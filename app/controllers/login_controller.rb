@@ -1,4 +1,5 @@
 class LoginController < ApplicationController
+  before_filter :authentication, :except => [:index, :login]
 
   def index
   end
@@ -20,6 +21,8 @@ class LoginController < ApplicationController
   end
 
   def destroy
+    session[:user_token] = nil
+    redirect_to root_path
   end
 
   
