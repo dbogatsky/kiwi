@@ -1,16 +1,77 @@
-<% provide(:title, "Log in") %>
-<h1>Login Page</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="shortcut icon" href="images/favicon.png" type="image/png">
 
-<%= form_tag(user_login_url) do |f| %>
-  <label>Email</label>
-  <%= text_field_tag :email %>
-<br />
-  <label>Password</label>
-  <%= password_field_tag :password %>
-<br />
-  <%= submit_tag "Log in" %>
+  <title>Conversations - Code10</title>
 
-<% end %>
+  <link href="assets/bootstrap/css/style.default.css" rel="stylesheet">
+
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="assets/bootstrap/js/html5shiv.js"></script>
+  <script src="assets/bootstrap/js/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+<body class="signin">
+
+
+<section>
+  
+    <div class="signinpanel">
+        
+        <div class="row">
+            
+            <div class="col-xs-3">
+            </div>
+            
+            <div class="col-md-7">
+                
+                <%= form_tag(user_login_url) do |f| %>
+	                <img src="assets/images/code10.png" height="50" alt="Code10" />
+                    <br /><br />
+                
+                    <input type="text" name="email" id="email" class="form-control uname" placeholder="Email" autofocus required>
+					<input type="password" name="password" id="password" class="form-control pword" placeholder="Password" required>
+                    <a href=""><small>Forgot Your Password?</small></a>
+                    <br /><br />
+                    <input type="submit" class="btn btn-block btn-primary sharp" value="Login">                 
+                <% end %>
+            </div>
+            
+            <div class="col-xs-3">
+            </div>
+            
+            
+        </div><!-- row -->
+        
+    </div><!-- signin -->
+  
+</section>
+
+
+<script src="assets/bootstrap/js/jquery-1.11.1.min.js"></script>
+<script src="assets/bootstrap/js/jquery-migrate-1.2.1.min.js"></script>
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="assets/bootstrap/js/modernizr.min.js"></script>
+<script src="assets/bootstrap/js/jquery.sparkline.min.js"></script>
+<script src="assets/bootstrap/js/jquery.cookies.js"></script>
+
+<script src="assets/bootstrap/js/toggles.min.js"></script>
+<script src="assets/bootstrap/js/retina.min.js"></script>
+
+<script src="assets/bootstrap/js/custom.js"></script>
+
+</body>
+</html>
+
+
+
 
 
 
