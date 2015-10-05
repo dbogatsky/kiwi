@@ -24,32 +24,29 @@
 <section>
   
     <div class="signinpanel">
-        
+    
         <div class="row">
-            
-            <div class="col-xs-3">
-            </div>
-            
-            <div class="col-md-7">
-                
-                <%= form_tag(user_login_url) do |f| %>
-	                <img src="assets/images/code10.png" height="50" alt="Code10" />
-                    <br /><br />
-                
-                    <input type="text" name="email" id="email" class="form-control uname" placeholder="Email" autofocus required>
-					<input type="password" name="password" id="password" class="form-control pword" placeholder="Password" required>
-                    <a href=""><small>Forgot Your Password?</small></a>
-                    <br /><br />
-                    <input type="submit" class="btn btn-block btn-primary sharp" value="Login">                 
-                <% end %>
-            </div>
-            
-            <div class="col-xs-3">
-            </div>
-            
-            
-        </div><!-- row -->
         
+          <div class="col-xs-3">
+          </div>
+          
+          <div class="col-md-7">
+            <%= form_tag(user_login_url) do |f| %>
+              <img src="assets/images/code10.png" height="50" alt="Code10" />
+              <br /><br />
+            
+              <input type="text" name="email" id="email" class="form-control uname" placeholder="Email" autofocus required>
+              <input type="password" name="password" id="password" class="form-control pword" placeholder="Password" required>
+              <a href=""><small>Forgot Your Password?</small></a>
+              <br /><br />
+              <input type="submit" class="btn btn-block btn-primary sharp" value="Login">                 
+            <% end %>
+          </div>
+          
+          <div class="col-xs-3">
+          </div>
+        </div><!-- row -->
+    
     </div><!-- signin -->
   
 </section>

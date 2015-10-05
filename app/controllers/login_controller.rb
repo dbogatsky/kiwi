@@ -18,7 +18,7 @@ class LoginController < ApplicationController
     else 
       # Create an error message
       flash[:danger] = 'Error:  Incorrect username or password.  Please try again...'  # Log in error message  
-      render 'index'
+      redirect_to root_path
     end 
   end
 
