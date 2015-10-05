@@ -1,7 +1,9 @@
 class LoginController < ApplicationController
   before_filter :authentication, :except => [:index, :login]
 
+
   def index
+    render :layout => false
   end
 
 
