@@ -10,8 +10,10 @@ class LoginController < ApplicationController
   def login 
     # Check username and password through the Authentication API]
    if @auth = User.authenticate(params[:email], params[:password])
+
       # Store username into session
       session[:user_token] = @auth
+   
       # Log the user in and redirect to the main page: Dashboard first? 
       redirect_to dashboard_path
       # render 'show'

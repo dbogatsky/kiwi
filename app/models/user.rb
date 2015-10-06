@@ -1,23 +1,36 @@
 require 'kiwi_service'
 
 class User < KiwiServiceModel
-  attr_accessor :email, :password, :first_name, :last_name
-
-  def self.authenticate(email, password)
-	  
-    @token = Token.new    
-    @token.create(
-        user = {
-	        email: email, 
-			password: password
-		}
-    )
-
-    if  @token.token == nil
-        false
-    else 
-        @token.token
-    end 
-  end
+	
+	#setup instance variables
+	attr_accessor :email, :password
+	
+	##
+	#athentication method to verify credentials
+	##
+	def self.authenticate(email, password)
+	
+		#create new token object for auth
+		@token = Token.new 
+		
+		#initate api call and catch any errors
+		begin
+			@token.create(
+			user: {
+				email: email,
+				password: password
+				}
+			)
+		rescue ActiveRestClient::HTTPClientException, ActiveRestClient::HTTPServerException => e
+			Rails.logger.error("API returned #{e.status} : #{e.result.message}")
+		end
+		  
+		#token did not return for some reason or is not set otherwise return the token
+		if  @token.token == nil
+		    false
+		else 
+		    @token.token
+		end 
+	end
 
 end
