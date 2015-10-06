@@ -1,12 +1,16 @@
 require 'kiwi_service'
 
 class User < KiwiServiceModel
-  attr_accessor :username, :email, :password, :first_name, :last_name
+  attr_accessor :email, :password, :first_name, :last_name
 
   def self.authenticate(email, password)
-    @token = Token.new
+	  
+    @token = Token.new    
     @token.create(
-        user = { "email": email, "password": password }
+        user = {
+	        email: email, 
+			password: password
+		}
     )
 
     if  @token.token == nil
