@@ -5,7 +5,7 @@ class Token < ActiveRestClient::Base
     request_body_type :json
     
     #enable to true for debugging
-    verbose false
+    verbose APP_CONFIG['api_verbose']
 
     # Request for token
     post :create, "/token", defaults: {app_key:APP_CONFIG['api_app_key']}

@@ -1,6 +1,4 @@
-require 'kiwi_service'
-
-class User < KiwiServiceModel
+class User
 	
 	#setup instance variables
 	attr_accessor :email, :password
