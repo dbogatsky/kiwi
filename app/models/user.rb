@@ -4,10 +4,15 @@ class User < KiwiServiceModel
   attr_accessor :username, :email, :password, :first_name, :last_name
 
   def self.authenticate(email, password)
-    if email == 'me@code10.ca'
-      true
+    @token = Token.new
+    @token.create(
+        user = { "email": email, "password": password }
+    )
+
+    if  @token.token == nil
+        false
     else 
-      false
+        @token.token
     end 
   end
 

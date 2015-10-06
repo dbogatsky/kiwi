@@ -6,18 +6,18 @@ development:
   <<: *default
   api_name: Orchard
   api_app_key: app_LL1zKMy_vLixnHSyyiAB
-  api_url: http://api.convo.code10.ca/api/v1/token
+  api_url: http://api.convo.code10.ca/api/v1
 
 
 test:
   <<: *default
   api_name: Orchard
   api_app_key: app_LL1zKMy_vLixnHSyyiAB
-  api_url: http://api.convo.code10.ca/api/v1/token
+  api_url: http://api.convo.code10.ca/api/v1
 
 
 production:
   <<: *default
   api_name: Orchard
   api_app_key: app_LL1zKMy_vLixnHSyyiAB
-  api_url: http://api.convo.code10.ca/api/v1/token
+  api_url: http://api.convo.code10.ca/api/v1
