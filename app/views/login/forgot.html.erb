@@ -11,12 +11,12 @@
 
   <title><%= APP_CONFIG['software_title'] %></title>
 
-  <link href="assets/bootstrap/css/style.default.css" rel="stylesheet">
+  <link href="/assets/bootstrap/css/style.default.css" rel="stylesheet">
 
   <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!--[if lt IE 9]>
-  <script src="assets/bootstrap/js/html5shiv.js"></script>
-  <script src="assets/bootstrap/js/respond.min.js"></script>
+  <script src="/assets/bootstrap/js/html5shiv.js"></script>
+  <script src="/assets/bootstrap/js/respond.min.js"></script>
   <![endif]-->
 </head>
 
@@ -33,28 +33,16 @@
 				</div>
 				
 				<div class="col-md-7">
-					<%= form_tag(user_login_url) do |f| %>
+					<%= form_tag(login_recover_url) do |f| %>
 
 						<img src="/assets/images/code10.png" height="50" alt="Code10" />
 						<br /><br />
 						
-						<% if flash[:danger] %>
-							<div class="alert alert-danger">
-								<strong>Sorry!</strong> <%= flash[:danger] %>
-	              			</div>
-              			<% end %>
-              			
-              			<% if flash[:recover_success] %>
-							<div class="alert alert-success">
-								<strong>Great!</strong> <%= flash[:recover_success] %>
-							</div> 
-						<% end %>  
+						<p>Enter your email address and we'll help you reset your password.</p>
 						
 						<input type="text" name="email" id="email" class="form-control uname" placeholder="Email" autofocus required>
-						<input type="password" name="password" id="password" class="form-control pword" placeholder="Password" required>
-						<a href="/login/forgot"><small>Forgot Your Password?</small></a>
 						<br /><br />
-						<input type="submit" class="btn btn-block btn-primary sharp" value="Login">                 
+						<input type="submit" class="btn btn-block btn-primary sharp" value="Recover Password">                 
 					<% end %>
 				</div>
 				
@@ -79,7 +67,6 @@
 <script src="/assets/bootstrap/js/retina.min.js"></script>
 
 <script src="/assets/bootstrap/js/custom.js"></script>
-
 
 </body>
 </html>
