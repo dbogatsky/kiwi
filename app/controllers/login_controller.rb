@@ -16,7 +16,7 @@ class LoginController < ApplicationController
    
       # Log the user in and redirect to the main page: Dashboard first? 
       redirect_to dashboard_path
-      # render 'show'
+
     else 
       # Create an error message
       flash[:danger] = 'Error:  Incorrect username or password.  Please try again...'  # Log in error message  
