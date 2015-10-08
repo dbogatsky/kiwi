@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     match '/accounts', to: 'accounts#index', as: :accounts, via: [:get] 
     get '/accounts/:id', to: 'accounts#conversation', as: :accounts_conversation
     get '/accounts/add', to: 'accounts#add', as: :accounts_add
+    get '/accounts/edit/:id', to: 'accounts#edit', as: :accounts_edit
     match '/schedule', to: 'schedule#index', as: :schedule, via: [:get] 
     match '/media', to: 'media#index', as: :media, via: [:get] 
     match '/messages', to: 'messages#index', as: :messages, via: [:get] 

@@ -4,15 +4,24 @@ class AccountsController < ApplicationController
 	end
 
 
+	def conversation
+		# Get the conversation based on id given
+
+	end
+
+
 	def add
 		# Add an account
 		
 	end
 
 
-	def conversation
-		# get the conversation based on id given
-
+	def edit
+		# Edit an account
+		
 	end
+
+
+
 
 end
