@@ -22,6 +22,19 @@ class AccountsController < ApplicationController
 	end
 
 
+	def schedule_meeting
+
+	end 
+
+	def add_note
+
+	end
+
+	def send_email
+
+	end
+
+
 
 
 end

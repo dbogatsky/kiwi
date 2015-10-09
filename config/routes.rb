@@ -9,8 +9,8 @@ Rails.application.routes.draw do
     match '/dashboard', to: 'dashboard#index', as: :dashboard, via: [:get] 
     match '/accounts', to: 'accounts#index', as: :accounts, via: [:get] 
     get '/accounts/add', to: 'accounts#add', as: :accounts_add
-    get '/accounts/:id', to: 'accounts#conversation', as: :accounts_conversation
     get '/accounts/edit/:id', to: 'accounts#edit', as: :accounts_edit
+    get '/accounts/:id', to: 'accounts#conversation', as: :accounts_conversation
     
     match '/schedule', to: 'schedule#index', as: :schedule, via: [:get] 
     match '/media', to: 'media#index', as: :media, via: [:get] 
