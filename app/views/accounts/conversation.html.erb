@@ -161,6 +161,8 @@
     <script src="/assets/bootstrap/js/moment.js"></script>
     
     <script src="/assets/bootstrap/js/custom.js"></script>
+
+
     <script>
         jQuery(document).ready(function(){
     
@@ -174,6 +176,17 @@
                          {value: "5", text: "Admin"}
                         ]
             });
+
+
+            jQuery('#scheduleDatePicker').datepicker();
+            jQuery('#scheduleTimePicker').timepicker({minuteStep: 5});
+            
+            jQuery('#reminderDatePicker').datepicker();
+            jQuery('#reminderTimePicker').timepicker({minuteStep: 5});
+
+
             
         });
+
+
     </script>
