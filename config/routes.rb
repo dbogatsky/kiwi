@@ -3,13 +3,13 @@ Rails.application.routes.draw do
     get '/login', to: 'login#index', as: :user_login 
     
     get '/login/destroy', to: 'login#destroy', as: :user_logout
-	get '/login/forgot', to: 'login#forgot', as: :login_forgot
+    get '/login/forgot', to: 'login#forgot', as: :login_forgot
     post '/login/recover', to:'login#recover', as: :login_recover
     
     match '/dashboard', to: 'dashboard#index', as: :dashboard, via: [:get] 
     match '/accounts', to: 'accounts#index', as: :accounts, via: [:get] 
-    get '/accounts/:id', to: 'accounts#conversation', as: :accounts_conversation
     get '/accounts/add', to: 'accounts#add', as: :accounts_add
+    get '/accounts/:id', to: 'accounts#conversation', as: :accounts_conversation
     get '/accounts/edit/:id', to: 'accounts#edit', as: :accounts_edit
     
     match '/schedule', to: 'schedule#index', as: :schedule, via: [:get] 
