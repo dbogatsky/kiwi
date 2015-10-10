@@ -13,43 +13,56 @@
 
               <div class="row row-pad-5">
                 <div class="col-lg-12">
-                  <input type="text" name="scheduleTitle" placeholder="Title" class="form-control" required="required" />
+                  <input type="text" name="scheduleTitle" placeholder="Event" class="form-control" required="required" />
                 </div>
               </div><!-- row -->
 
               <div class="row row-pad-5">
                 <div class="col-lg-12">
-                  <input type="text" name="scheduleLocation" placeholder="Location" class="form-control" required="required" />
+                  <input type="text" name="scheduleLocation" placeholder="Add Location" class="form-control" required="required" />
                 </div>
               </div><!-- row -->
 
               <div class="row row-pad-5">
                 <div class="col-lg-12">
-                  <input type="text" name="scheduleInvitees" placeholder="Invitees" class="form-control" required="required" />
+                  <input name="tags" id="tags" class="form-control" value="" />
                 </div>
               </div><!-- row -->
+              
+              <div class="row">
+	              <div class="col-lg-4">
+	              <h5>Starts</h5>
+	              </div>
+              </div>
 
               <div class="row row-pad-5">
                 <div class="col-lg-4">
-                  <div class="input-group mb15">
+                  <div class="input-group ">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                    <input type="text" class="form-control" placeholder="From: mm/dd/yyyy" id="scheduleFromDatePicker" required="required" />
+                    <input type="text" class="form-control" placeholder="dd/mm/yy" id="scheduleFromDatePicker" required="required" />
                   </div>
                 </div>
 
                 <div class="col-lg-4">
-                  <div class="input-group mb15">
+                  <div class="input-group ">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                     <div class="bootstrap-timepicker"><input id="scheduleFromTimePicker" type="text" class="form-control" required="required" /></div>
                   </div>
                 </div>
               </div><!-- row -->
 
+
+              <div class="row">
+	              <div class="col-lg-4">
+	              <h5>Ends</h5>
+	              </div>
+              </div>
+
               <div class="row row-pad-5">
                 <div class="col-lg-4">
-                  <div class="input-group mb15">
+                  <div class="input-group ">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                    <input type="text" class="form-control" placeholder="To: mm/dd/yyyy" id="scheduleToDatePicker" required="required" />
+                    <input type="text" class="form-control" placeholder="dd/mm/yy" id="scheduleToDatePicker" required="required" />
                   </div>
                 </div>
 
@@ -59,11 +72,11 @@
                     <div class="bootstrap-timepicker"><input id="scheduleToTimePicker" type="text" class="form-control" required="required" /></div>
                   </div>
                 </div>
-              </div><!-- row -->
+              </div><!-- row -->         
 
               <div class="row row-pad-5">
-                <div class="col-lg-12">
-                  <textarea class="form-control" rows="5" placeholder="Message" required="required"></textarea>
+                <div class="col-lg-12 mb15">
+                  <textarea class="form-control" rows="5" placeholder="Notes" required="required"></textarea>
                 </div>
               </div><!-- row -->
 
