@@ -10,7 +10,11 @@ Rails.application.routes.draw do
     match '/accounts', to: 'accounts#index', as: :accounts, via: [:get] 
     get '/accounts/add', to: 'accounts#add', as: :accounts_add
     get '/accounts/edit/:id', to: 'accounts#edit', as: :accounts_edit
+    
     get '/accounts/:id', to: 'accounts#conversation', as: :accounts_conversation
+    post '/accounts/:id/schedule_meeting', to:'accounts#schedule_meeting', as: :account_schedule_meeting
+    post '/accounts/:id/add_note', to:'accounts#add_note', as: :account_add_note
+    post '/accounts/:id/send_email', to:'accounts#send_email', as: :account_send_email
     
     match '/schedule', to: 'schedule#index', as: :schedule, via: [:get] 
     match '/media', to: 'media#index', as: :media, via: [:get] 

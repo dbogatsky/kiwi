@@ -7,8 +7,8 @@
         </div>
         <div class="modal-body">
         <p>Provide the details below to schedule a meeting</p>
+        <%= form_tag(account_schedule_meeting_url) do |f| %>
         <div class="panel panel-default">
-            <form>
             <div class="panel-body">
 
               <div class="row row-pad-5">
@@ -94,23 +94,23 @@
 	                <div class="col-lg-4">
 	                  <div class="input-group">
 	                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-	                    <input type="text" class="form-control" placeholder="mm/dd/yyyy" id="meetingReminderDate" required="required" />
+	                    <input type="text" class="form-control" placeholder="mm/dd/yyyy" id="meetingReminderDate" />
 	                   </div>  
 	                </div>
 	
 	                <div class="col-lg-4">
 	                  <div class="input-group">
 	                    <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-	                    <div class="bootstrap-timepicker"><input id="meetingReminderTime" type="text" class="form-control" required="required" /></div>
+	                    <div class="bootstrap-timepicker"><input id="meetingReminderTime" type="text" class="form-control" /></div>
 	                  </div>
 	                </div>
 	              </div><!-- row -->     
 			  </div><!-- meeting reminder settings -->   
 
 				<div id="meeting-repeat-settings">
-					<div class="row ">
+					<div class="row row-pad-5">
 						<div class="col-sm-6">
-							<label for="meeting-reminder">Frequency:</label>
+							<label for="repeat-frequency">Frequency:</label>
 							<select class="form-control input-sm mb15" id="repeat-frequency">
 								<option value="daily">Daily</option>
 								<option value="weekly">Weekly</option>
@@ -119,55 +119,143 @@
 							</select>
 						</div>
 						<div class="col-sm-6">
-							<label for="meeting-reminder">Repeat every:</label>
-							<select class="form-control input-sm mb15" id="repeat-every">							
-								<% (1..30).each do |i| %>
+							<label for="repeat-occurrences">Stop After:</label>
+							<select class="form-control input-sm mb15" id="repeat-occurrences">							
+								<% (1..100).each do |i| %>
 								<option value="<%= i %>">
-								  	<% if i == 1 %>
-									  	week
+									<% if i == 1 %>
+									  	1 Occurrence
 									<% else %>
-										<%= i %> weeks
-									<% end %> 
+										<%= i %> Occurrences 
+									<% end %>
 								</option>  
 								<% end %>
 							</select>
-						</div>
+						</div>							
 					</div><!-- row -->
-					<div class="row row-pad-5">
-						<div class="col-sm-6">
-							Repeat On:<br/>
-							<input type="checkbox" id="repeat-day-mon">
-							<label for="repeat-day-mon" style="padding:4px;">M</label>
-							<input type="checkbox" id="repeat-day-tue">
-							<label for="repeat-day-tue" style="padding:4px;">T</label>
-							<input type="checkbox" id="repeat-day-wed">
-							<label for="repeat-day-wed" style="padding:5px;">W</label>
-							<input type="checkbox" id="repeat-day-thu">
-							<label for="repeat-day-thu" style="padding:4px;">T</label>
-							<input type="checkbox" id="repeat-day-fri">
-							<label for="repeat-day-fri" style="padding:4px;">F</label>
-							<input type="checkbox" id="repeat-day-sat">
-							<label for="repeat-day-sat" style="padding:4px;">S</label>
-							<input type="checkbox" id="repeat-day-sun">
-							<label for="repeat-day-sun" style="padding:4px;">S</label>
+					
+					
+					<div id="repeat-frequency-day">
+						<div class="row row-pad-5">
+							<div class="col-sm-6">
+								<label for="repeat-every-day">Repeat Every:</label>
+								<select class="form-control input-sm mb15" id="repeat-every-day">							
+									<% (1..30).each do |i| %>
+									<option value="<%= i %>">
+									  	<% if i == 1 %>
+										  	Day
+										<% else %>
+											<%= i %> Days 
+										<% end %> 
+									</option>  
+									<% end %>
+								</select>
+							</div>							
 						</div>
-					</div>
+					</div><!-- row repeat frequency day -->
+					
+					
+					
+					<div id="repeat-frequency-week">
+						<div class="row row-pad-5">
+							<div class="col-sm-6">
+								<label for="repeat-every-week">Repeat Every:</label>
+								<select class="form-control input-sm mb15" id="repeat-every-week">							
+									<% (1..52).each do |i| %>
+									<option value="<%= i %>">
+									  	<% if i == 1 %>
+										  	Week
+										<% else %>
+											<%= i %> Weeks
+										<% end %> 
+									</option>  
+									<% end %>
+								</select>
+							</div>							
+							<div class="col-sm-6">
+								<div id="repeat-frequency-weekday-on">
+									Repeat On:<br/>
+									<input type="checkbox" id="repeat-day-mon">
+									<label for="repeat-day-mon" style="padding:4px;">M</label>
+									<input type="checkbox" id="repeat-day-tue">
+									<label for="repeat-day-tue" style="padding:4px;">T</label>
+									<input type="checkbox" id="repeat-day-wed">
+									<label for="repeat-day-wed" style="padding:5px;">W</label>
+									<input type="checkbox" id="repeat-day-thu">
+									<label for="repeat-day-thu" style="padding:4px;">T</label>
+									<input type="checkbox" id="repeat-day-fri">
+									<label for="repeat-day-fri" style="padding:4px;">F</label>
+									<input type="checkbox" id="repeat-day-sat">
+									<label for="repeat-day-sat" style="padding:4px;">S</label>
+									<input type="checkbox" id="repeat-day-sun">
+									<label for="repeat-day-sun" style="padding:4px;">S</label>
+								</div>
+							</div>
+						</div>
+					</div><!-- row repeat frequency month -->
+					
+					
+					<div id="repeat-frequency-month">
+						<div class="row row-pad-5">
+							<div class="col-sm-6">
+								<label for="repeat-every-month">Repeat Every:</label>
+								<select class="form-control input-sm mb15" id="repeat-every-month">							
+									<% (1..12).each do |i| %>
+									<option value="<%= i %>">
+									  	<% if i == 1 %>
+										  	Month
+										<% else %>
+											<%= i %> Month
+										<% end %> 
+									</option>  
+									<% end %>
+								</select>
+							</div>							
+							<div class="col-sm-6">
+								<label for="repeat-every-month-on">Repeat On:</label>
+								<select class="form-control input-sm mb15" id="repeat-every-month-on">							
+									<option value="dayofmonth">Day of the Month</option>
+									<option value="dayofweek">Day of the Week</option>
+								</select>
+							</div>
+						</div>
+					</div><!-- row repeat frequency month -->
+					
+					
+					<div id="repeat-frequency-year">
+						<div class="row row-pad-5">
+							<div class="col-sm-6">
+								<label for="repeat-every-year">Repeat every:</label>
+								<select class="form-control input-sm mb15" id="repeat-every-year">							
+									<% (1..5).each do |i| %>
+									<option value="<%= i %>">
+									  	<% if i == 1 %>
+										  	Year
+										<% else %>
+											<%= i %> Years
+										<% end %> 
+									</option>  
+									<% end %>
+								</select>
+							</div>							
+						</div>
+					</div><!-- row repeat frequency year -->					
 				</div><!-- meeting repeat settings -->          
 
 
 
               <div class="row row-pad-5">
                 <div class="col-lg-12 mb15">
-                  <textarea class="form-control" rows="5" placeholder="Notes" required="required"></textarea>
+                  <textarea class="form-control" rows="5" placeholder="Notes"></textarea>
                 </div>
               </div><!-- row -->
 
             </div><!-- panel-body -->
             <div class="panel-footer">
-              <button class="btn btn-primary">Save</button>
+              <button type="submit" value="submit" class="btn btn-primary">Save</button>
             </div>
-            </form>
         </div><!-- panel -->
+        <% end %> <!-- end form -->
         </div><!-- modal body -->
     </div><!-- modal content -->
   </div><!-- modal dialog -->
