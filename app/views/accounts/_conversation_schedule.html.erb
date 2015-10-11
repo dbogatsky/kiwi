@@ -6,9 +6,9 @@
             <h4 class="modal-title">Schedule Meeting</h4>
         </div>
         <div class="modal-body">
-        <p>Follow the steps to schedule a meeting</p>
+        <p>Provide the details below to schedule a meeting</p>
         <div class="panel panel-default">
-              <form>
+            <form>
             <div class="panel-body">
 
               <div class="row row-pad-5">
@@ -19,7 +19,7 @@
 
               <div class="row row-pad-5">
                 <div class="col-lg-12">
-                  <input type="text" name="scheduleLocation" placeholder="Add Location" class="form-control" required="required" />
+                  <input type="text" name="scheduleLocation" placeholder="Add Location" class="form-control" required="required" value="2529 Canada Way, Vancouver, Canada, V5G 1G4"/>
                 </div>
               </div><!-- row -->
 
@@ -75,6 +75,88 @@
               </div><!-- row -->         
 
               <div class="row row-pad-5">
+                <div class="col-lg-6">
+                  <div class="ckbox ckbox-primary">
+                    <input type="checkbox" id="meeting-reminder">
+                    <label for="meeting-reminder">Set a Custom Reminder</label>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="ckbox ckbox-primary">
+                    <input type="checkbox" id="meeting-repeat">
+                    <label for="meeting-repeat">Repeat</label>
+                  </div>
+                </div>
+              </div><!-- row -->
+
+			  <div id="meeting-reminder-settings">
+	              <div class="row row-pad-5">
+	                <div class="col-lg-4">
+	                  <div class="input-group">
+	                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+	                    <input type="text" class="form-control" placeholder="mm/dd/yyyy" id="meetingReminderDate" required="required" />
+	                   </div>  
+	                </div>
+	
+	                <div class="col-lg-4">
+	                  <div class="input-group">
+	                    <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+	                    <div class="bootstrap-timepicker"><input id="meetingReminderTime" type="text" class="form-control" required="required" /></div>
+	                  </div>
+	                </div>
+	              </div><!-- row -->     
+			  </div><!-- meeting reminder settings -->   
+
+				<div id="meeting-repeat-settings">
+					<div class="row ">
+						<div class="col-sm-6">
+							<label for="meeting-reminder">Frequency:</label>
+							<select class="form-control input-sm mb15" id="repeat-frequency">
+								<option value="daily">Daily</option>
+								<option value="weekly">Weekly</option>
+								<option value="monthly">Monthly</option>
+								<option value="yearly">Yearly</option>
+							</select>
+						</div>
+						<div class="col-sm-6">
+							<label for="meeting-reminder">Repeat every:</label>
+							<select class="form-control input-sm mb15" id="repeat-every">							
+								<% (1..30).each do |i| %>
+								<option value="<%= i %>">
+								  	<% if i == 1 %>
+									  	week
+									<% else %>
+										<%= i %> weeks
+									<% end %> 
+								</option>  
+								<% end %>
+							</select>
+						</div>
+					</div><!-- row -->
+					<div class="row row-pad-5">
+						<div class="col-sm-6">
+							Repeat On:<br/>
+							<input type="checkbox" id="repeat-day-mon">
+							<label for="repeat-day-mon" style="padding:4px;">M</label>
+							<input type="checkbox" id="repeat-day-tue">
+							<label for="repeat-day-tue" style="padding:4px;">T</label>
+							<input type="checkbox" id="repeat-day-wed">
+							<label for="repeat-day-wed" style="padding:5px;">W</label>
+							<input type="checkbox" id="repeat-day-thu">
+							<label for="repeat-day-thu" style="padding:4px;">T</label>
+							<input type="checkbox" id="repeat-day-fri">
+							<label for="repeat-day-fri" style="padding:4px;">F</label>
+							<input type="checkbox" id="repeat-day-sat">
+							<label for="repeat-day-sat" style="padding:4px;">S</label>
+							<input type="checkbox" id="repeat-day-sun">
+							<label for="repeat-day-sun" style="padding:4px;">S</label>
+						</div>
+					</div>
+				</div><!-- meeting repeat settings -->          
+
+
+
+              <div class="row row-pad-5">
                 <div class="col-lg-12 mb15">
                   <textarea class="form-control" rows="5" placeholder="Notes" required="required"></textarea>
                 </div>
@@ -83,9 +165,8 @@
             </div><!-- panel-body -->
             <div class="panel-footer">
               <button class="btn btn-primary">Save</button>
-              <button type="reset" class="btn btn-default">Reset</button>
-                  </div>
-              </form>
+            </div>
+            </form>
         </div><!-- panel -->
         </div><!-- modal body -->
     </div><!-- modal content -->

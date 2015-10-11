@@ -26,27 +26,30 @@
               <div class="row row-pad-5">
                 <div class="col-lg-12">
                   <div class="ckbox ckbox-primary">
-                    <input type="checkbox" value="1" id="reminderCheckbox">
-                    <label for="reminderCheckbox">Set a Reminder</label>
+                    <input type="checkbox" id="note-reminder">
+                    <label for="note-reminder">Set a Reminder</label>
                   </div>
                 </div>
               </div><!-- row -->
 
-              <div class="row row-pad-5">
-                <div class="col-lg-4">
-                  <div class="input-group">
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                    <input type="text" class="form-control" placeholder="mm/dd/yyyy" id="reminderDatePicker" required="required" />
-                   </div>  
-                </div>
 
-                <div class="col-lg-4">
-                  <div class="input-group">
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-                    <div class="bootstrap-timepicker"><input id="reminderTimePicker" type="text" class="form-control" required="required" /></div>
-                  </div>
-                </div>
-              </div><!-- row -->              
+			  <div id="note-reminder-settings">
+	              <div class="row row-pad-5">
+	                <div class="col-lg-4">
+	                  <div class="input-group">
+	                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+	                    <input type="text" class="form-control" placeholder="mm/dd/yyyy" id="reminderDatePicker" required="required" />
+	                   </div>  
+	                </div>
+	
+	                <div class="col-lg-4">
+	                  <div class="input-group">
+	                    <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+	                    <div class="bootstrap-timepicker"><input id="reminderTimePicker" type="text" class="form-control" required="required" /></div>
+	                  </div>
+	                </div>
+	              </div><!-- row -->     
+			  </div><!-- reminder settings -->       
 
             </div><!-- panel-body -->
             <div class="panel-footer">

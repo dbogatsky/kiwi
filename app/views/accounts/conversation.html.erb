@@ -43,7 +43,7 @@
 						<h6><span class="badge" style="background-color: #0eb057; border-color: #0eb057;">Open</span> </h6>
 					</div>					
 					<div class="col-xs-3">
-						<small><strong>Assigned To:</strong></small>
+						<small><strong>Assigned To</strong></small>
 						<h6>Micheal Jordan</h6>
 					</div>
 					<div class="col-xs-3">
@@ -51,7 +51,7 @@
 						<h6>Oct 10, 2016 @ 2:30pm</h6>
 					</div>
 					<div class="col-xs-3">
-						<small><strong>Last Update By:</strong></small>
+						<small><strong>Updated By</strong></small>
 						<h6>Charles Barkley</h6>
 					</div>					
 				</div>
@@ -66,7 +66,7 @@
                   </button>
                   <ul class="dropdown-menu" role="menu">
                     <li><a href="#" data-toggle="modal" data-target=".account-action-meeting">Schedule Meeting</a></li>
-                    <li><a href="#" data-toggle="modal" data-target=".account-action-note">Add a Note</a></li>
+                    <li><a href="#" data-toggle="modal" data-target=".account-action-note">Add Note</a></li>
                     <li><a href="#" data-toggle="modal" data-target=".account-action-email">Send Email</a></li>
                     <li class="divider"></li>
                     <li><a href="<%= accounts_edit_path(1) %>">Edit Account</a></li>
@@ -147,8 +147,17 @@
                       <h2>Final Section</h2>
                       <p>This is the content of the last section</p>
                     </div> <!-- cd-timeline-content -->
-                  </div> <!-- cd-timeline-block -->
+                  </div> <!-- cd-timeline-block -->                  
                 </section> <!-- cd-timeline -->
+
+				<div class="row">
+					<div class="col-sm-12">
+						<button type="button" class="btn btn-primary pull-right" style="width:95%;">
+							<i class="fa  fa-arrow-circle-down"></i>Load More
+						</button>
+					</div>
+				</div> 
+
                 
                 <!-- Timeline End -->
               </div>              
@@ -161,7 +170,7 @@
 
 <%= render "conversation_schedule" %>
 
-<%= render "conversation_reminder" %>
+<%= render "conversation_notes" %>
 
 <%= render "conversation_email" %>
 
@@ -186,10 +195,9 @@
     <script src="/assets/bootstrap/js/select2.min.js"></script>
     <script src="/assets/bootstrap/js/bootstrap-editable.min.js"></script>
     <script src="/assets/bootstrap/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="/assets/bootstrap/js/moment.js"></script>
-    
+    <script src="/assets/bootstrap/js/moment.js"></script>  
     <script src="/assets/bootstrap/js/jquery.tagsinput.min.js"></script>
-    
+  
     <script src="/assets/bootstrap/js/custom.js"></script>
 
     <script>
@@ -212,19 +220,74 @@
 			    }
 			};
 
-            jQuery('#scheduleFromDatePicker').datepicker({
+            $('#scheduleFromDatePicker').datepicker({
 	            dateFormat: 'dd/mm/yy',
 				altField: "#scheduleToDatePicker",
 				altFormat: "dd/mm/yy"	            
 	        });
-            jQuery('#scheduleToDatePicker').datepicker({
+            $('#scheduleToDatePicker').datepicker({
 	            dateFormat: 'dd/mm/yy'
 	        });
-            jQuery('#scheduleFromTimePicker').timepicker({minuteStep: 5});
-            jQuery('#scheduleToTimePicker').timepicker({minuteStep: 5});
+            jQuery('#scheduleFromTimePicker').timepicker({
+	            minuteStep: 15
+	        });
+            $('#scheduleToTimePicker').timepicker({
+	            minuteStep: 15
+	        });
+            $('#scheduleFromTimePicker').timepicker().on('hide.timepicker', function(e) {
+			 	$('#scheduleToTimePicker').timepicker('setTime', e.time.value);
+  			});
+  			
+			
+  			$('#meetingReminderDate').datepicker();
+			$('#meetingReminderTime').timepicker({minuteStep: 5});
+			
+			// by default hide reminder settings for meetings
+			$("#meeting-reminder-settings").hide();
+			
+			// hide show note reminder settings for meetings
+			$('#meeting-reminder').change(function () {
+			    if ($("#meeting-reminder").is(':checked')) {
+				    $("#meeting-reminder-settings").show(500);
+				}
+				else {
+					$("#meeting-reminder-settings").hide(500);
+				}
+			});
+
+
+			// by default hide repeat settings for meetings
+			$("#meeting-repeat-settings").hide();
+			
+			// hide show note reminder settings for meetings
+			$('#meeting-repeat').change(function () {
+			    if ($("#meeting-repeat").is(':checked')) {
+				    $("#meeting-repeat-settings").show(500);
+				}
+				else {
+					$("#meeting-repeat-settings").hide(500);
+				}
+			});
+
+
+
+			$('#reminderDatePicker').datepicker();
+			$('#reminderTimePicker').timepicker({minuteStep: 5});
+
+			// by default hide reminder settings for notes
+			$("#note-reminder-settings").hide();
+			
+			// hide show note reminder settings
+			$('#note-reminder').change(function () {
+			    if ($("#note-reminder").is(':checked')) {
+				    $("#note-reminder-settings").show(500);
+				}
+				else {
+					$("#note-reminder-settings").hide(500);
+				}
+			});
+
             
-            jQuery('#reminderDatePicker').datepicker();
-            jQuery('#reminderTimePicker').timepicker({minuteStep: 5});
             
         });
 
