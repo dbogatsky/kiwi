@@ -1,4 +1,4 @@
-class Token < ActiveRestClient::Base
+class OrchardApiToken < ActiveRestClient::Base
 	
 	#api details
     base_url APP_CONFIG['api_url']   

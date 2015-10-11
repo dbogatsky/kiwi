@@ -9,7 +9,7 @@ class User
 	def self.authenticate(email, password)
 	
 		#create new token object for auth
-		@token = Token.new 
+		@token = OrchardApiToken.new 
 		
 		#initate api call and catch any errors
 		begin
