@@ -213,7 +213,7 @@
     
   
 			// Tags Input
-			jQuery('#tags').tagsInput({
+			jQuery('#invite-emails').tagsInput({
 				width:'100%',
 				height: 'auto',
 				onAddTag:isValidEmailAddress,
@@ -224,31 +224,31 @@
 			    
 			    if (pattern.test(emailAddress) == false) {
 					alert("Please add a valid email address");
-					$('#tags').removeTag(emailAddress); 
+					$('#invite-emails').removeTag(emailAddress); 
 			    }
 			};
 
-            $('#scheduleFromDatePicker').datepicker({
+            $('#schedule-from-datepicker').datepicker({
 	            dateFormat: 'dd/mm/yy',
-				altField: "#scheduleToDatePicker",
+				altField: "#schedule-to-datepicker",
 				altFormat: "dd/mm/yy"	            
 	        });
-            $('#scheduleToDatePicker').datepicker({
+            $('#schedule-to-datepicker').datepicker({
 	            dateFormat: 'dd/mm/yy'
 	        });
-            jQuery('#scheduleFromTimePicker').timepicker({
+            jQuery('#schedule-from-timepicker').timepicker({
 	            minuteStep: 15
 	        });
-            $('#scheduleToTimePicker').timepicker({
+            $('#schedule-to-timepicker').timepicker({
 	            minuteStep: 15
 	        });
             $('#scheduleFromTimePicker').timepicker().on('hide.timepicker', function(e) {
-			 	$('#scheduleToTimePicker').timepicker('setTime', e.time.value);
+			 	$('#schedule-to-timepicker').timepicker('setTime', e.time.value);
   			});
   			
 			
-  			$('#meetingReminderDate').datepicker();
-			$('#meetingReminderTime').timepicker({minuteStep: 5});
+  			$('#meeting-reminder-date').datepicker();
+			$('#meeting-reminder-time').timepicker({minuteStep: 5});
 			
 			// by default hide reminder settings for meetings
 			$("#meeting-reminder-settings").hide();

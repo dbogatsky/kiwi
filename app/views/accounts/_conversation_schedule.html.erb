@@ -13,19 +13,19 @@
 
               <div class="row row-pad-5">
                 <div class="col-lg-12">
-                  <input type="text" name="scheduleTitle" placeholder="Event" class="form-control" required="required" />
+                  <input type="text" name="schedule-title" placeholder="Event" class="form-control" required="required" />
                 </div>
               </div><!-- row -->
 
               <div class="row row-pad-5">
                 <div class="col-lg-12">
-                  <input type="text" name="scheduleLocation" placeholder="Add Location" class="form-control" required="required" value="2529 Canada Way, Vancouver, Canada, V5G 1G4"/>
+                  <input type="text" name="schedule-location" placeholder="Add Location" class="form-control" required="required" value="2529 Canada Way, Vancouver, Canada, V5G 1G4"/>
                 </div>
               </div><!-- row -->
 
               <div class="row row-pad-5">
                 <div class="col-lg-12">
-                  <input name="tags" id="tags" class="form-control" value="" />
+                  <input name="invite-emails" id="invite-emails" class="form-control" value="" />
                 </div>
               </div><!-- row -->
               
@@ -39,14 +39,14 @@
                 <div class="col-lg-4">
                   <div class="input-group ">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                    <input type="text" class="form-control" placeholder="dd/mm/yy" id="scheduleFromDatePicker" required="required" />
+                    <input type="text" class="form-control" placeholder="dd/mm/yy" name="schedule-from-datepicker" id="schedule-from-datepicker" required="required" />
                   </div>
                 </div>
 
                 <div class="col-lg-4">
                   <div class="input-group ">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-                    <div class="bootstrap-timepicker"><input id="scheduleFromTimePicker" type="text" class="form-control" required="required" /></div>
+                    <div class="bootstrap-timepicker"><input id="schedule-from-timepicker" name="schedule-from-timepicker" type="text" class="form-control" required="required" /></div>
                   </div>
                 </div>
               </div><!-- row -->
@@ -62,14 +62,14 @@
                 <div class="col-lg-4">
                   <div class="input-group ">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                    <input type="text" class="form-control" placeholder="dd/mm/yy" id="scheduleToDatePicker" required="required" />
+                    <input type="text" class="form-control" placeholder="dd/mm/yy" name="schedule-to-datepicker"  id="schedule-to-datepicker" required="required" />
                   </div>
                 </div>
 
                 <div class="col-lg-4">
                   <div class="input-group mb15">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-                    <div class="bootstrap-timepicker"><input id="scheduleToTimePicker" type="text" class="form-control" required="required" /></div>
+                    <div class="bootstrap-timepicker"><input name="schedule-to-timepicker"  id="schedule-to-timepicker" type="text" class="form-control" required="required" /></div>
                   </div>
                 </div>
               </div><!-- row -->         
@@ -77,13 +77,13 @@
               <div class="row row-pad-5">
                 <div class="col-lg-6">
                   <div class="ckbox ckbox-primary">
-                    <input type="checkbox" id="meeting-reminder">
+                    <input type="checkbox" id="meeting-reminder" name="meeting-reminder">
                     <label for="meeting-reminder">Set a Custom Reminder</label>
                   </div>
                 </div>
                 <div class="col-lg-6">
                   <div class="ckbox ckbox-primary">
-                    <input type="checkbox" id="meeting-repeat">
+                    <input type="checkbox" id="meeting-repeat" name="meeting-repeat">
                     <label for="meeting-repeat">Repeat</label>
                   </div>
                 </div>
@@ -94,14 +94,14 @@
 	                <div class="col-lg-4">
 	                  <div class="input-group">
 	                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-	                    <input type="text" class="form-control" placeholder="mm/dd/yyyy" id="meetingReminderDate" />
+	                    <input type="text" class="form-control" placeholder="mm/dd/yyyy" name="meeting-reminder-date" id="meeting-reminder-date" />
 	                   </div>  
 	                </div>
 	
 	                <div class="col-lg-4">
 	                  <div class="input-group">
 	                    <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-	                    <div class="bootstrap-timepicker"><input id="meetingReminderTime" type="text" class="form-control" /></div>
+	                    <div class="bootstrap-timepicker"><input name="meeting-reminder-time" id="meeting-reminder-time" type="text" class="form-control" /></div>
 	                  </div>
 	                </div>
 	              </div><!-- row -->     
