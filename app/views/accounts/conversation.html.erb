@@ -1,4 +1,12 @@
           <div class="profile-header">
+	        <div class="row">
+		    	<% if flash[:success] %>
+					<div class="alert alert-success">
+						<strong><%= flash[:success] %></strong>
+					</div> 
+				<% end %>      
+		        
+	        </div>  
             <div class="row">
               <div class="col-sm-3">
                 <img src="/assets/bootstrap/images/photos/hd-profile.jpg" class="thumbnail img-responsive" alt="">
@@ -258,6 +266,10 @@
 
 			// by default hide repeat settings for meetings
 			$("#meeting-repeat-settings").hide();
+			$("#repeat-frequency-week").hide();
+			$("#repeat-frequency-month").hide();
+			$("#repeat-frequency-year").hide();
+			
 			
 			// hide show note reminder settings for meetings
 			$('#meeting-repeat').change(function () {
@@ -268,7 +280,38 @@
 					$("#meeting-repeat-settings").hide(500);
 				}
 			});
-
+			
+			// hide show note reminder settings for meetings
+			$('#repeat-frequency').change(function () {
+				if($('#repeat-frequency').val() == "daily") {
+					$("#repeat-frequency-day").show(500);
+					$("#repeat-frequency-week").hide(500);
+					$("#repeat-frequency-month").hide(500);
+					$("#repeat-frequency-year").hide(500);
+				}
+				else if($('#repeat-frequency').val() == "weekly"){
+					$("#repeat-frequency-day").hide(500);
+					$("#repeat-frequency-week").show(500);
+					$("#repeat-frequency-month").hide(500);
+					$("#repeat-frequency-year").hide(500);
+				}
+				else if($('#repeat-frequency').val() == "monthly"){
+					$("#repeat-frequency-day").hide(500);
+					$("#repeat-frequency-week").hide(500);
+					$("#repeat-frequency-month").show(500);
+					$("#repeat-frequency-year").hide(500);					
+				}
+				else if($('#repeat-frequency').val() == "yearly"){
+					$("#repeat-frequency-day").hide(500);
+					$("#repeat-frequency-week").hide(500);
+					$("#repeat-frequency-month").hide(500);
+					$("#repeat-frequency-year").show(500);					
+				}
+			});
+			
+			
+			
+			
 
 
 			$('#reminderDatePicker').datepicker();

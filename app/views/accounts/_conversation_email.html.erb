@@ -6,6 +6,7 @@
             <h4 class="modal-title">Email</h4>
         </div>
         <div class="modal-body">
+	    <%= form_tag(account_send_email_url) do |f| %>
         <p>Send an email by filling in the details below:</p>
         <div class="panel panel-default">
               <form>
@@ -17,7 +18,7 @@
               </div><!-- row -->
               <div class="row row-pad-5">
               <div class="col-lg-10">
-                  <input type="url" name="subject" placeholder="Subject" class="form-control" required="required"  />
+                  <input type="text" name="subject" placeholder="Subject" class="form-control" required="required"  />
                 </div>
               </div><!-- row -->
               <textarea class="form-control" rows="5" placeholder="Message" required="required"></textarea>
@@ -25,9 +26,9 @@
             <div class="panel-footer">
               <button class="btn btn-primary">Send Email</button>
               <button type="reset" class="btn btn-default">Reset</button>
-                  </div>
-              </form>
+            </div>
         </div><!-- panel -->
+        <% end %>
         </div><!-- modal body -->
     </div><!-- modal content -->
   </div><!-- modal dialog -->
