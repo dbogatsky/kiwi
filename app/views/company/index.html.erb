@@ -1,4 +1,60 @@
-Company page
+	<div class="row row-pad-5">
+		<div class="col-md-5">
+		</div>
+		<div class="col-md-2">
+			<a href="<%= company_add_path %>" class="btn btn-primary btn-block"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Company</a>
+		</div>
+	</div> <!-- row -->
+
+	<div class="row row-pad-5">
+        <div class="table-responsive">
+                <table class="table table-primary table-buglist">
+                    <thead>
+                        <tr>
+                        	<th>Status</th>
+                            <th>Name</th>
+                            <th>Contact Person</th>
+                            <th>Created</th>
+                            <th>Last Updated</th>
+                            <th>Edit</th>
+                            <% if super_admin == true %><th>Delete</th><% end %>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="badge pull-right" style="background-color: #0eb057; border-color: #0eb057;">Active</span></td>
+                            <td><a href="view-issue.html">Chocolate Factory</a></td>
+                            <td><a href="view-issue.html">Willy Wonka</a></td>
+                            <td>2015-10-11</td>
+                            <td>2015-10-11 2:00 PM</td>
+                            <td><a href="<%= company_edit_path(1) %>"><i class="fa fa-edit"></i></a></td>
+                            <% if super_admin == true %><td><a href="<%= company_delete_path(1) %>"><i class="fa fa-times-circle-o"></i></a></td><% end %>
+                        </tr>
+
+                        <tr>
+                            <td><span class="badge pull-right" style="background-color: #ff860d; border-color: #0eb057;">Suspended</span></td>
+                            <td><a href="view-issue.html">Candyland</a></td>
+                            <td><a href="view-issue.html">Papa Roach</a></td>
+                            <td>2015-01-01</td>
+                            <td>2015-07-21 4:45 PM</td>
+                            <td><a href="<%= company_edit_path(2) %>"><i class="fa fa-edit"></i></a></td>
+                            <% if super_admin == true %><td><a href="<%= company_delete_path(2) %>"><i class="fa fa-times-circle-o"></i></a></td><% end %>
+                        </tr>
+
+                    </tbody>
+                </table>
+                </div><!-- table-responsive -->
+            	<ul class="pagination pagination-split nomargin">
+                    <li class="disabled"><a href="#"><i class="fa fa-angle-left"></i></a></li>
+                    <li><a href="#">1</a></li>
+                    <li class="active"><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">5</a></li>
+                    <li><a href="#"><i class="fa fa-angle-right"></i></a></li>
+                </ul>
+			</div> <!-- row -->
+
 
 <script src="assets/bootstrap/js/jquery-1.11.1.min.js"></script>
 <script src="assets/bootstrap/js/jquery-migrate-1.2.1.min.js"></script>
@@ -9,9 +65,8 @@ Company page
 <script src="assets/bootstrap/js/retina.min.js"></script>
 <script src="assets/bootstrap/js/jquery.cookies.js"></script>
 
-
-<script src="assets/bootstrap/js/jquery-ui-1.10.3.min.js"></script>
-<script src="assets/bootstrap/js/fullcalendar.min.js"></script>
-<script src="assets/bootstrap/js/jquery.ui.touch-punch.min.js"></script>
+<script src="assets/bootstrap/js/morris.min.js"></script>
+<script src="assets/bootstrap/js/raphael-2.1.0.min.js"></script>
+<script src="assets/bootstrap/js/chosen.jquery.min.js"></script>
 
 <script src="assets/bootstrap/js/custom.js"></script>
