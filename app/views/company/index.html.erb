@@ -17,7 +17,7 @@
                             <th>Created</th>
                             <th>Last Updated</th>
                             <th>Edit</th>
-                            <% if super_admin == true %><th>Delete</th><% end %>
+                            <% if @super_admin == true %><th>Delete</th><% end %>
                         </tr>
                     </thead>
                     <tbody>
@@ -28,7 +28,7 @@
                             <td>2015-10-11</td>
                             <td>2015-10-11 2:00 PM</td>
                             <td><a href="<%= company_edit_path(1) %>"><i class="fa fa-edit"></i></a></td>
-                            <% if super_admin == true %><td><a href="<%= company_delete_path(1) %>"><i class="fa fa-times-circle-o"></i></a></td><% end %>
+                            <% if @super_admin == true %><td><a href="<%= company_delete_path(1) %>"><i class="fa fa-times-circle-o"></i></a></td><% end %>
                         </tr>
 
                         <tr>
@@ -38,7 +38,7 @@
                             <td>2015-01-01</td>
                             <td>2015-07-21 4:45 PM</td>
                             <td><a href="<%= company_edit_path(2) %>"><i class="fa fa-edit"></i></a></td>
-                            <% if super_admin == true %><td><a href="<%= company_delete_path(2) %>"><i class="fa fa-times-circle-o"></i></a></td><% end %>
+                            <% if @super_admin == true %><td><a href="<%= company_delete_path(2) %>"><i class="fa fa-times-circle-o"></i></a></td><% end %>
                         </tr>
 
                     </tbody>
