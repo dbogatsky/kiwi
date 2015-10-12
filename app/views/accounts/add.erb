@@ -6,7 +6,7 @@
 		<p>Fill in the details below to add an account</p>
 	</div>
 	<div class="panel-body">
-		<div class="form-group">
+		<div class="form-group">			
 			<label class="col-sm-3 control-label">Account Name<span class="asterisk">*</span></label>
 			<div class="col-sm-6">
 				<input type="text" name="account-name" class="form-control" required>
@@ -19,7 +19,13 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-sm-3 control-label">Contact<span class="asterisk">*</span></label>
+			<label class="col-sm-3 control-label">Contact Name</label>
+			<div class="col-sm-6">
+				<input type="text" name="account-address" id="account-contact-name" class="form-control">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">Contact</label>
 			<div class="col-sm-6">
 				<div class="row" id="account-contact-row">
 					<div class="col-sm-3">
@@ -40,18 +46,33 @@
 					</div>
 					<div class="col-sm-1">
 						<div class="btn-group">
-							<a href="#" class="add-detail btn btn-default"><i class="fa fa-plus"></i></a>
+							<a class="add-detail btn btn-default"><i class="fa fa-plus"></i></a>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>		
 		<div class="form-group">
-			<label class="col-sm-3 control-label">Contact Name</label>
-			<div class="col-sm-6">
-				<input type="text" name="account-address" id="account-contact-name" class="form-control">
+			<label class="col-sm-3 control-label">Account Status<span class="asterisk">*</span></label>
+			<div class="col-sm-2">
+				<select name="account-status" class="form-control input-sm">
+					<option value="lead">Lead</option>
+					<option value="open">Open</option>
+				</select>
 			</div>
-		</div>		
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">Assigned To<span class="asterisk">*</span></label>
+			<div class="col-sm-6">
+				... 
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">Shared With</label>
+			<div class="col-sm-6">
+				...
+			</div>
+		</div>			
 		<div class="form-group">
 			<label class="col-sm-3 control-label">About</label>
 			<div class="col-sm-7">
