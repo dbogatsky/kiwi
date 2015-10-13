@@ -1,7 +1,7 @@
 class LoginController < ApplicationController
 	
 	#exclude the following methods from the authentication filter since the user is not logged in yet
-	before_filter :authentication, :except => [:index, :login, :forgot, :recover]
+	before_filter :authentication, :except => [:index, :login, :forgot, :recover, :superadmin, :superadmin_auth]
 
 
 	def index
@@ -10,6 +10,15 @@ class LoginController < ApplicationController
 	
 	
 	def login 
+		if params[:email] == APP_CONFIG['superadmin_email']
+			#authenticate superadmin login
+			
+			#set superadmin token
+			
+			#go to next screen
+			return redirect_to login_superadmin_path
+		end
+		
 		# Check username and password through the Authentication API]
 		if @auth = User.authenticate(params[:email], params[:password])
 		
@@ -26,6 +35,26 @@ class LoginController < ApplicationController
 		end 
 	end
 	
+	#superadmin company choice
+	def superadmin
+		#check if superadmin token exists
+		
+		#get a list of companies
+		
+		#show layout
+		render :layout => false
+	end	
+	
+	#superadmin login as company admin
+	def superadmin_auth
+		#check if superadmin token exists, if not boot user out
+		
+		#login as admin user
+		
+		#valid user so send to the dasbhoard
+		#redirect_to dashboard_path
+		exit #temp code to be removed after logic is placed
+	end			
 	
 	#forget password recover
 	def forgot

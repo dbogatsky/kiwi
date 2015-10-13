@@ -46,7 +46,7 @@
 					</div>
 					<div class="col-sm-1">
 						<div class="btn-group">
-							<a class="add-detail btn btn-default"><i class="fa fa-plus"></i></a>
+							<a class="add-detail btn btn-success"><i class="fa fa-plus"></i></a>
 						</div>
 					</div>
 				</div>
@@ -142,6 +142,8 @@
 
 	    row.find('.add-detail')
 	        .removeClass('add-detail')
+	        .removeClass('btn-success')
+	        .addClass('btn-danger')
 	        .addClass('minus-detail');
 
 	    

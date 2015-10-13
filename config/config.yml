@@ -1,6 +1,7 @@
 default: &default
   software_version: 0.1
   software_title: Conversations - Code10
+  superadmin_email: superadmin@code10.ca
 
 development:
   <<: *default
