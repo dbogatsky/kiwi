@@ -1,4 +1,7 @@
 class CompanyController < ApplicationController
+	# Leaving this here for now
+	before_action :superadmin, only: [:index]
+
 
 	def index
 		# Main Company Page
@@ -42,6 +45,14 @@ class CompanyController < ApplicationController
 
 		#flash[:danger] = 'Warning: Can not delete company.  Please contact the administator for assistance.'  #  Unable to delete company
 		# Record the API error into the log.  Action with timestamp
+	end
+
+
+	private
+
+
+	def superadmin
+		@superadmin = true
 	end
 			
 end

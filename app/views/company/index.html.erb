@@ -1,5 +1,5 @@
 	<div class="row row-pad-5">
-		<div class="col-md-5">
+		<div class="col-md-10">
 		</div>
 		<div class="col-md-2">
 			<a href="<%= company_add_path %>" class="btn btn-primary btn-block"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Company</a>
@@ -23,8 +23,8 @@
                     <tbody>
                         <tr>
                             <td><span class="badge pull-right" style="background-color: #0eb057; border-color: #0eb057;">Active</span></td>
-                            <td><a href="view-issue.html">Chocolate Factory</a></td>
-                            <td><a href="view-issue.html">Willy Wonka</a></td>
+                            <td><a href="<%= company_show_path(1) %>">Chocolate Factory</a></td>
+                            <td><a href="<%= company_show_path(1) %>">Willy Wonka</a></td>
                             <td>2015-10-11</td>
                             <td>2015-10-11 2:00 PM</td>
                             <td><a href="<%= company_edit_path(1) %>"><i class="fa fa-edit"></i></a></td>
@@ -33,8 +33,8 @@
 
                         <tr>
                             <td><span class="badge pull-right" style="background-color: #ff860d; border-color: #0eb057;">Suspended</span></td>
-                            <td><a href="view-issue.html">Candyland</a></td>
-                            <td><a href="view-issue.html">Papa Roach</a></td>
+                            <td><a href="<%= company_show_path(2) %>">Candyland</a></td>
+                            <td><a href="<%= company_show_path(2) %>">Papa Roach</a></td>
                             <td>2015-01-01</td>
                             <td>2015-07-21 4:45 PM</td>
                             <td><a href="<%= company_edit_path(2) %>"><i class="fa fa-edit"></i></a></td>
