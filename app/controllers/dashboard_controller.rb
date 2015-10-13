@@ -1,10 +1,4 @@
 class DashboardController < ApplicationController
-    
-
-    def index
-    end
-
-
-    private
-
+  def index
+  end
 end

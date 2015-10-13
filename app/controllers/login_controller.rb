@@ -1,14 +1,11 @@
 class LoginController < ApplicationController
-	
 	#exclude the following methods from the authentication filter since the user is not logged in yet
 	before_filter :authentication, :except => [:index, :login, :forgot, :recover, :superadmin, :superadmin_auth]
-
 
 	def index
 		render :layout => false
 	end
 	
-
 	def login 
 		if params[:email] == APP_CONFIG['superadmin_email']
 			#authenticate superadmin login
@@ -85,14 +82,8 @@ class LoginController < ApplicationController
 		redirect_to root_path
 	end
 	
-	
-	
-	
   private
 
-    def api_authentication_check
-
-    end
-
-
+  def api_authentication_check
+  end
 end
