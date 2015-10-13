@@ -1,62 +1,81 @@
-	<div class="row row-pad-5">
-		<div class="col-md-10">
-		</div>
-		<div class="col-md-2">
-            <% if @superadmin == true %>
-            <a href="<%= company_add_path %>" class="btn btn-primary btn-block"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Company</a>
-            <% end %>
-        </div>
-	</div> <!-- row -->
+        <div class="profile-header">
+            <div class="row">
+            </div>  
+            
+            <div class="row">
+              
+              <div class="col-sm-3">
+                <img src="/assets/bootstrap/images/photos/hd-profile.jpg" class="thumbnail img-responsive" alt="">    
+                <div class="mb30"></div>
 
-	<div class="row row-pad-5">
-        <div class="table-responsive">
-                <table class="table table-primary table-buglist">
-                    <thead>
-                        <tr>
-                        	<th>Status</th>
-                            <th>Name</th>
-                            <th>Contact Person</th>
-                            <th>Created</th>
-                            <th>Last Updated</th>
-                            <th>Edit</th>
-                            <% if @superadmin == true %><th>Delete</th><% end %>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><span class="badge pull-right" style="background-color: #0eb057; border-color: #0eb057;">Active</span></td>
-                            <td><a href="<%= company_show_path(1) %>">Chocolate Factory</a></td>
-                            <td><a href="<%= company_show_path(1) %>">Willy Wonka</a></td>
-                            <td>2015-10-11</td>
-                            <td>2015-10-11 2:00 PM</td>
-                            <td><a href="<%= company_edit_path(1) %>"><i class="fa fa-edit"></i></a></td>
-                            <% if @superadmin == true %><td><a href="<%= company_delete_path(1) %>"><i class="fa fa-times-circle-o"></i></a></td><% end %>
-                        </tr>
+            
+              </div><!-- col-sm-3 -->           
+                  
+              <div class="col-sm-9">
+                <h2 class="profile-name">Harley Davison Motor Company</h2> 
+                <div class="mb30"></div>  
+                <p>Company Information detail</p>
+                <br />
+                <div class="mb30"></div> 
+                
+                <div class="row">
+                    <div class="col-xs-3">
+                        <small><strong>Account Status</strong></small>
+                        <h6><span class="badge" style="background-color: #0eb057; border-color: #0eb057;">Open</span> </h6>
+                    </div>                  
+                    <div class="col-xs-3">
+                        <small><strong>Assigned To</strong></small>
+                        <h6>Micheal Jordan</h6>
+                    </div>
+                    <div class="col-xs-3">
+                        <small><strong>Last Update</strong></small>
+                        <h6>Oct 10, 2016 @ 2:30pm</h6>
+                    </div>
+                    <div class="col-xs-3">
+                        <small><strong>Updated By</strong></small>
+                        <h6>Charles Barkley</h6>
+                    </div>                  
+                </div>          
+            
+              </div><!-- col-sm-9 -->
+              <div class="mb30"></div>  
+              
+            </div><!-- row -->
 
-                        <tr>
-                            <td><span class="badge pull-right" style="background-color: #ff860d; border-color: #0eb057;">Suspended</span></td>
-                            <td><a href="<%= company_show_path(2) %>">Candyland</a></td>
-                            <td><a href="<%= company_show_path(2) %>">Papa Roach</a></td>
-                            <td>2015-01-01</td>
-                            <td>2015-07-21 4:45 PM</td>
-                            <td><a href="<%= company_edit_path(2) %>"><i class="fa fa-edit"></i></a></td>
-                            <% if @superadmin == true %><td><a href="<%= company_delete_path(2) %>"><i class="fa fa-times-circle-o"></i></a></td><% end %>
-                        </tr>
+            <div class="row row-pad-5">
+                <div class="col-md-12 mb20">
+                      
+                    <h5 class="subtitle mb5">Company Information</h5>
+                    <p>Company Information detail</p>
+                    <br />
+                    
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs nav-dark">
+                      <li class="active"><a href="#organization" data-toggle="tab"><strong>Organization</strong></a></li>
+                      <li><a href="#settings" data-toggle="tab"><strong>Settings</strong></a></li>
+                    </ul>
+                    
+                    <!-- Tab panes -->
+                    <div class="tab-content mb30">
+                      <div class="tab-pane active" id="status">
+                        <h4 class="dark">Organization Header</h4>
+                        <p>Organization Info here.</p>
+                      </div>
+                      <div class="tab-pane" id="settings">
+                        <h4 class="dark">Settings Header</h4>
+                        <p>Settings Info here.</p>
+                      </div>
+                    </div>
+                    
+                </div> <!-- col- -->
 
-                    </tbody>
-                </table>
-                </div><!-- table-responsive -->
-            	<ul class="pagination pagination-split nomargin">
-                    <li class="disabled"><a href="#"><i class="fa fa-angle-left"></i></a></li>
-                    <li><a href="#">1</a></li>
-                    <li class="active"><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
-                    <li><a href="#"><i class="fa fa-angle-right"></i></a></li>
-                </ul>
-			</div> <!-- row -->
+            </div><!-- row -->          
+    
+        </div><!-- profile-header -->
+    </div>
 
+</div><!-- mainpanel -->
+</section>
 
 <script src="/assets/bootstrap/js/jquery-1.11.1.min.js"></script>
 <script src="/assets/bootstrap/js/jquery-migrate-1.2.1.min.js"></script>
