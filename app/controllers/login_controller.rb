@@ -8,7 +8,7 @@ class LoginController < ApplicationController
 		render :layout => false
 	end
 	
-	
+
 	def login 
 		if params[:email] == APP_CONFIG['superadmin_email']
 			#authenticate superadmin login
@@ -24,6 +24,9 @@ class LoginController < ApplicationController
 		
 		  # Store username into session
 		  session[:user_token] = @auth
+		  $user_token = @auth
+		  
+		  @user_details = User.details
 		
 		  # Log the user in and redirect to the main page: Dashboard first? 
 		  redirect_to dashboard_path
