@@ -10,8 +10,21 @@ class OrchardApiUser < ActiveRestClient::Base
     #enable to true for debugging
     verbose APP_CONFIG['api_verbose']
 
-    # Request for token
-    get :find, "/users/:id" 
-    
-end
 
+    # Request to users api
+    # get all users
+    get :all, "/users"
+
+    # get user by id 
+    get :find, "/users/:id"
+
+    # create new user 
+    post :create, "/users"
+
+    # update user (single field) by id 
+    patch :update, "/users/:id"
+
+    # update user by id
+    put :save, "/users/:id"
+
+end
