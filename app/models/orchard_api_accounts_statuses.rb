@@ -17,7 +17,7 @@ class OrchardApiAccountsStatuses < ActiveRestClient::Base
     get :find, "/account_statuses/:id"
 
     # create accounts status
-    post :create, "/account_statuses/:id"    
+    post :create, "/account_statuses"    
 
     # update accounts status (single field) by id 
     patch :update, "/account_statuses/:id"
