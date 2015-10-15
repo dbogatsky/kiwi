@@ -1,6 +1,17 @@
         <div class="profile-header">
-            <div class="row">
-            </div>  
+	        <div class="row">
+		    	<% if flash[:success] %>
+					<div class="alert alert-success">
+						<strong><%= flash[:success] %></strong>
+					</div> 
+				<% end %> 
+				<% if flash[:danger] %>
+					<div class="alert alert-danger">
+						<strong>Sorry!</strong> <%= flash[:danger] %>
+          			</div>
+      			<% end %>				     
+		        
+	        </div>  
             
             <div class="row">
               
@@ -66,64 +77,43 @@
                             </div>                            
                         </div>
                       </div>
+                      <div class="mb30"></div>
                       <div class="tab-pane" id="settings">
                         <div class="row row-pad-5">
                             <div class="col-md-10">
+	                            <h3 class="panel-title">Account Statuses</h3>
+	                            <p>Each account is designated a status and can a great way to organize based on name and color.</p>
                             </div>
-                            <div class="col-md-2">
-                                <a href="#" class="btn btn-primary btn-block"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Status</a>
-                            </div>                            
+	                            <div class="col-md-2">
+	                                <a href="#" class="btn btn-primary btn-block" data-toggle="modal" data-target=".account-status-add"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Status</a>
+	                            </div>                            
                         </div>
                         <div class="row row-pad-5">
-                            <div class="col-md-12">
+                            <div class="col-md-8">
                                 <div class="table-responsive">
                                   <table class="table mb30">
                                     <thead>
                                       <tr>
-                                        <th></th>
-                                        <th>Status Name</th>
-                                        <th>Colour</th>
+                                        <th>Status</th>
                                         <th>Description</th>
                                         <th></th>
                                       </tr>
                                     </thead>
                                     <tbody>
-                                      <tr>
-                                        <td><span class="badge" style="background-color: #0eb057; border-color: #0eb057;">Open</span></td>
-                                        <td>Open</td>
-                                        <td>#0eb057;</td>
-                                        <td>Open status</td>
-                                        <td class="table-action">
-                                          <a href=""><i class="fa fa-pencil"></i></a>
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td><span class="badge" style="background-color:#2251ed; border-color: #2251ed;">Lead</span></td>
-                                        <td>Lead</td>
-                                        <td>#2251ed;</td>
-                                        <td>Lead status</td>
-                                        <td class="table-action">
-                                          <a href=""><i class="fa fa-pencil"></i></a>
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td><span class="badge" style="background-color: #ff860d; border-color: #ff860d;">Suspended</span></td>
-                                        <td>Suspended</td>
-                                        <td>#ff860d;</td>
-                                        <td>Suspended status</td>
-                                        <td class="table-action">
-                                          <a href=""><i class="fa fa-pencil"></i></a>
-                                        </td>
-                                      </tr>                                                                                                                  
-                                      <tr>
-                                        <td><span class="badge" style="background-color:#999999 ; border-color: #999999;">Closed</span></td>
-                                        <td>Closed</td>
-                                        <td>#999999;</td>
-                                        <td>Closed status</td>
-                                        <td class="table-action">
-                                          <a href=""><i class="fa fa-pencil"></i></a>
-                                        </td>
-                                      </tr>                                     
+									<% 	@account_statuses.each do |status| %>
+									<tr>
+										<td><span class="badge" style="background-color: <%= status['color'] %>; border-color: <%= status['color'] %>;"><%= status['name'] %></span></td>
+										<td><%= status['description'] %></td>
+										<td class="table-action">
+											<a href="#" 
+												data-id="<%= status['id'] %>" 
+												data-statname="<%= status['name'] %>" 
+												data-statcolor="<%= status['color'] %>"
+												data-statdesc="<%= status['description'] %>" 
+												data-toggle="modal" data-target=".account-status-add" class="modal-link"><i class="fa fa-pencil"></i></a>
+										</td>
+									</tr>
+									<% end %>                                  
                                     </tbody>
                                   </table>
                                   </div><!-- table-responsive -->
@@ -143,6 +133,9 @@
 </div><!-- mainpanel -->
 </section>
 
+
+<%= render "company_account_status" %>
+
 <script src="/assets/bootstrap/js/jquery-1.11.1.min.js"></script>
 <script src="/assets/bootstrap/js/jquery-migrate-1.2.1.min.js"></script>
 <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -151,9 +144,43 @@
 <script src="/assets/bootstrap/js/toggles.min.js"></script>
 <script src="/assets/bootstrap/js/retina.min.js"></script>
 <script src="/assets/bootstrap/js/jquery.cookies.js"></script>
+<script src="/assets/bootstrap/js/colorpicker.js"></script>
 
 <script src="/assets/bootstrap/js/morris.min.js"></script>
 <script src="/assets/bootstrap/js/raphael-2.1.0.min.js"></script>
 <script src="/assets/bootstrap/js/chosen.jquery.min.js"></script>
 
 <script src="/assets/bootstrap/js/custom.js"></script>
+
+
+<script>
+	// Color Picker
+	if(jQuery('#account-status-color').length > 0) {
+	 jQuery('#colorSelector').ColorPicker({
+			onShow: function (colpkr) {
+				jQuery(colpkr).fadeIn(500);
+				return false;
+			},
+			onHide: function (colpkr) {
+				jQuery(colpkr).fadeOut(500);
+				return false;
+			},
+			onChange: function (hsb, hex, rgb) {
+				jQuery('#colorSelector span').css('backgroundColor', '#' + hex);
+				jQuery('#account-status-color').val('#'+hex);
+			}
+	 });
+	}
+
+	$(document).on("click", ".modal-link", function () {
+		var statusID = $(this).data('id');
+		$(".modal-body #account-status-id").val( statusID );
+		$("#account-status-name").val( $(this).data('statname') );
+		$("#account-status-color").val( $(this).data('statcolor') );
+		$("#account-status-desc").val( $(this).data('statdesc') );
+		
+		
+	});
+
+
+</script>

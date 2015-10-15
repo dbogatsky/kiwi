@@ -5,7 +5,7 @@ class CompanyController < ApplicationController
 
 	def index
 		# Main Company Page
-
+		@account_statuses = Account.statuslist
 	end
 
 
@@ -13,31 +13,6 @@ class CompanyController < ApplicationController
 		# Show Company Details
 
 	end
-
-
-	def add
-		# Add new Company
-
-	end
-
-
-	def edit
-		# Edit Company
-
-	end
-
-
-	def add_entity
-		# Add new entity
-
-	end
-
-
-	def edit_entity
-		# Edit entity
-
-	end
-
 
 	def save
 		# Save changes from Add/Edit Company page
@@ -49,15 +24,19 @@ class CompanyController < ApplicationController
 		# Record the API error into the log.  Action with timestamp  
 	end
 
-	def delete
-		# Delete Company (Soft delete)
-
-		flash[:success] = 'Company deleted successfully'
-		redirect_to company_path
-
-		#flash[:danger] = 'Warning: Can not delete company.  Please contact the administator for assistance.'  #  Unable to delete company
-		# Record the API error into the log.  Action with timestamp
+	def account_status_add
+		
+		if Account.statusadd(params["account-status-name"],params["account-status-color"],params["account-status-desc"])
+			flash[:success] = 'Account status has been added successfully'
+		else 
+			# Create an error message
+			flash[:danger] = 'Ops! Unable to add the account status'  # Log in error message  
+		end 	
+		redirect_to company_path	
 	end
+
+
+
 
 
 	private

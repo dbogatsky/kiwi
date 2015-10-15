@@ -1,9 +1,13 @@
 class OrchardApiAccountsStatuses < ActiveRestClient::Base
+    before_request do |name, request|
+    	request.headers["Authorization"] = 'Token token="'+$user_token+'", app_key="'+APP_CONFIG['api_app_key']+'"'
+	end
 	
 	#api details
     base_url APP_CONFIG['api_url']   
     request_body_type :json
     perform_caching false
+    
 
     #enable to true for debugging
     verbose APP_CONFIG['api_verbose']
