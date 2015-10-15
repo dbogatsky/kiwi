@@ -27,6 +27,18 @@ class CompanyController < ApplicationController
 	end
 
 
+	def add_entity
+		# Add new entity
+
+	end
+
+
+	def edit_entity
+		# Edit entity
+
+	end
+
+
 	def save
 		# Save changes from Add/Edit Company page
 

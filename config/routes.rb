@@ -26,6 +26,8 @@ Rails.application.routes.draw do
     get '/company/show/:id', to: 'company#show', as: :company_show
     get '/company/add', to: 'company#add', as: :company_add
     get '/company/edit/:id', to: 'company#edit', as: :company_edit
+    get '/company/add_entity', to: 'company#add_entity', as: :company_add_entity
+    get '/company/edit_entity/:id', to: 'company#edit_entity', as: :company_edit_entity
     post '/company/delete/:id', to: 'company#delete', as: :company_delete
 
     match '/users', to: 'users#index', as: :users, via: [:get] 
