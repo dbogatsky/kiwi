@@ -11,7 +11,7 @@ class OrchardApiUser < ActiveRestClient::Base
     verbose APP_CONFIG['api_verbose']
 
 
-    # Request to users api
+    ### Request to users api ###
     # get all users
     get :all, "/users"
 

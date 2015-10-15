@@ -9,7 +9,7 @@ class OrchardApiAccounts < ActiveRestClient::Base
     verbose APP_CONFIG['api_verbose']
 
 
-    # Request to accounts api
+    ### Request to accounts api ###
     # get all accounts 
     get :all, "/accounts"
 
@@ -25,26 +25,8 @@ class OrchardApiAccounts < ActiveRestClient::Base
     # update accounts by id
     put :save, "/accounts/:id"
 
-    # update accounts by id
+    # remove accounts by id
     delete :remove, "/accounts/:id"
-
-
-    # Request to accounts_statuses api
-    # get all statuses 
-    get :all, "/account_statuses"
-
-    # get status by id
-    get :find, "/account_statuses/:id"
-
-    # create status
-    post :create, "/account_statuses/:id"    
-
-    # update status (single field) by id 
-    patch :update, "/account_statuses/:id"
-
-    # update status by id
-    put :save, "/account_statuses/:id"
-
 
 
     # Fake calls for account api
