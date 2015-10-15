@@ -7,8 +7,9 @@ class OrchardApiMedia < ActiveRestClient::Base
     #enable to true for debugging
     verbose APP_CONFIG['api_verbose']
 
-    # Request for token
-    post :create, "/token", defaults: {app_key:APP_CONFIG['api_app_key']}
+    ### Request for media api ###
+    # get all media
+    get :all, "/media"
     
 end
 

@@ -7,7 +7,8 @@ class OrchardApiToken < ActiveRestClient::Base
     #enable to true for debugging
     verbose APP_CONFIG['api_verbose']
 
-    # Request for token
+    ### Request for token ###
+    # get a token
     post :create, "/token", defaults: {app_key:APP_CONFIG['api_app_key']}
     
 end

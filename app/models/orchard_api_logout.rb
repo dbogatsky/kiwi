@@ -7,7 +7,8 @@ class OrchardApiLogout < ActiveRestClient::Base
     #enable to true for debugging
     verbose APP_CONFIG['api_verbose']
 
-    # Request for logout api
+    ### Request for logout api ###
+    # delete token from system
     post :remove, "/logout", defaults: {app_key:APP_CONFIG['api_app_key']}
     
 end
