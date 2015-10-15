@@ -20,13 +20,17 @@ class LoginController < ApplicationController
 		end
 		
 		# Check username and password through the Authentication API]
-		if @auth = User.authenticate(params[:email], params[:password])
+		if @user = User.authenticate(params[:email], params[:password])
 		
-		  # Store username into session
-		  session[:user_token] = @auth
-		  $user_token = @auth
+		  # Store user details into session
+		  session[:user] = @user
 		  
-		  @user_details = User.details
+		  #set gloal var for token to be used in model, hack for now
+		  $user_token = session["user"]["token"]
+
+		  #retrieve remainder details and store to session
+		  @user_details = User.find(session["user"]["id"])
+		  session["user"].merge!(@user_details)
 		
 		  # Log the user in and redirect to the main page: Dashboard first? 
 		  redirect_to dashboard_path
@@ -71,7 +75,7 @@ class LoginController < ApplicationController
 	
 	
 	def destroy
-		session[:user_token] = nil
+		session[:user] = nil
 		redirect_to root_path
 	end
 	

@@ -11,7 +11,7 @@ class OrchardApiUser < ActiveRestClient::Base
     verbose APP_CONFIG['api_verbose']
 
     # Request for token
-    get :userdetails, "/users" 
+    get :find, "/users/:id" 
     
 end
 
