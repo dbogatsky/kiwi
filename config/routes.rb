@@ -23,7 +23,6 @@ Rails.application.routes.draw do
     match '/messages', to: 'messages#index', as: :messages, via: [:get] 
 
     match '/company', to: 'company#index', as: :company, via: [:get]
-    get '/company/show/:id', to: 'company#show', as: :company_show
     get '/company/add', to: 'company#add', as: :company_add
     get '/company/edit/:id', to: 'company#edit', as: :company_edit
     get '/company/add_entity', to: 'company#add_entity', as: :company_add_entity

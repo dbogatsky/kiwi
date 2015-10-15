@@ -9,12 +9,6 @@ class CompanyController < ApplicationController
 	end
 
 
-	def show
-		# Show Company Details
-
-	end
-
-
 	def add
 		# Add new Company
 
