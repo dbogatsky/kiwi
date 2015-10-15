@@ -9,10 +9,17 @@ class CompanyController < ApplicationController
 	end
 
 
-	def show
-		# Show Company Details
+	def add_entity
+		# Add new entity
 
 	end
+
+
+	def edit_entity
+		# Edit entity
+
+	end
+
 
 	def save
 		# Save changes from Add/Edit Company page
