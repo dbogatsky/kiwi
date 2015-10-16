@@ -33,7 +33,7 @@ class CompanyController < ApplicationController
 
 	def account_status
 		
-		if (params["account-status-id"].blank) 
+		if ( params["account-status-id"].blank? ) 
 
 			# Create new account status
 			if Account.statusadd(params["account-status-name"],params["account-status-color"],params["account-status-desc"])
