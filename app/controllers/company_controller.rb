@@ -5,7 +5,9 @@ class CompanyController < ApplicationController
 
 	def index
 		# Main Company Page
-		@account_statuses = Account.statuslist
+		
+		#get status cached upon login from session
+		@account_statuses = session["account"]["statuses"]
 	end
 
 

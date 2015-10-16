@@ -13,6 +13,8 @@ class AccountsController < ApplicationController
 	def add
 		# Add an account
 		
+		#get status cached upon login from session
+		@account_statuses = session["account"]["statuses"]
 	end
 
 

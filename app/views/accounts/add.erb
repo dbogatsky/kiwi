@@ -56,8 +56,9 @@
 			<label class="col-sm-3 control-label">Account Status<span class="asterisk">*</span></label>
 			<div class="col-sm-2">
 				<select name="account-status" class="form-control input-sm">
-					<option value="lead">Lead</option>
-					<option value="open">Open</option>
+					<% @account_statuses.each do |status| %>
+						<option value="<%= status['id'] %>"><%= status['name'] %></option>
+					<% end %>
 				</select>
 			</div>
 		</div>
