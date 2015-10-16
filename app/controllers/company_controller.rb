@@ -31,14 +31,31 @@ class CompanyController < ApplicationController
 		# Record the API error into the log.  Action with timestamp  
 	end
 
-	def account_status_add
+	def account_status
 		
-		if Account.statusadd(params["account-status-name"],params["account-status-color"],params["account-status-desc"])
-			flash[:success] = 'Account status has been added successfully'
-		else 
-			# Create an error message
-			flash[:danger] = 'Ops! Unable to add the account status'  # Log in error message  
-		end 	
+		if (params["account-status-id"].blank) 
+
+			# Create new account status
+			if Account.statusadd(params["account-status-name"],params["account-status-color"],params["account-status-desc"])
+				flash[:success] = 'Account status has been added successfully'
+			else 
+				# Create an error message
+				flash[:danger] = 'Ops! Unable to add the account status'  # Log in error message  
+			end
+
+		else
+
+			# Edit account status
+			if Account.statusedit(params["account-status-id"],params["account-status-name"],params["account-status-color"],params["account-status-desc"])
+				flash[:success] = 'Account status has been edited successfully'
+			else 
+				# Create an error message
+				flash[:danger] = 'Ops! Unable to edit the account status'  # Log in error message  
+			end			
+
+
+		end
+
 		redirect_to company_path	
 	end
 
@@ -48,9 +65,8 @@ class CompanyController < ApplicationController
 
 	private
 
-
-	def superadmin
-		@superadmin = true
-	end
+		def superadmin
+			@superadmin = true
+		end
 			
 end

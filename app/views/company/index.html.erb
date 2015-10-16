@@ -85,7 +85,7 @@
 	                            <p>Each account is designated a status and can a great way to organize based on name and color.</p>
                             </div>
 	                            <div class="col-md-2">
-	                                <a href="#" class="btn btn-primary btn-block" data-toggle="modal" data-target=".account-status-add"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Status</a>
+	                                <a href="#" id="add_status" class="btn btn-primary btn-block" data-toggle="modal" data-target=".account-status-add"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Status</a>
 	                            </div>                            
                         </div>
                         <div class="row row-pad-5">
@@ -178,9 +178,16 @@
 		$("#account-status-name").val( $(this).data('statname') );
 		$("#account-status-color").val( $(this).data('statcolor') );
 		$("#account-status-desc").val( $(this).data('statdesc') );
-		
-		
 	});
+
+
+  $(document).on("click", "#add_status", function () {
+          $(".modal-body #account-status-id").val("");
+          $("#account-status-name").val("");
+          $("#account-status-color").val("");
+          $("#account-status-desc").val("");
+  });
+
 
 
 </script>

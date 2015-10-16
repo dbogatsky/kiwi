@@ -30,7 +30,7 @@ Rails.application.routes.draw do
     get '/company/edit_entity/:id', to: 'company#edit_entity', as: :company_edit_entity
     post '/company/delete/:id', to: 'company#delete', as: :company_delete
 
-    post '/company/account_status', to:'company#account_status_add', as: :account_status_add
+    post '/company/account_status', to:'company#account_status', as: :account_status
 
 
     match '/users', to: 'users#index', as: :users, via: [:get] 
