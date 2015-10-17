@@ -39,6 +39,11 @@ class CompanyController < ApplicationController
 
 			# Create new account status
 			if Account.statusadd(params["account-status-name"],params["account-status-color"],params["account-status-desc"])
+				
+				#update status list stored in session
+				@account_statuses = Account.statuslist
+				session["account"]["statuses"] = @account_statuses
+				
 				flash[:success] = 'Account status has been added successfully'
 			else 
 				# Create an error message
@@ -49,6 +54,11 @@ class CompanyController < ApplicationController
 
 			# Edit account status
 			if Account.statusedit(params["account-status-id"],params["account-status-name"],params["account-status-color"],params["account-status-desc"])
+
+				#update status list stored in session
+				@account_statuses = Account.statuslist
+				session["account"]["statuses"] = @account_statuses
+				
 				flash[:success] = 'Account status has been edited successfully'
 			else 
 				# Create an error message
