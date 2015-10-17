@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   before_filter :authentication
 
   def authentication
-     if session["user"]["token"].nil?
+     if defined?(session["user"]["token"]).nil?
       flash[:danger] = 'Your session has expired.  Please log in again.'  # Log in error message
       redirect_to root_path
      else 
