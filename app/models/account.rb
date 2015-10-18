@@ -3,6 +3,131 @@ class Account
 	attr_accessor :status_id, :status_name, :status_color, :status_description
 
 
+	# Account - Get all accounts
+	def self.accountlist
+			
+		@accounts = OrchardApiAccounts.new
+		
+		#initate api call and catch any errors		
+		begin
+			@accounts.all
+		rescue ActiveRestClient::HTTPClientException, ActiveRestClient::HTTPServerException => e
+			Rails.logger.error("API returned #{e.status} : #{e.result.message}")
+		end
+
+		#accounts did not return for some reason or is not set otherwise return the account_list
+		if  @accounts == nil
+		    false
+		else
+			@account_list = Array.new
+			@accounts.each do |account|
+				@account = Hash.new
+				@account["id"] 				= account.id
+				@account["name"] 			= account.name
+				@account["color"] 			= account.color
+				@account["description"] 	= account.description
+				@account_list.push(@account)
+			end
+			@account_list		 
+		end 		 
+		
+	end
+
+
+	# Account - Find account by id
+	def self.accountget(id)
+			
+		@accounts = OrchardApiAccounts.new
+		
+		#initate api call and catch any errors		
+		begin
+			@accounts.find(id)
+		rescue ActiveRestClient::HTTPClientException, ActiveRestClient::HTTPServerException => e
+			Rails.logger.error("API returned #{e.status} : #{e.result.message}")
+		end
+
+		#accounts did not return for some reason or is not set otherwise return the account_list
+		if  @accounts == nil
+		    false
+		else
+			@account_list = Array.new
+			@accounts.each do |account|
+				@account = Hash.new
+				@account["id"] 				= account.id
+				@account["name"] 			= account.name
+				@account["color"] 			= account.color
+				@account["description"] 	= account.description
+				@account_list.push(@account)
+			end
+			@account_list		 
+		end 		 
+		
+	end
+
+	# Account - Add account
+	def self.accountadd(account_details)
+			
+		@accounts = OrchardApiAccounts.new
+		
+		#initate api call and catch any errors		
+		begin
+			@accounts.create
+		rescue ActiveRestClient::HTTPClientException, ActiveRestClient::HTTPServerException => e
+			Rails.logger.error("API returned #{e.status} : #{e.result.message}")
+		end
+
+		#accounts did not return for some reason or is not set otherwise return the account_list
+		if  @accounts == nil
+		    false
+		else
+			@account_list = Array.new
+			@accounts.each do |account|
+				@account = Hash.new
+				@account["id"] 				= account.id
+				@account["name"] 			= account.name
+				@account["color"] 			= account.color
+				@account["description"] 	= account.description
+				@account_list.push(@account)
+			end
+			@account_list		 
+		end 		 
+		
+	end
+
+
+	# Account - Edit account
+	def self.accountedit(account_details)
+			
+		@accounts = OrchardApiAccounts.new
+		
+		#initate api call and catch any errors		
+		begin
+			@accounts.save
+		rescue ActiveRestClient::HTTPClientException, ActiveRestClient::HTTPServerException => e
+			Rails.logger.error("API returned #{e.status} : #{e.result.message}")
+		end
+
+		#accounts did not return for some reason or is not set otherwise return the account_list
+		if  @accounts == nil
+		    false
+		else
+			@account_list = Array.new
+			@accounts.each do |account|
+				@account = Hash.new
+				@account["id"] 				= account.id
+				@account["name"] 			= account.name
+				@account["color"] 			= account.color
+				@account["description"] 	= account.description
+				@account_list.push(@account)
+			end
+			@account_list		 
+		end 		 
+		
+	end
+
+
+
+	# Account Status - Get all account statuses
 	def self.statuslist
 			
 		@account_status = OrchardApiAccountsStatuses.new
@@ -14,7 +139,7 @@ class Account
 			Rails.logger.error("API returned #{e.status} : #{e.result.message}")
 		end
 
-		#token did not return for some reason or is not set otherwise return the token
+		#account_status did not return for some reason or is not set otherwise return the status_list
 		if  @account_status == nil
 		    false
 		else
@@ -32,7 +157,7 @@ class Account
 		
 	end	
 
-
+	# Account Status - Add account status
 	def self.statusadd(status_name, status_color, status_description)
 			
 		@account_status = OrchardApiAccountsStatuses.new
@@ -48,7 +173,7 @@ class Account
 			Rails.logger.error("API returned #{e.status} : #{e.result.message}")
 		end
 
-		#token did not return for some reason or is not set otherwise return the token
+		#Return false if add account status failed, otherwise true
 		if  @account_status == nil
 		    false
 		else
@@ -57,7 +182,7 @@ class Account
 		
 	end
 
-
+	# Account Status - Edit account status
 	def self.statusedit(status_id, status_name, status_color, status_description)
 			
 		@account_status = OrchardApiAccountsStatuses.new
@@ -74,7 +199,7 @@ class Account
 			Rails.logger.error("API returned #{e.status} : #{e.result.message}")
 		end
 
-		#token did not return for some reason or is not set otherwise return the token
+		#Return false if edit account status failed, otherwise true
 		if  @account_status == nil
 		    false
 		else
@@ -82,6 +207,8 @@ class Account
 		end 		 
 		
 	end
+
+
 
 
 end

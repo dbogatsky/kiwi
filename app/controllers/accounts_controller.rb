@@ -1,6 +1,11 @@
 class AccountsController < ApplicationController
 
 	def index
+
+
+	# Get all accounts
+	#@account_list = Account.accountlist
+
 	end
 
 
