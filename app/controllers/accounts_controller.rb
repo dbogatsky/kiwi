@@ -1,4 +1,5 @@
 class AccountsController < ApplicationController
+	before_action :get_token
 
 	def index
 
@@ -45,6 +46,12 @@ class AccountsController < ApplicationController
 	end
 
 
+	private
+
+		def get_token
+		  #set gloal var for token to be used in model, hack for now
+		  $user_token = session["user"]["token"]
+		end
 
 
 end
