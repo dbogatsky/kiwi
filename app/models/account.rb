@@ -76,6 +76,7 @@ class Account
 		if  @account == nil
 		    false
 		else
+			account = @account.account
 			account_info = Hash.new
 			account_info["id"] 		= account.id
 			account_info["name"] 	= account.name
