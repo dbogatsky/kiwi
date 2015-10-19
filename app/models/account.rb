@@ -40,7 +40,6 @@ class Account
 				end
 				account_hash["addresses"] = account_addresses_list
 
-
 				# get all the contact information for this account
 				account_contacts_list = Array.new
 				account.contacts.each do |contact|
@@ -52,10 +51,9 @@ class Account
 					account_contacts_list.push(contact_hash)
 				end
 				account_hash["contacts"] = account_contacts_list
-								
 				account_list.push(account_hash)
-
 			end
+
 			account_list		 
 		end 		 
 		
@@ -65,32 +63,55 @@ class Account
 	# Account - Find account by id
 	def self.accountget(id)
 			
-		@accounts = OrchardApiAccounts.new
+		@account = OrchardApiAccounts.new
 		
 		#initate api call and catch any errors		
 		begin
-			@accounts.find(id)
+			@account.find(id)
 		rescue ActiveRestClient::HTTPClientException, ActiveRestClient::HTTPServerException => e
 			Rails.logger.error("API returned #{e.status} : #{e.result.message}")
 		end
 
-		#accounts did not return for some reason or is not set otherwise return the account_list
-		if  @accounts == nil
+		#account did not return for some reason or is not set otherwise return the account_info
+		if  @account == nil
 		    false
 		else
-			@account_list = Array.new
-			@accounts.each do |account|
-				@account = Hash.new
-				@account["id"] 				= account.id
-				@account["name"] 			= account.name
-				@account["color"] 			= account.color
-				@account["description"] 	= account.description
-				@account_list.push(@account)
+			account_info = Hash.new
+			account_info["id"] 		= account.id
+			account_info["name"] 	= account.name
+			account_info["status"] 	= account.status
+			
+			# get all addresses for this account
+			account_addresses_list = Array.new
+			account.addresses.each do |address|
+				address_hash = Hash.new
+				address_hash["id"] 			= address.id
+				address_hash["street"] 		= address.street_address
+				address_hash["city"] 		= address.city
+				address_hash["region"] 		= address.region
+				address_hash["postcode"] 	= address.postcode
+				address_hash["country"] 	= address.country
+				account_addresses_list.push(address_hash)
 			end
-			@account_list		 
+			account_info["addresses"] = account_addresses_list
+
+			# get all the contact information for this account
+			account_contacts_list = Array.new
+			account.contacts.each do |contact|
+				contact_hash = Hash.new
+				contact_hash["id"] 			= contact.id
+				contact_hash["name"] 		= contact.name
+				contact_hash["value"] 		= contact.value
+				contact_hash["type"] 		= contact.type
+				account_contacts_list.push(contact_hash)
+			end
+			account_info["contacts"] = account_contacts_list
+
+			account_info
 		end 		 
 		
 	end
+
 
 	# Account - Add account
 	def self.accountadd(account_details)
