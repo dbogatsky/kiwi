@@ -19,16 +19,44 @@ class Account
 		if  @accounts == nil
 		    false
 		else
-			@account_list = Array.new
-			@accounts.each do |account|
-				@account = Hash.new
-				@account["id"] 				= account.id
-				@account["name"] 			= account.name
-				@account["color"] 			= account.color
-				@account["description"] 	= account.description
-				@account_list.push(@account)
+			account_list = Array.new
+			@accounts.accounts.each do |account|
+				account_hash = Hash.new
+				account_hash["id"] 		= account.id
+				account_hash["name"] 	= account.name
+				account_hash["status"] 	= account.status
+				
+				# get all addresses for this account
+				account_addresses_list = Array.new
+				account.addresses.each do |address|
+					address_hash = Hash.new
+					address_hash["id"] 			= address.id
+					address_hash["street"] 		= address.street_address
+					address_hash["city"] 		= address.city
+					address_hash["region"] 		= address.region
+					address_hash["postcode"] 	= address.postcode
+					address_hash["country"] 	= address.country
+					account_addresses_list.push(address_hash)
+				end
+				account_hash["addresses"] = account_addresses_list
+
+
+				# get all the contact information for this account
+				account_contacts_list = Array.new
+				account.contacts.each do |contact|
+					contact_hash = Hash.new
+					contact_hash["id"] 			= contact.id
+					contact_hash["name"] 		= contact.name
+					contact_hash["value"] 		= contact.value
+					contact_hash["type"] 		= contact.type
+					account_contacts_list.push(contact_hash)
+				end
+				account_hash["contacts"] = account_contacts_list
+								
+				account_list.push(account_hash)
+
 			end
-			@account_list		 
+			account_list		 
 		end 		 
 		
 	end

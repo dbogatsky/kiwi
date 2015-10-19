@@ -5,7 +5,7 @@ class AccountsController < ApplicationController
 
 
 	# Get all accounts
-	#@account_list = Account.accountlist
+	@account_list = Account.accountlist
 
 	end
 
