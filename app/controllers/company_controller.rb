@@ -34,8 +34,9 @@ class CompanyController < ApplicationController
 	end
 
 	def account_status
-		
-		if ( params["account-status-id"].blank? ) 
+		# Save changes from Add/Edit Account Statuses page
+
+		if params["account-status-id"].blank?
 
 			# Create new account status
 			if Account.statusadd(params["account-status-name"],params["account-status-color"],params["account-status-desc"])
@@ -64,7 +65,6 @@ class CompanyController < ApplicationController
 				# Create an error message
 				flash[:danger] = 'Ops! Unable to edit the account status'  # Log in error message  
 			end			
-
 
 		end
 
