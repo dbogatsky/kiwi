@@ -47,10 +47,10 @@ class AccountsController < ApplicationController
   def save
     # Save changes from Add/Edit Account page
 
-    if params["account-status-id"].blank?
+    if params["account-id"].blank?
 
       # Create new account
-      if Account.accountadd()
+      if Account.accountadd(params["account"]["name"], params["account-status"], params["account"]["address"], params["account"]["contacts"])
 
         flash[:success] = 'Account has been added successfully'
       else 
@@ -61,7 +61,7 @@ class AccountsController < ApplicationController
     else  
 
       # Edit account
-      if Account.accountedit()
+      if Account.accountedit(params["account-id"], params["account"]["name"], params["account-status"], params["account"]["address"], params["account"]["contacts"])
 
         flash[:success] = 'Account has been edited successfully'
       else 
@@ -98,6 +98,5 @@ class AccountsController < ApplicationController
 		  #set gloal var for token to be used in model, hack for now
 		  $user_token = session["user"]["token"]
 		end
-
 
 end

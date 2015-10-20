@@ -22,17 +22,17 @@ class Account
 			account_list = Array.new
 			@accounts.accounts.each do |account|
 				account_hash = Hash.new
-				account_hash["id"] 		= account.id
-				account_hash["name"] 	= account.name
+				account_hash["id"] 		  = account.id
+				account_hash["name"] 	  = account.name
 				account_hash["status"] 	= account.status
 				
 				# get all addresses for this account
 				account_addresses_list = Array.new
 				account.addresses.each do |address|
 					address_hash = Hash.new
-					address_hash["id"] 			= address.id
+					address_hash["id"] 			  = address.id
 					address_hash["street"] 		= address.street_address
-					address_hash["city"] 		= address.city
+					address_hash["city"] 		  = address.city
 					address_hash["region"] 		= address.region
 					address_hash["postcode"] 	= address.postcode
 					address_hash["country"] 	= address.country
@@ -46,7 +46,7 @@ class Account
 					contact_hash = Hash.new
 					contact_hash["id"] 			= contact.id
 					contact_hash["name"] 		= contact.name
-					contact_hash["value"] 		= contact.value
+					contact_hash["value"] 	= contact.value
 					contact_hash["type"] 		= contact.type
 					account_contacts_list.push(contact_hash)
 				end
@@ -78,17 +78,17 @@ class Account
 		else
 			account = @account.account
 			account_info = Hash.new
-			account_info["id"] 		= account.id
-			account_info["name"] 	= account.name
+			account_info["id"] 		  = account.id
+			account_info["name"] 	  = account.name
 			account_info["status"] 	= account.status
 			
 			# get all addresses for this account
 			account_addresses_list = Array.new
 			account.addresses.each do |address|
 				address_hash = Hash.new
-				address_hash["id"] 			= address.id
+				address_hash["id"] 			  = address.id
 				address_hash["street"] 		= address.street_address
-				address_hash["city"] 		= address.city
+				address_hash["city"] 		  = address.city
 				address_hash["region"] 		= address.region
 				address_hash["postcode"] 	= address.postcode
 				address_hash["country"] 	= address.country
@@ -102,7 +102,7 @@ class Account
 				contact_hash = Hash.new
 				contact_hash["id"] 			= contact.id
 				contact_hash["name"] 		= contact.name
-				contact_hash["value"] 		= contact.value
+				contact_hash["value"] 	= contact.value
 				contact_hash["type"] 		= contact.type
 				account_contacts_list.push(contact_hash)
 			end
@@ -119,75 +119,92 @@ class Account
 			
 		@accounts = OrchardApiAccounts.new
 		
+    account_addresses_list = Array.new
 		account_addresses.each do |address|
 			addresses_hash = Hash.new
-
+      addresses_hash["street_address"]  = address["street_address"]
+      addresses_hash["city"]            = address["city"]
+      addresses_hash["region"]          = address["region"]
+      addresses_hash["postcode"]        = address["postcode"]
+      addresses_hash["country"]         = address["country"]
+      account_addresses_list.push(address_hash)
 		end
 
+    account_contacts_list = Array.new
     account_contacts.each do |contact|
       contacts_hash = Hash.new
-      
-    end    
-
+      contacts_hash["name"]   = contact["account-contact_name"]
+      contacts_hash["value"]  = contact["account-contact-details"]
+      contacts_hash["type"]   = contact["account-contact-type"]
+      account_contacts_list.push(contacts_hash)
+    end
 
 		#initate api call and catch any errors		
 		begin
 			@accounts.create(
 				name: account_name,
 				status: account_status_id,
-				addresses: addresses_hash,
-				contacts: contacts_hash
+				addresses: account_addresses_list,
+				contacts: account_contacts_list
 				)
 		rescue ActiveRestClient::HTTPClientException, ActiveRestClient::HTTPServerException => e
 			Rails.logger.error("API returned #{e.status} : #{e.result.message}")
 		end
 
-		#accounts did not return for some reason or is not set otherwise return the account_list
-		if  @accounts == nil
-		    false
-		else
-			@account_list = Array.new
-			@accounts.each do |account|
-				@account = Hash.new
-				@account["id"] 				= account.id
-				@account["name"] 			= account.name
-				@account["color"] 			= account.color
-				@account["description"] 	= account.description
-				@account_list.push(@account)
-			end
-			@account_list		 
-		end 		 
+    #Return false if add account failed, otherwise true
+    if  @accounts == nil
+        false
+    else
+      true       
+    end 		 
 		
 	end
 
 
 	# Account - Edit account
-	def self.accountedit(account_details)
+	def self.accountedit(account_id, account_name, account_status_id, account_addresses, account_contacts)
 			
 		@accounts = OrchardApiAccounts.new
 		
+    account_addresses_list = Array.new
+    account_addresses.each do |address|
+      addresses_hash = Hash.new
+      addresses_hash["street_address"]  = address["street_address"]
+      addresses_hash["city"]            = address["city"]
+      addresses_hash["region"]          = address["region"]
+      addresses_hash["postcode"]        = address["postcode"]
+      addresses_hash["country"]         = address["country"]
+      account_addresses_list.push(address_hash)
+    end
+
+    account_contacts_list = Array.new
+    account_contacts.each do |contact|
+      contacts_hash = Hash.new
+      contacts_hash["name"]   = contact["account-contact_name"]
+      contacts_hash["value"]  = contact["account-contact-details"]
+      contacts_hash["type"]   = contact["account-contact-type"]
+      account_contacts_list.push(contacts_hash)
+    end
+    
 		#initate api call and catch any errors		
 		begin
-			@accounts.save
+			@accounts.save(
+        id: account_id,
+        name: account_name,
+        status: account_status_id,
+        addresses: account_addresses_list,
+        contacts: account_contacts_list
+        )
 		rescue ActiveRestClient::HTTPClientException, ActiveRestClient::HTTPServerException => e
 			Rails.logger.error("API returned #{e.status} : #{e.result.message}")
 		end
 
-		#accounts did not return for some reason or is not set otherwise return the account_list
-		if  @accounts == nil
-		    false
-		else
-			@account_list = Array.new
-			@accounts.each do |account|
-				@account = Hash.new
-				@account["id"] 				= account.id
-				@account["name"] 			= account.name
-				@account["color"] 			= account.color
-				@account["description"] 	= account.description
-				@account_list.push(@account)
-			end
-			@account_list		 
-		end 		 
+    #Return false if edit account failed, otherwise true
+    if  @accounts == nil
+        false
+    else
+      true       
+    end 		 
 		
 	end
 
