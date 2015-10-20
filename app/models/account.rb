@@ -115,13 +115,29 @@ class Account
 
 
 	# Account - Add account
-	def self.accountadd(account_details)
+	def self.accountadd(account_name, account_status_id, account_addresses, account_contacts)
 			
 		@accounts = OrchardApiAccounts.new
 		
+		account_addresses.each do |address|
+			addresses_hash = Hash.new
+
+		end
+
+    account_contacts.each do |contact|
+      contacts_hash = Hash.new
+      
+    end    
+
+
 		#initate api call and catch any errors		
 		begin
-			@accounts.create
+			@accounts.create(
+				name: account_name,
+				status: account_status_id,
+				addresses: addresses_hash,
+				contacts: contacts_hash
+				)
 		rescue ActiveRestClient::HTTPClientException, ActiveRestClient::HTTPServerException => e
 			Rails.logger.error("API returned #{e.status} : #{e.result.message}")
 		end
