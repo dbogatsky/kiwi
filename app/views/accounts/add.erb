@@ -305,7 +305,7 @@
 			<div class="col-sm-6">
 				<div class="row" id="account-contact-row">
 					<div class="col-sm-3">
-						<select name="account[][contact-type]" class="form-control input-sm">
+						<select name="account[1][contact-type]" class="form-control input-sm">
 			              <option value="phone">Phone</option>
 			              <option value="mobile">Mobile</option>
 			              <option value="fax">Fax</option>
@@ -318,7 +318,7 @@
 			            </select>
 					</div>
 					<div class="col-sm-8">
-						<input type="text" name="account[][contact-details]" placeholder="Details" class="form-control" required>
+						<input type="text" name="account[1][contact-details]" placeholder="Details" class="form-control" required>
 					</div>
 					<div class="col-sm-1">
 						<div class="btn-group">
@@ -428,6 +428,8 @@
 }
 </style>
 <script>
+      i=2;
+
 	// Textarea Autogrow
 	jQuery('#account-about').autogrow();	
 	jQuery('#account-facts').autogrow();	
@@ -464,7 +466,10 @@
 
 	    
 	    new_row.find('input:text').val('');
-	    
+          new_row.find('input:select').attr('name', 'account[' + i + '][contact-type]');
+          new_row.find('input:text').attr('name', 'account[' + i + '][contact-details]');
+	    i++;
+
 	    row.after(new_row);
 	}).on('click', '.minus-detail', function () {
 	    $(this).closest('#account-contact-row').remove();
