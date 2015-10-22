@@ -30,6 +30,7 @@ class AccountsController < ApplicationController
 		
 		#get status cached upon login from session
 		@account_statuses = session["account"]["statuses"]
+    @contact_counter = 2
 
 	end
 

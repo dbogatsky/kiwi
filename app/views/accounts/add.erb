@@ -465,8 +465,8 @@
 	        .addClass('minus-detail');
 
 	    
-	    new_row.find('input:text').val('');
-          new_row.find('input:select').attr('name', 'account[' + i + '][contact-type]');
+          new_row.find('select').attr('name', 'account[' + i + '][contact-type]');
+          new_row.find('input:text').val('');
           new_row.find('input:text').attr('name', 'account[' + i + '][contact-details]');
 	    i++;
 
