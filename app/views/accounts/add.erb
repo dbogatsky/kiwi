@@ -8,7 +8,7 @@
 		<div class="form-group">			
 			<label class="col-sm-3 control-label">Account Name<span class="asterisk">*</span></label>
 			<div class="col-sm-6">
-				<input type="text" name="account[name]" id="account-name" class="form-control" required>
+				<input type="text" name="account-name" id="account-name" class="form-control" required>
 			</div>
 		</div>
 		<div class="form-group">
@@ -305,7 +305,7 @@
 			<div class="col-sm-6">
 				<div class="row" id="account-contact-row">
 					<div class="col-sm-3">
-						<select name="account[1][contact-type]" class="form-control input-sm">
+						<select name="account-contact[1][contact-type]" class="form-control input-sm">
 			              <option value="phone">Phone</option>
 			              <option value="mobile">Mobile</option>
 			              <option value="fax">Fax</option>
@@ -318,7 +318,7 @@
 			            </select>
 					</div>
 					<div class="col-sm-8">
-						<input type="text" name="account[1][contact-details]" placeholder="Details" class="form-control" required>
+						<input type="text" name="account-contact[1][contact-details]" placeholder="Details" class="form-control" required>
 					</div>
 					<div class="col-sm-1">
 						<div class="btn-group">
@@ -465,9 +465,9 @@
 	        .addClass('minus-detail');
 
 	    
-          new_row.find('select').attr('name', 'account[' + contact_index + '][contact-type]');
+          new_row.find('select').attr('name', 'account-contact[' + contact_index + '][contact-type]');
           new_row.find('input:text').val('');
-          new_row.find('input:text').attr('name', 'account[' + contact_index + '][contact-details]');
+          new_row.find('input:text').attr('name', 'account-contact[' + contact_index + '][contact-details]');
           contact_index++;
 
 	    row.before(new_row);
