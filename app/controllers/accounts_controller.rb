@@ -30,7 +30,6 @@ class AccountsController < ApplicationController
 		
 		#get status cached upon login from session
 		@account_statuses = session["account"]["statuses"]
-    @contact_counter = 2
 
 	end
 
@@ -38,6 +37,8 @@ class AccountsController < ApplicationController
   def edit
     # Edit an account
     @account_info = Account.accountget(params[:id])
+
+    @contact_counter = 2 # Check number of existing contacts and up the contact counter.
     
     #get status cached upon login from session
     @account_statuses = session["account"]["statuses"]

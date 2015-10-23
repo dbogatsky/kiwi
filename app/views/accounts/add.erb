@@ -428,7 +428,7 @@
 }
 </style>
 <script>
-      i=2;
+      contact_index = <%= @contact_counter %>;
 
 	// Textarea Autogrow
 	jQuery('#account-about').autogrow();	
@@ -465,15 +465,17 @@
 	        .addClass('minus-detail');
 
 	    
-          new_row.find('select').attr('name', 'account[' + i + '][contact-type]');
+          new_row.find('select').attr('name', 'account[' + contact_index + '][contact-type]');
           new_row.find('input:text').val('');
-          new_row.find('input:text').attr('name', 'account[' + i + '][contact-details]');
-	    i++;
+          new_row.find('input:text').attr('name', 'account[' + contact_index + '][contact-details]');
+          contact_index++;
 
-	    row.after(new_row);
+	    row.before(new_row);
+
 	}).on('click', '.minus-detail', function () {
 	    $(this).closest('#account-contact-row').remove();
 	});	
+
 
 	var $image = $('.account-avatar > img'),
 	    replaced;
