@@ -54,7 +54,7 @@ class AccountsController < ApplicationController
     if params["account-id"].blank?
 
       # Create new account
-      if Account.accountadd(params["account"]["name"], params["account-status"], params["account"]["address"], params["account"]["contacts"])
+      if Account.accountadd(params["account-name"], params["account-status"], params["account-address"], params["account-contact"])
 
         flash[:success] = 'Account has been added successfully'
       else 
@@ -65,7 +65,7 @@ class AccountsController < ApplicationController
     else  
 
       # Edit account
-      if Account.accountedit(params["account-id"], params["account"]["name"], params["account-status"], params["account"]["address"], params["account"]["contacts"])
+      if Account.accountedit(params["account-id"], params["account-name"], params["account-status"], params["account-address"], params["account-contact"])
 
         flash[:success] = 'Account has been edited successfully'
       else 
