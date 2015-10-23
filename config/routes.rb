@@ -33,8 +33,12 @@ Rails.application.routes.draw do
 
     post '/company/account_status', to:'company#account_status', as: :account_status
 
+    match '/users', to: 'users#index', as: :users, via: [:get]
+    get '/users/add', to: 'users#add', as: :users_add
+    get '/users/edit/:id', to: 'users#edit', as: :users_edit
+    post '/users/save/', to: 'users#save', as: :users_save
+    post '/users/delete/:id', to: 'users#delete', as: :users_delete
 
-    match '/users', to: 'users#index', as: :users, via: [:get] 
     match '/settings', to: 'settings#index', as: :settings, via: [:get] 
 
     root 'login#index'

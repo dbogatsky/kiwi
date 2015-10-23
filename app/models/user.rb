@@ -64,4 +64,15 @@ class User
 		
 	end
 
+
+	# User - Add User
+	def self.useradd(user_email)
+		true
+	end
+
+	# User - Edit User
+	def self.useredit(user_id, user_email)
+		true
+	end
+
 end
