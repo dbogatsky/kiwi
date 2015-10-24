@@ -159,13 +159,7 @@ jQuery(document).ready(function(){
         barColor: '#999'
     });
     
-    // Chosen Select
-    jQuery("select").chosen({
-      'min-width': '100px',
-      'white-space': 'nowrap',
-      disable_search_threshold: 10
-    });
-	 
+
 	
 	// Do not use the code below. It's for demo purposes only
 	var c = jQuery.cookie('change-skin');

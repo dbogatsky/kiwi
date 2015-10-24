@@ -1,274 +1,163 @@
-      <div class="row">
-        <div class="col-sm-8 col-md-9">
-          <div class="panel panel-default">
-            <div class="panel-body">
-              <div class="row">
-                <div class="col-sm-8">
-                  <h5 class="subtitle mb5">Network Performance</h5>
-                  <p class="mb15">Duis autem vel eum iriure dolor in hendrerit in vulputate...</p>
-                  <div id="basicflot" style="width: 100%; height: 300px; margin-bottom: 20px"></div>
-                </div><!-- col-sm-8 -->
-                <div class="col-sm-4">
-                  <h5 class="subtitle mb5">Server Status</h5>
-                  <p class="mb15">Summary of the status of your server.</p>
-                  
-                  <span class="sublabel">CPU Usage (40.05 - 32 cpus)</span>
-                  <div class="progress progress-sm">
-                    <div style="width: 40%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="40" role="progressbar" class="progress-bar progress-bar-primary"></div>
-                  </div><!-- progress -->
-                  
-                  <span class="sublabel">Memory Usage (32.2%)</span>
-                  <div class="progress progress-sm">
-                    <div style="width: 32%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="40" role="progressbar" class="progress-bar progress-bar-success"></div>
-                  </div><!-- progress -->
-                  
-                  <span class="sublabel">Disk Usage (82.2%)</span>
-                  <div class="progress progress-sm">
-                    <div style="width: 82%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="40" role="progressbar" class="progress-bar progress-bar-danger"></div>
-                  </div><!-- progress -->
-                  
-                  <span class="sublabel">Databases (63/100)</span>
-                  <div class="progress progress-sm">
-                    <div style="width: 63%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="40" role="progressbar" class="progress-bar progress-bar-warning"></div>
-                  </div><!-- progress -->
-                  
-                  <span class="sublabel">Domains (2/10)</span>
-                  <div class="progress progress-sm">
-                    <div style="width: 20%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="40" role="progressbar" class="progress-bar progress-bar-success"></div>
-                  </div><!-- progress -->
-                  
-                  <span class="sublabel">Email Account (13/50)</span>
-                  <div class="progress progress-sm">
-                    <div style="width: 26%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="40" role="progressbar" class="progress-bar progress-bar-success"></div>
-                  </div><!-- progress -->
-                  
-                  
-                </div><!-- col-sm-4 -->
-              </div><!-- row -->
-            </div><!-- panel-body -->
-          </div><!-- panel -->
-        </div><!-- col-sm-9 -->
-        
-        <div class="col-sm-4 col-md-3">
-          
-          <div class="panel panel-default">
-            <div class="panel-body">
-            <h5 class="subtitle mb5">Accounts By Status</h5>
-            <p class="mb15">Duis autem vel eum iriure dolor in hendrerit in vulputate...</p>
-            <div id="donut-chart2" class="ex-donut-chart"></div>
-            </div><!-- panel-body -->
-          </div><!-- panel -->
-          
-        </div><!-- col-sm-3 -->
-        
-      </div><!-- row -->
-      
-      <div class="row">
-        
-        <div class="col-sm-7">
-          
-          <div class="table-responsive">
-            <table class="table table-bordered mb30">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Username</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-              </tr>
-              <tr>
-                <td>4</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <td>5</td>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <td>6</td>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-              </tr>
-              <tr>
-                <td>7</td>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-              </tr>
-            </tbody>
-          </table>
-          </div><!-- table-responsive -->
-          
-        </div><!-- col-sm-7 -->
-        
-        <div class="col-sm-5">
-          
-          <div class="panel panel-success">
-            <div class="panel-heading padding5">
-              <div id="line-chart" class="ex-line-chart"></div>
+<div class="row">
+  <div class="col-sm-8">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="col-sm-4">
+              <h4>Good Afternoon John</h4>
+              <small>You have 1 new message and 6 notifications.</small>
             </div>
-            <div class="panel-body">
-              <div class="tinystat pull-left">
-                <div id="sparkline" class="chart mt5"></div>
-                <div class="datainfo">
-                  <span class="text-muted">Average Sales</span>
-                  <h4>$630,201</h4>
-                </div>
-              </div><!-- tinystat -->
-              <div class="tinystat pull-right">
-                <div id="sparkline2" class="chart mt5"></div>
-                <div class="datainfo">
-                  <span class="text-muted">Total Sales</span>
-                  <h4>$139,201</h4>
-                </div>
-              </div><!-- tinystat -->
+            <div class="col-md-8">
+              <div id="accounts-status-breakdown" class="body-chart"></div>
             </div>
-          </div><!-- panel -->
-          
-        </div><!-- col-sm-6 -->
-      </div><!-- row -->
-      
-      <div class="row">
-        <div class="col-sm-6 col-md-4">
-          <div class="panel panel-default widget-photoday">
-            <div class="panel-body">
-              <a href="" class="photoday"><img src="assets/bootstrap/images/photos/photo1.png" alt="" /></a>
-              <div class="photo-details">
-                <h4 class="photo-title">Strawhat In The Beach</h4>
-                <small class="text-muted"><i class="fa fa-map-marker"></i> San Franciso, California, USA</small>
-                <small>By: <a href="">ThemePixels</a></small>
-              </div><!-- photo-details -->
-              <ul class="photo-meta">
-                <li><span><i class="fa fa-eye"></i> 32,102</span></li>
-                <li><a href="#"><i class="fa fa-heart"></i> 1,003</a></li>
-                <li><a href="#"><i class="fa fa-comments"></i> 52</a></li>
-              </ul>
-            </div><!-- panel-body -->
-          </div><!-- panel -->
-        </div><!-- col-sm-6 -->
-        
-        <div class="col-sm-6 col-md-4">
-          <div class="panel panel-default panel-alt widget-messaging">
+          </div><!-- panel body -->
+        </div><!-- panel -->
+      </div>
+    </div><!-- row -->
+    
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="panel panel-dark panel-alt">
           <div class="panel-heading">
-              <div class="panel-btns">
-                <a href="" class="panel-edit"><i class="fa fa-edit"></i></a>
-              </div><!-- panel-btns -->
-              <h3 class="panel-title">Messaging</h3>
-            </div>
-            <div class="panel-body">
-              <ul>
-                <li>
-                  <small class="pull-right">Dec 10</small>
-                  <h4 class="sender">Jennier Lawrence</h4>
-                  <small>Lorem ipsum dolor sit amet...</small>
-                </li>
-                <li>
-                  <small class="pull-right">Dec 9</small>
-                  <h4 class="sender">Marsha Mellow</h4>
-                  <small>Lorem ipsum dolor sit amet...</small>
-                </li>
-                <li>
-                  <small class="pull-right">Dec 9</small>
-                  <h4 class="sender">Holly Golightly</h4>
-                  <small>Lorem ipsum dolor sit amet...</small>
-                </li>
-                <li>
-                  <small class="pull-right">Dec 10</small>
-                  <h4 class="sender">Jennier Lawrence</h4>
-                  <small>Lorem ipsum dolor sit amet...</small>
-                </li>
-                <li>
-                  <small class="pull-right">Dec 9</small>
-                  <h4 class="sender">Marsha Mellow</h4>
-                  <small>Lorem ipsum dolor sit amet...</small>
-                </li>
-              </ul>
-            </div><!-- panel-body -->
-          </div><!-- panel -->
-        </div><!-- col-sm-6 -->
-        
-        <div class="col-sm-6 col-md-4">
-          <div class="panel panel-dark panel-alt widget-quick-status-post">
-          <div class="panel-heading">
-              <div class="panel-btns">
-                <a href="" class="panel-close">&times;</a>
-                <a href="" class="minimize">&minus;</a>
-              </div><!-- panel-btns -->
-              <h3 class="panel-title">Quick Status Post</h3>
-            </div>
-            <div class="panel-body">
-              <ul class="nav nav-tabs nav-justified">
-                <li class="active"><a href="#post-status" data-toggle="tab"><i class="fa fa-pencil"></i> <strong>Status</strong></a></li>
-                <li><a href="#post-photo" data-toggle="tab"><i class="fa fa-picture-o"></i> <strong>Photo</strong></a></li>
-                <li><a href="#post-checkin" data-toggle="tab"><i class="fa fa-map-marker"></i> <strong>Check-In</strong></a></li>
-              </ul>
-              <div class="tab-content">
-                <div id="post-status" class="tab-pane active">
-                  <input type="text" class="form-control" placeholder="What's your status?" />
-                </div>
-                <div id="post-photo" class="tab-pane">
-                  <input type="text" class="form-control" placeholder="Choose photo" />
-                </div>
-                <div id="post-checkin" class="tab-pane">
-                  <input type="text" class="form-control" placeholder="Search location" />
-                </div>
-                <button class="btn btn-primary btn-block mt10">Submit Post</button>
-              </div><!-- tab-content -->
-              
-            </div><!-- panel-body -->
-          </div><!-- panel -->
-          
-          <div class="mb20"></div>
-          
+            <div class="panel-btns">
+              <a href="" class="panel-close">×</a>
+              <a href="" class="minimize">−</a>
+            </div><!-- panel-btns -->
+            <h3 class="panel-title">Maps</h3>
+          </div>
+          <div class="panel-body">
+            <p>See your schedule today on the map below</p>
+            <div id="gmap-marker" style="height: 300px"></div>  
+          </div><!-- panel-body -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="row">
+      <div class="panel panel-default widget-weather">
+        <div class="panel-body">
           <div class="row">
-            <div class="col-xs-6">
-              <div class="panel panel-warning panel-alt widget-today">
-                <div class="panel-heading text-center">
-                  <i class="fa fa-calendar-o"></i>
-                </div>
-                <div class="panel-body text-center">
-                  <h3 class="today">Fri, Dec 13</h3>
-                </div><!-- panel-body -->
-              </div><!-- panel -->
+            <div class="col-xs-6 temp text-center">
+              <h1>18 <span>゜</span></h1>
+              <h5><i class="fa fa-map-marker"></i> &nbsp; Vancouver</h5>
             </div>
-            
-            <div class="col-xs-6">
-              <div class="panel panel-danger panel-alt widget-time">
-                <div class="panel-heading text-center">
-                  <i class="glyphicon glyphicon-time"></i>
-                </div>
-                <div class="panel-body text-center">
-                  <h3 class="today">4:50AM PST</h3>
-                </div><!-- panel-body -->
-              </div><!-- panel -->
+            <div class="col-xs-6 weather text-center">
+              <i class="fa fa-cloud weather-icon"></i>
+              <div class="pull-left"><i class="fa fa-umbrella"></i> 1.0mm</div>
+              <div class="pull-right"><i class="fa fa-flag"></i> 30mph</div>
             </div>
           </div>
-        </div><!-- col-sm-6 -->
+        </div><!-- panel-body -->
+      </div>
+    </div>
+    <div class="row">
+
+<div class="panel panel-dark panel-alt">
+  <div class="panel-heading">
+    <div class="panel-btns">
+      <a href="" class="panel-close">×</a>
+      <a href="" class="minimize">−</a>
+    </div><!-- panel-btns -->
+    <h3 class="panel-title">Schedule</h3>
+  </div>
+  <div class="panel-body">
+    <div class="inspinia-timeline">
+    
+      <div class="timeline-item">
+        <div class="row">
+            <div class="col-xs-3 date">
+                <i class="fa fa-briefcase"></i>
+                6:00 am
+            </div>
+            <div class="col-xs-7 content no-top-border">
+                <p class="m-b-xs"><strong>Meeting</strong></p>
+      
+                <p>Conference on the sales results for the previous year. Monica please examine sales trends in marketing and products. Below please find the current status of the sale.</p>
+            </div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="row">
+            <div class="col-xs-3 date">
+                <i class="fa fa-file-text"></i>
+                7:00 am
+            </div>
+            <div class="col-xs-7 content">
+                <p class="m-b-xs"><strong>Send documents to Mike</strong></p>
+                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since.</p>
+            </div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="row">
+            <div class="col-xs-3 date">
+                <i class="fa fa-coffee"></i>
+                8:00 am
+            </div>
+            <div class="col-xs-7 content">
+                <p class="m-b-xs"><strong>Coffee Break</strong></p>
+                <p>
+                    Go to shop and find some products.
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's.
+                </p>
+            </div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="row">
+            <div class="col-xs-3 date">
+                <i class="fa fa-phone"></i>
+                11:00 am
+            </div>
+            <div class="col-xs-7 content">
+                <p class="m-b-xs"><strong>Phone with Jeronimo</strong></p>
+                <p>
+                    Lorem Ipsum has been the industry's standard dummy text ever since.
+                </p>
+            </div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="row">
+            <div class="col-xs-3 date">
+                <i class="fa fa-user-md"></i>
+                09:00 pm
+            </div>
+            <div class="col-xs-7 content">
+                <p class="m-b-xs"><strong>Go to the doctor dr Smith</strong></p>
+                <p>
+                    Find some issue and go to doctor.
+                </p>
+            </div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="row">
+            <div class="col-xs-3 date">
+                <i class="fa fa-comments"></i>
+                12:50 pm
+            </div>
+            <div class="col-xs-7 content">
+                <p class="m-b-xs"><strong>Chat with Monica and Sandra</strong></p>
+                <p>
+                    Web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+                </p>
+            </div>
+        </div>
+      </div>
+    
+    </div>
+  </div>
+</div>
+
+
+    </div>
+  </div>
+</div>      
+
+      
 
     </div><!-- contentpanel -->
     
@@ -277,22 +166,114 @@
 </section>
 
 
-<script src="assets/bootstrap/js/jquery-1.11.1.min.js"></script>
-<script src="assets/bootstrap/js/jquery-migrate-1.2.1.min.js"></script>
-<script src="assets/bootstrap/js/jquery-ui-1.10.3.min.js"></script>
-<script src="assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="assets/bootstrap/js/modernizr.min.js"></script>
-<script src="assets/bootstrap/js/jquery.sparkline.min.js"></script>
-<script src="assets/bootstrap/js/toggles.min.js"></script>
-<script src="assets/bootstrap/js/retina.min.js"></script>
-<script src="assets/bootstrap/js/jquery.cookies.js"></script>
+<script src="/assets/bootstrap/js/jquery-1.11.1.min.js"></script>
+<script src="/assets/bootstrap/js/jquery-migrate-1.2.1.min.js"></script>
+<script src="/assets/bootstrap/js/jquery-ui-1.10.3.min.js"></script>
+<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="/assets/bootstrap/js/modernizr.min.js"></script>
+<script src="/assets/bootstrap/js/jquery.sparkline.min.js"></script>
+<script src="/assets/bootstrap/js/toggles.min.js"></script>
+<script src="/assets/bootstrap/js/retina.min.js"></script>
+<script src="/assets/bootstrap/js/jquery.cookies.js"></script>
 
-<script src="assets/bootstrap/js/flot/jquery.flot.min.js"></script>
-<script src="assets/bootstrap/js/flot/jquery.flot.resize.min.js"></script>
-<script src="assets/bootstrap/js/flot/jquery.flot.spline.min.js"></script>
-<script src="assets/bootstrap/js/morris.min.js"></script>
-<script src="assets/bootstrap/js/raphael-2.1.0.min.js"></script>
+<script src="/assets/bootstrap/js/flot/jquery.flot.min.js"></script>
+<script src="/assets/bootstrap/js/flot/jquery.flot.resize.min.js"></script>
+<script src="/assets/bootstrap/js/flot/jquery.flot.spline.min.js"></script>
+<script src="/assets/bootstrap/js/morris.min.js"></script>
+<script src="/assets/bootstrap/js/raphael-2.1.0.min.js"></script>
 
-<script src="assets/bootstrap/js/custom.js"></script>
-<script src="assets/bootstrap/js/dashboard.js"></script>
+<script src="http://maps.google.com/maps/api/js?sensor=true"></script>
+<script src="/assets/bootstrap/js/gmaps.js"></script>
 
+
+<script src="/assets/bootstrap/js/custom.js"></script>
+<script src="/assets/bootstrap/js/dashboard.js"></script>
+
+<script>
+  var map_marker = new GMaps({
+    div: '#gmap-marker',
+    lat: -12.043333,
+    lng: -77.028333
+  });
+  map_marker.addMarker({
+    lat: -12.043333,
+    lng: -77.019333,
+    label: "GJ",
+    click: function(e) {
+      alert('You clicked in this marker');
+    }
+  });
+  map_marker.addMarker({
+    lat: -12.043333,
+    lng: -77.028333,
+    label: "RJ",
+    title: 'Hello World!'
+  }); 
+  map_marker.addMarker({
+    lat: -12.043333,
+    lng: -77.022333,
+    label: "DY",
+    click: function(e) {
+      alert('You clicked in this marker');
+    }
+  });   
+  
+   var m4 = new Morris.Bar({
+        // ID of the element in which to draw the chart.
+        element: 'accounts-status-breakdown',
+        // Chart data records -- each entry in this array corresponds to a point on
+        // the chart.
+        data: [
+            { y: 'Jan', a: 10, b: 50, c: 0, d: 0},
+            { y: 'Feb', a: 13,  b: 23, c: 0, d: 0},
+            { y: 'Mar', a: 22,  b: 22, c: 2, d: 0},
+            { y: 'Apr', a: 28,  b: 12, c: 4, d: 5},
+            { y: 'May', a: 44,  b: 5, c: 0, d: 6},
+            { y: 'Jun', a: 80,  b: 32, c: 10, d: 7},
+            { y: 'Jul', a: 100, b: 20, c: 3, d: 3}
+        ],
+        xkey: 'y',
+        ykeys: ['a', 'b', 'c', 'd'],
+        labels: ['Open', 'Leads', 'Suspended', 'Closed'],
+          barColors: ['#1CAF9A', '#428BCA', '#ff860d', '#999999'],
+        lineWidth: '1px',
+        fillOpacity: 0.8,
+        smooth: false,
+        stacked: true,
+        hideHover: true
+   });
+</script>
+
+
+
+<link href="/assets/bootstrap/css/morris.css" rel="stylesheet">
+<style>
+  /* Intimeline */
+.timeline-item .date i {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 5px;
+  width: 30px;
+  text-align: center;
+  border-top: 1px solid #e7eaec;
+  border-bottom: 1px solid #e7eaec;
+  border-left: 1px solid #e7eaec;
+  background: #f8f8f8;
+}
+.timeline-item .date {
+  text-align: right;
+  width: 110px;
+  position: relative;
+  padding-top: 30px;
+}
+.timeline-item .content {
+  border-left: 1px solid #e7eaec;
+  border-top: 1px solid #e7eaec;
+  padding-top: 10px;
+  min-height: 100px;
+}
+.timeline-item .content:hover {
+  background: #f6f6f6;
+}
+</style>
