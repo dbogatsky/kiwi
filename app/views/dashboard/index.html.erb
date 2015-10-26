@@ -4,12 +4,41 @@
       <div class="col-sm-12">
         <div class="panel panel-default">
           <div class="panel-body">
-            <div class="col-sm-4">
+            <div class="col-sm-5">
               <h4>Good Afternoon John</h4>
-              <small>You have 1 new message and 6 notifications.</small>
+              <small>Below are some quick stats</small>
+              <br /><br />
+              <table class="table small">
+                <tbody>
+                <tr>
+                    <td align="right"><span class="badge">1</span></td>
+                    <td align="left"><i class="fa fa-envelope"></i>&nbsp;&nbsp;New Message</td>
+                </tr> 
+                <tr>
+                    <td align="right"><span class="badge">6</span></td>
+                    <td align="left"><i class="fa fa-warning"></i>&nbsp;&nbsp;Notifications</td>
+                </tr>  
+                <tr>
+                    <td align="right"><span class="badge">10</span></td>
+                    <td align="left"><i class="fa fa-comments"></i>&nbsp;&nbsp;Conversations updated</td>
+                </tr>
+                <tr>
+                    <td align="right"><span class="badge">22</span></td>
+                    <td align="left"><i class="fa fa-share-alt"></i>&nbsp;&nbsp;Shared Conversations updated</td>
+                </tr>
+                <tr>
+                    <td align="right"><span class="badge">10</span></td>
+                    <td align="left"><i class="fa fa-calendar"></i>&nbsp;&nbsp;Meetings Today</td>
+                </tr>
+                <tr>
+                    <td align="right"><span class="badge">3</span></td>
+                    <td align="left"><i class="fa fa-bell"></i>&nbsp;&nbsp;Reminders Today</td>
+                </tr>
+                </tbody>
+              </table>
             </div>
-            <div class="col-md-8">
-              <div id="accounts-status-breakdown" class="body-chart"></div>
+            <div class="col-sm-7">
+              <div id="accounts-status-breakdown"></div>
             </div>
           </div><!-- panel body -->
         </div><!-- panel -->
@@ -20,10 +49,6 @@
       <div class="col-sm-12">
         <div class="panel panel-dark panel-alt">
           <div class="panel-heading">
-            <div class="panel-btns">
-              <a href="" class="panel-close">×</a>
-              <a href="" class="minimize">−</a>
-            </div><!-- panel-btns -->
             <h3 class="panel-title">Maps</h3>
           </div>
           <div class="panel-body">
@@ -56,10 +81,6 @@
 
 <div class="panel panel-dark panel-alt">
   <div class="panel-heading">
-    <div class="panel-btns">
-      <a href="" class="panel-close">×</a>
-      <a href="" class="minimize">−</a>
-    </div><!-- panel-btns -->
     <h3 class="panel-title">Schedule</h3>
   </div>
   <div class="panel-body">
@@ -176,9 +197,7 @@
 <script src="/assets/bootstrap/js/retina.min.js"></script>
 <script src="/assets/bootstrap/js/jquery.cookies.js"></script>
 
-<script src="/assets/bootstrap/js/flot/jquery.flot.min.js"></script>
-<script src="/assets/bootstrap/js/flot/jquery.flot.resize.min.js"></script>
-<script src="/assets/bootstrap/js/flot/jquery.flot.spline.min.js"></script>
+
 <script src="/assets/bootstrap/js/morris.min.js"></script>
 <script src="/assets/bootstrap/js/raphael-2.1.0.min.js"></script>
 
@@ -224,18 +243,17 @@
         // Chart data records -- each entry in this array corresponds to a point on
         // the chart.
         data: [
-            { y: 'Jan', a: 10, b: 50, c: 0, d: 0},
-            { y: 'Feb', a: 13,  b: 23, c: 0, d: 0},
-            { y: 'Mar', a: 22,  b: 22, c: 2, d: 0},
-            { y: 'Apr', a: 28,  b: 12, c: 4, d: 5},
-            { y: 'May', a: 44,  b: 5, c: 0, d: 6},
-            { y: 'Jun', a: 80,  b: 32, c: 10, d: 7},
-            { y: 'Jul', a: 100, b: 20, c: 3, d: 3}
+            { y: 'May', a: 13,  b: 23, c: 0, d: 0},
+            { y: 'Jun', a: 22,  b: 22, c: 2, d: 0},
+            { y: 'Jul', a: 28,  b: 12, c: 4, d: 5},
+            { y: 'Aug', a: 44,  b: 5, c: 0, d: 6},
+            { y: 'Sep', a: 80,  b: 32, c: 10, d: 7},
+            { y: 'Oct', a: 100, b: 20, c: 3, d: 3}
         ],
         xkey: 'y',
         ykeys: ['a', 'b', 'c', 'd'],
         labels: ['Open', 'Leads', 'Suspended', 'Closed'],
-          barColors: ['#1CAF9A', '#428BCA', '#ff860d', '#999999'],
+        barColors: ['#1CAF9A', '#428BCA', '#ff860d', '#999999'],
         lineWidth: '1px',
         fillOpacity: 0.8,
         smooth: false,
