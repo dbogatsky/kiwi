@@ -1,4 +1,4 @@
-<%= form_tag(users_save_url, {:id=>'account-add-form', :name=>'account-add-form'}) do |f| %>            
+<%= form_tag(users_save_url, {:id=>'user-add-form', :name=>'user-add-form'}) do |f| %>            
 <div class="panel panel-default">
 	<div class="panel-heading">
 		<h4 class="panel-title">Add User</h4>
@@ -6,39 +6,81 @@
 	</div>
 	<div class="panel-body">
 		<div class="form-group">			
-			<label class="col-sm-3 control-label">Account Name<span class="asterisk">*</span></label>
+			<label class="col-sm-3 control-label">Email<span class="asterisk">*</span></label>
 			<div class="col-sm-6">
-				<input type="text" name="account-name" id="account-name" class="form-control" required>
+				<input type="text" name="user-email" id="user-email" class="form-control" required>
 			</div>
 		</div>
+            <div class="form-group">                  
+                  <label class="col-sm-3 control-label">First Name<span class="asterisk">*</span></label>
+                  <div class="col-sm-6">
+                        <input type="text" name="user-firstname" id="user-firstname" class="form-control" required>
+                  </div>
+            </div>
+            <div class="form-group">                  
+                  <label class="col-sm-3 control-label">Last Name<span class="asterisk">*</span></label>
+                  <div class="col-sm-6">
+                        <input type="text" name="user-lastname" id="user-lastname" class="form-control" required>
+                  </div>
+            </div>
+            <div class="form-group">
+                  <label class="col-sm-3 control-label">Role<span class="asterisk">*</span></label>
+                  <div class="col-sm-2">
+                        <select name="user-role" class="form-control input-sm">
+                              <% @roles.each do |role| %>
+                                    <option value="<%= role['id'] %>"><%= role['name'] %></option>
+                              <% end %>
+                        </select>
+                  </div>
+            </div>
+            <div class="form-group">
+                  <label class="col-sm-3 control-label">Locale<span class="asterisk">*</span></label>
+                  <div class="col-sm-6">
+                  <select class="form-control input-sm" name="user-locale" data-placeholder="Select default language for this user">
+                        <option value="1">English</option>
+                        <option value="2">French</option>
+                  </select>
+                  </div>
+            </div>
+            <div class="form-group">
+                  <label class="col-sm-3 control-label">Time zone<span class="asterisk">*</span></label>
+                  <div class="col-sm-6">
+                  <select class="form-control input-sm" name="user-timezone" data-placeholder="Select default timezone this user is in">
+                        <option value="1">(GMT-08:00) Pacific Time (US and Canada); Tijuana</option>
+                        <option value="2">(GMT-07:00) Mountain Time (US and Canada)</option>
+                        <option value="3">(GMT-06:00) Central Time (US and Canada)</option>
+                        <option value="4">(GMT-05:00) Eastern Time (US & Canada)</option>
+                  </select>
+                  </div>
+            </div>                               
 		<div class="form-group">
 			<label class="col-sm-3 control-label">Street<span class="asterisk">*</span></label>
 			<div class="col-sm-6">
-				<input type="text" name="account-address[street_address]" id="account-street_address" class="form-control" required>
+				<input type="text" name="user-address[street_address]" id="user-street_address" class="form-control" required>
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-3 control-label">City<span class="asterisk">*</span></label>
 			<div class="col-sm-6">
-				<input type="text" name="account-address[city]" id="account-city" class="form-control" required>
+				<input type="text" name="user-address[city]" id="user-city" class="form-control" required>
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-3 control-label">Postcode/Zipcode<span class="asterisk">*</span></label>
 			<div class="col-sm-6">
-				<input type="text" name="account-address[postcode]" id="account-postcode" class="form-control" required>
+				<input type="text" name="user-address[postcode]" id="user-postcode" class="form-control" required>
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-3 control-label">Province/State<span class="asterisk">*</span></label>
 			<div class="col-sm-6">
-				<input type="text" name="account-address[region]" id="account-region" class="form-control" required>
+				<input type="text" name="user-address[region]" id="user-region" class="form-control" required>
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-3 control-label">Country<span class="asterisk">*</span></label>
 			<div class="col-sm-6">
-                <select class="select2" data-placeholder="Choose a Country..." name="account-address[country]" id="account-country" class="form-control" required>
+                <select class="select2" data-placeholder="Choose a Country..." name="user-address[country]" id="user-country" class="form-control" required>
                   <option value=""></option>
                   <option value="Canada">Canada</option>
                   <option value="United States">United States</option>
@@ -297,15 +339,15 @@
 		<div class="form-group">
 			<label class="col-sm-3 control-label">Contact Name</label>
 			<div class="col-sm-6">
-				<input type="text" name="account-contact_name" id="account-contact_name" class="form-control">
+				<input type="text" name="user-contact_name" id="user-contact_name" class="form-control">
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-3 control-label">Contact</label>
 			<div class="col-sm-6">
-				<div class="row" id="account-contact-row">
+				<div class="row" id="user-contact-row">
 					<div class="col-sm-3">
-						<select name="account-contact[1][contact-type]" class="form-control input-sm">
+						<select name="user-contact[1][contact-type]" class="form-control input-sm">
 			              <option value="phone">Phone</option>
 			              <option value="mobile">Mobile</option>
 			              <option value="fax">Fax</option>
@@ -318,7 +360,7 @@
 			            </select>
 					</div>
 					<div class="col-sm-8">
-						<input type="text" name="account-contact[1][contact-details]" placeholder="Details" class="form-control" required>
+						<input type="text" name="user-contact[1][contact-details]" placeholder="Details" class="form-control" required>
 					</div>
 					<div class="col-sm-1">
 						<div class="btn-group">
@@ -327,51 +369,6 @@
 					</div>
 				</div>
 			</div>
-		</div>		
-		<div class="form-group">
-			<label class="col-sm-3 control-label">Account Status<span class="asterisk">*</span></label>
-			<div class="col-sm-2">
-				<select name="account-status" class="form-control input-sm">
-					<% @account_statuses.each do |status| %>
-						<option value="<%= status['id'] %>"><%= status['name'] %></option>
-					<% end %>
-				</select>
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-sm-3 control-label">Assign To<span class="asterisk">*</span></label>
-			<div class="col-sm-6">
-            	<select class="select2" data-placeholder="Select user to assign this account too">
-	            	<option value="6">Michael Jordan</option>
-	            	<option value="6">Charles Barkley</option>
-            	</select>
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-sm-3 control-label">Shared With</label>
-			<div class="col-sm-6">
-                <select class="select2" name="account-shared" id="account-shared" multiple data-placeholder="Type name of user you wish to share with">
-					<option value=""></option>
-					<option value="1">Gurpreet Jajj</option>
-					<option value="2">David Young</option>
-					<option value="3">Diego Brogna</option>
-					<option value="4">Amar Jajj</option>
-					<option value="5">Lakhveer Jajj</option>
-					<option value="6">Dani Syed</option>
-                </select>
-			</div>
-		</div>			
-		<div class="form-group">
-			<label class="col-sm-3 control-label">About</label>
-			<div class="col-sm-6">
-				<textarea class="form-control" name="account-about" id="account-about" rows="5"></textarea>
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-sm-3 control-label">Quick Facts</label>
-			<div class="col-sm-6">
-				<textarea class="form-control" name="account-facts" id="account-facts" rows="5"></textarea>
-			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-3 control-label">Picture</label>
@@ -379,7 +376,7 @@
                 <label title="Upload image file" for="inputImage" class="btn btn-primary">
                     <input type="file" accept="image/*" name="file" id="inputImage" class="hide">Upload new image
                 </label>
-				<div class="account-avatar">
+				<div class="user-avatar">
 					<img src="/assets/images/default_account_avatar.png" alt="Picture">
 				</div>
 			</div>
@@ -419,20 +416,16 @@
 <script src="/assets/bootstrap/js/custom.js"></script>
 
 <style>
-	.account-avatar {
+.user-avatar {
   width: 100%;
 }
 
-.account-avatar > img {
+.user-avatar > img {
   max-width: 100%;
 }
 </style>
 <script>
-      contact_index = <%= @contact_counter %>;
-
-	// Textarea Autogrow
-	jQuery('#account-about').autogrow();	
-	jQuery('#account-facts').autogrow();	
+      contact_index = <%= @contact_counter %>;	
 	
 	//multiselect for sharing accounts
 	jQuery(".select2").select2({
@@ -440,7 +433,7 @@
 	});
 	
 	// Basic Form
-	jQuery("#account-add-form").validate({
+	jQuery("#user-add-form").validate({
 			highlight: function(element) {
 			jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
 		},
@@ -450,8 +443,8 @@
 	});
 	
 
-	$('#account-add-form').on('click', '.add-detail', function () {
-	    var row = $('#account-contact-row'),
+	$('#user-add-form').on('click', '.add-detail', function () {
+	    var row = $('#user-contact-row'),
 	        new_row = row.clone();
 
 	    row.find('.fa-plus')
@@ -465,19 +458,19 @@
 	        .addClass('minus-detail');
 
 	    
-          new_row.find('select').attr('name', 'account-contact[' + contact_index + '][contact-type]');
+          new_row.find('select').attr('name', 'user-contact[' + contact_index + '][contact-type]');
           new_row.find('input:text').val('');
-          new_row.find('input:text').attr('name', 'account-contact[' + contact_index + '][contact-details]');
+          new_row.find('input:text').attr('name', 'user-contact[' + contact_index + '][contact-details]');
           contact_index++;
 
 	    row.before(new_row);
 
 	}).on('click', '.minus-detail', function () {
-	    $(this).closest('#account-contact-row').remove();
+	    $(this).closest('#user-contact-row').remove();
 	});	
 
 
-	var $image = $('.account-avatar > img'),
+	var $image = $('.user-avatar > img'),
 	    replaced;
 	
 	$image.cropper({
