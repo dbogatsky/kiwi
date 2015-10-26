@@ -17,9 +17,9 @@ jQuery(document).ready(function(){
 	
 	// Trigger Resize in Morris Chart
    var delay = (function() {
-		var timer = 0;
+    var timer = 0;
 		return function(callback, ms) {
-			clearTimeout(timer);
+			clearTimeout(timer);  
 			timer = setTimeout(callback, ms);
 		};
     })();
@@ -27,7 +27,7 @@ jQuery(document).ready(function(){
    jQuery(window).resize(function() {
 		delay(function() {
 			m4.redraw();
-	}, 100);
+	}, 500);
    }).trigger('resize');
     
    jQuery('#sparkline').sparkline([4,3,3,1,4,3,2,2,3,10,9,6], {
