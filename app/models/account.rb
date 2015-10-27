@@ -1,4 +1,5 @@
-class Account
+class Account < OrchardApiModel
+=begin
 	#setup instance variables
 	attr_accessor :status_id, :status_name, :status_color, :status_description
 
@@ -294,4 +295,5 @@ class Account
 
 
 
+=end
 end
