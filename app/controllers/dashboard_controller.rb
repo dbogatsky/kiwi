@@ -9,9 +9,9 @@ class DashboardController < ApplicationController
 
     if ( current_time.in_time_zone(current_time_zone).hour < 12 ) # Morning - Before 12:00
       greeting = 'Good morning '
-    else if ( current_time.in_time_zone(current_time_zone).hour > 11 && current_time.in_time_zone(current_time_zone).hour < 18 ) # Afternoon - Between 11:00 and 18:00
+    elsif ( current_time.in_time_zone(current_time_zone).hour > 11 && current_time.in_time_zone(current_time_zone).hour < 18 ) # Afternoon - Between 11:00 and 18:00
       greeting = 'Good afternoon '
-    else if ( current_time.in_time_zone(current_time_zone).hour > 17 ) # Evening - After 17:00
+    elsif ( current_time.in_time_zone(current_time_zone).hour > 17 ) # Evening - After 17:00
       greeting = 'Good evening '
     else
       greeting = 'Hello '
