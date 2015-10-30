@@ -68,7 +68,7 @@
             <div class="btn-group">
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                 <img src="/assets/bootstrap/images/photos/loggeduser.png" alt="" />
-                <%= session[:user][:first_name].to_s %>
+                <%= session[:user][:first_name].to_s %> <%= session[:user][:last_name].to_s %> 
                 <span class="caret"></span>
               </button>
               <ul class="dropdown-menu dropdown-menu-usermenu pull-right">
