@@ -10,7 +10,7 @@ Rails.application.routes.draw do
     
     match '/dashboard', to: 'dashboard#index', as: :dashboard, via: [:get] 
 
-    match '/myprofile', to: 'myprofile#index', as: :myprofile, via: [:get] 
+    match '/myprofile', to: 'my_profile#index', as: :myprofile, via: [:get] 
 
     match '/accounts', to: 'accounts#index', as: :accounts, via: [:get] 
     get '/accounts/add', to: 'accounts#add', as: :accounts_add
