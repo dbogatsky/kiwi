@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     match '/dashboard', to: 'dashboard#index', as: :dashboard, via: [:get] 
 
     match '/myprofile', to: 'my_profile#index', as: :myprofile, via: [:get] 
+    post '/myprofile/save/', to: 'my_profile#save', as: :myprofile_save
 
     match '/accounts', to: 'accounts#index', as: :accounts, via: [:get] 
     get '/accounts/add', to: 'accounts#add', as: :accounts_add
