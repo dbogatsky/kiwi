@@ -1,18 +1,95 @@
+    <%= form_tag(myprofile_save_url, {:id=>'myprofile-form', :name=>'myprofile-form'}) do |f| %>   
+      <div class="panel panel-default">
 
-<%= form_tag(myprofile_save_url, {:id=>'myprofile-form', :name=>'myprofile-form'}) do |f| %>   
-<div class="panel panel-default">
-	<div class="panel-heading">
-		<h4 class="panel-title">Edit My Profile</h4>
-		<p>Make changes and click save.</p>
-	</div>
-	<div class="panel-body">
-	</div><!-- panel-body -->
-	<div class="panel-footer">
-	</div><!-- panel-footer -->
-</div>		
+      	<div class="panel-heading">
+      		<h4 class="panel-title">Edit My Profile</h4>
+      		<p>Make changes and click save.</p>
+      	</div>
 
-<% end %>
+      	<div class="panel-body">
+          <div class="form-group">
+            <label class="col-sm-3 control-label">Email</label>
+            <div class="col-sm-6">
+              <input type="text" name="account-contact_name" id="account-contact_name" class="form-control">
+            </div>
+          </div>
 
+          <div class="form-group">
+            <label class="col-sm-3 control-label">First Name</label>
+            <div class="col-sm-6">
+              <input type="text" name="account-contact_name" id="account-contact_name" class="form-control" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-3 control-label">Last Name</label>
+            <div class="col-sm-6">
+              <input type="text" name="account-contact_name" id="account-contact_name" class="form-control" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-3 control-label">Title</label>
+            <div class="col-sm-6">
+              <input type="text" name="account-contact_name" id="account-contact_name" class="form-control">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-3 control-label">Picture</label>
+            <div class="col-sm-6">
+              <label title="Upload image file" for="inputImage" class="btn btn-primary">
+                  <input type="file" accept="image/*" name="file" id="inputImage" class="hide">Upload new image
+              </label>
+              <div class="account-avatar">
+                <img src="/assets/images/default_account_avatar.png" alt="Picture">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+                <label class="col-sm-3 control-label">Locale<span class="asterisk">*</span></label>
+                <div class="col-sm-6">
+                <select class="form-control input-sm" name="user-locale" data-placeholder="Select default language for this user">
+                      <option value="0">Auto Select</option>
+                      <option value="1">English</option>
+                      <option value="2">French</option>
+                </select>
+                </div>
+          </div>
+          <div class="form-group">
+                <label class="col-sm-3 control-label">Time zone<span class="asterisk">*</span></label>
+                <div class="col-sm-6">
+                <select class="form-control input-sm" name="user-timezone" data-placeholder="Select default timezone this user is in">
+                  <option value="0">Auto Select</option>
+                  <option value="1">(GMT-08:00) Pacific Time (US and Canada); Tijuana</option>
+                  <option value="2">(GMT-07:00) Mountain Time (US and Canada)</option>
+                  <option value="3">(GMT-06:00) Central Time (US and Canada)</option>
+                  <option value="4">(GMT-05:00) Eastern Time (US & Canada)</option>
+                </select>
+                </div>
+          </div>  
+
+      	</div><!-- panel-body -->
+
+      	<div class="panel-footer">
+      		<div class="row">
+      			<div class="col-sm-6 col-sm-offset-3">
+      				<button type="submit" class="btn btn-primary" name="save" id="save">Save</button>&nbsp;
+      				<button class="btn btn-default" name="cancel" id="cancel">Cancel</button>
+      			</div>
+      		</div>		
+      	</div><!-- panel-footer -->
+
+      </div>		
+
+    <% end %>
+
+    </div><!-- contentpanel -->
+    
+  </div><!-- mainpanel -->
+    
+</section>
 
 <script src="assets/bootstrap/js/jquery-1.11.1.min.js"></script>
 <script src="assets/bootstrap/js/jquery-migrate-1.2.1.min.js"></script>
