@@ -24,6 +24,7 @@ Rails.application.routes.draw do
     
     match '/schedule', to: 'schedule#index', as: :schedule, via: [:get] 
     match '/media', to: 'media#index', as: :media, via: [:get] 
+    match '/notifications', to: 'notifications#index', as: :notifications, via: [:get]
     match '/messages', to: 'messages#index', as: :messages, via: [:get] 
 
     match '/company', to: 'company#index', as: :company, via: [:get]
