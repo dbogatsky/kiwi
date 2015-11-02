@@ -10,7 +10,7 @@
           <div class="form-group">
             <label class="col-sm-3 control-label">Email</label>
             <div class="col-sm-6">
-              <input type="text" name="account-contact_name" id="account-contact_name" class="form-control">
+              <%= session["user"]["email"] %>
             </div>
           </div>
 
@@ -51,22 +51,15 @@
                 <label class="col-sm-3 control-label">Locale<span class="asterisk">*</span></label>
                 <div class="col-sm-6">
                 <select class="form-control input-sm" name="user-locale" data-placeholder="Select default language for this user">
-                      <option value="0">Auto Select</option>
+                      <option value="0">Select</option>
                       <option value="1">English</option>
-                      <option value="2">French</option>
                 </select>
                 </div>
           </div>
           <div class="form-group">
                 <label class="col-sm-3 control-label">Time zone<span class="asterisk">*</span></label>
                 <div class="col-sm-6">
-                <select class="form-control input-sm" name="user-timezone" data-placeholder="Select default timezone this user is in">
-                  <option value="0">Auto Select</option>
-                  <option value="1">(GMT-08:00) Pacific Time (US and Canada); Tijuana</option>
-                  <option value="2">(GMT-07:00) Mountain Time (US and Canada)</option>
-                  <option value="3">(GMT-06:00) Central Time (US and Canada)</option>
-                  <option value="4">(GMT-05:00) Eastern Time (US & Canada)</option>
-                </select>
+                  <%= time_zone_select( "user",  "time_zone", ActiveSupport::TimeZone.us_zones, {:default => "Pacific Time (US & Canada)"}, {:class => 'form-control input-sm'}) %>
                 </div>
           </div>  
 
