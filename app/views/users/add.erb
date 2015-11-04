@@ -8,25 +8,25 @@
 		<div class="form-group">			
 			<label class="col-sm-3 control-label">Email<span class="asterisk">*</span></label>
 			<div class="col-sm-6">
-				<input type="text" name="user-email" id="user-email" class="form-control" required>
+				<input type="text" name="email" id="email" class="form-control" required>
 			</div>
 		</div>
             <div class="form-group">                  
                   <label class="col-sm-3 control-label">First Name<span class="asterisk">*</span></label>
                   <div class="col-sm-6">
-                        <input type="text" name="user-firstname" id="user-firstname" class="form-control" required>
+                        <input type="text" name="firstname" id="firstname" class="form-control" required>
                   </div>
             </div>
             <div class="form-group">                  
                   <label class="col-sm-3 control-label">Last Name<span class="asterisk">*</span></label>
                   <div class="col-sm-6">
-                        <input type="text" name="user-lastname" id="user-lastname" class="form-control" required>
+                        <input type="text" name="lastname" id="lastname" class="form-control" required>
                   </div>
             </div>
             <div class="form-group">
                   <label class="col-sm-3 control-label">Role<span class="asterisk">*</span></label>
                   <div class="col-sm-2">
-                        <select name="user-role" class="form-control input-sm">
+                        <select name="role" class="form-control input-sm">
                               <% @roles.each do |role| %>
                                     <option value="<%= role[:id] %>"><%= role[:name] %></option>
                               <% end %>
@@ -36,24 +36,19 @@
             <div class="form-group">
                   <label class="col-sm-3 control-label">Locale<span class="asterisk">*</span></label>
                   <div class="col-sm-6">
-                  <select class="form-control input-sm" name="user-locale" data-placeholder="Select default language for this user">
+                  <select class="form-control input-sm" name="locale" data-placeholder="Select default language for this user">
                         <option value="1">English</option>
                         <option value="2">French</option>
                   </select>
                   </div>
             </div>
             <div class="form-group">
-                  <label class="col-sm-3 control-label">Time zone<span class="asterisk">*</span></label>
-                  <div class="col-sm-6">
-                  <select class="form-control input-sm" name="user-timezone" data-placeholder="Select default timezone this user is in">
-                        <option value="1">(GMT-08:00) Pacific Time (US and Canada); Tijuana</option>
-                        <option value="2">(GMT-07:00) Mountain Time (US and Canada)</option>
-                        <option value="3">(GMT-06:00) Central Time (US and Canada)</option>
-                        <option value="4">(GMT-05:00) Eastern Time (US & Canada)</option>
-                  </select>
-                  </div>
-            </div>                               
-		<div class="form-group">
+                <label class="col-sm-3 control-label">Time zone<span class="asterisk">*</span></label>
+                <div class="col-sm-6">
+                  <%= time_zone_select( "user",  "time_zone", ActiveSupport::TimeZone.us_zones, {:default => "Pacific Time (US & Canada)"}, {:class => 'form-control input-sm'}) %>
+                </div>
+            </div>
+            <div class="form-group">
 			<label class="col-sm-3 control-label">Street<span class="asterisk">*</span></label>
 			<div class="col-sm-6">
 				<input type="text" name="user-address[street_address]" id="user-street_address" class="form-control" required>
@@ -373,9 +368,9 @@
 		<div class="form-group">
 			<label class="col-sm-3 control-label">Picture</label>
 			<div class="col-sm-6">
-                <label title="Upload image file" for="inputImage" class="btn btn-primary">
-                    <input type="file" accept="image/*" name="file" id="inputImage" class="hide">Upload new image
-                </label>
+                        <label title="Upload image file" for="inputImage" class="btn btn-primary">
+                          <input type="file" accept="image/*" name="avatar" id="inputImage" class="hide">Upload new image
+                        </label>
 				<div class="user-avatar">
 					<img src="/assets/images/default_account_avatar.png" alt="Picture">
 				</div>
