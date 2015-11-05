@@ -18,23 +18,26 @@ class LoginController < ApplicationController
 		
 		# Check username and password through the Authentication API]
 		user_id, token = User.authenticate(params[:email], params[:password])
+        puts token
         unless token.nil?
 		
 		  # Store user details into session
-		  session[:user] = @user
+		  session[:user_id] = user_id
+          session[:token] = token
 		  
 		  #set gloal var for token to be used in model, hack for now
-		  $user_token = session["user"]["token"]
+          set_current_user
+		  #$user_token = session[:token]
 
 		  #retrieve remainder details and store to session
-		  @user_details = User.find(session["user"]["id"])
-		  session["user"].merge!(@user_details)
+		#  @user_details = User.find(session["user"]["id"])
+		#  session["user"].merge!(@user_details)
 		  
 		  #cache some stuff for performance
 		  #- account statuses
-		  @account_statuses = Account.statuslist
-		  session["account"]  ||= {}
-		  session["account"]["statuses"] = @account_statuses
+		 # @account_statuses = Account.statuslist
+		 # session["account"]  ||= {}
+		 # session["account"]["statuses"] = @account_statuses
 		
 		  # Log the user in and redirect to the main page: Dashboard first? 
 		  redirect_to dashboard_path

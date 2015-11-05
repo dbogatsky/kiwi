@@ -4,13 +4,30 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   before_filter :authentication
+   
+  helper_method :current_user, :logged_in?
+
+  private
 
   def authentication
-     if defined?(session["user"]["token"]).nil?
+     if session[:token].nil?
       flash[:danger] = 'Your session has expired.  Please log in again.'  # Log in error message
       redirect_to root_path
      else 
-      true
+       set_current_user
      end
+  end
+
+  def set_current_user
+    $user_token = session[:token]
+    @current_user = User.find(session[:user_id])
+  end
+
+  def current_user
+    @current_user
+  end
+
+  def logged_in?
+    current_user != nil
   end
 end

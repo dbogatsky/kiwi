@@ -17,7 +17,7 @@ class DashboardController < ApplicationController
       greeting = 'Hello '
     end
 
-    @GreetingMessage = greeting + session[:user][:first_name].to_s
+    @GreetingMessage = greeting + (current_user.first_name || "")
 
   end
 
