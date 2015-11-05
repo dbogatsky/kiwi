@@ -1,4 +1,4 @@
-    <%= form_tag(myprofile_save_url, {:id=>'myprofile-form', :name=>'myprofile-form'}) do |f| %>   
+    <%= simple_form_for current_user, url: profile_path do |f| %>   
       <div class="panel panel-default">
 
       	<div class="panel-heading">
@@ -10,30 +10,15 @@
           <div class="form-group">
             <label class="col-sm-3 control-label">Email</label>
             <div class="col-sm-6">
-              <%= session["user"]["email"] %>
+              <%= current_user.email %>
             </div>
           </div>
 
-          <div class="form-group">
-            <label class="col-sm-3 control-label">First Name</label>
-            <div class="col-sm-6">
-              <input type="text" name="first_name" id="first_name" class="form-control" required>
-            </div>
-          </div>
+          <%= f.input :first_name, required: true %>
+          <%= f.input :last_name, required: true %>
+          <%= f.input :title, required: true %>
+          
 
-          <div class="form-group">
-            <label class="col-sm-3 control-label">Last Name</label>
-            <div class="col-sm-6">
-              <input type="text" name="last_name" id="last_name" class="form-control" required>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="col-sm-3 control-label">Title</label>
-            <div class="col-sm-6">
-              <input type="text" name="title" id="title" class="form-control">
-            </div>
-          </div>
 
           <div class="form-group">
             <label class="col-sm-3 control-label">Picture</label>
@@ -46,24 +31,8 @@
               </div>
             </div>
           </div>
-
-          <div class="form-group">
-                <label class="col-sm-3 control-label">Locale<span class="asterisk">*</span></label>
-                <div class="col-sm-6">
-                <select class="form-control input-sm" name="locale" data-placeholder="Select default language for this user">
-                      <option value="0">Select</option>
-                      <option value="1">English</option>
-                </select>
-                </div>
-          </div>
-          <div class="form-group">
-                <label class="col-sm-3 control-label">Time zone<span class="asterisk">*</span></label>
-                <div class="col-sm-6">
-                  <%= time_zone_select( "user",  "time_zone", ActiveSupport::TimeZone.us_zones, {:default => "Pacific Time (US & Canada)"}, {:class => 'form-control input-sm'}) %>
-                </div>
-          </div>  
-
-      	</div><!-- panel-body -->
+          <%= f.input :locale, collection: I18n.available_locales, prompt: "Select a locale"%>
+          <%= f.input :time_zone, priority: ActiveSupport::TimeZone.us_zones %>
 
       	<div class="panel-footer">
       		<div class="row">

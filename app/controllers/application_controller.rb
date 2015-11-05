@@ -21,6 +21,7 @@ class ApplicationController < ActionController::Base
   def set_current_user
     $user_token = session[:token]
     @current_user = User.find(session[:user_id])
+    @current_user.id = session[:user_id]
   end
 
   def current_user
