@@ -18,4 +18,5 @@ group :development, :test do
   gem 'better_errors'
   gem 'jazz_fingers'
   gem 'web-console', '~> 2.0'
+  gem "http_logger"
 end

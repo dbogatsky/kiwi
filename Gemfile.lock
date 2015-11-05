@@ -72,6 +72,7 @@ GEM
     globalid (0.3.6)
       activesupport (>= 4.1.0)
     hirb (0.7.3)
+    http_logger (0.5.1)
     i18n (0.7.0)
     jazz_fingers (3.0.0)
       awesome_print (~> 1.6)
@@ -184,6 +185,7 @@ DEPENDENCIES
   byebug
   coffee-rails (~> 4.1.0)
   dotenv-rails
+  http_logger
   jazz_fingers
   jquery-rails
   puma
