@@ -14,6 +14,9 @@ class UsersController < ApplicationController
 		@contact_counter = 2 # Contact index counter
 
 
+    #get roles (temporary hardcoded)
+    @roles = [{id: 1, name: "sales"},{id: 2, name: "manager"}]
+
 	end
 
 

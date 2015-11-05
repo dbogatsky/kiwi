@@ -1,0 +1,151 @@
+    <%= form_tag(myprofile_save_url, {:id=>'myprofile-form', :name=>'myprofile-form'}) do |f| %>   
+      <div class="panel panel-default">
+
+      	<div class="panel-heading">
+      		<h4 class="panel-title">Edit My Profile</h4>
+      		<p>Make changes and click save.</p>
+      	</div>
+
+      	<div class="panel-body">
+          <div class="form-group">
+            <label class="col-sm-3 control-label">Email</label>
+            <div class="col-sm-6">
+              <%= session["user"]["email"] %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-3 control-label">First Name</label>
+            <div class="col-sm-6">
+              <input type="text" name="first_name" id="first_name" class="form-control" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-3 control-label">Last Name</label>
+            <div class="col-sm-6">
+              <input type="text" name="last_name" id="last_name" class="form-control" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-3 control-label">Title</label>
+            <div class="col-sm-6">
+              <input type="text" name="title" id="title" class="form-control">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-3 control-label">Picture</label>
+            <div class="col-sm-6">
+              <label title="Upload image file" for="inputImage" class="btn btn-primary">
+                  <input type="file" accept="image/*" name="avatar" id="inputImage" class="hide">Upload new image
+              </label>
+              <div class="account-avatar">
+                <img src="/assets/images/default_account_avatar.png" alt="Picture">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+                <label class="col-sm-3 control-label">Locale<span class="asterisk">*</span></label>
+                <div class="col-sm-6">
+                <select class="form-control input-sm" name="locale" data-placeholder="Select default language for this user">
+                      <option value="0">Select</option>
+                      <option value="1">English</option>
+                </select>
+                </div>
+          </div>
+          <div class="form-group">
+                <label class="col-sm-3 control-label">Time zone<span class="asterisk">*</span></label>
+                <div class="col-sm-6">
+                  <%= time_zone_select( "user",  "time_zone", ActiveSupport::TimeZone.us_zones, {:default => "Pacific Time (US & Canada)"}, {:class => 'form-control input-sm'}) %>
+                </div>
+          </div>  
+
+      	</div><!-- panel-body -->
+
+      	<div class="panel-footer">
+      		<div class="row">
+      			<div class="col-sm-6 col-sm-offset-3">
+      				<button type="submit" class="btn btn-primary" name="save" id="save">Save</button>&nbsp;
+      				<button class="btn btn-default" name="cancel" id="cancel">Cancel</button>
+      			</div>
+      		</div>		
+      	</div><!-- panel-footer -->
+
+      </div>		
+
+    <% end %>
+
+    </div><!-- contentpanel -->
+    
+  </div><!-- mainpanel -->
+    
+</section>
+
+<script src="/assets/bootstrap/js/jquery-1.11.1.min.js"></script>
+<script src="/assets/bootstrap/js/jquery-migrate-1.2.1.min.js"></script>
+<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="/assets/bootstrap/js/modernizr.min.js"></script>
+<script src="/assets/bootstrap/js/jquery.sparkline.min.js"></script>
+<script src="/assets/bootstrap/js/toggles.min.js"></script>
+<script src="/assets/bootstrap/js/retina.min.js"></script>
+<script src="/assets/bootstrap/js/jquery.cookies.js"></script>
+<script src="/assets/bootstrap/js/jquery-ui-1.10.3.min.js"></script>
+
+<script src="/assets/bootstrap/js/custom.js"></script>
+
+<script src="/assets/bootstrap/js/cropper.min.js"></script>
+
+<style>
+.user-avatar {
+  width: 100%;
+}
+
+.user-avatar > img {
+  max-width: 100%;
+}
+</style>
+
+
+<script>
+  var $image = $('.user-avatar > img'),
+      replaced;
+  
+  $image.cropper({
+    aspectRatio: 1 / 1,
+    movable: false,
+    zoomable: false,
+    rotatable: false,
+    scalable: false
+  });
+
+  var $inputImage = $("#inputImage");
+  if (window.FileReader) {
+      $inputImage.change(function() {
+          var fileReader = new FileReader(),
+                  files = this.files,
+                  file;
+  
+          if (!files.length) {
+              return;
+          }
+  
+          file = files[0];
+  
+          if (/^image\/\w+$/.test(file.type)) {
+              fileReader.readAsDataURL(file);
+              fileReader.onload = function () {
+                  $inputImage.val("");
+                  $image.cropper("reset", true).cropper("replace", this.result);
+              };
+          } else {
+              showMessage("Please choose an image file.");
+          }
+      });
+  } else {
+      $inputImage.addClass("hide");
+  }
+
+</script>

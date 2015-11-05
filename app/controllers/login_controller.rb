@@ -17,7 +17,8 @@ class LoginController < ApplicationController
 		end
 		
 		# Check username and password through the Authentication API]
-		if @user = User.authenticate(params[:email], params[:password])
+		user_id, token = User.authenticate(params[:email], params[:password])
+        unless token.nil?
 		
 		  # Store user details into session
 		  session[:user] = @user

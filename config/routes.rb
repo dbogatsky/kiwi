@@ -10,6 +10,9 @@ Rails.application.routes.draw do
     
     match '/dashboard', to: 'dashboard#index', as: :dashboard, via: [:get] 
 
+    match '/myprofile', to: 'my_profile#index', as: :myprofile, via: [:get] 
+    post '/myprofile/save/', to: 'my_profile#save', as: :myprofile_save
+
     match '/accounts', to: 'accounts#index', as: :accounts, via: [:get] 
     get '/accounts/add', to: 'accounts#add', as: :accounts_add
     get '/accounts/edit/:id', to: 'accounts#edit', as: :accounts_edit
@@ -21,6 +24,7 @@ Rails.application.routes.draw do
     
     match '/schedule', to: 'schedule#index', as: :schedule, via: [:get] 
     match '/media', to: 'media#index', as: :media, via: [:get] 
+    match '/notifications', to: 'notifications#index', as: :notifications, via: [:get]
     match '/messages', to: 'messages#index', as: :messages, via: [:get] 
 
     match '/company', to: 'company#index', as: :company, via: [:get]
