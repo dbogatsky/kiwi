@@ -19,20 +19,19 @@
           <%= f.input :title, required: true %>
           
 
-
           <div class="form-group">
             <label class="col-sm-3 control-label">Picture</label>
             <div class="col-sm-6">
               <label title="Upload image file" for="inputImage" class="btn btn-primary">
                   <input type="file" accept="image/*" name="avatar" id="inputImage" class="hide">Upload new image
               </label>
-              <div class="account-avatar">
+              <div class="useravatar">
                 <img src="/assets/images/default_account_avatar.png" alt="Picture">
               </div>
             </div>
           </div>
-          <%= f.input :locale, collection: I18n.available_locales, prompt: "Select a locale"%>
-          <%= f.input :time_zone, priority: ActiveSupport::TimeZone.us_zones %>
+          <%= f.input :locale, input_html: { class: 'form-control input-sm' }, collection: I18n.available_locales, prompt: "Select a locale"%>
+          <%= f.input :time_zone, input_html: { class: 'form-control input-sm' }, priority: ActiveSupport::TimeZone.us_zones %>
 
       	<div class="panel-footer">
       		<div class="row">
@@ -79,7 +78,7 @@
 
 
 <script>
-  var $image = $('.user-avatar > img'),
+  var $image = $('.useravatar > img'),
       replaced;
   
   $image.cropper({
