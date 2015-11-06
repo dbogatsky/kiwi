@@ -17,7 +17,7 @@ Rails.application.routes.draw do
 
 
     match '/accounts', to: 'accounts#index', as: :accounts, via: [:get] 
-    get '/accounts/add', to: 'accounts#add', as: :accounts_add
+    get '/accounts/new', to: 'accounts#new', as: :new_accounts
     get '/accounts/edit/:id', to: 'accounts#edit', as: :accounts_edit
     get '/accounts/:id', to: 'accounts#conversation', as: :accounts_conversation
     post '/accounts', to: 'accounts#create', as: :accounts_create
