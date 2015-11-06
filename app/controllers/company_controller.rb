@@ -7,7 +7,9 @@ class CompanyController < ApplicationController
 		# Main Company Page
 		
 		#get status cached upon login from session
-		@account_statuses = session["account"]["statuses"]
+		@account_statuses = AccountStatuses.find
+		
+		#@account_statuses = session["account"]["statuses"]
 	end
 
 

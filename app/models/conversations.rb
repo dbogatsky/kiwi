@@ -1,0 +1,2 @@
+class Conversations < OrchardApiModel
+end
