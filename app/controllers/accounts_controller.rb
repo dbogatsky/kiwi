@@ -25,8 +25,10 @@ class AccountsController < ApplicationController
 	end
 
 
-	def add
+	def new
 		# Add an account
+
+    @account_new = new Account
 
     @contact_counter = 2 # Contact index counter
 		
@@ -48,32 +50,30 @@ class AccountsController < ApplicationController
   end
 
 
-  def save
-    # Save changes from Add/Edit Account page
+  def create
+    # Create new account
 
-    if params["account-id"].blank?
+    account_new.new accounts_params
 
-      # Create new account
-      if Account.accountadd(params["account-name"], params["account-status"], params["account-address"], params["account-contact"])
+    if false
+      flash[:success] = 'Account has been added successfully'
+    else
+      flash[:danger] = 'Oops! Unable to add the account'  # Log in error message  
+    end
 
-        flash[:success] = 'Account has been added successfully'
-      else 
+    redirect_to accounts_path
+  end
 
-        flash[:danger] = 'Oops! Unable to add the account'  # Log in error message  
-      end
+  def update
+    # Update account
 
-    else  
+    account_update.update_attributes accounts_params
 
-      # Edit account
-      if Account.accountedit(params["account-id"], params["account-name"], params["account-status"], params["account-address"], params["account-contact"])
-
-        flash[:success] = 'Account has been edited successfully'
-      else 
-
-        flash[:danger] = 'Oops! Unable to edit the account'  # Log in error message  
-      end
-
-    end 
+    if false
+      flash[:success] = 'Account has been edited successfully'
+    else
+      flash[:danger] = 'Oops! Unable to edit the account'  # Log in error message  
+    end
 
     redirect_to accounts_path
   end
@@ -102,5 +102,9 @@ class AccountsController < ApplicationController
 		  #set gloal var for token to be used in model, hack for now
 		  $user_token = session[:token]
 		end
+
+    def accounts_params
+      params.require(:account).permit(:name, :status_id)
+    end
 
 end
