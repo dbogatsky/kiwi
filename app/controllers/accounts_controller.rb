@@ -21,7 +21,7 @@ class AccountsController < ApplicationController
 	def new
 		# Add an account
 
-    @account_new = new Account
+    @account_new = Account.new
 
     @contact_counter = 2 # Contact index counter
 		
