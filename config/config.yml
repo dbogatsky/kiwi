@@ -3,13 +3,15 @@ default: &default
   software_title: Conversations - Code10
   superadmin_email: superadmin@code10.ca
 
+  open_weather_map: 59972cbdeb7c9f8000bcd04dac2aaccd
+
+
 development:
   <<: *default
   api_name: Orchard
   api_app_key: app_LL1zKMy_vLixnHSyyiAB
   api_url: http://api.convo.code10.ca/api/v1
   api_verbose: true
-
 
 test:
   <<: *default
