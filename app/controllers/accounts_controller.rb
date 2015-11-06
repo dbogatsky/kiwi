@@ -4,23 +4,16 @@ class AccountsController < ApplicationController
 	def index
 		# Get all accounts
 		@accounts = Account.all
-
-
-		# Loop through all the account and apply the proper status info for each one
-
-		# If status id in the account_list does not match in anyone from session, refetch all status via api
-		#- account statuses
-		#@account_statuses = Account.statuslist
-		#session["account"]  ||= {}
-		#session["account"]["statuses"] = @account_statuses
-
+		
 	end
 
 
 	def conversation
 		# Get the acount info and conversation based on id given
-		@account_info = Account.find(params[:id])
-		#@conversation = Conversation.whatever_method_by_id(params[:id])
+		@account = Account.find(params[:id])
+		
+		#retrieve conversation - assuming at the moment that the account id = conversation id
+		@conversation = Conversations.find(params[:id])
 
 	end
 
@@ -38,7 +31,7 @@ class AccountsController < ApplicationController
 
   def edit
     # Edit an account
-    @account_info = Account.accountget(params[:id])
+    @account = Account.find(params[:id])
 
     @contact_counter = 2 # Check number of existing contacts and up the contact counter.
     

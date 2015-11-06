@@ -27,12 +27,7 @@ class LoginController < ApplicationController
 		  
 		  #set gloal var for token to be used in model, hack for now
           set_current_user
-		  #$user_token = session[:token]
 
-		  #retrieve remainder details and store to session
-		#  @user_details = User.find(session["user"]["id"])
-		#  session["user"].merge!(@user_details)
-		  
 		  #cache some stuff for performance
 		  #- account statuses
 		 # @account_statuses = Account.statuslist
