@@ -54,170 +54,38 @@
       <div class="people-list">
         <div class="row">
           
-          <div class="col-md-6">
-            <div class="people-item">
-              <div class="media">
-                <div class="media-body">
-                  <h4 class="person-name"><a href="<%= accounts_conversation_path(1) %>">Harley Davison Motor Company</a></h4>
-                  <span class="badge pull-right" style="background-color: #0eb057; border-color: #0eb057;">Open</span>               
-                  <div class="text-muted">                      
-	                  	<address>	                  		                  	
-                            <i class="fa fa-map-marker"></i>2529 Canada Way<br />Vancouver, Canada, V5G 1G4<br><br />
-                            <a href="conversation.php" class="pull-left"><img alt="" src="assets/bootstrap/images/photos/hd-profile.jpg" class="thumbnail media-object"></a> 
-                            <abbr title="Telephone">T:</abbr>&nbsp;(123) 456-7890<br />
-                            <abbr title="Fax">F:</abbr>&nbsp;(123) 456-7890<br />
-                            <abbr title="Mobile">M:</abbr>&nbsp;(123) 456-7890<br />
-                            <abbr title="Email">E:</abbr>&nbsp;my.email.account@company.com
-                        </address>
-                  </div> 
-                  <ul class="social-list">
-                    <li><a href="https://maps.google.com?daddr=2529+Canada Way+Vancouver+Canada+V5G1G4" target="_blank" class="tooltips" data-toggle="tooltip" data-placement="top" title="Map"><i class="fa fa-map-marker"></i></a></li>
-                    <li><a href="" class="tooltips" data-toggle="tooltip" data-placement="top" title="Web"><i class="fa fa-globe"></i></a></li>
-                    <li><a href="conversation.php" class="tooltips" data-toggle="tooltip" data-placement="top" title="Conversation"><i class="fa  fa-comments"></i></a></li>
-                    <li class="pull-right"><span class="badge" style="color:#333; background-color: #fcfcfc; border-color: #fcfcfc;">Michael Jordan</span><i class="fa fa-users"></i></li>
-                  </ul>
+          <% @accounts.each do |account| %>
+          
+            <div class="col-md-6">
+              <div class="people-item">
+                <div class="media">
+                  <div class="media-body">
+                    <h4 class="person-name"><a href="<%= accounts_conversation_path(account.id) %>"><%= account.name %></a></h4>
+                    <span class="badge pull-right" style="background-color: #0eb057; border-color: #0eb057;">TODO: Open</span>               
+                    <div class="text-muted">                      
+  	                  	<address>	                  		                  	
+                              <i class="fa fa-map-marker"></i>2529 Canada Way<br />Vancouver, Canada, V5G 1G4<br><br />
+                              <a href="conversation.php" class="pull-left"><img alt="" src="assets/bootstrap/images/photos/hd-profile.jpg" class="thumbnail media-object"></a> 
+                              <abbr title="Telephone">T:</abbr>&nbsp;(123) 456-7890<br />
+                              <abbr title="Fax">F:</abbr>&nbsp;(123) 456-7890<br />
+                              <abbr title="Mobile">M:</abbr>&nbsp;(123) 456-7890<br />
+                              <abbr title="Email">E:</abbr>&nbsp;my.email.account@company.com
+                          </address>
+                    </div> 
+                    <ul class="social-list">
+                      <li><a href="https://maps.google.com?daddr=2529+Canada Way+Vancouver+Canada+V5G1G4" target="_blank" class="tooltips" data-toggle="tooltip" data-placement="top" title="Map"><i class="fa fa-map-marker"></i></a></li>
+                      <li><a href="" class="tooltips" data-toggle="tooltip" data-placement="top" title="Web"><i class="fa fa-globe"></i></a></li>
+                      <li><a href="conversation.php" class="tooltips" data-toggle="tooltip" data-placement="top" title="Conversation"><i class="fa  fa-comments"></i></a></li>
+                      <li class="pull-right"><span class="badge" style="color:#333; background-color: #fcfcfc; border-color: #fcfcfc;">Michael Jordan</span><i class="fa fa-users"></i></li>
+                    </ul>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div><!-- col-md-6 -->
-
-          <div class="col-md-6">
-            <div class="people-item">
-              <div class="media">
-                <div class="media-body">
-                  <h4 class="person-name"><a href="">First Great Western Computer Solutions</a></h4>               
-                  <span class="badge pull-right" style="background-color:#2251ed; border-color: #2251ed;">Lead</span>
-                  <div class="text-muted">                      
-	                  	<address>
-                            <i class="fa fa-map-marker"></i>  795 Folsom Ave, Suite 600<br>
-                            San Francisco, CA 94107<br><br />
-							<a href="#" class="pull-left"><img alt="" src="assets/bootstrap/images/photos/user2.png" class="thumbnail media-object"></a>  
-                            <abbr title="Telephone">T:</abbr>&nbsp;(123) 456-7890<br />
-                            <abbr title="Fax">F:</abbr>&nbsp;(123) 456-7890<br />
-                            <abbr title="Mobile">M:</abbr>&nbsp;(123) 456-7890
-                        </address>
-                  </div> 
-                  <ul class="social-list">
-                    <li><a href="https://maps.google.com?daddr=2529+Canada Way+Vancouver+Canada+V5G1G4" target="_blank" class="tooltips" data-toggle="tooltip" data-placement="top" title="Map"><i class="fa fa-map-marker"></i></a></li>
-                    <li><a href="" class="tooltips" data-toggle="tooltip" data-placement="top" title="Web"><i class="fa fa-globe"></i></a></li>
-                    <li><a href="conversation.php" class="tooltips" data-toggle="tooltip" data-placement="top" title="Conversation"><i class="fa  fa-comments"></i></a></li>
-                    <li class="pull-right"><span class="badge" style="color:#333; background-color: #fcfcfc; border-color: #fcfcfc;">Kevin Durrant</span><i class="fa fa-users"></i></li> 
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div><!-- col-md-6 -->
-
-          <div class="col-md-6">
-            <div class="people-item">
-              <div class="media">
-                <div class="media-body">
-                  <h4 class="person-name"><a href="conversation.php">American Airlines</a></h4>               
-                  <span class="badge pull-right" style="background-color:#999999 ; border-color: #999999;">Closed</span>
-                  <div class="text-muted">                      
-	                  	<address>
-                            <i class="fa fa-map-marker"></i>  795 Folsom Ave, Suite 600<br>
-                            San Francisco, CA 94107<br><br />
-                            <a href="#" class="pull-left"><img alt="" src="assets/bootstrap/images/photos/user3.png" class="thumbnail media-object"></a> 
-                            <abbr title="Telephone">T:</abbr>&nbsp;(123) 456-7890<br />
-                            <abbr title="Fax">F:</abbr>&nbsp;(123) 456-7890<br />
-                            <abbr title="Mobile">M:</abbr>&nbsp;(123) 456-7890
-                        </address>
-                  </div> 
-                  <ul class="social-list">
-                    <li><a href="https://maps.google.com?daddr=2529+Canada Way+Vancouver+Canada+V5G1G4" target="_blank" class="tooltips" data-toggle="tooltip" data-placement="top" title="Map"><i class="fa fa-map-marker"></i></a></li>
-                    <li><a href="" class="tooltips" data-toggle="tooltip" data-placement="top" title="Web"><i class="fa fa-globe"></i></a></li>
-                    <li><a href="conversation.php" class="tooltips" data-toggle="tooltip" data-placement="top" title="Conversation"><i class="fa  fa-comments"></i></a></li>
-                    <li class="pull-right"><span class="badge" style="color:#333; background-color: #fcfcfc; border-color: #fcfcfc;">Charles Barkley</span><i class="fa fa-users"></i></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div><!-- col-md-6 -->
-
-
-          <div class="col-md-6">
-            <div class="people-item">
-              <div class="media">
-                <div class="media-body">
-                  <h4 class="person-name"><a href="conversation.php">Virgin Megastore</a></h4>               
-                  <span class="badge pull-right" style="background-color: #ff860d; border-color: #0eb057;">Suspended</span>
-                  <div class="text-muted">                      
-	                  	<address>
-                            <i class="fa fa-map-marker"></i>  795 Folsom Ave, Suite 600<br>
-                            San Francisco, CA 94107<br><br />
-                            <a href="#" class="pull-left"><img alt="" src="assets/bootstrap/images/photos/user4.png" class="thumbnail media-object"></a> 
-                            <abbr title="Telephone">T:</abbr>&nbsp;(123) 456-7890<br />
-                            <abbr title="Fax">F:</abbr>&nbsp;(123) 456-7890<br />
-                            <abbr title="Mobile">M:</abbr>&nbsp;(123) 456-7890
-                        </address>
-                  </div> 
-                  <ul class="social-list">
-                    <li><a href="https://maps.google.com?daddr=2529+Canada Way+Vancouver+Canada+V5G1G4" target="_blank" class="tooltips" data-toggle="tooltip" data-placement="top" title="Map"><i class="fa fa-map-marker"></i></a></li>
-                    <li><a href="" class="tooltips" data-toggle="tooltip" data-placement="top" title="Web"><i class="fa fa-globe"></i></a></li>
-                    <li><a href="conversation.php" class="tooltips" data-toggle="tooltip" data-placement="top" title="Conversation"><i class="fa  fa-comments"></i></a></li>
-                    <li class="pull-right"><span class="badge" style="color:#333; background-color: #fcfcfc; border-color: #fcfcfc;">LeBron James</span><i class="fa fa-users"></i></li>                    
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div><!-- col-md-6 -->
-
-
-          <div class="col-md-6">
-            <div class="people-item">
-              <div class="media">
-                <div class="media-body">
-                  <h4 class="person-name"><a href="conversation.php">Mercedes Benz</a></h4>               
-				          <span class="badge pull-right" style="background-color:#0eb057; border-color:#0eb057;">Open</span>
-                  <div class="text-muted">                      
-	                  	<address>
-                            <i class="fa fa-map-marker"></i>  795 Folsom Ave, Suite 600<br>
-                            San Francisco, CA 94107<br><br />
-                            <a href="#" class="pull-left"><img alt="" src="assets/bootstrap/images/photos/user5.png" class="thumbnail media-object"></a> 
-                            <abbr title="Telephone">T:</abbr>&nbsp;(123) 456-7890<br />
-                            <abbr title="Fax">F:</abbr>&nbsp;(123) 456-7890<br />
-                            <abbr title="Mobile">M:</abbr>&nbsp;(123) 456-7890
-                        </address>
-                  </div> 
-                  <ul class="social-list">
-                    <li><a href="https://maps.google.com?daddr=2529+Canada Way+Vancouver+Canada+V5G1G4" target="_blank" class="tooltips" data-toggle="tooltip" data-placement="top" title="Map"><i class="fa fa-map-marker"></i></a></li>
-                    <li><a href="" class="tooltips" data-toggle="tooltip" data-placement="top" title="Web"><i class="fa fa-globe"></i></a></li>
-                    <li><a href="conversation.php" class="tooltips" data-toggle="tooltip" data-placement="top" title="Conversation"><i class="fa  fa-comments"></i></a></li>
-                    <li class="pull-right"><span class="badge" style="color:#333; background-color: #fcfcfc; border-color: #fcfcfc;">Michael Jordan</span><i class="fa fa-users"></i></li>                    
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div><!-- col-md-6 -->
-<% if @accounts %>
-          <div class="col-md-6">
-            <div class="people-item">
-              <div class="media">
-                <div class="media-body">
-                  <h4 class="person-name"><a href="<%= accounts_conversation_path(@accounts.id) %>"><%= @accounts.name %></a></h4>               
-                  <span class="badge pull-right" style="background-color:#0eb057; border-color:<%= @accounts.acc_status_color %>;"><%= @accounts.acc_status_name %></span>
-                  <div class="text-muted">                      
-                      <address>
-                            <i class="fa fa-map-marker"></i><%= @accounts.addr_street_address %><br>
-                            <%= @accounts.addr_city %>, <%= @accounts.addr_postcode %><br><br />
-                            <a href="#" class="pull-left"><img alt="" src="assets/bootstrap/images/photos/user6.png" class="thumbnail media-object"></a> 
-                            <abbr title="Telephone">T:</abbr>&nbsp;<%= @accounts.contact_value %><br />
-                            <abbr title="Fax">F:</abbr>&nbsp;(123) 456-7890<br />
-                            <abbr title="Mobile">M:</abbr>&nbsp;(123) 456-7890
-                        </address>
-                  </div> addr_province
-                  <ul class="social-list">
-                    <li><a href="https://maps.google.com?daddr=<%= @accounts.addr_street_address %>+<%= @accounts.addr_city %>+<%= @accounts.addr_postcode %>+<%= @accounts.addr_country %>+<%= @accounts.addr_postcode %>" target="_blank" class="tooltips" data-toggle="tooltip" data-placement="top" title="Map"><i class="fa fa-map-marker"></i></a></li>
-                    <li><a href="" class="tooltips" data-toggle="tooltip" data-placement="top" title="Web"><i class="fa fa-globe"></i></a></li>
-                    <li><a href="<%= accounts_conversation_path(@accounts.id) %>" class="tooltips" data-toggle="tooltip" data-placement="top" title="Conversation"><i class="fa  fa-comments"></i></a></li>
-                    <li class="pull-right"><span class="badge" style="color:#333; background-color: #fcfcfc; border-color: #fcfcfc;">Michael Jordan</span><i class="fa fa-users"></i></li>                    
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div><!-- col-md-6 -->
-<% end %>         
+            </div><!-- col-md-6 -->          
+          
+          
+          <% end %> 
+                 
         </div><!-- row -->
       </div><!-- people-list -->
 

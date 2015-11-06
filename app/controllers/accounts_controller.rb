@@ -3,7 +3,7 @@ class AccountsController < ApplicationController
 
 	def index
 		# Get all accounts
-		@account_list = Account.accountlist
+		@accounts = Account.all
 
 
 		# Loop through all the account and apply the proper status info for each one
@@ -19,7 +19,7 @@ class AccountsController < ApplicationController
 
 	def conversation
 		# Get the acount info and conversation based on id given
-		@account_info = Account.accountget(params[:id])
+		@account_info = Account.find(params[:id])
 		#@conversation = Conversation.whatever_method_by_id(params[:id])
 
 	end
@@ -100,7 +100,7 @@ class AccountsController < ApplicationController
 
 		def get_token
 		  #set gloal var for token to be used in model, hack for now
-		  $user_token = session["user"]["token"]
+		  $user_token = session[:token]
 		end
 
 end
