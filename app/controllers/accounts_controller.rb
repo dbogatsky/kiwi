@@ -46,7 +46,7 @@ class AccountsController < ApplicationController
   def create
     # Create new account
 
-    account_new.new accounts_params
+    @account_new.new accounts_params
 
     if false
       flash[:success] = 'Account has been added successfully'
