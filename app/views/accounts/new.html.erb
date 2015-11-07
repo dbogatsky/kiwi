@@ -1,11 +1,11 @@
-      <%= simple_form_for @account_new, url: accounts_create_path do |f| %>       
+      <%= simple_form_for @account, url: accounts_create_path do |f| %>       
       <div class="panel panel-default">
       	<div class="panel-heading">
       		<h4 class="panel-title">Add Account</h4>
       		<p>Fill in the details below to add an account</p>
       	</div>
       	<div class="panel-body">
-                  <%= f.input :name, required: true %>
+                  <%= f.input :name, label: "Account Name", required: true %>
 
       		<div class="form-group">
       			<label class="col-sm-3 control-label">Street<span class="asterisk">*</span></label>

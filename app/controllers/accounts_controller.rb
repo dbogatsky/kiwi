@@ -20,10 +20,9 @@ class AccountsController < ApplicationController
 
 	def new
 		# Add an account
+    @account = Account.new
 
-    @account_new = Account.new
-
-    @contact_counter = 2 # Contact index counter
+   	@contact_counter = 2 # Contact index counter
 		
 		#get status cached upon login from session
 		@account_statuses = session["account"]["statuses"]
@@ -46,9 +45,9 @@ class AccountsController < ApplicationController
   def create
     # Create new account
 
-    @account_new.new accounts_params
+    @account.new accounts_params
 
-    if false
+    if true
       flash[:success] = 'Account has been added successfully'
     else
       flash[:danger] = 'Oops! Unable to add the account'  # Log in error message  
@@ -62,7 +61,7 @@ class AccountsController < ApplicationController
 
     account_update.update_attributes accounts_params
 
-    if false
+    if true
       flash[:success] = 'Account has been edited successfully'
     else
       flash[:danger] = 'Oops! Unable to edit the account'  # Log in error message  
