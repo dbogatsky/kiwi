@@ -1,3 +1,7 @@
 class AccountStatuses < OrchardApiModel
-  include ActiveResource::Singleton
+  schema do
+    # define each attribute separately
+    attribute 'name', :string
+
+  end
 end

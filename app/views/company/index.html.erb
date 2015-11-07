@@ -108,14 +108,14 @@
                                     <tbody>
 									<% 	@account_statuses.each do |status| %>
 									<tr>
-										<td><span class="badge" style="background-color: <%= status['color'] %>; border-color: <%= status['color'] %>;"><%= status['name'] %></span></td>
-										<td><%= status['description'] %></td>
+										<td><span class="badge" style="background-color: <%= status.color %>; border-color: <%= status.color %>;"><%= status.name %></span></td>
+										<td><%= status.description %></td>
 										<td class="table-action">
 											<a href="#" 
-												data-id="<%= status['id'] %>" 
-												data-statname="<%= status['name'] %>" 
-												data-statcolor="<%= status['color'] %>"
-												data-statdesc="<%= status['description'] %>" 
+												data-id="<%= status.id %>" 
+												data-statname="<%= status.name %>" 
+												data-statcolor="<%= status.color %>"
+												data-statdesc="<%= status.description %>" 
 												data-toggle="modal" data-target=".account-status-add" class="modal-link"><i class="fa fa-pencil"></i></a>
 										</td>
 									</tr>
