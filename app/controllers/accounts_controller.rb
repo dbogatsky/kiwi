@@ -45,13 +45,17 @@ class AccountsController < ApplicationController
   def create
     # Create new account
 
-    @account.new accounts_params
+    if params.has_key?(:save)
 
-    if true
-      flash[:success] = 'Account has been added successfully'
-    else
-      flash[:danger] = 'Oops! Unable to add the account'  # Log in error message  
-    end
+      @account.new accounts_params
+
+      if true
+        flash[:success] = 'Account has been added successfully'
+      else
+        flash[:danger] = 'Oops! Unable to add the account'  # Log in error message  
+      end
+
+    end 
 
     redirect_to accounts_path
   end
@@ -59,12 +63,16 @@ class AccountsController < ApplicationController
   def update
     # Update account
 
-    account_update.update_attributes accounts_params
+    if params.has_key?(:save)
 
-    if true
-      flash[:success] = 'Account has been edited successfully'
-    else
-      flash[:danger] = 'Oops! Unable to edit the account'  # Log in error message  
+      account_update.update_attributes accounts_params
+
+      if true
+        flash[:success] = 'Account has been edited successfully'
+      else
+        flash[:danger] = 'Oops! Unable to edit the account'  # Log in error message  
+      end
+
     end
 
     redirect_to accounts_path
