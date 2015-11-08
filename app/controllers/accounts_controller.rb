@@ -47,9 +47,9 @@ class AccountsController < ApplicationController
 
     if params.has_key?(:save)
 
-      @account.new accounts_params
+      @account = Account.new accounts_params
 
-      if true
+      if @account.save
         flash[:success] = 'Account has been added successfully'
       else
         flash[:danger] = 'Oops! Unable to add the account'  # Log in error message  
