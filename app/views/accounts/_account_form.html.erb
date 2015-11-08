@@ -1,11 +1,5 @@
-      <%= simple_form_for @account, url: url do |f| %>
-      <div class="panel panel-default">
-      	<div class="panel-heading">
-      		<h4 class="panel-title">Add Account</h4>
-      		<p>Fill in the details below to add an account</p>
-      	</div>
       	<div class="panel-body">
-
+          <%= simple_form_for @account, url: url do |f| %>
           <%= f.input :name, label: "Account Name", required: true %>
 
       		<div class="form-group">
@@ -390,5 +384,4 @@
       			</div>
       		</div>
       	</div><!-- panel-footer -->
-      </div>
       <% end %>

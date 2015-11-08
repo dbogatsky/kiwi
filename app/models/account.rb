@@ -3,7 +3,7 @@ class Account < OrchardApiModel
     # define each attribute separately
     attribute 'name', :string
     attribute 'status_id', :integer
-
+=begin
     attribute 'addresses_attributes', Array do
       attribute 'street_address', :string
       attribute 'city', :string
@@ -15,7 +15,7 @@ class Account < OrchardApiModel
       attribute 'value', :string
       attribute 'type', :string
     end    
-
+=end
   end
 
 end
