@@ -6,7 +6,7 @@
 					</div> 
 				<% end %>      
 		        
-	        </div>  
+	        </div>
             <div class="row">
               <div class="col-sm-3">
                 <img src="/assets/bootstrap/images/photos/hd-profile.jpg" class="thumbnail img-responsive" alt="">
@@ -28,145 +28,88 @@
               
                 <h5 class="subtitle">Address&nbsp;<i class="fa fa-map-marker"></i></h5>
                 <div class="profile-location">  
-                  <a href="https://maps.google.com?daddr=2529+Canada Way+Vancouver+Canada+V5G1G4" target="_blank">2529 Canada Way<br />Vancouver, Canada<br />V5G 1G4</a>
+                  <a href="https://maps.google.com?daddr=2529+Canada Way+Vancouver+Canada+V5G1G4" target="_blank">???</a>
                 </div>
                 
                 <div class="mb30"></div>
                 <h5 class="subtitle">About</h5>
-                <p class="mb30">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitat</p>
+                <p class="mb30">???</p>
 
                 <div class="mb30"></div>
                 <h5 class="subtitle">Quick Facts</h5>
-                <p class="mb30">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitat</p>
+                <p class="mb30">???</p>
 
     
               
               </div><!-- col-sm-3 -->
               <div class="col-sm-9">
                 <h2 class="profile-name"><%= @account.name %></h2> 
-                <div class="mb30"></div>  
-				<div class="row">
-					<div class="col-xs-3">
-						<small><strong>Account Status</strong></small>
-						<h6><span class="badge" style="background-color: #0eb057; border-color: #0eb057;">Open</span> </h6>
-					</div>					
-					<div class="col-xs-3">
-						<small><strong>Assigned To</strong></small>
-						<h6>Micheal Jordan</h6>
-					</div>
-					<div class="col-xs-3">
-						<small><strong>Last Update</strong></small>
-						<h6>Oct 10, 2016 @ 2:30pm</h6>
-					</div>
-					<div class="col-xs-3">
-						<small><strong>Updated By</strong></small>
-						<h6>Charles Barkley</h6>
-					</div>					
-				</div>
-                
-        
                 <div class="mb20"></div>
-                <div class="btn-group mr5">
-                  <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
-                      <i class="fa fa-plus-circle mr5"></i> Action
-                      <span class="caret"></span>
-                  </button>
-                  <ul class="dropdown-menu">
-                    <li><a href="#" data-toggle="modal" data-target=".account-action-meeting">Schedule Meeting</a></li>
-                    <li><a href="#" data-toggle="modal" data-target=".account-action-note">Add Note</a></li>
-                    <li><a href="#" data-toggle="modal" data-target=".account-action-email">Send Email</a></li>
-                    <li class="divider"></li>
-                    <li><a href="<%= accounts_edit_path(1) %>">Edit Account</a></li>                    
-                  </ul>
+                <div class="row">
+                  <div class="col-sm-11">
+                    <div class="row">
+                        <small>
+                        <div class="col-sm-5">
+                            <div class="row bars">
+                                <div class="col-xs-5" style="text-align:right"><strong>Status</strong></div>
+                                <div class="col-xs-7"><span class="badge" style="background-color: #0eb057; border-color: #0eb057;">???</span> </div>
+                            </div>
+                            <div class="row bars">
+                                <div class="col-xs-5" style="text-align:right"><strong>Assigned To</strong></div>
+                                <div class="col-xs-7">???</div>
+                            </div>
+                            <div class="row bars">
+                                <div class="col-xs-5" style="text-align:right"><strong>Shared With</strong></div>
+                                <div class="col-xs-7"><a href="">??? Poeple</a></div>
+                            </div>
+                        </div><!-- col-sm-4 -->
+                        <div class="col-sm-7">
+                            <div class="row bars">
+                                <div class="col-xs-5" style="text-align:right"><strong>Created</strong></div>
+                                <div class="col-xs-7"><%= @conversation.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%b %d %Y @ %I:%M %p") %></div>
+                            </div>
+                            <div class="row bars">
+                                <div class="col-xs-5" style="text-align:right"><strong>Updated</strong></div>
+                                <div class="col-xs-7"><%= @conversation.updated_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%b %d %Y @ %I:%M %p") %></div>
+                            </div>
+                            <div class="row bars">
+                                <div class="col-xs-5" style="text-align:right"><strong>Updated By</strong></div>
+                                <div class="col-xs-7">???</div>
+                            </div>
+                        </div><!-- col-sm-4 -->
+                        </small>
+                    </div><!-- row -->    
+                  </div>
                 </div>
+                <div class="mb40"></div>
+                <h5 class="subtitle">Conversation</h5>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <%= render "conversation_search" %>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="btn-group mr5 pull-right">
+                      <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
+                          <i class="fa fa-plus-circle mr5"></i> Action
+                          <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li><a href="#" data-toggle="modal" data-target=".account-action-meeting">Schedule Meeting</a></li>
+                        <li><a href="#" data-toggle="modal" data-target=".account-action-note">Add Note</a></li>
+                        <li><a href="#" data-toggle="modal" data-target=".account-action-email">Send Email</a></li>
+                        <li class="divider"></li>
+                        <li><a href="<%= accounts_edit_path(1) %>">Edit Account</a></li>                    
+                      </ul>
+                    </div>
+                  </div><!-- col -->
+                </div><!-- row -->
                 <div class="mb20"></div>
                 
                 <!--- Timeline Start -->
-                <h4 class="subtitle">Conversation</h4>
-                <section id="cd-timeline" class="cd-container">
-                  <div class="cd-timeline-block">
-                    <div class="cd-timeline-img cd-phone">
-                      <img src="/assets/vertical-timeline/img/cd-icon-phone.svg" alt="Phone">
-                    </div> <!-- cd-timeline-img -->
-              
-                    <div class="cd-timeline-content">
-                      <span class="cd-date">Jul 14, 2015</span>
-                      <h2>Title of section 1</h2>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, optio, dolorum provident rerum aut hic quasi placeat iure tempora laudantium ipsa ad debitis unde? Iste voluptatibus minus veritatis qui ut.</p>
-                    </div> <!-- cd-timeline-content -->
-                  </div> <!-- cd-timeline-block -->
-              
-                  <div class="cd-timeline-block">
-                    <div class="cd-timeline-img cd-meeting">
-                      <img src="/assets/vertical-timeline/img/cd-icon-calendar.svg" alt="Meeting">
-                    </div> <!-- cd-timeline-img -->
-              
-                    <div class="cd-timeline-content">
-                      <span class="cd-date">Jun 18, 2015</span> 
-                      <h2>Title of section 2</h2>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, optio, dolorum provident rerum aut hic quasi placeat iure tempora laudantium ipsa ad debitis unde?</p>
-                    </div> <!-- cd-timeline-content -->
-                  </div> <!-- cd-timeline-block -->
-              
-                  <div class="cd-timeline-block">
-                    <div class="cd-timeline-img cd-note">
-                      <img src="/assets/vertical-timeline/img/cd-icon-comments.svg" alt="Note">
-                    </div> <!-- cd-timeline-img -->
-              
-                    <div class="cd-timeline-content">
-                      <span class="cd-date">May 24, 2015</span>       
-                      <h2>Title of section 3</h2>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi, obcaecati, quisquam id molestias eaque asperiores voluptatibus cupiditate error assumenda delectus odit similique earum voluptatem doloremque dolorem ipsam quae rerum quis. Odit, itaque, deserunt corporis vero ipsum nisi eius odio natus ullam provident pariatur temporibus quia eos repellat consequuntur perferendis enim amet quae quasi repudiandae sed quod veniam dolore possimus rem voluptatum eveniet eligendi quis fugiat aliquam sunt similique aut adipisci.</p>
-                    </div> <!-- cd-timeline-content -->
-                  </div> <!-- cd-timeline-block -->
-              
-                  <div class="cd-timeline-block">
-                    <div class="cd-timeline-img cd-reminder">
-                      <img src="/assets/vertical-timeline/img/cd-icon-bell.svg" alt="Reminder">
-                    </div> <!-- cd-timeline-img -->
-              
-                    <div class="cd-timeline-content">
-                      <span class="cd-date">Apr 14, 2015</span>
-                      <h2>Title of section 4</h2>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, optio, dolorum provident rerum aut hic quasi placeat iure tempora laudantium ipsa ad debitis unde? Iste voluptatibus minus veritatis qui ut.</p>
-                    </div> <!-- cd-timeline-content -->
-                  </div> <!-- cd-timeline-block -->
-              
-                  <div class="cd-timeline-block">
-                    <div class="cd-timeline-img cd-meeting">
-                      <img src="/assets/vertical-timeline/img/cd-icon-coffee.svg" alt="Meeting">
-                    </div> <!-- cd-timeline-img -->
-              
-                    <div class="cd-timeline-content">
-                      <span class="cd-date">Mar 18, 2015</span>       
-                      <h2>Title of section 5</h2>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, optio, dolorum provident rerum.</p>
-                    </div> <!-- cd-timeline-content -->
-                  </div> <!-- cd-timeline-block -->
-              
-                  <div class="cd-timeline-block">
-                    <div class="cd-timeline-img cd-account">
-                      <img src="/assets/vertical-timeline/img/cd-icon-briefcase.svg" alt="Account">
-                    </div> <!-- cd-timeline-img -->
-              
-                    <div class="cd-timeline-content">
-                      <span class="cd-date">Feb 26, 2015</span>       
-                      <h2>Final Section</h2>
-                      <p>This is the content of the last section</p>
-                    </div> <!-- cd-timeline-content -->
-                  </div> <!-- cd-timeline-block -->                  
-                </section> <!-- cd-timeline -->
-
-				<div class="row">
-					<div class="col-sm-12">
-						<button type="button" class="btn btn-primary pull-right" style="width:95%;">
-							<i class="fa  fa-arrow-circle-down"></i>Load More
-						</button>
-					</div>
-				</div> 
-
-                
+                <%= render "conversation_timeline" %>
                 <!-- Timeline End -->
+                
+                
               </div>              
             </div><!-- row -->
           </div><!-- profile-header -->
@@ -226,6 +169,8 @@
 					$('#invite-emails').removeTag(emailAddress); 
 			    }
 			};
+			
+			$('.datepicker').datepicker();
 
             $('#schedule-from-datepicker').datepicker({
 	            dateFormat: 'dd/mm/yy',
@@ -246,7 +191,6 @@
   			});
   			
 			
-  			$('#meeting-reminder-date').datepicker();
 			$('#meeting-reminder-time').timepicker({minuteStep: 5});
 			
 			// by default hide reminder settings for meetings
@@ -334,3 +278,13 @@
         });
 
     </script>
+<style>
+  .bars {
+    border-bottom: 0px dotted #ddd;
+    padding: 5px;
+  }
+  
+  
+
+
+</style>
