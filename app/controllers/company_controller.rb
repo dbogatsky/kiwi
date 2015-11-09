@@ -4,9 +4,15 @@ class CompanyController < ApplicationController
 
 
 	def index
+		#comapny details
+		@company = Company.find
+		
+		#entities
+		@entites = CompanyEntities.all
 		
 		#get status cached upon login from session
 		@account_statuses = AccountStatuses.all 
+		
 	end
 
 

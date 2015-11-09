@@ -1,0 +1,2 @@
+class CompanyEntities < OrchardApiModel
+end
