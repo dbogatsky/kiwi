@@ -21,8 +21,8 @@ Rails.application.routes.draw do
     get '/accounts/edit/:id', to: 'accounts#edit', as: :accounts_edit
     get '/accounts/:id', to: 'accounts#conversation', as: :accounts_conversation
     post '/accounts', to: 'accounts#create', as: :accounts_create
-    put '/accounts', to: 'accounts#update'
-    patch '/accounts', to: 'accounts#update'
+    put '/accounts/:id', to: 'accounts#update'
+    patch '/accounts/:id', to: 'accounts#update'
 
     post '/accounts/:id/schedule_meeting', to:'accounts#schedule_meeting', as: :account_schedule_meeting
     post '/accounts/:id/add_note', to:'accounts#add_note', as: :account_add_note
