@@ -1,5 +1,8 @@
       	<div class="panel-body">
           <%= simple_form_for @account, url: url do |f| %>
+          <% if !(id.nil) %>
+          <%= f.input :id, :as => :hidden, :input_html => { :value => id } %>
+          <% end %>
           <%= f.input :name, label: "Account Name", required: true %>
 
       		<div class="form-group">
@@ -26,7 +29,7 @@
       				<input type="text" name="account-address[region]" id="account-region" class="form-control" required>
       			</div>
       		</div>
-	<%= f.input :country, as: :country, priority: [ "Canada", "United States", "United Kingdom" ] %>      	
+	        <%= f.input :country, as: :country, priority: [ "Canada", "United States", "United Kingdom" ] %>      	
       		<div class="form-group">
       			<label class="col-sm-3 control-label">Contact Name</label>
       			<div class="col-sm-6">

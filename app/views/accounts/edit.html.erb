@@ -3,7 +3,7 @@
           <h4 class="panel-title">Edit Account</h4>
           <p>Edit the details below.</p>
         </div>
-          <%= render partial: "account_form", locals: { url: accounts_path } %>
+          <%= render partial: "account_form", locals: { url: accounts_path, id: @account.id } %>
       </div>
 
     </div><!-- contentpanel -->
