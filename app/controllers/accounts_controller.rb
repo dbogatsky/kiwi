@@ -1,5 +1,6 @@
 class AccountsController < ApplicationController
 	before_action :get_token
+  before_action :find_account, only: [:conversation, :edit, :update]
 
 	def index
 		# Get all accounts
@@ -10,7 +11,7 @@ class AccountsController < ApplicationController
 
 	def conversation
 		# Get the acount info and conversation based on id given
-		@account = Account.find(params[:id])
+		#@account = Account.find(params[:id])
 		
 		#retrieve conversation - assuming at the moment that the account id = conversation id
 		@conversation = Conversations.find(params[:id])
@@ -32,7 +33,7 @@ class AccountsController < ApplicationController
 
   def edit
     # Edit an account
-    @account = Account.find(params[:id])
+    #@account = Account.find(params[:id])
 
     @contact_counter = 2 # Check number of existing contacts and up the contact counter.
     
@@ -65,9 +66,7 @@ class AccountsController < ApplicationController
 
     if params.has_key?(:save)
 
-      account_update.update_attributes accounts_params
-
-      if true
+      if @account.update_attributes(accounts_params)
         flash[:success] = 'Account has been edited successfully'
       else
         flash[:danger] = 'Oops! Unable to edit the account'  # Log in error message  
@@ -105,6 +104,10 @@ class AccountsController < ApplicationController
 
     def accounts_params
       params.require(:account).permit(:name, :status_id)
+    end
+
+    def find_account
+      @account = Account.find(params[:id])
     end
 
 end
