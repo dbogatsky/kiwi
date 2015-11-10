@@ -3,7 +3,12 @@ class Account < OrchardApiModel
     # define each attribute separately
     attribute 'name', :string
     attribute 'status_id', :integer
-attribute 'country', :string
+    attribute 'assign_to', :string
+    attribute 'shared_with', :string
+    attribute 'about', :string
+    attribute 'facts', :string
+    attribute 'avatar', :string
+
 =begin
     attribute 'addresses_attributes', Array do
       attribute 'street_address', :string

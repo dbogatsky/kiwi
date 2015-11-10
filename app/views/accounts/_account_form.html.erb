@@ -26,7 +26,9 @@
       				<input type="text" name="account-address[region]" id="account-region" class="form-control" required>
       			</div>
       		</div>
-	        <%= f.input :country, as: :country, priority: [ "Canada", "United States", "United Kingdom" ] %>      	
+          
+	        <%= f.input :country, as: :country, priority: [ "Canada", "United States", "United Kingdom" ] %>   
+
       		<div class="form-group">
       			<label class="col-sm-3 control-label">Contact Name</label>
       			<div class="col-sm-6">
@@ -93,19 +95,12 @@
       					<option value="6">Dani Syed</option>
                       </select>
       			</div>
-      		</div>			
-      		<div class="form-group">
-      			<label class="col-sm-3 control-label">About</label>
-      			<div class="col-sm-6">
-      				<textarea class="form-control" name="account-about" id="account-about" rows="5"></textarea>
-      			</div>
-      		</div>
-      		<div class="form-group">
-      			<label class="col-sm-3 control-label">Quick Facts</label>
-      			<div class="col-sm-6">
-      				<textarea class="form-control" name="account-facts" id="account-facts" rows="5"></textarea>
-      			</div>
-      		</div>
+      		</div>		
+          
+          <%= f.input :about, :label => 'About', :input_html => { :rows => 5 }	%>
+
+          <%= f.input :facts, :label => 'Quick Facts', :input_html => { :rows => 5 }  %>
+
       		<div class="form-group">
       			<label class="col-sm-3 control-label">Picture</label>
       			<div class="col-sm-6">
@@ -118,6 +113,7 @@
       			</div>
       		</div>			
       	</div><!-- panel-body -->
+
       	<div class="panel-footer">
       		<div class="row">
       			<div class="col-sm-6 col-sm-offset-3">
