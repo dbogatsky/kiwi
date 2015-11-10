@@ -65,7 +65,7 @@
                     <div class="text-muted">                      
   	                  	<address>	                  		                  	
                               <i class="fa fa-map-marker"></i>2529 Canada Way<br />Vancouver, Canada, V5G 1G4<br><br />
-                              <a href="conversation.php" class="pull-left"><img alt="" src="assets/bootstrap/images/photos/hd-profile.jpg" class="thumbnail media-object"></a> 
+                              <a href="<%= accounts_conversation_path(account.id) %>" class="pull-left"><img alt="" src="assets/bootstrap/images/photos/hd-profile.jpg" class="thumbnail media-object"></a> 
                               <abbr title="Telephone">T:</abbr>&nbsp;(123) 456-7890<br />
                               <abbr title="Fax">F:</abbr>&nbsp;(123) 456-7890<br />
                               <abbr title="Mobile">M:</abbr>&nbsp;(123) 456-7890<br />
@@ -73,10 +73,15 @@
                           </address>
                     </div> 
                     <ul class="social-list">
+                      
                       <li><a href="https://maps.google.com?daddr=2529+Canada Way+Vancouver+Canada+V5G1G4" target="_blank" class="tooltips" data-toggle="tooltip" data-placement="top" title="Map"><i class="fa fa-map-marker"></i></a></li>
+                      
                       <li><a href="" class="tooltips" data-toggle="tooltip" data-placement="top" title="Web"><i class="fa fa-globe"></i></a></li>
-                      <li><a href="conversation.php" class="tooltips" data-toggle="tooltip" data-placement="top" title="Conversation"><i class="fa  fa-comments"></i></a></li>
+                      
+                      <li><a href="<%= accounts_conversation_path(account.id) %>" class="tooltips" data-toggle="tooltip" data-placement="top" title="Conversation"><i class="fa  fa-comments"></i></a></li>
+                      
                       <li class="pull-right"><span class="badge" style="color:#333; background-color: #fcfcfc; border-color: #fcfcfc;">Michael Jordan</span><i class="fa fa-users"></i></li>
+                      
                     </ul>
                   </div>
                 </div>
