@@ -1,0 +1,71 @@
+<div class="modal fade account-shared-users" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">&times;</button>
+        <h4 class="modal-title">Shared Users</h4>
+      </div>
+      <div class="modal-body">
+        <%= form_tag(account_send_email_url) do |f| %>
+        <p>Below are a list of users whom this account is shared with</p>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="table-responsive">
+              <table class="table mb30">
+                <thead>
+                  <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>mark.otto@westcanauto.com</td>
+                    <td class="table-action">
+                      <a href="" class="delete-row"><i class="fa fa-trash-o"></i></a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>Jacob.thorton@westcanauto.com</td>
+                    <td class="table-action">
+                      <a href="" class="delete-row"><i class="fa fa-trash-o"></i></a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Larry</td>
+                    <td>the Bird</td>
+                    <td>larry.bird@westcanauto.com</td>
+                    <td class="table-action">
+                      <a href="" class="delete-row"><i class="fa fa-trash-o"></i></a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div><!-- panel-body -->
+          <div class="panel-footer">
+            <div class="row">
+              <div class="col-sm-6">
+                <select class="select2" data-placeholder="Select a User">
+                  <option></option>
+                	<option value="6">Michael Jordan</option>
+                	<option value="8">Charles Barkley</option>
+              	</select>
+              </div>
+              <div class="col-sm-6">
+                <button type="submit" value="submit" class="btn btn-success"><i class="fa fa-plus-circle mr5"></i>Add</button>
+              </div>
+            </div>
+          </div>
+        </div><!-- panel -->
+        <% end %>
+      </div><!-- modal body -->
+    </div><!-- modal content -->
+  </div><!-- modal dialog -->
+</div><!-- modal -->

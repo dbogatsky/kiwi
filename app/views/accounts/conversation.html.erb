@@ -60,7 +60,7 @@
                             </div>
                             <div class="row bars">
                                 <div class="col-xs-5" style="text-align:right"><strong>Shared With</strong></div>
-                                <div class="col-xs-7"><a href="">??? People</a></div>
+                                <div class="col-xs-7"><a href="#" data-toggle="modal" data-target=".account-shared-users">??? People</a></div>
                             </div>
                         </div><!-- col-sm-4 -->
                         <div class="col-sm-7">
@@ -124,6 +124,8 @@
 
 <%= render "conversation_email" %>
 
+<%= render "conversation_sharedusers" %>
+
 
 	<script src="/assets/bootstrap/js/jquery-1.11.1.min.js"></script>
 	<script src="/assets/bootstrap/js/jquery-migrate-1.2.1.min.js"></script>
@@ -135,24 +137,29 @@
 	<script src="/assets/bootstrap/js/retina.min.js"></script>
 	<script src="/assets/bootstrap/js/jquery.cookies.js"></script>
     
-    <script src="/assets/vertical-timeline/js/main.js"></script> <!-- Timeline Resource jQuery -->                    
-
-     <!-- Form elements - status and date picker -->
-    <script src="/assets/bootstrap/js/bootstrap-timepicker.min.js"></script>
-	<script src="/assets/bootstrap/js/jquery.maskedinput.min.js"></script>
-	<script src="/assets/bootstrap/js/jquery.tagsinput.min.js"></script>
-	<script src="/assets/bootstrap/js/jquery.mousewheel.js"></script>    
-    <script src="/assets/bootstrap/js/select2.min.js"></script>
-    <script src="/assets/bootstrap/js/bootstrap-editable.min.js"></script>
-    <script src="/assets/bootstrap/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="/assets/bootstrap/js/moment.js"></script>  
-    <script src="/assets/bootstrap/js/jquery.tagsinput.min.js"></script>
+  <script src="/assets/vertical-timeline/js/main.js"></script> <!-- Timeline Resource jQuery -->                    
   
-    <script src="/assets/bootstrap/js/custom.js"></script>
+   <!-- Form elements - status and date picker -->
+  <script src="/assets/bootstrap/js/bootstrap-timepicker.min.js"></script>
+  <script src="/assets/bootstrap/js/jquery.maskedinput.min.js"></script>
+  <script src="/assets/bootstrap/js/jquery.tagsinput.min.js"></script>
+  <script src="/assets/bootstrap/js/jquery.mousewheel.js"></script>    
+  <script src="/assets/bootstrap/js/select2.min.js"></script>
+  <script src="/assets/bootstrap/js/bootstrap-editable.min.js"></script>
+  <script src="/assets/bootstrap/js/bootstrap-datetimepicker.min.js"></script>
+  <script src="/assets/bootstrap/js/moment.js"></script>  
+  <script src="/assets/bootstrap/js/jquery.tagsinput.min.js"></script>
+  
+  <script src="/assets/bootstrap/js/custom.js"></script>
 
-    <script>
-        jQuery(document).ready(function(){
-    
+  <script>
+    jQuery(document).ready(function(){
+
+
+      //multiselect for sharing accounts
+      jQuery(".select2").select2({
+      	width: '100%'
+      });
   
 			// Tags Input
 			jQuery('#invite-emails').tagsInput({
