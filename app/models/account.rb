@@ -9,6 +9,8 @@ class Account < OrchardApiModel
     attribute 'facts', :string
     attribute 'avatar', :string
 
+    attribute 'country', :string
+
 =begin
     attribute 'addresses_attributes', Array do
       attribute 'street_address', :string
