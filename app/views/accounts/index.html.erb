@@ -63,21 +63,33 @@
                     <h4 class="person-name"><a href="<%= accounts_conversation_path(account.id) %>"><%= account.name %></a></h4>
                     <span class="badge pull-right" style="background-color: #0eb057; border-color: #0eb057;">TODO: Open</span>               
                     <div class="text-muted">                      
-  	                  	<address>	                  		                  	
-                              <i class="fa fa-map-marker"></i>2529 Canada Way<br />Vancouver, Canada, V5G 1G4<br><br />
-                              <a href="<%= accounts_conversation_path(account.id) %>" class="pull-left"><img alt="" src="assets/bootstrap/images/photos/hd-profile.jpg" class="thumbnail media-object"></a> 
-                              <abbr title="Telephone">T:</abbr>&nbsp;(123) 456-7890<br />
-                              <abbr title="Fax">F:</abbr>&nbsp;(123) 456-7890<br />
-                              <abbr title="Mobile">M:</abbr>&nbsp;(123) 456-7890<br />
-                              <abbr title="Email">E:</abbr>&nbsp;my.email.account@company.com
-                          </address>
+	                  	<address>	                  		                  	
+                        <% account.addresses.each do |address| %>
+                          <i class="fa fa-map-marker"></i>
+                          <%= address.street_address %>, <%= address.city %><br />
+                          <%= address.region %>, <%= address.country %>, <%= address.postcode %><br />
+                          <br />
+                        <% end %>
+
+                        <a href="<%= accounts_conversation_path(account.id) %>" class="pull-left"><img alt="" src="assets/bootstrap/images/photos/hd-profile.jpg" class="thumbnail media-object"></a> 
+                          
+                        <% account.contacts.each do |contact| %>
+                          <abbr title="<%= contact.type %>"><%= contact.type.initial %>:</abbr>&nbsp;<%= contact.value %><br />
+                        <% end %>
+
+                      </address>
                     </div> 
                     <ul class="social-list">
-                      
-                      <li><a href="https://maps.google.com?daddr=2529+Canada Way+Vancouver+Canada+V5G1G4" target="_blank" class="tooltips" data-toggle="tooltip" data-placement="top" title="Map"><i class="fa fa-map-marker"></i></a></li>
-                      
-                      <li><a href="" class="tooltips" data-toggle="tooltip" data-placement="top" title="Web"><i class="fa fa-globe"></i></a></li>
-                      
+                      <% account.addresses.each do |address| %>
+                        <li><a href="https://maps.google.com?daddr=<%= address.street_address %>+<%= address.city %>+<%= address.region %>+<%= address.country %>+<%= address.postcode %>" target="_blank" class="tooltips" data-toggle="tooltip" data-placement="top" title="Map"><i class="fa fa-map-marker"></i></a></li>
+                      <% end %>
+
+                      <% account.contacts.each do |contact| %>
+                        <% contact.type = "Web" %>
+                        <li><a href="<%= contact.value %>" class="tooltips" data-toggle="tooltip" data-placement="top" title="Web"><i class="fa fa-globe"></i></a></li>
+                        <% end %>
+                      <% end %>
+
                       <li><a href="<%= accounts_conversation_path(account.id) %>" class="tooltips" data-toggle="tooltip" data-placement="top" title="Conversation"><i class="fa  fa-comments"></i></a></li>
                       
                       <li class="pull-right"><span class="badge" style="color:#333; background-color: #fcfcfc; border-color: #fcfcfc;">Michael Jordan</span><i class="fa fa-users"></i></li>
