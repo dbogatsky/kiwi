@@ -85,7 +85,7 @@
                       <% end %>
 
                       <% account.contacts.each do |contact| %>
-                        <% contact.type = "Web" %>
+                        <% if contact.type == "Web" %>
                         <li><a href="<%= contact.value %>" class="tooltips" data-toggle="tooltip" data-placement="top" title="Web"><i class="fa fa-globe"></i></a></li>
                         <% end %>
                       <% end %>
