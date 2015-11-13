@@ -75,7 +75,7 @@
                           <br />
                         <% end %>
 
-                        <a href="<%= accounts_conversation_path(account.id) %>" class="pull-left"><img alt="" src="<%= (account.avatar.nil?) ? 'assets/images/default_account_avatar.png' : account.avatar %>" class="thumbnail media-object"></a> 
+                        <a href="<%= accounts_conversation_path(account.id) %>" class="pull-left"><img alt="" src="<%= (account.avatar.nil?) ? '/assets/images/default_account_avatar.png' : account.avatar %>" class="thumbnail media-object"></a> 
                           
                         <% account.contacts.each do |contact| %>
                           <abbr title="<%= contact.type %>"><%= contact.type.initial %>:</abbr>&nbsp;<%= contact.value %><br />
