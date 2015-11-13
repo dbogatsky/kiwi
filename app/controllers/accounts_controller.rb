@@ -5,7 +5,9 @@ class AccountsController < ApplicationController
 	def index
 		# Get all accounts
 		@accounts = Account.all
-		
+
+		@account_statuses = get_hashed_account_statuses
+
 	end
 
 
@@ -108,6 +110,16 @@ class AccountsController < ApplicationController
 
     def find_account
       @account = Account.find(params[:id])
+    end
+
+    def get_hashed_account_statuses
+
+      account_statuses = Hash.new
+      session["account"]["statuses"].each do | account_status |
+        account_statuses[account_status["id"]] = account_status
+      end
+
+      account_statuses
     end
 
 end

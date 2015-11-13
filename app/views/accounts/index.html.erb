@@ -61,7 +61,11 @@
                 <div class="media">
                   <div class="media-body">
                     <h4 class="person-name"><a href="<%= accounts_conversation_path(account.id) %>"><%= account.name %></a></h4>
-                    <span class="badge pull-right" style="background-color: #0eb057; border-color: #0eb057;">TODO: Open</span>               
+                    <% if !@account_statuses[account.status].nil? %>
+                      <span class="badge pull-right" style="background-color: #<%= @account_statuses[account.status]['color']%>; border-color: #<%= @account_statuses[account.status]['color']%>;"><%= @account_statuses[account.status]['name']%></span> 
+                    <% else %>
+                      <span class="badge pull-right" style="background-color: #ffffff; border-color: #ffffff;">&nbsp;</span>
+                    <% end %>
                     <div class="text-muted">                      
 	                  	<address>	                  		                  	
                         <% account.addresses.each do |address| %>
