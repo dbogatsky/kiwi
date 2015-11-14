@@ -4,10 +4,39 @@
 				<div class="input-group mb15">
 				<input type="text" name="account-search" placeholder="Search here ..." class="form-control">
 				<span class="input-group-btn">
+					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+						<span class="caret"></span>
+          </button>
 					<button type="submit" class="btn btn-primary">
 						<i class="fa fa-search"></i>
 					</button>
-                </span>
+            <div class="dropdown-menu dropdown-menu-right account-search" role="menu">
+              <form class="form-horizontal" role="form">
+                <div class="form-group">
+                  <label for="filter">Filter by Type</label>
+                  <select name="filter_type" class="form-control input-sm">
+                      <option value="all" selected="">All</option>
+                      <option value="meetings">Meetings</option>
+                      <option value="notes">Notes & Reminders</option>
+                      <option value="emails">Emails</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="filter">Filter Date</label>
+                    <div class="input-daterange input-group">
+                      <input type="text" class="form-control datepicker" placeholder="dd/mm/yy" name="search-from-datepicker" id="search-from-datepicker" required="required" />
+                         <span class="input-group-addon">to</span>
+                      <input type="text" class="form-control datepicker" placeholder="dd/mm/yy" name="search_datepicker_end" id="search_datepicker_end">
+                    </div>
+                </div>
+                <div class="form-group">
+                  <label for="contain">Contains the words</label>
+                  <input class="form-control" type="text" />
+                </div>
+                <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search</button>
+              </form>
+            </div>          
+        </span>
 			</div>
 		</form>
 		</div>
@@ -133,3 +162,29 @@
 <script src="/assets/bootstrap/js/holder.js"></script>
 
 <script src="/assets/bootstrap/js/custom.js"></script>
+
+
+<style>
+  .bars {
+    border-bottom: 0px dotted #ddd;
+    padding: 5px;
+  }
+  
+  .account-search {
+    width: 420px;
+    padding: 25px;
+    margin-top: -1px;
+  }
+
+  @media (min-width: 320px) {
+    .account-search {
+      width: 290px;
+    }
+  }
+
+  @media (min-width: 384px) {
+     .account-search {
+       width: 360px;
+     }
+  }
+</style>
