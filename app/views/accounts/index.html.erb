@@ -163,6 +163,33 @@
 
 <script src="/assets/bootstrap/js/custom.js"></script>
 
+<script>
+  jQuery(document).ready(function(){
+
+      $('.datepicker').datepicker();
+
+        $('#schedule-from-datepicker').datepicker({
+          dateFormat: 'dd/mm/yy',
+          altField: "#schedule-to-datepicker",
+          altFormat: "dd/mm/yy"             
+        });
+        $('#schedule-to-datepicker').datepicker({
+          dateFormat: 'dd/mm/yy'
+        });
+        jQuery('#schedule-from-timepicker').timepicker({
+          minuteStep: 15
+        });
+        $('#schedule-to-timepicker').timepicker({
+          minuteStep: 15
+        });
+        $('#scheduleFromTimePicker').timepicker().on('hide.timepicker', function(e) {
+          $('#schedule-to-timepicker').timepicker('setTime', e.time.value);
+        });
+
+
+      });
+
+</script>
 
 <style>
   .bars {
