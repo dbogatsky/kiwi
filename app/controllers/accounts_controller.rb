@@ -4,7 +4,7 @@ class AccountsController < ApplicationController
 
 	def index
 		# Get all accounts
-		@accounts = Account.all
+		@accounts = Account.all(params: {search: params[:search]})
 
 		@account_statuses = get_hashed_account_statuses
 

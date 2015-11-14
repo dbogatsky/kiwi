@@ -1,78 +1,26 @@
-	<div class="row row-pad-5">
-		<div class="col-md-5">
-				<div class="input-group mb15">
-				<input type="text" name="account-search" placeholder="Search here ..." class="form-control">
-				<div class="input-group-btn">
-					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-						<span class="caret"></span>
+<div class="row row-pad-5">
+  <div class="col-md-5">
+    <%= simple_form_for :search, method: :get do |f| %>
+      <%= f.input :name_cont, wrapper: :vertical_input_group, label: false do %>
+        <%= f.input_field :name_cont, class: "form-control", placeholder: "Search here ...", value: params[:search].try(:[], :name_cont) %>
+        <div class="input-group-btn">
+          <button type="submit" class="btn btn-primary">
+            <i class="fa fa-search"></i>
           </button>
-					<button type="submit" class="btn btn-primary">
-						<i class="fa fa-search"></i>
-					</button>
-            <div class="dropdown-menu dropdown-menu-right account-search" role="menu">
-              <form class="form-horizontal" role="form">
-                <div class="form-group">
-                  <label for="filter">Filter by Type</label>
-                  <select name="filter_type" class="form-control input-sm">
-                      <option value="all" selected="">All</option>
-                      <option value="meetings">Meetings</option>
-                      <option value="notes">Notes & Reminders</option>
-                      <option value="emails">Emails</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="filter">Filter Date</label>
-                    <div class="input-daterange input-group">
-                      <input type="text" class="form-control datepicker" placeholder="dd/mm/yy" name="search-from-datepicker" id="search-from-datepicker" required="required" />
-                         <span class="input-group-addon">to</span>
-                      <input type="text" class="form-control datepicker" placeholder="dd/mm/yy" name="search_datepicker_end" id="search_datepicker_end">
-                    </div>
-                </div>
-                <div class="form-group">
-                  <label for="contain">Contains the words</label>
-                  <input class="form-control" type="text" />
-                </div>
-                <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search</button>
-              </form>
-            </div>          
         </div>
-			</div>
-		</div>
-		<div class="col-md-5">
-		</div>
-		<div class="col-md-2">
-			<a href="<%= new_accounts_path %>" class="btn btn-primary btn-block"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Account</a>
-		</div>
-	</div><!-- row -->
+      <% end %>
+    <% end %>
+  </div>
+<div class="col-md-2 col-md-offset-5">
+  <a href="<%= new_accounts_path %>" class="btn btn-primary btn-block"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Account</a>
+</div>
+    </div><!-- row -->
 	<div class="row row-pad-5">
 		<div class="col-md-12">
 			<ul class="letter-list">
-				<li><a href="">a</a></li>
-				<li><a href="">b</a></li>
-				<li><a href="">c</a></li>
-				<li><a href="">d</a></li>
-				<li><a href="">e</a></li>
-				<li><a href="">f</a></li>
-				<li><a href="">g</a></li>
-				<li><a href="">h</a></li>
-				<li><a href="">i</a></li>
-				<li><a href="">j</a></li>
-				<li><a href="">k</a></li>
-				<li><a href="">l</a></li>
-				<li><a href="">m</a></li>
-				<li><a href="">n</a></li>
-				<li><a href="">o</a></li>
-				<li><a href="">p</a></li>
-				<li><a href="">q</a></li>
-				<li><a href="">r</a></li>
-				<li><a href="">s</a></li>
-				<li><a href="">t</a></li>
-				<li><a href="">u</a></li>
-				<li><a href="">v</a></li>
-				<li><a href="">w</a></li>
-				<li><a href="">x</a></li>
-				<li><a href="">y</a></li>
-				<li><a href="">z</a></li>
+              <% ("a".."z").each do |l| %>
+                <li><%= link_to l, accounts_path(search: {name_start: l}) %></li>
+              <% end %>
 			</ul>
 		</div>
 	</div><!-- row -->
@@ -80,63 +28,9 @@
       
       <div class="people-list">
         <div class="row">
-          
-          <% @accounts.each do |account| %>
-          
-            <div class="col-md-6">
-              <div class="people-item">
-                <div class="media">
-                  <div class="media-body">
-                    <h4 class="person-name"><a href="<%= accounts_conversation_path(account.id) %>"><%= account.name %></a></h4>
-                    <% if !@account_statuses[account.status].nil? %>
-                      <span class="badge pull-right" style="background-color: #<%= @account_statuses[account.status]['color']%>; border-color: #<%= @account_statuses[account.status]['color']%>;"><%= @account_statuses[account.status]['name']%></span> 
-                    <% else %>
-                      <span class="badge pull-right" style="background-color: #ffffff; border-color: #ffffff;">&nbsp;</span>
-                    <% end %>
-                    <div class="text-muted">                      
-	                  	<address>	                  		                  	
-                        <% account.addresses.each do |address| %>
-                          <i class="fa fa-map-marker"></i>
-                          <%= address.street_address %>, <%= address.city %><br />
-                          <%= address.region %>, <%= address.country %>, <%= address.postcode %><br />
-                          <br />
-                        <% end %>
 
-                        <a href="<%= accounts_conversation_path(account.id) %>" class="pull-left"><img alt="" src="<%= (account.avatar.nil?) ? '/assets/images/default_account_avatar.png' : account.avatar %>" class="thumbnail media-object"></a> 
-                          
-                        <% account.contacts.each do |contact| %>
-                          <abbr title="<%= contact.type %>"><%= contact.type.initial %>:</abbr>&nbsp;<%= contact.value %><br />
-                        <% end %>
-
-                      </address>
-                    </div> 
-                    <ul class="social-list">
-                      <% account.addresses.each do |address| %>
-                        <li><a href="https://maps.google.com?daddr=<%= address.street_address %>+<%= address.city %>+<%= address.region %>+<%= address.country %>+<%= address.postcode %>" target="_blank" class="tooltips" data-toggle="tooltip" data-placement="top" title="Map"><i class="fa fa-map-marker"></i></a></li>
-                      <% end %>
-
-                      <% account.contacts.each do |contact| %>
-                        <% if contact.type == "Web" %>
-                        <li><a href="<%= contact.value %>" class="tooltips" data-toggle="tooltip" data-placement="top" title="Web"><i class="fa fa-globe"></i></a></li>
-                        <% end %>
-                      <% end %>
-
-                      <li><a href="<%= accounts_conversation_path(account.id) %>" class="tooltips" data-toggle="tooltip" data-placement="top" title="Conversation"><i class="fa  fa-comments"></i></a></li>
-                      
-                      <li class="pull-right"><span class="badge" style="color:#333; background-color: #fcfcfc; border-color: #fcfcfc;">Michael Jordan</span><i class="fa fa-user"></i></li>
-                      <li class="pull-right"><span class="badge" style="color:#333; background-color: #fcfcfc; border-color: #fcfcfc;">Scotty Pippen</span><i class="fa fa-share-alt"></i></li>
-                      <li class="pull-right"><span class="badge" style="color:#333; background-color: #fcfcfc; border-color: #fcfcfc;">Steve Kerr</span><i class="fa fa-share-alt"></i></li>
-                      <li class="pull-right"><span class="badge" style="color:#333; background-color: #fcfcfc; border-color: #fcfcfc;">Hugh Grant</span><i class="fa fa-share-alt"></i></li>
-                      
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div><!-- col-md-6 -->          
+          <%= render(partial: @accounts) || render('empty_search')%> 
           
-          
-          <% end %> 
-                 
         </div><!-- row -->
       </div><!-- people-list -->
 
