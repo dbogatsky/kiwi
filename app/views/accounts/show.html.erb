@@ -16,14 +16,24 @@
                                 
                 <h5 class="subtitle">Connect</h5>
                 <ul class="profile-social-list">
-                  <li><i class="fa fa-phone"></i>(123) 456-7890</li>
-                  <li><i class="fa fa-fax"></i>(123) 456-7890</li>
-                  <li><i class="fa fa-mobile"></i>(123) 456-7890</li>
-                  <li><i class="fa fa-envelope-o"></i>my.email.account@company.com</li>
-                  <li><i class="fa fa-twitter"></i> <a href="">twitter.com/eileensideways</a></li>
-                  <li><i class="fa fa-facebook"></i> <a href="">facebook.com/eileen</a></li>
-                  <li><i class="fa fa-youtube"></i> <a href="">youtube.com/eileen22</a></li>
+                  <% @account.contacts.each do |contact| %>
+                    <li><i class="fa fa-<%= contact.icon_name%>"></i><%= contact.value %></li>
+                  <% end %>
+                  <!--
+                    <li><i class="fa fa-fax"></i>(123) 456-7890</li>
+                    <li><i class="fa fa-mobile"></i>(123) 456-7890</li>
+                    <li><i class="fa fa-envelope-o"></i>my.email.account@company.com</li>
+                    <li><i class="fa fa-twitter"></i> <a href="">twitter.com/eileensideways</a></li>
+                    <li><i class="fa fa-facebook"></i> <a href="">facebook.com/eileen</a></li>
+                    <li><i class="fa fa-youtube"></i> <a href="">youtube.com/eileen22</a></li>
+                    -->
                 </ul>
+                <%= simple_form_for [@account, Contact.new] do |f|%>
+                  <%= f.input :type %>
+                  <%= f.input :name %>
+                  <%= f.input :value %>
+                  <%= f.submit %>
+                <% end %>
                 
                 <div class="mb30"></div>
               
@@ -57,7 +67,7 @@
                             </div>
                             <div class="row bars">
                                 <div class="col-xs-5" style="text-align:right"><strong>Assigned To</strong></div>
-                                <div class="col-xs-7">???</div>
+                                <div class="col-xs-7"><%= @account.user.first_name %> <%= @account.user.last_name %></div>
                             </div>
                             <div class="row bars">
                                 <div class="col-xs-5" style="text-align:right"><strong>Shared With</strong></div>
@@ -99,7 +109,7 @@
                         <li><a href="#" data-toggle="modal" data-target=".account-action-note">Add Note</a></li>
                         <li><a href="#" data-toggle="modal" data-target=".account-action-email">Send Email</a></li>
                         <li class="divider"></li>
-                        <li><a href="<%= accounts_edit_path(@account) %>">Edit Account</a></li>                    
+                        <li><a href="<%= edit_account_path(@account) %>">Edit Account</a></li>                    
                       </ul>
                     </div>
                   </div><!-- col -->

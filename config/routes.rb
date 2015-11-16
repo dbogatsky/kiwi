@@ -12,10 +12,12 @@ Rails.application.routes.draw do
 
    # get '/my_profile', to: 'my_profile#show', as: :my_profile
     resource :profile
+    resources :accounts do
+      resources :contacts, only: [:create, :update, :destroy]
+    end
    # put '/my_profile', to: 'my_profile#update', as: :my_profile
 
-
-
+=begin
     match '/accounts', to: 'accounts#index', as: :accounts, via: [:get] 
     get '/accounts/new', to: 'accounts#new', as: :new_accounts
     get '/accounts/edit/:id', to: 'accounts#edit', as: :accounts_edit
@@ -23,7 +25,7 @@ Rails.application.routes.draw do
     post '/accounts', to: 'accounts#create', as: :accounts_create
     put '/accounts/:id', to: 'accounts#update'
     patch '/accounts/:id', to: 'accounts#update'
-
+=end
     post '/accounts/:id/schedule_meeting', to:'accounts#schedule_meeting', as: :account_schedule_meeting
     post '/accounts/:id/add_note', to:'accounts#add_note', as: :account_add_note
     post '/accounts/:id/send_email', to:'accounts#send_email', as: :account_send_email
