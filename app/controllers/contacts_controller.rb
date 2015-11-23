@@ -1,9 +1,8 @@
 class ContactsController < ApplicationController
 
   def create
-    @account = Account.find(params[:account_id])
-    @account.update_attributes(account: {contacts_attributes: [contact_params]})
-    redirect_to account_path(@account)
+    contact = Contact.create(contact_params.merge({account_id: params[:account_id]}))
+    redirect_to account_path(params[:account_id])
   end
 
   private
