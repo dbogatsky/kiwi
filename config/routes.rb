@@ -13,7 +13,7 @@ Rails.application.routes.draw do
    # get '/my_profile', to: 'my_profile#show', as: :my_profile
     resource :profile
     resources :accounts do
-      resources :contacts, only: [:create, :update, :destroy]
+      resources :contacts, only: [:edit, :create, :update, :destroy]
     end
    # put '/my_profile', to: 'my_profile#update', as: :my_profile
 

@@ -17,7 +17,10 @@
                 <h5 class="subtitle">Connect</h5>
                 <ul class="profile-social-list">
                   <% @account.contacts.each do |contact| %>
-                    <li><i class="fa fa-<%= contact.icon_name%>"></i><%= contact.value %></li>
+                    <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name%>"></i><%= contact.value %>
+                    <%= link_to "x", account_contact_path(@account, contact.id), method: :delete %>
+                    <%= link_to "edit", edit_account_contact_path(@account, contact.id), remote: true %>
+                  </li>
                   <% end %>
                   <!--
                     <li><i class="fa fa-fax"></i>(123) 456-7890</li>
