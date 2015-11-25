@@ -2,7 +2,7 @@
   <div class="people-item">
     <div class="media">
       <div class="media-body">
-        <h4 class="person-name"><a href="<%= accounts_conversation_path(account.id) %>"><%= account.name %></a></h4>
+        <h4 class="person-name"><%= link_to account.name, account_path(account.id) %></h4>
         <% if !@account_statuses[account.status].nil? %>
           <span class="badge pull-right" style="background-color: #<%= @account_statuses[account.status]['color']%>; border-color: #<%= @account_statuses[account.status]['color']%>;"><%= @account_statuses[account.status]['name']%></span> 
         <% else %>
@@ -17,10 +17,10 @@
               <br />
             <% end %>
 
-            <a href="<%= accounts_conversation_path(account.id) %>" class="pull-left"><img alt="" src="<%= (account.avatar.nil?) ? '/assets/images/default_account_avatar.png' : account.avatar %>" class="thumbnail media-object"></a> 
+            <a href="<%= account_path(account.id) %>" class="pull-left"><img alt="" src="<%= (account.avatar.nil?) ? '/assets/images/default_account_avatar.png' : account.avatar %>" class="thumbnail media-object"></a> 
 
             <% account.contacts.each do |contact| %>
-              <abbr title="<%= contact.type %>"><%= contact.type.initial %>:</abbr>&nbsp;<%= contact.value %><br />
+              <abbr title="<%= contact.type %>"><%#= contact.type.initial %>:</abbr>&nbsp;<%= contact.value %><br />
             <% end %>
 
           </address>
@@ -36,7 +36,7 @@
             <% end %>
           <% end %>
 
-          <li><a href="<%= accounts_conversation_path(account.id) %>" class="tooltips" data-toggle="tooltip" data-placement="top" title="Conversation"><i class="fa  fa-comments"></i></a></li>
+          <li><a href="<%= account_path(account.id) %>" class="tooltips" data-toggle="tooltip" data-placement="top" title="Conversation"><i class="fa  fa-comments"></i></a></li>
 
           <li class="pull-right"><span class="badge" style="color:#333; background-color: #fcfcfc; border-color: #fcfcfc;">Michael Jordan</span><i class="fa fa-user"></i></li>
           <li class="pull-right"><span class="badge" style="color:#333; background-color: #fcfcfc; border-color: #fcfcfc;">Scotty Pippen</span><i class="fa fa-share-alt"></i></li>

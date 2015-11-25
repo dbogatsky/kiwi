@@ -30,7 +30,7 @@
                     <li><i class="fa fa-facebook"></i> <a href="">facebook.com/eileen</a></li>
                     <li><i class="fa fa-youtube"></i> <a href="">youtube.com/eileen22</a></li>
                     -->
-                </ul>
+                  </ul>
                 <%= simple_form_for [@account, Contact.new] do |f|%>
                   <%= f.input :type %>
                   <%= f.input :name %>
@@ -44,6 +44,20 @@
                 <div class="profile-location">  
                   <a href="https://maps.google.com?daddr=2529+Canada Way+Vancouver+Canada+V5G1G4" target="_blank">???</a>
                 </div>
+                <ul class="profile-social-list">
+                  <% @account.addresses.each do |address| %>
+                    <li><%= address.street_address %></li>
+                  <% end %>
+                </ul>
+                <%= simple_form_for [@account, Address.new] do |f|%>
+                  <%= f.input :name %>
+                  <%= f.input :street_address %>
+                  <%= f.input :city %>
+                  <%= f.input :postcode %>
+                  <%= f.input :region %>
+                  <%= f.input :country %>
+                  <%= f.submit %>
+                <% end %>
                 
                 <div class="mb30"></div>
                 <h5 class="subtitle">About</h5>
