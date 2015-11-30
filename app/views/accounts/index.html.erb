@@ -18,9 +18,10 @@
 	<div class="row row-pad-5">
 		<div class="col-md-12">
 			<ul class="letter-list">
-              <% ("a".."z").each do |l| %>
-                <li><%= link_to l, accounts_path(search: {name_start: l}) %></li>
-              <% end %>
+        <% ("a".."z").each do |l| %>
+          <li><%= link_to l, accounts_path(search: {name_start: l}) %></li>
+        <% end %>
+        <li><a href="/accounts">All</a></li>
 			</ul>
 		</div>
 	</div><!-- row -->
