@@ -1,388 +1,430 @@
-      <ul class="filemanager-options">
-        <li>
-          <div class="ckbox ckbox-default">
+<ul class="filemanager-options">
+    <li>
+        <div class="ckbox ckbox-default">
             <input type="checkbox" id="selectall" value="1" />
             <label for="selectall">Select All</label>
-          </div>
-        </li>
-        <li>
-          <a href="" class="itemopt disabled"><i class="fa fa-envelope-o"></i> Email</a>
-        </li>
-        <li>
-          <a href="" class="itemopt disabled"><i class="fa fa-download"></i> Download</a>
-        </li>
-        <li>
-          <a href="" class="itemopt disabled"><i class="fa fa-pencil"></i> Edit</a>
-        </li>
-        <li>
-          <a href="" class="itemopt disabled"><i class="fa fa-trash-o"></i> Delete</a>
-        </li>
-        <li class="filter-type">
-          Show:
-          <a href="all" class="active">All</a>
-          <a href="document">Documents</a>
-          <a href="audio">Audio</a>
-          <a href="image">Images</a>
-          <a href="video">Videos</a>
-        </li>
-        
-      </ul>
-        
-      
-      <div class="row">
-        <div class="col-sm-9">
-          <div class="row filemanager">
-            
+        </div>
+    </li>
+    <li>
+        <a href="" class="itemopt disabled"><i class="fa fa-envelope-o"></i> Email</a>
+    </li>
+    <li>
+        <a href="" class="itemopt disabled"><i class="fa fa-download"></i> Download</a>
+    </li>
+    <li>
+        <a href="" class="itemopt disabled"><i class="fa fa-pencil"></i> Edit</a>
+    </li>
+    <li>
+        <a href="" class="itemopt disabled"><i class="fa fa-trash-o"></i> Delete</a>
+    </li>
+    <li class="filter-type">
+        Show:
+        <a href="all" class="active">All</a>
+        <a href="document">Documents</a>
+        <a href="audio">Audio</a>
+        <a href="image">Images</a>
+        <a href="video">Videos</a>
+    </li>
+
+</ul>
+
+
+<div class="row">
+    <div class="col-sm-9">
+        <div class="row filemanager">
+            <div id="flash_messages">
+              <% flash.each do |key, value| %>
+                <%= content_tag(:div, value, :class => "flash #{key}") %>
+              <% end %>
+            </div>
+
             <div class="col-xs-6 col-sm-4 col-md-3 document">
-              <div class="thmb">
-                <div class="ckbox ckbox-default">
-                  <input type="checkbox" id="check1" value="1" />
-                  <label for="check1"></label>
-                </div>
-                <div class="btn-group fm-group">
-                    <button type="button" class="btn btn-default dropdown-toggle fm-toggle" data-toggle="dropdown">
-                      <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu fm-menu" role="menu">
-                      <li><a href="#"><i class="fa fa-share"></i> Share</a></li>
-                      <li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
-                      <li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li>
-                      <li><a href="#"><i class="fa fa-download"></i> Download</a></li>
-                      <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
-                    </ul>
-                </div><!-- btn-group -->
-                <div class="thmb-prev">
-                  <img src="assets/bootstrap/images/photos/media-doc.png" class="img-responsive" alt="" />
-                </div>
-                <h5 class="fm-title"><a href="">MyDocuments.doc</a></h5>
-                <small class="text-muted">Added: Jan 03, 2014</small>
-              </div><!-- thmb -->
+                <div class="thmb">
+                    <div class="ckbox ckbox-default">
+                        <input type="checkbox" id="check1" value="1" />
+                        <label for="check1"></label>
+                    </div>
+                    <div class="btn-group fm-group">
+                        <button type="button" class="btn btn-default dropdown-toggle fm-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu fm-menu" role="menu">
+                            <li><a href="#"><i class="fa fa-share"></i> Share</a></li>
+                            <li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
+                            <li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li>
+                            <li><a href="#"><i class="fa fa-download"></i> Download</a></li>
+                            <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
+                        </ul>
+                    </div><!-- btn-group -->
+                    <div class="thmb-prev">
+                        <img src="assets/bootstrap/images/photos/media-doc.png" class="img-responsive" alt="" />
+                    </div>
+                    <h5 class="fm-title"><a href="">MyDocuments.doc</a></h5>
+                    <small class="text-muted">Added: Jan 03, 2014</small>
+                </div><!-- thmb -->
             </div><!-- col-xs-6 -->
-            
+
             <div class="col-xs-6 col-sm-4 col-md-3 image">
-              <div class="thmb">
-                <div class="ckbox ckbox-default">
-                  <input type="checkbox" id="check2" value="1" />
-                  <label for="check2"></label>
-                </div>
-                <div class="btn-group fm-group">
-                    <button type="button" class="btn btn-default dropdown-toggle fm-toggle" data-toggle="dropdown">
-                      <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu fm-menu" role="menu">
-                      <li><a href="#"><i class="fa fa-share"></i> Share</a></li>
-                      <li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
-                      <li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li>
-                      <li><a href="#"><i class="fa fa-download"></i> Download</a></li>
-                      <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
-                    </ul>
-                </div><!-- btn-group -->
-                <div class="thmb-prev">
-                  <a href="assets/bootstrap/images/photos/media1.jpg" data-rel="prettyPhoto">
-                    <img src="assets/bootstrap/images/photos/media1.jpg" class="img-responsive" alt="" />
-                  </a>
-                </div>
-                <h5 class="fm-title"><a href="">Vegetarian.png</a></h5>
-                <small class="text-muted">Added: Jan 02, 2014</small>
-              </div><!-- thmb -->
+                <div class="thmb">
+                    <div class="ckbox ckbox-default">
+                        <input type="checkbox" id="check2" value="1" />
+                        <label for="check2"></label>
+                    </div>
+                    <div class="btn-group fm-group">
+                        <button type="button" class="btn btn-default dropdown-toggle fm-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu fm-menu" role="menu">
+                            <li><a href="#"><i class="fa fa-share"></i> Share</a></li>
+                            <li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
+                            <li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li>
+                            <li><a href="#"><i class="fa fa-download"></i> Download</a></li>
+                            <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
+                        </ul>
+                    </div><!-- btn-group -->
+                    <div class="thmb-prev">
+                        <a href="assets/bootstrap/images/photos/media1.jpg" data-rel="prettyPhoto">
+                            <img src="assets/bootstrap/images/photos/media1.jpg" class="img-responsive" alt="" />
+                        </a>
+                    </div>
+                    <h5 class="fm-title"><a href="">Vegetarian.png</a></h5>
+                    <small class="text-muted">Added: Jan 02, 2014</small>
+                </div><!-- thmb -->
             </div><!-- col-xs-6 -->
-            
+
             <div class="col-xs-6 col-sm-4 col-md-3 video">
-              <div class="thmb">
-                <div class="ckbox ckbox-default">
-                  <input type="checkbox" id="check3" value="1" />
-                  <label for="check3"></label>
-                </div>
-                <div class="btn-group fm-group">
-                    <button type="button" class="btn btn-default dropdown-toggle fm-toggle" data-toggle="dropdown">
-                      <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu fm-menu" role="menu">
-                      <li><a href="#"><i class="fa fa-share"></i> Share</a></li>
-                      <li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
-                      <li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li>
-                      <li><a href="#"><i class="fa fa-download"></i> Download</a></li>
-                      <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
-                    </ul>
-                </div><!-- btn-group -->
-                <div class="thmb-prev">
-                  <img src="assets/bootstrap/images/photos/media5.png" class="img-responsive" alt="" />
-                </div>
-                <h5 class="fm-title"><a href="">DogAnimation.mp4</a></h5>
-                <small class="text-muted">Added: Jan 02, 2014</small>
-              </div><!-- thmb -->
+                <div class="thmb">
+                    <div class="ckbox ckbox-default">
+                        <input type="checkbox" id="check3" value="1" />
+                        <label for="check3"></label>
+                    </div>
+                    <div class="btn-group fm-group">
+                        <button type="button" class="btn btn-default dropdown-toggle fm-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu fm-menu" role="menu">
+                            <li><a href="#"><i class="fa fa-share"></i> Share</a></li>
+                            <li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
+                            <li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li>
+                            <li><a href="#"><i class="fa fa-download"></i> Download</a></li>
+                            <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
+                        </ul>
+                    </div><!-- btn-group -->
+                    <div class="thmb-prev">
+                        <img src="assets/bootstrap/images/photos/media5.png" class="img-responsive" alt="" />
+                    </div>
+                    <h5 class="fm-title"><a href="">DogAnimation.mp4</a></h5>
+                    <small class="text-muted">Added: Jan 02, 2014</small>
+                </div><!-- thmb -->
             </div><!-- col-xs-6 -->
-            
+
             <div class="col-xs-6 col-sm-4 col-md-3 audio">
-              <div class="thmb">
-                <div class="ckbox ckbox-default">
-                  <input type="checkbox" id="check7" value="1" />
-                  <label for="check7"></label>
-                </div>
-                <div class="btn-group fm-group">
-                    <button type="button" class="btn btn-default dropdown-toggle fm-toggle" data-toggle="dropdown">
-                      <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu fm-menu" role="menu">
-                      <li><a href="#"><i class="fa fa-share"></i> Share</a></li>
-                      <li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
-                      <li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li>
-                      <li><a href="#"><i class="fa fa-download"></i> Download</a></li>
-                      <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
-                    </ul>
-                </div><!-- btn-group -->
-                <div class="thmb-prev">
-                  <img src="assets/bootstrap/images/photos/media-audio.png" class="img-responsive" alt="" />
-                </div>
-                <h5 class="fm-title"><a href="">WreckingBall.mp3</a></h5>
-                <small class="text-muted">Added: Jan 01, 2014</small>
-              </div><!-- thmb -->
+                <div class="thmb">
+                    <div class="ckbox ckbox-default">
+                        <input type="checkbox" id="check7" value="1" />
+                        <label for="check7"></label>
+                    </div>
+                    <div class="btn-group fm-group">
+                        <button type="button" class="btn btn-default dropdown-toggle fm-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu fm-menu" role="menu">
+                            <li><a href="#"><i class="fa fa-share"></i> Share</a></li>
+                            <li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
+                            <li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li>
+                            <li><a href="#"><i class="fa fa-download"></i> Download</a></li>
+                            <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
+                        </ul>
+                    </div><!-- btn-group -->
+                    <div class="thmb-prev">
+                        <img src="assets/bootstrap/images/photos/media-audio.png" class="img-responsive" alt="" />
+                    </div>
+                    <h5 class="fm-title"><a href="">WreckingBall.mp3</a></h5>
+                    <small class="text-muted">Added: Jan 01, 2014</small>
+                </div><!-- thmb -->
             </div><!-- col-xs-6 -->
-            
+
             <div class="col-xs-6 col-sm-4 col-md-3 image">
-              <div class="thmb">
-                <div class="ckbox ckbox-default">
-                  <input type="checkbox" id="check4" value="1" />
-                  <label for="check4"></label>
-                </div>
-                <div class="btn-group fm-group">
-                    <button type="button" class="btn btn-default dropdown-toggle fm-toggle" data-toggle="dropdown">
-                      <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu fm-menu" role="menu">
-                      <li><a href="#"><i class="fa fa-share"></i> Share</a></li>
-                      <li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
-                      <li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li>
-                      <li><a href="#"><i class="fa fa-download"></i> Download</a></li>
-                      <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
-                    </ul>
-                </div><!-- btn-group -->
-                <div class="thmb-prev">
-                  <a href="assets/bootstrap/images/photos/media3.png" data-rel="prettyPhoto">
-                    <img src="assets/bootstrap/images/photos/media3.png" class="img-responsive" alt="" />
-                  </a>
-                </div>
-                <h5 class="fm-title"><a href="">MyFirstArt.png</a></h5>
-                <small class="text-muted">Added: Jan 01, 2014</small>
-              </div><!-- thmb -->
+                <div class="thmb">
+                    <div class="ckbox ckbox-default">
+                        <input type="checkbox" id="check4" value="1" />
+                        <label for="check4"></label>
+                    </div>
+                    <div class="btn-group fm-group">
+                        <button type="button" class="btn btn-default dropdown-toggle fm-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu fm-menu" role="menu">
+                            <li><a href="#"><i class="fa fa-share"></i> Share</a></li>
+                            <li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
+                            <li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li>
+                            <li><a href="#"><i class="fa fa-download"></i> Download</a></li>
+                            <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
+                        </ul>
+                    </div><!-- btn-group -->
+                    <div class="thmb-prev">
+                        <a href="assets/bootstrap/images/photos/media3.png" data-rel="prettyPhoto">
+                            <img src="assets/bootstrap/images/photos/media3.png" class="img-responsive" alt="" />
+                        </a>
+                    </div>
+                    <h5 class="fm-title"><a href="">MyFirstArt.png</a></h5>
+                    <small class="text-muted">Added: Jan 01, 2014</small>
+                </div><!-- thmb -->
             </div><!-- col-xs-6 -->
-            
+
             <div class="col-xs-6 col-sm-4 col-md-3 document">
-              <div class="thmb">
-                <div class="ckbox ckbox-default">
-                  <input type="checkbox" id="check5" value="1" />
-                  <label for="check5"></label>
-                </div>
-                <div class="btn-group fm-group">
-                    <button type="button" class="btn btn-default dropdown-toggle fm-toggle" data-toggle="dropdown">
-                      <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu fm-menu" role="menu">
-                      <li><a href="#"><i class="fa fa-share"></i> Share</a></li>
-                      <li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
-                      <li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li>
-                      <li><a href="#"><i class="fa fa-download"></i> Download</a></li>
-                      <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
-                    </ul>
-                </div><!-- btn-group -->
-                <div class="thmb-prev">
-                  <img src="assets/bootstrap/images/photos/media-doc.png" class="img-responsive" alt="" />
-                </div>
-                <h5 class="fm-title"><a href="">MyResume.docx</a></h5>
-                <small class="text-muted">Added: Jan 01, 2014</small>
-              </div><!-- thmb -->
+                <div class="thmb">
+                    <div class="ckbox ckbox-default">
+                        <input type="checkbox" id="check5" value="1" />
+                        <label for="check5"></label>
+                    </div>
+                    <div class="btn-group fm-group">
+                        <button type="button" class="btn btn-default dropdown-toggle fm-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu fm-menu" role="menu">
+                            <li><a href="#"><i class="fa fa-share"></i> Share</a></li>
+                            <li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
+                            <li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li>
+                            <li><a href="#"><i class="fa fa-download"></i> Download</a></li>
+                            <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
+                        </ul>
+                    </div><!-- btn-group -->
+                    <div class="thmb-prev">
+                        <img src="assets/bootstrap/images/photos/media-doc.png" class="img-responsive" alt="" />
+                    </div>
+                    <h5 class="fm-title"><a href="">MyResume.docx</a></h5>
+                    <small class="text-muted">Added: Jan 01, 2014</small>
+                </div><!-- thmb -->
             </div><!-- col-xs-6 -->
-            
+
             <div class="col-xs-6 col-sm-4 col-md-3 video">
-              <div class="thmb">
-                <div class="ckbox ckbox-default">
-                  <input type="checkbox" id="check6" value="1" />
-                  <label for="check6"></label>
-                </div>
-                <div class="btn-group fm-group">
-                    <button type="button" class="btn btn-default dropdown-toggle fm-toggle" data-toggle="dropdown">
-                      <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu fm-menu" role="menu">
-                      <li><a href="#"><i class="fa fa-share"></i> Share</a></li>
-                      <li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
-                      <li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li>
-                      <li><a href="#"><i class="fa fa-download"></i> Download</a></li>
-                      <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
-                    </ul>
-                </div><!-- btn-group -->
-                <div class="thmb-prev">
-                  <img src="assets/bootstrap/images/photos/media4.png" class="img-responsive" alt="" />
-                </div>
-                <h5 class="fm-title"><a href="">MyFirstMovie.mp4</a></h5>
-                <small class="text-muted">Added: Jan 01, 2014</small>
-              </div><!-- thmb -->
+                <div class="thmb">
+                    <div class="ckbox ckbox-default">
+                        <input type="checkbox" id="check6" value="1" />
+                        <label for="check6"></label>
+                    </div>
+                    <div class="btn-group fm-group">
+                        <button type="button" class="btn btn-default dropdown-toggle fm-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu fm-menu" role="menu">
+                            <li><a href="#"><i class="fa fa-share"></i> Share</a></li>
+                            <li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
+                            <li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li>
+                            <li><a href="#"><i class="fa fa-download"></i> Download</a></li>
+                            <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
+                        </ul>
+                    </div><!-- btn-group -->
+                    <div class="thmb-prev">
+                        <img src="assets/bootstrap/images/photos/media4.png" class="img-responsive" alt="" />
+                    </div>
+                    <h5 class="fm-title"><a href="">MyFirstMovie.mp4</a></h5>
+                    <small class="text-muted">Added: Jan 01, 2014</small>
+                </div><!-- thmb -->
             </div><!-- col-xs-6 -->
-                        
+
             <div class="col-xs-6 col-sm-4 col-md-3 image">
-              <div class="thmb">
-                <div class="ckbox ckbox-default">
-                  <input type="checkbox" id="check13" value="1" />
-                  <label for="check13"></label>
-                </div>
-                <div class="btn-group fm-group">
-                    <button type="button" class="btn btn-default dropdown-toggle fm-toggle" data-toggle="dropdown">
-                      <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu fm-menu" role="menu">
-                      <li><a href="#"><i class="fa fa-share"></i> Share</a></li>
-                      <li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
-                      <li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li>
-                      <li><a href="#"><i class="fa fa-download"></i> Download</a></li>
-                      <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
-                    </ul>
-                </div><!-- btn-group -->
-                <div class="thmb-prev">
-                  <a href="assets/bootstrap/images/photos/media2.png" data-rel="prettyPhoto">
-                    <img src="assets/bootstrap/images/photos/media2.png" class="img-responsive" alt="" />
-                  </a>
-                </div>
-                <h5 class="fm-title"><a href="">MeAndFriends.png</a></h5>
-                <small class="text-muted">Added: Jan 01, 2014</small>
-              </div><!-- thmb -->
+                <div class="thmb">
+                    <div class="ckbox ckbox-default">
+                        <input type="checkbox" id="check13" value="1" />
+                        <label for="check13"></label>
+                    </div>
+                    <div class="btn-group fm-group">
+                        <button type="button" class="btn btn-default dropdown-toggle fm-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu fm-menu" role="menu">
+                            <li><a href="#"><i class="fa fa-share"></i> Share</a></li>
+                            <li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
+                            <li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li>
+                            <li><a href="#"><i class="fa fa-download"></i> Download</a></li>
+                            <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
+                        </ul>
+                    </div><!-- btn-group -->
+                    <div class="thmb-prev">
+                        <a href="assets/bootstrap/images/photos/media2.png" data-rel="prettyPhoto">
+                            <img src="assets/bootstrap/images/photos/media2.png" class="img-responsive" alt="" />
+                        </a>
+                    </div>
+                    <h5 class="fm-title"><a href="">MeAndFriends.png</a></h5>
+                    <small class="text-muted">Added: Jan 01, 2014</small>
+                </div><!-- thmb -->
             </div><!-- col-xs-6 -->
-            
+
             <div class="col-xs-6 col-sm-4 col-md-3 audio">
-              <div class="thmb">
-                <div class="ckbox ckbox-default">
-                  <input type="checkbox" id="check8" value="1" />
-                  <label for="check8"></label>
-                </div>
-                <div class="btn-group fm-group">
-                    <button type="button" class="btn btn-default dropdown-toggle fm-toggle" data-toggle="dropdown">
-                      <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu fm-menu" role="menu">
-                      <li><a href="#"><i class="fa fa-share"></i> Share</a></li>
-                      <li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
-                      <li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li>
-                      <li><a href="#"><i class="fa fa-download"></i> Download</a></li>
-                      <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
-                    </ul>
-                </div><!-- btn-group -->
-                <div class="thmb-prev">
-                  <img src="assets/bootstrap/images/photos/media-audio.png" class="img-responsive" alt="" />
-                </div>
-                <h5 class="fm-title"><a href="">IWillSurvive.mp3</a></h5>
-                <small class="text-muted">Added: Dec 31, 2013</small>
-              </div><!-- thmb -->
+                <div class="thmb">
+                    <div class="ckbox ckbox-default">
+                        <input type="checkbox" id="check8" value="1" />
+                        <label for="check8"></label>
+                    </div>
+                    <div class="btn-group fm-group">
+                        <button type="button" class="btn btn-default dropdown-toggle fm-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu fm-menu" role="menu">
+                            <li><a href="#"><i class="fa fa-share"></i> Share</a></li>
+                            <li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
+                            <li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li>
+                            <li><a href="#"><i class="fa fa-download"></i> Download</a></li>
+                            <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
+                        </ul>
+                    </div><!-- btn-group -->
+                    <div class="thmb-prev">
+                        <img src="assets/bootstrap/images/photos/media-audio.png" class="img-responsive" alt="" />
+                    </div>
+                    <h5 class="fm-title"><a href="">IWillSurvive.mp3</a></h5>
+                    <small class="text-muted">Added: Dec 31, 2013</small>
+                </div><!-- thmb -->
             </div><!-- col-xs-6 -->
-            
+
             <div class="col-xs-6 col-sm-4 col-md-3 document">
-              <div class="thmb">
-                <div class="ckbox ckbox-default">
-                  <input type="checkbox" id="check9" value="1" />
-                  <label for="check9"></label>
-                </div>
-                <div class="btn-group fm-group">
-                    <button type="button" class="btn btn-default dropdown-toggle fm-toggle" data-toggle="dropdown">
-                      <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu fm-menu" role="menu">
-                      <li><a href="#"><i class="fa fa-share"></i> Share</a></li>
-                      <li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
-                      <li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li>
-                      <li><a href="#"><i class="fa fa-download"></i> Download</a></li>
-                      <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
-                    </ul>
-                </div><!-- btn-group -->
-                <div class="thmb-prev">
-                  <img src="assets/bootstrap/images/photos/media-doc.png" class="img-responsive" alt="" />
-                </div>
-                <h5 class="fm-title"><a href="">MyDocuments.doc</a></h5>
-                <small class="text-muted">Added: Dec 31, 2013</small>
-              </div><!-- thmb -->
+                <div class="thmb">
+                    <div class="ckbox ckbox-default">
+                        <input type="checkbox" id="check9" value="1" />
+                        <label for="check9"></label>
+                    </div>
+                    <div class="btn-group fm-group">
+                        <button type="button" class="btn btn-default dropdown-toggle fm-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu fm-menu" role="menu">
+                            <li><a href="#"><i class="fa fa-share"></i> Share</a></li>
+                            <li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
+                            <li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li>
+                            <li><a href="#"><i class="fa fa-download"></i> Download</a></li>
+                            <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
+                        </ul>
+                    </div><!-- btn-group -->
+                    <div class="thmb-prev">
+                        <img src="assets/bootstrap/images/photos/media-doc.png" class="img-responsive" alt="" />
+                    </div>
+                    <h5 class="fm-title"><a href="">MyDocuments.doc</a></h5>
+                    <small class="text-muted">Added: Dec 31, 2013</small>
+                </div><!-- thmb -->
             </div><!-- col-xs-6 -->
-            
+
             <div class="col-xs-6 col-sm-4 col-md-3 image">
-              <div class="thmb">
-                <div class="ckbox ckbox-default">
-                  <input type="checkbox" id="check10" value="1" />
-                  <label for="check10"></label>
-                </div>
-                <div class="btn-group fm-group">
-                    <button type="button" class="btn btn-default dropdown-toggle fm-toggle" data-toggle="dropdown">
-                      <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu fm-menu" role="menu">
-                      <li><a href="#"><i class="fa fa-share"></i> Share</a></li>
-                      <li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
-                      <li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li>
-                      <li><a href="#"><i class="fa fa-download"></i> Download</a></li>
-                      <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
-                    </ul>
-                </div><!-- btn-group -->
-                <div class="thmb-prev">
-                  <a href="assets/bootstrap/images/photos/media6.png" data-rel="prettyPhoto">
-                    <img src="assets/bootstrap/images/photos/media6.png" class="img-responsive" alt="" />
-                  </a>
-                </div>
-                <h5 class="fm-title"><a href="">GreatCity.png</a></h5>
-                <small class="text-muted">Added: Dec 30, 2013</small>
-              </div><!-- thmb -->
+                <div class="thmb">
+                    <div class="ckbox ckbox-default">
+                        <input type="checkbox" id="check10" value="1" />
+                        <label for="check10"></label>
+                    </div>
+                    <div class="btn-group fm-group">
+                        <button type="button" class="btn btn-default dropdown-toggle fm-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu fm-menu" role="menu">
+                            <li><a href="#"><i class="fa fa-share"></i> Share</a></li>
+                            <li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
+                            <li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li>
+                            <li><a href="#"><i class="fa fa-download"></i> Download</a></li>
+                            <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
+                        </ul>
+                    </div><!-- btn-group -->
+                    <div class="thmb-prev">
+                        <a href="assets/bootstrap/images/photos/media6.png" data-rel="prettyPhoto">
+                            <img src="assets/bootstrap/images/photos/media6.png" class="img-responsive" alt="" />
+                        </a>
+                    </div>
+                    <h5 class="fm-title"><a href="">GreatCity.png</a></h5>
+                    <small class="text-muted">Added: Dec 30, 2013</small>
+                </div><!-- thmb -->
             </div><!-- col-xs-6 -->
-            
+
             <div class="col-xs-6 col-sm-4 col-md-3 video">
-              <div class="thmb">
-                <div class="ckbox ckbox-default">
-                  <input type="checkbox" id="check11" value="1" />
-                  <label for="check11"></label>
-                </div>
-                <div class="btn-group fm-group">
-                    <button type="button" class="btn btn-default dropdown-toggle fm-toggle" data-toggle="dropdown">
-                      <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu fm-menu" role="menu">
-                      <li><a href="#"><i class="fa fa-share"></i> Share</a></li>
-                      <li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
-                      <li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li>
-                      <li><a href="#"><i class="fa fa-download"></i> Download</a></li>
-                      <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
-                    </ul>
-                </div><!-- btn-group -->
-                <div class="thmb-prev">
-                  <img src="assets/bootstrap/images/photos/media7.png" class="img-responsive" alt="" />
-                </div>
-                <h5 class="fm-title"><a href="">InTheSea.mp4</a></h5>
-                <small class="text-muted">Added: Dec 30, 2013</small>
-              </div><!-- thmb -->
+                <div class="thmb">
+                    <div class="ckbox ckbox-default">
+                        <input type="checkbox" id="check11" value="1" />
+                        <label for="check11"></label>
+                    </div>
+                    <div class="btn-group fm-group">
+                        <button type="button" class="btn btn-default dropdown-toggle fm-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu fm-menu" role="menu">
+                            <li><a href="#"><i class="fa fa-share"></i> Share</a></li>
+                            <li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
+                            <li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li>
+                            <li><a href="#"><i class="fa fa-download"></i> Download</a></li>
+                            <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
+                        </ul>
+                    </div><!-- btn-group -->
+                    <div class="thmb-prev">
+                        <img src="assets/bootstrap/images/photos/media7.png" class="img-responsive" alt="" />
+                    </div>
+                    <h5 class="fm-title"><a href="">InTheSea.mp4</a></h5>
+                    <small class="text-muted">Added: Dec 30, 2013</small>
+                </div><!-- thmb -->
             </div><!-- col-xs-6 -->
-            
-          </div><!-- row -->
-        </div><!-- col-sm-9 -->
-        <div class="col-sm-3">
-          <div class="fm-sidebar">
-            
-            <button class="btn btn-primary btn-block">Upload Files</button>
-            
+
+        </div><!-- row -->
+    </div><!-- col-sm-9 -->
+    <div class="col-sm-3">
+        <div class="fm-sidebar">
+
+            <!--button class="btn btn-primary btn-block">Upload Files</button-->
+            <button class="btn btn-primary btn-block" id="upload-file">Upload File</button>
+
+
+            <!-- Upload file Popup -->
+            <div class="modal fade" id="upload">
+                <div class="modal-dialog">
+
+                    <!-- Popup content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Upload Media File</h4>
+                        </div>
+                        <div class="modal-body">
+
+                            <%= form_tag({:action => 'upload_file'}, :multipart => true) do %>
+                              <%= text_field_tag :filename %> 
+                              <%= file_field 'media', 'payload' %>
+                              <%= submit_tag "Upload" %>
+                            <% end %>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+
             <div class="mb30"></div>
-            
-            <h5 class="subtitle">Folders <a href="" class="pull-right">+ Add New Folder</a></h5>
+
+            <h5 class="subtitle">Folders <a class="pull-right" id="add-folder">+ Add New Folder</a></h5>
+
+            <div id="create-folder" style="display:none">
+                <%= form_tag media_path do %>
+                  <%= text_field_tag :name %>
+                  <%= hidden_field_tag :type,'Folder' %>
+                  <%= submit_tag "Create", :id=> "create", :class => "btn btn-primary" %>
+                <% end %>
+            </div>
+            <div id="msg"></div>  
+
             <ul class="folder-list">
-              <li><a href=""><i class="fa fa-folder-o"></i> My Pictures</a></li>
-              <li><a href=""><i class="fa fa-folder-o"></i> Facebook Photos</a></li>
-              <li><a href=""><i class="fa fa-folder-o"></i> My Collection</a></li>
-              <li><a href=""><i class="fa fa-folder-o"></i> Illustrations</a></li>
-              <li><a href=""><i class="fa fa-folder-o"></i> TV Series</a></li>
-              <li><a href=""><i class="fa fa-folder-o"></i> Downloaded Movies</a></li>
-              <li><a href=""><i class="fa fa-folder-o"></i> E-book</a></li>
+
+                <% @medias.each do |folder| %>
+                  <li><a href=""><i class="fa fa-folder-o"></i> <%= folder.name %></a></li>
+                <% end %>
+
+
             </ul>
-            
+
             <div class="mb30"></div>
-            
-          </div>
-        </div><!-- col-sm-3 -->
-      </div>
-    </div>
-    
-  </div><!-- mainpanel -->
-  
-  <div class="rightpanel">
+
+        </div>
+    </div><!-- col-sm-3 -->
+</div>
+</div>
+
+</div><!-- mainpanel -->
+
+<div class="rightpanel">
     <!-- Nav tabs -->
     <ul class="nav nav-tabs nav-justified">
         <li class="active"><a href="#rp-alluser" data-toggle="tab"><i class="fa fa-users"></i></a></li>
@@ -390,7 +432,7 @@
         <li><a href="#rp-history" data-toggle="tab"><i class="fa fa-clock-o"></i></a></li>
         <li><a href="#rp-settings" data-toggle="tab"><i class="fa fa-gear"></i></a></li>
     </ul>
-        
+
     <!-- Tab panes -->
     <div class="tab-content">
         <div class="tab-pane active" id="rp-alluser">
@@ -453,9 +495,9 @@
                     </div><!-- media -->
                 </li>
             </ul>
-            
+
             <div class="mb30"></div>
-            
+
             <h5 class="sidebartitle">Offline Users</h5>
             <ul class="chatuserlist">
                 <li>
@@ -636,7 +678,7 @@
             </ul>
         </div>
         <div class="tab-pane pane-settings" id="rp-settings">
-            
+
             <h5 class="sidebartitle mb20">Settings</h5>
             <div class="form-group">
                 <label class="col-xs-8 control-label">Show Offline Users</label>
@@ -644,33 +686,33 @@
                     <div class="toggle toggle-success"></div>
                 </div>
             </div>
-            
+
             <div class="form-group">
                 <label class="col-xs-8 control-label">Enable History</label>
                 <div class="col-xs-4 control-label">
                     <div class="toggle toggle-success"></div>
                 </div>
             </div>
-            
+
             <div class="form-group">
                 <label class="col-xs-8 control-label">Show Full Name</label>
                 <div class="col-xs-4 control-label">
                     <div class="toggle-chat1 toggle-success"></div>
                 </div>
             </div>
-            
+
             <div class="form-group">
                 <label class="col-xs-8 control-label">Show Location</label>
                 <div class="col-xs-4 control-label">
                     <div class="toggle toggle-success"></div>
                 </div>
             </div>
-            
+
         </div><!-- tab-pane -->
-        
+
     </div><!-- tab-content -->
-  </div><!-- rightpanel -->
-  
+</div><!-- rightpanel -->
+
 </section>
 
 
@@ -688,82 +730,143 @@
 
 <script src="assets/bootstrap/js/custom.js"></script>
 <script>
-  jQuery(document).ready(function(){
-    
-    "use strict";
-    
-    jQuery('.thmb').hover(function(){
-      var t = jQuery(this);
-      t.find('.ckbox').show();
-      t.find('.fm-group').show();
-    }, function() {
-      var t = jQuery(this);
-      if(!t.closest('.thmb').hasClass('checked')) {
-        t.find('.ckbox').hide();
-        t.find('.fm-group').hide();
+  jQuery(document).ready(function () {
+
+      "use strict";
+
+      jQuery('.thmb').hover(function () {
+          var t = jQuery(this);
+          t.find('.ckbox').show();
+          t.find('.fm-group').show();
+      }, function () {
+          var t = jQuery(this);
+          if (!t.closest('.thmb').hasClass('checked')) {
+              t.find('.ckbox').hide();
+              t.find('.fm-group').hide();
+          }
+      });
+
+      jQuery('.ckbox').each(function () {
+          var t = jQuery(this);
+          var parent = t.parent();
+          if (t.find('input').is(':checked')) {
+              t.show();
+              parent.find('.fm-group').show();
+              parent.addClass('checked');
+          }
+      });
+
+
+      jQuery('.ckbox').click(function () {
+          var t = jQuery(this);
+          if (!t.find('input').is(':checked')) {
+              t.closest('.thmb').removeClass('checked');
+              enable_itemopt(false);
+          } else {
+              t.closest('.thmb').addClass('checked');
+              enable_itemopt(true);
+          }
+      });
+
+      jQuery('#selectall').click(function () {
+          if (jQuery(this).is(':checked')) {
+              jQuery('.thmb').each(function () {
+                  jQuery(this).find('input').attr('checked', true);
+                  jQuery(this).addClass('checked');
+                  jQuery(this).find('.ckbox, .fm-group').show();
+              });
+              enable_itemopt(true);
+          } else {
+              jQuery('.thmb').each(function () {
+                  jQuery(this).find('input').attr('checked', false);
+                  jQuery(this).removeClass('checked');
+                  jQuery(this).find('.ckbox, .fm-group').hide();
+              });
+              enable_itemopt(false);
+          }
+      });
+
+      function enable_itemopt(enable) {
+          if (enable) {
+              jQuery('.itemopt').removeClass('disabled');
+          } else {
+
+              // check all thumbs if no remaining checks
+              // before we can disabled the options
+              var ch = false;
+              jQuery('.thmb').each(function () {
+                  if (jQuery(this).hasClass('checked'))
+                      ch = true;
+              });
+
+              if (!ch)
+                  jQuery('.itemopt').addClass('disabled');
+          }
       }
-    });
-    
-    jQuery('.ckbox').each(function(){
-      var t = jQuery(this);
-      var parent = t.parent();
-      if(t.find('input').is(':checked')) {
-        t.show();
-        parent.find('.fm-group').show();
-        parent.addClass('checked');
-      }
-    });
-    
-    
-    jQuery('.ckbox').click(function(){
-      var t = jQuery(this);
-      if(!t.find('input').is(':checked')) {
-        t.closest('.thmb').removeClass('checked');
-        enable_itemopt(false);
-      } else {
-        t.closest('.thmb').addClass('checked');
-        enable_itemopt(true);
-      }
-    });
-    
-    jQuery('#selectall').click(function(){
-      if(jQuery(this).is(':checked')) {
-        jQuery('.thmb').each(function(){
-          jQuery(this).find('input').attr('checked',true);
-          jQuery(this).addClass('checked');
-          jQuery(this).find('.ckbox, .fm-group').show();
-        });
-        enable_itemopt(true);
-      } else {
-        jQuery('.thmb').each(function(){
-          jQuery(this).find('input').attr('checked',false);
-          jQuery(this).removeClass('checked');
-          jQuery(this).find('.ckbox, .fm-group').hide();
-        });
-        enable_itemopt(false);
-      }
-    });
-    
-    function enable_itemopt(enable) {
-      if(enable) {
-        jQuery('.itemopt').removeClass('disabled');
-      } else {
-        
-        // check all thumbs if no remaining checks
-        // before we can disabled the options
-        var ch = false;
-        jQuery('.thmb').each(function(){
-          if(jQuery(this).hasClass('checked'))
-            ch = true;
-        });
-        
-        if(!ch)
-          jQuery('.itemopt').addClass('disabled');
-      }
-    }
-    
-    jQuery("a[data-rel^='prettyPhoto']").prettyPhoto();
-    
+
+      jQuery("a[data-rel^='prettyPhoto']").prettyPhoto();
+
+
+
+      $("#create").live("click", function (e) {
+          e.preventDefault();
+          var type = $("#type").val();
+          var name = $("#name").val();
+          $('input[type="submit"]').prop('disabled', true);
+          $.ajax({
+              url: "<%= request.base_url %>" + "/media/create_folder",
+              type: 'post',
+              data: "name=" + name + "&type=" + type,
+              success: function (data) {
+                  $("#name").val('');
+                  if (data == 1) {
+                      $("#msg").html('');
+                      $(".folder-list").prepend("<li><a href=''><i class='fa fa-folder-o'></i>" + name + "</a></li>");
+                  } else {
+                      $("#msg").html("Folder Not created");
+                      setTimeout(function () {
+                          $("#msg").html('');
+                      }, 5000)
+                  }
+                  $('input[type="submit"]').prop('disabled', false);
+
+              },
+              error: function (err, req) {
+                  $("#name").val('');
+                  $('input[type="submit"]').prop('disabled', false);
+                  alert("Your browser broke!");
+              }
+
+
+          });
+
+
+
+
+
+      });
+
+
+
+
+
   });
-  
+
 </script>
+
+
+
+<script>
+  $(document).ready(function () {
+      $("#upload-file").click(function () {
+          $("#upload").modal();
+      });
+  });
+</script>
+
+</body>
+</html>
+
+
+
+

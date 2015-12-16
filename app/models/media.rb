@@ -1,0 +1,3 @@
+class Media < OrchardApiModel
+  
+end
