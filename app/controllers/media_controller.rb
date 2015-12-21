@@ -6,8 +6,8 @@ class MediaController < ApplicationController
 	def index
     @medias = Media.all  
     #Media.all(params: {folder_id: 52})
-    @test = Media.all(:folder_id => 56)
-    abort(@test.inspect)
+    #@test = Media.all(:folder_id => 56)
+    #abort(@test.inspect)
  	end
   
 	# Create a new media folder
