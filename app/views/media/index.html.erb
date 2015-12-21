@@ -49,7 +49,7 @@
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu fm-menu" role="menu">
-                            <li><a href="#"><i class="fa fa-share"></i> Share</a></li>
+                            <li><a href="#" class="share-media"><i class="fa fa-share"></i> Share</a></li>
                             <li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
                             <li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li>
                             <li><a href="#"><i class="fa fa-download"></i> Download</a></li>
@@ -357,7 +357,28 @@
                     <small class="text-muted">Added: Dec 30, 2013</small>
                 </div><!-- thmb -->
             </div><!-- col-xs-6 -->
+            
+            
+            
+            <!-- Share media file Popup -->
+            <div class="modal fade" id="share-media">
+                <div class="modal-dialog">
 
+                    <!-- Popup content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="buttson" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Share this media file:</h4>
+                        </div>
+                        <div class="modal-body">
+                            
+                            <%= social_share_button_tag("Share Media File") %>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            
         </div><!-- row -->
     </div><!-- col-sm-9 -->
     <div class="col-sm-3">
@@ -409,7 +430,21 @@
             <ul class="folder-list">
 
                 <% @medias.each do |folder| %>
-                  <li><a href=""><i class="fa fa-folder-o"></i> <%= folder.name %></a></li>
+                <% if folder.type == 'folder' %>
+                <li>
+                    <a href="javascript:void(0);" data-id="<%= folder.id %>"><i class="fa fa-folder-o"></i> <%= folder.name %></a>
+                    <a style="display:none;" href="javascript:void(0);" class="edit-folder" data-id="<%= folder.id %>"><i class="fa fa-pencil"></i></a>
+                    <a style="display:none;" href="javascript:void(0);" class="delete-folder" data-id="<%= folder.id %>"><i class="fa fa-trash-o"></i></a>
+                    <div class="edit-folder-form" style="display:none">
+                        <%= form_tag media_path, :class => "save-folder-frm" do %>
+                          <%= text_field_tag :name, folder.name %>
+                          <%= hidden_field_tag :type,'Folder' %>
+                          <%= hidden_field_tag :folder_id, folder.id %>
+                          <%= submit_tag "Save", :class => "btn btn-primary save-folder" %>
+                        <% end %>
+                    </div>
+                </li>
+                <% end %>
                 <% end %>
 
 
@@ -860,6 +895,102 @@
   $(document).ready(function () {
       $("#upload-file").click(function () {
           $("#upload").modal();
+      });
+      $(".share-media").click(function () {
+          $("#share-media").modal();
+      });
+      $(".edit-folder").click(function(){
+        $(this).next().next().toggle();
+      });
+      $("form.save-folder-frm").submit(function(){
+        var fields = $(this).serializeArray();
+        var type = 'folder';
+        var name = '';
+        var folder_id = '';
+        jQuery.each( fields, function( i, field ) {
+          if(field.name == 'name'){
+            name = field.value;
+          }
+          if(field.name == 'folder_id'){
+            folder_id = field.value;
+          }
+        });
+        $('input[type="submit"]').prop('disabled', true);
+        $.ajax({
+              url: "<%= request.base_url %>" + "/media/save_folder",
+              type: 'post',
+              data: "id=" + folder_id + "&name=" + name + "&type=" + type,
+              success: function (data) {
+                  //$("#name").val('');
+                  /*if (data == 1) {
+                      $("#msg").html('');
+                      $(".folder-list").prepend("<li><a href=''><i class='fa fa-folder-o'></i>" + name + "</a></li>");
+                  } else {
+                      $("#msg").html("Folder Not created");
+                      setTimeout(function () {
+                          $("#msg").html('');
+                      }, 5000)
+                  }*/
+                  $('input[type="submit"]').prop('disabled', false);
+
+              },
+              error: function (err, req) {
+                  $("#name").val('');
+                  $('input[type="submit"]').prop('disabled', false);
+                  alert("Your browser broke!");
+              }
+
+
+          });
+          
+        return false;
+      });
+      
+      /*
+      *View Folder media 
+      */
+      $(document).on('click', ".folder-list li a", function(e){
+          e.preventDefault();
+          var _this_ = this;
+          var folder_id = $(this).attr('data-id');
+          $.ajax({
+              url: "<%= request.base_url %>" + "/media/index",
+              type: 'post',
+              data: "folder_id=" + folder_id,
+              success: function (data) {
+                $('div.filemanager').html(data);
+              },
+              error: function (err, req) {
+                  alert("Your browser broke!");
+              }
+          });
+          
+          
+      });
+      /*
+      *Delete Folder 
+      */
+      $(document).on('click', "a.delete-folder", function(){
+        if(confirm('Are you sure you want to delete this folder?')){
+          var _this_ = this;
+          var id = $(this).attr('data-id');
+          $.ajax({
+              url: "<%= request.base_url %>" + "/media/destroy",
+              type: 'post',
+              data: "id=" + id,
+              success: function (data) {
+                if (data == 1) {
+                    $(_this_).parent().css('background-color','#FFB9B9').slideUp(500);
+                } else {
+                  alert('Folder is not deleted')
+                }
+              },
+              error: function (err, req) {
+                  alert("Your browser broke!");
+              }
+          });
+        }
+          
       });
   });
 </script>

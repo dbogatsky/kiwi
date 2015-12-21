@@ -7,6 +7,7 @@ class LoginController < ApplicationController
 	end
 	
 	def login 
+	#abort(current_user.inspest)
 		if params[:email] == APP_CONFIG['superadmin_email']
 			#authenticate superadmin login
 			

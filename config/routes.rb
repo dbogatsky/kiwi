@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+
+	#resources :homes, only: [:show]
+	#root to: "homes#show"
+  
+	get 'homes/show'
+
     post '/login', to: 'login#login'
     get '/login', to: 'login#index', as: :user_login 
     
@@ -33,6 +39,12 @@ Rails.application.routes.draw do
     
     match '/schedule', to: 'schedule#index', as: :schedule, via: [:get] 
     match '/media', to: 'media#index', as: :media, via: [:get] 
+    
+    post '/media/create_folder', to:'media#create_folder', as: :create_folder
+
+    post '/media/destroy', to:'media#destroy', as: :destroy
+    post '/media/upload_file', to:'media#upload_file', as: :upload_file
+
     match '/notifications', to: 'notifications#index', as: :notifications, via: [:get]
     match '/messages', to: 'messages#index', as: :messages, via: [:get] 
 

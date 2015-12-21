@@ -22,3 +22,4 @@
 
 # Ignore old files extension
 *.old
+/nbproject/private/
