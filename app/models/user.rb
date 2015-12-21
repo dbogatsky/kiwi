@@ -1,5 +1,5 @@
 class User < OrchardApiModel
-  attr_accessor token
+  attr_accessor :token
 
   def self.authenticate(email, password)
     #initate api call and catch any errors
