@@ -41,7 +41,8 @@ Rails.application.routes.draw do
     match '/media', to: 'media#index', as: :media, via: [:get] 
     
     post '/media/create_folder', to:'media#create_folder', as: :create_folder
-
+    post '/media/show', to:'media#show', as: :show
+    post '/media/save_folder', to:'media#save_folder', as: :save_folder
     post '/media/destroy', to:'media#destroy', as: :destroy
     post '/media/upload_file', to:'media#upload_file', as: :upload_file
 

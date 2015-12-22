@@ -33,333 +33,12 @@
     <div class="col-sm-9">
         <div class="row filemanager">
             <div id="flash_messages">
-              <% flash.each do |key, value| %>
-                <%= content_tag(:div, value, :class => "flash #{key}") %>
-              <% end %>
+                <% flash.each do |key, value| %>
+                  <%= content_tag(:div, value, :class => "flash #{key}") %>
+                <% end %>
+            </div>  
+            <div id="fm-files-container">
             </div>
-
-            <div class="col-xs-6 col-sm-4 col-md-3 document">
-                <div class="thmb">
-                    <div class="ckbox ckbox-default">
-                        <input type="checkbox" id="check1" value="1" />
-                        <label for="check1"></label>
-                    </div>
-                    <div class="btn-group fm-group">
-                        <button type="button" class="btn btn-default dropdown-toggle fm-toggle" data-toggle="dropdown">
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu fm-menu" role="menu">
-                            <li><a href="#" class="share-media"><i class="fa fa-share"></i> Share</a></li>
-                            <li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
-                            <li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li>
-                            <li><a href="#"><i class="fa fa-download"></i> Download</a></li>
-                            <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
-                        </ul>
-                    </div><!-- btn-group -->
-                    <div class="thmb-prev">
-                        <img src="assets/bootstrap/images/photos/media-doc.png" class="img-responsive" alt="" />
-                    </div>
-                    <h5 class="fm-title"><a href="">MyDocuments.doc</a></h5>
-                    <small class="text-muted">Added: Jan 03, 2014</small>
-                </div><!-- thmb -->
-            </div><!-- col-xs-6 -->
-
-            <div class="col-xs-6 col-sm-4 col-md-3 image">
-                <div class="thmb">
-                    <div class="ckbox ckbox-default">
-                        <input type="checkbox" id="check2" value="1" />
-                        <label for="check2"></label>
-                    </div>
-                    <div class="btn-group fm-group">
-                        <button type="button" class="btn btn-default dropdown-toggle fm-toggle" data-toggle="dropdown">
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu fm-menu" role="menu">
-                            <li><a href="#"><i class="fa fa-share"></i> Share</a></li>
-                            <li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
-                            <li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li>
-                            <li><a href="#"><i class="fa fa-download"></i> Download</a></li>
-                            <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
-                        </ul>
-                    </div><!-- btn-group -->
-                    <div class="thmb-prev">
-                        <a href="assets/bootstrap/images/photos/media1.jpg" data-rel="prettyPhoto">
-                            <img src="assets/bootstrap/images/photos/media1.jpg" class="img-responsive" alt="" />
-                        </a>
-                    </div>
-                    <h5 class="fm-title"><a href="">Vegetarian.png</a></h5>
-                    <small class="text-muted">Added: Jan 02, 2014</small>
-                </div><!-- thmb -->
-            </div><!-- col-xs-6 -->
-
-            <div class="col-xs-6 col-sm-4 col-md-3 video">
-                <div class="thmb">
-                    <div class="ckbox ckbox-default">
-                        <input type="checkbox" id="check3" value="1" />
-                        <label for="check3"></label>
-                    </div>
-                    <div class="btn-group fm-group">
-                        <button type="button" class="btn btn-default dropdown-toggle fm-toggle" data-toggle="dropdown">
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu fm-menu" role="menu">
-                            <li><a href="#"><i class="fa fa-share"></i> Share</a></li>
-                            <li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
-                            <li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li>
-                            <li><a href="#"><i class="fa fa-download"></i> Download</a></li>
-                            <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
-                        </ul>
-                    </div><!-- btn-group -->
-                    <div class="thmb-prev">
-                        <img src="assets/bootstrap/images/photos/media5.png" class="img-responsive" alt="" />
-                    </div>
-                    <h5 class="fm-title"><a href="">DogAnimation.mp4</a></h5>
-                    <small class="text-muted">Added: Jan 02, 2014</small>
-                </div><!-- thmb -->
-            </div><!-- col-xs-6 -->
-
-            <div class="col-xs-6 col-sm-4 col-md-3 audio">
-                <div class="thmb">
-                    <div class="ckbox ckbox-default">
-                        <input type="checkbox" id="check7" value="1" />
-                        <label for="check7"></label>
-                    </div>
-                    <div class="btn-group fm-group">
-                        <button type="button" class="btn btn-default dropdown-toggle fm-toggle" data-toggle="dropdown">
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu fm-menu" role="menu">
-                            <li><a href="#"><i class="fa fa-share"></i> Share</a></li>
-                            <li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
-                            <li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li>
-                            <li><a href="#"><i class="fa fa-download"></i> Download</a></li>
-                            <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
-                        </ul>
-                    </div><!-- btn-group -->
-                    <div class="thmb-prev">
-                        <img src="assets/bootstrap/images/photos/media-audio.png" class="img-responsive" alt="" />
-                    </div>
-                    <h5 class="fm-title"><a href="">WreckingBall.mp3</a></h5>
-                    <small class="text-muted">Added: Jan 01, 2014</small>
-                </div><!-- thmb -->
-            </div><!-- col-xs-6 -->
-
-            <div class="col-xs-6 col-sm-4 col-md-3 image">
-                <div class="thmb">
-                    <div class="ckbox ckbox-default">
-                        <input type="checkbox" id="check4" value="1" />
-                        <label for="check4"></label>
-                    </div>
-                    <div class="btn-group fm-group">
-                        <button type="button" class="btn btn-default dropdown-toggle fm-toggle" data-toggle="dropdown">
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu fm-menu" role="menu">
-                            <li><a href="#"><i class="fa fa-share"></i> Share</a></li>
-                            <li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
-                            <li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li>
-                            <li><a href="#"><i class="fa fa-download"></i> Download</a></li>
-                            <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
-                        </ul>
-                    </div><!-- btn-group -->
-                    <div class="thmb-prev">
-                        <a href="assets/bootstrap/images/photos/media3.png" data-rel="prettyPhoto">
-                            <img src="assets/bootstrap/images/photos/media3.png" class="img-responsive" alt="" />
-                        </a>
-                    </div>
-                    <h5 class="fm-title"><a href="">MyFirstArt.png</a></h5>
-                    <small class="text-muted">Added: Jan 01, 2014</small>
-                </div><!-- thmb -->
-            </div><!-- col-xs-6 -->
-
-            <div class="col-xs-6 col-sm-4 col-md-3 document">
-                <div class="thmb">
-                    <div class="ckbox ckbox-default">
-                        <input type="checkbox" id="check5" value="1" />
-                        <label for="check5"></label>
-                    </div>
-                    <div class="btn-group fm-group">
-                        <button type="button" class="btn btn-default dropdown-toggle fm-toggle" data-toggle="dropdown">
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu fm-menu" role="menu">
-                            <li><a href="#"><i class="fa fa-share"></i> Share</a></li>
-                            <li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
-                            <li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li>
-                            <li><a href="#"><i class="fa fa-download"></i> Download</a></li>
-                            <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
-                        </ul>
-                    </div><!-- btn-group -->
-                    <div class="thmb-prev">
-                        <img src="assets/bootstrap/images/photos/media-doc.png" class="img-responsive" alt="" />
-                    </div>
-                    <h5 class="fm-title"><a href="">MyResume.docx</a></h5>
-                    <small class="text-muted">Added: Jan 01, 2014</small>
-                </div><!-- thmb -->
-            </div><!-- col-xs-6 -->
-
-            <div class="col-xs-6 col-sm-4 col-md-3 video">
-                <div class="thmb">
-                    <div class="ckbox ckbox-default">
-                        <input type="checkbox" id="check6" value="1" />
-                        <label for="check6"></label>
-                    </div>
-                    <div class="btn-group fm-group">
-                        <button type="button" class="btn btn-default dropdown-toggle fm-toggle" data-toggle="dropdown">
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu fm-menu" role="menu">
-                            <li><a href="#"><i class="fa fa-share"></i> Share</a></li>
-                            <li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
-                            <li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li>
-                            <li><a href="#"><i class="fa fa-download"></i> Download</a></li>
-                            <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
-                        </ul>
-                    </div><!-- btn-group -->
-                    <div class="thmb-prev">
-                        <img src="assets/bootstrap/images/photos/media4.png" class="img-responsive" alt="" />
-                    </div>
-                    <h5 class="fm-title"><a href="">MyFirstMovie.mp4</a></h5>
-                    <small class="text-muted">Added: Jan 01, 2014</small>
-                </div><!-- thmb -->
-            </div><!-- col-xs-6 -->
-
-            <div class="col-xs-6 col-sm-4 col-md-3 image">
-                <div class="thmb">
-                    <div class="ckbox ckbox-default">
-                        <input type="checkbox" id="check13" value="1" />
-                        <label for="check13"></label>
-                    </div>
-                    <div class="btn-group fm-group">
-                        <button type="button" class="btn btn-default dropdown-toggle fm-toggle" data-toggle="dropdown">
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu fm-menu" role="menu">
-                            <li><a href="#"><i class="fa fa-share"></i> Share</a></li>
-                            <li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
-                            <li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li>
-                            <li><a href="#"><i class="fa fa-download"></i> Download</a></li>
-                            <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
-                        </ul>
-                    </div><!-- btn-group -->
-                    <div class="thmb-prev">
-                        <a href="assets/bootstrap/images/photos/media2.png" data-rel="prettyPhoto">
-                            <img src="assets/bootstrap/images/photos/media2.png" class="img-responsive" alt="" />
-                        </a>
-                    </div>
-                    <h5 class="fm-title"><a href="">MeAndFriends.png</a></h5>
-                    <small class="text-muted">Added: Jan 01, 2014</small>
-                </div><!-- thmb -->
-            </div><!-- col-xs-6 -->
-
-            <div class="col-xs-6 col-sm-4 col-md-3 audio">
-                <div class="thmb">
-                    <div class="ckbox ckbox-default">
-                        <input type="checkbox" id="check8" value="1" />
-                        <label for="check8"></label>
-                    </div>
-                    <div class="btn-group fm-group">
-                        <button type="button" class="btn btn-default dropdown-toggle fm-toggle" data-toggle="dropdown">
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu fm-menu" role="menu">
-                            <li><a href="#"><i class="fa fa-share"></i> Share</a></li>
-                            <li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
-                            <li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li>
-                            <li><a href="#"><i class="fa fa-download"></i> Download</a></li>
-                            <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
-                        </ul>
-                    </div><!-- btn-group -->
-                    <div class="thmb-prev">
-                        <img src="assets/bootstrap/images/photos/media-audio.png" class="img-responsive" alt="" />
-                    </div>
-                    <h5 class="fm-title"><a href="">IWillSurvive.mp3</a></h5>
-                    <small class="text-muted">Added: Dec 31, 2013</small>
-                </div><!-- thmb -->
-            </div><!-- col-xs-6 -->
-
-            <div class="col-xs-6 col-sm-4 col-md-3 document">
-                <div class="thmb">
-                    <div class="ckbox ckbox-default">
-                        <input type="checkbox" id="check9" value="1" />
-                        <label for="check9"></label>
-                    </div>
-                    <div class="btn-group fm-group">
-                        <button type="button" class="btn btn-default dropdown-toggle fm-toggle" data-toggle="dropdown">
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu fm-menu" role="menu">
-                            <li><a href="#"><i class="fa fa-share"></i> Share</a></li>
-                            <li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
-                            <li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li>
-                            <li><a href="#"><i class="fa fa-download"></i> Download</a></li>
-                            <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
-                        </ul>
-                    </div><!-- btn-group -->
-                    <div class="thmb-prev">
-                        <img src="assets/bootstrap/images/photos/media-doc.png" class="img-responsive" alt="" />
-                    </div>
-                    <h5 class="fm-title"><a href="">MyDocuments.doc</a></h5>
-                    <small class="text-muted">Added: Dec 31, 2013</small>
-                </div><!-- thmb -->
-            </div><!-- col-xs-6 -->
-
-            <div class="col-xs-6 col-sm-4 col-md-3 image">
-                <div class="thmb">
-                    <div class="ckbox ckbox-default">
-                        <input type="checkbox" id="check10" value="1" />
-                        <label for="check10"></label>
-                    </div>
-                    <div class="btn-group fm-group">
-                        <button type="button" class="btn btn-default dropdown-toggle fm-toggle" data-toggle="dropdown">
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu fm-menu" role="menu">
-                            <li><a href="#"><i class="fa fa-share"></i> Share</a></li>
-                            <li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
-                            <li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li>
-                            <li><a href="#"><i class="fa fa-download"></i> Download</a></li>
-                            <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
-                        </ul>
-                    </div><!-- btn-group -->
-                    <div class="thmb-prev">
-                        <a href="assets/bootstrap/images/photos/media6.png" data-rel="prettyPhoto">
-                            <img src="assets/bootstrap/images/photos/media6.png" class="img-responsive" alt="" />
-                        </a>
-                    </div>
-                    <h5 class="fm-title"><a href="">GreatCity.png</a></h5>
-                    <small class="text-muted">Added: Dec 30, 2013</small>
-                </div><!-- thmb -->
-            </div><!-- col-xs-6 -->
-
-            <div class="col-xs-6 col-sm-4 col-md-3 video">
-                <div class="thmb">
-                    <div class="ckbox ckbox-default">
-                        <input type="checkbox" id="check11" value="1" />
-                        <label for="check11"></label>
-                    </div>
-                    <div class="btn-group fm-group">
-                        <button type="button" class="btn btn-default dropdown-toggle fm-toggle" data-toggle="dropdown">
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu fm-menu" role="menu">
-                            <li><a href="#"><i class="fa fa-share"></i> Share</a></li>
-                            <li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
-                            <li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li>
-                            <li><a href="#"><i class="fa fa-download"></i> Download</a></li>
-                            <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
-                        </ul>
-                    </div><!-- btn-group -->
-                    <div class="thmb-prev">
-                        <img src="assets/bootstrap/images/photos/media7.png" class="img-responsive" alt="" />
-                    </div>
-                    <h5 class="fm-title"><a href="">InTheSea.mp4</a></h5>
-                    <small class="text-muted">Added: Dec 30, 2013</small>
-                </div><!-- thmb -->
-            </div><!-- col-xs-6 -->
-            
-            
-            
             <!-- Share media file Popup -->
             <div class="modal fade" id="share-media">
                 <div class="modal-dialog">
@@ -371,14 +50,13 @@
                             <h4 class="modal-title">Share this media file:</h4>
                         </div>
                         <div class="modal-body">
-                            
-                            <%= social_share_button_tag("Share Media File") %>
+                            <!--https://github.com/huacnlee/social-share-button-->
+                            <%= social_share_button_tag("Share Media File", :url => "https://www.google.co.in/images/nav_logo242.png", :image => "https://www.google.co.in/images/nav_logo242.png", :desc=> "The summary of page") %>
                         </div>
                     </div>
 
                 </div>
             </div>
-            
         </div><!-- row -->
     </div><!-- col-sm-9 -->
     <div class="col-sm-3">
@@ -403,6 +81,7 @@
                             <%= form_tag({:action => 'upload_file'}, :multipart => true) do %>
                               <%= text_field_tag :filename %> 
                               <%= file_field 'media', 'payload' %>
+                              <%= hidden_field_tag :folder_id, '0' %>
                               <%= submit_tag "Upload" %>
                             <% end %>
 
@@ -430,21 +109,21 @@
             <ul class="folder-list">
 
                 <% @medias.each do |folder| %>
-                <% if folder.type == 'folder' %>
-                <li>
-                    <a href="javascript:void(0);" data-id="<%= folder.id %>"><i class="fa fa-folder-o"></i> <%= folder.name %></a>
-                    <a style="display:none;" href="javascript:void(0);" class="edit-folder" data-id="<%= folder.id %>"><i class="fa fa-pencil"></i></a>
-                    <a style="display:none;" href="javascript:void(0);" class="delete-folder" data-id="<%= folder.id %>"><i class="fa fa-trash-o"></i></a>
-                    <div class="edit-folder-form" style="display:none">
-                        <%= form_tag media_path, :class => "save-folder-frm" do %>
-                          <%= text_field_tag :name, folder.name %>
-                          <%= hidden_field_tag :type,'Folder' %>
-                          <%= hidden_field_tag :folder_id, folder.id %>
-                          <%= submit_tag "Save", :class => "btn btn-primary save-folder" %>
-                        <% end %>
-                    </div>
-                </li>
-                <% end %>
+                  <% if folder.type == 'folder' %>
+                <li class="folder-id-<%= folder.id %>">
+                        <a href="javascript:void(0);" data-id="<%= folder.id %>"><i class="fa fa-folder-o"></i> <%= folder.name %></a>
+                        <a style="display:none;" href="javascript:void(0);" class="edit-folder" data-id="<%= folder.id %>"><i class="fa fa-pencil"></i></a>
+                        <a style="display:none;" href="javascript:void(0);" class="delete-folder" data-id="<%= folder.id %>"><i class="fa fa-trash-o"></i></a>
+                        <div class="edit-folder-form" style="display:none">
+                            <%= form_tag media_path, :class => "save-folder-frm" do %>
+                              <%= text_field_tag :name, folder.name %>
+                              <%= hidden_field_tag :type,'Folder' %>
+                              <%= hidden_field_tag :folder_id, folder.id %>
+                              <%= submit_tag "Save", :class => "btn btn-primary save-folder" %>
+                            <% end %>
+                        </div>
+                    </li>
+                  <% end %>
                 <% end %>
 
 
@@ -765,208 +444,208 @@
 
 <script src="assets/bootstrap/js/custom.js"></script>
 <script>
-  jQuery(document).ready(function () {
+          jQuery(document).ready(function () {
 
-      "use strict";
-
-      jQuery('.thmb').hover(function () {
-          var t = jQuery(this);
-          t.find('.ckbox').show();
-          t.find('.fm-group').show();
-      }, function () {
-          var t = jQuery(this);
-          if (!t.closest('.thmb').hasClass('checked')) {
+  "use strict";
+  
+          $(document).on('mouseover', '.thmb' , function () {
+            var t = jQuery(this);
+            t.find('.ckbox').show();
+            t.find('.fm-group').show();
+          });
+          $(document).on('mouseout', '.thmb' , function () {
+            var t = jQuery(this);
+            if (!t.closest('.thmb').hasClass('checked')) {
               t.find('.ckbox').hide();
               t.find('.fm-group').hide();
-          }
-      });
-
-      jQuery('.ckbox').each(function () {
-          var t = jQuery(this);
+            }
+          });
+  
+          jQuery('.ckbox').each(function () {
+  var t = jQuery(this);
           var parent = t.parent();
           if (t.find('input').is(':checked')) {
-              t.show();
-              parent.find('.fm-group').show();
-              parent.addClass('checked');
-          }
-      });
-
-
-      jQuery('.ckbox').click(function () {
-          var t = jQuery(this);
+  t.show();
+          parent.find('.fm-group').show();
+          parent.addClass('checked');
+  }
+  });
+          jQuery('.ckbox').click(function () {
+  var t = jQuery(this);
           if (!t.find('input').is(':checked')) {
-              t.closest('.thmb').removeClass('checked');
-              enable_itemopt(false);
-          } else {
-              t.closest('.thmb').addClass('checked');
-              enable_itemopt(true);
-          }
-      });
-
-      jQuery('#selectall').click(function () {
-          if (jQuery(this).is(':checked')) {
-              jQuery('.thmb').each(function () {
-                  jQuery(this).find('input').attr('checked', true);
-                  jQuery(this).addClass('checked');
-                  jQuery(this).find('.ckbox, .fm-group').show();
-              });
-              enable_itemopt(true);
-          } else {
-              jQuery('.thmb').each(function () {
-                  jQuery(this).find('input').attr('checked', false);
-                  jQuery(this).removeClass('checked');
-                  jQuery(this).find('.ckbox, .fm-group').hide();
-              });
-              enable_itemopt(false);
-          }
-      });
-
-      function enable_itemopt(enable) {
+  t.closest('.thmb').removeClass('checked');
+          enable_itemopt(false);
+  } else {
+  t.closest('.thmb').addClass('checked');
+          enable_itemopt(true);
+  }
+  });
+          jQuery('#selectall').click(function () {
+  if (jQuery(this).is(':checked')) {
+  jQuery('.thmb').each(function () {
+  jQuery(this).find('input').attr('checked', true);
+          jQuery(this).addClass('checked');
+          jQuery(this).find('.ckbox, .fm-group').show();
+  });
+          enable_itemopt(true);
+  } else {
+  jQuery('.thmb').each(function () {
+  jQuery(this).find('input').attr('checked', false);
+          jQuery(this).removeClass('checked');
+          jQuery(this).find('.ckbox, .fm-group').hide();
+  });
+          enable_itemopt(false);
+  }
+  });
+          function enable_itemopt(enable) {
           if (enable) {
-              jQuery('.itemopt').removeClass('disabled');
+          jQuery('.itemopt').removeClass('disabled');
           } else {
 
-              // check all thumbs if no remaining checks
-              // before we can disabled the options
-              var ch = false;
-              jQuery('.thmb').each(function () {
-                  if (jQuery(this).hasClass('checked'))
-                      ch = true;
-              });
-
-              if (!ch)
+          // check all thumbs if no remaining checks
+          // before we can disabled the options
+          var ch = false;
+                  jQuery('.thmb').each(function () {
+          if (jQuery(this).hasClass('checked'))
+                  ch = true;
+          });
+                  if (!ch)
                   jQuery('.itemopt').addClass('disabled');
           }
-      }
+          }
 
-      jQuery("a[data-rel^='prettyPhoto']").prettyPhoto();
-
-
-
-      $("#create").live("click", function (e) {
-          e.preventDefault();
+  jQuery("a[data-rel^='prettyPhoto']").prettyPhoto();
+          $("#create").live("click", function (e) {
+  e.preventDefault();
           var type = $("#type").val();
           var name = $("#name").val();
           $('input[type="submit"]').prop('disabled', true);
           $.ajax({
-              url: "<%= request.base_url %>" + "/media/create_folder",
-              type: 'post',
-              data: "name=" + name + "&type=" + type,
-              success: function (data) {
-                  $("#name").val('');
-                  if (data == 1) {
+          url: "<%= request.base_url %>" + "/media/create_folder",
+                  type: 'post',
+                  data: "name=" + name + "&type=" + type,
+                  success: function (id) {
+                    $("#name").val('');
+                    if (id > 0) {
                       $("#msg").html('');
-                      $(".folder-list").prepend("<li><a href=''><i class='fa fa-folder-o'></i>" + name + "</a></li>");
-                  } else {
+                      $(".folder-list").prepend("<li><a href='javascript:void(0);' data-id='"+id+"'><i class='fa fa-folder-o'></i>" + name + "</a></li>");
+                    } else {
                       $("#msg").html("Folder Not created");
                       setTimeout(function () {
-                          $("#msg").html('');
+                      $("#msg").html('');
                       }, 5000)
                   }
                   $('input[type="submit"]').prop('disabled', false);
-
-              },
-              error: function (err, req) {
+                  },
+                  error: function (err, req) {
                   $("#name").val('');
-                  $('input[type="submit"]').prop('disabled', false);
-                  alert("Your browser broke!");
-              }
+                          $('input[type="submit"]').prop('disabled', false);
+                          alert("Your browser broke!");
+                  }
 
 
           });
-
-
-
-
-
-      });
-
-
-
-
-
   });
-
-</script>
+  });</script>
 
 
 
 <script>
-  $(document).ready(function () {
-      $("#upload-file").click(function () {
-          $("#upload").modal();
-      });
-      $(".share-media").click(function () {
-          $("#share-media").modal();
-      });
-      $(".edit-folder").click(function(){
-        $(this).next().next().toggle();
-      });
-      $("form.save-folder-frm").submit(function(){
-        var fields = $(this).serializeArray();
-        var type = 'folder';
-        var name = '';
-        var folder_id = '';
-        jQuery.each( fields, function( i, field ) {
-          if(field.name == 'name'){
-            name = field.value;
+          var SELECTED_FOLDER = '';
+  
+          $(document).ready(function () {
+           
+            $("#upload-file").click(function () {
+              $("#upload").modal();
+            });
+          $(document).on('click', ".share-media", function () {
+            $('div.social-share-button').attr('data-img',$(this).attr('data-img'));
+            $('div.social-share-button').attr('data-url',$(this).attr('data-img'));
+            $("#share-media").modal();
+          });
+          $(".edit-folder").click(function(){
+            $(this).next().next().toggle();
+          });
+          $("form.save-folder-frm").submit(function(){
+          var fields = $(this).serializeArray();
+          var type = 'folder';
+          var name = '';
+          var folder_id = '';
+          jQuery.each(fields, function(i, field) {
+          if (field.name == 'name'){
+          name = field.value;
           }
-          if(field.name == 'folder_id'){
-            folder_id = field.value;
+          if (field.name == 'folder_id'){
+          folder_id = field.value;
           }
-        });
-        $('input[type="submit"]').prop('disabled', true);
-        $.ajax({
-              url: "<%= request.base_url %>" + "/media/save_folder",
-              type: 'post',
-              data: "id=" + folder_id + "&name=" + name + "&type=" + type,
-              success: function (data) {
+          });
+          $('input[type="submit"]').prop('disabled', true);
+          $.ajax({
+          url: "<%= request.base_url %>" + "/media/save_folder",
+                  type: 'post',
+                  data: "id=" + folder_id + "&name=" + name + "&type=" + type,
+                  success: function (data) {
                   //$("#name").val('');
                   /*if (data == 1) {
-                      $("#msg").html('');
-                      $(".folder-list").prepend("<li><a href=''><i class='fa fa-folder-o'></i>" + name + "</a></li>");
-                  } else {
-                      $("#msg").html("Folder Not created");
-                      setTimeout(function () {
-                          $("#msg").html('');
-                      }, 5000)
-                  }*/
+                   $("#msg").html('');
+                   $(".folder-list").prepend("<li><a href=''><i class='fa fa-folder-o'></i>" + name + "</a></li>");
+                   } else {
+                   $("#msg").html("Folder Not created");
+                   setTimeout(function () {
+                   $("#msg").html('');
+                   }, 5000)
+                   }*/
                   $('input[type="submit"]').prop('disabled', false);
-
-              },
-              error: function (err, req) {
+                  },
+                  error: function (err, req) {
                   $("#name").val('');
-                  $('input[type="submit"]').prop('disabled', false);
-                  alert("Your browser broke!");
-              }
+                          $('input[type="submit"]').prop('disabled', false);
+                          alert("Your browser broke!");
+                  }
 
 
           });
-          
-        return false;
+          return false;
+  });
+          /*
+           *View Folder media 
+           */
+          $(document).on('click', ".folder-list li a", function(e){
+  e.preventDefault();
+          var _this_ = this;
+          var folder_id = SELECTED_FOLDER = $(this).attr('data-id');
+          loadMediaFiles(folder_id);   
       });
+      /*Automatically load first folder media files*/
+      $('ul.folder-list li a:first').click();
+      
       
       /*
-      *View Folder media 
+      *Delete Media File
       */
-      $(document).on('click', ".folder-list li a", function(e){
-          e.preventDefault();
+      $(document).on('click', "a.trash-media", function(){
+        if(confirm('Are you sure you want to delete this file?')){
           var _this_ = this;
-          var folder_id = $(this).attr('data-id');
+          var id = $(this).attr('data-id');
           $.ajax({
-              url: "<%= request.base_url %>" + "/media/index",
+              url: "<%= request.base_url %>" + "/media/destroy",
               type: 'post',
-              data: "folder_id=" + folder_id,
+              data: "id=" + id,
               success: function (data) {
-                $('div.filemanager').html(data);
+                if (data == 1) {
+                  $(_this_).parent().parent().parent().parent().parent().remove();
+                  loadMediaFiles(SELECTED_FOLDER);
+                } else {
+                  alert('File is not deleted')
+                }
               },
               error: function (err, req) {
-                  alert("Your browser broke!");
+                alert("Your browser broke!");
               }
-          });
-          
-          
-      });
+           });
+          }
+       });
+       
       /*
       *Delete Folder 
       */
@@ -980,19 +659,64 @@
               data: "id=" + id,
               success: function (data) {
                 if (data == 1) {
-                    $(_this_).parent().css('background-color','#FFB9B9').slideUp(500);
+                $(_this_).parent().css('background-color', '#FFB9B9').slideUp(500);
                 } else {
-                  alert('Folder is not deleted')
+                alert('Folder is not deleted')
                 }
               },
               error: function (err, req) {
+                alert("Your browser broke!");
+              }
+           });
+          }
+       });
+      });
+      
+ /*
+ * Function: loadMediaFiles
+ * Params: folder_id Folder Id
+ * Purpose: loads all the media files of specific folder
+ */     
+ function loadMediaFiles(folder_id){
+       $.ajax({
+                  url: "<%= request.base_url %>" + "/media/show",
+                  type: 'post',
+                  data: "folder_id=" + folder_id,
+                  dataType: 'json',
+                  beforeSend: function(){
+                          $('#preloader').show();
+                  },
+                success: function (data) {
+
+                        var container = '';
+                        var html = 'No file(s) found.';
+                if (data.length){
+                        html = '';
+                $(data).each(function(index, value){
+                var checkbox = '<div class="ckbox ckbox-default" style="display: none;"><input type="checkbox" value="1" id="check'+index+'"><label for="check'+index+'"></label></div>';  
+                var shareDropdown = '<div class="btn-group fm-group" style="display: none;"><button data-toggle="dropdown" class="btn btn-default dropdown-toggle fm-toggle" type="button"><span class="caret"></span></button><ul role="menu" class="dropdown-menu fm-menu"><li><a class="share-media" href="#" data-img="'+value.cdn_url+'"><i class="fa fa-share"></i> Share</a></li><li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li><li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li><li><a href="#"><i class="fa fa-download"></i> Download</a></li><li><a href="javascript:void(0);" class="trash-media" data-id="'+value.id+'"><i class="fa fa-trash-o"></i> Delete</a></li></ul></div>';
+                
+                container = $('<div class="col-xs-6 col-sm-4 col-md-3 image"><div class="thmb">'+checkbox + shareDropdown +'<div class="thmb-prev"></div></div><!-- thmb --></div>');
+                        container.find('.thmb-prev').html('<a data-rel="prettyPhoto" href="assets/bootstrap/images/photos/media1.jpg"><img alt="" class="img-responsive" src="' + value.cdn_url + '"></a>')
+                        
+                //ss = '<div data-via="" data-popup="" data-desc="The summary of page" data-url="https://www.google.co.in/images/nav_logo242.png" data-img="https://www.google.co.in/images/nav_logo242.png" data-title="Share Media File" class="social-share-button"><a href="#" title="Share to Twitter" onclick="return SocialShareButton.share(this);" class="social-share-button-twitter" data-site="twitter" rel="nofollow "></a><a href="#" title="Share to Facebook" onclick="return SocialShareButton.share(this);" class="social-share-button-facebook" data-site="facebook" rel="nofollow "></a><a href="#" title="Share to Pinterest" onclick="return SocialShareButton.share(this);" class="social-share-button-pinterest" data-site="pinterest" rel="nofollow "></a></div>';        
+                container.find('.thmb-prev').after('<h5 class="fm-title"><a href="">' + value.name + '</a></h5><small class="text-muted">Added: Jan 02, 2014</small>');
+                        html += $(container).prop('outerHTML'); ;
+                });
+                }
+
+                $('div.filemanager #fm-files-container').html(html);
+                $('#preloader').hide();
+                $("form input[name='folder_id']").val(folder_id);
+                $('ul.folder-list li a i').attr('class','fa fa-folder-o');
+                $('ul.folder-list li.folder-id-'+folder_id+' a i').attr('class','fa fa-folder-open');
+              },
+              error: function (err, req) {
                   alert("Your browser broke!");
+                  $('#preloader').hide();
               }
           });
-        }
-          
-      });
-  });
+  }
 </script>
 
 </body>
