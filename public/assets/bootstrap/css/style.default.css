@@ -2239,11 +2239,25 @@ div.error label.error:before {
 .folder-list li {
     display: block;
     border-bottom: 1px solid #ddd;
+    float: left;
+    width: 100%;
 }
-
+.edit-div-right{float:right;}
+.edit-folder-form input{margin:0px 0px 10px 0px;}
+.form-control-2{ float: left;
+    margin: 0 10px 0 0!important;
+    width: 75%;}
+.form-control-folder {
+    float: left;
+    margin: 0 10px 0 0 !important;
+    width: 70%;
+}    
+.thmb-prev img{height:135px; width:100%;}
+.filemanager{margin:0px;}
 .folder-list li a {
     display: block;
     padding: 5px 0;
+     display: inline-block;
     color: #666;
 }
 
@@ -4530,10 +4544,7 @@ div.error label.error:before {
         line-height: 18px;
     }
 
-    .blog-summary {
-        font-size: 12px;
-        line-height: 18px;
-    }
+    .folder-list li a
 
     .blog-summary .btn {
         padding: 2px 5px;
@@ -4602,3 +4613,5 @@ div.error label.error:before {
     }
 
 }
+/*------- custom css ---------*/
+.folder-list li a{display:inline-block; vertical-align:top;}

@@ -1,5 +1,5 @@
 class MediaController < ApplicationController
-	skip_before_filter :verify_authenticity_token, :only => [:create_folder, :save_folder, :destroy, :show]
+	skip_before_filter :verify_authenticity_token, :only => [:create_folder, :save_folder, :destroy, :show, :email_file]
   before_action :get_token
 
   # Display all folders
@@ -39,11 +39,51 @@ class MediaController < ApplicationController
     end
 	end
   
+  # Edit existing folder
+	def save_folder
+    if(request.xhr?)
+      @media = Media.find(params[:id])
+      @media.update_attributes({:id => params[:id],:name => params[:name]})
+      #@medias = Media.new(resource_params)
+      #@medias.id = params[:id]
+      #@medias.type = params[:type]
+      #@medias.name = params[:name]
+      #attributes = {:id => params[:id],:name => params[:name]}
+      #Media.where(:id => params[:id]).update(:name => params[:name])
+      #obj = Media.all(params: {folder_id: params[:id]})
+      #render :text => (Media.update_attributes(attributes) ? 1 : 0) and return
+    end
+	end
+  
   # Used to delete the media folder
   def destroy
     render :text => (Media.delete(params[:id]) ? 1 : 0) and return
   end
 	
+  #Email media file
+  def email_file
+    #abort(.inspect)
+    #name = 'testEmail.jpeg'
+    #cdnUrl = params[:cdn_url]
+    to = params[:to]
+    #directory = "app/assets/images"
+    #path = File.join(directory, name)
+    #File.open(path, "wb") { |f| f.write(cdnUrl) }
+    #serverPath = '@' + path;
+    #require 'open-uri'
+    #open('image.jpeg', 'wb') do |file|
+      #file.write(cdnUrl)
+    #end
+    if(to.blank? == true)
+      message = 'Please enter email address'
+    else
+      UserNotifier.send_media_email(to).deliver
+      message = 'Email has been sent'
+    end
+    flash[:notice] = message
+    redirect_to "/media"
+  end
+  
   # Upload file on the server
 	def upload_file
     name = params[:media][:payload].original_filename

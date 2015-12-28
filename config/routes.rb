@@ -45,6 +45,7 @@ Rails.application.routes.draw do
     post '/media/save_folder', to:'media#save_folder', as: :save_folder
     post '/media/destroy', to:'media#destroy', as: :destroy
     post '/media/upload_file', to:'media#upload_file', as: :upload_file
+    post '/media/email_file', to:'media#email_file', as: :email_file
 
     match '/notifications', to: 'notifications#index', as: :notifications, via: [:get]
     match '/messages', to: 'messages#index', as: :messages, via: [:get] 

@@ -11,20 +11,20 @@
     <li>
         <a href="" class="itemopt disabled"><i class="fa fa-download"></i> Download</a>
     </li>
-    <li>
+    <!--li>
         <a href="" class="itemopt disabled"><i class="fa fa-pencil"></i> Edit</a>
-    </li>
+    </li-->
     <li>
         <a href="" class="itemopt disabled"><i class="fa fa-trash-o"></i> Delete</a>
     </li>
-    <li class="filter-type">
+    <!--li class="filter-type">
         Show:
         <a href="all" class="active">All</a>
         <a href="document">Documents</a>
         <a href="audio">Audio</a>
         <a href="image">Images</a>
         <a href="video">Videos</a>
-    </li>
+    </li-->
 
 </ul>
 
@@ -34,7 +34,7 @@
         <div class="row filemanager">
             <div id="flash_messages">
                 <% flash.each do |key, value| %>
-                  <%= content_tag(:div, value, :class => "flash #{key}") %>
+                  <%= content_tag(:div, value, :class => "alert alert-success fade in flash #{key}") %>
                 <% end %>
             </div>  
             <div id="fm-files-container">
@@ -90,6 +90,28 @@
 
                 </div>
             </div>
+            
+            <!-- Send Media File in email Popup -->
+            <div class="modal fade" id="email-media-file">
+                <div class="modal-dialog">
+                    <!-- Popup content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Email Media File</h4>
+                        </div>
+                        <div class="modal-body">
+                            <%= form_tag({:action => 'email_file'}, :multipart => true) do %>
+                            <label>To </label><%= text_field_tag :to %> 
+                              
+                              <%= hidden_field_tag :cdn_url, 'https://orchard-api-staging.s3.amazonaws.com/media/images/payloads/000/000/071/original/indeex.jpeg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q&Expires=1451288320&Signature=mryzDXjftkje9QAkfQSXc4wysEE%3D' %>
+                              <%= submit_tag "Send" %>
+                            <% end %>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
 
 
 
@@ -99,7 +121,7 @@
 
             <div id="create-folder" style="display:none">
                 <%= form_tag media_path do %>
-                  <%= text_field_tag :name %>
+                  <%= text_field_tag :name, ' ',:class => 'form-control form-control-folder' %>
                   <%= hidden_field_tag :type,'Folder' %>
                   <%= submit_tag "Create", :id=> "create", :class => "btn btn-primary" %>
                 <% end %>
@@ -111,12 +133,14 @@
                 <% @medias.each do |folder| %>
                   <% if folder.type == 'folder' %>
                 <li class="folder-id-<%= folder.id %>">
-                        <a href="javascript:void(0);" data-id="<%= folder.id %>"><i class="fa fa-folder-o"></i> <%= folder.name %></a>
-                        <a style="display:none;" href="javascript:void(0);" class="edit-folder" data-id="<%= folder.id %>"><i class="fa fa-pencil"></i></a>
-                        <a style="display:none;" href="javascript:void(0);" class="delete-folder" data-id="<%= folder.id %>"><i class="fa fa-trash-o"></i></a>
+                        <a href="javascript:void(0);" class="open-folder" data-id="<%= folder.id %>"><i class="fa fa-folder-o"></i> <%= folder.name %></a>
+                        <div class="edit-div-right">
+                        <a href="javascript:void(0);" class="edit-folder" data-id="<%= folder.id %>"><i class="fa fa-pencil"></i></a>
+                        <a href="javascript:void(0);" class="delete-folder" data-id="<%= folder.id %>"><i class="fa fa-trash-o"></i></a>
+                        </div>
                         <div class="edit-folder-form" style="display:none">
                             <%= form_tag media_path, :class => "save-folder-frm" do %>
-                              <%= text_field_tag :name, folder.name %>
+                              <%= text_field_tag :name, folder.name , :class => 'form-control form-control-2' %>
                               <%= hidden_field_tag :type,'Folder' %>
                               <%= hidden_field_tag :folder_id, folder.id %>
                               <%= submit_tag "Save", :class => "btn btn-primary save-folder" %>
@@ -438,8 +462,7 @@
 <script src="assets/bootstrap/js/toggles.min.js"></script>
 <script src="assets/bootstrap/js/retina.min.js"></script>
 <script src="assets/bootstrap/js/jquery.cookies.js"></script>
-
-
+<link rel="stylesheet" type="text/css" href="assets/bootstrap/css/prettyPhoto.css">
 <script src="assets/bootstrap/js/jquery.prettyPhoto.js"></script>
 
 <script src="assets/bootstrap/js/custom.js"></script>
@@ -514,7 +537,7 @@
           }
           }
 
-  jQuery("a[data-rel^='prettyPhoto']").prettyPhoto();
+  
           $("#create").live("click", function (e) {
   e.preventDefault();
           var type = $("#type").val();
@@ -554,8 +577,11 @@
           var SELECTED_FOLDER = '';
   
           $(document).ready(function () {
-           
-            $("#upload-file").click(function () {
+          
+          /*Auto hide flash message after 10 seconds*/
+          $('#flash_messages').delay(10000).fadeOut('slow');
+
+          $("#upload-file").click(function () {
               $("#upload").modal();
             });
           $(document).on('click', ".share-media", function () {
@@ -564,7 +590,7 @@
             $("#share-media").modal();
           });
           $(".edit-folder").click(function(){
-            $(this).next().next().toggle();
+            $(this).parent().next().toggle();
           });
           $("form.save-folder-frm").submit(function(){
           var fields = $(this).serializeArray();
@@ -610,7 +636,7 @@
           /*
            *View Folder media 
            */
-          $(document).on('click', ".folder-list li a", function(e){
+          $(document).on('click', ".folder-list li a.open-folder", function(e){
   e.preventDefault();
           var _this_ = this;
           var folder_id = SELECTED_FOLDER = $(this).attr('data-id');
@@ -659,7 +685,7 @@
               data: "id=" + id,
               success: function (data) {
                 if (data == 1) {
-                $(_this_).parent().css('background-color', '#FFB9B9').slideUp(500);
+                $(_this_).parent().parent().css('background-color', '#FFB9B9').slideUp(500);
                 } else {
                 alert('Folder is not deleted')
                 }
@@ -689,15 +715,15 @@
                 success: function (data) {
 
                         var container = '';
-                        var html = 'No file(s) found.';
+                        var html = 'Folder is Empty';
                 if (data.length){
                         html = '';
                 $(data).each(function(index, value){
                 var checkbox = '<div class="ckbox ckbox-default" style="display: none;"><input type="checkbox" value="1" id="check'+index+'"><label for="check'+index+'"></label></div>';  
-                var shareDropdown = '<div class="btn-group fm-group" style="display: none;"><button data-toggle="dropdown" class="btn btn-default dropdown-toggle fm-toggle" type="button"><span class="caret"></span></button><ul role="menu" class="dropdown-menu fm-menu"><li><a class="share-media" href="#" data-img="'+value.cdn_url+'"><i class="fa fa-share"></i> Share</a></li><li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li><li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li><li><a href="#"><i class="fa fa-download"></i> Download</a></li><li><a href="javascript:void(0);" class="trash-media" data-id="'+value.id+'"><i class="fa fa-trash-o"></i> Delete</a></li></ul></div>';
+                var shareDropdown = '<div class="btn-group fm-group" style="display: none;"><button data-toggle="dropdown" class="btn btn-default dropdown-toggle fm-toggle" type="button"><span class="caret"></span></button><ul role="menu" class="dropdown-menu fm-menu"><li><a class="share-media" href="#" data-img="'+value.cdn_url+'"><i class="fa fa-share"></i> Share</a></li><li><a data-toggle="modal" data-target="#email-media-file" href="javascript:void(0)"><i class="fa fa-envelope-o"></i> Email</a></li><li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li><li><a href="#"><i class="fa fa-download"></i> Download</a></li><li><a href="javascript:void(0);" class="trash-media" data-id="'+value.id+'"><i class="fa fa-trash-o"></i> Delete</a></li></ul></div>';
                 
                 container = $('<div class="col-xs-6 col-sm-4 col-md-3 image"><div class="thmb">'+checkbox + shareDropdown +'<div class="thmb-prev"></div></div><!-- thmb --></div>');
-                        container.find('.thmb-prev').html('<a data-rel="prettyPhoto" href="assets/bootstrap/images/photos/media1.jpg"><img alt="" class="img-responsive" src="' + value.cdn_url + '"></a>')
+                        container.find('.thmb-prev').html('<a title="' + value.name + '" data-rel="prettyPhoto" href="' + value.cdn_url + '"><img width="180" height="135" alt="" class="img-responsive" src="' + value.cdn_url + '"></a>')
                         
                 //ss = '<div data-via="" data-popup="" data-desc="The summary of page" data-url="https://www.google.co.in/images/nav_logo242.png" data-img="https://www.google.co.in/images/nav_logo242.png" data-title="Share Media File" class="social-share-button"><a href="#" title="Share to Twitter" onclick="return SocialShareButton.share(this);" class="social-share-button-twitter" data-site="twitter" rel="nofollow "></a><a href="#" title="Share to Facebook" onclick="return SocialShareButton.share(this);" class="social-share-button-facebook" data-site="facebook" rel="nofollow "></a><a href="#" title="Share to Pinterest" onclick="return SocialShareButton.share(this);" class="social-share-button-pinterest" data-site="pinterest" rel="nofollow "></a></div>';        
                 container.find('.thmb-prev').after('<h5 class="fm-title"><a href="">' + value.name + '</a></h5><small class="text-muted">Added: Jan 02, 2014</small>');
@@ -708,8 +734,9 @@
                 $('div.filemanager #fm-files-container').html(html);
                 $('#preloader').hide();
                 $("form input[name='folder_id']").val(folder_id);
-                $('ul.folder-list li a i').attr('class','fa fa-folder-o');
-                $('ul.folder-list li.folder-id-'+folder_id+' a i').attr('class','fa fa-folder-open');
+                $('ul.folder-list li a i:first').attr('class','fa fa-folder-o');
+                $('ul.folder-list li:first.folder-id-'+folder_id+' a i:first').attr('class','fa fa-folder-open');
+                jQuery("a[data-rel^='prettyPhoto']").prettyPhoto();
               },
               error: function (err, req) {
                   alert("Your browser broke!");
