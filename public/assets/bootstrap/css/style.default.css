@@ -2254,6 +2254,7 @@ div.error label.error:before {
 }    
 .thmb-prev img{height:135px; width:100%;}
 .filemanager{margin:0px;}
+.pp_social { display: none;}
 .folder-list li a {
     display: block;
     padding: 5px 0;
