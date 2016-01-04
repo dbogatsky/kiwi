@@ -66,6 +66,8 @@ class MediaController < ApplicationController
     #name = 'testEmail.jpeg'
     #cdnUrl = params[:cdn_url]
     to = params[:to]
+    subject = params[:subject]
+    message = params[:message]
     #directory = "app/assets/images"
     #path = File.join(directory, name)
     #File.open(path, "wb") { |f| f.write(cdnUrl) }
@@ -77,7 +79,7 @@ class MediaController < ApplicationController
     if(to.blank? == true)
       message = 'Please enter email address'
     else
-      UserNotifier.send_media_email(to).deliver
+      UserNotifier.send_media_email(to,subject,message).deliver
       message = 'Email has been sent'
     end
     flash[:notice] = message

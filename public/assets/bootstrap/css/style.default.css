@@ -4616,3 +4616,6 @@ div.error label.error:before {
 }
 /*------- custom css ---------*/
 .folder-list li a{display:inline-block; vertical-align:top;}
+
+
+.div-oth-input{width:100%; display:inline-block; margin:0px 0px 15px 0px;}
