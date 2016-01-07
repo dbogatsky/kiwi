@@ -15,7 +15,7 @@
         <a href="" class="itemopt disabled"><i class="fa fa-pencil"></i> Edit</a>
     </li-->
     <li>
-        <a href="" class="itemopt disabled"><i class="fa fa-trash-o"></i> Delete</a>
+        <a href="javascript:void(0);" class="itemopt disabled" id="destroy-multiple"><i class="fa fa-trash-o"></i> Delete</a>
     </li>
     <!--li class="filter-type">
         Show:
@@ -109,6 +109,7 @@
                               
 
                               <%= hidden_field_tag :cdn_url, 'https://orchard-api-staging.s3.amazonaws.com/media/images/payloads/000/000/071/original/indeex.jpeg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q&Expires=1451288320&Signature=mryzDXjftkje9QAkfQSXc4wysEE%3D' %>
+                               <div class="div-oth-input"><i class="fa fa-paperclip"></i> Index.jpeg</div>
                               <%= submit_tag "Send",:id=> "send", :class => "btn btn-primary" %>
                             <% end %>
                         </div>
@@ -497,33 +498,25 @@
           parent.addClass('checked');
   }
   });
-          jQuery('.ckbox').click(function () {
-  var t = jQuery(this);
-          if (!t.find('input').is(':checked')) {
-  t.closest('.thmb').removeClass('checked');
-          enable_itemopt(false);
-  } else {
-  t.closest('.thmb').addClass('checked');
-          enable_itemopt(true);
-  }
-  });
+  
+         
           jQuery('#selectall').click(function () {
-  if (jQuery(this).is(':checked')) {
-  jQuery('.thmb').each(function () {
-  jQuery(this).find('input').attr('checked', true);
-          jQuery(this).addClass('checked');
-          jQuery(this).find('.ckbox, .fm-group').show();
-  });
-          enable_itemopt(true);
-  } else {
-  jQuery('.thmb').each(function () {
-  jQuery(this).find('input').attr('checked', false);
-          jQuery(this).removeClass('checked');
-          jQuery(this).find('.ckbox, .fm-group').hide();
-  });
-          enable_itemopt(false);
-  }
-  });
+            if (jQuery(this).is(':checked')) {
+            jQuery('.thmb').each(function () {
+            jQuery(this).find('input').attr('checked', true);
+                    jQuery(this).addClass('checked');
+                    jQuery(this).find('.ckbox, .fm-group').show();
+            });
+                    enable_itemopt(true);
+            } else {
+            jQuery('.thmb').each(function () {
+            jQuery(this).find('input').attr('checked', false);
+                    jQuery(this).removeClass('checked');
+                    jQuery(this).find('.ckbox, .fm-group').hide();
+            });
+                    enable_itemopt(false);
+            }
+          });
           function enable_itemopt(enable) {
           if (enable) {
           jQuery('.itemopt').removeClass('disabled');
@@ -541,6 +534,18 @@
           }
           }
 
+   $('.ckbox').live('click',function () {
+        var t = jQuery(this);
+                if (!t.find('input').is(':checked')) {
+        t.closest('.thmb').removeClass('checked');
+                enable_itemopt(false);
+        } else {
+        t.closest('.thmb').addClass('checked');
+                enable_itemopt(true);
+        }
+        });
+        
+        
   
           $("#create").live("click", function (e) {
   e.preventDefault();
@@ -597,34 +602,25 @@
             $(this).parent().next().toggle();
           });
           $("form.save-folder-frm").submit(function(){
-          var fields = $(this).serializeArray();
-          var type = 'folder';
-          var name = '';
-          var folder_id = '';
-          jQuery.each(fields, function(i, field) {
-          if (field.name == 'name'){
-          name = field.value;
-          }
-          if (field.name == 'folder_id'){
-          folder_id = field.value;
-          }
-          });
-          $('input[type="submit"]').prop('disabled', true);
+              var fields = $(this).serializeArray();
+              var type = 'folder';
+              var name = '';
+              var folder_id = '';
+              jQuery.each(fields, function(i, field) {
+              if (field.name == 'name'){
+              name = field.value;
+              }
+              if (field.name == 'folder_id'){
+              folder_id = field.value;
+              }
+              });
+              $('input[type="submit"]').prop('disabled', true);
           $.ajax({
           url: "<%= request.base_url %>" + "/media/save_folder",
                   type: 'post',
                   data: "id=" + folder_id + "&name=" + name + "&type=" + type,
                   success: function (data) {
-                  //$("#name").val('');
-                  /*if (data == 1) {
-                   $("#msg").html('');
-                   $(".folder-list").prepend("<li><a href=''><i class='fa fa-folder-o'></i>" + name + "</a></li>");
-                   } else {
-                   $("#msg").html("Folder Not created");
-                   setTimeout(function () {
-                   $("#msg").html('');
-                   }, 5000)
-                   }*/
+                    $('.folder-id-'+folder_id + ' form').hide();
                   $('input[type="submit"]').prop('disabled', false);
                   },
                   error: function (err, req) {
@@ -649,7 +645,37 @@
       /*Automatically load first folder media files*/
       $('ul.folder-list li a:first').click();
       
+      /*
+      *Delete multiple Media Files
+      */
+      $('#destroy-multiple').click(function(){
+        var ids = [];
+        $("input.media-checked:checked").each(function(index,element){
+          ids.push($(element).val());
+        });
+        if(confirm('Are you sure you want to delete these files?')){
+          var _this_ = this;
+          var id = $(this).attr('data-id');
+          $.ajax({
+              url: "<%= request.base_url %>" + "/media/destroy_multiple",
+              type: 'post',
+              data: 'ids='+ids,
+              success: function (data) {
+                if (data == 1) {
+                  loadMediaFiles(SELECTED_FOLDER);
+                } else {
+                  alert('File(s) not deleted')
+                }
+              },
+              error: function (err, req) {
+                alert("Your browser broke!");
+              }
+           });
+          }
+       });
       
+    
+  
       /*
       *Delete Media File
       */
@@ -723,7 +749,7 @@
                 if (data.length){
                         html = '';
                 $(data).each(function(index, value){
-                var checkbox = '<div class="ckbox ckbox-default" style="display: none;"><input type="checkbox" value="1" id="check'+index+'"><label for="check'+index+'"></label></div>';  
+                var checkbox = '<div class="ckbox ckbox-default" style="display: none;"><input class="media-checked" type="checkbox" value="'+value.id+'" id="check'+index+'"><label for="check'+index+'"></label></div>';  
                 var shareDropdown = '<div class="btn-group fm-group" style="display: none;"><button data-toggle="dropdown" class="btn btn-default dropdown-toggle fm-toggle" type="button"><span class="caret"></span></button><ul role="menu" class="dropdown-menu fm-menu"><li><a class="share-media" href="#" data-img="'+value.cdn_url+'"><i class="fa fa-share"></i> Share</a></li><li><a data-toggle="modal" data-target="#email-media-file" href="javascript:void(0)"><i class="fa fa-envelope-o"></i> Email</a></li><li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li><li><a target="_blank" href="' + value.cdn_url + '"><i class="fa fa-download"></i> Download</a></li><li><a href="javascript:void(0);" class="trash-media" data-id="'+value.id+'"><i class="fa fa-trash-o"></i> Delete</a></li></ul></div>';
                 
                 container = $('<div class="col-xs-6 col-sm-4 col-md-3 image"><div class="thmb">'+checkbox + shareDropdown +'<div class="thmb-prev"></div></div><!-- thmb --></div>');

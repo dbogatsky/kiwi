@@ -1,5 +1,5 @@
 class MediaController < ApplicationController
-	skip_before_filter :verify_authenticity_token, :only => [:create_folder, :save_folder, :destroy, :show, :email_file]
+	skip_before_filter :verify_authenticity_token, :only => [:create_folder, :save_folder, :destroy, :destroy_multiple, :show, :email_file]
   before_action :get_token
 
   # Display all folders
@@ -42,22 +42,29 @@ class MediaController < ApplicationController
   # Edit existing folder
 	def save_folder
     if(request.xhr?)
-      @media = Media.find(params[:id])
-      @media.update_attributes({:id => params[:id],:name => params[:name]})
-      #@medias = Media.new(resource_params)
-      #@medias.id = params[:id]
-      #@medias.type = params[:type]
-      #@medias.name = params[:name]
-      #attributes = {:id => params[:id],:name => params[:name]}
-      #Media.where(:id => params[:id]).update(:name => params[:name])
-      #obj = Media.all(params: {folder_id: params[:id]})
-      #render :text => (Media.update_attributes(attributes) ? 1 : 0) and return
+      email = current_user.email
+      appKey = APP_CONFIG['api_app_key']
+      token = session[:token]
+      id = params[:id]
+      new_name = params[:name]
+      #curlRes = `curl -X GET -H "Authorization: Token token="#{token}", email="#{email}", app_key="#{appKey}"" "#{apiFullUrl}"`
+      curlRes = `curl -X PUT -H "Authorization: Token token="#{token}", email="#{email}", app_key="#{appKey}"" -H "Content-Type: application/json"  -d '{"medium":{"name": "#{new_name}"}}' 'http://api.convo.code10.ca/api/v1/media/#{id}'`
+      render :text => (1 ? 1 : 0) and return
     end
 	end
   
   # Used to delete the media folder
   def destroy
     render :text => (Media.delete(params[:id]) ? 1 : 0) and return
+  end
+  
+  # Used to delete the media files
+  def destroy_multiple
+    duplicates = params[:ids].split(",")
+    duplicates.each do | duplicate |
+      Media.delete(duplicate)
+    end
+    render :text => ( 1 ? 1 : 0) and return
   end
 	
   #Email media file
