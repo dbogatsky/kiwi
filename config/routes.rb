@@ -49,7 +49,8 @@ Rails.application.routes.draw do
     post '/media/upload_file', to:'media#upload_file', as: :upload_file
     post '/media/email_file', to:'media#email_file', as: :email_file
     get '/media/download_file', to:'media#download_file', as: :download_file
-
+	post '/media/rename_media_file', to:'media#rename_media_file', as: :rename_media_file
+	
     match '/notifications', to: 'notifications#index', as: :notifications, via: [:get]
     match '/messages', to: 'messages#index', as: :messages, via: [:get] 
 

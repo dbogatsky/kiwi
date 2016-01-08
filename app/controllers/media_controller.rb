@@ -1,5 +1,5 @@
 class MediaController < ApplicationController
-	skip_before_filter :verify_authenticity_token, :only => [:create_folder, :save_folder, :destroy, :destroy_multiple, :show, :email_file]
+	skip_before_filter :verify_authenticity_token, :only => [:create_folder, :save_folder, :destroy, :destroy_multiple, :show, :email_file, :rename_media_file]
   before_action :get_token
 
   # Display all folders
@@ -93,6 +93,19 @@ class MediaController < ApplicationController
     redirect_to "/media"
   end
   
+  # rename media file
+  def rename_media_file
+    if(request.xhr?)
+      email = current_user.email
+      appKey = APP_CONFIG['api_app_key']
+      token = session[:token]
+      id = params[:id]
+      new_name = params[:name]
+      #curlRes = `curl -X GET -H "Authorization: Token token="#{token}", email="#{email}", app_key="#{appKey}"" "#{apiFullUrl}"`
+      curlRes = `curl -X PUT -H "Authorization: Token token="#{token}", email="#{email}", app_key="#{appKey}"" -H "Content-Type: application/json"  -d '{"medium":{"name": "#{new_name}"}}' 'http://api.convo.code10.ca/api/v1/media/#{id}'`
+      render :text => (1 ? 1 : 0) and return
+    end
+  end
   # Upload file on the server
 	def upload_file
     name = params[:media][:payload].original_filename

@@ -6,7 +6,7 @@
         </div>
     </li>
     <li>
-        <a href="" class="itemopt disabled"><i class="fa fa-envelope-o"></i> Email</a>
+        <a href="javascript:void(0)" id="email-multiple" class="itemopt disabled"><i class="fa fa-envelope-o"></i> Email</a>
     </li>
     <li>
         <a href="" class="itemopt disabled"><i class="fa fa-download"></i> Download</a>
@@ -109,8 +109,32 @@
                               
 
                               <%= hidden_field_tag :cdn_url, 'https://orchard-api-staging.s3.amazonaws.com/media/images/payloads/000/000/071/original/indeex.jpeg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q&Expires=1451288320&Signature=mryzDXjftkje9QAkfQSXc4wysEE%3D' %>
-                               <div class="div-oth-input"><i class="fa fa-paperclip"></i> Index.jpeg</div>
+                               <div class="div-oth-input" id="email-attachments">
+                                   
+                               </div>
                               <%= submit_tag "Send",:id=> "send", :class => "btn btn-primary" %>
+                            <% end %>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            
+            <!-- Rename Media File in Popup -->
+            <div class="modal fade" id="rename-media-file">
+                <div class="modal-dialog">
+                    <!-- Popup content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Email</h4>
+                        </div>
+                        <div class="modal-body">
+                            <label>Rename Media File</label>
+                            <%= form_tag({:action => 'rename_media_file'}, :multipart => true, :id => "save-file-frm") do %>
+                              <div class="div-oth-input"><%= text_field_tag 'new_name' , nil, placeholder: "Name", class: 'form-control'%></div>
+                              <%= hidden_field_tag :media_file_id %>
+                              <%= submit_tag "Save",:id=> "rename-file", :class => "btn btn-primary" %>
                             <% end %>
                         </div>
                     </div>
@@ -138,7 +162,7 @@
                 <% @medias.each do |folder| %>
                   <% if folder.type == 'folder' %>
                 <li class="folder-id-<%= folder.id %>">
-                        <a href="javascript:void(0);" class="open-folder" data-id="<%= folder.id %>"><i class="fa fa-folder-o"></i> <%= folder.name %></a>
+                    <a href="javascript:void(0);" class="open-folder" data-id="<%= folder.id %>"><i class="fa fa-folder-o"></i><span><%= folder.name %></span></a>
                         <div class="edit-div-right">
                         <a href="javascript:void(0);" class="edit-folder" data-id="<%= folder.id %>"><i class="fa fa-pencil"></i></a>
                         <a href="javascript:void(0);" class="delete-folder" data-id="<%= folder.id %>"><i class="fa fa-trash-o"></i></a>
@@ -147,8 +171,9 @@
                             <%= form_tag media_path, :class => "save-folder-frm" do %>
                               <%= text_field_tag :name, folder.name , :class => 'form-control form-control-2' %>
                               <%= hidden_field_tag :type,'Folder' %>
-                              <%= hidden_field_tag :folder_id, folder.id %>
+                              <%= hidden_field_tag :folder_iid, folder.id %>
                               <%= submit_tag "Save", :class => "btn btn-primary save-folder" %>
+                              <%= button_tag "Cancel", :class => "btn btn-default cancel-save-folder" %>
                             <% end %>
                         </div>
                     </li>
@@ -548,7 +573,7 @@
         
   
           $("#create").live("click", function (e) {
-  e.preventDefault();
+          e.preventDefault();
           var type = $("#type").val();
           var name = $("#name").val();
           $('input[type="submit"]').prop('disabled', true);
@@ -599,8 +624,45 @@
             $("#share-media").modal();
           });
           $(".edit-folder").click(function(){
-            $(this).parent().next().toggle();
+            $(this).parent().next().show();
           });
+          $(".cancel-save-folder").click(function(){
+            $(this).parent().parent().hide();
+          });
+          
+          $("form#save-file-frm").submit(function(){
+              var fields = $(this).serializeArray();
+              var type = 'folder';
+              var name = '';
+              var file_id = '';
+              jQuery.each(fields, function(i, field) {
+              if (field.name == 'new_name'){
+              name = field.value;
+              }
+              if (field.name == 'media_file_id'){
+              file_id = field.value;
+              }
+              });
+              $('form#save-file-frm input[type="submit"]').prop('disabled', true);
+          $.ajax({
+          url: "<%= request.base_url %>" + "/media/rename_media_file",
+                  type: 'post',
+                  data: "id=" + file_id + "&name=" + name,
+                  success: function (data) {
+                    $('#rename-media-file').modal('hide');
+                    loadMediaFiles(SELECTED_FOLDER);
+                  $('form#save-file-frm input[type="submit"]').prop('disabled', false);
+                  },
+                  error: function (err, req) {
+                          $('form#save-file-frm input[type="submit"]').prop('disabled', false);
+                          alert("Your browser broke!");
+                  }
+
+
+          });
+          return false;
+  });
+          
           $("form.save-folder-frm").submit(function(){
               var fields = $(this).serializeArray();
               var type = 'folder';
@@ -610,7 +672,7 @@
               if (field.name == 'name'){
               name = field.value;
               }
-              if (field.name == 'folder_id'){
+              if (field.name == 'folder_iid'){
               folder_id = field.value;
               }
               });
@@ -620,6 +682,7 @@
                   type: 'post',
                   data: "id=" + folder_id + "&name=" + name + "&type=" + type,
                   success: function (data) {
+                    $('li.folder-id-'+folder_id + ' a span').text(name);
                     $('.folder-id-'+folder_id + ' form').hide();
                   $('input[type="submit"]').prop('disabled', false);
                   },
@@ -644,6 +707,38 @@
       });
       /*Automatically load first folder media files*/
       $('ul.folder-list li a:first').click();
+      
+      
+      $(document).on('click', "a.rename-media-file", function(e){
+        $('input[name="media_file_id"]').val($(this).attr('data-id'));
+        $('input[name="new_name"]').val($(this).attr('data-name'));
+        $('#rename-media-file').modal('show');
+      });
+      
+      
+      
+      /*
+      *Email single Media File
+      */
+      $(document).on('click', "a.email-media-file", function(){
+        var name = $(this).parent().parent().parent().parent().find('.fm-title').text();
+          name = '<i class="fa fa-paperclip"></i> ' + name + "<br>";
+        $("#email-attachments").html(name);
+        $('#email-media-file').modal('show');
+       });
+       
+      /*
+      *Email multiple Media Files
+      */
+      $('#email-multiple').click(function(){
+        
+        var names = '';
+        $("input.media-checked:checked").each(function(index,element){
+          names += '<i class="fa fa-paperclip"></i> ' + $(".media-file-" + $(element).val() + ' .fm-title').text() + "<br>";
+        });
+        $("#email-attachments").html(names);
+        $('#email-media-file').modal('show');
+       });
       
       /*
       *Delete multiple Media Files
@@ -750,9 +845,9 @@
                         html = '';
                 $(data).each(function(index, value){
                 var checkbox = '<div class="ckbox ckbox-default" style="display: none;"><input class="media-checked" type="checkbox" value="'+value.id+'" id="check'+index+'"><label for="check'+index+'"></label></div>';  
-                var shareDropdown = '<div class="btn-group fm-group" style="display: none;"><button data-toggle="dropdown" class="btn btn-default dropdown-toggle fm-toggle" type="button"><span class="caret"></span></button><ul role="menu" class="dropdown-menu fm-menu"><li><a class="share-media" href="#" data-img="'+value.cdn_url+'"><i class="fa fa-share"></i> Share</a></li><li><a data-toggle="modal" data-target="#email-media-file" href="javascript:void(0)"><i class="fa fa-envelope-o"></i> Email</a></li><li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li><li><a target="_blank" href="' + value.cdn_url + '"><i class="fa fa-download"></i> Download</a></li><li><a href="javascript:void(0);" class="trash-media" data-id="'+value.id+'"><i class="fa fa-trash-o"></i> Delete</a></li></ul></div>';
+                var shareDropdown = '<div class="btn-group fm-group" style="display: none;"><button data-toggle="dropdown" class="btn btn-default dropdown-toggle fm-toggle" type="button"><span class="caret"></span></button><ul role="menu" class="dropdown-menu fm-menu"><li><a class="share-media" href="#" data-img="'+value.cdn_url+'"><i class="fa fa-share"></i> Share</a></li><li><a class="email-media-file" href="javascript:void(0)"><i class="fa fa-envelope-o"></i> Email</a></li><li><a href="javascript:void(0);" class="rename-media-file" data-id="'+value.id+'" data-name="'+value.name+'"><i class="fa fa-pencil"></i> Edit</a></li><li><a target="_blank" href="' + value.cdn_url + '"><i class="fa fa-download"></i> Download</a></li><li><a href="javascript:void(0);" class="trash-media" data-id="'+value.id+'"><i class="fa fa-trash-o"></i> Delete</a></li></ul></div>';
                 
-                container = $('<div class="col-xs-6 col-sm-4 col-md-3 image"><div class="thmb">'+checkbox + shareDropdown +'<div class="thmb-prev"></div></div><!-- thmb --></div>');
+                container = $('<div class="col-xs-6 col-sm-4 col-md-3 image media-file-'+value.id+'"><div class="thmb">'+checkbox + shareDropdown +'<div class="thmb-prev"></div></div><!-- thmb --></div>');
                         container.find('.thmb-prev').html('<a title="' + value.name + '" data-rel="prettyPhoto" href="' + value.cdn_url + '"><img width="180" height="135" alt="" class="img-responsive" src="' + value.cdn_url + '"></a>')
                         
                 //ss = '<div data-via="" data-popup="" data-desc="The summary of page" data-url="https://www.google.co.in/images/nav_logo242.png" data-img="https://www.google.co.in/images/nav_logo242.png" data-title="Share Media File" class="social-share-button"><a href="#" title="Share to Twitter" onclick="return SocialShareButton.share(this);" class="social-share-button-twitter" data-site="twitter" rel="nofollow "></a><a href="#" title="Share to Facebook" onclick="return SocialShareButton.share(this);" class="social-share-button-facebook" data-site="facebook" rel="nofollow "></a><a href="#" title="Share to Pinterest" onclick="return SocialShareButton.share(this);" class="social-share-button-pinterest" data-site="pinterest" rel="nofollow "></a></div>';        
@@ -763,9 +858,10 @@
 
                 $('div.filemanager #fm-files-container').html(html);
                 $('#preloader').hide();
+                //set folder id to upload file in specific folder
                 $("form input[name='folder_id']").val(folder_id);
-                $('ul.folder-list li a i:first').attr('class','fa fa-folder-o');
-                $('ul.folder-list li:first.folder-id-'+folder_id+' a i:first').attr('class','fa fa-folder-open');
+                $('ul.folder-list li a i').attr('class','fa fa-folder-o');
+                $('ul.folder-list li.folder-id-'+folder_id+' a i:first').attr('class','fa fa-folder-open');
                 jQuery("a[data-rel^='prettyPhoto']").prettyPhoto();
               },
               error: function (err, req) {
