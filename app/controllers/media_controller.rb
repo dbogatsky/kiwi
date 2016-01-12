@@ -23,6 +23,7 @@ class MediaController < ApplicationController
         curlRes = `curl -X GET -H "Authorization: Token token="#{token}", email="#{email}", app_key="#{appKey}"" "#{apiFullUrl}"`
         curlRes = JSON.parse(curlRes);
         media.cdn_url =curlRes['cdn_url']
+        media.uid = uid
         mediaArray.push(media)
       end
       render json: mediaArray
@@ -75,18 +76,27 @@ class MediaController < ApplicationController
     to = params[:to]
     subject = params[:subject]
     message = params[:message]
-    #directory = "app/assets/images"
-    #path = File.join(directory, name)
-    #File.open(path, "wb") { |f| f.write(cdnUrl) }
-    #serverPath = '@' + path;
-    #require 'open-uri'
-    #open('image.jpeg', 'wb') do |file|
-      #file.write(cdnUrl)
-    #end
+    
+    email = current_user.email
+    appKey = APP_CONFIG['api_app_key']
+    token = session[:token]
+    apiURL = APP_CONFIG['api_url'] + '/download/media'
+    mediaArray = []
+    #attachments = params[:attachments]
+    attachments = params[:attachments].split(",")
+    attachments.each do | media |
+      uid = media
+      apiFullUrl = apiURL + "/" +  uid;
+      curlRes = `curl -X GET -H "Authorization: Token token="#{token}", email="#{email}", app_key="#{appKey}"" "#{apiFullUrl}"`
+      curlRes = JSON.parse(curlRes);
+      mediaArray.push(curlRes['cdn_url'])
+    end
+    #abort(mediaArray.inspect)
+    
     if(to.blank? == true)
       message = 'Please enter email address'
     else
-      UserNotifier.send_media_email(to,subject,message).deliver
+      UserNotifier.send_media_email(to,subject,message, mediaArray).deliver
       message = 'Email has been sent'
     end
     flash[:notice] = message
@@ -123,20 +133,33 @@ class MediaController < ApplicationController
     curlRes =  `curl -X POST  -F"medium[payload]=#{serverPath}" -F"type=#{type}" -F"medium[name]=#{filename}" -F"medium[parent_id]=#{folderId}" -H "Authorization: Token token="#{token}", email="#{email}", app_key="#{appKey}"" "#{apiURL}"  -v`;
     message = ''
     if curlRes == nil
-      message = 'Image is not uploaded'
+      message = 'File is not uploaded'
     else
       curlRes = JSON.parse(curlRes);
       if curlRes['payload_content_type'] != nil and curlRes['payload_content_type'][0] == "is Fnvalid"
-        message = 'Image is not uploaded'
+        message = 'File is not uploaded'
       else
-        message = 'Image is uploaded'
+        message = 'File is uploaded'
         File.delete(path)
       end
     end
     flash[:notice] = message
     redirect_to "/media"
   end
-
+  
+  # Used to download the media file
+  def download_file
+    require 'open-uri'
+    path = 'app/assets/images/'
+    uri = URI.parse(params[:url])
+    filename =  File.basename(uri.path)
+    open(path + filename, 'wb') do |file|
+      file << open(params[:url]).read
+    end
+    send_file path + filename, disposition: 'attachment'
+    #File.delete(path + filename)
+  end
+  
   private
   def get_token
     #set gloal var for token to be used in model, hack for now

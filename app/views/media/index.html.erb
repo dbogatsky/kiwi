@@ -78,11 +78,13 @@
                         </div>
                         <div class="modal-body">
 
-                            <%= form_tag({:action => 'upload_file'}, :multipart => true) do %>
-                              <%= text_field_tag :filename %> 
-                              <%= file_field 'media', 'payload' %>
+                            <%= form_tag({:action => 'upload_file'}, :name => 'upload-media-file', :multipart => true) do %>
+                            <div class="div-oth-input"><%= text_field_tag :filename, nil, placeholder: 'Name', class: 'form-control' %></div> 
+                            <div class="div-oth-input"><%= file_field 'media', 'payload', class: 'form-control' %>
+                                <span class="help">Only .jpg, .jpeg, .png, .doc, .docx, .xls, .xlsx, .pdf, .mp3, .mpeg, .mpg are allowed.</span>
+                            </div>
                               <%= hidden_field_tag :folder_id, '0' %>
-                              <%= submit_tag "Upload" %>
+                              <%= submit_tag "Upload", :class => 'btn btn-primary' %>
                             <% end %>
 
                         </div>
@@ -102,16 +104,13 @@
                         </div>
                         <div class="modal-body">
                             <label>Send an email by filling in the details below:</label>
-                            <%= form_tag({:action => 'email_file'}, :multipart => true) do %>
+                            <%= form_tag({:action => 'email_file'}, :name => 'send-email', :multipart => true) do %>
                               <div class="div-oth-input"><%= text_field_tag 'to' , nil, placeholder: "To", class: 'form-control'%></div>
                                <div class="div-oth-input"><%= text_field_tag 'subject',nil, placeholder: "Subject", class: 'form-control'%></div>
                                <div class="div-oth-input"><%= text_area_tag 'message', nil, :rows => 4, :cols => 50, placeholder: "Message", class: 'form-control'%></div>
-                              
-
-                              <%= hidden_field_tag :cdn_url, 'https://orchard-api-staging.s3.amazonaws.com/media/images/payloads/000/000/071/original/indeex.jpeg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q&Expires=1451288320&Signature=mryzDXjftkje9QAkfQSXc4wysEE%3D' %>
-                               <div class="div-oth-input" id="email-attachments">
-                                   
-                               </div>
+                              <%= hidden_field_tag :attachments %>
+                              <div class="div-oth-input" id="email-attachments">
+                              </div>
                               <%= submit_tag "Send",:id=> "send", :class => "btn btn-primary" %>
                             <% end %>
                         </div>
@@ -496,6 +495,8 @@
 <script src="assets/bootstrap/js/jquery.prettyPhoto.js"></script>
 
 <script src="assets/bootstrap/js/custom.js"></script>
+<script src="assets/bootstrap/js/jquery.validate.min.js"></script>
+<script src="assets/bootstrap/js/additional-methods.min.js"></script>
 <script>
           jQuery(document).ready(function () {
 
@@ -608,9 +609,68 @@
 
 
 <script>
+  
           var SELECTED_FOLDER = '';
   
           $(document).ready(function () {
+            $.validator.addMethod('filesize', function(value, element, param) {
+              // param = size (en bytes) 
+              // element = element to validate (<input>)
+              // value = value of the element (file name)
+              return this.optional(element) || (element.files[0].size <= param) 
+          });
+            
+            /*jquery validations */
+            $("form[name='upload-media-file']").validate({
+              focusInvalid: true,
+              rules: {
+                  filename: {
+                      required: true
+                  },
+                  'media[payload]':{
+                    required: true,
+                    extension: 'jpg|jpeg|png|doc|docx|xls|xlsx|pdf|mp3|mpeg|mpg',
+                    filesize: 5242880
+                  }
+              },
+              messages: {
+                  filename: {
+                      required: 'Please enter file name'
+                  },
+                  'media[payload]':{
+                    required: 'Please select file to upload',
+                    filesize: 'File is too large. Only 5MB allowed'
+                  }
+              },
+              submitHandler: function (form) {
+                  form.submit();
+              }
+            });
+            
+            $("form[name='send-email']").validate({
+              focusInvalid: true,
+              rules: {
+                  to: {
+                      required: true,
+                      email: true
+                  },
+                  subject:{
+                    required: true
+                  }
+              },
+              messages: {
+                  to: {
+                      required: 'Please enter email address'
+                  },
+                  subject:{
+                   required: 'Please enter subject',
+                  }
+              },
+              submitHandler: function (form) {
+                  form.submit();
+              }
+            });
+            
           
           /*Auto hide flash message after 10 seconds*/
           $('#flash_messages').delay(10000).fadeOut('slow');
@@ -722,7 +782,9 @@
       */
       $(document).on('click', "a.email-media-file", function(){
         var name = $(this).parent().parent().parent().parent().find('.fm-title').text();
+        var id= $(this).parent().parent().parent().prev().find('.media-checked').attr('uid');
           name = '<i class="fa fa-paperclip"></i> ' + name + "<br>";
+        $("input[name='attachments']").val(id);
         $("#email-attachments").html(name);
         $('#email-media-file').modal('show');
        });
@@ -733,9 +795,12 @@
       $('#email-multiple').click(function(){
         
         var names = '';
+        var ids = Array();
         $("input.media-checked:checked").each(function(index,element){
           names += '<i class="fa fa-paperclip"></i> ' + $(".media-file-" + $(element).val() + ' .fm-title').text() + "<br>";
+          ids.push($(element).attr('uid'));
         });
+        $("input[name='attachments']").val(ids);
         $("#email-attachments").html(names);
         $('#email-media-file').modal('show');
        });
@@ -844,8 +909,8 @@
                 if (data.length){
                         html = '';
                 $(data).each(function(index, value){
-                var checkbox = '<div class="ckbox ckbox-default" style="display: none;"><input class="media-checked" type="checkbox" value="'+value.id+'" id="check'+index+'"><label for="check'+index+'"></label></div>';  
-                var shareDropdown = '<div class="btn-group fm-group" style="display: none;"><button data-toggle="dropdown" class="btn btn-default dropdown-toggle fm-toggle" type="button"><span class="caret"></span></button><ul role="menu" class="dropdown-menu fm-menu"><li><a class="share-media" href="#" data-img="'+value.cdn_url+'"><i class="fa fa-share"></i> Share</a></li><li><a class="email-media-file" href="javascript:void(0)"><i class="fa fa-envelope-o"></i> Email</a></li><li><a href="javascript:void(0);" class="rename-media-file" data-id="'+value.id+'" data-name="'+value.name+'"><i class="fa fa-pencil"></i> Edit</a></li><li><a target="_blank" href="' + value.cdn_url + '"><i class="fa fa-download"></i> Download</a></li><li><a href="javascript:void(0);" class="trash-media" data-id="'+value.id+'"><i class="fa fa-trash-o"></i> Delete</a></li></ul></div>';
+                var checkbox = '<div class="ckbox ckbox-default" style="display: none;"><input class="media-checked" type="checkbox" value="'+value.id+'" id="check'+index+'" uid="'+ value.uid +'"><label for="check'+index+'"></label></div>';  
+                var shareDropdown = '<div class="btn-group fm-group" style="display: none;"><button data-toggle="dropdown" class="btn btn-default dropdown-toggle fm-toggle" type="button"><span class="caret"></span></button><ul role="menu" class="dropdown-menu fm-menu"><li><a class="share-media" href="#" data-img="'+value.cdn_url+'"><i class="fa fa-share"></i> Share</a></li><li><a class="email-media-file" href="javascript:void(0)"><i class="fa fa-envelope-o"></i> Email</a></li><li><a href="javascript:void(0);" class="rename-media-file" data-id="'+value.id+'" data-name="'+value.name+'"><i class="fa fa-pencil"></i> Edit</a></li><li><a target="_blank" href="media/download_file/' + encodeURIComponent(value.cdn_url) + '"><i class="fa fa-download"></i> Download</a></li><li><a href="javascript:void(0);" class="trash-media" data-id="'+value.id+'"><i class="fa fa-trash-o"></i> Delete</a></li></ul></div>';
                 
                 container = $('<div class="col-xs-6 col-sm-4 col-md-3 image media-file-'+value.id+'"><div class="thmb">'+checkbox + shareDropdown +'<div class="thmb-prev"></div></div><!-- thmb --></div>');
                         container.find('.thmb-prev').html('<a title="' + value.name + '" data-rel="prettyPhoto" href="' + value.cdn_url + '"><img width="180" height="135" alt="" class="img-responsive" src="' + value.cdn_url + '"></a>')
@@ -860,7 +925,7 @@
                 $('#preloader').hide();
                 //set folder id to upload file in specific folder
                 $("form input[name='folder_id']").val(folder_id);
-                $('ul.folder-list li a i').attr('class','fa fa-folder-o');
+                $('ul.folder-list li a.open-folder i').attr('class','fa fa-folder-o');
                 $('ul.folder-list li.folder-id-'+folder_id+' a i:first').attr('class','fa fa-folder-open');
                 jQuery("a[data-rel^='prettyPhoto']").prettyPhoto();
               },
