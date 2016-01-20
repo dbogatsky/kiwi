@@ -130,7 +130,7 @@ class MediaController < ApplicationController
     appKey = APP_CONFIG['api_app_key']
     token = session[:token]
     apiURL = APP_CONFIG['api_url'] + '/media' #http://api.convo.code10.ca/api/v1/media/
-    curlRes =  `curl -X POST  -F"medium[payload]=#{serverPath}" -F"type=#{type}" -F"medium[name]=#{filename}" -F"medium[parent_id]=#{folderId}" -H "Authorization: Token token="#{token}", email="#{email}", app_key="#{appKey}"" "#{apiURL}"  -v`;
+    curlRes = `curl -X POST -F"medium[payload]=#{serverPath}" -F"type=#{type}" -F"medium[name]=#{filename}" -F"medium[parent_id]=#{folderId}" -H "Authorization: Token token="#{token}", email="#{email}", app_key="#{appKey}"" "#{apiURL}" -v`;
     message = ''
     if curlRes == nil
       message = 'File is not uploaded'
@@ -153,6 +153,7 @@ class MediaController < ApplicationController
     path = 'app/assets/images/'
     uri = URI.parse(params[:url])
     filename =  File.basename(uri.path)
+    filename = params[:name]+ File.extname(uri.path)
     open(path + filename, 'wb') do |file|
       file << open(params[:url]).read
     end
