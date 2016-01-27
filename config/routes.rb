@@ -22,6 +22,7 @@ Rails.application.routes.draw do
       resources :contacts, only: [:edit, :create, :update, :destroy]
       resources :addresses, only: [:edit, :create, :update, :destroy]
     end
+    
    # put '/my_profile', to: 'my_profile#update', as: :my_profile
 
 =begin

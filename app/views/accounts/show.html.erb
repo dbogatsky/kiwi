@@ -1,317 +1,319 @@
-          <div class="profile-header">
-	        <div class="row">
-		    	<% if flash[:success] %>
-					<div class="alert alert-success">
-						<strong><%= flash[:success] %></strong>
-					</div> 
-				<% end %>      
-		        
-	        </div>
-            <div class="row">
-              <div class="col-sm-3">
+<div class="profile-header">
+  <!-- TODO: really need flash error here?? -->
+  <div class="row">
+    <% if flash[:success] %>
+    <div class="alert alert-success">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      <strong><%= flash[:success] %></strong>
+    </div>
+    <% elsif flash[:danger] %>
+    <div class="alert alert-danger">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      <strong><%= flash[:danger] %></strong>
+    </div>
+    <% end %>
+  </div>
+  <div class="row">
+    <div class="col-sm-3">
+      <img src="<%= (@account.avatar_url.eql? "/avatars/thumb/missing.png") ? '/assets/images/default_account_avatar.png' : @account.avatar_url %>" class="thumbnail img-responsive" alt="">
+      <div class="mb30"></div>
+      <h5 class="subtitle">Connect</h5>
+      <ul class="profile-social-list" id="account-contacts">
+        <% @account.contacts.each do |contact| %>
+          <li id="<%= dom_id(contact) %>">
+            <i class="fa fa-<%= contact.icon_name %>"></i>
+            <a id="account-contact-editable-<%= contact.id %>" data-url="<%= account_contact_path(@account, contact.id) %>" class="account-contact-editable" data-title="Enter Contact" data-type="text" data-contacttype="<%= contact.type %>" data-contactname="<%= contact.name %>"><%= contact.value %></a>
+            <div id="contact-button-grp-<%= contact.id %>" class="btn-group" style="margin-left: 5px;">
+              <%= link_to account_contact_path(@account, contact.id), {  method: :delete, remote: true, data: { confirm: 'Are you sure?', toggle: "tooltip", placement: "top"}, class: "btn btn-default btn-xs tooltips link-delete", title: "Remove"} do %>
+              <span class="glyphicon glyphicon-remove"></span>
+              <% end %>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+      <div class="mb10"></div>
+      <button class="btn btn-primary btn-xs mr5" data-toggle="modal" data-target=".contact-modal-form">New Contact</button>
+      <div class="mb30"></div>
 
-                <img src="<%= (@account.avatar.nil?) ? '/assets/images/default_account_avatar.png' : @account.avatar %>" class="thumbnail img-responsive" alt="">
-                
-                <div class="mb30"></div>
-                                
-                <h5 class="subtitle">Connect</h5>
-                <ul class="profile-social-list">
-                  <% @account.contacts.each do |contact| %>
-                    <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name%>"></i><%= contact.value %>
-                    <%= link_to "x", account_contact_path(@account, contact.id), method: :delete %>
-                    <%= link_to "edit", edit_account_contact_path(@account, contact.id), remote: true %>
-                  </li>
-                  <% end %>
-                  <!--
-                    <li><i class="fa fa-fax"></i>(123) 456-7890</li>
-                    <li><i class="fa fa-mobile"></i>(123) 456-7890</li>
-                    <li><i class="fa fa-envelope-o"></i>my.email.account@company.com</li>
-                    <li><i class="fa fa-twitter"></i> <a href="">twitter.com/eileensideways</a></li>
-                    <li><i class="fa fa-facebook"></i> <a href="">facebook.com/eileen</a></li>
-                    <li><i class="fa fa-youtube"></i> <a href="">youtube.com/eileen22</a></li>
-                    -->
-                  </ul>
-                <%= simple_form_for [@account, Contact.new] do |f|%>
-                  <%= f.input :type %>
-                  <%= f.input :name %>
-                  <%= f.input :value %>
-                  <%= f.submit %>
+      <h5 class="subtitle">Address&nbsp;<i class="fa fa-map-marker"></i></h5>
+      <!--<div class="profile-location">  
+        <a href="https://maps.google.com?daddr=2529+Canada Way+Vancouver+Canada+V5G1G4" target="_blank">???</a>
+      </div>-->
+      <ul class="profile-social-list" id="account-addresses">
+        <% @account.addresses.each do |address| %>
+          <li id="<%= dom_id(address) %>">
+            <address>
+              <strong><%= address.name %></strong>
+              <div id="address-button-grp-<%= address.id %>" class="btn-group" style="margin-left: 15px;">
+                <%= link_to account_address_path(@account, address.id), { method: :delete, remote: true, data: { confirm: 'Are you sure?', toggle: "tooltip", placement: "top"}, class: "btn btn-default btn-xs tooltips", title: "Remove"} do %>
+                <span class="glyphicon glyphicon-remove"></span>
                 <% end %>
-                
-                <div class="mb30"></div>
-              
-                <h5 class="subtitle">Address&nbsp;<i class="fa fa-map-marker"></i></h5>
-                <div class="profile-location">  
-                  <a href="https://maps.google.com?daddr=2529+Canada Way+Vancouver+Canada+V5G1G4" target="_blank">???</a>
-                </div>
-                <ul class="profile-social-list">
-                  <% @account.addresses.each do |address| %>
-                    <li><%= address.street_address %></li>
-                  <% end %>
-                </ul>
-                <%= simple_form_for [@account, Address.new] do |f|%>
-                  <%= f.input :name %>
-                  <%= f.input :street_address %>
-                  <%= f.input :city %>
-                  <%= f.input :postcode %>
-                  <%= f.input :region %>
-                  <%= f.input :country %>
-                  <%= f.submit %>
-                <% end %>
-                
-                <div class="mb30"></div>
-                <h5 class="subtitle">About</h5>
-                <p class="mb30">???</p>
+              </div>
+              <br>
+              <%= address.street_address %><br>
+              <%= address.city %> (<% address.region %>), <%= address.postcode %> - <%= address.country %> 
+            </address>
+          </li>
+        <% end %>
+      </ul>
+      <div class="mb10"></div>
+      <button class="btn btn-primary btn-xs mr5" data-toggle="modal" data-target=".address-modal-form">New Address</button>
+      
+      <div class="mb30"></div>
+      <h5 class="subtitle">About</h5>
+      <p class="mb30"><%= @account.about%></p>
 
-                <div class="mb30"></div>
-                <h5 class="subtitle">Quick Facts</h5>
-                <p class="mb30">???</p>
+      <div class="mb30"></div>
+      <h5 class="subtitle">Quick Facts</h5>
+      <p class="mb30"><%= @account.quick_facts %></p>    
+    </div><!-- col-sm-3 -->
 
-    
-              
-              </div><!-- col-sm-3 -->
-              <div class="col-sm-9">
-                <h2 class="profile-name"><%= @account.name %></h2> 
-                <div class="mb20"></div>
-                <div class="row">
-                  <div class="col-sm-11">
-                    <div class="row">
-                        <small>
-                        <div class="col-sm-5">
-                            <div class="row bars">
-                                <div class="col-xs-5" style="text-align:right"><strong>Status</strong></div>
-                                <div class="col-xs-7"><span class="badge" style="background-color: #0eb057; border-color: #0eb057;">???</span> </div>
-                            </div>
-                            <div class="row bars">
-                                <div class="col-xs-5" style="text-align:right"><strong>Assigned To</strong></div>
-                                <div class="col-xs-7"><%= @account.user.first_name %> <%= @account.user.last_name %></div>
-                            </div>
-                            <div class="row bars">
-                                <div class="col-xs-5" style="text-align:right"><strong>Shared With</strong></div>
-                                <div class="col-xs-7"><a href="#" data-toggle="modal" data-target=".account-shared-users">??? People</a></div>
-                            </div>
-                        </div><!-- col-sm-4 -->
-                        <div class="col-sm-7">
-                            <div class="row bars">
-                                <div class="col-xs-5" style="text-align:right"><strong>Created</strong></div>
-                                <div class="col-xs-7"><%= @conversation.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%b %d %Y @ %I:%M %p") %></div>
-                            </div>
-                            <div class="row bars">
-                                <div class="col-xs-5" style="text-align:right"><strong>Updated</strong></div>
-                                <div class="col-xs-7"><%= @conversation.updated_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%b %d %Y @ %I:%M %p") %></div>
-                            </div>
-                            <div class="row bars">
-                                <div class="col-xs-5" style="text-align:right"><strong>Updated By</strong></div>
-                                <div class="col-xs-7">???</div>
-                            </div>
-                        </div><!-- col-sm-4 -->
-                        </small>
-                    </div><!-- row -->    
-                  </div>
-                </div>
-                <div class="mb40"></div>
-                <h5 class="subtitle">Conversation</h5>
-                <div class="row">
-                  <div class="col-sm-6">
-                    <%= render "conversation_search" %>
-                  </div>
-                  <div class="col-sm-6">
-                    <div class="btn-group mr5 pull-right">
-                      <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
-                          <i class="fa fa-plus-circle mr5"></i> Action
-                          <span class="caret"></span>
-                      </button>
-                      <ul class="dropdown-menu">
-                        <li><a href="#" data-toggle="modal" data-target=".account-action-meeting">Schedule Meeting</a></li>
-                        <li><a href="#" data-toggle="modal" data-target=".account-action-note">Add Note</a></li>
-                        <li><a href="#" data-toggle="modal" data-target=".account-action-email">Send Email</a></li>
-                        <li class="divider"></li>
-                        <li><a href="<%= edit_account_path(@account) %>">Edit Account</a></li>                    
-                      </ul>
-                    </div>
-                  </div><!-- col -->
-                </div><!-- row -->
-                <div class="mb20"></div>
-                
-                <!--- Timeline Start -->
-                <%= render "conversation_timeline" %>
-                <!-- Timeline End -->
-                
-                
-              </div>              
-            </div><!-- row -->
-          </div><!-- profile-header -->
-                </div>
+    <div class="col-sm-9"> 
+      <div class="profile-header">
+        <h2 class="profile-name"><%= @account.name %></h2>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="profile-position"><strong style="margin-right: 5px;">Status: </strong><%= get_styled_status(@account, false) %></div>
+            <div class="profile-position"><strong>Assigned To: </strong><%= @account.user == nil ? "" : "#{@account.user.first_name} #{@account.user.last_name}" %></div>
+            <div class="profile-position"><strong>Shared With: </strong><%= @account.shared_users == nil ? "" : "people??" %></div>
+          </div>
+          <div class="col-sm-6">
+            <div class="profile-position"><strong>Created At: </strong><%= Date.parse(@account.created_at).strftime("%B %e, %Y at %I:%M%p") %></div>
+            <div class="profile-position"><strong>Updated At: </strong><%= Date.parse(@account.updated_at).strftime("%B %e, %Y at %I:%M%p") %></div>
+            <div class="profile-position"><strong>Updated By: </strong><%= @account.updated_by.nil? ? "" : @account.updated_by.username %></div>
+          </div>
+        </div>
+      </div><!-- profile-header -->
 
-            </div><!-- mainpanel -->
-        </section>
+      <div class="mb40"></div>
+      <h5 class="subtitle">Conversation</h5>
+      <div class="row">
+        <div class="col-sm-6">
+          <%= render "conversation_search" %>
+        </div>
+        <div class="col-sm-6">
+          <div class="btn-group mr5 pull-right">
+            <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
+                <i class="fa fa-plus-circle mr5"></i> Action
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a href="#" data-toggle="modal" data-target=".account-action-meeting">Schedule Meeting</a></li>
+              <li><a href="#" data-toggle="modal" data-target=".conversation-note-modal-form">Add Note</a></li>
+              <li><a href="#" data-toggle="modal" data-target=".account-action-email">Send Email</a></li>
+              <li class="divider"></li>
+              <li><a href="<%= edit_account_path(@account) %>">Edit Account</a></li>                    
+            </ul>
+          </div>
+        </div><!-- col -->
+      </div><!-- row -->
+      <div class="mb20"></div>
+      
+      <!--- Timeline Start -->
+      <%= render "conversation_timeline" %>
+      <!-- Timeline End -->   
+    </div> <!-- col-sm-9 -->            
+  </div><!-- row -->
+</div><!-- profile-header -->
 
+<% content_for :outside_section do %>
+<!-- add contact modal form -->
+<div id="contact-modal" class="modal fade contact-modal-form" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="panel panel-dark panel-alt">
+        <div class="panel-heading">
+          <button aria-hidden="true" data-dismiss="modal" class="close" type="button" style="color: white !important; opacity: 1.0 !important">&times;</button>
+          <h3 class="panel-title">New Contact</h3>
+        </div>
+        <div class="panel-body">
+          <%#= render :partial => "contacts/form", review: Contact.new(account_id: @account.id) %>
+          <%= render :partial => "contacts/form" %>
+        </div><!-- panel -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end of add contact modal form -->
+<!-- add address modal form -->
+<div id="address-modal" class="modal fade address-modal-form" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="panel panel-dark panel-alt">
+        <div class="panel-heading">
+          <button aria-hidden="true" data-dismiss="modal" class="close" type="button" style="color: white !important; opacity: 1.0 !important">&times;</button>
+          <h3 class="panel-title">New Address</h3>
+        </div>
+        <div class="panel-body">
+          <%= render :partial => "addresses/form", review: Address.new(account_id: @account.id) %>
+        </div><!-- panel -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end of add address modal form -->
+<!-- add conversation schedule modal form -->
 <%= render "conversation_schedule" %>
+<!-- end of add conversation schedule modal form -->
 
 <%= render "conversation_notes" %>
 
 <%= render "conversation_email" %>
 
 <%= render "conversation_sharedusers" %>
+<% end %>
 
 
-	<script src="/assets/bootstrap/js/jquery-1.11.1.min.js"></script>
-	<script src="/assets/bootstrap/js/jquery-migrate-1.2.1.min.js"></script>
-	<script src="/assets/bootstrap/js/jquery-ui-1.10.3.min.js"></script>
-	<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
-	<script src="/assets/bootstrap/js/modernizr.min.js"></script>
-	<script src="/assets/bootstrap/js/jquery.sparkline.min.js"></script>
-	<script src="/assets/bootstrap/js/toggles.min.js"></script>
-	<script src="/assets/bootstrap/js/retina.min.js"></script>
-	<script src="/assets/bootstrap/js/jquery.cookies.js"></script>
+<% content_for :custom_js do %>    
+<script>
+  jQuery(document).ready(function(){
+
+    $.fn.editable.defaults.ajaxOptions = {type: "PUT"};
+    jQuery('.account-contact-editable').editable({
+      send: 'always',
+      validate: function(value) {
+        if($.trim(value) == '') return 'This field is required';
+      },
+      params: function (params) {
+        var data = {};
+        var contact = {};
+        data['authenticity_token'] = "<%= form_authenticity_token %>";
+        contact['id'] = params.id;
+        contact['name'] = $(this).editable().data('contactname');;
+        contact['type'] = $(this).editable().data('contacttype');
+        contact['value'] = params.value;
+        data['contact'] = contact;
+        return data;
+      },
+      success: function(response, newValue) {
+        console.log(JSON.stringify(response));
+        if(response.status == 'error'){
+          return response.msg; //msg will be shown in editable form
+        }
+      }
+    });
+
+    jQuery("#account-contact-add-form").validate({
+      highlight: function(element) {
+        jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+      },
+      success: function(element) {
+        jQuery(element).closest('.form-group').removeClass('has-error');
+      }
+    });
+
+    jQuery("#account-address-add-form").validate({
+      highlight: function(element) {
+        jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+      },
+      success: function(element) {
+        jQuery(element).closest('.form-group').removeClass('has-error');
+      }
+    });
+
     
-  <script src="/assets/vertical-timeline/js/main.js"></script> <!-- Timeline Resource jQuery -->                    
-  
-   <!-- Form elements - status and date picker -->
-  <script src="/assets/bootstrap/js/bootstrap-timepicker.min.js"></script>
-  <script src="/assets/bootstrap/js/jquery.maskedinput.min.js"></script>
-  <script src="/assets/bootstrap/js/jquery.tagsinput.min.js"></script>
-  <script src="/assets/bootstrap/js/jquery.mousewheel.js"></script>    
-  <script src="/assets/bootstrap/js/select2.min.js"></script>
-  <script src="/assets/bootstrap/js/bootstrap-editable.min.js"></script>
-  <script src="/assets/bootstrap/js/bootstrap-datetimepicker.min.js"></script>
-  <script src="/assets/bootstrap/js/moment.js"></script>  
- 
-  <script src="/assets/bootstrap/js/custom.js"></script>
-
-  <script>
-    jQuery(document).ready(function(){
 
 
-      //multiselect for sharing accounts
-      jQuery(".select2").select2({
-      	width: '100%'
-      });
-  
-			// Tags Input
-			jQuery('#invite-emails').tagsInput({
-				width:'100%',
-				height: 'auto',
-				onAddTag:isValidEmailAddress,
-				defaultText:'Invitees'
-			});
-			function isValidEmailAddress(emailAddress) {
-			    var pattern = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
-			    
-			    if (pattern.test(emailAddress) == false) {
-					alert("Please add a valid email address");
-					$('#invite-emails').removeTag(emailAddress); 
-			    }
-			};
-			
-			$('.datepicker').datepicker();
-
-            $('#schedule-from-datepicker').datepicker({
-	            dateFormat: 'dd/mm/yy',
-				altField: "#schedule-to-datepicker",
-				altFormat: "dd/mm/yy"	            
-	        });
-            $('#schedule-to-datepicker').datepicker({
-	            dateFormat: 'dd/mm/yy'
-	        });
-            jQuery('#schedule-from-timepicker').timepicker({
-	            minuteStep: 15
-	        });
-            $('#schedule-to-timepicker').timepicker({
-	            minuteStep: 15
-	        });
-            $('#scheduleFromTimePicker').timepicker().on('hide.timepicker', function(e) {
-			 	$('#schedule-to-timepicker').timepicker('setTime', e.time.value);
-  			});
-  			
-			
-			$('#meeting-reminder-time').timepicker({minuteStep: 5});
-			
-			// by default hide reminder settings for meetings
-			$("#meeting-reminder-settings").hide();
-			
-			// hide show note reminder settings for meetings
-			$('#meeting-reminder').change(function () {
-			    if ($("#meeting-reminder").is(':checked')) {
-				    $("#meeting-reminder-settings").show(500);
-				}
-				else {
-					$("#meeting-reminder-settings").hide(500);
-				}
-			});
 
 
-			// by default hide repeat settings for meetings
-			$("#meeting-repeat-settings").hide();
-			$("#repeat-frequency-week").hide();
-			$("#repeat-frequency-month").hide();
-			$("#repeat-frequency-year").hide();
-			
-			
-			// hide show note reminder settings for meetings
-			$('#meeting-repeat').change(function () {
-			    if ($("#meeting-repeat").is(':checked')) {
-				    $("#meeting-repeat-settings").show(500);
-				}
-				else {
-					$("#meeting-repeat-settings").hide(500);
-				}
-			});
-			
-			// hide show note reminder settings for meetings
-			$('#repeat-frequency').change(function () {
-				if($('#repeat-frequency').val() == "daily") {
-					$("#repeat-frequency-day").show(500);
-					$("#repeat-frequency-week").hide(500);
-					$("#repeat-frequency-month").hide(500);
-					$("#repeat-frequency-year").hide(500);
-				}
-				else if($('#repeat-frequency').val() == "weekly"){
-					$("#repeat-frequency-day").hide(500);
-					$("#repeat-frequency-week").show(500);
-					$("#repeat-frequency-month").hide(500);
-					$("#repeat-frequency-year").hide(500);
-				}
-				else if($('#repeat-frequency').val() == "monthly"){
-					$("#repeat-frequency-day").hide(500);
-					$("#repeat-frequency-week").hide(500);
-					$("#repeat-frequency-month").show(500);
-					$("#repeat-frequency-year").hide(500);					
-				}
-				else if($('#repeat-frequency').val() == "yearly"){
-					$("#repeat-frequency-day").hide(500);
-					$("#repeat-frequency-week").hide(500);
-					$("#repeat-frequency-month").hide(500);
-					$("#repeat-frequency-year").show(500);					
-				}
-			});
-			
-			
-			
-			
 
 
-			$('#reminderDatePicker').datepicker();
-			$('#reminderTimePicker').timepicker({minuteStep: 5});
 
-			// by default hide reminder settings for notes
-			$("#note-reminder-settings").hide();
-			
-			// hide show note reminder settings
-			$('#note-reminder').change(function () {
-			    if ($("#note-reminder").is(':checked')) {
-				    $("#note-reminder-settings").show(500);
-				}
-				else {
-					$("#note-reminder-settings").hide(500);
-				}
-			});
+		// Tags Input
+		jQuery('#invite-emails').tagsInput({
+			width:'100%',
+			height: 'auto',
+			onAddTag:isValidEmailAddress,
+			defaultText:'Invitees'
+		});
+		function isValidEmailAddress(emailAddress) {
+		    var pattern = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
+		    
+		    if (pattern.test(emailAddress) == false) {
+				alert("Please add a valid email address");
+				$('#invite-emails').removeTag(emailAddress); 
+		    }
+		};
+	
+		$('#meeting-reminder-time').timepicker({minuteStep: 5});
+		
+		// by default hide reminder settings for meetings
+		$("#meeting-reminder-settings").hide();
+		
+		// hide show note reminder settings for meetings
+		$('#meeting-reminder').change(function () {
+		    if ($("#meeting-reminder").is(':checked')) {
+			    $("#meeting-reminder-settings").show(500);
+			}
+			else {
+				$("#meeting-reminder-settings").hide(500);
+			}
+		});
 
-            
-            
-        });
+		// by default hide repeat settings for meetings
+		$("#meeting-repeat-settings").hide();
+		$("#repeat-frequency-week").hide();
+		$("#repeat-frequency-month").hide();
+		$("#repeat-frequency-year").hide();
+					
+		// hide show note reminder settings for meetings
+		$('#meeting-repeat').change(function () {
+		    if ($("#meeting-repeat").is(':checked')) {
+			    $("#meeting-repeat-settings").show(500);
+			}
+			else {
+				$("#meeting-repeat-settings").hide(500);
+			}
+		});
+		
+		// hide show note reminder settings for meetings
+		$('#repeat-frequency').change(function () {
+			if($('#repeat-frequency').val() == "daily") {
+				$("#repeat-frequency-day").show(500);
+				$("#repeat-frequency-week").hide(500);
+				$("#repeat-frequency-month").hide(500);
+				$("#repeat-frequency-year").hide(500);
+			}
+			else if($('#repeat-frequency').val() == "weekly"){
+				$("#repeat-frequency-day").hide(500);
+				$("#repeat-frequency-week").show(500);
+				$("#repeat-frequency-month").hide(500);
+				$("#repeat-frequency-year").hide(500);
+			}
+			else if($('#repeat-frequency').val() == "monthly"){
+				$("#repeat-frequency-day").hide(500);
+				$("#repeat-frequency-week").hide(500);
+				$("#repeat-frequency-month").show(500);
+				$("#repeat-frequency-year").hide(500);					
+			}
+			else if($('#repeat-frequency').val() == "yearly"){
+				$("#repeat-frequency-day").hide(500);
+				$("#repeat-frequency-week").hide(500);
+				$("#repeat-frequency-month").hide(500);
+				$("#repeat-frequency-year").show(500);					
+			}
+		});
+		
+		$('#reminderDatePicker').datepicker();
+		$('#reminderTimePicker').timepicker({minuteStep: 5});
 
-    </script>
+		// by default hide reminder settings for notes
+		$("#note-reminder-settings").hide();
+		
+		// hide show note reminder settings
+		$('#note-reminder').change(function () {
+		    if ($("#note-reminder").is(':checked')) {
+			    $("#note-reminder-settings").show(500);
+			}
+			else {
+				$("#note-reminder-settings").hide(500);
+			}
+		});
+  });
+  </script>
+<% end %>
+
+<% content_for :custom_css do %>
 <style>
   .bars {
     border-bottom: 0px dotted #ddd;
@@ -341,5 +343,5 @@
       width: 260px;
     }
   }
-
 </style>
+<% end %>

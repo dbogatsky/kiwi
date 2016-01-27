@@ -1,0 +1,54 @@
+<div class="people-list">
+  <div class="row">
+    <% if @accounts.size == 0 %>
+    <div class="col-md-6">
+    <h3>There are no account's matching the search</h3>
+	<%= link_to "View all accounts", accounts_path %>
+	</div>
+    <% else %>
+	    <% @accounts.each do |account| %>
+	    <div class="col-md-6">
+		  <div class="people-item">
+		    <div class="media">
+		      <a href="<%= account_path(account.id) %>" class="pull-left">
+		        <img alt="" src="<%= (account.avatar_url.eql? "/avatars/thumb/missing.png") ? '/assets/images/default_account_avatar.png' : account.avatar_url %>" class="thumbnail media-object">
+		      </a> 
+		      <div class="media-body">
+		        <h4 class="person-name"><%= link_to account.name, account_path(account.id) %> <%= get_styled_status(account) %></h4>
+		        <% if !account.addresses.empty? %>
+			        <% account.addresses.each_with_index do |address, i| %>
+			        <div class="text-muted">
+			        	<i class="fa fa-map-marker"></i>
+			        	<%= address.street_address %>, <%= address.city %>, <%= address.region %>, <%= address.country %>, <%= address.postcode %>
+			        	<!--<a href="https://maps.google.com?daddr=<%= address.street_address %>+<%= address.city %>+<%= address.region %>+<%= address.country %>+<%= address.postcode %>" target="_blank" class="tooltips" data-toggle="tooltip" data-placement="top" title="Map">link</a>-->
+			        </div>
+			        <% end %>
+		        <% end %>
+		        <% if !account.quick_facts.nil? %>
+		        <div class="text-muted"><i class="fa fa-briefcase"></i> <%= account.quick_facts %> </div>
+		        <% end %>
+		        <ul class="social-list">
+		          <% account.contacts.each do |contact| %>
+		          	<li>
+		          		<% if contact.type.eql? "web" %>
+		          		<a href="<%= contact.value %>" class="tooltips" data-toggle="tooltip" data-placement="top" title="<%= contact.type.capitalize %>">
+		          			<i class="fa fa-<%= contact.icon_name %>"></i>
+		          		</a>
+		          		<% else %>
+		          		 <a href="" class="tooltips" data-toggle="tooltip" data-placement="top" title="<%= contact.type.capitalize %>: <%= contact.value %>"><i class="fa fa-<%= contact.icon_name %>"></i></a>
+		          		<% end %>
+		          	</li>
+		          <% end %>
+
+		          <li><a href="<%= account_path(account.id) %>" class="tooltips" data-toggle="tooltip" data-placement="top" title="Conversation"><i class="fa  fa-comments"></i></a></li>
+
+		          <li class="pull-right"><span class="badge" style="color:#333; background-color: #fcfcfc; border-color: #fcfcfc;">Michael Jordan</span><i class="fa fa-user"></i></li>
+		        </ul>
+		      </div>
+		    </div>
+		  </div>
+		</div><!-- col-md-6 -->
+		<% end %>
+    <% end %>
+  </div><!-- row -->
+</div><!-- people-list -->

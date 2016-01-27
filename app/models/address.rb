@@ -1,5 +1,6 @@
 class Address < OrchardApiModel
   self.site = "#{ENV.fetch("ORCHARD_API_HOST")}/accounts/:account_id/"
+  belongs_to :account
 
   schema do
     attribute 'name', :string
@@ -9,7 +10,4 @@ class Address < OrchardApiModel
     attribute 'region', :string
     attribute 'country', :string
   end
-
 end
-
-

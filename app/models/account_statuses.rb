@@ -1,2 +1,0 @@
-class AccountStatuses < OrchardApiModel
-end

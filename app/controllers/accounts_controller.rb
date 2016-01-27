@@ -1,3 +1,4 @@
+require 'net/http/post/multipart'
 class AccountsController < ApplicationController
   before_action :get_token
   before_action :find_account, only: [:conversation, :edit, :update]
@@ -5,7 +6,7 @@ class AccountsController < ApplicationController
   def index
     # Get all accounts
     @accounts = Account.all(params: {search: params[:search]})
-
+    #@accounts = @accounts.sort_by{|a| a.created_at}.reverse!
     @account_statuses = get_hashed_account_statuses
 
   end
@@ -16,47 +17,68 @@ class AccountsController < ApplicationController
     @account = Account.find(params[:id])
 
     #retrieve conversation - assuming at the moment that the account id = conversation id
-    @conversation = Conversations.find(params[:id])
+    ### @conversation = Conversations.find(params[:id])###
   end
 
 
   def new
     # Add an account
     @account = Account.new
+    @users = User.all 
+    #@account_statuses = AccountStatus.all
+    #@contact_types = Contact::CONTACT_TYPES
 
-    @contact_counter = 2 # Contact index counter
+
+    #@contact_counter = 2 # Contact index counter
 
     #get status cached upon login from session
-    @account_statuses = session["account"]["statuses"]
+    #@account_statuses = session["account"]["statuses"]
 
   end
 
 
   def edit
     # Edit an account
-    #@account = Account.find(params[:id])
-
-    @contact_counter = 2 # Check number of existing contacts and up the contact counter.
+    @account = Account.find(params[:id])
+    @addresses = @account.addresses
+    @contacts = @account.contacts
+    @users = User.all 
+    
+    #@account_statuses = AccountStatus.all
+    #@contact_types = Contact::CONTACT_TYPES
+    #@contact_counter = 2 # Check number of existing contacts and up the contact counter.
 
     #get status cached upon login from session
-    @account_statuses = session["account"]["statuses"]
+    #@account_statuses = session["account"]["statuses"]
 
   end
 
 
   def create
+    puts "RECEIVED PARAMS = #{account_params}"
     # Create new account
-
     if params.has_key?(:save)
-
-      @account = Account.new accounts_params
+      #@account = Account.new account_params
+      params[:account][:contacts_attributes] = params[:account][:contacts_attributes].values
+      params[:account][:addresses_attributes] = params[:account][:addresses_attributes].values
+      @account = Account.new(request: :create, account: account_params)
 
       if @account.save
+        if params.has_key?(:avatar)
+          puts "sending avatar..."
+          url = URI.parse("#{ENV.fetch("ORCHARD_API_HOST")}/accounts/#{@account.id}")
+          #req = Net::HTTP::Put::Multipart.new url.path,  account: { :avatar => UploadIO.new(File.new(params[:avatar].tempfile), "image/jpeg", "image.jpg")}
+          req = Net::HTTP::Put::Multipart.new url.path, :avatar => UploadIO.new(File.new(params[:avatar].tempfile), "image/jpeg", "image.jpg")
+          req.add_field("Authorization", "Token token=\"#{$user_token}\", app_key=\"#{APP_CONFIG['api_app_key']}\"")
+          #req.add_field("Content-Type", "application/json")
+          res = Net::HTTP.start(url.host, url.port) do |http|
+            http.request(req)
+          end
+        end
         flash[:success] = 'Account has been added successfully'
       else
-        flash[:danger] = 'Oops! Unable to add the account'  # Log in error message  
+        flash[:danger] = 'Oops! Unable to add the account'
       end
-
     end 
 
     redirect_to accounts_path
@@ -64,15 +86,14 @@ class AccountsController < ApplicationController
 
   def update
     # Update account
-
     if params.has_key?(:save)
-
-      if @account.update_attributes(accounts_params)
+      params[:account][:contacts_attributes] = params[:account][:contacts_attributes].values
+      #params[:account][:addresses_attributes] = params[:account][:addresses_attributes].values
+      if @account.update_attributes(name: @account.name, account: account_params)
         flash[:success] = 'Account has been edited successfully'
       else
-        flash[:danger] = 'Oops! Unable to edit the account'  # Log in error message  
+        flash[:danger] = 'Oops! Unable to edit the account'
       end
-
     end
 
     redirect_to accounts_path
@@ -86,8 +107,16 @@ class AccountsController < ApplicationController
   end 
 
   def add_note
-    flash[:success] = 'Your note has been added to the conversation'
-    redirect_to accounts_conversation_path(id)
+    c_id = Account.find(conversation_item_params[:account_id]).conversation.id
+    
+    ci = ConversationItem.create(conversation_item: {title: conversation_item_params[:title], body: conversation_item_params[:body]}, conversation_id: c_id, type: conversation_item_params[:type])
+    if ci
+      flash[:success] = 'Your note has been added to the conversation'
+    else
+      flash[:danger] = 'Oops! Unable to add note'
+    end
+
+    redirect_to account_path(conversation_item_params[:account_id])
   end
 
   def send_email
@@ -103,8 +132,16 @@ class AccountsController < ApplicationController
     $user_token = session[:token]
   end
 
-  def accounts_params
-    params.require(:account).permit(:name, :status_id)
+  def account_params
+    params.require(:account).permit(
+      :name, :status_id, :assign_to, :shared_with, :about, :quick_facts, :avatar, 
+      addresses_attributes: [:id, :name, :street_address, :postcode, :city, :region, :country, :_destroy],
+      contacts_attributes: [:id, :type, :name, :value, :_destroy]
+    )
+  end
+
+  def conversation_item_params
+    params.require(:conversation_item).permit(:account_id, :type, :title, :body)
   end
 
   def find_account

@@ -1,0 +1,23 @@
+$("#address-button-grp-<%= @address.id %>").find('a.tooltips').tooltip('hide');
+$("#preloader").hide();
+<% if @status.eql?("ok") %>
+$("#address-button-grp-<%= @address.id %>").find('a.tooltips').tooltip('destroy');
+$("#<%= dom_id(@address) %>").remove();
+jQuery.gritter.add({
+	title: 'Success!',
+	text: '<%= @notification_message %>',
+	class_name: 'growl-success',
+	image: '/assets/bootstrap/images/screen.png',
+	sticky: false,
+	time: ''
+});
+<% else %>
+jQuery.gritter.add({
+	title: 'Error!',
+	text: '<%= @notification_message %>',
+	class_name: 'growl-danger',
+	image: '/assets/bootstrap/images/screen.png',
+	sticky: false,
+	time: ''
+});
+<% end %>

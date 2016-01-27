@@ -1,7 +1,14 @@
-<%= simple_form_for [@account, @contact] do |f|%>
-  <%= f.input :type %>
-  <%= f.input :name %>
-  <%= f.input :value %>
-  <%= f.submit %>
+<%= simple_form_for [@account, Contact.new], :remote => true, html: { id: "account-contact-add-form" } do |f| %>
+    <%= f.input :name %>
+    <%#= f.input :type, required: true, as: :select, :collection => Contact::CONTACT_TYPES %>
+    <div class="form-group">
+		<label class="col-sm-3 control-label">Type<span class="asterisk">*</span></label>
+		<div class="col-sm-6">
+			<%= f.select( :type, options_for_select(Contact::CONTACT_TYPES), {}, { :class => "select2" } ) %>
+		</div>
+	</div>
+    <%= f.input :value, required: true %>
+    <%= f.hidden_field :account_id, :value => @account.id %>
+	<!--<div class="col-sm-6 col-sm-offset-3">-->
+	<button type="submit" class="btn btn-primary" name="save" id="save">Create</button>
 <% end %>
-
