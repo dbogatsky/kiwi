@@ -126,11 +126,16 @@ class MediaController < ApplicationController
     File.open(path, "wb") { |f| f.write(params[:media][:payload].read) }
     serverPath = '@' + path;
     type = 'image'
+    content_type = params[:media][:payload].content_type
+    if content_type == "application/force-download"
+    type = 'document'
+    end
     email = current_user.email
     appKey = APP_CONFIG['api_app_key']
     token = session[:token]
     apiURL = APP_CONFIG['api_url'] + '/media' #http://api.convo.code10.ca/api/v1/media/
     curlRes = `curl -X POST -F"medium[payload]=#{serverPath}" -F"type=#{type}" -F"medium[name]=#{filename}" -F"medium[parent_id]=#{folderId}" -H "Authorization: Token token="#{token}", email="#{email}", app_key="#{appKey}"" "#{apiURL}" -v`;
+    #abort(curlRes.inspect)
     message = ''
     if curlRes == nil
       message = 'File is not uploaded'
