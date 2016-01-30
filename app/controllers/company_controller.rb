@@ -11,7 +11,7 @@ class CompanyController < ApplicationController
 		@entites = CompanyEntities.all
 		
 		#get status cached upon login from session
-		@account_statuses = AccountStatuses.all 
+		@account_statuses = AccountStatus.all 
 		
 	end
 
@@ -43,7 +43,7 @@ class CompanyController < ApplicationController
 
 		if params["account-status-id"].blank?
 
-      @status = AccountStatuses.new
+      @status = AccountStatus.new
 			@status.name = params["account-status-name"]
 			@status.color  = params["account-status-color"]
 			@status.description = params["account-status-desc"]
@@ -51,7 +51,7 @@ class CompanyController < ApplicationController
 			# Create new account status
 			if @status.save  			
 				#update status list stored in session
-				@account_statuses = AccountStatuses.all
+				@account_statuses = AccountStatus.all
 				session["account"]["statuses"] = @account_statuses
 				
 				flash[:success] = 'Account status has been added successfully'
@@ -63,15 +63,15 @@ class CompanyController < ApplicationController
 		else
 
 			# Edit account status
-			@status = AccountStatuses.find(params["account-status-id"])
+			@status = AccountStatus.find(params["account-status-id"])
 			attributes = {:name => params["account-status-name"], :color  => params["account-status-color"], :description =>params["account-status-desc"]}
 			
-			#AccountStatuses.update_attributes(@status)
+			#AccountStatus.update_attributes(@status)
 			
 			if @status.update_attributes(attributes)
 
 				#update status list stored in session
-				@account_statuses = AccountStatuses.all
+				@account_statuses = AccountStatus.all
 				session["account"]["statuses"] = @account_statuses
 				
 				flash[:success] = 'Account status has been edited successfully'

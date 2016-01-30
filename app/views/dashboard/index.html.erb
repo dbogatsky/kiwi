@@ -27,16 +27,12 @@
                 <table class="table small">
                   <tbody>
                     <tr>
-                      <td align="right"><span class="badge">1</span></td>
-                      <td align="left"><i class="fa fa-envelope"></i>&nbsp;&nbsp;New Message</td>
-                    </tr> 
-                    <tr>
                       <td align="right"><span class="badge">6</span></td>
                       <td align="left"><i class="fa fa-warning"></i>&nbsp;&nbsp;Notifications</td>
                     </tr>  
                     <tr>
                       <td align="right"><span class="badge">10</span></td>
-                      <td align="left"><i class="fa fa-comments"></i>&nbsp;&nbsp;Conversations updated</td>
+                      <td align="left"><i class="fa fa-comments"></i>&nbsp;&nbsp;Accounts updated</td>
                     </tr>
                     <tr>
                       <td align="right"><span class="badge">22</span></td>
@@ -212,13 +208,13 @@
         <div class="panel-body">
           <div class="row">
             <div class="col-xs-6 temp text-center">
-              <h1>18 <span>゜</span></h1>
-              <h5><i class="fa fa-map-marker"></i> &nbsp; Vancouver</h5>
+              <h1><%= @weather["temp"] %> <span>゜</span></h1>
+              <h5><i class="fa fa-map-marker"></i> &nbsp; <%= @weather["city"] %></h5>
             </div>
             <div class="col-xs-6 weather text-center">
-              <i class="fa fa-cloud weather-icon"></i>
-              <div class="pull-left"><i class="fa fa-umbrella"></i> 1.0mm</div>
-              <div class="pull-right"><i class="fa fa-flag"></i> 30mph</div>
+              <i style="line-height:1" class="<%= @weather["icon"] %> weather-icon"></i>
+              <div class="pull-left"><i class="wi-thermometer"></i> <%= @weather["temp_max"] %>゜</div>
+              <div class="pull-right"><i class="fa fa-flag"></i> <%= @weather["wind"] %>kph</div>
             </div>
           </div>
         </div><!-- panel-body -->
@@ -325,88 +321,3 @@
 </div>      
 
 <%= render "dashboard/js" %>
-
-<% content_for :custom_css do %>
-<link href="/assets/bootstrap/css/morris.css" rel="stylesheet">
-<style>
-  /* Intimeline */
-  .timeline-item .date i {
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 5px;
-    width: 30px;
-    text-align: center;
-    border-top: 1px solid #e7eaec;
-    border-bottom: 1px solid #e7eaec;
-    border-left: 1px solid #e7eaec;
-    background: #f8f8f8;
-  }
-  .timeline-item .date {
-    text-align: right;
-    position: relative;
-    padding-top: 30px;
-  }
-  .timeline-item .content {
-    border-left: 1px solid #e7eaec;
-    border-top: 1px solid #e7eaec;
-    padding-top: 10px;
-    min-height: 100px;
-  }
-  .timeline-item .content:hover {
-    background: #f6f6f6;
-  }
-
-  #accounts-status-breakdown > svg { width: 100% !important; }
-
-
-
-  .feed-activity-list .feed-element {
-    border-bottom: 1px solid #e7eaec;
-  }
-  .feed-element:first-child {
-    margin-top: 0;
-  }
-  .feed-element {
-    padding-bottom: 15px;
-  }
-  .feed-element,
-  .feed-element .media {
-    margin-top: 15px;
-  }
-  .feed-element,
-  .media-body {
-    overflow: hidden;
-  }
-  .feed-element > .pull-left {
-    margin-right: 10px;
-  }
-  .feed-element img.img-circle,
-  .dropdown-messages-box img.img-circle {
-    width: 38px;
-    height: 38px;
-  }
-  .feed-element .well {
-    border: 1px solid #e7eaec;
-    box-shadow: none;
-    margin-top: 10px;
-    margin-bottom: 5px;
-    padding: 10px 20px;
-    font-size: 11px;
-    line-height: 16px;
-  }
-  .feed-element .actions {
-    margin-top: 10px;
-  }
-  .feed-element .photos {
-    margin: 10px 0;
-  }
-  .feed-photo {
-    max-height: 180px;
-    border-radius: 4px;
-    overflow: hidden;
-    margin-right: 10px;
-    margin-bottom: 10px;
-  }
-</style>
-<% end %>

@@ -1,9 +1,9 @@
 default: &default
   software_version: 0.1
-  software_title: Conversations - Code10
+  software_title: Focus - Code10
   superadmin_email: superadmin@code10.ca
 
-  open_weather_map: 59972cbdeb7c9f8000bcd04dac2aaccd
+  open_weather_map: f4dc5bfac1f432cf8f665c834148f904
 
 
 development:

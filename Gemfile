@@ -10,6 +10,9 @@ gem 'country_select', '~> 2.4'
 gem 'social-share-button', '~> 0.1.6'
 gem 'turbolinks'
 gem 'multipart-post'
+gem 'open-weather'
+gem 'geocoder'
+
 
 # This gem is for accessing REST services in an ActiveRecord style.
 #gem 'active_rest_client', '1.2.0'
