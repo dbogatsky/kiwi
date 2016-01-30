@@ -1,3 +1,16 @@
+<div class="row">
+  <% if flash[:success] %>
+  <div class="alert alert-success">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <strong><%= flash[:success] %></strong>
+  </div>
+  <% elsif flash[:danger] %>
+  <div class="alert alert-danger">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <strong><%= flash[:danger] %></strong>
+  </div>
+  <% end %>
+</div>
 <div class="row row-pad-5">
   <div class="col-md-5">
     <%= simple_form_for :search, method: :get do |f| %>
@@ -11,90 +24,30 @@
       <% end %>
     <% end %>
   </div>
-<div class="col-md-2 col-md-offset-5">
-  <%= link_to new_account_path, class: "btn btn-primary btn-block" do %><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Account<% end %>
-</div>
-    </div><!-- row -->
-	<div class="row row-pad-5">
-		<div class="col-md-12">
-			<ul class="letter-list">
-        <% ("a".."z").each do |l| %>
-          <li><%= link_to l, accounts_path(search: {name_start: l}) %></li>
-        <% end %>
-        <li><a href="/accounts">All</a></li>
-			</ul>
-		</div>
-	</div><!-- row -->
-	<div class="mb30"></div>
-      
-      <div class="people-list">
-        <div class="row">
+  <div class="col-md-2 col-md-offset-5">
+    <%= link_to new_account_path, class: "btn btn-primary btn-block" do %><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Account<% end %>
+  </div>
+</div><!-- row -->
+<div class="row row-pad-5">
+	<div class="col-md-12">
+		<ul class="letter-list">
+      <% ("a".."z").each do |l| %>
+        <li><%= link_to l, accounts_path(search: {name_start: l}) %></li>
+      <% end %>
+      <li><a href="/accounts">All</a></li>
+		</ul>
+	</div>
+</div><!-- row -->
+<div class="mb30"></div>
+<%= render partial: "accounts/account_list" %>
 
-          <%= render(partial: @accounts) || render('empty_search')%> 
-          
-        </div><!-- row -->
-      </div><!-- people-list -->
+<!--<div class="people-list">
+  <div class="row">
+    <%#= render(partial: @accounts) || render('empty_search')%> 
+  </div>
+</div>--><!-- people-list -->
 
-    </div><!-- contentpanel -->
-    
-  </div><!-- mainpanel -->
-    
-</section>
-
-
-<script src="/assets/bootstrap/js/jquery-1.11.1.min.js"></script>
-<script src="/assets/bootstrap/js/jquery-migrate-1.2.1.min.js"></script>
-<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="/assets/bootstrap/js/modernizr.min.js"></script>
-<script src="/assets/bootstrap/js/jquery.sparkline.min.js"></script>
-<script src="/assets/bootstrap/js/toggles.min.js"></script>
-<script src="/assets/bootstrap/js/retina.min.js"></script>
-<script src="/assets/bootstrap/js/jquery.cookies.js"></script>
-
-<script src="/assets/bootstrap/js/holder.js"></script>
-
-
- <!-- Form elements - status and date picker -->
-<script src="/assets/bootstrap/js/bootstrap-timepicker.min.js"></script>
-<script src="/assets/bootstrap/js/jquery.maskedinput.min.js"></script>
-<script src="/assets/bootstrap/js/jquery.tagsinput.min.js"></script>
-<script src="/assets/bootstrap/js/jquery.mousewheel.js"></script>    
-<script src="/assets/bootstrap/js/select2.min.js"></script>
-<script src="/assets/bootstrap/js/bootstrap-editable.min.js"></script>
-<script src="/assets/bootstrap/js/bootstrap-datetimepicker.min.js"></script>
-<script src="/assets/bootstrap/js/moment.js"></script> 
-
-
-<script src="/assets/bootstrap/js/custom.js"></script>
-
-<script>
-  jQuery(document).ready(function(){
-
-      $('.datepicker').datepicker();
-
-        $('#schedule-from-datepicker').datepicker({
-          dateFormat: 'dd/mm/yy',
-          altField: "#schedule-to-datepicker",
-          altFormat: "dd/mm/yy"             
-        });
-        $('#schedule-to-datepicker').datepicker({
-          dateFormat: 'dd/mm/yy'
-        });
-        jQuery('#schedule-from-timepicker').timepicker({
-          minuteStep: 15
-        });
-        $('#schedule-to-timepicker').timepicker({
-          minuteStep: 15
-        });
-        $('#scheduleFromTimePicker').timepicker().on('hide.timepicker', function(e) {
-          $('#schedule-to-timepicker').timepicker('setTime', e.time.value);
-        });
-
-
-      });
-
-</script>
-
+<% content_for :custom_css do %>
 <style>
   .bars {
     border-bottom: 0px dotted #ddd;
@@ -125,3 +78,4 @@
     }
   }  
 </style>
+<% end %>

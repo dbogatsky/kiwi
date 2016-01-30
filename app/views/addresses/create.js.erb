@@ -1,0 +1,42 @@
+$('#address-modal').modal('hide');
+$('#account-address-add-form')[0].reset();
+<% if @status.eql?("ok") %>
+$("#account-addresses").append('\
+	<li id="<%= dom_id(@address) %>">\
+		<address>\
+			<strong><%= @address.name %></strong>\
+			<div id="address-button-grp-<%= @address.id %>" class="btn-group" style="margin-left: 15px;">\
+				<%= link_to account_address_path(@account, @address.id), { method: :delete, remote: true, data: { confirm: "Are you sure?", toggle: "tooltip", placement: "top"}, class: "btn btn-default btn-xs tooltips", title: "Remove"} do %>\
+				<span class="glyphicon glyphicon-remove"></span>\
+				<% end %>\
+			</div>\
+			<br>\
+			<%= @address.street_address %><br>\
+			<%= @address.city %> (<% @address.region %>), <%= @address.postcode %> - <%= @address.country %>\
+		</address>\
+	</li>\
+');
+
+jQuery(document).ready(function() {
+	jQuery.gritter.add({
+		title: 'Success!',
+		text: '<%= @notification_message %>',
+    	class_name: 'growl-success',
+    	image: '/assets/bootstrap/images/screen.png',
+		sticky: false,
+		time: ''
+	});
+});
+<% else %>
+jQuery(document).ready(function() {
+	jQuery.gritter.add({
+		title: 'Error!',
+		text: '<%= @notification_message %>',
+    	class_name: 'growl-danger',
+    	image: '/assets/bootstrap/images/screen.png',
+		sticky: false,
+		time: ''
+	});
+});
+
+<% end %>

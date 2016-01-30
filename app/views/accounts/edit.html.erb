@@ -1,39 +1,15 @@
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h4 class="panel-title">Edit Account</h4>
-          <p>Edit the details below.</p>
-        </div>
-          <%= render partial: "account_form", locals: { url: accounts_path } %>
-      </div>
-
-    </div><!-- contentpanel -->
-    
-  </div><!-- mainpanel -->
-    
-</section>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h4 class="panel-title">Edit Account</h4>
+		<p>Edit the details below.</p>
+	</div>
+	<%#= render partial: "account_form", locals: { url: accounts_path } %>
+	<%= render partial: "account_edit" %>
+</div>
 
 
-<script src="/assets/bootstrap/js/jquery-1.11.1.min.js"></script>
-<script src="/assets/bootstrap/js/jquery-migrate-1.2.1.min.js"></script>
-<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="/assets/bootstrap/js/modernizr.min.js"></script>
-<script src="/assets/bootstrap/js/jquery.sparkline.min.js"></script>
-<script src="/assets/bootstrap/js/toggles.min.js"></script>
-<script src="/assets/bootstrap/js/retina.min.js"></script>
-<script src="/assets/bootstrap/js/jquery.cookies.js"></script>
-<script src="/assets/bootstrap/js/jquery.autogrow-textarea.js"></script>
-<script src="/assets/bootstrap/js/jquery.validate.min.js"></script>
-<script src="/assets/bootstrap/js/select2.min.js"></script>
 
-
-<script src="/assets/bootstrap/js/jquery-ui-1.10.3.min.js"></script>
-<script src="/assets/bootstrap/js/fullcalendar.min.js"></script>
-<script src="/assets/bootstrap/js/jquery.ui.touch-punch.min.js"></script>
-
-<script src="/assets/bootstrap/js/cropper.min.js"></script>
-
-<script src="/assets/bootstrap/js/custom.js"></script>
-
+<% content_for :custom_css do %>
 <style>
 	.account-avatar {
   width: 100%;
@@ -43,95 +19,54 @@
   max-width: 100%;
 }
 </style>
-<script>
-      contact_index = <%= @contact_counter %>;
+<% end %>
 
-	// Textarea Autogrow
-	jQuery('#account-about').autogrow();	
-	jQuery('#account-facts').autogrow();	
-	
-	//multiselect for sharing accounts
-	jQuery(".select2").select2({
-		width: '100%'
-	});
-	
-	// Basic Form
-	jQuery("#account-add-form").validate({
-			highlight: function(element) {
-			jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+<% content_for :custom_js do %>
+<script>
+jQuery(document).ready(function(){
+    "use strict";
+  
+	// With Form Validation Wizard
+	var $validator = jQuery("#account-edit-form").validate({
+		highlight: function(element) {
+		  jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
 		},
 		success: function(element) {
 		  jQuery(element).closest('.form-group').removeClass('has-error');
 		}
 	});
-	
+  
+	jQuery('#validationWizard').bootstrapWizard({
+		tabClass: 'nav nav-pills nav-justified nav-disabled-click',
+		onTabClick: function(tab, navigation, index) {
+		  return false;
+		},
+		onNext: function(tab, navigation, index) {
+		  var $valid = jQuery('#account-edit-form').valid();
+		  
+		  if(!$valid) {
+		    $validator.focusInvalid();
+		    return false;
+		  }
+		  
+		},
+		onTabShow: function(tab, navigation, index){
+			if(index == 3){
+		  		$(".pager .next").hide();
+		  		$('.pager .finish').removeClass('disabled');
+		  		$(".pager .finish").show();
+			  }else{
+			  	$(".pager .next").show();
+			  	$(".pager .finish").hide();
+			  }	
+		}
 
-	$('#account-add-form').on('click', '.add-detail', function () {
-	    var row = $('#account-contact-row'),
-	        new_row = row.clone();
-
-	    row.find('.fa-plus')
-	        .removeClass('fa-plus')
-	        .addClass('fa-minus');
-
-	    row.find('.add-detail')
-	        .removeClass('add-detail')
-	        .removeClass('btn-success')
-	        .addClass('btn-danger')
-	        .addClass('minus-detail');
-
-	    
-          new_row.find('select').attr('name', 'account-contact[' + contact_index + '][contact-type]');
-          new_row.find('input:text').val('');
-          new_row.find('input:text').attr('name', 'account-contact[' + contact_index + '][contact-details]');
-          contact_index++;
-
-	    row.before(new_row);
-
-	}).on('click', '.minus-detail', function () {
-	    $(this).closest('#account-contact-row').remove();
-	});	
-
-
-	var $image = $('.account-avatar > img'),
-	    replaced;
-	
-	$image.cropper({
-		aspectRatio: 1 / 1,
-		movable: false,
-		zoomable: false,
-		rotatable: false,
-		scalable: false
 	});
-	
-
-	var $inputImage = $("#inputImage");
-	if (window.FileReader) {
-	    $inputImage.change(function() {
-	        var fileReader = new FileReader(),
-	                files = this.files,
-	                file;
-	
-	        if (!files.length) {
-	            return;
-	        }
-	
-	        file = files[0];
-	
-	        if (/^image\/\w+$/.test(file.type)) {
-	            fileReader.readAsDataURL(file);
-	            fileReader.onload = function () {
-	                $inputImage.val("");
-	                $image.cropper("reset", true).cropper("replace", this.result);
-	            };
-	        } else {
-	            showMessage("Please choose an image file.");
-	        }
-	    });
-	} else {
-	    $inputImage.addClass("hide");
-	}
-
-
-
+  	
+  	$(".pager .finish").click(function(e){
+  		e.preventDefault();
+  		$("#account-edit-form").submit();
+  	})
+});
 </script>
+<% end %>

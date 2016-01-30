@@ -1,6 +1,9 @@
 class Account < OrchardApiModel
   has_one :conversation
-  has_many :contacts
+  has_many :contacts_attributes, :class_name => 'Contact'
+  has_many :addresses_attributes, :class_name => 'Address'
+  
+
   schema do
     # define each attribute separately
     attribute 'name', :string
@@ -8,24 +11,8 @@ class Account < OrchardApiModel
     attribute 'assign_to', :string
     attribute 'shared_with', :string
     attribute 'about', :string
-    attribute 'facts', :string
-    attribute 'avatar', :string
-
-    attribute 'country', :string
-=begin
-
-    attribute 'addresses_attributes', Array do
-      attribute 'street_address', :string
-      attribute 'city', :string
-      attribute 'postcode', :string
-      attribute 'country', :string
-    end
-    attribute 'contacts_attributes', Array do
-      attribute 'name', :string
-      attribute 'value', :string
-      attribute 'type', :string
-    end    
-=end
+    attribute 'quick_facts', :string
+    attribute 'avatar_url', :string
   end
 
 end

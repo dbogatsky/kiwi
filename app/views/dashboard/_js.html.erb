@@ -1,10 +1,104 @@
-<script src="assets/bootstrap/js/jquery-ui-1.10.3.min.js"></script>
+<% content_for :custom_js do %>
+<!-- dashboard javascript -->
+<!--<script src="/assets/bootstrap/js/dashboard.js"></script>-->
+<script>
+  var map_marker = new GMaps({
+    div: '#gmap-marker',
+    lat: -12.043333,
+    lng: -77.028333
+  });
+  map_marker.addMarker({
+    lat: -12.043333,
+    lng: -77.019333,
+    label: "GJ",
+    click: function(e) {
+      alert('You clicked in this marker');
+    }
+  });
+  map_marker.addMarker({
+    lat: -12.043333,
+    lng: -77.028333,
+    label: "RJ",
+    title: 'Hello World!'
+  }); 
+  map_marker.addMarker({
+    lat: -12.043333,
+    lng: -77.022333,
+    label: "DY",
+    click: function(e) {
+      alert('You clicked in this marker');
+    }
+  });   
+  
+  var m4 = new Morris.Bar({
+        // ID of the element in which to draw the chart.
+        element: 'accounts-status-breakdown',
+        // Chart data records -- each entry in this array corresponds to a point on
+        // the chart.
+        data: [
+        { y: 'May', a: 13,  b: 23, c: 0, d: 0},
+        { y: 'Jun', a: 22,  b: 22, c: 2, d: 0},
+        { y: 'Jul', a: 28,  b: 12, c: 4, d: 5},
+        { y: 'Aug', a: 44,  b: 5, c: 0, d: 6},
+        { y: 'Sep', a: 80,  b: 32, c: 10, d: 7},
+        { y: 'Oct', a: 100, b: 20, c: 3, d: 3}
+        ],
+        xkey: 'y',
+        ykeys: ['a', 'b', 'c', 'd'],
+        labels: ['Open', 'Leads', 'Suspended', 'Closed'],
+        barColors: ['#1CAF9A', '#428BCA', '#ff860d', '#999999'],
+        lineWidth: '1px',
+        fillOpacity: 0.8,
+        smooth: false,
+        stacked: true,
+        hideHover: true
+      });
 
-<script src="assets/bootstrap/js/flot/jquery.flot.min.js"></script>
-<script src="assets/bootstrap/js/flot/jquery.flot.resize.min.js"></script>
-<script src="assets/bootstrap/js/flot/jquery.flot.spline.min.js"></script>
-<script src="assets/bootstrap/js/morris.min.js"></script>
-<script src="assets/bootstrap/js/raphael-2.1.0.min.js"></script>
+  jQuery(document).ready(function(){
+	
+	"use strict";
+	
+	function showTooltip(x, y, contents) {
+		jQuery('<div id="tooltip" class="tooltipflot">' + contents + '</div>').css( {
+		  position: 'absolute',
+		  display: 'none',
+		  top: y + 5,
+		  left: x + 5
+		}).appendTo("body").fadeIn(200);
+	}
+    
+   var uploads = [[0, 2], [1, 9], [2,5], [3, 13], [4, 6], [5, 13], [6, 8]];
+	var downloads = [[0, 0], [1, 6.5], [2,4], [3, 10], [4, 2], [5, 10], [6, 4]];
+	
+	
+	// Trigger Resize in Morris Chart
+   var delay = (function() {
+    var timer = 0;
+		return function(callback, ms) {
+			clearTimeout(timer);  
+			timer = setTimeout(callback, ms);
+		};
+    })();
 
-
-<script src="assets/bootstrap/js/dashboard.js"></script>
+   jQuery(window).resize(function() {
+		delay(function() {
+			m4.redraw();
+	}, 500);
+   }).trigger('resize');
+    
+   jQuery('#sparkline').sparkline([4,3,3,1,4,3,2,2,3,10,9,6], {
+		  type: 'bar', 
+		  height:'30px',
+        barColor: '#428BCA'
+   });
+	
+    
+    jQuery('#sparkline2').sparkline([9,8,8,6,9,10,6,5,6,3,4,2], {
+		  type: 'bar', 
+		  height:'30px',
+        barColor: '#999'
+    });
+});
+</script>
+<!-- end of dashboard javascript -->
+<% end %>

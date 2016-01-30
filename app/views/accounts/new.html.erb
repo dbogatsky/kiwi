@@ -1,17 +1,12 @@
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h4 class="panel-title">Add Account</h4>
-          <p>Fill in the details below to add an account</p>
-        </div>
-          <%= render partial: "account_form", locals: { url: accounts_create_path } %>
-      </div>
-    </div><!-- contentpanel -->
+<div class="panel panel-default">
+	<div class="panel-heading">
+	  <h4 class="panel-title">Add Account</h4>
+	  <p>Fill in the details below to add an account</p>
+	</div>
+  	<%= render partial: "account_form" %>
+</div>
     
-  </div><!-- mainpanel -->
-    
-</section>
-
-
+<!--
 <script src="/assets/bootstrap/js/jquery-1.11.1.min.js"></script>
 <script src="/assets/bootstrap/js/jquery-migrate-1.2.1.min.js"></script>
 <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -32,58 +27,132 @@
 <script src="/assets/bootstrap/js/cropper.min.js"></script>
 
 <script src="/assets/bootstrap/js/custom.js"></script>
+-->
 
-<style>
-	.account-avatar {
-  width: 100%;
-}
-
-.account-avatar > img {
-  max-width: 100%;
-}
-</style>
+<% content_for :custom_js do %>
 <script>
-      contact_index = <%= @contact_counter %>;
+jQuery(document).ready(function(){
+    "use strict";
 
-	// Textarea Autogrow
-	jQuery('#account-about').autogrow();	
-	jQuery('#account-facts').autogrow();	
-	
-	//multiselect for sharing accounts
-	jQuery(".select2").select2({
-		width: '100%'
-	});
-	
-	// Basic Form
-	jQuery("#account-add-form").validate({
-			highlight: function(element) {
-			jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+	// Basic Wizard
+	//jQuery('#basicWizard').bootstrapWizard();
+
+	// Progress Wizard
+	/*$('#progressWizard').bootstrapWizard({
+	'nextSelector': '.next',
+	'previousSelector': '.previous',
+	onNext: function(tab, navigation, index) {
+	  var $total = navigation.find('li').length;
+	  var $current = index+1;
+	  var $percent = ($current/$total) * 100;
+	  jQuery('#progressWizard').find('.progress-bar').css('width', $percent+'%');
+	},
+	onPrevious: function(tab, navigation, index) {
+	  var $total = navigation.find('li').length;
+	  var $current = index+1;
+	  var $percent = ($current/$total) * 100;
+	  jQuery('#progressWizard').find('.progress-bar').css('width', $percent+'%');
+	},
+	onTabShow: function(tab, navigation, index) {
+	  var $total = navigation.find('li').length;
+	  var $current = index+1;
+	  var $percent = ($current/$total) * 100;
+	  jQuery('#progressWizard').find('.progress-bar').css('width', $percent+'%');
+	}
+	});*/
+
+	// Disabled Tab Click Wizard
+	/*jQuery('#disabledTabWizard').bootstrapWizard({
+	tabClass: 'nav nav-pills nav-justified nav-disabled-click',
+	onTabClick: function(tab, navigation, index) {
+	  return false;
+	}
+	});*/
+  
+	// With Form Validation Wizard
+	var $validator = jQuery("#account-add-form").validate({
+		highlight: function(element) {
+		  jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
 		},
 		success: function(element) {
 		  jQuery(element).closest('.form-group').removeClass('has-error');
 		}
 	});
+  
+	jQuery('#validationWizard').bootstrapWizard({
+		tabClass: 'nav nav-pills nav-justified nav-disabled-click',
+		onTabClick: function(tab, navigation, index) {
+		  return false;
+		},
+		onNext: function(tab, navigation, index) {
+		  var $valid = jQuery('#account-add-form').valid();
+		  
+		  if(!$valid) {
+		    $validator.focusInvalid();
+		    return false;
+		  }
+		  
+		},
+		onTabShow: function(tab, navigation, index){
+			if(index == 3){
+		  		$(".pager .next").hide();
+		  		$('.pager .finish').removeClass('disabled');
+		  		$(".pager .finish").show();
+			  }else{
+			  	$(".pager .next").show();
+			  	$(".pager .finish").hide();
+			  }	
+		}
+
+	});
+  	
+  	$(".pager .finish").click(function(e){
+  		e.preventDefault();
+  		$("#account-add-form").submit();
+  	})
+  	/*$(".pager .finish").on("click",".remove_field", function(e){ //user click on remove text
+	    e.preventDefault();
+	    $("#account-add-form").submit();
+	})*/
+  
+
+	// Textarea Autogrow
+	jQuery('#account-about').autogrow();
+	jQuery('#account-facts').autogrow();	
+	
+	//multiselect for sharing accounts
+	/*jQuery(".select2").select2({
+		width: '100%'
+	});*/
+	
+	// Basic Form
+	/*jQuery("#account-add-form").validate({
+		highlight: function(element) {
+			jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+		},
+		success: function(element) {
+		  jQuery(element).closest('.form-group').removeClass('has-error');
+		}
+	});*/
 	
 
-	$('#account-add-form').on('click', '.add-detail', function () {
-	    var row = $('#account-contact-row'),
-	        new_row = row.clone();
+	/*$('#account-add-form').on('click', '.add-detail', function () {
+	    var row = $('#account-contact-row'), new_row = row.clone();
 
 	    row.find('.fa-plus')
-	        .removeClass('fa-plus')
-	        .addClass('fa-minus');
+		.removeClass('fa-plus')
+		.addClass('fa-minus');
 
 	    row.find('.add-detail')
-	        .removeClass('add-detail')
-	        .removeClass('btn-success')
-	        .addClass('btn-danger')
-	        .addClass('minus-detail');
-
+		.removeClass('add-detail')
+		.removeClass('btn-success')
+		.addClass('btn-danger')
+		.addClass('minus-detail');
 	    
-          new_row.find('select').attr('name', 'account-contact[' + contact_index + '][contact-type]');
-          new_row.find('input:text').val('');
-          new_row.find('input:text').attr('name', 'account-contact[' + contact_index + '][contact-details]');
-          contact_index++;
+		new_row.find('select').attr('name', 'account-contact[' + contact_index + '][contact-type]');
+		new_row.find('input:text').val('');
+		new_row.find('input:text').attr('name', 'account-contact[' + contact_index + '][contact-details]');
+		contact_index++;
 
 	    row.before(new_row);
 
@@ -132,5 +201,37 @@
 	}
 
 
+	//Dynamic add/remove fields in form
+	var max_fields      = 10; //maximum input boxes allowed
+	var wrapper         = $(".input-fields-wrap"); //Fields wrapper
+	var add_button      = $(".add-field-button"); //Add button ID
 
+	var x = 1; //initlal text box count
+	$(add_button).click(function(e){ //on add input button click
+	    e.preventDefault();
+	    if(x < max_fields){ //max input box allowed
+	        x++; //text box increment
+	        $(wrapper).append('<div><input type="text" name="mytext[]"/><a href="#" class="remove_field">Remove</a></div>'); //add input box
+	    }
+	});
+
+	$(wrapper).on("click",".remove_field", function(e){ //user click on remove text
+	    e.preventDefault(); $(this).parent('div').remove(); x--;
+	})*/
+
+});
 </script>
+<% end %>
+
+
+<% content_for :custom_css do %>
+<style>
+	.account-avatar {
+	width: 100%;
+}
+
+.account-avatar > img {
+	max-width: 100%;
+}
+</style>
+<% end %>

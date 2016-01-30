@@ -1,0 +1,62 @@
+$('#contact-modal').modal('hide');
+$('#account-contact-add-form')[0].reset();
+<% if @status.eql?("ok") %>
+$("#account-contacts").append('\
+<li id="<%= dom_id(@contact) %>">\
+    <i class="fa fa-<%= @contact.icon_name %>"></i>\
+    <a id="account-contact-editable-<%= @contact.id %>" data-url="<%= account_contact_path(@account, @contact.id) %>" class="account-contact-editable" data-title="Enter Contact" data-type="text" data-contacttype="<%= @contact.type %>" data-contactname="<%= @contact.name %>"><%= @contact.value %></a>\
+    <div id="contact-button-grp-<%= @contact.id %>" class="btn-group" style="margin-left: 5px;">\
+      <%= link_to account_contact_path(@account, @contact.id), {  method: :delete, remote: true, data: { confirm: "Are you sure?", toggle: "tooltip", placement: "top"}, class: "btn btn-default btn-xs tooltips link-delete", title: "Remove"} do %>\
+      <span class="glyphicon glyphicon-remove"></span>\
+      <% end %>\
+    </div>\
+</li>');
+
+$.fn.editable.defaults.ajaxOptions = {type: "PUT"};
+jQuery('#account-contact-editable-<%= @contact.id %>').editable({
+  send: 'always',
+  validate: function(value) {
+    if($.trim(value) == '') return 'This field is required';
+  },
+  params: function (params) {
+    var data = {};
+    var contact = {};
+    data['authenticity_token'] = "<%= form_authenticity_token %>";
+    contact['id'] = params.id;
+    contact['name'] = $(this).editable().data('contactname');;
+    contact['type'] = $(this).editable().data('contacttype');
+    contact['value'] = params.value;
+    data['contact'] = contact;
+    return data;
+  },
+  success: function(response, newValue) {
+    console.log(JSON.stringify(response));
+    if(response.status == 'error'){
+      return response.msg; //msg will be shown in editable form
+    }
+  }
+});
+
+jQuery(document).ready(function() {
+	jQuery.gritter.add({
+		title: 'Success!',
+		text: '<%= @notification_message %>',
+    	class_name: 'growl-success',
+    	image: '/assets/bootstrap/images/screen.png',
+		sticky: false,
+		time: ''
+	});
+});
+<% else %>
+jQuery(document).ready(function() {
+	jQuery.gritter.add({
+		title: 'Error!',
+		text: '<%= @notification_message %>',
+    	class_name: 'growl-danger',
+    	image: '/assets/bootstrap/images/screen.png',
+		sticky: false,
+		time: ''
+	});
+});
+//alert("Error in create DEBUG[]: <%= @contact.errors.messages.inspect %>");
+<% end %>

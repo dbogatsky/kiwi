@@ -1,125 +1,167 @@
-      	<div class="panel-body">
-          <%= simple_form_for @account, url: url do |f| %>
-          <%= f.input :name, label: "Account Name", required: true %>
+<div class="panel-body panel-body-nopadding">
+  
+  <!-- BASIC WIZARD -->
+  <div id="validationWizard" class="basic-wizard">
+    
+    <ul class="nav nav-pills nav-justified">
+      <li><a href="#vtab1" data-toggle="tab"><span>Step 1:</span> Basic Info</a></li>
+      <li><a href="#vtab2" data-toggle="tab"><span>Step 2:</span> Address</a></li>
+      <li><a href="#vtab3" data-toggle="tab"><span>Step 3:</span> Contact Details</a></li>
+      <li><a href="#vtab4" data-toggle="tab"><span>Step 4:</span> Extra info</a></li>
+    </ul>
 
-      		<div class="form-group">
-      			<label class="col-sm-3 control-label">Street<span class="asterisk">*</span></label>
-      			<div class="col-sm-6">
-      				<input type="text" name="account-address[street_address]" id="account-street_address" class="form-control" required>
-      			</div>
-      		</div>
-      		<div class="form-group">
-      			<label class="col-sm-3 control-label">City<span class="asterisk">*</span></label>
-      			<div class="col-sm-6">
-      				<input type="text" name="account-address[city]" id="account-city" class="form-control" required>
-      			</div>
-      		</div>
-      		<div class="form-group">
-      			<label class="col-sm-3 control-label">Postcode/Zipcode<span class="asterisk">*</span></label>
-      			<div class="col-sm-6">
-      				<input type="text" name="account-address[postcode]" id="account-postcode" class="form-control" required>
-      			</div>
-      		</div>
-      		<div class="form-group">
-      			<label class="col-sm-3 control-label">Province/State<span class="asterisk">*</span></label>
-      			<div class="col-sm-6">
-      				<input type="text" name="account-address[region]" id="account-region" class="form-control" required>
-      			</div>
-      		</div>
+    <!--<form class="form-horizontal" id="firstForm">-->
+    <%= simple_form_for @account, html: { id: "account-add-form", class: "form-horizontal" } do |f| %>
+    <div class="tab-content">
+      
+      <div class="tab-pane" id="vtab1">
+          <%= f.input :name, wrapper: :wizard_horizontal_form, label: "Account Name", required: true %>
+
+          <div class="form-group">
+            <label class="col-sm-offset-2 col-sm-1 control-label">Account Status<span class="asterisk">*</span></label>
+            <div class="col-sm-4">
+              <%= f.select( :status_id, options_for_select(AccountStatus.all.collect{ |a| ["#{a.name}", a.id] }), {}, { :class => 'select2' }) %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-offset-2 col-sm-1 control-label">Assign To<span class="asterisk">*</span></label>
+            <div class="col-sm-4">
+                    <%= f.select( :assign_to, options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] }), {}, { :class => 'select2' })%>
+            </div>
+          </div>
           
-	        <%= f.input :country, as: :country, priority: [ "Canada", "United States", "United Kingdom" ] %>   
+          <div class="form-group">
+            <label class="col-sm-offset-2 col-sm-1 control-label">Shared With</label>
+            <div class="col-sm-4">
+              <%= f.select( :shared_with, options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] }), { :include_blank => true}, { :class => 'select2', 'data-placeholder' => "Type name of user you wish to share with"})%>
+            </div>
+          </div>
+      </div>
+      <div class="tab-pane" id="vtab2">
+        <%= f.fields_for :addresses_attributes do |add| %>
+          <%= add.input :street_address, wrapper: :wizard_horizontal_form, required: true, label: "Street Address", :input_html => { :name => "account[addresses_attributes][][street_address]"} %>
+          <%= add.input :city, wrapper: :wizard_horizontal_form, required: true, label: "City", :input_html => { :name => "account[addresses_attributes][][city]"} %>
+          <%= add.input :postcode, wrapper: :wizard_horizontal_form, required: true, label: "Post/Zipcode", :input_html => { :name => "account[addresses_attributes][][postcode]"} %>
+          <%= add.input :region, wrapper: :wizard_horizontal_form, required: true, label: "Province/State", :input_html => { :name => "account[addresses_attributes][][region]"} %>
+            
+          <div class="form-group">
+            <label class="col-sm-offset-2 col-sm-1 control-label">Country<span class="asterisk">*</span></label>
+            <div class="col-sm-4">
+            <%= add.input_field :country, { required: true, priority: [ "Canada", "United States", "United Kingdom" ],  class: "select2", name: "account[addresses_attributes][][country]" } %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      
+      <div class="tab-pane" id="vtab3">
+        <div class="contact-form-wrap">
+        <div class="contact-element" style="padding-bottom: 10px;">
+        <%= f.simple_fields_for :contacts_attributes do |c| %>
+          <% t = Time.now.to_i %>
+          <div class="form-group">
+            <label class="col-sm-offset-1 col-sm-1 control-label">Contact<span class="asterisk">*</span></label>
+            <div class="col-sm-2">
+              <%#= c.input :name, required: true, label: 'Contact', :input_html => { :name => "account[contacts_attributes][][name]" } %>
+              <%= c.input_field :name, { required: true, label: 'Contact', name: "account[contacts_attributes][#{t}][name]", class: "form-control", id: "account_contacts_attributes_name_1" } %>
+            </div>
+            
+            <label class="col-sm-1 control-label">Type<span class="asterisk">*</span></label>
+            <div class="col-sm-1">
+              <%= c.select( :type, options_for_select(Contact::CONTACT_TYPES), {}, { :class => "select2", :name => "account[contacts_attributes][#{t}][type]", :id => "account_contacts_attributes_type_1" } ) %>
+            </div>
 
-      		<div class="form-group">
-      			<label class="col-sm-3 control-label">Contact Name</label>
-      			<div class="col-sm-6">
-      				<input type="text" name="account-contact_name" id="account-contact_name" class="form-control">
-      			</div>
-      		</div>
-      		<div class="form-group">
-      			<label class="col-sm-3 control-label">Contact</label>
-      			<div class="col-sm-6">
-      				<div class="row" id="account-contact-row">
-      					<div class="col-sm-3">
-      						<select name="account-contact[1][contact-type]" class="form-control input-sm">
-      			              <option value="phone">Phone</option>
-      			              <option value="mobile">Mobile</option>
-      			              <option value="fax">Fax</option>
-      			              <option value="email">Email</option>
-      			              <option value="website">Website</option>
-      			              <option value="twitter">Twitter</option>
-      			              <option value="facebook">Facebook</option>
-      			              <option value="youtube">Youtube</option>
-      			              <option value="instagram">Instagram</option>
-      			            </select>
-      					</div>
-      					<div class="col-sm-8">
-      						<input type="text" name="account-contact[1][contact-details]" placeholder="Details" class="form-control" required>
-      					</div>
-      					<div class="col-sm-1">
-      						<div class="btn-group">
-      							<a class="add-detail btn btn-success"><i class="fa fa-plus"></i></a>
-      						</div>
-      					</div>
-      				</div>
-      			</div>
-      		</div>		
-      		<div class="form-group">
-      			<label class="col-sm-3 control-label">Account Status<span class="asterisk">*</span></label>
-      			<div class="col-sm-2">
-      				<select name="status_id" class="form-control input-sm">
-      					<% @account_statuses.each do |status| %>
-      						<option value="<%= status['id'] %>"><%= status['name'] %></option>
-      					<% end %>
-      				</select>
-      			</div>
-      		</div>
-      		<div class="form-group">
-      			<label class="col-sm-3 control-label">Assign To<span class="asterisk">*</span></label>
-      			<div class="col-sm-6">
-                  	<select class="select2" data-placeholder="Select user to assign this account too">
-      	            	<option value="6">Michael Jordan</option>
-      	            	<option value="6">Charles Barkley</option>
-                  	</select>
-      			</div>
-      		</div>
-      		<div class="form-group">
-      			<label class="col-sm-3 control-label">Shared With</label>
-      			<div class="col-sm-6">
-                      <select class="select2" name="account-shared" id="account-shared" multiple data-placeholder="Type name of user you wish to share with">
-      					<option value=""></option>
-      					<option value="1">Gurpreet Jajj</option>
-      					<option value="2">David Young</option>
-      					<option value="3">Diego Brogna</option>
-      					<option value="4">Amar Jajj</option>
-      					<option value="5">Lakhveer Jajj</option>
-      					<option value="6">Dani Syed</option>
-                      </select>
-      			</div>
-      		</div>		
-          
-          <%= f.input :about, :label => 'About', :input_html => { :rows => 5 }	%>
+            <label class="col-sm-1 control-label">Value<span class="asterisk">*</span></label>
+            <div class="col-sm-2">
+              <%#= c.input :value, required: true, :input_html => { :name => "account[contacts_attributes][][value]"} %>
+              <%= c.input_field :value, { required: true, label: 'Value', name: "account[contacts_attributes][#{t}][value]", class: "form-control", id: "account_contacts_attributes_value_1" } %>
+            </div>
+          </div>
+        <% end %>
+        </div>
+        </div>
+        <button class="add-contact-button btn btn-success btn-xs">Add Contact</button>
+      </div>
 
-          <%= f.input :facts, :label => 'Quick Facts', :input_html => { :rows => 5 }  %>
+      <div class="tab-pane" id="vtab4">
+        <div class="form-group">
+          <label class="col-sm-offset-2 col-sm-1 control-label">Avatar</label>
+          <div class="col-sm-4">
+            <label title="Upload image file" for="inputImage" class="btn btn-primary">
+              <%= f.file_field :avatar, { name: "avatar" }  %>
+            </label>
+          </div>
+        </div>
+        <%= f.input :about, wrapper: :wizard_horizontal_form, :label => 'About', :input_html => { :rows => 5 }  %>
 
-      		<div class="form-group">
-      			<label class="col-sm-3 control-label">Picture</label>
-      			<div class="col-sm-6">
-                      <label title="Upload image file" for="inputImage" class="btn btn-primary">
-                          <input type="file" accept="image/*" name="file" id="inputImage" class="hide">Upload new image
-                      </label>
-      				<div class="account-avatar">
-      					<img src="/assets/images/default_account_avatar.png" alt="Picture">
-      				</div>
-      			</div>
-      		</div>			
-      	</div><!-- panel-body -->
-
-      	<div class="panel-footer">
-      		<div class="row">
-      			<div class="col-sm-6 col-sm-offset-3">
-      				<button type="submit" class="btn btn-primary" name="save" id="save">Save</button>&nbsp;
-      				<button class="btn btn-default" name="cancel" id="cancel">Cancel</button>
-      			</div>
-      		</div>
-      	</div><!-- panel-footer -->
-      <% end %>
+        <%= f.input :quick_facts, wrapper: :wizard_horizontal_form, :label => 'Quick Facts', :input_html => { :rows => 5 }  %>
+        <input type="hidden" name="save">
+      </div>
+      
+      
+    </div><!-- tab-content -->
+    <% end %>
+    <!--</form>-->
+    
+    <ul class="pager wizard">
+      <li class="previous"><a href="javascript:void(0)">Previous</a></li>
+      <li class="next"><a href="javascript:void(0)">Next</a></li>
+      <li class="next finish" style="display:none;"><a href="javascript:;">Finish</a></li>
+    </ul>
+    
+  </div><!-- #validationWizard -->
+  
+</div><!-- panel-body -->
+<script>
+    var max_fields      = 5; //maximum input boxes allowed
+    var wrapper         = $(".contact-form-wrap"); //Fields wrapper
+    var add_button      = $(".add-contact-button"); //Add button ID
+   
+    var x = 1; //initlal text box count
+    $(add_button).click(function(e){ //on add input button click
+        e.preventDefault();
+        if(x < max_fields){ //max input box allowed
+            x++; //text box increment
+            //$(wrapper).append('<div><input type="text" name="mytext[]"/><a href="#" class="remove_field">Remove</a></div>'); //add input box
+            //alert("HTML to add = " + $(".contact-element:first").html());
+            //<button class="remove-contact-button btn btn-danger btn-xs">Remove</button>
+            t = (new Date()).getTime();
+            str_html = '\
+            <div class="contact-element" id="contact-element-'+x+'" style="padding-bottom: 10px;">\
+              <div class="form-group">\
+                <label class="col-sm-offset-1 col-sm-1 control-label">Contact<span class="asterisk">*</span></label>\
+                <div class="col-sm-2">\
+                  <input label="Contact" name="account[contacts_attributes]['+t+'][name]" class="form-control" required id="account_contacts_attributes_name_'+x+'" type="text">\
+                </div>\
+                <label class="col-sm-1 control-label">Type<span class="asterisk">*</span></label>\
+                <div class="col-sm-1">\
+                  <select class="select2" id="account_contacts_attributes_type_'+x+'" name="account[contacts_attributes]['+t+'][type]">\
+                    <option value="email">email</option>\
+                    <option value="fax">fax</option>\
+                    <option value="mobile">mobile</option>\
+                    <option value="phone">phone</option>\
+                  </select>\
+                </div>\
+                <label class="col-sm-1 control-label">Value<span class="asterisk">*</span></label>\
+                <div class="col-sm-2">\
+                  <input label="Value" name="account[contacts_attributes]['+t+'][value]" class="form-control" required id="account_contacts_attributes_value_'+x+'" type="text">\
+                </div>\
+                <div class="col-sm-1"><button class="remove-contact-button btn btn-danger btn-xs">Remove</button></div>\
+              </div>\
+            </div>';
+            $(wrapper).append(str_html);
+            $("#account_contacts_attributes_type_"+x).select2({ width: '100%'});
+            //$('#account_contacts_attributes_value_'+x).rules('add', { required: true });
+            /*$('input[id="account_contacts_attributes_value_'+x+'"]').rules("add", {  // <- apply rule to new field
+              required: true
+            });*/
+            
+        }
+    });
+   
+    $(wrapper).on("click",".remove-contact-button", function(e){ //user click on remove text
+        e.preventDefault();
+        //$(this).parent('div').remove(); x--;
+        $(this).closest('div.contact-element').remove(); x--;
+    })
+</script>

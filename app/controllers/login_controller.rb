@@ -29,7 +29,7 @@ class LoginController < ApplicationController
 
       #cache some stuff for performance
       #- account statuses
-      @account_statuses = AccountStatuses.all
+      @account_statuses = AccountStatus.all
       session["account"]  ||= {}
       session["account"]["statuses"] = @account_statuses
 
