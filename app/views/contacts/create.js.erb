@@ -2,15 +2,8 @@ $('#contact-modal').modal('hide');
 $('#account-contact-add-form')[0].reset();
 <% if @status.eql?("ok") %>
 $("#account-contacts").append('\
-<li id="<%= dom_id(@contact) %>">\
-    <i class="fa fa-<%= @contact.icon_name %>"></i>\
-    <a id="account-contact-editable-<%= @contact.id %>" data-url="<%= account_contact_path(@account, @contact.id) %>" class="account-contact-editable" data-title="Enter Contact" data-type="text" data-contacttype="<%= @contact.type %>" data-contactname="<%= @contact.name %>"><%= @contact.value %></a>\
-    <div id="contact-button-grp-<%= @contact.id %>" class="btn-group" style="margin-left: 5px;">\
-      <%= link_to account_contact_path(@account, @contact.id), {  method: :delete, remote: true, data: { confirm: "Are you sure?", toggle: "tooltip", placement: "top"}, class: "btn btn-default btn-xs tooltips link-delete", title: "Remove"} do %>\
-      <span class="glyphicon glyphicon-remove"></span>\
-      <% end %>\
-    </div>\
-</li>');
+<li id="<%= dom_id(@contact) %>"><i class="fa fa-<%= contact.icon_name %>"></i><%= contact.value %></li>\
+');
 
 $.fn.editable.defaults.ajaxOptions = {type: "PUT"};
 jQuery('#account-contact-editable-<%= @contact.id %>').editable({
