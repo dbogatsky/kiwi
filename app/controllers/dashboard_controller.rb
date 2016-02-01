@@ -1,3 +1,4 @@
+require 'open_weather'
 class DashboardController < ApplicationController
 
   def index
