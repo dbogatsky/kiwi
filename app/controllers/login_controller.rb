@@ -7,19 +7,32 @@ class LoginController < ApplicationController
   end
 
   def login
-  #abort(current_user.inspest)
+    #abort(current_user.inspest)
     if params[:email] == APP_CONFIG['superadmin_email']
       return redirect_to login_superadmin_path
     end
 
-    # Check username and password through the Authentication API]
-    token = User.authenticate(params[:email], params[:password])
+    # Check username and password through the Authentication API
+    begin
+      token = User.authenticate(params[:email], params[:password])
+    rescue ActiveResource::ResourceNotFound, ActiveResource::BadRequest, ActiveResource::UnauthorizedAccess, ActiveResource::MethodNotAllowed, ActiveResource::ResourceConflict, ActiveResource::ResourceGone, ActiveResource::ResourceInvalid
+      # 404 ResourceNotFound - No match found with email/password provided
+      # 400 BadRequest - Incorrect request sent
+      # 403 UnauthorizedAccess - No access to server
+      # 405 MethodNotAllowed - Incorrect request
+      # 409 ResourceConflict - ?
+      # 410 ResourceGone - ?
+      # 422 ResourceInvalid (rescued by save as validation errors) - ?
+      flash[:danger] = 'Your email or password is incorrect.  Please try again.'  # Log in error message
+      return redirect_to user_login_path
+    rescue ActiveResource::ServerError, ActiveResource::ConnectionError
+      # 500..599 ServerError - Server Error or unresponsive
+      # Other ConnectionError - No connection or other error
+      flash[:danger] = 'An unexpected error was encountered.'  # Log in error message
+      return redirect_to user_login_path
+    end
 
-     if token.nil?
-      # Create an error message
-      flash[:danger] = 'Your email or password is incorrect'  # Log in error message
-      redirect_to root_path
-    else
+    unless token.nil?
       # Store user details into session
       session[:user_id] = token.user_id
       session[:token] = token.token
