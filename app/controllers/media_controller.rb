@@ -46,10 +46,12 @@ class MediaController < ApplicationController
       email = current_user.email
       appKey = APP_CONFIG['api_app_key']
       token = session[:token]
+      apiURL = APP_CONFIG['api_url'] + '/download/media'
       id = params[:id]
+      apiFullUrl = apiURL + "/" +  id;
       new_name = params[:name]
       #curlRes = `curl -X GET -H "Authorization: Token token="#{token}", email="#{email}", app_key="#{appKey}"" "#{apiFullUrl}"`
-      curlRes = `curl -X PUT -H "Authorization: Token token="#{token}", email="#{email}", app_key="#{appKey}"" -H "Content-Type: application/json"  -d '{"medium":{"name": "#{new_name}"}}' 'http://api.convo.code10.ca/api/v1/media/#{id}'`
+      curlRes = `curl -X PUT -H "Authorization: Token token="#{token}", email="#{email}", app_key="#{appKey}"" -H "Content-Type: application/json"  -d '{"medium":{"name": "#{new_name}"}}' '#{apiFullUrl}'`
       render :text => (1 ? 1 : 0) and return
     end
 	end
@@ -109,10 +111,12 @@ class MediaController < ApplicationController
       email = current_user.email
       appKey = APP_CONFIG['api_app_key']
       token = session[:token]
+      apiURL = APP_CONFIG['api_url'] + '/download/media'
       id = params[:id]
+      apiFullUrl = apiURL + "/" +  id;
       new_name = params[:name]
       #curlRes = `curl -X GET -H "Authorization: Token token="#{token}", email="#{email}", app_key="#{appKey}"" "#{apiFullUrl}"`
-      curlRes = `curl -X PUT -H "Authorization: Token token="#{token}", email="#{email}", app_key="#{appKey}"" -H "Content-Type: application/json"  -d '{"medium":{"name": "#{new_name}"}}' 'http://api.convo.code10.ca/api/v1/media/#{id}'`
+      curlRes = `curl -X PUT -H "Authorization: Token token="#{token}", email="#{email}", app_key="#{appKey}"" -H "Content-Type: application/json"  -d '{"medium":{"name": "#{new_name}"}}' '#{apiFullUrl}'`
       render :text => (1 ? 1 : 0) and return
     end
   end
