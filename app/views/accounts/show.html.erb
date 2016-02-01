@@ -1,3 +1,17 @@
+<% content_for :pageheader do %>
+<div class="pageheader">
+  <h2><i class="fa fa-briefcase"></i><%= @account.name %></h2>
+  <div class="breadcrumb-wrapper">
+    <span class="label">You are here:</span>
+    <ol class="breadcrumb">
+        <li><a href="/accounts">Accounts</a></li>
+        <li class="active">Details</li>
+    </ol>
+  </div>
+</div>
+<% end %>
+
+
 <div class="profile-header">
   <!-- TODO: really need flash error here?? -->
   <div class="row">
@@ -35,29 +49,23 @@
       <button class="btn btn-primary btn-xs mr5" data-toggle="modal" data-target=".contact-modal-form">New Contact</button>
       <div class="mb30"></div>
 
-      <h5 class="subtitle">Address&nbsp;<i class="fa fa-map-marker"></i></h5>
-      <!--<div class="profile-location">  
-        <a href="https://maps.google.com?daddr=2529+Canada Way+Vancouver+Canada+V5G1G4" target="_blank">???</a>
-      </div>-->
+      <h5 class="subtitle">Address&nbsp;<i class="fa fa-map-marker"></i>
+        <a href="#" data-toggle="modal" data-target=".address-modal-form" class="pull-right">+ Add</a>
+      </h5>
       <ul class="profile-social-list" id="account-addresses">
         <% @account.addresses.each do |address| %>
-          <li id="<%= dom_id(address) %>">
+          <li id="<%= dom_id(address) %>" style="border-bottom:0px;">
             <address>
               <strong><%= address.name %></strong>
-              <div id="address-button-grp-<%= address.id %>" class="btn-group" style="margin-left: 15px;">
-                <%= link_to account_address_path(@account, address.id), { method: :delete, remote: true, data: { confirm: 'Are you sure?', toggle: "tooltip", placement: "top"}, class: "btn btn-default btn-xs tooltips", title: "Remove"} do %>
-                <span class="glyphicon glyphicon-remove"></span>
-                <% end %>
-              </div>
-              <br>
+              <a href="https://maps.google.com?daddr=<%= address.street_address %>+<%= address.city %>+<% address.region %>+<%= address.country %>+<%= address.postcode %>" target="_blank">
               <%= address.street_address %><br>
-              <%= address.city %> (<% address.region %>), <%= address.postcode %> - <%= address.country %> 
+              <%= address.city %>, <% address.region %>, <%= address.country %><br />
+              <%= address.postcode %> 
+              </a>
             </address>
           </li>
         <% end %>
       </ul>
-      <div class="mb10"></div>
-      <button class="btn btn-primary btn-xs mr5" data-toggle="modal" data-target=".address-modal-form">New Address</button>
       
       <div class="mb30"></div>
       <h5 class="subtitle">About</h5>
@@ -69,7 +77,6 @@
     </div><!-- col-sm-3 -->
 
               <div class="col-sm-9">
-                <h2 class="profile-name"><%= @account.name %></h2> 
                 <div class="mb20"></div>
                 <div class="row">
                   <div class="col-sm-11">
