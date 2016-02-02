@@ -28,36 +28,26 @@
                    </tr>
                 </thead>
                 <tbody>
-                   <tr>
-                      <td>davidbowie@company.com</td>
-                      <td>David</td>
-                      <td>Bowie</td>
-                      <td>Manager</td>
-                      <td class="table-action">
-                  <a href=""><i class="fa fa-pencil"></i></a>
-                        <a href="" class="delete-row"><i class="fa fa-trash-o"></i></a>
+
+                  <% @all_users.each do |user| %>
+                    <tr>
+                      <td><%= user.email %></td>
+                      <td><%= user.first_name %></td>
+                      <td><%= user.last_name %></td>
+                      <td>
+                        <% @user_roles_array = Array.new %>
+                        <% user.roles.each do |role| %>
+                          <% @user_roles_array.push(role.name) %>
+                        <% end %>
+                        <%= @user_roles_array.join(', ') %>
                       </td>
-                   </tr>
-                   <tr>
-                      <td>axelrose@company.com</td>
-                      <td>Axel</td>
-                      <td>Rose</td>
-                      <td>Sales</td>
                       <td class="table-action">
-                  <a href=""><i class="fa fa-pencil"></i></a>
-                        <a href="" class="delete-row"><i class="fa fa-trash-o"></i></a>
+                        <a href="<%= user.id %>"><i class="fa fa-pencil"></i></a>
+                        <a href="<%= user.id %>" class="delete-row"><i class="fa fa-trash-o"></i></a>
                       </td>
-                   </tr>
-                   <tr>
-                      <td>amylee@company.com</td>
-                      <td>Amy</td>
-                      <td>Lee</td>
-                      <td>Sales</td>
-                      <td class="table-action">
-                  <a href=""><i class="fa fa-pencil"></i></a>
-                        <a href="" class="delete-row"><i class="fa fa-trash-o"></i></a>
-                      </td>
-                   </tr>
+                    </tr>
+                  <% end %>
+
                 </tbody>
              </table>
             </div><!-- table-responsive -->

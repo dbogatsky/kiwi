@@ -5,6 +5,8 @@ class UsersController < ApplicationController
 
 	def index
 		# Get all users
+    @all_users = User.all
+
 	end
 
 
