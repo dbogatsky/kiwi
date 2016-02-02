@@ -17,7 +17,7 @@ class UsersController < ApplicationController
 
 
     #get roles (temporary hardcoded)
-    @roles = [{id: 1, name: "sales"},{id: 2, name: "manager"}]
+    @roles = [{id: 1, name: "Admin"},{id: 2, name: "Enitity Admin"},{id: 3, name: "User"}]
 
 	end
 
@@ -65,7 +65,7 @@ class UsersController < ApplicationController
 
 		def get_token
 		  #set gloal var for token to be used in model, hack for now
-		  $user_token = session["user_token"]
+		  $user_token = session[:token]
 		end
 
 end
