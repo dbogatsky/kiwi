@@ -2,7 +2,7 @@ class LoginController < ApplicationController
   #exclude the following methods from the authentication filter since the user is not logged in yet
   before_filter :authentication, :except => [:index, :login, :forgot, :recover, :superadmin, :superadmin_auth]
 
-  def index
+  def index   
     render :layout => false
   end
 
@@ -14,7 +14,7 @@ class LoginController < ApplicationController
 
     # Check username and password through the Authentication API
     begin
-      token = User.authenticate(params[:email], params[:password])
+      token = Token.authenticate(params[:email], params[:password])
     rescue ActiveResource::ResourceNotFound, ActiveResource::BadRequest, ActiveResource::UnauthorizedAccess, ActiveResource::MethodNotAllowed, ActiveResource::ResourceConflict, ActiveResource::ResourceGone, ActiveResource::ResourceInvalid
       # 404 ResourceNotFound - No match found with email/password provided
       # 400 BadRequest - Incorrect request sent
@@ -85,6 +85,7 @@ class LoginController < ApplicationController
 
   def destroy
     session[:user] = nil
+    session[:token] = nil
     redirect_to root_path
   end
 
