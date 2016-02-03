@@ -10,29 +10,29 @@
   <link rel="shortcut icon" href="" type="image/png">
 
   <title><%= APP_CONFIG['software_title'] %></title>
-  
+
   <link rel="stylesheet" href="/assets/bootstrap/css/style.default.css" />
-  <link rel="stylesheet" href="/assets/bootstrap/css/fullcalendar.css" /> 
+  <link rel="stylesheet" href="/assets/bootstrap/css/fullcalendar.css" />
   <link rel="stylesheet" href="/assets/bootstrap/css/colorpicker.css" />
   <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap-timepicker.min.css" /><!-- timepicker style -->
-  <link rel="stylesheet" href="/assets/bootstrap/css/jquery.tagsinput.css" /><!-- tag input style -->  
+  <link rel="stylesheet" href="/assets/bootstrap/css/jquery.tagsinput.css" /><!-- tag input style -->
   <link rel="stylesheet" href="/assets/bootstrap/css/cropper.min.css" /> <!-- photo cropper style -->
   <link rel="stylesheet" href="/assets/vertical-timeline/css/style.css" /> <!-- Resource style -->
   <link rel="stylesheet" href="/assets/bootstrap/css/jquery.datatables.css" /> <!-- datatable style -->
   <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap-editable.css" />
   <link rel="stylesheet" href="/assets/bootstrap/css/jquery.gritter.css" />
   <link rel="stylesheet" href="/assets/bootstrap/css/morris.css" /> <!-- morris charts -->
-  
+
   <!--<script src="/assets/vertical-timeline/js/modernizr.js"></script />--> <!-- Modernizr -->
 
-  
+
   <%#= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= stylesheet_link_tag 'application', media: 'all' %>
   <%#= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application' %>
   <%= render "shared/js" %>
 
-  
+
   <%= csrf_meta_tags %>
 
   <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -42,12 +42,12 @@
   <![endif]-->
 
   <%= yield :custom_css %>
-  
+
   <style>
       #ui-datepicker-div{ z-index:9999 !important; }
   	.colorpicker, .colorpicker * {
   		z-index: 9999 !important;
-  	}    
+  	}
   </style>
 </head>
 
@@ -60,9 +60,11 @@
   <section>
     <%= render "layouts/nav" %>
     <div class="mainpanel">
-      <%= render "layouts/bar" %>  
+      <%= render "layouts/bar" %>
 
-      <%= yield :pageheader %>
+      <div class="pageheader">
+        <%= yield :pageheader %>
+      </div>
 
       <div class="contentpanel">
        <%= yield %>

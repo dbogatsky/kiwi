@@ -1,469 +1,77 @@
+<%= content_for :pageheader do %>
+  <h2><i class="fa fa-file-o"></i> Media Manager </h2>
+<% end %>
 <ul class="filemanager-options">
-    <li>
-        <div class="ckbox ckbox-default">
-            <input type="checkbox" id="selectall" value="1" />
-            <label for="selectall">Select All</label>
-        </div>
-    </li>
-    <li>
-        <a href="javascript:void(0)" id="email-multiple" class="itemopt disabled"><i class="fa fa-envelope-o"></i> Email</a>
-    </li>
-    <li>
-        <a href="" class="itemopt disabled"><i class="fa fa-download"></i> Download</a>
-    </li>
-    <!--li>
-        <a href="" class="itemopt disabled"><i class="fa fa-pencil"></i> Edit</a>
-    </li-->
-    <li>
-        <a href="javascript:void(0);" class="itemopt disabled" id="destroy-multiple"><i class="fa fa-trash-o"></i> Delete</a>
-    </li>
-    <!--li class="filter-type">
-        Show:
-        <a href="all" class="active">All</a>
-        <a href="document">Documents</a>
-        <a href="audio">Audio</a>
-        <a href="image">Images</a>
-        <a href="video">Videos</a>
-    </li-->
-
+  <li>
+    <div class="ckbox ckbox-default">
+      <input type="checkbox" id="selectall" value="1" />
+      <label for="selectall">Select All</label>
+    </div>
+  </li>
+  <li>
+    <a href="javascript:void(0)" id="email-multiple" class="itemopt disabled"><i class="fa fa-envelope-o"></i> Email</a>
+  </li>
+  <li>
+    <a href="" class="itemopt disabled"><i class="fa fa-download"></i> Download</a>
+  </li>
+  <!--li>
+    <a href="" class="itemopt disabled"><i class="fa fa-pencil"></i> Edit</a>
+  </li-->
+  <li>
+    <a href="javascript:void(0);" class="itemopt disabled" id="destroy-multiple"><i class="fa fa-trash-o"></i> Delete</a>
+  </li>
+  <!--li class="filter-type">
+      Show:
+      <a href="all" class="active">All</a>
+      <a href="document">Documents</a>
+      <a href="audio">Audio</a>
+      <a href="image">Images</a>
+      <a href="video">Videos</a>
+  </li-->
 </ul>
 
-
 <div class="row">
-    <div class="col-sm-9">
-        <div class="row filemanager">
-            <div id="flash_messages">
-                <% flash.each do |key, value| %>
-                  <%= content_tag(:div, value, :class => "alert alert-success fade in flash #{key}") %>
-                <% end %>
-            </div>  
-            <div id="fm-files-container">
-            </div>
-        </div><!-- row -->
-    </div><!-- col-sm-9 -->
-    <div class="col-sm-3">
-        <div class="fm-sidebar">
+  <div class="col-sm-9">
+    <div class="row filemanager">
+      <div id="flash_messages">
+        <% flash.each do |key, value| %>
+          <%= content_tag(:div, value, :class => "alert alert-success fade in flash #{key}") %>
+        <% end %>
+      </div>
+      <div id="fm-files-container"></div>
+    </div><!-- row -->
+  </div><!-- col-sm-9 -->
+  <div class="col-sm-3">
+    <div class="fm-sidebar">
+      <button class="btn btn-primary btn-block" id="upload-file">Upload File</button>
 
-            <!--button class="btn btn-primary btn-block">Upload Files</button-->
-            <button class="btn btn-primary btn-block" id="upload-file">Upload File</button>
+      <!-- Upload file Popup -->
+      <%= render 'upload_modal' %>
 
+      <!-- Send Media File in email Popup -->
+      <%= render 'email_media_modal' %>
 
-            <!-- Upload file Popup -->
-            <div class="modal fade" id="upload">
-                <div class="modal-dialog">
-
-                    <!-- Popup content-->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Upload Media File</h4>
-                        </div>
-                        <div class="modal-body">
-
-                            <%= form_tag({:action => 'upload_file'}, :name => 'upload-media-file', :multipart => true) do %>
-                            <div class="div-oth-input"><%= text_field_tag :filename, nil, placeholder: 'Name', class: 'form-control' %></div> 
-                            <div class="div-oth-input"><%= file_field 'media', 'payload', class: 'form-control', accept: 'audio/*|video/*|image/*|application/pdf|application/msword| application/vnd.openxmlformats-officedocument.wordprocessingml.document|application/vnd.ms-excel|application/vnd.openxmlformats-officedocument.spreadsheetml.sheet|MIME_type'  %>
-                                <span class="help">Only videos, audios, images and docs are allowed.</span>
-                            </div>
-                              <%= hidden_field_tag :folder_id, '0' %>
-                              <%= submit_tag "Upload", :class => 'btn btn-primary' %>
-                            <% end %>
-
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            
-            <!-- Send Media File in email Popup -->
-            <div class="modal fade" id="email-media-file">
-                <div class="modal-dialog">
-                    <!-- Popup content-->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Email</h4>
-                        </div>
-                        <div class="modal-body">
-                            <label>Send an email by filling in the details below:</label>
-                            <%= form_tag({:action => 'email_file'}, :name => 'send-email', :multipart => true) do %>
-                              <div class="div-oth-input"><%= text_field_tag 'to' , nil, placeholder: "To", class: 'form-control'%></div>
-                               <div class="div-oth-input"><%= text_field_tag 'subject',nil, placeholder: "Subject", class: 'form-control'%></div>
-                               <div class="div-oth-input"><%= text_area_tag 'message', nil, :rows => 4, :cols => 50, placeholder: "Message", class: 'form-control'%></div>
-                              <%= hidden_field_tag :attachments %>
-                              <div class="div-oth-input" id="email-attachments">
-                              </div>
-                              <%= submit_tag "Send",:id=> "send", :class => "btn btn-primary" %>
-                            <% end %>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            
-            <!-- Rename Media File in Popup -->
-            <div class="modal fade" id="rename-media-file">
-                <div class="modal-dialog">
-                    <!-- Popup content-->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Email</h4>
-                        </div>
-                        <div class="modal-body">
-                            <label>Rename Media File</label>
-                            <%= form_tag({:action => 'rename_media_file'}, :multipart => true, :id => "save-file-frm") do %>
-                              <div class="div-oth-input"><%= text_field_tag 'new_name' , nil, placeholder: "Name", class: 'form-control'%></div>
-                              <%= hidden_field_tag :media_file_id %>
-                              <%= submit_tag "Save",:id=> "rename-file", :class => "btn btn-primary" %>
-                            <% end %>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-
-
-            <div class="mb30"></div>
-
-            <h5 class="subtitle">Folders <a class="pull-right" id="add-folder">+ Add New Folder</a></h5>
-
-            <div id="create-folder" style="display:none">
-                <%= form_tag media_path do %>
-                  <%= text_field_tag :name, ' ',:class => 'form-control form-control-folder' %>
-                  <%= hidden_field_tag :type,'Folder' %>
-                  <%= submit_tag "Create", :id=> "create", :class => "btn btn-primary" %>
-                <% end %>
-            </div>
-            <div id="msg"></div>  
-
-            <ul class="folder-list">
-
-                <% @medias.each do |folder| %>
-                  <% if folder.type == 'folder' %>
-                <li class="folder-id-<%= folder.id %>">
-                    <a href="javascript:void(0);" class="open-folder" data-id="<%= folder.id %>"><i class="fa fa-folder-o"></i><span><%= folder.name %></span></a>
-                        <div class="edit-div-right">
-                        <a href="javascript:void(0);" class="edit-folder" data-id="<%= folder.id %>"><i class="fa fa-pencil"></i></a>
-                        <a href="javascript:void(0);" class="delete-folder" data-id="<%= folder.id %>"><i class="fa fa-trash-o"></i></a>
-                        </div>
-                        <div class="edit-folder-form" style="display:none">
-                            <%= form_tag media_path, :class => "save-folder-frm" do %>
-                              <%= text_field_tag :name, folder.name , :class => 'form-control form-control-2' %>
-                              <%= hidden_field_tag :type,'Folder' %>
-                              <%= hidden_field_tag :folder_iid, folder.id %>
-                              <%= submit_tag "Save", :class => "btn btn-primary save-folder" %>
-                              <%= button_tag "Cancel", :class => "btn btn-default cancel-save-folder" %>
-                            <% end %>
-                        </div>
-                    </li>
-                  <% end %>
-                <% end %>
-
-
-            </ul>
-
-            <div class="mb30"></div>
-
-        </div>
-    </div><!-- col-sm-3 -->
+      <!-- Rename Media File in Popup -->
+      <%= render 'rename_media_modal' %>
+      <div class="mb30"></div>
+      <h5 class="subtitle">Folders
+        <a class="pull-right" id="add-folder">+ Add New Folder</a>
+      </h5>
+      <div id="create-folder" style="display:none">
+        <%= form_tag media_path do %>
+          <%= text_field_tag :name, ' ',:class => 'form-control form-control-folder' %>
+          <%= hidden_field_tag :type,'Folder' %>
+          <%= submit_tag "Create", :id=> "create", :class => "btn btn-primary" %>
+        <% end %>
+      </div>
+      <div id="msg"></div>
+      <ul class="folder-list">
+        <%= render @medias %>
+      </ul>
+      <div class="mb30"></div>
+    </div>
+  </div><!-- col-sm-3 -->
 </div>
-</div>
-
-</div><!-- mainpanel -->
-
-<div class="rightpanel">
-    <!-- Nav tabs -->
-    <ul class="nav nav-tabs nav-justified">
-        <li class="active"><a href="#rp-alluser" data-toggle="tab"><i class="fa fa-users"></i></a></li>
-        <li><a href="#rp-favorites" data-toggle="tab"><i class="fa fa-heart"></i></a></li>
-        <li><a href="#rp-history" data-toggle="tab"><i class="fa fa-clock-o"></i></a></li>
-        <li><a href="#rp-settings" data-toggle="tab"><i class="fa fa-gear"></i></a></li>
-    </ul>
-
-    <!-- Tab panes -->
-    <div class="tab-content">
-        <div class="tab-pane active" id="rp-alluser">
-            <h5 class="sidebartitle">Online Users</h5>
-            <ul class="chatuserlist">
-                <li class="online">
-                    <div class="media">
-                        <a href="#" class="pull-left media-thumb">
-                            <img alt="" src="assets/bootstrap/images/photos/userprofile.png" class="media-object">
-                        </a>
-                        <div class="media-body">
-                            <strong>Eileen Sideways</strong>
-                            <small>Los Angeles, CA</small>
-                        </div>
-                    </div><!-- media -->
-                </li>
-                <li class="online">
-                    <div class="media">
-                        <a href="#" class="pull-left media-thumb">
-                            <img alt="" src="assets/bootstrap/images/photos/user1.png" class="media-object">
-                        </a>
-                        <div class="media-body">
-                            <span class="pull-right badge badge-danger">2</span>
-                            <strong>Zaham Sindilmaca</strong>
-                            <small>San Francisco, CA</small>
-                        </div>
-                    </div><!-- media -->
-                </li>
-                <li class="online">
-                    <div class="media">
-                        <a href="#" class="pull-left media-thumb">
-                            <img alt="" src="assets/bootstrap/images/photos/user2.png" class="media-object">
-                        </a>
-                        <div class="media-body">
-                            <strong>Nusja Nawancali</strong>
-                            <small>Bangkok, Thailand</small>
-                        </div>
-                    </div><!-- media -->
-                </li>
-                <li class="online">
-                    <div class="media">
-                        <a href="#" class="pull-left media-thumb">
-                            <img alt="" src="assets/bootstrap/images/photos/user3.png" class="media-object">
-                        </a>
-                        <div class="media-body">
-                            <strong>Renov Leongal</strong>
-                            <small>Cebu City, Philippines</small>
-                        </div>
-                    </div><!-- media -->
-                </li>
-                <li class="online">
-                    <div class="media">
-                        <a href="#" class="pull-left media-thumb">
-                            <img alt="" src="assets/bootstrap/images/photos/user4.png" class="media-object">
-                        </a>
-                        <div class="media-body">
-                            <strong>Weno Carasbong</strong>
-                            <small>Tokyo, Japan</small>
-                        </div>
-                    </div><!-- media -->
-                </li>
-            </ul>
-
-            <div class="mb30"></div>
-
-            <h5 class="sidebartitle">Offline Users</h5>
-            <ul class="chatuserlist">
-                <li>
-                    <div class="media">
-                        <a href="#" class="pull-left media-thumb">
-                            <img alt="" src="assets/bootstrap/images/photos/user5.png" class="media-object">
-                        </a>
-                        <div class="media-body">
-                            <strong>Eileen Sideways</strong>
-                            <small>Los Angeles, CA</small>
-                        </div>
-                    </div><!-- media -->
-                </li>
-                <li>
-                    <div class="media">
-                        <a href="#" class="pull-left media-thumb">
-                            <img alt="" src="assets/bootstrap/images/photos/user2.png" class="media-object">
-                        </a>
-                        <div class="media-body">
-                            <strong>Zaham Sindilmaca</strong>
-                            <small>San Francisco, CA</small>
-                        </div>
-                    </div><!-- media -->
-                </li>
-                <li>
-                    <div class="media">
-                        <a href="#" class="pull-left media-thumb">
-                            <img alt="" src="assets/bootstrap/images/photos/user3.png" class="media-object">
-                        </a>
-                        <div class="media-body">
-                            <strong>Nusja Nawancali</strong>
-                            <small>Bangkok, Thailand</small>
-                        </div>
-                    </div><!-- media -->
-                </li>
-                <li>
-                    <div class="media">
-                        <a href="#" class="pull-left media-thumb">
-                            <img alt="" src="assets/bootstrap/images/photos/user4.png" class="media-object">
-                        </a>
-                        <div class="media-body">
-                            <strong>Renov Leongal</strong>
-                            <small>Cebu City, Philippines</small>
-                        </div>
-                    </div><!-- media -->
-                </li>
-                <li>
-                    <div class="media">
-                        <a href="#" class="pull-left media-thumb">
-                            <img alt="" src="assets/bootstrap/images/photos/user5.png" class="media-object">
-                        </a>
-                        <div class="media-body">
-                            <strong>Weno Carasbong</strong>
-                            <small>Tokyo, Japan</small>
-                        </div>
-                    </div><!-- media -->
-                </li>
-                <li>
-                    <div class="media">
-                        <a href="#" class="pull-left media-thumb">
-                            <img alt="" src="assets/bootstrap/images/photos/user4.png" class="media-object">
-                        </a>
-                        <div class="media-body">
-                            <strong>Renov Leongal</strong>
-                            <small>Cebu City, Philippines</small>
-                        </div>
-                    </div><!-- media -->
-                </li>
-                <li>
-                    <div class="media">
-                        <a href="#" class="pull-left media-thumb">
-                            <img alt="" src="assets/bootstrap/images/photos/user5.png" class="media-object">
-                        </a>
-                        <div class="media-body">
-                            <strong>Weno Carasbong</strong>
-                            <small>Tokyo, Japan</small>
-                        </div>
-                    </div><!-- media -->
-                </li>
-            </ul>
-        </div>
-        <div class="tab-pane" id="rp-favorites">
-            <h5 class="sidebartitle">Favorites</h5>
-            <ul class="chatuserlist">
-                <li class="online">
-                    <div class="media">
-                        <a href="#" class="pull-left media-thumb">
-                            <img alt="" src="assets/bootstrap/images/photos/user2.png" class="media-object">
-                        </a>
-                        <div class="media-body">
-                            <strong>Eileen Sideways</strong>
-                            <small>Los Angeles, CA</small>
-                        </div>
-                    </div><!-- media -->
-                </li>
-                <li>
-                    <div class="media">
-                        <a href="#" class="pull-left media-thumb">
-                            <img alt="" src="assets/bootstrap/images/photos/user1.png" class="media-object">
-                        </a>
-                        <div class="media-body">
-                            <strong>Zaham Sindilmaca</strong>
-                            <small>San Francisco, CA</small>
-                        </div>
-                    </div><!-- media -->
-                </li>
-                <li>
-                    <div class="media">
-                        <a href="#" class="pull-left media-thumb">
-                            <img alt="" src="assets/bootstrap/images/photos/user3.png" class="media-object">
-                        </a>
-                        <div class="media-body">
-                            <strong>Nusja Nawancali</strong>
-                            <small>Bangkok, Thailand</small>
-                        </div>
-                    </div><!-- media -->
-                </li>
-                <li class="online">
-                    <div class="media">
-                        <a href="#" class="pull-left media-thumb">
-                            <img alt="" src="assets/bootstrap/images/photos/user4.png" class="media-object">
-                        </a>
-                        <div class="media-body">
-                            <strong>Renov Leongal</strong>
-                            <small>Cebu City, Philippines</small>
-                        </div>
-                    </div><!-- media -->
-                </li>
-                <li class="online">
-                    <div class="media">
-                        <a href="#" class="pull-left media-thumb">
-                            <img alt="" src="assets/bootstrap/images/photos/user5.png" class="media-object">
-                        </a>
-                        <div class="media-body">
-                            <strong>Weno Carasbong</strong>
-                            <small>Tokyo, Japan</small>
-                        </div>
-                    </div><!-- media -->
-                </li>
-            </ul>
-        </div>
-        <div class="tab-pane" id="rp-history">
-            <h5 class="sidebartitle">History</h5>
-            <ul class="chatuserlist">
-                <li class="online">
-                    <div class="media">
-                        <a href="#" class="pull-left media-thumb">
-                            <img alt="" src="assets/bootstrap/images/photos/user4.png" class="media-object">
-                        </a>
-                        <div class="media-body">
-                            <strong>Eileen Sideways</strong>
-                            <small>Hi hello, ctc?... would you mind if I go to your...</small>
-                        </div>
-                    </div><!-- media -->
-                </li>
-                <li>
-                    <div class="media">
-                        <a href="#" class="pull-left media-thumb">
-                            <img alt="" src="assets/bootstrap/images/photos/user2.png" class="media-object">
-                        </a>
-                        <div class="media-body">
-                            <strong>Zaham Sindilmaca</strong>
-                            <small>This is to inform you that your product that we...</small>
-                        </div>
-                    </div><!-- media -->
-                </li>
-                <li>
-                    <div class="media">
-                        <a href="#" class="pull-left media-thumb">
-                            <img alt="" src="assets/bootstrap/images/photos/user3.png" class="media-object">
-                        </a>
-                        <div class="media-body">
-                            <strong>Nusja Nawancali</strong>
-                            <small>Are you willing to have a long term relat...</small>
-                        </div>
-                    </div><!-- media -->
-                </li>
-            </ul>
-        </div>
-        <div class="tab-pane pane-settings" id="rp-settings">
-
-            <h5 class="sidebartitle mb20">Settings</h5>
-            <div class="form-group">
-                <label class="col-xs-8 control-label">Show Offline Users</label>
-                <div class="col-xs-4 control-label">
-                    <div class="toggle toggle-success"></div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-xs-8 control-label">Enable History</label>
-                <div class="col-xs-4 control-label">
-                    <div class="toggle toggle-success"></div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-xs-8 control-label">Show Full Name</label>
-                <div class="col-xs-4 control-label">
-                    <div class="toggle-chat1 toggle-success"></div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-xs-8 control-label">Show Location</label>
-                <div class="col-xs-4 control-label">
-                    <div class="toggle toggle-success"></div>
-                </div>
-            </div>
-
-        </div><!-- tab-pane -->
-
-    </div><!-- tab-content -->
-</div><!-- rightpanel -->
-
-</section>
-
 
 <script src="assets/bootstrap/js/jquery-1.11.1.min.js"></script>
 <script src="assets/bootstrap/js/jquery-migrate-1.2.1.min.js"></script>
@@ -480,448 +88,420 @@
 <script src="assets/bootstrap/js/jquery.validate.min.js"></script>
 <script src="assets/bootstrap/js/additional-methods.min.js"></script>
 <script>
-          jQuery(document).ready(function () {
+  $(document).ready(function () {
+    "use strict";
+    $(document).on('mouseover', '.thmb' , function () {
+      var t = $(this);
+      t.find('.ckbox').show();
+      t.find('.fm-group').show();
+    });
+    $(document).on('mouseout', '.thmb' , function () {
+      var t = $(this);
+      if (!t.closest('.thmb').hasClass('checked')) {
+        t.find('.ckbox').hide();
+        t.find('.fm-group').hide();
+      }
+    });
 
-  "use strict";
-  
-          $(document).on('mouseover', '.thmb' , function () {
-            var t = jQuery(this);
-            t.find('.ckbox').show();
-            t.find('.fm-group').show();
-          });
-          $(document).on('mouseout', '.thmb' , function () {
-            var t = jQuery(this);
-            if (!t.closest('.thmb').hasClass('checked')) {
-              t.find('.ckbox').hide();
-              t.find('.fm-group').hide();
-            }
-          });
-  
-          jQuery('.ckbox').each(function () {
-  var t = jQuery(this);
-          var parent = t.parent();
-          if (t.find('input').is(':checked')) {
-  t.show();
-          parent.find('.fm-group').show();
-          parent.addClass('checked');
-  }
-  });
-  
-         
-          jQuery('#selectall').click(function () {
-            if (jQuery(this).is(':checked')) {
-            jQuery('.thmb').each(function () {
-            jQuery(this).find('input').attr('checked', true);
-                    jQuery(this).addClass('checked');
-                    jQuery(this).find('.ckbox, .fm-group').show();
-            });
-                    enable_itemopt(true);
-            } else {
-            jQuery('.thmb').each(function () {
-            jQuery(this).find('input').attr('checked', false);
-                    jQuery(this).removeClass('checked');
-                    jQuery(this).find('.ckbox, .fm-group').hide();
-            });
-                    enable_itemopt(false);
-            }
-          });
-          function enable_itemopt(enable) {
-          if (enable) {
-          jQuery('.itemopt').removeClass('disabled');
-          } else {
+    $('.ckbox').each(function () {
+      var t = $(this);
+      var parent = t.parent();
+      if (t.find('input').is(':checked')) {
+        t.show();
+        parent.find('.fm-group').show();
+        parent.addClass('checked');
+      }
+    });
 
-          // check all thumbs if no remaining checks
-          // before we can disabled the options
-          var ch = false;
-                  jQuery('.thmb').each(function () {
-          if (jQuery(this).hasClass('checked'))
-                  ch = true;
+    $('#selectall').click(function () {
+      if ($(this).is(':checked')) {
+        $('.thmb').each(function () {
+          $(this).find('input').attr('checked', true);
+            $(this).addClass('checked');
+            $(this).find('.ckbox, .fm-group').show();
           });
-                  if (!ch)
-                  jQuery('.itemopt').addClass('disabled');
-          }
-          }
+        enable_itemopt(true);
+      } else {
+        $('.thmb').each(function () {
+          $(this).find('input').attr('checked', false);
+            $(this).removeClass('checked');
+            $(this).find('.ckbox, .fm-group').hide();
+          });
+        enable_itemopt(false);
+      }
+    });
 
-   $('.ckbox').live('click',function () {
-        var t = jQuery(this);
-                if (!t.find('input').is(':checked')) {
+    function enable_itemopt(enable) {
+      if (enable) {
+        $('.itemopt').removeClass('disabled');
+      } else {
+      // check all thumbs if no remaining checks
+      // before we can disabled the options
+      var ch = false;
+      $('.thmb').each(function () {
+        if ($(this).hasClass('checked'))
+          ch = true;
+        });
+        if (!ch)
+          $('.itemopt').addClass('disabled');
+      }
+    }
+
+    $('.ckbox').live('click',function () {
+      var t = $(this);
+      if (!t.find('input').is(':checked')) {
         t.closest('.thmb').removeClass('checked');
-                enable_itemopt(false);
-        } else {
+        enable_itemopt(false);
+      } else {
         t.closest('.thmb').addClass('checked');
-                enable_itemopt(true);
+        enable_itemopt(true);
+      }
+    });
+
+    $("#create").live("click", function (e) {
+      e.preventDefault();
+      var type = $("#type").val();
+      var name = $("#name").val();
+      $('input[type="submit"]').prop('disabled', true);
+      $.ajax({
+        url: "<%= request.base_url %>" + "/media/create_folder",
+        type: 'post',
+        data: "name=" + name + "&type=" + type,
+        success: function (id) {
+          $("#name").val('');
+          if (id > 0) {
+            $("#msg").html('');
+            $(".folder-list").prepend("<li><a href='javascript:void(0);' data-id='"+id+"'><i class='fa fa-folder-o'></i>" + name + "</a></li>");
+          } else {
+          $("#msg").html("Folder Not created");
+          setTimeout(function () {
+            $("#msg").html('');
+          }, 5000)
         }
-        });
-        
-        
-  
-          $("#create").live("click", function (e) {
-          e.preventDefault();
-          var type = $("#type").val();
-          var name = $("#name").val();
-          $('input[type="submit"]').prop('disabled', true);
-          $.ajax({
-          url: "<%= request.base_url %>" + "/media/create_folder",
-                  type: 'post',
-                  data: "name=" + name + "&type=" + type,
-                  success: function (id) {
-                    $("#name").val('');
-                    if (id > 0) {
-                      $("#msg").html('');
-                      $(".folder-list").prepend("<li><a href='javascript:void(0);' data-id='"+id+"'><i class='fa fa-folder-o'></i>" + name + "</a></li>");
-                    } else {
-                      $("#msg").html("Folder Not created");
-                      setTimeout(function () {
-                      $("#msg").html('');
-                      }, 5000)
-                  }
-                  $('input[type="submit"]').prop('disabled', false);
-                  },
-                  error: function (err, req) {
-                  $("#name").val('');
-                          $('input[type="submit"]').prop('disabled', false);
-                          alert("Your browser broke!");
-                  }
-
-
-          });
-  });
-  });</script>
-
-
-
-<script>
-  
-          var SELECTED_FOLDER = '';
-  
-          $(document).ready(function () {
-            $.validator.addMethod('filesize', function(value, element, param) {
-              // param = size (en bytes) 
-              // element = element to validate (<input>)
-              // value = value of the element (file name)
-              return this.optional(element) || (element.files[0].size <= param) 
-          });
-            
-            /*jquery validations */
-            $("form[name='upload-media-file']").validate({
-              focusInvalid: true,
-              rules: {
-                  filename: {
-                      required: true
-                  },
-                  'media[payload]':{
-                    required: true,
-                    //extension: 'jpg|jpeg|png|doc|docx|xls|xlsx|pdf|mp3|mpeg|mpg',
-                    filesize: 5242880
-                  }
-              },
-              messages: {
-                  filename: {
-                      required: 'Please enter file name'
-                  },
-                  'media[payload]':{
-                    required: 'Please select file to upload',
-                    filesize: 'File is too large. Only 5MB allowed'
-                  }
-              },
-              submitHandler: function (form) {
-                  form.submit();
-              }
-            });
-            
-            $("form[name='send-email']").validate({
-              focusInvalid: true,
-              rules: {
-                  to: {
-                      required: true,
-                      email: true
-                  },
-                  subject:{
-                    required: true
-                  }
-              },
-              messages: {
-                  to: {
-                      required: 'Please enter email address'
-                  },
-                  subject:{
-                   required: 'Please enter subject',
-                  }
-              },
-              submitHandler: function (form) {
-                  form.submit();
-              }
-            });
-            
-          
-          /*Auto hide flash message after 10 seconds*/
-          $('#flash_messages').delay(10000).fadeOut('slow');
-
-          $("#upload-file").click(function () {
-              $("#upload").modal();
-            });
-          $(document).on('click', ".share-media", function () {
-            $('div.social-share-button').attr('data-img',$(this).attr('data-img'));
-            $('div.social-share-button').attr('data-url',$(this).attr('data-img'));
-            $("#share-media").modal();
-          });
-          $(".edit-folder").click(function(){
-            $(this).parent().next().show();
-          });
-          $(".cancel-save-folder").click(function(){
-            $(this).parent().parent().hide();
-          });
-          
-          $("form#save-file-frm").submit(function(){
-              var fields = $(this).serializeArray();
-              var type = 'folder';
-              var name = '';
-              var file_id = '';
-              jQuery.each(fields, function(i, field) {
-              if (field.name == 'new_name'){
-              name = field.value;
-              }
-              if (field.name == 'media_file_id'){
-              file_id = field.value;
-              }
-              });
-              $('form#save-file-frm input[type="submit"]').prop('disabled', true);
-          $.ajax({
-          url: "<%= request.base_url %>" + "/media/rename_media_file",
-                  type: 'post',
-                  data: "id=" + file_id + "&name=" + name,
-                  success: function (data) {
-                    $('#rename-media-file').modal('hide');
-                    loadMediaFiles(SELECTED_FOLDER);
-                  $('form#save-file-frm input[type="submit"]').prop('disabled', false);
-                  },
-                  error: function (err, req) {
-                          $('form#save-file-frm input[type="submit"]').prop('disabled', false);
-                          alert("Your browser broke!");
-                  }
-
-
-          });
-          return false;
-  });
-          
-          $("form.save-folder-frm").submit(function(){
-              var fields = $(this).serializeArray();
-              var type = 'folder';
-              var name = '';
-              var folder_id = '';
-              jQuery.each(fields, function(i, field) {
-              if (field.name == 'name'){
-              name = field.value;
-              }
-              if (field.name == 'folder_iid'){
-              folder_id = field.value;
-              }
-              });
-              $('input[type="submit"]').prop('disabled', true);
-          $.ajax({
-          url: "<%= request.base_url %>" + "/media/save_folder",
-                  type: 'post',
-                  data: "id=" + folder_id + "&name=" + name + "&type=" + type,
-                  success: function (data) {
-                    $('li.folder-id-'+folder_id + ' a span').text(name);
-                    $('.folder-id-'+folder_id + ' form').hide();
-                  $('input[type="submit"]').prop('disabled', false);
-                  },
-                  error: function (err, req) {
-                  $("#name").val('');
-                          $('input[type="submit"]').prop('disabled', false);
-                          alert("Your browser broke!");
-                  }
-
-
-          });
-          return false;
-  });
-          /*
-           *View Folder media 
-           */
-          $(document).on('click', ".folder-list li a.open-folder", function(e){
-  e.preventDefault();
-          var _this_ = this;
-          var folder_id = SELECTED_FOLDER = $(this).attr('data-id');
-          loadMediaFiles(folder_id);   
+          $('input[type="submit"]').prop('disabled', false);
+        },
+        error: function (err, req) {
+          $("#name").val('');
+          $('input[type="submit"]').prop('disabled', false);
+          alert("Your browser broke!");
+        }
       });
-      /*Automatically load first folder media files*/
-      $('ul.folder-list li a:first').click();
-      
-      
-      $(document).on('click', "a.rename-media-file", function(e){
-        $('input[name="media_file_id"]').val($(this).attr('data-id'));
-        $('input[name="new_name"]').val($(this).attr('data-name'));
-        $('#rename-media-file').modal('show');
-      });
-      
-      
-      
-      /*
-      *Email single Media File
-      */
-      $(document).on('click', "a.email-media-file", function(){
-        var name = $(this).parent().parent().parent().parent().find('.fm-title').text();
-        var id= $(this).parent().parent().parent().prev().find('.media-checked').attr('uid');
-          name = '<i class="fa fa-paperclip"></i> ' + name + "<br>";
-        $("input[name='attachments']").val(id);
-        $("#email-attachments").html(name);
-        $('#email-media-file').modal('show');
-       });
-       
-      /*
-      *Email multiple Media Files
-      */
-      $('#email-multiple').click(function(){
-        
-        var names = '';
-        var ids = Array();
-        $("input.media-checked:checked").each(function(index,element){
-          names += '<i class="fa fa-paperclip"></i> ' + $(".media-file-" + $(element).val() + ' .fm-title').text() + "<br>";
-          ids.push($(element).attr('uid'));
-        });
-        $("input[name='attachments']").val(ids);
-        $("#email-attachments").html(names);
-        $('#email-media-file').modal('show');
-       });
-      
-      /*
-      *Delete multiple Media Files
-      */
-      $('#destroy-multiple').click(function(){
-        var ids = [];
-        $("input.media-checked:checked").each(function(index,element){
-          ids.push($(element).val());
-        });
-        if(confirm('Are you sure you want to delete these files?')){
-          var _this_ = this;
-          var id = $(this).attr('data-id');
-          $.ajax({
-              url: "<%= request.base_url %>" + "/media/destroy_multiple",
-              type: 'post',
-              data: 'ids='+ids,
-              success: function (data) {
-                if (data == 1) {
-                  loadMediaFiles(SELECTED_FOLDER);
-                } else {
-                  alert('File(s) not deleted')
-                }
-              },
-              error: function (err, req) {
-                alert("Your browser broke!");
-              }
-           });
-          }
-       });
-      
-    
-  
-      /*
-      *Delete Media File
-      */
-      $(document).on('click', "a.trash-media", function(){
-        if(confirm('Are you sure you want to delete this file?')){
-          var _this_ = this;
-          var id = $(this).attr('data-id');
-          $.ajax({
-              url: "<%= request.base_url %>" + "/media/destroy",
-              type: 'post',
-              data: "id=" + id,
-              success: function (data) {
-                if (data == 1) {
-                  $(_this_).parent().parent().parent().parent().parent().remove();
-                  loadMediaFiles(SELECTED_FOLDER);
-                } else {
-                  alert('File is not deleted')
-                }
-              },
-              error: function (err, req) {
-                alert("Your browser broke!");
-              }
-           });
-          }
-       });
-       
-      /*
-      *Delete Folder 
-      */
-      $(document).on('click', "a.delete-folder", function(){
-        if(confirm('Are you sure you want to delete this folder?')){
-          var _this_ = this;
-          var id = $(this).attr('data-id');
-          $.ajax({
-              url: "<%= request.base_url %>" + "/media/destroy",
-              type: 'post',
-              data: "id=" + id,
-              success: function (data) {
-                if (data == 1) {
-                $(_this_).parent().parent().css('background-color', '#FFB9B9').slideUp(500);
-                } else {
-                alert('Folder is not deleted')
-                }
-              },
-              error: function (err, req) {
-                alert("Your browser broke!");
-              }
-           });
-          }
-       });
-      });
-      
- /*
- * Function: loadMediaFiles
- * Params: folder_id Folder Id
- * Purpose: loads all the media files of specific folder
- */     
- function loadMediaFiles(folder_id){
-       $.ajax({
-                  url: "<%= request.base_url %>" + "/media/show",
-                  type: 'post',
-                  data: "folder_id=" + folder_id,
-                  dataType: 'json',
-                  beforeSend: function(){
-                          $('#preloader').show();
-                  },
-                success: function (data) {
-
-                        var container = '';
-                        var html = 'Folder is Empty';
-                if (data.length){
-                        html = '';
-                $(data).each(function(index, value){
-                var checkbox = '<div class="ckbox ckbox-default" style="display: none;"><input class="media-checked" type="checkbox" value="'+value.id+'" id="check'+index+'" uid="'+ value.uid +'"><label for="check'+index+'"></label></div>';  
-                var shareDropdown = '<div class="btn-group fm-group" style="display: none;"><button data-toggle="dropdown" class="btn btn-default dropdown-toggle fm-toggle" type="button"><span class="caret"></span></button><ul role="menu" class="dropdown-menu fm-menu"><li><a class="share-media" href="#" data-img="'+value.cdn_url+'"><i class="fa fa-share"></i> Share</a></li><li><a class="email-media-file" href="javascript:void(0)"><i class="fa fa-envelope-o"></i> Email</a></li><li><a href="javascript:void(0);" class="rename-media-file" data-id="'+value.id+'" data-name="'+value.name+'"><i class="fa fa-pencil"></i> Edit</a></li><li><a target="_blank" href="media/download_file/' + encodeURIComponent(value.cdn_url) + '/' + value.name + '"><i class="fa fa-download"></i> Download</a></li><li><a href="javascript:void(0);" class="trash-media" data-id="'+value.id+'"><i class="fa fa-trash-o"></i> Delete</a></li></ul></div>';
-                
-                container = $('<div class="col-xs-6 col-sm-4 col-md-3 image media-file-'+value.id+'"><div class="thmb">'+checkbox + shareDropdown +'<div class="thmb-prev"></div></div><!-- thmb --></div>');
-                        container.find('.thmb-prev').html('<a title="' + value.name + '" data-rel="prettyPhoto" href="' + value.cdn_url + '"><img width="180" height="135" alt="" class="img-responsive" src="' + value.cdn_url + '"></a>')
-                        
-                //ss = '<div data-via="" data-popup="" data-desc="The summary of page" data-url="https://www.google.co.in/images/nav_logo242.png" data-img="https://www.google.co.in/images/nav_logo242.png" data-title="Share Media File" class="social-share-button"><a href="#" title="Share to Twitter" onclick="return SocialShareButton.share(this);" class="social-share-button-twitter" data-site="twitter" rel="nofollow "></a><a href="#" title="Share to Facebook" onclick="return SocialShareButton.share(this);" class="social-share-button-facebook" data-site="facebook" rel="nofollow "></a><a href="#" title="Share to Pinterest" onclick="return SocialShareButton.share(this);" class="social-share-button-pinterest" data-site="pinterest" rel="nofollow "></a></div>';        
-                container.find('.thmb-prev').after('<h5 class="fm-title"><a href="">' + value.name + '</a></h5><small class="text-muted">Added: Jan 02, 2014</small>');
-                        html += $(container).prop('outerHTML'); ;
-                });
-                }
-
-                $('div.filemanager #fm-files-container').html(html);
-                $('#preloader').hide();
-                //set folder id to upload file in specific folder
-                $("form input[name='folder_id']").val(folder_id);
-                $('ul.folder-list li a.open-folder i').attr('class','fa fa-folder-o');
-                $('ul.folder-list li.folder-id-'+folder_id+' a i:first').attr('class','fa fa-folder-open');
-                jQuery("a[data-rel^='prettyPhoto']").prettyPhoto();
-              },
-              error: function (err, req) {
-                  alert("Your browser broke!");
-                  $('#preloader').hide();
-              }
-          });
-  }
+    });
+  });
 </script>
 
-</body>
-</html>
+<script>
+
+  var SELECTED_FOLDER = '';
+  $(document).ready(function () {
+    $.validator.addMethod('filesize', function(value, element, param) {
+      // param = size (en bytes)
+      // element = element to validate (<input>)
+      // value = value of the element (file name)
+      return this.optional(element) || (element.files[0].size <= param)
+    });
+
+    /*jquery validations */
+    $("form[name='upload-media-file']").validate({
+      focusInvalid: true,
+      rules: {
+        filename: {
+          required: true
+        },
+        'media[payload]':{
+          required: true,
+          //extension: 'jpg|jpeg|png|doc|docx|xls|xlsx|pdf|mp3|mpeg|mpg',
+          filesize: 5242880
+        }
+      },
+      messages: {
+        filename: {
+          required: 'Please enter file name'
+        },
+        'media[payload]':{
+          required: 'Please select file to upload',
+          filesize: 'File is too large. Only 5MB allowed'
+        }
+      },
+      submitHandler: function (form) {
+        form.submit();
+      }
+    });
+
+    $("form[name='send-email']").validate({
+      focusInvalid: true,
+      rules: {
+        to: {
+          required: true,
+          email: true
+        },
+        subject:{
+          required: true
+        }
+      },
+      messages: {
+        to: {
+          required: 'Please enter email address'
+        },
+        subject:{
+          required: 'Please enter subject',
+        }
+      },
+      submitHandler: function (form) {
+          form.submit();
+      }
+    });
 
 
+    /*Auto hide flash message after 10 seconds*/
+    $('#flash_messages').delay(10000).fadeOut('slow');
+    $("#upload-file").click(function () {
+      $("#upload").modal();
+    });
+    $(document).on('click', ".share-media", function () {
+      $('div.social-share-button').attr('data-img',$(this).attr('data-img'));
+      $('div.social-share-button').attr('data-url',$(this).attr('data-img'));
+      $("#share-media").modal();
+    });
+    $(".edit-folder").click(function(){
+      $(this).parent().next().show();
+    });
+    $(".cancel-save-folder").click(function(){
+      $(this).parent().parent().hide();
+    });
 
+    $("form#save-file-frm").submit(function(){
+      var fields = $(this).serializeArray();
+      var type = 'folder';
+      var name = '';
+      var file_id = '';
+      jQuery.each(fields, function(i, field) {
+        if (field.name == 'new_name'){
+          name = field.value;
+        }
+        if (field.name == 'media_file_id'){
+          file_id = field.value;
+        }
+      });
+      $('form#save-file-frm input[type="submit"]').prop('disabled', true);
+      $.ajax({
+        url: "<%= request.base_url %>" + "/media/rename_media_file",
+        type: 'post',
+        data: "id=" + file_id + "&name=" + name,
+        success: function (data) {
+          $('#rename-media-file').modal('hide');
+          loadMediaFiles(SELECTED_FOLDER);
+        $('form#save-file-frm input[type="submit"]').prop('disabled', false);
+        },
+        error: function (err, req) {
+          $('form#save-file-frm input[type="submit"]').prop('disabled', false);
+          alert("Your browser broke!");
+        }
+      });
+      return false;
+    });
 
+    $("form.save-folder-frm").submit(function(){
+      var fields = $(this).serializeArray();
+      var type = 'folder';
+      var name = '';
+      var folder_id = '';
+      jQuery.each(fields, function(i, field) {
+        if (field.name == 'name'){
+          name = field.value;
+        }
+        if (field.name == 'folder_iid'){
+          folder_id = field.value;
+        }
+      });
+      $('input[type="submit"]').prop('disabled', true);
+      $.ajax({
+        url: "<%= request.base_url %>" + "/media/save_folder",
+        type: 'post',
+        data: "id=" + folder_id + "&name=" + name + "&type=" + type,
+        success: function (data) {
+          $('li.folder-id-'+folder_id + ' a span').text(name);
+          $('.folder-id-'+folder_id + ' form').hide();
+        $('input[type="submit"]').prop('disabled', false);
+        },
+        error: function (err, req) {
+        $("#name").val('');
+          $('input[type="submit"]').prop('disabled', false);
+          alert("Your browser broke!");
+        }
+      });
+      return false;
+    });
+    /*
+     *View Folder media
+     */
+    $(document).on('click', ".folder-list li a.open-folder", function(e){
+      e.preventDefault();
+      var _this_ = this;
+      var folder_id = SELECTED_FOLDER = $(this).attr('data-id');
+      loadMediaFiles(folder_id);
+    });
+    /*Automatically load first folder media files*/
+    $('ul.folder-list li a:first').click();
+
+    $(document).on('click', "a.rename-media-file", function(e){
+      $('input[name="media_file_id"]').val($(this).attr('data-id'));
+      $('input[name="new_name"]').val($(this).attr('data-name'));
+      $('#rename-media-file').modal('show');
+    });
+
+    /*
+    *Email single Media File
+    */
+    $(document).on('click', "a.email-media-file", function(){
+      var name = $(this).parent().parent().parent().parent().find('.fm-title').text();
+      var id= $(this).parent().parent().parent().prev().find('.media-checked').attr('uid');
+        name = '<i class="fa fa-paperclip"></i> ' + name + "<br>";
+      $("input[name='attachments']").val(id);
+      $("#email-attachments").html(name);
+      $('#email-media-file').modal('show');
+     });
+
+    /*
+    *Email multiple Media Files
+    */
+    $('#email-multiple').click(function(){
+      var names = '';
+      var ids = Array();
+      $("input.media-checked:checked").each(function(index,element){
+        names += '<i class="fa fa-paperclip"></i> ' + $(".media-file-" + $(element).val() + ' .fm-title').text() + "<br>";
+        ids.push($(element).attr('uid'));
+      });
+      $("input[name='attachments']").val(ids);
+      $("#email-attachments").html(names);
+      $('#email-media-file').modal('show');
+    });
+
+    /*
+    *Delete multiple Media Files
+    */
+    $('#destroy-multiple').click(function(){
+      var ids = [];
+      $("input.media-checked:checked").each(function(index,element){
+        ids.push($(element).val());
+      });
+      if(confirm('Are you sure you want to delete these files?')){
+        var _this_ = this;
+        var id = $(this).attr('data-id');
+        $.ajax({
+          url: "<%= request.base_url %>" + "/media/destroy_multiple",
+          type: 'post',
+          data: 'ids='+ids,
+          success: function (data) {
+            if (data == 1) {
+              loadMediaFiles(SELECTED_FOLDER);
+            } else {
+              alert('File(s) not deleted')
+            }
+          },
+          error: function (err, req) {
+            alert("Your browser broke!");
+          }
+       });
+      }
+    });
+
+    /*
+    *Delete Media File
+    */
+    $(document).on('click', "a.trash-media", function(){
+      if(confirm('Are you sure you want to delete this file?')){
+        var _this_ = this;
+        var id = $(this).attr('data-id');
+        $.ajax({
+            url: "<%= request.base_url %>" + "/media/destroy",
+            type: 'post',
+            data: "id=" + id,
+            success: function (data) {
+              if (data == 1) {
+                $(_this_).parent().parent().parent().parent().parent().remove();
+                loadMediaFiles(SELECTED_FOLDER);
+              } else {
+                alert('File is not deleted')
+              }
+            },
+            error: function (err, req) {
+              alert("Your browser broke!");
+            }
+         });
+        }
+     });
+
+    /*
+    *Delete Folder
+    */
+    $(document).on('click', "a.delete-folder", function(){
+      if(confirm('Are you sure you want to delete this folder?')){
+        var _this_ = this;
+        var id = $(this).attr('data-id');
+        $.ajax({
+            url: "<%= request.base_url %>" + "/media/destroy",
+            type: 'post',
+            data: "id=" + id,
+            success: function (data) {
+              if (data == 1) {
+              $(_this_).parent().parent().css('background-color', '#FFB9B9').slideUp(500);
+              } else {
+              alert('Folder is not deleted')
+              }
+            },
+            error: function (err, req) {
+              alert("Your browser broke!");
+            }
+         });
+        }
+     });
+    });
+
+  /*
+   * Function: loadMediaFiles
+   * Params: folder_id Folder Id
+   * Purpose: loads all the media files of specific folder
+  */
+  function loadMediaFiles(folder_id){
+    $.ajax({
+      url: "<%= request.base_url %>" + "/media/show",
+      type: 'post',
+      data: "folder_id=" + folder_id,
+      dataType: 'json',
+      beforeSend: function(){
+              $('#preloader').show();
+      },
+      success: function (data) {
+        var container = '';
+        var html = 'Folder is Empty';
+        if (data.length){
+                html = '';
+          $(data).each(function(index, value){
+            var checkbox = '<div class="ckbox ckbox-default" style="display: none;"><input class="media-checked" type="checkbox" value="'+value.id+'" id="check'+index+'" uid="'+ value.uid +'"><label for="check'+index+'"></label></div>';
+            var shareDropdown = '<div class="btn-group fm-group" style="display: none;"><button data-toggle="dropdown" class="btn btn-default dropdown-toggle fm-toggle" type="button"><span class="caret"></span></button><ul role="menu" class="dropdown-menu fm-menu"><li><a class="share-media" href="#" data-img="'+value.cdn_url+'"><i class="fa fa-share"></i> Share</a></li><li><a class="email-media-file" href="javascript:void(0)"><i class="fa fa-envelope-o"></i> Email</a></li><li><a href="javascript:void(0);" class="rename-media-file" data-id="'+value.id+'" data-name="'+value.name+'"><i class="fa fa-pencil"></i> Edit</a></li><li><a target="_blank" href="media/download_file/' + encodeURIComponent(value.cdn_url) + '/' + value.name + '"><i class="fa fa-download"></i> Download</a></li><li><a href="javascript:void(0);" class="trash-media" data-id="'+value.id+'"><i class="fa fa-trash-o"></i> Delete</a></li></ul></div>';
+
+            container = $('<div class="col-xs-6 col-sm-4 col-md-3 image media-file-'+value.id+'"><div class="thmb">'+checkbox + shareDropdown +'<div class="thmb-prev"></div></div><!-- thmb --></div>');
+                    container.find('.thmb-prev').html('<a title="' + value.name + '" data-rel="prettyPhoto" href="' + value.cdn_url + '"><img width="180" height="135" alt="" class="img-responsive" src="' + value.cdn_url + '"></a>')
+
+            //ss = '<div data-via="" data-popup="" data-desc="The summary of page" data-url="https://www.google.co.in/images/nav_logo242.png" data-img="https://www.google.co.in/images/nav_logo242.png" data-title="Share Media File" class="social-share-button"><a href="#" title="Share to Twitter" onclick="return SocialShareButton.share(this);" class="social-share-button-twitter" data-site="twitter" rel="nofollow "></a><a href="#" title="Share to Facebook" onclick="return SocialShareButton.share(this);" class="social-share-button-facebook" data-site="facebook" rel="nofollow "></a><a href="#" title="Share to Pinterest" onclick="return SocialShareButton.share(this);" class="social-share-button-pinterest" data-site="pinterest" rel="nofollow "></a></div>';
+            container.find('.thmb-prev').after('<h5 class="fm-title"><a href="">' + value.name + '</a></h5><small class="text-muted">Added: Jan 02, 2014</small>');
+                    html += $(container).prop('outerHTML'); ;
+          });
+        }
+
+        $('div.filemanager #fm-files-container').html(html);
+        $('#preloader').hide();
+        //set folder id to upload file in specific folder
+        $("form input[name='folder_id']").val(folder_id);
+        $('ul.folder-list li a.open-folder i').attr('class','fa fa-folder-o');
+        $('ul.folder-list li.folder-id-'+folder_id+' a i:first').attr('class','fa fa-folder-open');
+        $("a[data-rel^='prettyPhoto']").prettyPhoto();
+      },
+      error: function (err, req) {
+        alert("Your browser broke!");
+        $('#preloader').hide();
+      }
+    });
+  }
+</script>
