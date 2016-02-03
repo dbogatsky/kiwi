@@ -282,7 +282,7 @@
         success: function (data) {
           $('#rename-media-file').modal('hide');
           loadMediaFiles(SELECTED_FOLDER);
-        $('form#save-file-frm input[type="submit"]').prop('disabled', false);
+          $('form#save-file-frm input[type="submit"]').prop('disabled', false);
         },
         error: function (err, req) {
           $('form#save-file-frm input[type="submit"]').prop('disabled', false);
@@ -431,23 +431,23 @@
         var _this_ = this;
         var id = $(this).attr('data-id');
         $.ajax({
-            url: "<%= request.base_url %>" + "/media/destroy",
-            type: 'post',
-            data: "id=" + id,
-            success: function (data) {
-              if (data == 1) {
+          url: "<%= request.base_url %>" + "/media/destroy",
+          type: 'post',
+          data: "id=" + id,
+          success: function (data) {
+            if (data == 1) {
               $(_this_).parent().parent().css('background-color', '#FFB9B9').slideUp(500);
-              } else {
+            } else {
               alert('Folder is not deleted')
-              }
-            },
-            error: function (err, req) {
-              alert("Your browser broke!");
             }
-         });
-        }
-     });
+          },
+          error: function (err, req) {
+            alert("Your browser broke!");
+          }
+       });
+      }
     });
+  });
 
   /*
    * Function: loadMediaFiles
@@ -461,23 +461,30 @@
       data: "folder_id=" + folder_id,
       dataType: 'json',
       beforeSend: function(){
-              $('#preloader').show();
+        $('#preloader').show();
       },
       success: function (data) {
         var container = '';
         var html = 'Folder is Empty';
         if (data.length){
-                html = '';
+          html = '';
           $(data).each(function(index, value){
             var checkbox = '<div class="ckbox ckbox-default" style="display: none;"><input class="media-checked" type="checkbox" value="'+value.id+'" id="check'+index+'" uid="'+ value.uid +'"><label for="check'+index+'"></label></div>';
+
             var shareDropdown = '<div class="btn-group fm-group" style="display: none;"><button data-toggle="dropdown" class="btn btn-default dropdown-toggle fm-toggle" type="button"><span class="caret"></span></button><ul role="menu" class="dropdown-menu fm-menu"><li><a class="share-media" href="#" data-img="'+value.cdn_url+'"><i class="fa fa-share"></i> Share</a></li><li><a class="email-media-file" href="javascript:void(0)"><i class="fa fa-envelope-o"></i> Email</a></li><li><a href="javascript:void(0);" class="rename-media-file" data-id="'+value.id+'" data-name="'+value.name+'"><i class="fa fa-pencil"></i> Edit</a></li><li><a target="_blank" href="media/download_file/' + encodeURIComponent(value.cdn_url) + '/' + value.name + '"><i class="fa fa-download"></i> Download</a></li><li><a href="javascript:void(0);" class="trash-media" data-id="'+value.id+'"><i class="fa fa-trash-o"></i> Delete</a></li></ul></div>';
 
             container = $('<div class="col-xs-6 col-sm-4 col-md-3 image media-file-'+value.id+'"><div class="thmb">'+checkbox + shareDropdown +'<div class="thmb-prev"></div></div><!-- thmb --></div>');
-                    container.find('.thmb-prev').html('<a title="' + value.name + '" data-rel="prettyPhoto" href="' + value.cdn_url + '"><img width="180" height="135" alt="" class="img-responsive" src="' + value.cdn_url + '"></a>')
+            if(value.type == 'image'){
+              container.find('.thmb-prev').html('<a title="' + value.name + '" data-rel="prettyPhoto" href="' + value.cdn_url + '"><img alt="" class="img-responsive" src="' + value.cdn_url + '"></a>')
+              container.find('.thmb-prev').after('<h5 class="fm-title"><a href="javascript:void(0)">' + value.name + '</a></h5><small class="text-muted">Added: Jan 02, 2014</small>');
+              html += $(container).prop('outerHTML');
+            }else if(value.type == 'document'){
+              container.find('.thmb-prev').html('<img alt="" class="img-responsive" src="/assets/bootstrap/images/photos/media-doc.png">');
+              container.find('.thmb-prev').after('<h5 class="fm-title"><a href="'+ value.cdn_url +'" target="_blank">' + value.name + '</a></h5><small class="text-muted">Added: Jan 02, 2014</small>');
+              html += $(container).prop('outerHTML');
+            }
 
             //ss = '<div data-via="" data-popup="" data-desc="The summary of page" data-url="https://www.google.co.in/images/nav_logo242.png" data-img="https://www.google.co.in/images/nav_logo242.png" data-title="Share Media File" class="social-share-button"><a href="#" title="Share to Twitter" onclick="return SocialShareButton.share(this);" class="social-share-button-twitter" data-site="twitter" rel="nofollow "></a><a href="#" title="Share to Facebook" onclick="return SocialShareButton.share(this);" class="social-share-button-facebook" data-site="facebook" rel="nofollow "></a><a href="#" title="Share to Pinterest" onclick="return SocialShareButton.share(this);" class="social-share-button-pinterest" data-site="pinterest" rel="nofollow "></a></div>';
-            container.find('.thmb-prev').after('<h5 class="fm-title"><a href="">' + value.name + '</a></h5><small class="text-muted">Added: Jan 02, 2014</small>');
-                    html += $(container).prop('outerHTML'); ;
           });
         }
 

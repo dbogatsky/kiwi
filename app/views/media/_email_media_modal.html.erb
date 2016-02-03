@@ -10,11 +10,10 @@
         <label>Send an email by filling in the details below:</label>
         <%= form_tag({action: 'email_file'}, name: 'send-email', multipart: true) do %>
           <div class="div-oth-input"><%= text_field_tag 'to' , nil, placeholder: "To", class: 'form-control'%></div>
-           <div class="div-oth-input"><%= text_field_tag 'subject',nil, placeholder: "Subject", class: 'form-control'%></div>
-           <div class="div-oth-input"><%= text_area_tag 'message', nil, rows: 4, cols: 50, placeholder: "Message", class: 'form-control'%></div>
+          <div class="div-oth-input"><%= text_field_tag 'subject',nil, placeholder: "Subject", class: 'form-control'%></div>
+          <div class="div-oth-input"><%= text_area_tag 'message', nil, rows: 4, cols: 50, placeholder: "Message", class: 'form-control'%></div>
           <%= hidden_field_tag :attachments %>
-          <div class="div-oth-input" id="email-attachments">
-          </div>
+          <div class="div-oth-input" id="email-attachments"></div>
           <%= submit_tag "Send", id: "send", class: "btn btn-primary" %>
         <% end %>
       </div>
