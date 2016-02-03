@@ -6,9 +6,9 @@ class MediaController < ApplicationController
 	def index
     @medias = Media.all
  	end
-  
+
   # Display all media inside of a folder
-	def show 
+	def show
     if(request.xhr?)
       id = params[:folder_id]
       @medias = Media.all(params: {folder_id: id})
@@ -29,7 +29,7 @@ class MediaController < ApplicationController
       render json: mediaArray
     end
  	end
-  
+
 	# Create a new media folder
 	def create_folder
     if(request.xhr?)
@@ -39,7 +39,7 @@ class MediaController < ApplicationController
       render :text => (@medias.save ? @medias.id : 0) and return
     end
 	end
-  
+
   # Edit existing folder
 	def save_folder
     if(request.xhr?)
@@ -55,12 +55,12 @@ class MediaController < ApplicationController
       render :text => (1 ? 1 : 0) and return
     end
 	end
-  
+
   # Used to delete the media folder
   def destroy
     render :text => (Media.delete(params[:id]) ? 1 : 0) and return
   end
-  
+
   # Used to delete the media files
   def destroy_multiple
     duplicates = params[:ids].split(",")
@@ -69,7 +69,7 @@ class MediaController < ApplicationController
     end
     render :text => ( 1 ? 1 : 0) and return
   end
-	
+
   #Email media file
   def email_file
     #abort(.inspect)
@@ -78,7 +78,7 @@ class MediaController < ApplicationController
     to = params[:to]
     subject = params[:subject]
     message = params[:message]
-    
+
     email = current_user.email
     appKey = APP_CONFIG['api_app_key']
     token = session[:token]
@@ -94,7 +94,7 @@ class MediaController < ApplicationController
       mediaArray.push(curlRes['cdn_url'])
     end
     #abort(mediaArray.inspect)
-    
+
     if(to.blank? == true)
       message = 'Please enter email address'
     else
@@ -104,7 +104,7 @@ class MediaController < ApplicationController
     flash[:notice] = message
     redirect_to "/media"
   end
-  
+
   # rename media file
   def rename_media_file
     if(request.xhr?)
@@ -155,7 +155,7 @@ class MediaController < ApplicationController
     flash[:notice] = message
     redirect_to "/media"
   end
-  
+
   # Used to download the media file
   def download_file
     require 'open-uri'
@@ -169,13 +169,13 @@ class MediaController < ApplicationController
     send_file path + filename, disposition: 'attachment'
     #File.delete(path + filename)
   end
-  
+
   private
   def get_token
     #set gloal var for token to be used in model, hack for now
     $user_token = session[:token]
   end
- 
+
   def resource_params
     params.permit( :id, :name, :type, :folder_id)
   end

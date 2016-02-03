@@ -5,7 +5,7 @@
 	</div>
   	<%= render partial: "account_form" %>
 </div>
-    
+
 <!--
 <script src="/assets/bootstrap/js/jquery-1.11.1.min.js"></script>
 <script src="/assets/bootstrap/js/jquery-migrate-1.2.1.min.js"></script>
@@ -68,7 +68,7 @@ jQuery(document).ready(function(){
 	  return false;
 	}
 	});*/
-  
+
 	// With Form Validation Wizard
 	var $validator = jQuery("#account-add-form").validate({
 		highlight: function(element) {
@@ -78,7 +78,7 @@ jQuery(document).ready(function(){
 		  jQuery(element).closest('.form-group').removeClass('has-error');
 		}
 	});
-  
+
 	jQuery('#validationWizard').bootstrapWizard({
 		tabClass: 'nav nav-pills nav-justified nav-disabled-click',
 		onTabClick: function(tab, navigation, index) {
@@ -86,12 +86,12 @@ jQuery(document).ready(function(){
 		},
 		onNext: function(tab, navigation, index) {
 		  var $valid = jQuery('#account-add-form').valid();
-		  
+
 		  if(!$valid) {
 		    $validator.focusInvalid();
 		    return false;
 		  }
-		  
+
 		},
 		onTabShow: function(tab, navigation, index){
 			if(index == 3){
@@ -101,11 +101,11 @@ jQuery(document).ready(function(){
 			  }else{
 			  	$(".pager .next").show();
 			  	$(".pager .finish").hide();
-			  }	
+			  }
 		}
 
 	});
-  	
+
   	$(".pager .finish").click(function(e){
   		e.preventDefault();
   		$("#account-add-form").submit();
@@ -114,17 +114,17 @@ jQuery(document).ready(function(){
 	    e.preventDefault();
 	    $("#account-add-form").submit();
 	})*/
-  
+
 
 	// Textarea Autogrow
 	jQuery('#account-about').autogrow();
-	jQuery('#account-facts').autogrow();	
-	
+	jQuery('#account-facts').autogrow();
+
 	//multiselect for sharing accounts
 	/*jQuery(".select2").select2({
 		width: '100%'
 	});*/
-	
+
 	// Basic Form
 	/*jQuery("#account-add-form").validate({
 		highlight: function(element) {
@@ -134,7 +134,7 @@ jQuery(document).ready(function(){
 		  jQuery(element).closest('.form-group').removeClass('has-error');
 		}
 	});*/
-	
+
 
 	/*$('#account-add-form').on('click', '.add-detail', function () {
 	    var row = $('#account-contact-row'), new_row = row.clone();
@@ -148,7 +148,7 @@ jQuery(document).ready(function(){
 		.removeClass('btn-success')
 		.addClass('btn-danger')
 		.addClass('minus-detail');
-	    
+
 		new_row.find('select').attr('name', 'account-contact[' + contact_index + '][contact-type]');
 		new_row.find('input:text').val('');
 		new_row.find('input:text').attr('name', 'account-contact[' + contact_index + '][contact-details]');
@@ -158,12 +158,12 @@ jQuery(document).ready(function(){
 
 	}).on('click', '.minus-detail', function () {
 	    $(this).closest('#account-contact-row').remove();
-	});	
+	});
 
 
 	var $image = $('.account-avatar > img'),
 	    replaced;
-	
+
 	$image.cropper({
 		aspectRatio: 1 / 1,
 		movable: false,
@@ -171,7 +171,7 @@ jQuery(document).ready(function(){
 		rotatable: false,
 		scalable: false
 	});
-	
+
 
 	var $inputImage = $("#inputImage");
 	if (window.FileReader) {
@@ -179,13 +179,13 @@ jQuery(document).ready(function(){
 	        var fileReader = new FileReader(),
 	                files = this.files,
 	                file;
-	
+
 	        if (!files.length) {
 	            return;
 	        }
-	
+
 	        file = files[0];
-	
+
 	        if (/^image\/\w+$/.test(file.type)) {
 	            fileReader.readAsDataURL(file);
 	            fileReader.onload = function () {
