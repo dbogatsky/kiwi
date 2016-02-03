@@ -21,13 +21,14 @@
 <script src="/assets/bootstrap/js/holder.js"></script>
 
 <!-- Form elements - status and date picker -->
-<script src="/assets/vertical-timeline/js/main.js"></script> 
+<script src="/assets/vertical-timeline/js/main.js"></script>
 <script src="/assets/bootstrap/js/bootstrap-timepicker.min.js"></script>
 <script src="/assets/bootstrap/js/jquery.maskedinput.min.js"></script>
 <script src="/assets/bootstrap/js/jquery.tagsinput.min.js"></script>
-<script src="/assets/bootstrap/js/jquery.mousewheel.js"></script>    
+<script src="/assets/bootstrap/js/jquery.mousewheel.js"></script>
 <script src="/assets/bootstrap/js/select2.min.js"></script>
 <script src="/assets/bootstrap/js/jquery.validate.min.js"></script>
+<script src="assets/bootstrap/js/additional-methods.min.js"></script>
 <script src="/assets/bootstrap/js/bootstrap-editable.min.js"></script>
 <script src="/assets/bootstrap/js/bootstrap-datetimepicker.min.js"></script>
 <script src="/assets/bootstrap/js/moment.js"></script>
@@ -38,48 +39,45 @@
 <script src="/assets/bootstrap/js/bootstrap-wizard.min.js"></script>
 <!-- end test -->
 
-
-
 <script src="/assets/bootstrap/js/custom.js"></script>
 
 <script>
-	jQuery(document).ready(function(){
+	$(document).ready(function() {
 
-	    $('body').bind('ajax:beforeSend', function(event, xhr, settings) {
-            console.log("ajax-beforesend");
-            $("#preloader").show();
-        });
+    $('body').bind('ajax:beforeSend', function(event, xhr, settings) {
+      console.log("ajax-beforesend");
+      $("#preloader").show();
+    });
 
-        $('body').bind('ajax:complete', function( xhr, status) {
-        	console.log("ajax-complete");
-            $("#preloader").hide();
-        });
+    $('body').bind('ajax:complete', function(xhr, status) {
+      console.log("ajax-complete");
+      $("#preloader").hide();
+    });
 
-		// Select2
-	  	jQuery(".select2").select2({
-	    	width: '100%'
-	  	});
+    // Select2
+    $(".select2").select2({
+      width: '100%'
+    });
 
-
-		$('.datepicker').datepicker();
-	    $('#schedule-from-datepicker').datepicker({
-	      dateFormat: 'dd/mm/yy',
-	      altField: "#schedule-to-datepicker",
-	      altFormat: "dd/mm/yy"             
-	    });
-	    $('#schedule-to-datepicker').datepicker({
-	      dateFormat: 'dd/mm/yy'
-	    });
-	    jQuery('#schedule-from-timepicker').timepicker({
-	      minuteStep: 15
-	    });
-	    $('#schedule-to-timepicker').timepicker({
-	      minuteStep: 15
-	    });
-	    $('#scheduleFromTimePicker').timepicker().on('hide.timepicker', function(e) {
-	      $('#schedule-to-timepicker').timepicker('setTime', e.time.value);
-	    });
-	});
+    $('.datepicker').datepicker();
+    $('#schedule-from-datepicker').datepicker({
+      dateFormat: 'dd/mm/yy',
+      altField: "#schedule-to-datepicker",
+      altFormat: "dd/mm/yy"
+    });
+    $('#schedule-to-datepicker').datepicker({
+      dateFormat: 'dd/mm/yy'
+    });
+    $('#schedule-from-timepicker').timepicker({
+      minuteStep: 15
+    });
+    $('#schedule-to-timepicker').timepicker({
+      minuteStep: 15
+    });
+    $('#scheduleFromTimePicker').timepicker().on('hide.timepicker', function(e) {
+      $('#schedule-to-timepicker').timepicker('setTime', e.time.value);
+    });
+  });
 
 </script>
 <!-- end of shared javascript -->
