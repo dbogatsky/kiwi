@@ -1,5 +1,13 @@
 class OrchardApiModel < ActiveResource::Base
+  cattr_accessor :static_headers
   self.site = ENV.fetch("ORCHARD_API_HOST")
   #self.headers['Authorization'] = "Token token=\"#{$user_token}\", app_key=\"#{APP_CONFIG['api_app_key']}\""
-  self.headers['Authorization'] = "Token token=\"secret_RGq81azF29xPSgzF4ybs\", app_key=\"#{APP_CONFIG['api_app_key']}\""
+  self.static_headers = headers
+
+  def self.headers
+    new_headers = static_headers.clone
+    new_headers['Authorization'] = "Token token=\"#{$user_token}\", app_key=\"#{APP_CONFIG['api_app_key']}\""
+    new_headers
+  end
+
 end
