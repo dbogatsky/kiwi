@@ -7,12 +7,12 @@
       <a href="javascript:void(0);" class="delete-folder" data-id="<%= media.id %>"><i class="fa fa-trash-o"></i></a>
     </div>
     <div class="edit-folder-form" style="display:none">
-      <%= form_tag media_path, :class => "save-folder-frm" do %>
-        <%= text_field_tag :name, media.name , :class => 'form-control form-control-2' %>
+      <%= form_tag media_path, class: "save-folder-frm" do %>
+        <%= text_field_tag :name, media.name , class: 'form-control form-control-2' %>
         <%= hidden_field_tag :type,'Folder' %>
         <%= hidden_field_tag :folder_iid, media.id %>
-        <%= submit_tag "Save", :class => "btn btn-primary save-folder" %>
-        <%= button_tag "Cancel", :class => "btn btn-default cancel-save-folder" %>
+        <%= submit_tag "Save", class: "btn btn-primary save-folder" %>
+        <%= link_to "Cancel", 'javascript:void(0)', class: "btn btn-default cancel-save-folder" %>
       <% end %>
     </div>
   </li>
