@@ -12,7 +12,7 @@
         <%= hidden_field_tag :type,'Folder' %>
         <%= hidden_field_tag :folder_iid, media.id %>
         <%= submit_tag "Save", class: "btn btn-primary save-folder" %>
-        <%= button_to "Cancel", 'javascript:void(0)', class: "btn btn-default cancel-save-folder" %>
+        <%= button_tag "Cancel", 'javascript:void(0)', class: "btn btn-default cancel-save-folder", onclick: 'return false;' %>
       <% end %>
     </div>
   </li>
