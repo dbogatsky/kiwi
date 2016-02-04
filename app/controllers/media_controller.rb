@@ -119,7 +119,7 @@ class MediaController < ApplicationController
       apiFullUrl = apiURL + "/" +  id;
       new_name = params[:name]
       #curlRes = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" "#{apiFullUrl}"`
-      curlRes = `curl -X PUT -H "Authorization: Token token="#{token}", email="#{email}", app_key="#{appKey}"" -H "Content-Type: application/json"  -d '{"medium":{"name": "#{new_name}"}}' '#{apiFullUrl}'`
+      curlRes = `curl -X PUT -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -d '{"medium":{"name": "#{new_name}"}}' '#{apiFullUrl}'`
       render :text => (1 ? 1 : 0) and return
     end
   end
