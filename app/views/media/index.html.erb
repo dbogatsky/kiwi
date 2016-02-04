@@ -77,11 +77,7 @@
                   <% end %>
                 </div>
                 <h5 class="fm-title"><a href=""><%=media.name%></a></h5>
-                <% date = media.created_at.first(10)%>
-                <%year = date.first(4)%>
-                <%month = Date::MONTHNAMES[date.at(5..6).to_i].first(3)%>
-                <%day = date.last(2)%>
-                <small class="text-muted">Added: <%="#{month} "+"#{day}, "+"#{year}"%></small>
+                <small class="text-muted">Added: <%= Date.parse(media.created_at).strftime("%b %d, %Y") %></small>
               </div><!-- thmb -->
             </div><!-- col-xs-6 -->
           <%end%>
@@ -519,13 +515,15 @@
 
             container = $('<div class="col-xs-6 col-sm-4 col-md-3 image media-file-'+value.id+'"><div class="thmb">'+checkbox + shareDropdown +'<div class="thmb-prev"></div></div><!-- thmb --></div>');
 
+            var media_date = new Date(value.created_at);
+
             if(value.type == 'image'){
               container.find('.thmb-prev').html('<a title="' + value.name + '" data-rel="prettyPhoto" href="' + value.cdn_url + '"><img alt="" class="img-responsive" src="' + value.cdn_url + '"></a>')
-              container.find('.thmb-prev').after('<h5 class="fm-title"><a href="javascript:void(0)">' + value.name + '</a></h5><small class="text-muted">Added: Jan 02, 2014</small>');
+              container.find('.thmb-prev').after('<h5 class="fm-title"><a href="javascript:void(0)">' + value.name + '</a></h5><small class="text-muted">Added: '+ moment(media_date).format('MMM D, YYYY') +'</small>');
               html += $(container).prop('outerHTML');
             }else if(value.type == 'document'){
               container.find('.thmb-prev').html('<img alt="" class="img-responsive" src="/assets/bootstrap/images/photos/media-doc.png">');
-              container.find('.thmb-prev').after('<h5 class="fm-title"><a href="'+ value.cdn_url +'" target="_blank">' + value.name + '</a></h5><small class="text-muted">Added: Jan 02, 2014</small>');
+              container.find('.thmb-prev').after('<h5 class="fm-title"><a href="'+ value.cdn_url +'" target="_blank">' + value.name + '</a></h5><small class="text-muted">Added: '+ moment(media_date).format('MMM D, YYYY') +'</small>');
               html += $(container).prop('outerHTML');
             }
 
