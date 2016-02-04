@@ -28,12 +28,14 @@ class MediaController < ApplicationController
       apiURL = APP_CONFIG['api_url'] + '/download/media'
       mediaArray = []
       @medias.each do |media|
-        uid = media.uid
-        apiFullUrl = apiURL + "/" +  media.uid + "?style=thumb"
-        curlRes = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" "#{apiFullUrl}"`
-        curlRes = JSON.parse(curlRes);
-        media.cdn_url =curlRes['cdn_url']
-        media.uid = uid
+        cdn_url = media.urls.attributes['thumb'] if media.image?
+        media.cdn_url = cdn_url
+        # uid = media.uid
+        # apiFullUrl = apiURL + "/" +  media.uid + "?style=thumb"
+        # curlRes = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" "#{apiFullUrl}"`
+        # curlRes = JSON.parse(curlRes);
+        # media.cdn_url =curlRes['cdn_url']
+        # media.uid = uid
         mediaArray.push(media)
       end
       render json: mediaArray
