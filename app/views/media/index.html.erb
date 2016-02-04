@@ -46,12 +46,7 @@
       <div id="fm-files-container">
         <%@medias.each do |media|%>
           <%if media.type != 'folder'%>
-            <%
-              apiFullUrl = @apiURL + "/" +  media.uid + "?style=thumb"
-              curlRes = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" "#{apiFullUrl}"`
-              curlRes = JSON.parse(curlRes);
-              cdn_url =curlRes['cdn_url']
-            %>
+            <% cdn_url = media.urls.attributes['thumb'] if media.image? %>
             <div class="col-xs-6 col-sm-4 col-md-3 video">
               <div class="thmb">
                 <div class="ckbox ckbox-default">
@@ -71,7 +66,13 @@
                     </ul>
                 </div><!-- btn-group -->
                 <div class="thmb-prev">
-                  <img src="<%=cdn_url%>" class="img-responsive" alt="" />
+                  <% if media.image? %>
+                    <a href="<%=cdn_url%>" data-rel="prettyPhoto">
+                      <img src="<%=cdn_url%>" class="img-responsive" alt="" />
+                    </a>
+                  <% elsif media.document? %>
+                    <img alt="" class="img-responsive" src="/assets/bootstrap/images/photos/media-doc.png">
+                  <% end %>
                 </div>
                 <h5 class="fm-title"><a href=""><%=media.name%></a></h5>
                 <small class="text-muted">Added: Dec 30, 2013</small>
@@ -117,6 +118,7 @@
 <script>
   $(document).ready(function () {
     "use strict";
+    $("a[data-rel^='prettyPhoto']").prettyPhoto();
     $(document).on('mouseover', '.thmb' , function () {
       var t = $(this);
       t.find('.ckbox').show();
