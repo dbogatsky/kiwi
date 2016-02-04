@@ -493,7 +493,6 @@
    * Purpose: loads all the media files of specific folder
   */
   function loadMediaFiles(folder_id){
-    console.log(folder_id);
     $.ajax({
       url: "<%= request.base_url %>" + "/media/show",
       type: 'post',
