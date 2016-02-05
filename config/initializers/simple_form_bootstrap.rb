@@ -102,7 +102,7 @@ SimpleForm.setup do |config|
     b.optional :pattern
     b.optional :min_max
     b.optional :readonly
-    b.use :label, class: 'col-sm-offset-2 col-sm-1 control-label'
+    b.use :label, class: 'col-sm-offset-2 col-sm-2 control-label'
 
     b.wrapper tag: 'div', class: 'col-sm-4' do |ba|
       ba.use :input, class: 'form-control'

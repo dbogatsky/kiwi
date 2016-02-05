@@ -1,7 +1,17 @@
+<% content_for :pageheader do %>
+  <h2><i class="fa fa-briefcase"></i>Add Account</h2>
+<% end %>
+<div class="row">
+  <div class="col-md-10">
+  </div>
+  <div class="col-md-2 pull-right">
+  <%= link_to accounts_path, class: "btn btn-white btn-block" do %><i class="fa fa-minus-circle"></i>&nbsp;&nbsp;&nbsp;Cancel<% end %><br />
+  </div>
+</div>
+
 <div class="panel panel-default">
 	<div class="panel-heading">
-	  <h4 class="panel-title">Add Account</h4>
-	  <p>Fill in the details below to add an account</p>
+	  <h4 class="panel-title">Fill in the details below to add an account</h4>
 	</div>
   	<%= render partial: "account_form" %>
 </div>
