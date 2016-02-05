@@ -5,7 +5,7 @@ module AccountsHelper
 			pulled_right_class = ""
 		end
 		if account.status.nil?
-			html = "<span class='badge " + pulled_right_class + "' style='background-color: #ff860b; border-color: #ff860b;'>No Status!!</span>"
+			html = "<span class='badge " + pulled_right_class + "' style='background-color: #ff860b; border-color: #ff860b;'>No Status</span>"
 		else
 			html = "<span class='badge " + pulled_right_class + "' style='background-color: #{account.status.color}; border-color: #{account.status.color};'>#{account.status.name}</span>"
 		end

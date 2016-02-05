@@ -60,7 +60,7 @@ class AccountsController < ApplicationController
     if params.has_key?(:save)
       #@account = Account.new account_params
       params[:account][:contacts_attributes] = params[:account][:contacts_attributes].values
-      params[:account][:addresses_attributes] = params[:account][:addresses_attributes].values
+      params[:account][:addresses_attributes] = params[:account][:addresses_attributes]
       @account = Account.new(request: :create, account: account_params)
 
       if @account.save

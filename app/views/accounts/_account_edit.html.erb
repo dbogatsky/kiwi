@@ -18,21 +18,21 @@
           <%= f.input :name, wrapper: :wizard_horizontal_form, label: "Account Name", required: true %>
 
           <div class="form-group">
-            <label class="col-sm-offset-2 col-sm-1 control-label">Account Status<span class="asterisk">*</span></label>
+            <label class="col-sm-offset-2 col-sm-2 control-label">Account Status<span class="asterisk">*</span></label>
             <div class="col-sm-4">
               <%= f.select( :status_id, options_for_select(AccountStatus.all.collect{ |a| ["#{a.name}", a.id] }, @account.status.nil? ? "" : @account.status.id), {}, { :class => 'select2' }) %>
             </div>
           </div>
 
           <div class="form-group">
-            <label class="col-sm-offset-2 col-sm-1 control-label">Assign To<span class="asterisk">*</span></label>
+            <label class="col-sm-offset-2 col-sm-2 control-label">Assign To<span class="asterisk">*</span></label>
             <div class="col-sm-4">
                     <%= f.select( :assign_to, options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] }, @account.assign_to.nil? ? "" : @account.assign_to ), {}, { :class => 'select2' })%>
             </div>
           </div>
           
           <div class="form-group">
-            <label class="col-sm-offset-2 col-sm-1 control-label">Shared With</label>
+            <label class="col-sm-offset-2 col-sm-2 control-label">Shared With</label>
             <div class="col-sm-4">
               <%= f.select( :shared_with, options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] }), { :include_blank => true}, { :class => 'select2', 'data-placeholder' => "Type name of user you wish to share with"})%>
             </div>
@@ -47,7 +47,7 @@
           <%= add.input :region, wrapper: :wizard_horizontal_form, required: true, label: "Province/State", :input_html => { :name => "account[addresses_attributes][][region]", :value => @addresses.first.region } %>
             
           <div class="form-group">
-            <label class="col-sm-offset-2 col-sm-1 control-label">Country<span class="asterisk">*</span></label>
+            <label class="col-sm-offset-2 col-sm-2 control-label">Country<span class="asterisk">*</span></label>
             <div class="col-sm-4">
             <%= add.input_field :country, { required: true, priority: [ "Canada", "United States", "United Kingdom" ],  class: "select2", name: "account[addresses_attributes][][country]", selected: @addresses.first.country } %>
             </div>
@@ -62,7 +62,7 @@
           <%= f.simple_fields_for :contacts_attributes do |c| %>
             <div class="form-group">
               <input type="hidden" name="account[contacts_attributes][<%= current_contact.id %>][id]" value="<%= current_contact.id %>" >
-              <label class="col-sm-offset-1 col-sm-1 control-label">Contact<span class="asterisk">*</span></label>
+              <label class="col-sm-offset-1 col-sm-2 control-label">Contact<span class="asterisk">*</span></label>
               <div class="col-sm-2">
                 <%#= c.input :name, required: true, label: 'Contact', :input_html => { :name => "account[contacts_attributes][][name]" } %>
                 <%= c.input_field :name, { required: true, label: 'Contact', name: "account[contacts_attributes][#{current_contact.id}][name]", class: "form-control", :value => current_contact.name, :id => "account_contacts_attributes_name_#{current_contact.id}" } %>
@@ -89,17 +89,17 @@
 
       <div class="tab-pane" id="vtab4">
         <div class="form-group">
-          <label class="col-sm-offset-2 col-sm-1 control-label">Avatar</label>
+          <label class="col-sm-offset-2 col-sm-2 control-label">Avatar</label>
           <div class="col-sm-4">
-            <label title="Upload image file" for="inputImage" class="btn btn-primary">
+            <label title="Upload image file" for="inputImage" class="btn btn-white">
               <%= f.file_field :avatar, { name: "avatar" }  %>
             </label>
           </div>
         </div>
 
-        <%= f.input :about, wrapper: :wizard_horizontal_form, :label => 'About', :input_html => { :rows => 5, :value => @account.about }  %>
+        <%= f.input :about,  as: :text, wrapper: :wizard_horizontal_form, :label => 'About', :input_html => { :rows => 5, :value => @account.about }  %>
 
-        <%= f.input :quick_facts, wrapper: :wizard_horizontal_form, :label => 'Quick Facts', :input_html => { :rows => 5, :value => @account.quick_facts }  %>
+        <%= f.input :quick_facts,  as: :text, wrapper: :wizard_horizontal_form, :label => 'Quick Facts', :input_html => { :rows => 5, :value => @account.quick_facts }  %>
         <input type="hidden" name="save">
       </div>
       
@@ -121,6 +121,11 @@
     var max_fields      = 5; //maximum input boxes allowed
     var wrapper         = $(".contact-form-wrap"); //Fields wrapper
     var add_button      = $(".add-contact-button"); //Add button ID
+    
+    <% 
+      @contact_types = ""
+      Contact::CONTACT_TYPES.each { |x| @contact_types << '<option value="'+x+'">'+x+'</option>' }
+    %>
    
     //var x = 1; //initlal text box count
     var x = <%= @contacts.size %>; //initlal text box count
@@ -133,18 +138,13 @@
             str_html = '\
             <div class="contact-element" style="padding-bottom: 10px;">\
               <div class="form-group">\
-                <label class="col-sm-offset-1 col-sm-1 control-label">Contact<span class="asterisk">*</span></label>\
+                <label class="col-sm-offset-1 col-sm-2 control-label">Contact<span class="asterisk">*</span></label>\
                 <div class="col-sm-2">\
                   <input label="Contact" name="account[contacts_attributes]['+t+'][name]" class="form-control" required id="account_contacts_attributes_name_'+t+'" type="text">\
                 </div>\
                 <label class="col-sm-1 control-label">Type<span class="asterisk">*</span></label>\
                 <div class="col-sm-1">\
-                  <select class="select2" id="account_contacts_attributes_type_'+t+'" name="account[contacts_attributes]['+t+'][type]">\
-                    <option value="email">email</option>\
-                    <option value="fax">fax</option>\
-                    <option value="mobile">mobile</option>\
-                    <option value="phone">phone</option>\
-                  </select>\
+                  <select class="select2" id="account_contacts_attributes_type_'+t+'" name="account[contacts_attributes]['+t+'][type]"><%= raw(@contact_types) %></select>\
                 </div>\
                 <label class="col-sm-1 control-label">Value<span class="asterisk">*</span></label>\
                 <div class="col-sm-2">\

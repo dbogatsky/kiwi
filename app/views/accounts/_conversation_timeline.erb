@@ -17,8 +17,8 @@
         <% end %>
     
       <div class="cd-timeline-content">
-        <span class="cd-date"><%= i.created_at %></span>
-        <h2><%= i.title %></h2>
+        <span class="cd-date"><%= i.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%></span>
+        <h2 style="margin: 5px;"><%= i.title %></h2>
         <p><%= i.body %></p>
       </div>
     </div>
