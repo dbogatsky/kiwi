@@ -1,5 +1,4 @@
 <% content_for :pageheader do %>
-<div class="pageheader">
   <h2><i class="fa fa-briefcase"></i><%= @account.name %></h2>
   <div class="breadcrumb-wrapper">
     <span class="label">You are here:</span>
@@ -8,7 +7,6 @@
         <li class="active">Details</li>
     </ol>
   </div>
-</div>
 <% end %>
 
 
@@ -32,17 +30,17 @@
       <img src="<%= (@account.avatar_url.eql? "/avatars/thumb/missing.png") ? '/assets/images/default_account_avatar.png' : @account.avatar_url %>" class="thumbnail img-responsive" alt="">
       <div class="mb30"></div>
       <h5 class="subtitle">Connect
-        <a href="#" data-toggle="modal" data-target=".contact-modal-form" class="pull-right account_icons">+ Add</a>
+        <!--<a href="#" data-toggle="modal" data-target=".contact-modal-form" class="pull-right account_icons">+ Add</a>-->
       </h5>
       <ul class="profile-social-list" id="account-contacts">
         <% @account.contacts.each do |contact| %>
-          <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name %>"></i><%= contact.value %></li>        
+          <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name %>"></i><%= contact.value %></li>
         <% end %>
       </ul>
       <div class="mb30"></div>
 
       <h5 class="subtitle">Address&nbsp;<i class="fa fa-map-marker"></i>
-        <a href="#" data-toggle="modal" data-target=".address-modal-form" class="pull-right account_icons">+ Add</a>
+        <!--<a href="#" data-toggle="modal" data-target=".address-modal-form" class="pull-right account_icons">+ Add</a>-->
       </h5>
       <ul class="profile-social-list" id="account-addresses">
         <% @account.addresses.each_with_index do |address, index| %>
@@ -51,7 +49,7 @@
               <% if !address.name.nil? && !address.name.empty? %>
                 <strong><%= address.name %></strong>
               <% end %>
-              
+
               <% if (index > 0) %>
                 <%= link_to account_address_path(@account, address.id), { method: :delete, remote: true, data: { confirm: 'Are you sure you want to delete this address?', toggle: "tooltip", placement: "top"}, class: "account_icons", title: "Remove"} do %>
                 <i class="fa fa-trash-o"></i>
@@ -62,20 +60,20 @@
               <a href="https://maps.google.com?daddr=<%= address.street_address %>+<%= address.city %>+<%= address.region %>+<%= address.country %>+<%= address.postcode %>" target="_blank">
               <%= address.street_address %><br>
               <%= address.city %>, <%= address.region %>, <%= address.country %><br />
-              <%= address.postcode %> 
+              <%= address.postcode %>
               </a>
             </address>
           </li>
         <% end %>
       </ul>
-      
+
       <div class="mb30"></div>
       <h5 class="subtitle">About</h5>
       <p class="mb30"><%= @account.about%></p>
 
       <div class="mb30"></div>
       <h5 class="subtitle">Quick Facts</h5>
-      <p class="mb30"><%= @account.quick_facts %></p>    
+      <p class="mb30"><%= @account.quick_facts %></p>
     </div><!-- col-sm-3 -->
 
               <div class="col-sm-9">
@@ -101,19 +99,19 @@
                         <div class="col-sm-7">
                             <div class="row bars">
                                 <div class="col-xs-5" style="text-align:right"><strong>Created</strong></div>
-                                <div class="col-xs-7"><%= Date.parse(@account.created_at).strftime("%B %e, %Y at %I:%M%p") %></div>
+                                <div class="col-xs-7"><%= @account.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%B %e, %Y at %I:%M%p") %></div>
                             </div>
                             <div class="row bars">
                                 <div class="col-xs-5" style="text-align:right"><strong>Updated</strong></div>
-                                <div class="col-xs-7"><%= Date.parse(@account.updated_at).strftime("%B %e, %Y at %I:%M%p") %></div>
+                                <div class="col-xs-7"><%= @account.updated_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%B %e, %Y at %I:%M%p") %></div>
                             </div>
                             <div class="row bars">
                                 <div class="col-xs-5" style="text-align:right"><strong>Updated By</strong></div>
-                                <div class="col-xs-7"><%= @account.updated_by.nil? ? "" : @account.updated_by.username %></div>
+                                <div class="col-xs-7"><%= @account.updated_by.nil? ? "" : @account.updated_by.first_name + " " + @account.updated_by.last_name %></div>
                             </div>
                         </div><!-- col-sm-4 -->
                         </small>
-                    </div><!-- row -->    
+                    </div><!-- row -->
                   </div>
                 </div>
 
@@ -121,10 +119,7 @@
       <h5 class="subtitle">Conversation</h5>
       <div class="row">
         <div class="col-sm-6">
-          <%= render "conversation_search" %>
-        </div>
-        <div class="col-sm-6">
-          <div class="btn-group mr5 pull-right">
+          <div class="btn-group mr5">
             <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
                 <i class="fa fa-plus-circle mr5"></i> Action
                 <span class="caret"></span>
@@ -134,17 +129,20 @@
               <li><a href="#" data-toggle="modal" data-target=".conversation-note-modal-form">Add Note</a></li>
               <li><a href="#" data-toggle="modal" data-target=".account-action-email">Send Email</a></li>
               <li class="divider"></li>
-              <li><a href="<%= edit_account_path(@account) %>">Edit Account</a></li>                    
+              <li><a href="<%= edit_account_path(@account) %>">Edit Account</a></li>
             </ul>
           </div>
-        </div><!-- col -->
+        </div><!-- col -->        
+        <div class="col-sm-6 pullright">
+          <%= render "conversation_search" %>
+        </div>
       </div><!-- row -->
       <div class="mb20"></div>
-      
+
       <!--- Timeline Start -->
       <%= render "conversation_timeline" %>
-      <!-- Timeline End -->   
-    </div> <!-- col-sm-9 -->            
+      <!-- Timeline End -->
+    </div> <!-- col-sm-9 -->
   </div><!-- row -->
 </div><!-- profile-header -->
 
@@ -196,7 +194,7 @@
 <% end %>
 
 
-<% content_for :custom_js do %>    
+<% content_for :custom_js do %>
 <script>
   jQuery(document).ready(function(){
 
@@ -243,7 +241,7 @@
       }
     });
 
-    
+
 
 
 
@@ -260,18 +258,18 @@
 		});
 		function isValidEmailAddress(emailAddress) {
 		    var pattern = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
-		    
+
 		    if (pattern.test(emailAddress) == false) {
 				alert("Please add a valid email address");
-				$('#invite-emails').removeTag(emailAddress); 
+				$('#invite-emails').removeTag(emailAddress);
 		    }
 		};
-	
+
 		$('#meeting-reminder-time').timepicker({minuteStep: 5});
-		
+
 		// by default hide reminder settings for meetings
 		$("#meeting-reminder-settings").hide();
-		
+
 		// hide show note reminder settings for meetings
 		$('#meeting-reminder').change(function () {
 		    if ($("#meeting-reminder").is(':checked')) {
@@ -287,7 +285,7 @@
 		$("#repeat-frequency-week").hide();
 		$("#repeat-frequency-month").hide();
 		$("#repeat-frequency-year").hide();
-					
+
 		// hide show note reminder settings for meetings
 		$('#meeting-repeat').change(function () {
 		    if ($("#meeting-repeat").is(':checked')) {
@@ -297,7 +295,7 @@
 				$("#meeting-repeat-settings").hide(500);
 			}
 		});
-		
+
 		// hide show note reminder settings for meetings
 		$('#repeat-frequency').change(function () {
 			if($('#repeat-frequency').val() == "daily") {
@@ -316,22 +314,22 @@
 				$("#repeat-frequency-day").hide(500);
 				$("#repeat-frequency-week").hide(500);
 				$("#repeat-frequency-month").show(500);
-				$("#repeat-frequency-year").hide(500);					
+				$("#repeat-frequency-year").hide(500);
 			}
 			else if($('#repeat-frequency').val() == "yearly"){
 				$("#repeat-frequency-day").hide(500);
 				$("#repeat-frequency-week").hide(500);
 				$("#repeat-frequency-month").hide(500);
-				$("#repeat-frequency-year").show(500);					
+				$("#repeat-frequency-year").show(500);
 			}
 		});
-		
+
 		$('#reminderDatePicker').datepicker();
 		$('#reminderTimePicker').timepicker({minuteStep: 5});
 
 		// by default hide reminder settings for notes
 		$("#note-reminder-settings").hide();
-		
+
 		// hide show note reminder settings
 		$('#note-reminder').change(function () {
 		    if ($("#note-reminder").is(':checked')) {
@@ -350,15 +348,15 @@
   .account_icons {
     color: #484848;
   }
-  
+
   .account_icons:hover {
     text-decoration: none;
-  }  
+  }
   .bars {
     border-bottom: 0px dotted #ddd;
     padding: 5px;
   }
-  
+
   .conversation-search {
     width: 420px;
     padding: 25px;

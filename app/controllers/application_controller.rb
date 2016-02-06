@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   before_filter :authentication
-   
+
   helper_method :current_user, :logged_in?
 
   private
@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
      if session[:token].nil?
       flash[:danger] = 'Your session has expired.  Please log in again.'  # Log in error message
       redirect_to root_path
-     else 
+     else
        set_current_user
      end
   end

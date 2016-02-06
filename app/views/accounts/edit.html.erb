@@ -1,7 +1,26 @@
+<% content_for :pageheader do %>
+  <h2><i class="fa fa-briefcase"></i><%= @account.name %></h2>
+  <div class="breadcrumb-wrapper">
+    <span class="label">You are here:</span>
+    <ol class="breadcrumb">
+        <li><a href="/accounts">Accounts</a></li>
+        <li class="active"><%= link_to account_path(@account) do %>Edit<% end %></li>
+    </ol>
+  </div>
+<% end %>
+
+<div class="row">
+  <div class="col-md-10">
+  </div>
+  <div class="col-md-2 pull-right">
+  <%= link_to account_path(@account), class: "btn btn-white btn-block" do %><i class="fa fa-minus-circle"></i>&nbsp;&nbsp;&nbsp;Cancel<% end %><br />
+  </div>
+</div>
+
 <div class="panel panel-default">
 	<div class="panel-heading">
-		<h4 class="panel-title">Edit Account</h4>
-		<p>Edit the details below.</p>
+  	<h4 class="panel-title">Edit Account</h4>
+		<p>Update the account details by entering the detail below</p>
 	</div>
 	<%#= render partial: "account_form", locals: { url: accounts_path } %>
 	<%= render partial: "account_edit" %>

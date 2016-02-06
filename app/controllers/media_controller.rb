@@ -1,35 +1,47 @@
 class MediaController < ApplicationController
 	skip_before_filter :verify_authenticity_token, :only => [:create_folder, :save_folder, :destroy, :destroy_multiple, :show, :email_file, :rename_media_file]
   before_action :get_token
+  before_action :get_api_values, only: [:index, :show, :save_folder,
+                                        :email_file, :rename_media_file,
+                                        :upload_file
+                                       ]
 
   # Display all folders
 	def index
-    @medias = Media.all
+    if request.format.html?
+      @medias = Media.all
+      @apiURL = APP_CONFIG['api_url'] + '/download/media'
+    else
+      render text: 'Not an html request'
+    end
  	end
-  
+
   # Display all media inside of a folder
-	def show 
+	def show
     if(request.xhr?)
-      id = params[:folder_id]
-      @medias = Media.all(params: {folder_id: id})
-      email = current_user.email
-      appKey = APP_CONFIG['api_app_key']
-      token = session[:token]
+      if params[:folder_id].present?
+        id = params[:folder_id]
+        @medias = Media.all(params: {folder_id: id})
+      else
+        @medias = Media.all
+      end
       apiURL = APP_CONFIG['api_url'] + '/download/media'
       mediaArray = []
       @medias.each do |media|
-        uid = media.uid
-        apiFullUrl = apiURL + "/" +  media.uid;
-        curlRes = `curl -X GET -H "Authorization: Token token="#{token}", email="#{email}", app_key="#{appKey}"" "#{apiFullUrl}"`
-        curlRes = JSON.parse(curlRes);
-        media.cdn_url =curlRes['cdn_url']
-        media.uid = uid
+        cdn_url = media.urls.attributes['thumb'] if media.image?
+        media.cdn_url = cdn_url
+        # uid = media.uid
+        # apiFullUrl = apiURL + "/" +  media.uid + "?style=thumb"
+        # curlRes = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" "#{apiFullUrl}"`
+        # curlRes = JSON.parse(curlRes);
+        # media.cdn_url =curlRes['cdn_url']
+        # media.uid = uid
         mediaArray.push(media)
       end
       render json: mediaArray
     end
  	end
-  
+
 	# Create a new media folder
 	def create_folder
     if(request.xhr?)
@@ -39,28 +51,25 @@ class MediaController < ApplicationController
       render :text => (@medias.save ? @medias.id : 0) and return
     end
 	end
-  
+
   # Edit existing folder
 	def save_folder
     if(request.xhr?)
-      email = current_user.email
-      appKey = APP_CONFIG['api_app_key']
-      token = session[:token]
       apiURL = APP_CONFIG['api_url'] + '/download/media'
       id = params[:id]
       apiFullUrl = apiURL + "/" +  id;
       new_name = params[:name]
-      #curlRes = `curl -X GET -H "Authorization: Token token="#{token}", email="#{email}", app_key="#{appKey}"" "#{apiFullUrl}"`
-      curlRes = `curl -X PUT -H "Authorization: Token token="#{token}", email="#{email}", app_key="#{appKey}"" -H "Content-Type: application/json"  -d '{"medium":{"name": "#{new_name}"}}' '#{apiFullUrl}'`
+      #curlRes = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" "#{apiFullUrl}"`
+      curlRes = `curl -X PUT -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -d '{"medium":{"name": "#{new_name}"}}' '#{apiFullUrl}'`
       render :text => (1 ? 1 : 0) and return
     end
 	end
-  
+
   # Used to delete the media folder
   def destroy
     render :text => (Media.delete(params[:id]) ? 1 : 0) and return
   end
-  
+
   # Used to delete the media files
   def destroy_multiple
     duplicates = params[:ids].split(",")
@@ -69,7 +78,7 @@ class MediaController < ApplicationController
     end
     render :text => ( 1 ? 1 : 0) and return
   end
-	
+
   #Email media file
   def email_file
     #abort(.inspect)
@@ -78,10 +87,7 @@ class MediaController < ApplicationController
     to = params[:to]
     subject = params[:subject]
     message = params[:message]
-    
-    email = current_user.email
-    appKey = APP_CONFIG['api_app_key']
-    token = session[:token]
+
     apiURL = APP_CONFIG['api_url'] + '/download/media'
     mediaArray = []
     #attachments = params[:attachments]
@@ -89,12 +95,12 @@ class MediaController < ApplicationController
     attachments.each do | media |
       uid = media
       apiFullUrl = apiURL + "/" +  uid;
-      curlRes = `curl -X GET -H "Authorization: Token token="#{token}", email="#{email}", app_key="#{appKey}"" "#{apiFullUrl}"`
+      curlRes = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" "#{apiFullUrl}"`
       curlRes = JSON.parse(curlRes);
       mediaArray.push(curlRes['cdn_url'])
     end
     #abort(mediaArray.inspect)
-    
+
     if(to.blank? == true)
       message = 'Please enter email address'
     else
@@ -104,19 +110,16 @@ class MediaController < ApplicationController
     flash[:notice] = message
     redirect_to "/media"
   end
-  
+
   # rename media file
   def rename_media_file
     if(request.xhr?)
-      email = current_user.email
-      appKey = APP_CONFIG['api_app_key']
-      token = session[:token]
       apiURL = APP_CONFIG['api_url'] + '/download/media'
       id = params[:id]
       apiFullUrl = apiURL + "/" +  id;
       new_name = params[:name]
-      #curlRes = `curl -X GET -H "Authorization: Token token="#{token}", email="#{email}", app_key="#{appKey}"" "#{apiFullUrl}"`
-      curlRes = `curl -X PUT -H "Authorization: Token token="#{token}", email="#{email}", app_key="#{appKey}"" -H "Content-Type: application/json"  -d '{"medium":{"name": "#{new_name}"}}' '#{apiFullUrl}'`
+      #curlRes = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" "#{apiFullUrl}"`
+      curlRes = `curl -X PUT -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -d '{"medium":{"name": "#{new_name}"}}' '#{apiFullUrl}'`
       render :text => (1 ? 1 : 0) and return
     end
   end
@@ -134,11 +137,8 @@ class MediaController < ApplicationController
     if content_type == "application/force-download"
     type = 'document'
     end
-    email = current_user.email
-    appKey = APP_CONFIG['api_app_key']
-    token = session[:token]
     apiURL = APP_CONFIG['api_url'] + '/media' #http://api.convo.code10.ca/api/v1/media/
-    curlRes = `curl -X POST -F"medium[payload]=#{serverPath}" -F"type=#{type}" -F"medium[name]=#{filename}" -F"medium[parent_id]=#{folderId}" -H "Authorization: Token token="#{token}", email="#{email}", app_key="#{appKey}"" "#{apiURL}" -v`;
+    curlRes = `curl -X POST -F"medium[payload]=#{serverPath}" -F"type=#{type}" -F"medium[name]=#{filename}" -F"medium[parent_id]=#{folderId}" -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" "#{apiURL}" -v`;
     #abort(curlRes.inspect)
     message = ''
     if curlRes == nil
@@ -155,7 +155,7 @@ class MediaController < ApplicationController
     flash[:notice] = message
     redirect_to "/media"
   end
-  
+
   # Used to download the media file
   def download_file
     require 'open-uri'
@@ -169,15 +169,21 @@ class MediaController < ApplicationController
     send_file path + filename, disposition: 'attachment'
     #File.delete(path + filename)
   end
-  
+
   private
-  def get_token
-    #set gloal var for token to be used in model, hack for now
-    $user_token = session[:token]
-  end
- 
-  def resource_params
-    params.permit( :id, :name, :type, :folder_id)
-  end
+    def get_token
+      #set gloal var for token to be used in model, hack for now
+      $user_token = session[:token]
+    end
+
+    def resource_params
+      params.permit( :id, :name, :type, :folder_id)
+    end
+
+    def get_api_values
+      @email = current_user.email
+      @appKey = APP_CONFIG['api_app_key']
+      @token = session[:token]
+    end
 
 end

@@ -2,9 +2,9 @@
 
 <script>
   jQuery(document).ready(function(){
-    
+
     "use strict";
-    
+
     jQuery('.thmb').hover(function(){
       var t = jQuery(this);
       t.find('.ckbox').show();
@@ -16,7 +16,7 @@
         t.find('.fm-group').hide();
       }
     });
-    
+
     jQuery('.ckbox').each(function(){
       var t = jQuery(this);
       var parent = t.parent();
@@ -26,8 +26,8 @@
         parent.addClass('checked');
       }
     });
-    
-    
+
+
     jQuery('.ckbox').click(function(){
       var t = jQuery(this);
       if(!t.find('input').is(':checked')) {
@@ -38,7 +38,7 @@
         enable_itemopt(true);
       }
     });
-    
+
     jQuery('#selectall').click(function(){
       if(jQuery(this).is(':checked')) {
         jQuery('.thmb').each(function(){
@@ -56,12 +56,12 @@
         enable_itemopt(false);
       }
     });
-    
+
     function enable_itemopt(enable) {
       if(enable) {
         jQuery('.itemopt').removeClass('disabled');
       } else {
-        
+
         // check all thumbs if no remaining checks
         // before we can disabled the options
         var ch = false;
@@ -69,14 +69,14 @@
           if(jQuery(this).hasClass('checked'))
             ch = true;
         });
-        
+
         if(!ch)
           jQuery('.itemopt').addClass('disabled');
       }
     }
-    
+
     jQuery("a[data-rel^='prettyPhoto']").prettyPhoto();
-    
+
   });
-  
+
 </script>

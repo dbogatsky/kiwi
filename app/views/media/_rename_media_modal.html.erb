@@ -1,0 +1,19 @@
+<div class="modal fade" id="rename-media-file">
+  <div class="modal-dialog">
+    <!-- Popup content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Email</h4>
+      </div>
+      <div class="modal-body">
+        <label>Rename Media File</label>
+        <%= form_tag({action: 'rename_media_file'}, multipart: true, id: "save-file-frm") do %>
+          <div class="div-oth-input"><%= text_field_tag 'new_name' , nil, placeholder: "Name", class: 'form-control'%></div>
+          <%= hidden_field_tag :media_file_id %>
+          <%= submit_tag "Save", id: "rename-file", class: "btn btn-primary" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

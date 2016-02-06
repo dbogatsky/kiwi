@@ -24,7 +24,7 @@ class AccountsController < ApplicationController
   def new
     # Add an account
     @account = Account.new
-    @users = User.all 
+    @users = User.all
     #@account_statuses = AccountStatus.all
     #@contact_types = Contact::CONTACT_TYPES
 
@@ -42,8 +42,8 @@ class AccountsController < ApplicationController
     @account = Account.find(params[:id])
     @addresses = @account.addresses
     @contacts = @account.contacts
-    @users = User.all 
-    
+    @users = User.all
+
     #@account_statuses = AccountStatus.all
     #@contact_types = Contact::CONTACT_TYPES
     #@contact_counter = 2 # Check number of existing contacts and up the contact counter.
@@ -60,7 +60,7 @@ class AccountsController < ApplicationController
     if params.has_key?(:save)
       #@account = Account.new account_params
       params[:account][:contacts_attributes] = params[:account][:contacts_attributes].values
-      params[:account][:addresses_attributes] = params[:account][:addresses_attributes].values
+      params[:account][:addresses_attributes] = params[:account][:addresses_attributes]
       @account = Account.new(request: :create, account: account_params)
 
       if @account.save
@@ -79,7 +79,7 @@ class AccountsController < ApplicationController
       else
         flash[:danger] = 'Oops! Unable to add the account'
       end
-    end 
+    end
 
     redirect_to accounts_path
   end
@@ -104,11 +104,11 @@ class AccountsController < ApplicationController
   def schedule_meeting
     flash[:success] = 'Your meeting has been successfully scheduled'
     redirect_to accounts_conversation_path(id)
-  end 
+  end
 
   def add_note
     c_id = Account.find(conversation_item_params[:account_id]).conversation.id
-    
+
     ci = ConversationItem.create(conversation_item: {title: conversation_item_params[:title], body: conversation_item_params[:body]}, conversation_id: c_id, type: conversation_item_params[:type])
     if ci
       flash[:success] = 'Your note has been added to the conversation'
@@ -134,7 +134,7 @@ class AccountsController < ApplicationController
 
   def account_params
     params.require(:account).permit(
-      :name, :status_id, :assign_to, :shared_with, :about, :quick_facts, :avatar, 
+      :name, :status_id, :assign_to, :shared_with, :about, :quick_facts, :avatar,
       addresses_attributes: [:id, :name, :street_address, :postcode, :city, :region, :country, :_destroy],
       contacts_attributes: [:id, :type, :name, :value, :_destroy]
     )

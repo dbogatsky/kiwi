@@ -26,4 +26,5 @@ group :development, :test do
   gem 'jazz_fingers'
   gem 'web-console', '~> 2.0'
   gem "http_logger"
+  gem 'pry-rails'
 end
