@@ -19,18 +19,13 @@ class ApplicationController < ActionController::Base
   end
 
   def set_current_user
-    if session[:user].nil?
-      $user_token = session[:token]
-      @current_user = User.find(session[:user_id])
-      @current_user.id = session[:user_id]
-      session[:user] = @current_user.to_yaml
-    else
-      @current_user = YAML.load(session[:user])
-    end
+    $user_token = session[:token]
+    @current_user = User.find(session[:user_id])
+    @current_user.id = session[:user_id]
   end
 
   def current_user
-    @current_user = YAML.load(session[:user])
+    @current_user
   end
 
   def logged_in?

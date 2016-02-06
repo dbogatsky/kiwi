@@ -1,4 +1,5 @@
 class User < OrchardApiModel
+  cached_resource
 
   schema do
     # define each attribute separately

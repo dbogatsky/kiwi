@@ -85,7 +85,6 @@ class LoginController < ApplicationController
 
   def destroy
     $user_token = nil
-    session[:user] = nil
     session[:user_id] = nil
     session[:token] = nil
     redirect_to root_path

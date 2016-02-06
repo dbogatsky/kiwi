@@ -12,7 +12,7 @@ gem 'turbolinks'
 gem 'multipart-post'
 gem 'open-weather'
 gem 'geocoder'
-
+gem 'cached_resource'
 
 # This gem is for accessing REST services in an ActiveRecord style.
 #gem 'active_rest_client', '1.2.0'
