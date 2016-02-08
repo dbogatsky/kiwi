@@ -120,8 +120,14 @@ class AccountsController < ApplicationController
   end
 
   def send_email
-    flash[:success] = 'Your email has been successfully sent'
-    redirect_to accounts_conversation_path(id)
+    c_id = Account.find(conversation_item_params[:account_id]).conversation.id
+    ci = ConversationItem.create(conversation_item: {title: conversation_item_params[:title], body: conversation_item_params[:body]}, conversation_id: c_id, type: "email")
+    if ci
+      flash[:success] = 'Your email has been successfully sent'
+    else
+      flash[:danger] = 'Oops! Looks like there was a problem sending your email'
+    end
+    redirect_to account_path(conversation_item_params[:account_id])
   end
 
 
