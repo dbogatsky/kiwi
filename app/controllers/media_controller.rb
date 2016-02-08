@@ -156,6 +156,8 @@ class MediaController < ApplicationController
       type = 'document'
     elsif (content_type == 'audio/mpeg' || content_type == 'audio/x-mpeg' || content_type == 'audio/mp3' || content_type == 'audio/x-mp3' || content_type == 'audio/mpeg3' || content_type == 'audio/x-mpeg3' || content_type == 'audio/mpg' || content_type == 'audio/x-mpg' || content_type == 'audio/x-mpegaudio')
       type = 'audio'
+    elsif (content_type == 'video/x-flv' || content_type == 'video/x-flv' || content_type == 'video/MP2T' || content_type == 'video/3gpp' || content_type == 'video/quicktime' || content_type == ' video/x-msvideo' || content_type == 'video/x-ms-wmv' || content_type == 'video/mpeg')
+      type = 'video'
     end
     apiURL = APP_CONFIG['api_url'] + '/media' #http://api.convo.code10.ca/api/v1/media/
     curlRes = `curl -X POST -F"medium[payload]=#{serverPath};type=#{content_type}" -F"type=#{type}" -F"medium[name]=#{filename}" -F"medium[parent_id]=#{folderId}" -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" "#{apiURL}" -v`;
