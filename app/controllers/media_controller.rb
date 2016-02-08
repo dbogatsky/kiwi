@@ -128,7 +128,7 @@ class MediaController < ApplicationController
     name = params[:media][:payload].original_filename
     filename = params[:filename]
     folderId = params[:folder_id]
-    directory = "app/assets/images"
+    directory = "public/assets/images"
     path = File.join(directory, name)
     File.open(path, "wb") { |f| f.write(params[:media][:payload].read) }
     serverPath = '@' + path;
@@ -159,7 +159,7 @@ class MediaController < ApplicationController
   # Used to download the media file
   def download_file
     require 'open-uri'
-    path = 'app/assets/images/'
+    path = 'public/assets/images/'
     uri = URI.parse(params[:url])
     filename =  File.basename(uri.path)
     filename = params[:name]+ File.extname(uri.path)
