@@ -139,17 +139,17 @@ class MediaController < ApplicationController
     path = File.join(directory, name)
     File.open(path, "wb") { |f| f.write(params[:media][:payload].read) }
     serverPath = '@' + path;
-    type = 'image'
     content_type = params[:media][:payload].content_type
-    if (content_type == "application/force-download" || content_type == 'application/pdf' || content_type == 'application/vnd.ms-excel' || content_type == 'application/vnd.ms-excel' || content_type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || content_type == 'application/msword' || content_type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || content_type == 'text/plain')
+
+    if(content_type == 'image/png' || content_type == 'image/gif' || content_type == 'image/jpg' || content_type == 'image/jpeg')
+      type = 'image'
+    elsif (content_type == "application/force-download" || content_type == 'application/pdf' || content_type == 'application/vnd.ms-excel' || content_type == 'application/vnd.ms-excel' || content_type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || content_type == 'application/msword' || content_type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || content_type == 'text/plain')
       type = 'document'
     elsif (content_type == 'audio/mpeg' || content_type == 'audio/x-mpeg' || content_type == 'audio/mp3' || content_type == 'audio/x-mp3' || content_type == 'audio/mpeg3' || content_type == 'audio/x-mpeg3' || content_type == 'audio/mpg' || content_type == 'audio/x-mpg' || content_type == 'audio/x-mpegaudio')
       type = 'audio'
-      flash[:notice] = 'This filetype is not supported!'
-      redirect_to "/media" and return
     end
     apiURL = APP_CONFIG['api_url'] + '/media' #http://api.convo.code10.ca/api/v1/media/
-    curlRes = `curl -X POST -F"medium[payload]=#{serverPath}" -F"type=#{type}" -F"medium[name]=#{filename}" -F"medium[parent_id]=#{folderId}" -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" "#{apiURL}" -v`;
+    curlRes = `curl -X POST -F"medium[payload]=#{serverPath};type=#{content_type}" -F"type=#{type}" -F"medium[name]=#{filename}" -F"medium[parent_id]=#{folderId}" -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" "#{apiURL}" -v`;
     #abort(curlRes.inspect)
     message = ''
     if curlRes == nil
