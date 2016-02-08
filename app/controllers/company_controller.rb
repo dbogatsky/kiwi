@@ -51,8 +51,8 @@ class CompanyController < ApplicationController
 			# Create new account status
 			if @status.save  			
 				#update status list stored in session
-				@account_statuses = AccountStatus.all
-				session["account"]["statuses"] = @account_statuses
+				@account_statuses = AccountStatus.all(:reload => true)
+				#session["account"]["statuses"] = @account_statuses
 				
 				flash[:success] = 'Account status has been added successfully'
 			else 
@@ -71,8 +71,8 @@ class CompanyController < ApplicationController
 			if @status.update_attributes(attributes)
 
 				#update status list stored in session
-				@account_statuses = AccountStatus.all
-				session["account"]["statuses"] = @account_statuses
+				@account_statuses = AccountStatus.all(:reload => true)
+				#session["account"]["statuses"] = @account_statuses
 				
 				flash[:success] = 'Account status has been edited successfully'
 			else 

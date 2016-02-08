@@ -41,10 +41,6 @@ class LoginController < ApplicationController
       set_current_user
 
       #cache some stuff for performance
-      #- account statuses
-      @account_statuses = AccountStatus.all
-      session["account"]  ||= {}
-      session["account"]["statuses"] = @account_statuses
 
       # Log the user in and redirect to the main page: Dashboard first?
       redirect_to dashboard_path

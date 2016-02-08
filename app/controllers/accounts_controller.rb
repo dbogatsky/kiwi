@@ -7,7 +7,7 @@ class AccountsController < ApplicationController
     # Get all accounts
     @accounts = Account.all(params: {search: params[:search]})
     #@accounts = @accounts.sort_by{|a| a.created_at}.reverse!
-    @account_statuses = get_hashed_account_statuses
+    #@account_statuses = AccountStatus.all
 
   end
 
@@ -146,16 +146,6 @@ class AccountsController < ApplicationController
 
   def find_account
     @account = Account.find(params[:id])
-  end
-
-  def get_hashed_account_statuses
-
-    account_statuses = Hash.new
-    session["account"]["statuses"].each do | account_status |
-      account_statuses[account_status["id"]] = account_status
-    end
-
-    account_statuses
   end
 
 end
