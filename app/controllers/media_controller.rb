@@ -28,8 +28,15 @@ class MediaController < ApplicationController
       apiURL = APP_CONFIG['api_url'] + '/download/media'
       mediaArray = []
       @medias.each do |media|
-        cdn_url = media.urls.attributes['thumb'] if media.image?
-        media.cdn_url = cdn_url
+        if media.image?
+          cdn_url = media.urls.attributes['thumb']
+          media.cdn_url = cdn_url
+        else
+          apiFullUrl = apiURL + "/" +  media.uid
+          curlRes = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" "#{apiFullUrl}"`
+          curlRes = JSON.parse(curlRes);
+          media.cdn_url =curlRes['cdn_url']
+        end
         # uid = media.uid
         # apiFullUrl = apiURL + "/" +  media.uid + "?style=thumb"
         # curlRes = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" "#{apiFullUrl}"`
@@ -159,15 +166,11 @@ class MediaController < ApplicationController
   # Used to download the media file
   def download_file
     require 'open-uri'
-    path = 'public/assets/images/'
+    url = params[:url]
     uri = URI.parse(params[:url])
-    filename =  File.basename(uri.path)
     filename = params[:name]+ File.extname(uri.path)
-    open(path + filename, 'wb') do |file|
-      file << open(params[:url]).read
-    end
-    send_file path + filename, disposition: 'attachment'
-    #File.delete(path + filename)
+    data = open(url).read
+    send_data data, disposition: 'attachment', filename: filename
   end
 
   private
