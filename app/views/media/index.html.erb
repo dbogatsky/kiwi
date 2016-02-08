@@ -124,7 +124,11 @@
         <% end %>
       </div>
       <div id="msg"></div>
-      <ul class="folder-list">
+      <span>
+        <a href="javascript:void(0);" class="open-folder main-folder" data-id=""><i class="fa fa-folder-open"></i>
+        <span>Main</span>
+      </a></span>
+      <ul class="folder-list indent-left-list">
         <%= render @medias %>
       </ul>
       <div class="mb30"></div>
@@ -387,7 +391,7 @@
     /*
      *View Folder media
      */
-    $(document).on('click', "li a.open-folder", function(e){
+    $(document).on('click', "a.open-folder", function(e){
       e.preventDefault();
       var _this_ = this;
       var folder_id = SELECTED_FOLDER = $(this).attr('data-id');
