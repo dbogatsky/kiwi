@@ -85,6 +85,8 @@
                     <%end%>
                   <% elsif media.document? %>
                     <img alt="" class="img-responsive" src="/assets/bootstrap/images/photos/media-doc.png">
+                  <% elsif media.audio? %>
+                    <img alt="" class="img-responsive" src="/assets/bootstrap/images/photos/media-audio.png">
                   <% end %>
                 </div>
                 <h5 class="fm-title"><a href=""><%=media.name%></a></h5>
@@ -124,7 +126,11 @@
         <% end %>
       </div>
       <div id="msg"></div>
-      <ul class="folder-list">
+      <span>
+        <a href="javascript:void(0);" class="open-folder main-folder" data-id=""><i class="fa fa-folder-open"></i>
+        <span>Main</span>
+      </a></span>
+      <ul class="folder-list indent-left-list">
         <%= render @medias %>
       </ul>
       <div class="mb30"></div>
@@ -391,7 +397,7 @@
     /*
      *View Folder media
      */
-    $(document).on('click', ".folder-list li a.open-folder", function(e){
+    $(document).on('click', "a.open-folder", function(e){
       e.preventDefault();
       var _this_ = this;
       var folder_id = SELECTED_FOLDER = $(this).attr('data-id');
@@ -552,8 +558,11 @@
               container.find('.thmb-prev').html('<img alt="" class="img-responsive" src="/assets/bootstrap/images/photos/media-doc.png">');
               container.find('.thmb-prev').after('<h5 class="fm-title"><a href="'+ value.cdn_url +'" target="_blank">' + value.name + '</a></h5><small class="text-muted">Added: '+ moment(media_date).format('MMM D, YYYY') +'</small>' + '</a></h5><p><small class="text-muted">size: '+ file_size +' kb'+'</small></p>' + '</a></h5>' );
               html += $(container).prop('outerHTML');
+            }else if(value.type == 'audio'){
+              container.find('.thmb-prev').html('<img alt="" class="img-responsive" src="/assets/bootstrap/images/photos/media-audio.png">');
+              container.find('.thmb-prev').after('<h5 class="fm-title"><a href="'+ value.cdn_url +'" target="_blank">' + value.name + '</a></h5><small class="text-muted">Added: '+ moment(media_date).format('MMM D, YYYY') +'</small>' + '</a></h5><p><small class="text-muted">size: '+ file_size +' kb'+'</small></p>' + '</a></h5>' );
+              html += $(container).prop('outerHTML');
             }
-
             //ss = '<div data-via="" data-popup="" data-desc="The summary of page" data-url="https://www.google.co.in/images/nav_logo242.png" data-img="https://www.google.co.in/images/nav_logo242.png" data-title="Share Media File" class="social-share-button"><a href="#" title="Share to Twitter" onclick="return SocialShareButton.share(this);" class="social-share-button-twitter" data-site="twitter" rel="nofollow "></a><a href="#" title="Share to Facebook" onclick="return SocialShareButton.share(this);" class="social-share-button-facebook" data-site="facebook" rel="nofollow "></a><a href="#" title="Share to Pinterest" onclick="return SocialShareButton.share(this);" class="social-share-button-pinterest" data-site="pinterest" rel="nofollow "></a></div>';
           });
         }
