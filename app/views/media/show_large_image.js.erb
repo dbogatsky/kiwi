@@ -1,2 +1,3 @@
 url = '<%=j @web_url%>';
-$.prettyPhoto.open(url.replace('amp;', ''));
+parsed_url = url.replace('amp;', '').replace('amp;', '')
+$.prettyPhoto.open(parsed_url);

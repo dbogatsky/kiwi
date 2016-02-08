@@ -52,7 +52,7 @@ class MediaController < ApplicationController
   def show_large_image
     uid = params[:uid]
     apiURL = APP_CONFIG['api_url'] + '/download/media'
-    apiFullUrl = apiURL + "/" +  uid + "?style=thumb"
+    apiFullUrl = apiURL + "/" +  uid + "?style=web"
     curlRes = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" "#{apiFullUrl}"`
     curlRes = JSON.parse(curlRes);
     @web_url = curlRes['cdn_url']
