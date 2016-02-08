@@ -51,6 +51,7 @@
               if media.image?
                 cdn_url = media.urls.attributes['thumb']
               else
+                apiURL = APP_CONFIG['api_url'] + '/download/media'
                 apiFullUrl = apiURL + "/" +  media.uid
                 curlRes = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" "#{apiFullUrl}"`
                 curlRes = JSON.parse(curlRes);
