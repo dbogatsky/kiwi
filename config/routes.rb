@@ -43,6 +43,7 @@ Rails.application.routes.draw do
 
     post '/media/create_folder', to:'media#create_folder', as: :create_folder
     post '/media/show', to:'media#show', as: :show
+    get  '/media/show_large_image', to:'media#show_large_image', as: :show_large_image
     post '/media/save_folder', to:'media#save_folder', as: :save_folder
     post '/media/destroy', to:'media#destroy', as: :destroy
     post '/media/destroy_multiple', to:'media#destroy_multiple', as: :destroy_multiple

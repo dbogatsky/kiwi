@@ -3,7 +3,7 @@ class MediaController < ApplicationController
   before_action :get_token
   before_action :get_api_values, only: [:index, :show, :save_folder,
                                         :email_file, :rename_media_file,
-                                        :upload_file
+                                        :upload_file, :show_large_image
                                        ]
 
   # Display all folders
@@ -41,6 +41,15 @@ class MediaController < ApplicationController
       render json: mediaArray
     end
  	end
+
+  def show_large_image
+    uid = params[:uid]
+    apiURL = APP_CONFIG['api_url'] + '/download/media'
+    apiFullUrl = apiURL + "/" +  uid + "?style=thumb"
+    curlRes = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" "#{apiFullUrl}"`
+    curlRes = JSON.parse(curlRes);
+    @web_url = curlRes['cdn_url']
+  end
 
 	# Create a new media folder
 	def create_folder
