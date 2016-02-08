@@ -13,15 +13,16 @@
             <div class="panel-body">
               <div class="row row-pad-5">
                 <div class="col-lg-10">
-                  <input type="email" name="email" value="my.email.account@company.com" class="form-control"  required="required" />
+                  <input type="email" name="conversation_item[email]" placeholder="To" class="form-control"  required="required" />
                 </div>
               </div><!-- row -->
               <div class="row row-pad-5">
               <div class="col-lg-10">
-                  <input type="text" name="subject" placeholder="Subject" class="form-control" required="required"  />
+                  <input type="text" name="conversation_item[title]" placeholder="Subject" class="form-control" required="required"  />
                 </div>
               </div><!-- row -->
-              <textarea class="form-control" rows="5" placeholder="Message" required="required"></textarea>
+              <textarea class="form-control" rows="5" placeholder="Message" required="required" name="conversation_item[body]"></textarea>
+              <input type="hidden" name="conversation_item[account_id]" value=<%= @account.id %> >
             </div><!-- panel-body -->
             <div class="panel-footer">
               <button class="btn btn-primary">Send Email</button>
