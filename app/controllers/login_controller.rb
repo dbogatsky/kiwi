@@ -2,8 +2,12 @@ class LoginController < ApplicationController
   #exclude the following methods from the authentication filter since the user is not logged in yet
   before_filter :authentication, :except => [:index, :login, :forgot, :recover, :superadmin, :superadmin_auth]
 
-  def index   
-    render :layout => false
+  def index 
+    if !session[:token].nil? 
+      redirect_to dashboard_path
+    else
+      render :layout => false
+    end
   end
 
   def login
