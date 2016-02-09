@@ -68,37 +68,56 @@
         <!-- Tab panes -->
         <div class="tab-content mb30">
           <div class="mb30"></div>
-          <div class="tab-pane active" id="organization">
-                <div class="row row-pad-5">
+            <div class="tab-pane active" id="organization">
+              
+              <div class="row row-pad-5">
                 <div class="col-md-10">
                   <h3 class="panel-title">Entities</h3>
-                  <ul class="folder-list">
-                    <%if @entites.present?%>
-                        <%@entites.each do |entity|%>
-                          <li>
-                            <div class="col-md-6">
-                              <a href="/company_entities/<%=entity.id%>"><i class="fa fa-chevron-right"></i><span><%= entity.name %></span>
-                              </a>
-                            </div>
-                            <div class="col-md-6">
-                              <a href="javascript:void(0);" class="edit-folder" data-id="<%= entity.id %>" data-name="<%=entity.name%>" data-description="<%= entity.description%>"><i class="fa fa-pencil"></i></a>
-                              <%=link_to company_entity_path(entity.id), method: :delete,data: {:confirm => 'Are you sure to delete company entity?'} do %>
-                                <i class="fa fa-trash-o"></i>
-                              <%end%>
-                            </div>
-                          </li>
-                        <%end%>
-                    <%else%>
-                      <p>Create and manage Entities here.</p>
-                    <%end%>
-                  </ul>
+                  <p>Use entities to describe how your organization is structured</p>
                 </div>
                 <div class="col-md-2">
-                    <a href="<%= new_company_entity_path %>" class="btn btn-primary btn-block">
-                      <i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Entities</a>
+                  <a href="<%= new_company_entity_path %>" class="btn btn-primary btn-block"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Entities</a>
                 </div>
-            </div>
-          </div>
+              </div><!-- row -->
+              
+              <div class="row row-pad-5">
+                <div class="col-md-8">
+                  <% if @entites.present? %>
+                    <div class="table-responsive">
+                      <table class="table mb30">
+                        <thead>
+                          <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <% @entites.each do |entity| %>
+                      			<tr>
+                      				<td><%= entity.name %></td>
+                      				<td><%= entity.description %></td>
+                      				<td class="table-action">
+                                <a href="javascript:void(0);" class="edit-folder" 
+                                  data-id="<%= entity.id %>" 
+                                  data-name="<%=entity.name %>" 
+                                  data-description="<%= entity.description %>"
+                                  data-toggle="modal" data-target=".edit_company_entity" class="modal-link"><i class="fa fa-pencil"></i></a>
+                                  <%=link_to company_entity_path(entity.id), method: :delete,data: {:confirm => 'Are you sure to delete company entity?'} do %>
+                                    <i class="fa fa-trash-o"></i>
+                                  <% end %>
+                      				</td>
+                      			</tr>
+                          <% end %>
+                        </tbody>
+                      </table>
+                    </div><!-- table-responsive -->
+                  <% else %>
+                    <p>Create and manage Entities here.</p>
+                  <% end %>
+                </div>
+            </div><!-- row -->
+          </div><!-- tab pane -->
           <div class="mb30"></div>
           <div class="tab-pane" id="settings">
             <div class="row row-pad-5">
@@ -109,38 +128,38 @@
                   <div class="col-md-2">
                       <a href="#" id="add_status" class="btn btn-primary btn-block" data-toggle="modal" data-target=".account-status-add"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Status</a>
                   </div>
-            </div>
+            </div><!-- row pad 5-->
             <div class="row row-pad-5">
               <div class="col-md-8">
-                  <div class="table-responsive">
-                    <table class="table mb30">
-                      <thead>
-                        <tr>
-                          <th>Status</th>
-                          <th>Description</th>
-                          <th></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-			                  <% @account_statuses.each do |status| %>
-                    			<tr>
-                    				<td><span class="badge" style="background-color: <%= status.color %>; border-color: <%= status.color %>;"><%= status.name %></span></td>
-                    				<td><%= status.description %></td>
-                    				<td class="table-action">
-                    					<a href="#"
-                    						data-id="<%= status.id %>"
-                    						data-statname="<%= status.name %>"
-                    						data-statcolor="<%= status.color %>"
-                    						data-statdesc="<%= status.description %>"
-                    						data-toggle="modal" data-target=".account-status-add" class="modal-link"><i class="fa fa-pencil"></i></a>
-                    				</td>
-                    			</tr>
-			                  <% end %>
-                      </tbody>
-                    </table>
-                  </div><!-- table-responsive -->
+                <div class="table-responsive">
+                  <table class="table mb30">
+                    <thead>
+                      <tr>
+                        <th>Status</th>
+                        <th>Description</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+		                  <% @account_statuses.each do |status| %>
+                  			<tr>
+                  				<td><span class="badge" style="background-color: <%= status.color %>; border-color: <%= status.color %>;"><%= status.name %></span></td>
+                  				<td><%= status.description %></td>
+                  				<td class="table-action">
+                  					<a href="#"
+                  						data-id="<%= status.id %>"
+                  						data-statname="<%= status.name %>"
+                  						data-statcolor="<%= status.color %>"
+                  						data-statdesc="<%= status.description %>"
+                  						data-toggle="modal" data-target=".account-status-add" class="modal-link"><i class="fa fa-pencil"></i></a>
+                  				</td>
+                  			</tr>
+		                  <% end %>
+                    </tbody>
+                  </table>
+                </div><!-- table-responsive -->
               </div><!-- col-md-6 -->
-            </div>
+            </div><!-- row pad 5-->
           </div>
         </div>
       </div>

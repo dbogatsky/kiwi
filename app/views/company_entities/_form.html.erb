@@ -5,7 +5,6 @@
 <%= form_tag company_entities_path, class: 'form-horizontal', method: :post do %>
 <div class="panel panel-default">
 	<div class="panel-heading">
-		<h4 class="panel-title">Add Entity</h4>
 		<p>Fill in the details below to add an entity</p>
 	</div>
 	<div class="panel-body">
@@ -26,7 +25,7 @@
 		<div class="row">
 			<div class="col-sm-6 col-sm-offset-3">
 				<button type="submit" class="btn btn-primary" name="save" id="save">Save</button>&nbsp;
-				<button class="btn btn-default" name="cancel" id="cancel">Cancel</button>
+				<a class="btn btn-default" href="/company">Cancel</a>
 			</div>
 		</div>
 	</div><!-- panel-footer -->
