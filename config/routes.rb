@@ -22,6 +22,7 @@ Rails.application.routes.draw do
       resources :contacts, only: [:edit, :create, :update, :destroy]
       resources :addresses, only: [:edit, :create, :update, :destroy]
     end
+    resources :company_entities
 
    # put '/my_profile', to: 'my_profile#update', as: :my_profile
 
@@ -60,7 +61,7 @@ Rails.application.routes.draw do
     get '/company/add', to: 'company#add', as: :company_add
     get '/company/edit/:id', to: 'company#edit', as: :company_edit
 
-    get '/company/add_entity', to: 'company#add_entity', as: :company_add_entity
+    # match '/company/add_entity', to: 'company#add_entity', as: :company_add_entity, via: [:get, :post]
     get '/company/edit_entity/:id', to: 'company#edit_entity', as: :company_edit_entity
     post '/company/delete/:id', to: 'company#delete', as: :company_delete
 

@@ -1,27 +1,37 @@
-<form id="company-add-entity-form" name="company-add-entity-form" class="form-horizontal">
-            
-<div class="panel panel-default">
-	<div class="panel-heading">
+<%#= content_for :head_assets do %>
+  <script src="/assets/bootstrap/js/fullcalendar.min.js"></script>
+  <script src="/assets/bootstrap/js/jquery.ui.touch-punch.min.js"></script>
+<%# end %>
+<!-- <form id="company-add-entity-form" name="company-add-entity-form" class="form-horizontal" method="post"> -->
+<%#= form_tag company_entities_path, class: 'form-horizontal', method: :post do %>
+<!-- <div class="panel panel-default"> -->
+	<!-- <div class="panel-heading">
 		<h4 class="panel-title">Add Entity</h4>
 		<p>Fill in the details below to add an entity</p>
 	</div>
 	<div class="panel-body">
-		<div class="form-group">			
+		<div class="form-group">
 			<label class="col-sm-3 control-label">Entity Name<span class="asterisk">*</span></label>
 			<div class="col-sm-6">
-				<input type="text" name="company-entity-name" class="form-control" required>
+				<input type="text" name="company_entity[name]" class="form-control" required>
 			</div>
 		</div>
 		<div class="form-group">
+			<label class="col-sm-3 control-label">Description</label>
+			<div class="col-sm-7">
+				<textarea class="form-control" name="company_entity[description]" id="company-entity-description" rows="5"></textarea>
+			</div>
+		</div> -->
+		<!-- <div class="form-group">
 			<label class="col-sm-3 control-label">Address<span class="asterisk">*</span></label>
 			<div class="col-sm-6">
-				<input type="text" name="company-entity-address" id="company-entity-address" class="form-control" required>
+				<input type="text" name="company_entity[address]" id="company-entity-address" class="form-control" required>
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-3 control-label">Contact Name</label>
 			<div class="col-sm-6">
-				<input type="text" name="company-entity-address" id="company-entity-contact-name" class="form-control">
+				<input type="text" name="company_entity[contact-name]" id="company-entity-contact-name" class="form-control">
 			</div>
 		</div>
 		<div class="form-group">
@@ -51,7 +61,7 @@
 					</div>
 				</div>
 			</div>
-		</div>		
+		</div>
 		<div class="form-group">
 			<label class="col-sm-3 control-label">Entity Status<span class="asterisk">*</span></label>
 			<div class="col-sm-2">
@@ -64,7 +74,7 @@
 		<div class="form-group">
 			<label class="col-sm-3 control-label">Assigned To<span class="asterisk">*</span></label>
 			<div class="col-sm-6">
-				... 
+				...
 			</div>
 		</div>
 		<div class="form-group">
@@ -72,7 +82,7 @@
 			<div class="col-sm-6">
 				...
 			</div>
-		</div>			
+		</div>
 		<div class="form-group">
 			<label class="col-sm-3 control-label">About</label>
 			<div class="col-sm-7">
@@ -84,74 +94,55 @@
 			<div class="col-sm-7">
 				<textarea class="form-control" name="company-entity-facts" id="company-entity-facts" rows="5"></textarea>
 			</div>
-		</div>			
-	</div><!-- panel-body -->
-	<div class="panel-footer">
+		</div> -->
+	<!-- </div>panel-body -->
+	<!-- <div class="panel-footer">
 		<div class="row">
 			<div class="col-sm-6 col-sm-offset-3">
 				<button type="submit" class="btn btn-primary" name="save" id="save">Save</button>&nbsp;
 				<button class="btn btn-default" name="cancel" id="cancel">Cancel</button>
 			</div>
 		</div>
-	</div><!-- panel-footer -->
-</div>
-</form>
-
-
-<script src="/assets/bootstrap/js/jquery-1.11.1.min.js"></script>
-<script src="/assets/bootstrap/js/jquery-migrate-1.2.1.min.js"></script>
-<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="/assets/bootstrap/js/modernizr.min.js"></script>
-<script src="/assets/bootstrap/js/jquery.sparkline.min.js"></script>
-<script src="/assets/bootstrap/js/toggles.min.js"></script>
-<script src="/assets/bootstrap/js/retina.min.js"></script>
-<script src="/assets/bootstrap/js/jquery.cookies.js"></script>
-<script src="/assets/bootstrap/js/jquery.autogrow-textarea.js"></script>
-<script src="/assets/bootstrap/js/jquery.validate.min.js"></script>
-
-
-<script src="/assets/bootstrap/js/jquery-ui-1.10.3.min.js"></script>
-<script src="/assets/bootstrap/js/fullcalendar.min.js"></script>
-<script src="/assets/bootstrap/js/jquery.ui.touch-punch.min.js"></script>
-
-<script src="/assets/bootstrap/js/custom.js"></script>
+	</div>panel-footer -->
+<!-- </div> -->
+<%#end%>
 
 <script>
-	// Textarea Autogrow
-	jQuery('#company-entity-about').autogrow();	
-	jQuery('#company-entity-facts').autogrow();	
-	
-	// Basic Form
-	jQuery("#company-add-entity-form").validate({
-			highlight: function(element) {
-			jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
-		},
-		success: function(element) {
-		  jQuery(element).closest('.form-group').removeClass('has-error');
-		}
-	});
-	
+	// // Textarea Autogrow
+	// jQuery('#company-entity-about').autogrow();
+	// jQuery('#company-entity-facts').autogrow();
 
-	$('#company-add-entity-form').on('click', '.add-detail', function () {
-	    var row = $('#company-entity-contact-row'),
-	        new_row = row.clone();
+	// // Basic Form
+	// jQuery("#company-add-entity-form").validate({
+	// 		highlight: function(element) {
+	// 		jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+	// 	},
+	// 	success: function(element) {
+	// 	  jQuery(element).closest('.form-group').removeClass('has-error');
+	// 	}
+	// });
 
-	    row.find('.fa-plus')
-	        .removeClass('fa-plus')
-	        .addClass('fa-minus');
 
-	    row.find('.add-detail')
-	        .removeClass('add-detail')
-	        .removeClass('btn-success')
-	        .addClass('btn-danger')
-	        .addClass('minus-detail');
+	// $('#company-add-entity-form').on('click', '.add-detail', function () {
+	//     var row = $('#company-entity-contact-row'),
+	//         new_row = row.clone();
 
-	    
-	    new_row.find('input:text').val('');
-	    
-	    row.after(new_row);
-	}).on('click', '.minus-detail', function () {
-	    $(this).closest('#company-entity-contact-row').remove();
-	});	
+	//     row.find('.fa-plus')
+	//         .removeClass('fa-plus')
+	//         .addClass('fa-minus');
+
+	//     row.find('.add-detail')
+	//         .removeClass('add-detail')
+	//         .removeClass('btn-success')
+	//         .addClass('btn-danger')
+	//         .addClass('minus-detail');
+
+
+	//     new_row.find('input:text').val('');
+
+	//     row.after(new_row);
+	// }).on('click', '.minus-detail', function () {
+	//     $(this).closest('#company-entity-contact-row').remove();
+	// });
 
 </script>

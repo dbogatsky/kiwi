@@ -1,174 +1,170 @@
-        <div class="profile-header">
-	        <div class="row">
-		    	<% if flash[:success] %>
-					<div class="alert alert-success">
-						<strong><%= flash[:success] %></strong>
-					</div> 
-				<% end %> 
-				<% if flash[:danger] %>
-					<div class="alert alert-danger">
-						<strong>Sorry!</strong> <%= flash[:danger] %>
-          			</div>
-      			<% end %>				     
-		        
-	        </div>  
-            
-            <div class="row">
-				
-				<div class="col-sm-3">
-					<img src="/assets/bootstrap/images/photos/hd-profile.jpg" class="thumbnail img-responsive" alt="">    
-				<div class="mb30"></div>
-				
-				
-				</div><!-- col-sm-3 -->           
-				  
-				<div class="col-sm-9">
-          <h2 class="profile-name"><%= @company.name %></h2> 
-          <div class="mb20"></div>
+<div class="profile-header">
+  <div class="row">
+  	<% if flash[:success] %>
+    	<div class="alert alert-success">
+    		<strong><%= flash[:success] %></strong>
+    	</div>
+    <% end %>
+    <% if flash[:danger] %>
+    	<div class="alert alert-danger">
+    		<strong>Sorry!</strong> <%= flash[:danger] %>
+      </div>
+    <% end %>
+  </div>
+  <div class="row">
+    <div class="col-sm-3">
+    	<img src="/assets/bootstrap/images/photos/hd-profile.jpg" class="thumbnail img-responsive" alt="">
+      <div class="mb30"></div>
+    </div><!-- col-sm-3 -->
+    <div class="col-sm-9">
+      <h2 class="profile-name"><%= @company.name %></h2>
+      <div class="mb20"></div>
+      <div class="row">
+        <div class="col-sm-11">
           <div class="row">
-            <div class="col-sm-11">
-              <div class="row">
-                  <small>
-                  <div class="col-sm-5">
-                      <div class="row bars">
-                          <div class="col-xs-5" style="text-align:right"><strong>Status</strong></div>
-                          <div class="col-xs-7"><span class="badge" style="background-color: #0eb057; border-color: #0eb057;">Open</span> </div>
-                      </div>
-                      <div class="row bars">
-                          <div class="col-xs-5" style="text-align:right"><strong>Address</strong></div>
-                          <div class="col-xs-7">???</div>
-                      </div>
-                      <div class="row bars">
-                          <div class="col-xs-5" style="text-align:right"><strong>Contact</strong></div>
-                          <div class="col-xs-7">???</div>
-                      </div>
-                  </div><!-- col-sm-4 -->
-                  <div class="col-sm-7">
-                      <div class="row bars">
-                          <div class="col-xs-5" style="text-align:right"><strong>Created</strong></div>
-                          <div class="col-xs-7">???</div>
-                      </div>
-                      <div class="row bars">
-                          <div class="col-xs-5" style="text-align:right"><strong>Language</strong></div>
-                          <div class="col-xs-7"><%= @company.locale %></div>
-                      </div>                      
-                      <div class="row bars">
-                          <div class="col-xs-5" style="text-align:right"><strong>Time Zone</strong></div>
-                          <div class="col-xs-7"><%= @company.time_zone %></div>
-                      </div>
-                  </div><!-- col-sm-4 -->
-                  </small>
-              </div><!-- row -->    
+              <small>
+              <div class="col-sm-5">
+                  <div class="row bars">
+                      <div class="col-xs-5" style="text-align:right"><strong>Status</strong></div>
+                      <div class="col-xs-7"><span class="badge" style="background-color: #0eb057; border-color: #0eb057;">Open</span> </div>
+                  </div>
+                  <div class="row bars">
+                      <div class="col-xs-5" style="text-align:right"><strong>Address</strong></div>
+                      <div class="col-xs-7">???</div>
+                  </div>
+                  <div class="row bars">
+                      <div class="col-xs-5" style="text-align:right"><strong>Contact</strong></div>
+                      <div class="col-xs-7">???</div>
+                  </div>
+              </div><!-- col-sm-4 -->
+              <div class="col-sm-7">
+                  <div class="row bars">
+                      <div class="col-xs-5" style="text-align:right"><strong>Created</strong></div>
+                      <div class="col-xs-7">???</div>
+                  </div>
+                  <div class="row bars">
+                      <div class="col-xs-5" style="text-align:right"><strong>Language</strong></div>
+                      <div class="col-xs-7"><%= @company.locale %></div>
+                  </div>
+                  <div class="row bars">
+                      <div class="col-xs-5" style="text-align:right"><strong>Time Zone</strong></div>
+                      <div class="col-xs-7"><%= @company.time_zone %></div>
+                  </div>
+              </div><!-- col-sm-4 -->
+              </small>
+          </div><!-- row -->
+        </div>
+      </div>
+    </div><!-- col-sm-9 -->
+    <div class="mb20"></div>
+  </div><!-- row -->
+  <div class="row row-pad-5">
+    <div class="col-md-12 mb20">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs nav-dark">
+          <li class="active"><a href="#organization" data-toggle="tab"><strong>Organization</strong></a></li>
+          <li><a href="#settings" data-toggle="tab"><strong>Settings</strong></a></li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content mb30">
+          <div class="mb30"></div>
+          <div class="tab-pane active" id="organization">
+                <div class="row row-pad-5">
+                <div class="col-md-10">
+                  <h3 class="panel-title">Entities</h3>
+                  <ul class="folder-list">
+                    <%if @entites.present?%>
+                        <%@entites.each do |entity|%>
+                          <li>
+                            <div class="col-md-6">
+                              <a href="/company_entities/<%=entity.id%>"><i class="fa fa-chevron-right"></i><span><%= entity.name %></span>
+                              </a>
+                            </div>
+                            <div class="col-md-6">
+                              <a href="javascript:void(0);" class="edit-folder" data-id="<%= entity.id %>" data-name="<%=entity.name%>" data-description="<%= entity.description%>"><i class="fa fa-pencil"></i></a>
+                              <%=link_to company_entity_path(entity.id), method: :delete,data: {:confirm => 'Are you sure to delete company entity?'} do %>
+                                <i class="fa fa-trash-o"></i>
+                              <%end%>
+                            </div>
+                          </li>
+                        <%end%>
+                    <%else%>
+                      <p>Create and manage Entities here.</p>
+                    <%end%>
+                  </ul>
+                </div>
+                <div class="col-md-2">
+                    <a href="<%= new_company_entity_path %>" class="btn btn-primary btn-block">
+                      <i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Entities</a>
+                </div>
             </div>
-          </div>      
-        </div><!-- col-sm-9 -->
-        <div class="mb20"></div>  
-              
-            </div><!-- row -->
-
+          </div>
+          <div class="mb30"></div>
+          <div class="tab-pane" id="settings">
             <div class="row row-pad-5">
-                <div class="col-md-12 mb20">
-                    
-                    <!-- Nav tabs -->
-                    <ul class="nav nav-tabs nav-dark">
-                      <li class="active"><a href="#organization" data-toggle="tab"><strong>Organization</strong></a></li>
-                      <li><a href="#settings" data-toggle="tab"><strong>Settings</strong></a></li>
-                    </ul>
-                    
-                    <!-- Tab panes -->
-                    <div class="tab-content mb30">
-
-                      <div class="mb30"></div>
-                      <div class="tab-pane active" id="organization">
-                            <div class="row row-pad-5">
-                            <div class="col-md-10">
-                              <h3 class="panel-title">Entities</h3>
-                              <p>Create and manage Entities here.</p>                     
-                            </div>
-                            <div class="col-md-2">
-                                <a href="<%= company_add_entity_path %>" class="btn btn-primary btn-block">
-                                  <i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Entities</a>
-                            </div>                            
-                        </div>
-                      </div>
-
-                      <div class="mb30"></div>
-                      <div class="tab-pane" id="settings">
-                        <div class="row row-pad-5">
-                            <div class="col-md-10">
-	                            <h3 class="panel-title">Account Statuses</h3>
-	                            <p>Each account is designated a status and can a great way to organize based on name and color.</p>
-                            </div>
-	                            <div class="col-md-2">
-	                                <a href="#" id="add_status" class="btn btn-primary btn-block" data-toggle="modal" data-target=".account-status-add"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Status</a>
-	                            </div>                            
-                        </div>
-                        <div class="row row-pad-5">
-                            <div class="col-md-8">
-                                <div class="table-responsive">
-                                  <table class="table mb30">
-                                    <thead>
-                                      <tr>
-                                        <th>Status</th>
-                                        <th>Description</th>
-                                        <th></th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-									<% 	@account_statuses.each do |status| %>
-									<tr>
-										<td><span class="badge" style="background-color: <%= status.color %>; border-color: <%= status.color %>;"><%= status.name %></span></td>
-										<td><%= status.description %></td>
-										<td class="table-action">
-											<a href="#" 
-												data-id="<%= status.id %>" 
-												data-statname="<%= status.name %>" 
-												data-statcolor="<%= status.color %>"
-												data-statdesc="<%= status.description %>" 
-												data-toggle="modal" data-target=".account-status-add" class="modal-link"><i class="fa fa-pencil"></i></a>
-										</td>
-									</tr>
-									<% end %>                                  
-                                    </tbody>
-                                  </table>
-                                  </div><!-- table-responsive -->
-                                </div><!-- col-md-6 -->
-                            </div>                            
-                        </div>  
-                      </div>
-                    </div>
-                    
-                </div> <!-- col- -->
-
-            </div><!-- row -->          
-    
-        </div><!-- profile-header -->
-    </div>
-
+                <div class="col-md-10">
+                  <h3 class="panel-title">Account Statuses</h3>
+                  <p>Each account is designated a status and can a great way to organize based on name and color.</p>
+                </div>
+                  <div class="col-md-2">
+                      <a href="#" id="add_status" class="btn btn-primary btn-block" data-toggle="modal" data-target=".account-status-add"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Status</a>
+                  </div>
+            </div>
+            <div class="row row-pad-5">
+              <div class="col-md-8">
+                  <div class="table-responsive">
+                    <table class="table mb30">
+                      <thead>
+                        <tr>
+                          <th>Status</th>
+                          <th>Description</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+			                  <% @account_statuses.each do |status| %>
+                    			<tr>
+                    				<td><span class="badge" style="background-color: <%= status.color %>; border-color: <%= status.color %>;"><%= status.name %></span></td>
+                    				<td><%= status.description %></td>
+                    				<td class="table-action">
+                    					<a href="#"
+                    						data-id="<%= status.id %>"
+                    						data-statname="<%= status.name %>"
+                    						data-statcolor="<%= status.color %>"
+                    						data-statdesc="<%= status.description %>"
+                    						data-toggle="modal" data-target=".account-status-add" class="modal-link"><i class="fa fa-pencil"></i></a>
+                    				</td>
+                    			</tr>
+			                  <% end %>
+                      </tbody>
+                    </table>
+                  </div><!-- table-responsive -->
+              </div><!-- col-md-6 -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> <!-- col- -->
+  </div><!-- row -->
+</div><!-- profile-header -->
+</div>
 </div><!-- mainpanel -->
 </section>
-
-
 <%= render "company_account_status" %>
+<%= render 'edit_company_entity' %>
 
-<script src="/assets/bootstrap/js/jquery-1.11.1.min.js"></script>
-<script src="/assets/bootstrap/js/jquery-migrate-1.2.1.min.js"></script>
-<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="/assets/bootstrap/js/modernizr.min.js"></script>
-<script src="/assets/bootstrap/js/jquery.sparkline.min.js"></script>
-<script src="/assets/bootstrap/js/toggles.min.js"></script>
-<script src="/assets/bootstrap/js/retina.min.js"></script>
-<script src="/assets/bootstrap/js/jquery.cookies.js"></script>
 <script src="/assets/bootstrap/js/colorpicker.js"></script>
-
-<script src="/assets/bootstrap/js/morris.min.js"></script>
-<script src="/assets/bootstrap/js/raphael-2.1.0.min.js"></script>
 <script src="/assets/bootstrap/js/chosen.jquery.min.js"></script>
-
-<script src="/assets/bootstrap/js/custom.js"></script>
-
-
 <script>
+
+  $(document).on('click', "a.edit-folder", function(e){
+    id = $(this).attr('data-id')
+    $('input[name="entity_id"]').val(id);
+    $('input[name="company_entity[name]"]').val($(this).attr('data-name'));
+    $('textarea[name="company_entity[description]"]').val($(this).attr('data-description'))
+    $('#edit_company_entity').modal('show');
+    $('#edit_company_entity').find('form').attr('action', '/company_entities/'+id)
+  });
 	// Color Picker
 	if(jQuery('#account-status-color').length > 0) {
 	 jQuery('#colorSelector').ColorPicker({
@@ -197,12 +193,9 @@
 
 
   $(document).on("click", "#add_status", function () {
-          $(".modal-body #account-status-id").val("");
-          $("#account-status-name").val("");
-          $("#account-status-color").val("");
-          $("#account-status-desc").val("");
+    $(".modal-body #account-status-id").val("");
+    $("#account-status-name").val("");
+    $("#account-status-color").val("");
+    $("#account-status-desc").val("");
   });
-
-
-
-</script>	
+</script>

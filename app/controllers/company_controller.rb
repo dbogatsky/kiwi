@@ -6,20 +6,24 @@ class CompanyController < ApplicationController
 	def index
 		#comapny details
 		@company = Company.find
-		
+
 		#entities
 		@entites = CompanyEntities.all
-		
+
 		#get status cached upon login from session
-		@account_statuses = AccountStatus.all 
-		
+		@account_statuses = AccountStatus.all
 	end
 
-
-	def add_entity
-		# Add new entity
-
-	end
+	# def add_entity
+	# 	if request.post?
+	# 	  @company_entity = CompanyEntities.new(params[:company_entity])
+ #      if @company_entity.save
+ #        redirect_to company_path, notice: 'Company Entity was successfully created.'
+ #      else
+ #      	redirect_to company_path, alert: 'Company Entity not created.'
+ #      end
+ #    end
+	# end
 
 
 	def edit_entity
@@ -35,7 +39,7 @@ class CompanyController < ApplicationController
 		redirect_to company_path
 
 		#flash[:danger] = 'Warning: Your changes can not be saved.  Please contact the administator for assistance.'  # Unable to save changes
-		# Record the API error into the log.  Action with timestamp  
+		# Record the API error into the log.  Action with timestamp
 	end
 
 	def account_status
@@ -49,15 +53,15 @@ class CompanyController < ApplicationController
 			@status.description = params["account-status-desc"]
 
 			# Create new account status
-			if @status.save  			
+			if @status.save
 				#update status list stored in session
 				@account_statuses = AccountStatus.all(:reload => true)
 				#session["account"]["statuses"] = @account_statuses
-				
+
 				flash[:success] = 'Account status has been added successfully'
-			else 
+			else
 				# Create an error message
-				flash[:danger] = 'Ops! Unable to add the account status'  # Log in error message  
+				flash[:danger] = 'Ops! Unable to add the account status'  # Log in error message
 			end
 
 		else
@@ -65,24 +69,24 @@ class CompanyController < ApplicationController
 			# Edit account status
 			@status = AccountStatus.find(params["account-status-id"])
 			attributes = {:name => params["account-status-name"], :color  => params["account-status-color"], :description =>params["account-status-desc"]}
-			
+
 			#AccountStatus.update_attributes(@status)
-			
+
 			if @status.update_attributes(attributes)
 
 				#update status list stored in session
 				@account_statuses = AccountStatus.all(:reload => true)
 				#session["account"]["statuses"] = @account_statuses
-				
+
 				flash[:success] = 'Account status has been edited successfully'
-			else 
+			else
 				# Create an error message
-				flash[:danger] = 'Ops! Unable to edit the account status'  # Log in error message  
-			end			
+				flash[:danger] = 'Ops! Unable to edit the account status'  # Log in error message
+			end
 
 		end
 
-		redirect_to company_path	
+		redirect_to company_path
 	end
 
 
@@ -94,5 +98,5 @@ class CompanyController < ApplicationController
 		def superadmin
 			@superadmin = true
 		end
-			
+
 end
