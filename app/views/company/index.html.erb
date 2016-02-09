@@ -159,7 +159,6 @@
 
   $(document).on('click', "a.edit-folder", function(e){
     id = $(this).attr('data-id')
-    $('input[name="entity_id"]').val(id);
     $('input[name="company_entity[name]"]').val($(this).attr('data-name'));
     $('textarea[name="company_entity[description]"]').val($(this).attr('data-description'))
     $('#edit_company_entity').modal('show');
