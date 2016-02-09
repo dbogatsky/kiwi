@@ -289,7 +289,7 @@ body,
 }
 
 .nav-bracket > li > a > .badge {
-    background-color: #d9534f;
+    background-color: #f83d65;
     color: #fff;
     font-weight: 400;
 }
@@ -496,6 +496,9 @@ body,
 .pageheader {
     border-bottom: 1px solid #eee;
 }
+.widget-weather .temp {
+  background-color: #10c4ad;
+}
 
 .panel {
     -moz-box-shadow: none;
@@ -510,6 +513,11 @@ body,
 .panel {
     background: none;
 }
+
+.panel-body {
+  background: #FCFCFC;
+}
+
 
 .panel-default > .panel-heading {
     background-color: #f9f9f9;
@@ -738,6 +746,6 @@ body.notfound, body.signin {
     -moz-box-shdow: none;
     -webkit-box-shadow: none;
     box-shadow: none;
-    background-color: #fcfcfc;
+    background-color: #fff;
 }
 
