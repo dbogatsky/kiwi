@@ -69,7 +69,7 @@
         <div class="tab-content mb30">
           <div class="mb30"></div>
             <div class="tab-pane active" id="organization">
-              
+
               <div class="row row-pad-5">
                 <div class="col-md-10">
                   <h3 class="panel-title">Entities</h3>
@@ -79,7 +79,7 @@
                   <a href="<%= new_company_entity_path %>" class="btn btn-primary btn-block"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Entities</a>
                 </div>
               </div><!-- row -->
-              
+
               <div class="row row-pad-5">
                 <div class="col-md-8">
                   <% if @entites.present? %>
@@ -98,9 +98,9 @@
                       				<td><%= entity.name %></td>
                       				<td><%= entity.description %></td>
                       				<td class="table-action">
-                                <a href="javascript:void(0);" class="edit-folder" 
-                                  data-id="<%= entity.id %>" 
-                                  data-name="<%=entity.name %>" 
+                                <a href="javascript:void(0);" class="edit-folder"
+                                  data-id="<%= entity.id %>"
+                                  data-name="<%=entity.name %>"
                                   data-description="<%= entity.description %>"
                                   data-toggle="modal" data-target=".edit_company_entity" class="modal-link"><i class="fa fa-pencil"></i></a>
                                   <%=link_to company_entity_path(entity.id), method: :delete,data: {:confirm => 'Are you sure to delete company entity?'} do %>

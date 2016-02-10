@@ -17,6 +17,7 @@ gem 'cached_resource'
 #gem 'active_rest_client', '1.2.0'
 gem "activeresource", require: 'active_resource'
 gem 'puma'
+gem 'activesupport-json_encoder'
 
 group :development, :test do
   gem 'dotenv-rails'

@@ -23,6 +23,7 @@ Rails.application.routes.draw do
       resources :addresses, only: [:edit, :create, :update, :destroy]
     end
     resources :company_entities
+    resources :users
 
    # put '/my_profile', to: 'my_profile#update', as: :my_profile
 
@@ -67,11 +68,11 @@ Rails.application.routes.draw do
 
     post '/company/account_status', to:'company#account_status', as: :account_status
 
-    match '/users', to: 'users#index', as: :users, via: [:get]
-    get '/users/new', to: 'users#new', as: :users_new
-    get '/users/edit/:id', to: 'users#edit', as: :users_edit
-    post '/users/save/', to: 'users#save', as: :users_save
-    post '/users/delete/:id', to: 'users#delete', as: :users_delete
+    # match '/users', to: 'users#index', as: :users, via: [:get]
+    # get '/users/new', to: 'users#new', as: :users_new
+    # get '/users/edit/:id', to: 'users#edit', as: :users_edit
+    # post '/users/save/', to: 'users#save', as: :users_save
+    # post '/users/delete/:id', to: 'users#delete', as: :users_delete
 
     match '/settings', to: 'settings#index', as: :settings, via: [:get]
 
