@@ -1,5 +1,5 @@
  <div class="panel-body panel-body-nopadding">
-  
+
   <!-- BASIC WIZARD -->
   <div id="validationWizard" class="basic-wizard">
 
@@ -12,7 +12,7 @@
     <!--<form class="form-horizontal" id="firstForm">-->
     <%= simple_form_for @account, html: { id: "account-add-form", class: "form-horizontal" } do |f| %>
     <div class="tab-content">
-      
+
       <div class="tab-pane" id="vtab1">
           <%= f.input :name, wrapper: :wizard_horizontal_form, label: "Account Name", required: true %>
 
@@ -29,7 +29,7 @@
                     <%= f.select( :assign_to, options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] }), {}, { :class => 'select2' })%>
             </div>
           </div>
-          
+
           <div class="form-group">
             <label class="col-sm-offset-2 col-sm-2 control-label">Shared With</label>
             <div class="col-sm-4">
@@ -43,7 +43,7 @@
           <%= add.input :city, wrapper: :wizard_horizontal_form, required: true, label: "City", :input_html => { :name => "account[addresses_attributes][][city]"} %>
           <%= add.input :region, wrapper: :wizard_horizontal_form, required: true, label: "Province/State", :input_html => { :name => "account[addresses_attributes][][region]"} %>
           <%= add.input :postcode, wrapper: :wizard_horizontal_form, required: true, label: "Post/Zipcode", :input_html => { :name => "account[addresses_attributes][][postcode]"} %>
-            
+
           <div class="form-group">
             <label class="col-sm-offset-2 col-sm-2 control-label">Country<span class="asterisk">*</span></label>
             <div class="col-sm-4">
@@ -52,7 +52,7 @@
           </div>
         <% end %>
       </div>
-      
+
       <div class="tab-pane" id="vtab3">
         <div class="contact-form-wrap">
         <div class="contact-element" style="padding-bottom: 10px;">
@@ -64,7 +64,7 @@
               <%#= c.input :name, required: true, label: 'Contact', :input_html => { :name => "account[contacts_attributes][][name]" } %>
               <%= c.input_field :name, { required: true, label: 'Contact', name: "account[contacts_attributes][#{t}][name]", class: "form-control", id: "account_contacts_attributes_name_1" } %>
             </div>
-            
+
             <label class="col-sm-1 control-label">Type<span class="asterisk">*</span></label>
             <div class="col-sm-1">
               <%= c.select( :type, options_for_select(Contact::CONTACT_TYPES), {}, { :class => "select2", :name => "account[contacts_attributes][#{t}][type]", :id => "account_contacts_attributes_type_1" } ) %>
@@ -96,32 +96,32 @@
         <%= f.input :quick_facts, as: :text, wrapper: :wizard_horizontal_form, :label => 'Quick Facts', :input_html => { :rows => 5 }  %>
         <input type="hidden" name="save">
       </div>
-      
-      
+
+
     </div><!-- tab-content -->
     <% end %>
     <!--</form>-->
-    
+
     <ul class="pager wizard">
       <li class="previous"><a href="javascript:void(0)">Previous</a></li>
       <li class="next"><a href="javascript:void(0)">Next</a></li>
       <li class="next finish" style="display:none;"><a href="javascript:;">Finish</a></li>
     </ul>
-    
+
   </div><!-- #validationWizard -->
-  
+
 </div><!-- panel-body -->
 <script>
     var max_fields      = 5; //maximum input boxes allowed
     var wrapper         = $(".contact-form-wrap"); //Fields wrapper
     var add_button      = $(".add-contact-button"); //Add button ID
 
-    <% 
+    <%
       @contact_types = ""
       Contact::CONTACT_TYPES.each { |x| @contact_types << '<option value="'+x+'">'+x+'</option>' }
     %>
-   
-   
+
+
     var x = 1; //initlal text box count
     $(add_button).click(function(e){ //on add input button click
         e.preventDefault();
@@ -155,10 +155,10 @@
             /*$('input[id="account_contacts_attributes_value_'+x+'"]').rules("add", {  // <- apply rule to new field
               required: true
             });*/
-            
+
         }
     });
-   
+
     $(wrapper).on("click",".remove-contact-button", function(e){ //user click on remove text
         e.preventDefault();
         //$(this).parent('div').remove(); x--;

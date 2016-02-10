@@ -6,4 +6,12 @@ class Media < OrchardApiModel
   def document?
     type.eql?('document')
   end
+
+  def audio?
+    type.eql?('audio')
+  end
+
+  def video?
+    type.eql?('video')
+  end
 end

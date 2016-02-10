@@ -3,7 +3,7 @@ class MediaController < ApplicationController
   before_action :get_token
   before_action :get_api_values, only: [:index, :show, :save_folder,
                                         :email_file, :rename_media_file,
-                                        :upload_file
+                                        :upload_file, :show_large_image
                                        ]
 
   # Display all folders
@@ -48,6 +48,15 @@ class MediaController < ApplicationController
       render json: mediaArray
     end
  	end
+
+  def show_large_image
+    uid = params[:uid]
+    apiURL = APP_CONFIG['api_url'] + '/download/media'
+    apiFullUrl = apiURL + "/" +  uid + "?style=web"
+    curlRes = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" "#{apiFullUrl}"`
+    curlRes = JSON.parse(curlRes);
+    @web_url = curlRes['cdn_url']
+  end
 
 	# Create a new media folder
 	def create_folder
@@ -139,13 +148,19 @@ class MediaController < ApplicationController
     path = File.join(directory, name)
     File.open(path, "wb") { |f| f.write(params[:media][:payload].read) }
     serverPath = '@' + path;
-    type = 'image'
     content_type = params[:media][:payload].content_type
-    if content_type == "application/force-download"
-    type = 'document'
+
+    if(content_type == 'image/png' || content_type == 'image/gif' || content_type == 'image/jpg' || content_type == 'image/jpeg')
+      type = 'image'
+    elsif (content_type == "application/force-download" || content_type == 'application/pdf' || content_type == 'application/vnd.ms-excel' || content_type == 'application/vnd.ms-excel' || content_type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || content_type == 'application/msword' || content_type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || content_type == 'text/plain')
+      type = 'document'
+    elsif (content_type == 'audio/mpeg' || content_type == 'audio/x-mpeg' || content_type == 'audio/mp3' || content_type == 'audio/x-mp3' || content_type == 'audio/mpeg3' || content_type == 'audio/x-mpeg3' || content_type == 'audio/mpg' || content_type == 'audio/x-mpg' || content_type == 'audio/x-mpegaudio')
+      type = 'audio'
+    elsif (content_type == 'video/x-flv' || content_type == 'video/x-flv' || content_type == 'video/MP2T' || content_type == 'video/3gpp' || content_type == 'video/quicktime' || content_type == ' video/x-msvideo' || content_type == 'video/x-ms-wmv' || content_type == 'video/mpeg')
+      type = 'video'
     end
     apiURL = APP_CONFIG['api_url'] + '/media' #http://api.convo.code10.ca/api/v1/media/
-    curlRes = `curl -X POST -F"medium[payload]=#{serverPath}" -F"type=#{type}" -F"medium[name]=#{filename}" -F"medium[parent_id]=#{folderId}" -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" "#{apiURL}" -v`;
+    curlRes = `curl -X POST -F"medium[payload]=#{serverPath};type=#{content_type}" -F"type=#{type}" -F"medium[name]=#{filename}" -F"medium[parent_id]=#{folderId}" -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" "#{apiURL}" -v`;
     #abort(curlRes.inspect)
     message = ''
     if curlRes == nil

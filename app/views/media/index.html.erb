@@ -51,6 +51,7 @@
               if media.image?
                 cdn_url = media.urls.attributes['thumb']
               else
+                apiURL = APP_CONFIG['api_url'] + '/download/media'
                 apiFullUrl = apiURL + "/" +  media.uid
                 curlRes = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" "#{apiFullUrl}"`
                 curlRes = JSON.parse(curlRes);
@@ -74,17 +75,22 @@
 
                       <li><a target="_blank" href="<%=download_file_path(cdn_url, media.name)%>"><i class="fa fa-download"></i> Download</a></li>
 
-                      <li><a class="trash-media" data-id='<%=media.id%>' href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
+                      <li><a class="trash-media" data-id='<%=media.id%>' href="javascript:void(0)"><i class="fa fa-trash-o"></i> Delete</a></li>
                     </ul>
                 </div><!-- btn-group -->
                 <div class="thmb-prev">
                   <% if media.image? %>
-                    <a href="<%=cdn_url%>" data-rel="prettyPhoto">
+                    <%=link_to 'javascript:;', data: {uid: media.uid} , class: 'show_enlarge' do%>
                       <img src="<%=cdn_url%>" class="img-responsive" alt="" />
-                    </a>
+                    <%end%>
                   <% elsif media.document? %>
                     <img alt="" class="img-responsive" src="/assets/bootstrap/images/photos/media-doc.png">
+                  <% elsif media.audio? %>
+                    <img alt="" class="img-responsive" src="/assets/bootstrap/images/photos/media-audio.png">
+                  <% elsif media.video? %>
+                    <img alt="" class="img-responsive" src="/assets/bootstrap/images/photos/media-video.png">
                   <% end %>
+
                 </div>
                 <h5 class="fm-title"><a href=""><%=media.name%></a></h5>
                 <small class="text-muted">Added: <%= media.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%b %d, %Y")%></small>
@@ -123,7 +129,11 @@
         <% end %>
       </div>
       <div id="msg"></div>
-      <ul class="folder-list">
+      <span>
+        <a href="javascript:void(0);" class="open-folder main-folder" data-id=""><i class="fa fa-folder-open"></i>
+        <span>Main</span>
+      </a></span>
+      <ul class="folder-list indent-left-list">
         <%= render @medias %>
       </ul>
       <div class="mb30"></div>
@@ -132,14 +142,18 @@
 </div>
 
 <script>
-
-  // $('.file_field').change(function() {
-  //   var fileInput =  document.getElementById("xxx");
-  //   var file_size = fileInput.files[0].size/1024/1024);
-  // });
-
   $(document).ready(function () {
     "use strict";
+    $(document).on('click', '.show_enlarge', function(){
+      var uid = $(this).data('uid');
+      $.ajax({
+        url: "<%= show_large_image_path %>?uid="+uid,
+        type: 'GET',
+        success: function (data) {
+
+        }
+      });
+    });
     $("a[data-rel^='prettyPhoto']").prettyPhoto();
     $(document).on('mouseover', '.thmb' , function () {
       var t = $(this);
@@ -386,7 +400,7 @@
     /*
      *View Folder media
      */
-    $(document).on('click', ".folder-list li a.open-folder", function(e){
+    $(document).on('click', "a.open-folder", function(e){
       e.preventDefault();
       var _this_ = this;
       var folder_id = SELECTED_FOLDER = $(this).attr('data-id');
@@ -540,11 +554,19 @@
             var file_size = (value.size/1024).toFixed(2);
 
             if(value.type == 'image'){
-              container.find('.thmb-prev').html('<a title="' + value.name + '" data-rel="prettyPhoto" href="' + value.cdn_url + '"><img alt="" class="img-responsive" src="' + value.cdn_url + '"></a>')
+              container.find('.thmb-prev').html('<a title="' + value.name + '" data-uid="'+value.uid+'" href="javascript:void(0)" class="show_enlarge"><img alt="" class="img-responsive" src="' + value.cdn_url + '"></a>')
               container.find('.thmb-prev').after('<h5 class="fm-title"><a href="javascript:void(0)">' + value.name + '</a></h5><small class="text-muted">Added: '+ moment(media_date).format('MMM D, YYYY') + '</small>'  + '</a></h5><p><small class="text-muted">size: '+ file_size +' kb'+'</small></p>' + '</a></h5>' );
               html += $(container).prop('outerHTML');
             }else if(value.type == 'document'){
               container.find('.thmb-prev').html('<img alt="" class="img-responsive" src="/assets/bootstrap/images/photos/media-doc.png">');
+              container.find('.thmb-prev').after('<h5 class="fm-title"><a href="'+ value.cdn_url +'" target="_blank">' + value.name + '</a></h5><small class="text-muted">Added: '+ moment(media_date).format('MMM D, YYYY') +'</small>' + '</a></h5><p><small class="text-muted">size: '+ file_size +' kb'+'</small></p>' + '</a></h5>' );
+              html += $(container).prop('outerHTML');
+            }else if(value.type == 'audio'){
+              container.find('.thmb-prev').html('<img alt="" class="img-responsive" src="/assets/bootstrap/images/photos/media-audio.png">');
+              container.find('.thmb-prev').after('<h5 class="fm-title"><a href="'+ value.cdn_url +'" target="_blank">' + value.name + '</a></h5><small class="text-muted">Added: '+ moment(media_date).format('MMM D, YYYY') +'</small>' + '</a></h5><p><small class="text-muted">size: '+ file_size +' kb'+'</small></p>' + '</a></h5>' );
+              html += $(container).prop('outerHTML');
+            }else if(value.type == 'video'){
+              container.find('.thmb-prev').html('<img alt="" class="img-responsive" src="/assets/bootstrap/images/photos/media-video.png">');
               container.find('.thmb-prev').after('<h5 class="fm-title"><a href="'+ value.cdn_url +'" target="_blank">' + value.name + '</a></h5><small class="text-muted">Added: '+ moment(media_date).format('MMM D, YYYY') +'</small>' + '</a></h5><p><small class="text-muted">size: '+ file_size +' kb'+'</small></p>' + '</a></h5>' );
               html += $(container).prop('outerHTML');
             }

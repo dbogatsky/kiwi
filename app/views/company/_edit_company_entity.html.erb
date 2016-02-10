@@ -1,0 +1,41 @@
+<div class="modal fade" id="edit_company_entity" data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button aria-hidden="true" data-dismiss="modal" class="close" type="button">&times;</button>
+            <h4 class="modal-title">Edit Company Entity</h4>
+        </div>
+        <div class="modal-body">
+        <%= form_tag '#', method: :patch do %>
+        <p>You can edit your company entity by simply updating the information below and saving</p>
+        <div class="panel panel-default">
+            <div class="panel-body">
+              
+              <div class="row row-pad-5">
+                <div class="col-lg-10">
+                  <div class="form-group">
+                    <label class="control-label">Name:</label>
+                    <%= text_field_tag 'company_entity[name]' , nil, class: 'form-control', required: 'true'  %>
+                  </div>
+                </div><!-- col -->
+              </div><!-- row -->
+              
+              <div class="row row-pad-5">
+                <div class="col-lg-10">
+                  <div class="form-group">
+                    <label class="control-label">Description:</label>
+                    <%= text_area_tag 'company_entity[description]', nil, class: 'form-control'%>
+                  </div>
+                </div><!-- col -->
+              </div><!-- row -->
+             
+            </div><!-- panel-body -->
+            <div class="panel-footer">
+              <%= submit_tag "Save", class: "btn btn-primary" %>
+            </div>
+        </div><!-- panel -->
+        <% end %>
+        </div><!-- modal body -->
+    </div><!-- modal content -->
+  </div><!-- modal dialog -->
+</div><!-- modal -->

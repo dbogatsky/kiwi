@@ -10,8 +10,8 @@ class ContactsController < ApplicationController
   #end
   def create
     @contact = Contact.new(contact_params)
-    @account = Account.find(params[:account_id]) 
-    
+    @account = Account.find(params[:account_id])
+
     respond_to do |format|
       if @contact.save
         @status = "ok"
@@ -35,7 +35,7 @@ class ContactsController < ApplicationController
         format.js { }
       else
         #TODO: ugly way to show error messages in json. Fix it!
-        format.json { render :json => { :success => false, :status => "error", :msg => @contact.errors.messages[:value].first.to_s } } 
+        format.json { render :json => { :success => false, :status => "error", :msg => @contact.errors.messages[:value].first.to_s } }
         #puts "update ko. #{@contact.errors.messages}"
       end
     end
@@ -65,7 +65,7 @@ class ContactsController < ApplicationController
   def contact_params
     params.require(:contact).permit(:type, :name, :value, :account_id)
   end
-  
+
   def prefix_options
     { :account_id => account_id }
   end
