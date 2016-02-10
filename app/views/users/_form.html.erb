@@ -1,0 +1,105 @@
+<%= content_for :head_assets do %>
+  <script src="/assets/bootstrap/js/fullcalendar.min.js"></script>
+  <script src="/assets/bootstrap/js/jquery.ui.touch-punch.min.js"></script>
+<% end %>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h4 class="panel-title">Add User</h4>
+		<p>Fill in the details below to add a user</p>
+	</div>
+	<div class="panel-body">
+	  <%= simple_form_for @user, html: {class: "form-horizontal", multipart: true } do |f| %>
+
+	    <%= f.input :email, label: "Email", required: true %>
+
+	    <%= f.input :first_name, label: "First Name", required: true %>
+
+	    <%= f.input :last_name, label: "Last Name", required: true %>
+
+	    <%= f.input :password, label: "Password", required: true %>
+
+	    <div class="form-group">
+	      <label class="col-sm-3 control-label">Role<span class="asterisk">*</span></label>
+	      <div class="col-sm-2">
+	        <select name="user[role_ids][]" class="form-control input-sm">
+	          <% @roles.each do |role| %>
+	            <option value="<%= role[:id] %>"><%= role[:name] %></option>
+	          <% end %>
+	        </select>
+	      </div>
+	    </div>
+
+	    <div class="form-group">
+	      <label class="col-sm-3 control-label">Locale<span class="asterisk">*</span></label>
+	      <div class="col-sm-6">
+	        <select class="form-control input-sm" name="user[locale]" data-placeholder="Select default language for this user">
+	          <option value="1">English</option>
+	          <option value="2">French</option>
+	        </select>
+	      </div>
+	    </div>
+
+	    <div class="form-group">
+	      <label class="col-sm-3 control-label">Time zone<span class="asterisk">*</span></label>
+	      <div class="col-sm-6">
+	        <%= time_zone_select( 'user[time_zone]', @user.time_zone, ActiveSupport::TimeZone.us_zones, {:default => "Pacific Time (US & Canada)"}, {:class => 'form-control input-sm'})%>
+	      </div>
+	    </div>
+	    <%= f.fields_for :addresses_attributes do |add| %>
+	    	<%st_address = @address.last.street_address rescue nil%>
+	      <%= add.input :street_address, required: true, label: "Street", :input_html => { :name => "user[addresses_attributes][][street_address]", :value => st_address}%>
+	      <%city = @address.last.city rescue nil%>
+	      <%= add.input :city, required: true, label: "City", :input_html => { :name => "user[addresses_attributes][][city]", :value => city} %>
+	      <%postcode = @address.last.postcode rescue nil%>
+	      <%= add.input :postcode, required: true, label: "Postcode/Zipcode", :input_html => { :name => "user[addresses_attributes][][postcode]", :value => postcode}%>
+	      <%address_region = @address.last.region rescue nil%>
+	      <%= add.input :region, required: true, label: "Province/State", :input_html => { :name => "user[addresses_attributes][][region]", :value => address_region} %>
+	      <div class="form-group">
+	        <label class="col-sm-3 control-label">Country<span class="asterisk">*</span></label>
+	        <div class="col-sm-6">
+	  				<%= add.input_field :country, { required: true, priority: [ "Canada", "United States", "United Kingdom" ],  class: "select2", name: "user[addresses_attributes][][country]", selected: @address.present? ? @address.last.country : '' } %>
+	  			</div>
+	      </div>
+	    <% end %>
+
+	    <%= f.simple_fields_for :contacts_attributes do |c| %>
+	      <div class="form-group">
+	        <label class="col-sm-3 control-label">Contact Name<span class="asterisk">*</span></label>
+	        <div class="col-sm-2">
+	          <%contact_name = @contact.last.name rescue nil%>
+	          <%= c.input_field :name, { required: true, label: 'Contact', name: "user[contacts_attributes][][name]", class: "form-control", value: contact_name}%>
+	        </div>
+
+	        <label class="col-sm-1 control-label">Contact<span class="asterisk">*</span></label>
+	        <div class="col-sm-2">
+	          <%= c.select( :type, options_for_select(Contact::CONTACT_TYPES, @contact.present? ? @contact.last.type : "phone"), {}, { :class => "select2", :name => "user[contacts_attributes][][type]"} ) %>
+	        </div>
+
+	        <label class="col-sm-1 control-label">Value<span class="asterisk">*</span></label>
+	        <div class="col-sm-2">
+	          <%contact_value = @contact.last.value rescue nil%>
+	          <%= c.input_field :value, { required: true, label: 'Value', name: "user[contacts_attributes][][value]", class: "form-control", value: contact_value}%>
+	        </div>
+	      </div>
+	    <% end %>
+
+	    <div class="form-group">
+	      <label class="col-sm-3 control-label">Picture</label>
+	      <div class="col-sm-6">
+	        <label title="Upload image file" for="inputImage" class="btn btn-white">
+	          <%= f.file_field :avatar, { name: "user[avatar]" }  %>
+	        </label>
+	      </div>
+	    </div>
+		</div><!-- panel-body -->
+
+		<div class="panel-footer">
+			<div class="row">
+				<div class="col-sm-6 col-sm-offset-3">
+					<button type="submit" class="btn btn-primary" name="save" id="save">Save</button>&nbsp;
+					<button class="btn btn-default" name="cancel" id="cancel">Cancel</button>
+				</div>
+			</div>
+		</div><!-- panel-footer -->
+	<% end %>
+</div>
