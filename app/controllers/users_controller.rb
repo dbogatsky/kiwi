@@ -22,7 +22,7 @@ class UsersController < ApplicationController
   def create
     # Create new user
     if params.has_key?(:save)
-      @user = User.new(request: :create, user: params[:user])
+      @user = User.new(request: :create, user: params[:user], reload: true)
       if @user.save
         flash[:success] = 'User has been added successfully'
       else
@@ -33,7 +33,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    @user.update_attributes(request: :update, user: params[:user])
+    @user.update_attributes(request: :update, user: params[:user], reload: true)
     redirect_to users_path
   end
 
