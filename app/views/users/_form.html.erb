@@ -69,15 +69,15 @@
 
 	    <%= f.simple_fields_for :contacts_attributes do |c| %>
 	      <div class="form-group">
-	        <label class="col-sm-3 control-label">Contact Name<span class="asterisk">*</span></label>
+	        <!-- <label class="col-sm-3 control-label">Contact Name<span class="asterisk">*</span></label>
 	        <div class="col-sm-2">
-	          <%contact_name = @contact.last.name rescue nil%>
-	          <%= c.input_field :name, { required: true, label: 'Contact', name: "user[contacts_attributes][][name]", class: "form-control", value: contact_name}%>
-	        </div>
+	          <%#contact_name = @contact.last.name rescue nil%>
+	          <%#= c.input_field :name, { required: true, label: 'Contact', name: "user[contacts_attributes][][name]", class: "form-control", value: contact_name}%>
+	        </div> -->
 
-	        <label class="col-sm-1 control-label">Contact<span class="asterisk">*</span></label>
+	        <label class="col-sm-3 control-label">Contact<span class="asterisk">*</span></label>
 	        <div class="col-sm-2">
-	          <%= c.select( :type, options_for_select(Contact::CONTACT_TYPES, @contact.present? ? @contact.last.type : "phone"), {}, { :class => "select2", :name => "user[contacts_attributes][][type]"} ) %>
+	          <%= c.select( :type, options_for_select(["phone", "mobile"], @contact.present? ? @contact.last.type : "phone"), {}, { :class => "select2", :name => "user[contacts_attributes][][type]"} ) %>
 	        </div>
 
 	        <label class="col-sm-1 control-label">Value<span class="asterisk">*</span></label>
