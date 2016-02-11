@@ -339,6 +339,27 @@
 				$("#note-reminder-settings").hide(500);
 			}
 		});
+		
+
+		$('#scheduledDatePicker').datepicker();
+		$('#scheduledTimePicker').timepicker({minuteStep: 5});
+
+		// by default hide reminder settings for notes
+		$("#email-sendlater-settings").hide();
+
+		// hide show note reminder settings
+		$('#send-later').change(function () {
+		    if ($("#send-later").is(':checked')) {
+			    $("#email-sendlater-settings").show(500);
+			}
+			else {
+				$("#email-sendlater-settings").hide(500);
+			}
+		});		
+		
+		
+		
+		
   });
   </script>
 <% end %>
