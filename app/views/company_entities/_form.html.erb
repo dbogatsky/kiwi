@@ -17,7 +17,7 @@
 		<div class="form-group">
 			<label class="col-sm-3 control-label">Parent Entity</label>
 			<div class="col-sm-6">
-        <select name="company_entity[parent]" class="form-control input-sm">
+        <select name="company_entity[parent_id]" class="form-control input-sm">
           <option value="">Default</option>
           <%CompanyEntities.all.each do |entity|%>
             <option value="<%=entity.id%>"><%=entity.name%></option>
