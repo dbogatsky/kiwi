@@ -32,6 +32,12 @@ class UsersController < ApplicationController
 
   def update
     if @user.update_attributes(request: :update, user: params[:user], reload: true)
+      
+      #in the event we are updating the logged in user refresh the detail
+      if ( current_user.id == params['id'].to_i )
+        @current_user = User.find(current_user.id, reload: true)
+      end
+
       redirect_to users_path, notice: 'User successfully updated!'
     else
       render :edit
