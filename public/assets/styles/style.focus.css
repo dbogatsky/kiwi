@@ -99,7 +99,8 @@ body,
 }
 
 .headermenu .dropdown-menu-usermenu li a:hover {
-    background-color: #428bca;
+    background-color: #272727;
+    color: #fff;
 }
 
 .dropdown-menu-head .title {
@@ -113,13 +114,13 @@ body,
 }
 
 .headermenu .dropdown-menu-usermenu {
-    background-color: #fff;
+    background-color: black;
     border: 1px solid #ccc;
     border-top: 0;
 }
 
 .headermenu .dropdown-menu li a {
-    color: #333;
+    color: #999;
 }
 
 .headermenu .dropdown-menu:after {
@@ -128,7 +129,7 @@ body,
 }
 
 .headermenu .dropdown-menu-usermenu:after {
-    border-bottom-color: #fff;
+    border-bottom-color: black;
 }
 
 .headerbar .topnav > ul > li > a {
@@ -496,6 +497,7 @@ body,
 .pageheader {
     border-bottom: 1px solid #e8e8e8;
 }
+
 .widget-weather .temp {
   background-color: #10c4ad;
 }
