@@ -15,8 +15,11 @@
 	    <%= f.input :first_name, label: "First Name", required: true %>
 
 	    <%= f.input :last_name, label: "Last Name", required: true %>
+      <% if @user.new_record? %>
+	     <%= f.input :password, label: "Password", required: true %>
 
-	    <%= f.input :password, label: "Password", required: true %>
+	     <%= f.input :confirm_password, label: "Confirm Password", required: true %>
+      <%end%>
 
 	    <div class="form-group">
 	      <label class="col-sm-3 control-label">Role<span class="asterisk">*</span></label>
@@ -60,6 +63,8 @@
 	  				<%= add.input_field :country, { required: true, priority: [ "Canada", "United States", "United Kingdom" ],  class: "select2", name: "user[addresses_attributes][][country]", selected: @address.present? ? @address.last.country : '' } %>
 	  			</div>
 	      </div>
+	      <% address_id = @address.last.id rescue nil %>
+	      <%= add.hidden_field :id, value: address_id, name: "user[addresses_attributes][][id]" %>
 	    <% end %>
 
 	    <%= f.simple_fields_for :contacts_attributes do |c| %>
@@ -79,6 +84,8 @@
 	        <div class="col-sm-2">
 	          <%contact_value = @contact.last.value rescue nil%>
 	          <%= c.input_field :value, { required: true, label: 'Value', name: "user[contacts_attributes][][value]", class: "form-control", value: contact_value}%>
+	          <% contact_id = @contact.last.id rescue nil %>
+	          <%=c.hidden_field :id, value: contact_id, name: "user[contacts_attributes][][id]" %>
 	        </div>
 	      </div>
 	    <% end %>
@@ -87,7 +94,7 @@
 	      <label class="col-sm-3 control-label">Picture</label>
 	      <div class="col-sm-6">
 	        <label title="Upload image file" for="inputImage" class="btn btn-white">
-	          <%= f.file_field :avatar, { name: "user[avatar]" }  %>
+	          <%= f.file_field :avatar, { name: "avatar" }  %>
 	        </label>
 	      </div>
 	    </div>
@@ -96,10 +103,34 @@
 		<div class="panel-footer">
 			<div class="row">
 				<div class="col-sm-6 col-sm-offset-3">
-					<button type="submit" class="btn btn-primary" name="save" id="save">Save</button>&nbsp;
+				 <%=submit_tag 'Save', class: 'btn btn-primary'%>
+					&nbsp;
 					<button class="btn btn-default" name="cancel" id="cancel">Cancel</button>
 				</div>
 			</div>
 		</div><!-- panel-footer -->
 	<% end %>
 </div>
+
+<script>
+<% if @user.new_record?%>
+	$(function(){
+		$( "#user_form" ).validate({
+			debug: true,
+		  rules: {
+		   'user[password]': {
+		   		required: true,
+		   		minlength: 8
+		    },
+		    'user[confirm_password]': {
+		      equalTo: "#user_password",
+		      minlength: 8
+		    }
+		  },
+		  submitHandler: function (form) {
+		  	form.submit();
+      }
+		});
+	});
+<%end%>
+</script>

@@ -1,101 +1,77 @@
 class CompanyController < ApplicationController
-	# Leaving this here for now
-	before_action :superadmin, only: [:index]
+  # Leaving this here for now
+  before_action :superadmin, only: [:index]
 
+  def index
+    #comapny details
+    @company = Company.find
+    #entities
+    @entites = CompanyEntities.all
 
-	def index
-		#comapny details
-		@company = Company.find
+    #get status cached upon login from session
+    @account_statuses = AccountStatus.all
+  end
 
-		#entities
-		@entites = CompanyEntities.all
+  def edit_entity
+    # Edit entity
+  end
 
-		#get status cached upon login from session
-		@account_statuses = AccountStatus.all
-	end
+  def save
+    # Save changes from Add/Edit Company page
+    flash[:success] = 'You changes have been successfully saved'
+    redirect_to company_path
 
-	# def add_entity
-	# 	if request.post?
-	# 	  @company_entity = CompanyEntities.new(params[:company_entity])
- #      if @company_entity.save
- #        redirect_to company_path, notice: 'Company Entity was successfully created.'
- #      else
- #      	redirect_to company_path, alert: 'Company Entity not created.'
- #      end
- #    end
-	# end
+    #flash[:danger] = 'Warning: Your changes can not be saved.  Please contact the administator for assistance.'  # Unable to save changes
+    # Record the API error into the log.  Action with timestamp
+  end
 
+  def account_status
+    # Save changes from Add/Edit Account Statuses page
 
-	def edit_entity
-		# Edit entity
-	end
-
-
-	def save
-		# Save changes from Add/Edit Company page
-
-		flash[:success] = 'You changes have been successfully saved'
-		redirect_to company_path
-
-		#flash[:danger] = 'Warning: Your changes can not be saved.  Please contact the administator for assistance.'  # Unable to save changes
-		# Record the API error into the log.  Action with timestamp
-	end
-
-	def account_status
-		# Save changes from Add/Edit Account Statuses page
-
-		if params["account-status-id"].blank?
-
+    if params["account-status-id"].blank?
       @status = AccountStatus.new
-			@status.name = params["account-status-name"]
-			@status.color  = params["account-status-color"]
-			@status.description = params["account-status-desc"]
+      @status.name = params["account-status-name"]
+      @status.color  = params["account-status-color"]
+      @status.description = params["account-status-desc"]
 
-			# Create new account status
-			if @status.save
-				#update status list stored in session
-				@account_statuses = AccountStatus.all(:reload => true)
-				#session["account"]["statuses"] = @account_statuses
+      # Create new account status
+      if @status.save
+        #update status list stored in session
+        @account_statuses = AccountStatus.all(:reload => true)
+        #session["account"]["statuses"] = @account_statuses
 
-				flash[:success] = 'Account status has been added successfully'
-			else
-				# Create an error message
-				flash[:danger] = 'Ops! Unable to add the account status'  # Log in error message
-			end
+        flash[:success] = 'Account status has been added successfully'
+      else
+        # Create an error message
+        flash[:danger] = 'Ops! Unable to add the account status'  # Log in error message
+      end
+    else
+      # Edit account status
+      @status = AccountStatus.find(params["account-status-id"])
+      attributes = {:name => params["account-status-name"], :color  => params["account-status-color"], :description =>params["account-status-desc"]}
 
-		else
+      #AccountStatus.update_attributes(@status)
 
-			# Edit account status
-			@status = AccountStatus.find(params["account-status-id"])
-			attributes = {:name => params["account-status-name"], :color  => params["account-status-color"], :description =>params["account-status-desc"]}
+      if @status.update_attributes(attributes)
 
-			#AccountStatus.update_attributes(@status)
+        #update status list stored in session
+        @account_statuses = AccountStatus.all(:reload => true)
+        #session["account"]["statuses"] = @account_statuses
 
-			if @status.update_attributes(attributes)
+        flash[:success] = 'Account status has been edited successfully'
+      else
+        # Create an error message
+        flash[:danger] = 'Ops! Unable to edit the account status'  # Log in error message
+      end
+    end
 
-				#update status list stored in session
-				@account_statuses = AccountStatus.all(:reload => true)
-				#session["account"]["statuses"] = @account_statuses
+    redirect_to company_path
+  end
 
-				flash[:success] = 'Account status has been edited successfully'
-			else
-				# Create an error message
-				flash[:danger] = 'Ops! Unable to edit the account status'  # Log in error message
-			end
+  private
 
-		end
-
-		redirect_to company_path
-	end
-
-
-
-
-
-	private
-
-		def superadmin
-			@superadmin = true
-		end
+    def superadmin
+      @superadmin = true
+    end
 
 end

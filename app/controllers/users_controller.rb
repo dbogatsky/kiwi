@@ -1,7 +1,7 @@
 require 'net/http/post/multipart'
 class UsersController < ApplicationController
 	before_action :get_token
-  before_action :find_user, only: [:edit, :update, :delete]
+  before_action :find_user, only: [:edit, :update, :destroy]
   before_action :get_roles, only: [:new, :edit]
 
 
@@ -21,20 +21,21 @@ class UsersController < ApplicationController
 
   def create
     # Create new user
-    if params.has_key?(:save)
-      @user = User.new(request: :create, user: params[:user], reload: true)
-      if @user.save
-        flash[:success] = 'User has been added successfully'
-      else
-        flash[:danger] = 'Oops! Unable to add the user'
-      end
+    @user = User.new(request: :create, user: params[:user], reload: true)
+    if @user.save
+      flash[:success] = 'User has been added successfully'
+    else
+      flash[:danger] = 'Oops! Unable to add the user'
     end
     redirect_to users_path
   end
 
   def update
-    @user.update_attributes(request: :update, user: params[:user], reload: true)
-    redirect_to users_path
+    if @user.update_attributes(request: :update, user: params[:user], reload: true)
+      redirect_to users_path, notice: 'User successfully updated!'
+    else
+      render :edit
+    end
   end
 
   def destroy

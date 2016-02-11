@@ -5,7 +5,7 @@ class CompanyEntitiesController < ApplicationController
 	end
 
 	def create
-	  @company_entity = CompanyEntities.new(params[:company_entity])
+	  @company_entity = CompanyEntities.new(request: :create, company_entity: params[:company_entity])
     if @company_entity.save
       redirect_to company_path, notice: 'Company Entity successfully created.'
     else
@@ -15,10 +15,10 @@ class CompanyEntitiesController < ApplicationController
 
 	def update
 		@entity = CompanyEntities.find(params[:id])
-		if @entity.update_attributes(params[:company_entity])
-       redirect_to company_path, notice: 'Company Entity successfully updated.'
+		if @entity.update_attributes(request: :update, company_entity: params[:company_entity])
+      redirect_to company_path, notice: 'Company Entity successfully updated.'
     else
-    		redirect_to company_path, notice: 'Company Entity could not updated.'
+    	redirect_to company_path, notice: 'Company Entity could not updated.'
     end
 	end
 
