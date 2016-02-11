@@ -1,4 +1,4 @@
-<div class="profile-header">
+  <div class="profile-header">
   <div class="row">
   	<% if flash[:success] %>
     	<div class="alert alert-success">
@@ -60,19 +60,73 @@
   </div><!-- row -->
   <div class="row row-pad-5">
     <div class="col-md-12 mb20">
-        <!-- Nav tabs -->
-        <ul class="nav nav-tabs nav-dark">
-          <li class="active"><a href="#organization" data-toggle="tab"><strong>Organization</strong></a></li>
-          <li><a href="#settings" data-toggle="tab"><strong>Settings</strong></a></li>
-        </ul>
-        <!-- Tab panes -->
-        <div class="tab-content mb30">
-          <div class="mb30"></div>
+      <!-- Nav tabs -->
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <div class="panel-btns">
+            <a href="" class="minimize">−</a>
+          </div><!-- panel-btns -->
+          <h3 class="panel-title">Account Statues</h3>
+        </div>
+          <div class="panel-body">
+            <div class="tab-pane" id="settings">
+              <div class="row row-pad-5">
+                <div class="col-md-10">
+                  <p>
+                    Each account is designated a status and can a great way to organize based on name and color.
+                  </p>
+                </div>
+                <div class="col-md-2">
+                  <a href="#" id="add_status" class="btn btn-primary btn-block" data-toggle="modal" data-target=".account-status-add"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Status</a>
+                </div>
+              </div><!-- row pad 5-->
+            <div class="row row-pad-5">
+              <div class="col-md-8">
+                <div class="table-responsive">
+                  <table class="table mb30">
+                    <thead>
+                      <tr>
+                        <th>Status</th>
+                        <th>Description</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% @account_statuses.each do |status| %>
+                        <tr>
+                          <td><span class="badge" style="background-color: <%= status.color %>; border-color: <%= status.color %>;"><%= status.name %></span></td>
+                          <td><%= status.description %></td>
+                          <td class="table-action">
+                            <a href="#"
+                              data-id="<%= status.id %>"
+                              data-statname="<%= status.name %>"
+                              data-statcolor="<%= status.color %>"
+                              data-statdesc="<%= status.description %>"
+                              data-toggle="modal" data-target=".account-status-add" class="modal-link"><i class="fa fa-pencil"></i></a>
+                          </td>
+                        </tr>
+                      <% end %>
+                    </tbody>
+                  </table>
+                </div><!-- table-responsive -->
+              </div><!-- col-md-6 -->
+            </div><!-- row pad 5-->
+          </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <div class="panel-btns">
+              <a href="" class="minimize">−</a>
+            </div><!-- panel-btns -->
+            <h3 class="panel-title">Company Entities</h3>
+          </div>
+          <div class="panel-body">
             <div class="tab-pane active" id="organization">
 
               <div class="row row-pad-5">
                 <div class="col-md-10">
-                  <h3 class="panel-title">Entities</h3>
+                  <!-- <h3 class="panel-title">Entities</h3> -->
                   <p>Use entities to describe how your organization is structured</p>
                 </div>
                 <div class="col-md-2">
@@ -94,10 +148,10 @@
                         </thead>
                         <tbody>
                           <% @entites.each do |entity| %>
-                      			<tr>
-                      				<td><%= entity.name %></td>
-                      				<td><%= entity.description %></td>
-                      				<td class="table-action">
+                            <tr>
+                              <td><%= entity.name %></td>
+                              <td><%= entity.description %></td>
+                              <td class="table-action">
                                 <a href="javascript:void(0);" class="edit-folder"
                                   data-id="<%= entity.id %>"
                                   data-name="<%=entity.name %>"
@@ -106,8 +160,8 @@
                                   <%=link_to company_entity_path(entity.id), method: :delete,data: {:confirm => 'Are you sure to delete company entity?'} do %>
                                     <i class="fa fa-trash-o"></i>
                                   <% end %>
-                      				</td>
-                      			</tr>
+                              </td>
+                            </tr>
                           <% end %>
                         </tbody>
                       </table>
@@ -116,52 +170,14 @@
                     <p>Create and manage Entities here.</p>
                   <% end %>
                 </div>
-            </div><!-- row -->
-          </div><!-- tab pane -->
-          <div class="mb30"></div>
-          <div class="tab-pane" id="settings">
-            <div class="row row-pad-5">
-                <div class="col-md-10">
-                  <h3 class="panel-title">Account Statuses</h3>
-                  <p>Each account is designated a status and can a great way to organize based on name and color.</p>
-                </div>
-                  <div class="col-md-2">
-                      <a href="#" id="add_status" class="btn btn-primary btn-block" data-toggle="modal" data-target=".account-status-add"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Status</a>
-                  </div>
-            </div><!-- row pad 5-->
-            <div class="row row-pad-5">
-              <div class="col-md-8">
-                <div class="table-responsive">
-                  <table class="table mb30">
-                    <thead>
-                      <tr>
-                        <th>Status</th>
-                        <th>Description</th>
-                        <th></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-		                  <% @account_statuses.each do |status| %>
-                  			<tr>
-                  				<td><span class="badge" style="background-color: <%= status.color %>; border-color: <%= status.color %>;"><%= status.name %></span></td>
-                  				<td><%= status.description %></td>
-                  				<td class="table-action">
-                  					<a href="#"
-                  						data-id="<%= status.id %>"
-                  						data-statname="<%= status.name %>"
-                  						data-statcolor="<%= status.color %>"
-                  						data-statdesc="<%= status.description %>"
-                  						data-toggle="modal" data-target=".account-status-add" class="modal-link"><i class="fa fa-pencil"></i></a>
-                  				</td>
-                  			</tr>
-		                  <% end %>
-                    </tbody>
-                  </table>
-                </div><!-- table-responsive -->
-              </div><!-- col-md-6 -->
-            </div><!-- row pad 5-->
+            </div>
           </div>
         </div>
+        <!-- <ul class="panel-title"> -->
+          <!-- <li><a href="#organization" data-toggle="tab"><strong>Company Entities</strong></a></li> -->
+          <!-- <li><a href="#settings" data-toggle="tab"><strong>Account Statues</strong></a></li> -->
+        <!-- </ul> -->
+        <!-- Tab panes -->
       </div>
     </div> <!-- col- -->
   </div><!-- row -->
