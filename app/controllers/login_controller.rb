@@ -78,9 +78,10 @@ class LoginController < ApplicationController
   end
 
   def change_password
+    @user = User.find(params[:id])
     if request.patch?
-      current_user.update_attributes(request: :update, user: params[:user], reload: true)
-      redirect_to dashboard_path, notice: 'Password successfully updated.'
+      @user.update_attributes(request: :update, user: params[:user], reload: true)
+      redirect_to users_path, notice: 'Password successfully updated.'
     end
   end
 
