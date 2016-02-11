@@ -23,6 +23,20 @@
               <div class="row row-pad-5">
                 <div class="col-lg-10">
                   <div class="form-group">
+                    <label class="control-label">Parent Entity:</label>
+                    <select name="company_entity[parent]" class="form-control input-sm">
+                      <option value="">Default</option>
+                      <%CompanyEntities.all.each do |entity|%>
+                        <option value="<%=entity.id%>"><%=entity.name%></option>
+                      <%end%>
+                    </select>
+                  </div>
+                </div><!-- col -->
+              </div><!-- row -->
+
+              <div class="row row-pad-5">
+                <div class="col-lg-10">
+                  <div class="form-group">
                     <label class="control-label">Description:</label>
                     <%= text_area_tag 'company_entity[description]', nil, class: 'form-control'%>
                   </div>

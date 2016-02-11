@@ -156,6 +156,7 @@
                                   data-id="<%= entity.id %>"
                                   data-name="<%=entity.name %>"
                                   data-description="<%= entity.description %>"
+                                  data-parent="<%= entity.parent%>"
                                   data-toggle="modal" data-target=".edit_company_entity" class="modal-link"><i class="fa fa-pencil"></i></a>
                                   <%=link_to company_entity_path(entity.id), method: :delete,data: {:confirm => 'Are you sure to delete company entity?'} do %>
                                     <i class="fa fa-trash-o"></i>
@@ -195,7 +196,8 @@
   $(document).on('click', "a.edit-folder", function(e){
     id = $(this).attr('data-id')
     $('input[name="company_entity[name]"]').val($(this).attr('data-name'));
-    $('textarea[name="company_entity[description]"]').val($(this).attr('data-description'))
+    $('textarea[name="company_entity[description]"]').val($(this).attr('data-description'));
+    $('select[name="company_entity[parent]"]').val($(this).attr('data-parent'))
     $('#edit_company_entity').modal('show');
     $('#edit_company_entity').find('form').attr('action', '/company_entities/'+id)
   });
