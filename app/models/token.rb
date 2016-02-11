@@ -1,8 +1,8 @@
 class Token < OrchardApiModel
-  	
+
   include ActiveResource::Singleton
   #self.headers['Authorization'] = ''
-  
+
   def self.headers
     new_headers = static_headers.clone
     new_headers['Authorization'] = ''

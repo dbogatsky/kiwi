@@ -28,7 +28,6 @@ class CompanyController < ApplicationController
 
 	def edit_entity
 		# Edit entity
-
 	end
 
 

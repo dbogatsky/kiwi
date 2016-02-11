@@ -16,12 +16,50 @@
                   <input type="email" name="conversation_item[email]" placeholder="To" class="form-control"  required="required" />
                 </div>
               </div><!-- row -->
+              
               <div class="row row-pad-5">
-              <div class="col-lg-10">
+                <div class="col-lg-10">
                   <input type="text" name="conversation_item[title]" placeholder="Subject" class="form-control" required="required"  />
                 </div>
               </div><!-- row -->
-              <textarea class="form-control" rows="5" placeholder="Message" required="required" name="conversation_item[body]"></textarea>
+              
+              <div class="row row-pad-5">
+                <div class="col-lg-10">
+                  <textarea class="form-control" rows="5" placeholder="Message" required="required" name="conversation_item[body]"></textarea>
+                </div>
+              </div><!-- row -->
+              
+              
+              <div class="row row-pad-5">
+                <div class="col-lg-10">
+                  <div class="ckbox ckbox-primary">
+                    <input type="checkbox" id="send-later">
+                    <label for="send-later">Send Later?</label>
+                  </div>
+                </div>
+              </div>
+
+
+              <div id="email-sendlater-settings">
+	              <div class="row row-pad-5">
+	                
+	                <div class="col-lg-4">
+	                  <div class="input-group">
+	                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+	                    <input type="text" class="form-control datepicker" placeholder="dd/mm/yyyy" id="scheduledDatePicker"/>
+	                   </div>
+	                </div>
+
+	                <div class="col-lg-4">
+	                  <div class="input-group">
+	                    <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+	                    <div class="bootstrap-timepicker"><input id="scheduledTimePicker" type="text" class="form-control"/></div>
+	                  </div>
+	                </div>
+	              </div>
+			        </div>
+              
+              
               <input type="hidden" name="conversation_item[account_id]" value=<%= @account.id %> >
             </div><!-- panel-body -->
             <div class="panel-footer">
