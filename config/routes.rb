@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     get '/login/destroy', to: 'login#destroy', as: :user_logout
     get '/login/forgot', to: 'login#forgot', as: :login_forgot
     post '/login/recover', to:'login#recover', as: :login_recover
+    match '/login/change_password', to: 'login#change_password', as: :login_change_password, via: [:get, :patch]
 	get '/login/superadmin', to: 'login#superadmin', as: :login_superadmin
 	post '/login/superadmin_auth', to:'login#superadmin_auth', as: :login_superadmin_auth
 

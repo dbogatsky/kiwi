@@ -7,7 +7,7 @@ class UsersController < ApplicationController
 
 	def index
 		# Get all users
-    @all_users = User.all
+    @all_users = User.find(:all, reload: true)
 	end
 
 	def new
@@ -15,7 +15,6 @@ class UsersController < ApplicationController
 	end
 
   def edit
-    @user = User.find(params[:id])
     @address = @user.addresses
     @contact = @user.contacts
 	end
@@ -25,22 +24,20 @@ class UsersController < ApplicationController
     if params.has_key?(:save)
       @user = User.new(request: :create, user: params[:user])
       if @user.save
-        flash[:success] = 'Account has been added successfully'
+        flash[:success] = 'User has been added successfully'
       else
-        flash[:danger] = 'Oops! Unable to add the account'
+        flash[:danger] = 'Oops! Unable to add the user'
       end
     end
     redirect_to users_path
   end
 
   def update
-    @user = User.find(params[:id])
     @user.update_attributes(request: :update, user: params[:user])
     redirect_to users_path
   end
 
   def destroy
-    @user = User.find(params[:id])
     if @user.destroy
       redirect_to users_path, notice: 'User successfully deleted.'
     else
@@ -79,7 +76,7 @@ class UsersController < ApplicationController
 		end
 
     def find_user
-      @user = User.find(params[:id])
+      @user = User.find(params[:id], reload: true)
     end
 
 end

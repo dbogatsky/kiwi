@@ -2,8 +2,8 @@ class LoginController < ApplicationController
   #exclude the following methods from the authentication filter since the user is not logged in yet
   before_filter :authentication, :except => [:index, :login, :forgot, :recover, :superadmin, :superadmin_auth]
 
-  def index 
-    if !session[:token].nil? 
+  def index
+    if !session[:token].nil?
       redirect_to dashboard_path
     else
       render :layout => false
@@ -75,6 +75,13 @@ class LoginController < ApplicationController
   #forget password recover
   def forgot
     render :layout => false
+  end
+
+  def change_password
+    if request.patch?
+      current_user.update_attributes(password: params[:user][:password])
+      redirect_to dashboard_path, notice: 'Password successfully updated.'
+    end
   end
 
   def recover
