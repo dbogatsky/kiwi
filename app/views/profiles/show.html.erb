@@ -16,29 +16,26 @@
 
           <%= f.input :first_name, required: true %>
           <%= f.input :last_name, required: true %>
-
           <div class="form-group">
             <label class="col-sm-3 control-label">Role<span class="asterisk">*</span></label>
             <div class="col-sm-2">
-              <select name="user[role_ids][]" class="form-control input-sm sel_role">
+            <%rol = current_user.roles.present? ? current_user.roles.last : '' %>
+              <select name="user[role_ids][]" class="form-control input-sm sel_role" required>
+                <option value="<%= rol.present? ? rol.id : ''%>" selected><%=rol.present? ? rol.name : 'select'%></option>
                 <% Role.all.each do |role| %>
                   <option value="<%= role.id%>"><%= role.name %></option>
                 <% end %>
               </select>
             </div>
-            <div class="show_entity" style="display: none;">
+            <%en = current_user.entity.present? ? 'display: block' : 'display: none' %>
+            <div class="show_entity" style="<%=en%>">
               <label class="col-sm-1 control-label">Entity<span class="asterisk">*</span></label>
                 <div class="col-sm-2">
-                  <select name="user[company_entity_id]" class="form-control input-sm">
-                    <!-- <option value="audi" selected>Audi</option> -->
-                    <% CompanyEntities.all.each do |entity| %>
-                      <option value="<%=entity.id%>"><%=entity.name%></option>
-                    <% end %>
-                  </select>
+                   <%en = current_user.entity.present? ? current_user.entity.id : '' %>
+                   <%=f.select(:company_entity_id, options_for_select(CompanyEntities.all.map{|c| [c.name, c.id] }, selected: "#{en}"), {prompt: "Select Class"}, {:class => 'form-control sel_clear input-sm'})%>
                 </div>
             </div>
-          </div>         
-
+          </div>
           <%= f.input :title, required: true %>
 
           <div class="form-group">
@@ -74,25 +71,27 @@
                 <%= add.input_field :country, { required: true, priority: [ "Canada", "United States", "United Kingdom" ],  class: "select2", name: "user[addresses_attributes][][country]", selected: current_user.addresses.last.country} %>
               </div>
             </div>
-            <% address_id = @address.last.id rescue nil %>
+            <% address_id = current_user.addresses.last.id rescue nil %>
             <%= add.hidden_field :id, value: address_id, name: "user[addresses_attributes][][id]" %>
           <% end %>
 
           <%= f.simple_fields_for :contacts_attributes do |c| %>
             <div class="form-group">
-              <label class="col-sm-3 control-label">Contact Name<span class="asterisk">*</span></label>
-
-              <label class="col-sm-1 control-label">Contact<span class="asterisk">*</span></label>
+              <label class="col-sm-3 control-label">Phone:</label>
               <div class="col-sm-2">
-                <%= c.select( :type, options_for_select(Contact::CONTACT_TYPES, current_user.contacts.last.type), {}, { :class => "select2", :name => "user[contacts_attributes][][type]"} ) %>
-              </div>
-
-              <label class="col-sm-1 control-label">Value<span class="asterisk">*</span></label>
-              <div class="col-sm-2">
-                <%contact_value = @contact.last.value rescue nil%>
-                <%= c.input_field :value, { required: true, label: 'Value', name: "user[contacts_attributes][][value]", class: "form-control", value: current_user.contacts.last.value}%>
-                <% contact_id = @contact.last.id rescue nil %>
+                <%contact_value = current_user.contacts.first.value rescue nil%>
+                <%=c.hidden_field :type, value: 'phone', name: "user[contacts_attributes][][type]" %>
+                <%= c.input_field :value, { required: true, label: 'Phone', name: "user[contacts_attributes][][value]", class: "form-control", value: current_user.contacts.first.value}%>
+                <% contact_id = current_user.contacts.first.id rescue nil %>
                 <%=c.hidden_field :id, value: contact_id, name: "user[contacts_attributes][][id]" %>
+              </div>
+              <label class="col-sm-1 control-label">Mobile:</label>
+              <div class="col-sm-2">
+                <%contact_value1 = current_user.contacts.last.value rescue nil%>
+                <%=c.hidden_field :type, value: 'mobile', name: "user[contacts_attributes][][type]" %>
+                <%= c.input_field :value, { required: true, label: 'Value', name: "user[contacts_attributes][][value]", class: "form-control", value: current_user.contacts.last.value}%>
+                <% contact_id1 = current_user.contacts.last.id rescue nil %>
+                <%=c.hidden_field :id, value: contact_id1, name: "user[contacts_attributes][][id]" %>
               </div>
             </div>
           <% end %>
@@ -183,12 +182,13 @@
 
 
 $('.sel_role').change(function(){
-  if($(this).val() != 1)
-    {
-       $(".show_entity").show();
-    }else
+  if($(this).val() == 1 || $(this).val() == '' )
     {
       $(".show_entity").hide();
+      $(".sel_clear").val('');
+    }else
+    {
+     $(".show_entity").show();
     }
 });
 </script>
