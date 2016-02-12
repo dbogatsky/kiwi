@@ -16,12 +16,28 @@
 
           <%= f.input :first_name, required: true %>
           <%= f.input :last_name, required: true %>
+
           <div class="form-group">
             <label class="col-sm-3 control-label">Role<span class="asterisk">*</span></label>
             <div class="col-sm-2">
-              <%=select_tag 'role_ids', options_for_select(Role.all.map{|r| [r.name, r.id]}), class: 'select2' %>
+              <select name="user[role_ids][]" class="form-control input-sm sel_role">
+                <% Role.all.each do |role| %>
+                  <option value="<%= role.id%>"><%= role.name %></option>
+                <% end %>
+              </select>
             </div>
-          </div>
+            <div class="show_entity" style="display: none;">
+              <label class="col-sm-1 control-label">Entity<span class="asterisk">*</span></label>
+                <div class="col-sm-2">
+                  <select name="user[company_entity_id]" class="form-control input-sm">
+                    <!-- <option value="audi" selected>Audi</option> -->
+                    <% CompanyEntities.all.each do |entity| %>
+                      <option value="<%=entity.id%>"><%=entity.name%></option>
+                    <% end %>
+                  </select>
+                </div>
+            </div>
+          </div>         
 
           <%= f.input :title, required: true %>
           
@@ -39,7 +55,7 @@
           </div>
           <%= f.input :locale, input_html: { class: 'form-control input-sm' }, collection: I18n.available_locales, prompt: "Select a locale"%>
           <%= f.input :time_zone, input_html: { class: 'form-control input-sm' }, priority: ActiveSupport::TimeZone.us_zones %>
-
+          
           <%= f.fields_for :addresses_attributes do |add| %>
             <%st_address = @address.last.street_address rescue nil%>
             <%= add.input :street_address, required: true, label: "Street", :input_html => { :name => "user[addresses_attributes][][street_address]", :value => current_user.addresses.last.street_address}%>
@@ -123,6 +139,7 @@
 
 
 <script>
+
   var $image = $('.useravatar > img'),
       replaced;
   
@@ -161,4 +178,14 @@
       $inputImage.addClass("hide");
   }
 
+
+$('.sel_role').change(function(){
+  if($(this).val() != 1)
+    {
+       $(".show_entity").show();
+    }else
+    {
+      $(".show_entity").hide();
+    }
+});
 </script>
