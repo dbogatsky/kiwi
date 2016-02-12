@@ -70,7 +70,7 @@
                 <% if !current_user.avatar_url.present? %>
                   <img src="/assets/bootstrap/images/user.png" alt="" />
                 <% else %>
-                  <img src="/assets/bootstrap/images/photos/loggeduser.png" alt="" />
+                  <img alt="" src="<%= current_user.avatar_url %>">
                 <% end %>
                 <%= current_user.first_name %> <%= current_user.last_name %>
                 <span class="caret"></span>

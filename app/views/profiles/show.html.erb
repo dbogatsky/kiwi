@@ -40,19 +40,22 @@
           </div>         
 
           <%= f.input :title, required: true %>
-          
 
           <div class="form-group">
             <label class="col-sm-3 control-label">Picture</label>
             <div class="col-sm-6">
-              <label title="Upload image file" for="inputImage" class="btn btn-primary">
-                  <input type="file" accept="image/*" name="avatar" id="inputImage" class="hide">Upload new image
+              <!-- <label title="Upload image file" for="inputImage" class="btn btn-primary">
+                  <input type="file" name="user[avatar]" id="inputImage" class="hide">Upload new image
               </label>
               <div class="useravatar">
-                <img src="/assets/images/default_account_avatar.png" alt="Picture">
-              </div>
+                <img alt="" src="<%#=  current_user.avatar_url %>">
+              </div> -->
+              <label title="Upload image file" for="inputImage" class="btn btn-white">
+                <%= f.file_field :avatar, { name: "user[avatar]" }  %>
+              </label>
             </div>
           </div>
+
           <%= f.input :locale, input_html: { class: 'form-control input-sm' }, collection: I18n.available_locales, prompt: "Select a locale"%>
           <%= f.input :time_zone, input_html: { class: 'form-control input-sm' }, priority: ActiveSupport::TimeZone.us_zones %>
           
@@ -140,43 +143,43 @@
 
 <script>
 
-  var $image = $('.useravatar > img'),
-      replaced;
+  // var $image = $('.useravatar > img'),
+  //     replaced;
   
-  $image.cropper({
-    aspectRatio: 1 / 1,
-    movable: false,
-    zoomable: false,
-    rotatable: false,
-    scalable: false
-  });
+  // $image.cropper({
+  //   aspectRatio: 1 / 1,
+  //   movable: false,
+  //   zoomable: false,
+  //   rotatable: false,
+  //   scalable: false
+  // });
 
-  var $inputImage = $("#inputImage");
-  if (window.FileReader) {
-      $inputImage.change(function() {
-          var fileReader = new FileReader(),
-                  files = this.files,
-                  file;
+  // var $inputImage = $("#inputImage");
+  // if (window.FileReader) {
+  //     $inputImage.change(function() {
+  //         var fileReader = new FileReader(),
+  //                 files = this.files,
+  //                 file;
   
-          if (!files.length) {
-              return;
-          }
+  //         if (!files.length) {
+  //             return;
+  //         }
   
-          file = files[0];
+  //         file = files[0];
   
-          if (/^image\/\w+$/.test(file.type)) {
-              fileReader.readAsDataURL(file);
-              fileReader.onload = function () {
-                  $inputImage.val("");
-                  $image.cropper("reset", true).cropper("replace", this.result);
-              };
-          } else {
-              showMessage("Please choose an image file.");
-          }
-      });
-  } else {
-      $inputImage.addClass("hide");
-  }
+  //         if (/^image\/\w+$/.test(file.type)) {
+  //             fileReader.readAsDataURL(file);
+  //             fileReader.onload = function () {
+  //                 $inputImage.val("");
+  //                 $image.cropper("reset", true).cropper("replace", this.result);
+  //             };
+  //         } else {
+  //             showMessage("Please choose an image file.");
+  //         }
+  //     });
+  // } else {
+  //     $inputImage.addClass("hide");
+  // }
 
 
 $('.sel_role').change(function(){
