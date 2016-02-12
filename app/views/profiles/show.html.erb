@@ -1,4 +1,4 @@
-    <%= simple_form_for current_user, url: profile_path do |f| %>   
+    <%= simple_form_for current_user, url: profile_path, method: :patch do |f| %>
       <div class="panel panel-default">
 
       	<div class="panel-heading">
@@ -13,19 +13,13 @@
               <%= current_user.email %>
             </div>
           </div>
-
           <%= f.input :first_name, required: true %>
           <%= f.input :last_name, required: true %>
           <div class="form-group">
             <label class="col-sm-3 control-label">Role<span class="asterisk">*</span></label>
             <div class="col-sm-2">
-            <%rol = current_user.roles.present? ? current_user.roles.last : '' %>
-              <select name="user[role_ids][]" class="form-control input-sm sel_role" required>
-                <option value="<%= rol.present? ? rol.id : ''%>" selected><%=rol.present? ? rol.name : 'select'%></option>
-                <% Role.all.each do |role| %>
-                  <option value="<%= role.id%>"><%= role.name %></option>
-                <% end %>
-              </select>
+            <%rol = current_user.roles.present? ? current_user.roles.last.id : '' %>
+              <%=select_tag "user[role_ids][]", options_for_select(Role.all.map{|c| [c.name, c.id] }, selected: "#{rol}"), {prompt: "select", :class => 'form-control input-sm sel_role'}%>
             </div>
             <%en = current_user.entity.present? ? 'display: block' : 'display: none' %>
             <div class="show_entity" style="<%=en%>">
@@ -35,6 +29,10 @@
                    <%=f.select(:company_entity_id, options_for_select(CompanyEntities.all.map{|c| [c.name, c.id] }, selected: "#{en}"), {prompt: "Select Class"}, {:class => 'form-control sel_clear input-sm'})%>
                 </div>
             </div>
+            <!-- <div class="col-sm-4">
+              <label class="col-sm-1 control-label">Locale:<span class="asterisk">*</span></label>
+              <%#=f.select(:locale, options_for_select([['English', 1],['French', 2]], selected: current_user.locale), {prompt: "select"}, {:class => 'form-control'})%>
+            </div> -->
           </div>
           <%= f.input :title, required: true %>
 
@@ -54,8 +52,9 @@
           </div>
 
           <%= f.input :locale, input_html: { class: 'form-control input-sm' }, collection: I18n.available_locales, prompt: "Select a locale"%>
+
           <%= f.input :time_zone, input_html: { class: 'form-control input-sm' }, priority: ActiveSupport::TimeZone.us_zones %>
-          
+
           <%= f.fields_for :addresses_attributes do |add| %>
             <%st_address = @address.last.street_address rescue nil%>
             <%= add.input :street_address, required: true, label: "Street", :input_html => { :name => "user[addresses_attributes][][street_address]", :value => current_user.addresses.last.street_address}%>
@@ -102,32 +101,18 @@
       				<button type="submit" class="btn btn-primary" name="save" id="save">Save</button>&nbsp;
       				<button class="btn btn-default" name="cancel" id="cancel">Cancel</button>
       			</div>
-      		</div>		
+      		</div>
       	</div><!-- panel-footer -->
 
-      </div>		
+      </div>
 
     <% end %>
 
     </div><!-- contentpanel -->
-    
+
   </div><!-- mainpanel -->
-    
+
 </section>
-
-<script src="/assets/bootstrap/js/jquery-1.11.1.min.js"></script>
-<script src="/assets/bootstrap/js/jquery-migrate-1.2.1.min.js"></script>
-<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="/assets/bootstrap/js/modernizr.min.js"></script>
-<script src="/assets/bootstrap/js/jquery.sparkline.min.js"></script>
-<script src="/assets/bootstrap/js/toggles.min.js"></script>
-<script src="/assets/bootstrap/js/retina.min.js"></script>
-<script src="/assets/bootstrap/js/jquery.cookies.js"></script>
-<script src="/assets/bootstrap/js/jquery-ui-1.10.3.min.js"></script>
-
-<script src="/assets/bootstrap/js/custom.js"></script>
-
-<script src="/assets/bootstrap/js/cropper.min.js"></script>
 
 <style>
 .user-avatar {
@@ -144,7 +129,7 @@
 
   // var $image = $('.useravatar > img'),
   //     replaced;
-  
+
   // $image.cropper({
   //   aspectRatio: 1 / 1,
   //   movable: false,
@@ -159,13 +144,13 @@
   //         var fileReader = new FileReader(),
   //                 files = this.files,
   //                 file;
-  
+
   //         if (!files.length) {
   //             return;
   //         }
-  
+
   //         file = files[0];
-  
+
   //         if (/^image\/\w+$/.test(file.type)) {
   //             fileReader.readAsDataURL(file);
   //             fileReader.onload = function () {
