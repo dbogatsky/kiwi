@@ -2,7 +2,6 @@ require 'net/http/post/multipart'
 class UsersController < ApplicationController
 	before_action :get_token
   before_action :find_user, only: [:edit, :update, :destroy]
-  before_action :get_roles, only: [:new, :edit]
 
 
 	def index
@@ -32,7 +31,7 @@ class UsersController < ApplicationController
 
   def update
     if @user.update_attributes(request: :update, user: params[:user], reload: true)
-      
+
       #in the event we are updating the logged in user refresh the detail
       if ( current_user.id == params['id'].to_i )
         @current_user = User.find(current_user.id, reload: true)
@@ -73,10 +72,6 @@ class UsersController < ApplicationController
   # end
 
 	private
-    def get_roles
-      @roles = [{id: 1, name: "Admin"},{id: 2, name: "Enitity Admin"},{id: 3, name: "User"}]
-    end
-
 		def get_token
 		  #set gloal var for token to be used in model, hack for now
 		  $user_token = session[:token]
