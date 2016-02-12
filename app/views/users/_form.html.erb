@@ -38,10 +38,7 @@
 	    <div class="form-group">
 	      <label class="col-sm-3 control-label">Locale<span class="asterisk">*</span></label>
 	      <div class="col-sm-6">
-	        <select class="form-control input-sm" name="user[locale]" data-placeholder="Select default language for this user">
-	          <option value="1">English</option>
-	          <option value="2">French</option>
-	        </select>
+	        <%=f.select(:locale, options_for_select([['English', 1],['French', 2]], selected: @user.new_record? ? '' : @user.locale ), {prompt: "select"}, {:class => 'form-control'})%>
 	      </div>
 	    </div>
 
