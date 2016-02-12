@@ -22,6 +22,7 @@ class UsersController < ApplicationController
     # Create new user
     @user = User.new(request: :create, user: params[:user], reload: true)
     if @user.save
+      save_avatar
       flash[:success] = 'User has been added successfully'
     else
       flash[:danger] = 'Oops! Unable to add the user'
@@ -31,7 +32,7 @@ class UsersController < ApplicationController
 
   def update
     if @user.update_attributes(request: :update, user: params[:user], reload: true)
-
+      save_avatar
       #in the event we are updating the logged in user refresh the detail
       if ( current_user.id == params['id'].to_i )
         @current_user = User.find(current_user.id, reload: true)
@@ -79,6 +80,20 @@ class UsersController < ApplicationController
 
     def find_user
       @user = User.find(params[:id], reload: true)
+    end
+
+    def save_avatar
+      if params[:user][:avatar]
+        puts "sending avatar..."
+        url = URI.parse("#{ENV.fetch("ORCHARD_API_HOST")}/users/#{@user.id}")
+        #req = Net::HTTP::Put::Multipart.new url.path,  account: { :avatar => UploadIO.new(File.new(params[:avatar].tempfile), "image/jpeg", "image.jpg")}
+        req = Net::HTTP::Put::Multipart.new url.path, :avatar => UploadIO.new(File.new(params[:user][:avatar].tempfile), "image/jpeg", "image.jpg")
+        req.add_field("Authorization", "Token token=\"#{$user_token}\", app_key=\"#{APP_CONFIG['api_app_key']}\"")
+        #req.add_field("Content-Type", "application/json")
+        res = Net::HTTP.start(url.host, url.port) do |http|
+          http.request(req)
+        end
+      end
     end
 
 end
