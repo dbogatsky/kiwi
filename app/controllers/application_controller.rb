@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   before_filter :authentication
+  before_filter :check_request
 
   helper_method :current_user, :logged_in?
   helper_method :has_permission, :has_permissions, :has_page_permission, :has_page_permissions
@@ -158,6 +159,12 @@ class ApplicationController < ActionController::Base
       redirect_to dashboard_path
     else
       redirect_to redirect_path
+    end
+  end
+
+  def check_request
+    unless request.format.symbol.present?
+      render text: 'page loaded'
     end
   end
 
