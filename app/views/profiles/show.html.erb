@@ -1,9 +1,12 @@
+<% content_for :pageheader do %> 
+  <h2><i class="fa fa-user"></i> My Profile</h2>
+<% end %>   
+   
     <%= simple_form_for current_user, url: profile_path, method: :patch do |f| %>
       <div class="panel panel-default">
 
       	<div class="panel-heading">
-      		<h4 class="panel-title">Edit My Profile</h4>
-      		<p>Make changes and click save.</p>
+      		<p>Edit your profile below and click save</p>
       	</div>
 
       	<div class="panel-body">
@@ -21,12 +24,12 @@
             <%rol = current_user.roles.present? ? current_user.roles.last.id : '' %>
               <%=select_tag "user[role_ids][]", options_for_select(Role.all.map{|c| [c.name, c.id] }, selected: "#{rol}"), {prompt: "select", :class => 'form-control input-sm sel_role'}%>
             </div>
-            <%en = current_user.entity.present? ? 'display: block' : 'display: none' %>
+            <%en = (defined?(current_user.entity)).nil? ? 'display: none' : 'display: block' %>
             <div class="show_entity" style="<%=en%>">
               <label class="col-sm-1 control-label">Entity<span class="asterisk">*</span></label>
                 <div class="col-sm-2">
-                   <%en = current_user.entity.present? ? current_user.entity.id : '' %>
-                   <%=f.select(:company_entity_id, options_for_select(CompanyEntities.all.map{|c| [c.name, c.id] }, selected: "#{en}"), {prompt: "Select Class"}, {:class => 'form-control sel_clear input-sm'})%>
+                   <%en = (defined?(current_user.entity)).nil? ? '' : current_user.entity.id %>
+                   <%=f.select(:company_entity_id, options_for_select(CompanyEntities.all.map{|c| [c.name, c.id] }, selected: "#{en}"), {prompt: "select"}, {:class => 'form-control sel_clear input-sm'})%>
                 </div>
             </div>
             <!-- <div class="col-sm-4">
@@ -38,7 +41,7 @@
           <div class="form-group">
             <label class="col-sm-3 control-label">Locale<span class="asterisk">*</span></label>
             <div class="col-sm-6">
-              <%=f.select(:locale, options_for_select([['English', 1],['French', 2]], selected: current_user.locale), {prompt: "select"}, {:class => 'form-control'})%>
+              <%=f.select(:locale, options_for_select([['English', 1],['French', 2]], selected: current_user.locale), {prompt: "select"}, {:class => 'form-control input-sm'})%>
             </div>
           </div>
           <%= f.input :title, required: true %>
