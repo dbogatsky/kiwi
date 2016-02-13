@@ -53,10 +53,11 @@
 	      <%= add.input :street_address, required: true, label: "Street", :input_html => { :name => "user[addresses_attributes][][street_address]", :value => st_address}%>
 	      <%city = @address.last.city rescue nil%>
 	      <%= add.input :city, required: true, label: "City", :input_html => { :name => "user[addresses_attributes][][city]", :value => city} %>
-	      <%postcode = @address.last.postcode rescue nil%>
-	      <%= add.input :postcode, required: true, label: "Postcode/Zipcode", :input_html => { :name => "user[addresses_attributes][][postcode]", :value => postcode}%>
-	      <%address_region = @address.last.region rescue nil%>
+        <%address_region = @address.last.region rescue nil%>
 	      <%= add.input :region, required: true, label: "Province/State", :input_html => { :name => "user[addresses_attributes][][region]", :value => address_region} %>
+        <%postcode = @address.last.postcode rescue nil%>
+	      <%= add.input :postcode, required: true, label: "Postcode/Zipcode", :input_html => { :name => "user[addresses_attributes][][postcode]", :value => postcode}%>
+	      
 	      <div class="form-group">
 	        <label class="col-sm-3 control-label">Country<span class="asterisk">*</span></label>
 	        <div class="col-sm-6">
@@ -111,6 +112,23 @@
 </div>
 
 <script>
+// validate form
+$(".simple_form").validate({
+  highlight: function(element) {
+    jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+  },
+  success: function(element) {
+    jQuery(element).closest('.form-group').removeClass('has-error');
+  }
+});  
+  
+// default case
+if ( $('.sel_role').val() == 1 || $(this).val() == '' ) {
+  $(".show_entity").hide();
+  $(".sel_clear").val('');  
+}
+
+// when an entity is selected  
 $('.sel_role').change(function(){
   if($(this).val() == 1 || $(this).val() == '' )
     {
