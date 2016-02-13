@@ -16,68 +16,11 @@
   	<%= render partial: "account_form" %>
 </div>
 
-<!--
-<script src="/assets/bootstrap/js/jquery-1.11.1.min.js"></script>
-<script src="/assets/bootstrap/js/jquery-migrate-1.2.1.min.js"></script>
-<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="/assets/bootstrap/js/modernizr.min.js"></script>
-<script src="/assets/bootstrap/js/jquery.sparkline.min.js"></script>
-<script src="/assets/bootstrap/js/toggles.min.js"></script>
-<script src="/assets/bootstrap/js/retina.min.js"></script>
-<script src="/assets/bootstrap/js/jquery.cookies.js"></script>
-<script src="/assets/bootstrap/js/jquery.autogrow-textarea.js"></script>
-<script src="/assets/bootstrap/js/jquery.validate.min.js"></script>
-<script src="/assets/bootstrap/js/select2.min.js"></script>
-
-
-<script src="/assets/bootstrap/js/jquery-ui-1.10.3.min.js"></script>
-<script src="/assets/bootstrap/js/fullcalendar.min.js"></script>
-<script src="/assets/bootstrap/js/jquery.ui.touch-punch.min.js"></script>
-
-<script src="/assets/bootstrap/js/cropper.min.js"></script>
-
-<script src="/assets/bootstrap/js/custom.js"></script>
--->
-
 <% content_for :custom_js do %>
 <script>
 jQuery(document).ready(function(){
     "use strict";
 
-	// Basic Wizard
-	//jQuery('#basicWizard').bootstrapWizard();
-
-	// Progress Wizard
-	/*$('#progressWizard').bootstrapWizard({
-	'nextSelector': '.next',
-	'previousSelector': '.previous',
-	onNext: function(tab, navigation, index) {
-	  var $total = navigation.find('li').length;
-	  var $current = index+1;
-	  var $percent = ($current/$total) * 100;
-	  jQuery('#progressWizard').find('.progress-bar').css('width', $percent+'%');
-	},
-	onPrevious: function(tab, navigation, index) {
-	  var $total = navigation.find('li').length;
-	  var $current = index+1;
-	  var $percent = ($current/$total) * 100;
-	  jQuery('#progressWizard').find('.progress-bar').css('width', $percent+'%');
-	},
-	onTabShow: function(tab, navigation, index) {
-	  var $total = navigation.find('li').length;
-	  var $current = index+1;
-	  var $percent = ($current/$total) * 100;
-	  jQuery('#progressWizard').find('.progress-bar').css('width', $percent+'%');
-	}
-	});*/
-
-	// Disabled Tab Click Wizard
-	/*jQuery('#disabledTabWizard').bootstrapWizard({
-	tabClass: 'nav nav-pills nav-justified nav-disabled-click',
-	onTabClick: function(tab, navigation, index) {
-	  return false;
-	}
-	});*/
 
 	// With Form Validation Wizard
 	var $validator = jQuery("#account-add-form").validate({
