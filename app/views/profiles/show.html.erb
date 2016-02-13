@@ -109,7 +109,7 @@
       		<div class="row">
       			<div class="col-sm-6 col-sm-offset-3">
       				<button type="submit" class="btn btn-primary" name="save" id="save">Save</button>&nbsp;
-      				<button class="btn btn-default" name="cancel" id="cancel">Cancel</button>
+      				<a class="btn btn-default" href="/users">Cancel</a>
       			</div>
       		</div>
       	</div><!-- panel-footer -->
@@ -137,43 +137,15 @@
 
 <script>
 
-  // var $image = $('.useravatar > img'),
-  //     replaced;
-
-  // $image.cropper({
-  //   aspectRatio: 1 / 1,
-  //   movable: false,
-  //   zoomable: false,
-  //   rotatable: false,
-  //   scalable: false
-  // });
-
-  // var $inputImage = $("#inputImage");
-  // if (window.FileReader) {
-  //     $inputImage.change(function() {
-  //         var fileReader = new FileReader(),
-  //                 files = this.files,
-  //                 file;
-
-  //         if (!files.length) {
-  //             return;
-  //         }
-
-  //         file = files[0];
-
-  //         if (/^image\/\w+$/.test(file.type)) {
-  //             fileReader.readAsDataURL(file);
-  //             fileReader.onload = function () {
-  //                 $inputImage.val("");
-  //                 $image.cropper("reset", true).cropper("replace", this.result);
-  //             };
-  //         } else {
-  //             showMessage("Please choose an image file.");
-  //         }
-  //     });
-  // } else {
-  //     $inputImage.addClass("hide");
-  // }
+  // Form validation
+  jQuery(".simple_form").validate({
+    highlight: function(element) {
+      jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+    },
+    success: function(element) {
+      jQuery(element).closest('.form-group').removeClass('has-error');
+    }
+  });
 
 
 $('.sel_role').change(function(){
