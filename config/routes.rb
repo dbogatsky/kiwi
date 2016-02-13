@@ -1,19 +1,15 @@
 Rails.application.routes.draw do
 
-	#resources :homes, only: [:show]
-	#root to: "homes#show"
-
-	get 'homes/show'
-
     post '/login', to: 'login#login'
     get '/login', to: 'login#index', as: :user_login
-
+  
     get '/login/destroy', to: 'login#destroy', as: :user_logout
     get '/login/forgot', to: 'login#forgot', as: :login_forgot
     post '/login/recover', to:'login#recover', as: :login_recover
     match '/login/:id/change_password', to: 'login#change_password', as: :login_change_password, via: [:get, :patch]
-	get '/login/superadmin', to: 'login#superadmin', as: :login_superadmin
-	post '/login/superadmin_auth', to:'login#superadmin_auth', as: :login_superadmin_auth
+  	
+  	get '/login/superadmin', to: 'login#superadmin', as: :login_superadmin
+  	post '/login/superadmin_auth', to:'login#superadmin_auth', as: :login_superadmin_auth
 
     match '/dashboard', to: 'dashboard#index', as: :dashboard, via: [:get]
 
@@ -26,20 +22,10 @@ Rails.application.routes.draw do
     resources :company_entities
     resources :users
 
-   # put '/my_profile', to: 'my_profile#update', as: :my_profile
-
-=begin
-    match '/accounts', to: 'accounts#index', as: :accounts, via: [:get]
-    get '/accounts/new', to: 'accounts#new', as: :new_accounts
-    get '/accounts/edit/:id', to: 'accounts#edit', as: :accounts_edit
-    get '/accounts/:id', to: 'accounts#conversation', as: :accounts_conversation
-    post '/accounts', to: 'accounts#create', as: :accounts_create
-    put '/accounts/:id', to: 'accounts#update'
-    patch '/accounts/:id', to: 'accounts#update'
-=end
     post '/accounts/:id/schedule_meeting', to:'accounts#schedule_meeting', as: :account_schedule_meeting
     post '/accounts/:id/add_note', to:'accounts#add_note', as: :account_add_note
     post '/accounts/:id/send_email', to:'accounts#send_email', as: :account_send_email
+    post '/accounts/:id/share', to:'accounts#share', as: :account_share    
 
     match '/schedule', to: 'schedule#index', as: :schedule, via: [:get]
     match '/media', to: 'media#index', as: :media, via: [:get]

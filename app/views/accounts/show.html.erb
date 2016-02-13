@@ -89,11 +89,11 @@
                             </div>
                             <div class="row bars">
                                 <div class="col-xs-5" style="text-align:right"><strong>Assigned To</strong></div>
-                                <div class="col-xs-7"><%= @account.user == nil ? "" : "#{@account.user.first_name} #{@account.user.last_name}" %></div>
+                                <div class="col-xs-7"><%= (@account.assigned_to.nil? ? "Unkonwn" : "#{@account.assigned_to.first_name} #{@account.assigned_to.last_name}") %></div>
                             </div>
                             <div class="row bars">
                                 <div class="col-xs-5" style="text-align:right"><strong>Shared With</strong></div>
-                                <div class="col-xs-7"><a href="#" data-toggle="modal" data-target=".account-shared-users"><%= @account.shared_users == nil ? "" : "Nobody" %></a></div>
+                                <div class="col-xs-7"><a href="#" data-toggle="modal" data-target=".account-shared-users"><%= @account.user_account_sharings.count == 0 ? "Nobody" : "#{@account.user_account_sharings.count} User(s)" %></a></div>
                             </div>
                         </div><!-- col-sm-4 -->
                         <div class="col-sm-7">

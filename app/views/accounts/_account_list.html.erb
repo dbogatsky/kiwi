@@ -54,7 +54,7 @@
                   	<% end %>
                   <% end %>                  
              
-                  <li class="pull-right"><span class="badge" style="color:#333; background-color: #fcfcfc; border-color: #fcfcfc;">Charles Barkley</span><i class="fa fa-users"></i></li>
+                  <li class="pull-right"><span class="badge" style="color:#333; background-color: #fcfcfc; border-color: #fcfcfc;"><%= (account.assigned_to.nil? ? "Unkonwn" : "#{account.assigned_to.first_name} #{account.assigned_to.last_name}") %></span><i class="fa fa-users"></i></li>
                 </ul>
               </div>
             </div>

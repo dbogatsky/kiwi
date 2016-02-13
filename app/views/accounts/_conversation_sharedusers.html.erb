@@ -4,68 +4,104 @@
       <div class="modal-header">
         <button aria-hidden="true" data-dismiss="modal" class="close" type="button">&times;</button>
         <h4 class="modal-title">Shared Users</h4>
+        <p>Below are a list of users whom this account is shared with</p>
       </div>
       <div class="modal-body">
-        <%= form_tag(account_send_email_url) do |f| %>
-        <p>Below are a list of users whom this account is shared with</p>
+        <%= form_tag(account_share_url) do |f| %>
+        <div class="row">        
+          <div class="col-sm-6">
+            <select class="select2" id="add_shared_user" data-placeholder="Select a User">
+              <option value="">Select a User</option>
+            	<%= options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] }) %>
+          	</select>
+          </div>
+          <div class="col-sm-6">
+            <button type="button" id="add_shared_user_button" class="btn btn-primary"><i class="fa fa-plus-circle mr5"></i>Add</button>
+          </div>
+        </div>
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="table-responsive">
-              <table class="table mb30">
+              <table class="table mb30" id="shared_user_list">
                 <thead>
                   <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Email</th>
+                    <th>Name</th>
+                    <th>Permission</th>
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>mark.otto@westcanauto.com</td>
+                  <% @account.user_account_sharings.each do |shared_user| %>
+                  <tr id="<%= shared_user.user.id %>">
+                    <td>
+                      <input type="hidden" name="account[user_account_sharings][<%= shared_user.user.id %>][id]" value="<%= shared_user.user.id %>" >
+                      <%= shared_user.user.first_name %>&nbsp;<%= shared_user.user.last_name %>
+                    </td>
+                    <td>
+                      <select class="input-sm" name="account[user_account_sharings][<%= shared_user.user.id %>][permission]">
+                        <%= options_for_select({ "Read Only" => "read", "Can Update" => "update" }, shared_user.permission) %>
+                      </select>
+                      </td>
                     <td class="table-action">
                       <a href="" class="delete-row"><i class="fa fa-trash-o"></i></a>
                     </td>
                   </tr>
-                  <tr>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>Jacob.thorton@westcanauto.com</td>
-                    <td class="table-action">
-                      <a href="" class="delete-row"><i class="fa fa-trash-o"></i></a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Larry</td>
-                    <td>the Bird</td>
-                    <td>larry.bird@westcanauto.com</td>
-                    <td class="table-action">
-                      <a href="" class="delete-row"><i class="fa fa-trash-o"></i></a>
-                    </td>
-                  </tr>
+                  <% end %>
                 </tbody>
               </table>
             </div>
           </div><!-- panel-body -->
           <div class="panel-footer">
-            <div class="row">
-              <div class="col-sm-6">
-                <select class="select2" data-placeholder="Select a User">
-                  <option></option>
-                	<option value="6">Michael Jordan</option>
-                	<option value="8">Charles Barkley</option>
-              	</select>
-              </div>
-              <div class="col-sm-6">
-                <button type="submit" value="submit" class="btn btn-success"><i class="fa fa-plus-circle mr5"></i>Add</button>
-              </div>
+          <div class="row">        
+            <div class="col-sm-12">
+              <button type="submit" value="submit" class="btn btn-primary">Save</button>
             </div>
-          </div>
+          </div>            
+          </div><!-- panel footer -->
         </div><!-- panel -->
         <% end %>
       </div><!-- modal body -->
     </div><!-- modal content -->
   </div><!-- modal dialog -->
 </div><!-- modal -->
+
+<script type="text/javascript">
+  
+toggleButton();  
+
+$("#add_shared_user").on("change", function (e) { 
+  toggleButton();
+});  
+
+$('#add_shared_user_button').click(function(e){
+  
+  // append to table
+  var added_user_id = $('#add_shared_user').val();
+  var added_user    = $("#add_shared_user option:selected").text();
+  
+  var cell1 = '<input type="hidden" name="account[user_account_sharings]['+added_user_id+'][id]" value="'+added_user_id+'"/>'+added_user;
+  var cell2 = '<select class="input-sm" name="account[user_account_sharings]['+added_user_id+'][permission]">\
+                <option value="read">Read Only</option>\
+                <option value="read">Can Update</option>\
+              </select>';
+  var cell3 = '<a href="" class="delete-row"><i class="fa fa-trash-o"></i></a>';
+  
+  $('#shared_user_list tr:last').after('<tr id="'+added_user_id+'"><td>'+cell1+'</td><td>'+cell2+'</td><td class="table-action">'+cell3+'</td></tr>');
+  
+  // remove option from add list
+  $("#add_shared_user option:selected").remove();
+  $("#add_shared_user").select2("val", "");
+  toggleButton();
+  
+});
+
+function toggleButton() {
+  if($('#add_shared_user').val() == "") {
+    $('#add_shared_user_button').hide();
+  }
+  else {
+    $('#add_shared_user_button').show(); 
+  }
+}
+    
+</script>
