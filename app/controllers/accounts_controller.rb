@@ -6,18 +6,14 @@ class AccountsController < ApplicationController
   def index
     # Get all accounts
     @accounts = Account.all(params: {search: params[:search]})
-    #@accounts = @accounts.sort_by{|a| a.created_at}.reverse!
-    #@account_statuses = AccountStatus.all
-
   end
 
 
   def show
     # Get the acount info and conversation based on id given
     @account = Account.find(params[:id])
+    @users = User.all
 
-    #retrieve conversation - assuming at the moment that the account id = conversation id
-    ### @conversation = Conversations.find(params[:id])###
   end
 
 
