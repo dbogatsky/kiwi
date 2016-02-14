@@ -2,7 +2,7 @@ class Account < OrchardApiModel
   has_one :conversation
   has_many :contacts_attributes, :class_name => 'Contact'
   has_many :addresses_attributes, :class_name => 'Address'
-  has_many :user_account_sharings, :class_name => 'UserAccountSharing'
+  has_many :user_account_sharings_attributes, :class_name => 'UserAccountSharing'
   
 
   schema do

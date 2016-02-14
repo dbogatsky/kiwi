@@ -93,7 +93,7 @@
                             </div>
                             <div class="row bars">
                                 <div class="col-xs-5" style="text-align:right"><strong>Shared With</strong></div>
-                                <div class="col-xs-7"><a href="#" data-toggle="modal" data-target=".account-shared-users"><%= @account.user_account_sharings.count == 0 ? "Nobody" : "#{@account.user_account_sharings.count} User(s)" %></a></div>
+                                <div class="col-xs-7"><a href="#" data-toggle="modal" data-target=".account-shared-users"><%= @account.user_account_sharings.count == 0 ? "Nobody" : "#{pluralize(@account.user_account_sharings.count, 'user')}" %></a></div>
                             </div>
                         </div><!-- col-sm-4 -->
                         <div class="col-sm-7">

@@ -111,9 +111,8 @@ class AccountsController < ApplicationController
 
 
   def share
-    params[:account][:user_account_sharings] = params[:account][:user_account_sharings].values
-    @account.user_account_sharings = params[:account][:user_account_sharings]
-    if @account.save
+    params[:account][:user_account_sharings_attributes] = params[:account][:user_account_sharings_attributes].values
+    if @account.update_attributes(request: :update, account: shared_account_params)
       flash[:success] = 'Shared users updated successfully'
     else
       flash[:danger] = 'Oops! Unable updated the shared users'
@@ -145,9 +144,10 @@ class AccountsController < ApplicationController
     params.require(:conversation_item).permit(:account_id, :type, :title, :body)
   end
   
+  
   def shared_account_params
     params.require(:account).permit(
-      user_account_sharings: [:id, :permission, :_destroy]
+      user_account_sharings_attributes: [:user_id, :permission, :_destroy]
     )
   end
   
