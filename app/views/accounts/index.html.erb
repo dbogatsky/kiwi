@@ -32,9 +32,11 @@
       <% end %>
     <% end %>
   </div>
+  <% if has_permissions({ "Account"=>{"actions"=>["read","manage"]}, "all"=>{"actions"=>"manage"} }) %>
   <div class="col-md-2 col-md-offset-5">
     <%= link_to new_account_path, class: "btn btn-primary btn-block" do %><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Account<% end %>
   </div>
+  <% end %>
 </div><!-- row -->
 <div class="row row-pad-5">
 	<div class="col-md-12">

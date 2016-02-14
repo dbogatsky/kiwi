@@ -128,8 +128,12 @@
               <li><a href="#" data-toggle="modal" data-target=".account-action-meeting">Schedule Meeting</a></li>
               <li><a href="#" data-toggle="modal" data-target=".conversation-note-modal-form">Add Note</a></li>
               <li><a href="#" data-toggle="modal" data-target=".account-action-email">Send Email</a></li>
-              <li class="divider"></li>
-              <li><a href="<%= edit_account_path(@account) %>">Edit Account</a></li>
+
+              <% if has_permissions({ "Account"=>{"actions"=>["manage"]}, "all"=>{"actions"=>"manage"} }) %>
+                <li class="divider"></li>
+                <li><a href="<%= edit_account_path(@account) %>">Edit Account</a></li>
+              <% end %>
+
             </ul>
           </div>
         </div><!-- col -->        
