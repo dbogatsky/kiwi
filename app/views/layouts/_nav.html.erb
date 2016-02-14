@@ -22,17 +22,46 @@
     <h5 class="sidebartitle">Main</h5>
     <ul class="nav nav-pills nav-stacked nav-bracket">
       <li><a href="<%= dashboard_path %>"><i class="fa fa-home"></i> <span>Dashboard</span></a></li>
-      <li><a href="<%= schedule_path %>"><i class="fa fa-calendar"></i> <span>Schedule</span></a></li>
-      <li><a href="<%= accounts_path %>"><i class="fa fa-briefcase"></i><span>Accounts</span></a></li>
-      <li><a href="<%= media_path %>"><i class="fa fa-picture-o"></i><span>Media</span></a></li>
-      <li><a href="<%= notifications_path %>"><span class="pull-right badge badge-success">1</span><i class="fa fa-envelope-o"></i><span>Notifications</span></a></li>
+
+      <% if has_permissions({ "Account"=>{"actions"=>["read","manage"]}, "all"=>{"actions"=>"manage"} }) %>
+        <li><a href="<%= schedule_path %>"><i class="fa fa-calendar"></i> <span>Schedule</span></a></li>
+      <% end %>
+
+      <% if has_permissions({ "Account"=>{"actions"=>["read","manage"]}, "all"=>{"actions"=>"manage"} }) %>
+        <li><a href="<%= accounts_path %>"><i class="fa fa-briefcase"></i><span>Accounts</span></a></li>
+      <% end %>
+
+      <% if has_permissions({ "Medium"=>{"actions"=>["read","manage"]}, "all"=>{"actions"=>"manage"} }) %>
+        <li><a href="<%= media_path %>"><i class="fa fa-picture-o"></i><span>Media</span></a></li>
+      <% end %>
+
+      <% if has_permissions({ "Account"=>{"actions"=>["read","manage"]}, "all"=>{"actions"=>"manage"} }) %>
+        <li><a href="<%= notifications_path %>"><span class="pull-right badge badge-success">1</span><i class="fa fa-envelope-o"></i><span>Notifications</span></a></li>
+      <% end %>
     </ul>
-    <h5 class="sidebartitle">Admin</h5>
-    <ul class="nav nav-pills nav-stacked nav-bracket">
-      <li><a href="<%= company_path %>"><i class="fa fa-building"></i> <span>Company</span></a></li>
-      <li><a href="<%= users_path %>"><i class="fa fa-users"></i> <span>Users</span></a></li>
-      <li><a href="<%= settings_path %>"><i class="fa fa-cogs"></i><span>Settings</span></a></li>
-    </ul>
+
+    <% if has_permission("all", "manage") \
+          || has_permission("Company",        ["read","manage"]) \
+          || has_permission("CompanyEntity",  ["read","manage"])
+    %>
+      <h5 class="sidebartitle">Admin</h5>
+      <ul class="nav nav-pills nav-stacked nav-bracket">
+
+        <% if has_permissions({ "Company"=>{"actions"=>["read","manage"]}, "CompanyEntity"=>{"actions"=>["read","manage"]}, "all"=>{"actions"=>"manage"} }) %>
+          <li><a href="<%= company_path %>"><i class="fa fa-building"></i> <span>Company</span></a></li>
+        <% end %>
+
+        <% if has_permissions({ "all"=>{"actions"=>"manage"} }) %>
+          <li><a href="<%= users_path %>"><i class="fa fa-users"></i> <span>Users</span></a></li>
+        <% end %>
+
+        <% if has_permissions({ "all"=>{"actions"=>"manage"} }) %>
+          <li><a href="<%= settings_path %>"><i class="fa fa-cogs"></i><span>Settings</span></a></li>
+        <% end %>
+
+      </ul>
+    <% end %>
+
     <br />
   </div><!-- leftpanelinner -->
 </div><!-- leftpanel -->
