@@ -2,10 +2,14 @@
   <li class="folder-id-<%= media.id %>">
     <a href="javascript:void(0);" class="open-folder" data-id="<%= media.id %>"><i class="fa fa-folder-o"></i><span><%= media.name %></span>
     </a>
-    <div class="edit-div-right">
-      <a href="javascript:void(0);" class="edit-folder" data-id="<%= media.id %>"><i class="fa fa-pencil"></i></a>
-      <a href="javascript:void(0);" class="delete-folder" data-id="<%= media.id %>"><i class="fa fa-trash-o"></i></a>
-    </div>
+
+    <% if has_permissions({ "Medium"=>{"actions"=>"manage"}, "all"=>{"actions"=>"manage"} }) %>
+      <div class="edit-div-right">
+        <a href="javascript:void(0);" class="edit-folder" data-id="<%= media.id %>"><i class="fa fa-pencil"></i></a>
+        <a href="javascript:void(0);" class="delete-folder" data-id="<%= media.id %>"><i class="fa fa-trash-o"></i></a>
+      </div>
+    <% end %>
+
     <div class="edit-folder-form" style="display:none">
       <%= form_tag media_path, class: "save-folder-frm" do %>
         <%= text_field_tag :name, media.name , class: 'form-control form-control-2' %>
