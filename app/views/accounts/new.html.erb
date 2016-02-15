@@ -63,114 +63,11 @@ jQuery(document).ready(function(){
   		e.preventDefault();
   		$("#account-add-form").submit();
   	})
-  	/*$(".pager .finish").on("click",".remove_field", function(e){ //user click on remove text
-	    e.preventDefault();
-	    $("#account-add-form").submit();
-	})*/
 
 
 	// Textarea Autogrow
 	jQuery('#account-about').autogrow();
 	jQuery('#account-facts').autogrow();
-
-	//multiselect for sharing accounts
-	/*jQuery(".select2").select2({
-		width: '100%'
-	});*/
-
-	// Basic Form
-	/*jQuery("#account-add-form").validate({
-		highlight: function(element) {
-			jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
-		},
-		success: function(element) {
-		  jQuery(element).closest('.form-group').removeClass('has-error');
-		}
-	});*/
-
-
-	/*$('#account-add-form').on('click', '.add-detail', function () {
-	    var row = $('#account-contact-row'), new_row = row.clone();
-
-	    row.find('.fa-plus')
-		.removeClass('fa-plus')
-		.addClass('fa-minus');
-
-	    row.find('.add-detail')
-		.removeClass('add-detail')
-		.removeClass('btn-success')
-		.addClass('btn-danger')
-		.addClass('minus-detail');
-
-		new_row.find('select').attr('name', 'account-contact[' + contact_index + '][contact-type]');
-		new_row.find('input:text').val('');
-		new_row.find('input:text').attr('name', 'account-contact[' + contact_index + '][contact-details]');
-		contact_index++;
-
-	    row.before(new_row);
-
-	}).on('click', '.minus-detail', function () {
-	    $(this).closest('#account-contact-row').remove();
-	});
-
-
-	var $image = $('.account-avatar > img'),
-	    replaced;
-
-	$image.cropper({
-		aspectRatio: 1 / 1,
-		movable: false,
-		zoomable: false,
-		rotatable: false,
-		scalable: false
-	});
-
-
-	var $inputImage = $("#inputImage");
-	if (window.FileReader) {
-	    $inputImage.change(function() {
-	        var fileReader = new FileReader(),
-	                files = this.files,
-	                file;
-
-	        if (!files.length) {
-	            return;
-	        }
-
-	        file = files[0];
-
-	        if (/^image\/\w+$/.test(file.type)) {
-	            fileReader.readAsDataURL(file);
-	            fileReader.onload = function () {
-	                $inputImage.val("");
-	                $image.cropper("reset", true).cropper("replace", this.result);
-	            };
-	        } else {
-	            showMessage("Please choose an image file.");
-	        }
-	    });
-	} else {
-	    $inputImage.addClass("hide");
-	}
-
-
-	//Dynamic add/remove fields in form
-	var max_fields      = 10; //maximum input boxes allowed
-	var wrapper         = $(".input-fields-wrap"); //Fields wrapper
-	var add_button      = $(".add-field-button"); //Add button ID
-
-	var x = 1; //initlal text box count
-	$(add_button).click(function(e){ //on add input button click
-	    e.preventDefault();
-	    if(x < max_fields){ //max input box allowed
-	        x++; //text box increment
-	        $(wrapper).append('<div><input type="text" name="mytext[]"/><a href="#" class="remove_field">Remove</a></div>'); //add input box
-	    }
-	});
-
-	$(wrapper).on("click",".remove_field", function(e){ //user click on remove text
-	    e.preventDefault(); $(this).parent('div').remove(); x--;
-	})*/
 
 });
 </script>

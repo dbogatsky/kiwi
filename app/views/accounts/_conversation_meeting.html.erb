@@ -121,13 +121,9 @@
 						<div class="col-sm-6">
 							<label for="repeat-occurrences">Stop After:</label>
 							<select class="form-control input-sm mb15" id="repeat-occurrences">							
-								<% (1..100).each do |i| %>
+								<% (1..50).each do |i| %>
 								<option value="<%= i %>">
-									<% if i == 1 %>
-									  	1 Occurrence
-									<% else %>
-										<%= i %> Occurrences 
-									<% end %>
+									<%= pluralize(i, 'Occurrence') %>
 								</option>  
 								<% end %>
 							</select>
@@ -140,12 +136,12 @@
 							<div class="col-sm-6">
 								<label for="repeat-every-day">Repeat Every:</label>
 								<select class="form-control input-sm mb15" id="repeat-every-day">							
-									<% (1..30).each do |i| %>
+									<% (1..6).each do |i| %>
 									<option value="<%= i %>">
 									  	<% if i == 1 %>
 										  	Day
 										<% else %>
-											<%= i %> Days 
+											<%= "#{i.ordinalize} Day" %> 
 										<% end %> 
 									</option>  
 									<% end %>
@@ -164,10 +160,10 @@
 									<% (1..52).each do |i| %>
 									<option value="<%= i %>">
 									  	<% if i == 1 %>
-										  	Week
-										<% else %>
-											<%= i %> Weeks
-										<% end %> 
+                                            Week
+                                        <% else %>
+                                            <%= "#{i.ordinalize} Week" %> 
+                                        <% end %>
 									</option>  
 									<% end %>
 								</select>
@@ -202,11 +198,7 @@
 								<select class="form-control input-sm mb15" id="repeat-every-month">							
 									<% (1..12).each do |i| %>
 									<option value="<%= i %>">
-									  	<% if i == 1 %>
-										  	Month
-										<% else %>
-											<%= i %> Month
-										<% end %> 
+									  	<%= pluralize(i, 'Month') %>
 									</option>  
 									<% end %>
 								</select>
@@ -227,13 +219,9 @@
 							<div class="col-sm-6">
 								<label for="repeat-every-year">Repeat every:</label>
 								<select class="form-control input-sm mb15" id="repeat-every-year">							
-									<% (1..5).each do |i| %>
+									<% (1..4).each do |i| %>
 									<option value="<%= i %>">
-									  	<% if i == 1 %>
-										  	Year
-										<% else %>
-											<%= i %> Years
-										<% end %> 
+									  	<%= pluralize(i, 'Year') %> 
 									</option>  
 									<% end %>
 								</select>
@@ -246,7 +234,7 @@
 
               <div class="row row-pad-5">
                 <div class="col-lg-12 mb15">
-                  <textarea class="form-control" rows="5" placeholder="Notes"></textarea>
+                  <textarea class="form-control" rows="5" placeholder="Agenda"></textarea>
                 </div>
               </div><!-- row -->
 

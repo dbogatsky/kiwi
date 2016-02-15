@@ -1,0 +1,19 @@
+<div class="cd-timeline-img cd-note">
+	<img src="/assets/vertical-timeline/img/cd-icon-comments.svg" alt="Note">
+</div>
+<div class="cd-timeline-content">
+	<span class="cd-date">
+		<%= citem.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>
+	</span>
+    <div class="btn-group pull-right">
+        <a data-toggle="dropdown" class="dropdown-toggle">
+            <i class="fa fa-cog"></i>
+        </a>
+        <ul role="menu" class="dropdown-menu pull-right">
+            <li><a href="#">Edit</a></li>
+            <li><a href="#">Delete</a></li>
+        </ul>
+    </div>
+	<h2 style="margin-top: 2px;margin-bottom: 5px;"><%= citem.title %></h2>
+	<p><%= citem.body %></p>
+</div>

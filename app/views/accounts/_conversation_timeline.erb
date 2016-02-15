@@ -3,108 +3,16 @@
   <% @account.conversation.conversation_items.each do |i| %>
     <div class="cd-timeline-block">
         <% if i.type.eql? 'note' %>
-          <div class="cd-timeline-img cd-note">
-            <img src="/assets/vertical-timeline/img/cd-icon-comments.svg" alt="Note">
-          </div>
+          <%= render "conversation_notes_show", :citem => i %>
         <% elsif i.type.eql? 'call' %>
-          <div class="cd-timeline-img cd-phone">
-            <img src="/assets/vertical-timeline/img/cd-icon-phone.svg" alt="Phone">
-          </div>
+          <%= render "conversation_phone_show", :citem => i %>
         <% elsif i.type.eql? 'meeting' %>
-          <div class="cd-timeline-img cd-meeting">
-            <img src="/assets/vertical-timeline/img/cd-icon-calendar.svg" alt="Meeting">
-          </div>
+          <%= render "conversation_meeting_show", :citem => i %>
         <% end %>
-
-      <div class="cd-timeline-content">
-        <span class="cd-date"><%= i.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%></span>
-        <h2 style="margin-top: 2px;margin-bottom: 5px;"><%= i.title %></h2>
-        <p><%= i.body %></p>
-      </div>
     </div>
   <% end %>
-  <!--<div class="cd-timeline-block">
-    <div class="cd-timeline-img cd-phone">
-      <img src="/assets/vertical-timeline/img/cd-icon-phone.svg" alt="Phone">
-    </div>
-
-    <div class="cd-timeline-content">
-      <span class="cd-date">Jul 14, 2015</span>
-      <h2>Title of section 1</h2>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, optio, dolorum provident rerum aut hic quasi placeat iure tempora laudantium ipsa ad debitis unde? Iste voluptatibus minus veritatis qui ut.</p>
-    </div>
-  </div>
-
-  <div class="cd-timeline-block">
-    <div class="cd-timeline-img cd-meeting">
-      <img src="/assets/vertical-timeline/img/cd-icon-calendar.svg" alt="Meeting">
-    </div>
-
-    <div class="cd-timeline-content">
-      <span class="cd-date">Jun 18, 2015</span>
-      <h2>Title of section 2</h2>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, optio, dolorum provident rerum aut hic quasi placeat iure tempora laudantium ipsa ad debitis unde?</p>
-    </div>
-  </div>
-
-  <div class="cd-timeline-block">
-    <div class="cd-timeline-img cd-note">
-      <img src="/assets/vertical-timeline/img/cd-icon-comments.svg" alt="Note">
-    </div>
-
-    <div class="cd-timeline-content">
-      <span class="cd-date">May 24, 2015</span>
-      <h2>Title of section 3</h2>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi, obcaecati, quisquam id molestias eaque asperiores voluptatibus cupiditate error assumenda delectus odit similique earum voluptatem doloremque dolorem ipsam quae rerum quis. Odit, itaque, deserunt corporis vero ipsum nisi eius odio natus ullam provident pariatur temporibus quia eos repellat consequuntur perferendis enim amet quae quasi repudiandae sed quod veniam dolore possimus rem voluptatum eveniet eligendi quis fugiat aliquam sunt similique aut adipisci.</p>
-    </div>
-  </div>
-
-  <div class="cd-timeline-block">
-    <div class="cd-timeline-img cd-reminder">
-      <img src="/assets/vertical-timeline/img/cd-icon-bell.svg" alt="Reminder">
-    </div>
-
-    <div class="cd-timeline-content">
-      <span class="cd-date">Apr 14, 2015</span>
-      <h2>Title of section 4</h2>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, optio, dolorum provident rerum aut hic quasi placeat iure tempora laudantium ipsa ad debitis unde? Iste voluptatibus minus veritatis qui ut.</p>
-    </div>
-  </div>
-
-  <div class="cd-timeline-block">
-    <div class="cd-timeline-img cd-meeting">
-      <img src="/assets/vertical-timeline/img/cd-icon-coffee.svg" alt="Meeting">
-    </div>
-
-    <div class="cd-timeline-content">
-      <span class="cd-date">Mar 18, 2015</span>
-      <h2>Title of section 5</h2>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, optio, dolorum provident rerum.</p>
-    </div>
-  </div>
-
-  <div class="cd-timeline-block">
-    <div class="cd-timeline-img cd-account">
-      <img src="/assets/vertical-timeline/img/cd-icon-briefcase.svg" alt="Account">
-    </div>
-
-    <div class="cd-timeline-content">
-      <span class="cd-date">Feb 26, 2015</span>
-      <h2>Final Section</h2>
-      <p>This is the content of the last section</p>
-    </div>
-  </div>-->
 </section> <!-- cd-timeline -->
 
-<!--
-<div class="row">
-	<div class="col-sm-12">
-		<button type="button" class="btn btn-primary pull-right" style="width:95%;">
-			<i class="fa  fa-arrow-circle-down"></i>Load More
-		</button>
-	</div>
-</div>
--->
 <% else %>
 <div class="row">
   <div class="col-sm-12">

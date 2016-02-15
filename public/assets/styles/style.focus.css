@@ -603,6 +603,9 @@ body,
     color: #fff;
 }
 
+.btn-group > a {
+    color: #6b6b6b; 
+}
 
 
 /* blog */

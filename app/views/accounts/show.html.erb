@@ -11,20 +11,6 @@
 
 
 <div class="profile-header">
-  <!-- TODO: really need flash error here?? -->
-  <div class="row">
-    <% if flash[:success] %>
-    <div class="alert alert-success">
-      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-      <strong><%= flash[:success] %></strong>
-    </div>
-    <% elsif flash[:danger] %>
-    <div class="alert alert-danger">
-      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-      <strong><%= flash[:danger] %></strong>
-    </div>
-    <% end %>
-  </div>
   <div class="row">
     <div class="col-sm-3">
       <img src="<%= (@account.avatar_url.eql? "/avatars/thumb/missing.png") ? '/assets/images/default_account_avatar.png' : @account.avatar_url %>" class="thumbnail img-responsive" alt="">
@@ -92,7 +78,11 @@
                             </div>
                             <div class="row bars">
                                 <div class="col-xs-5" style="text-align:right"><strong>Shared With</strong></div>
-                                <div class="col-xs-7"><a href="#" data-toggle="modal" data-target=".account-shared-users"><%= @account.user_account_sharings.count == 0 ? "Nobody" : "#{pluralize(@account.user_account_sharings.count, 'user')}" %></a></div>
+                                <div class="col-xs-7">
+                                  <a href="#" data-toggle="modal" data-target=".account-shared-users">
+                                    <%= @account.user_account_sharings.count == 0 ? "Nobody" : "#{pluralize(@account.user_account_sharings.count, 'user')}" %>
+                                  </a>
+                                </div>
                             </div>
                         </div><!-- col-sm-4 -->
                         <div class="col-sm-7">
@@ -187,6 +177,7 @@
   </div>
 </div>
 <!-- end of add contact modal form -->
+
 <!-- add address modal form -->
 <div id="address-modal" class="modal fade address-modal-form" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -204,12 +195,10 @@
   </div>
 </div>
 <!-- end of add address modal form -->
+
 <!-- add conversation schedule modal form -->
-<%= render "conversation_schedule" %>
-<!-- end of add conversation schedule modal form -->
-
+<%= render "conversation_meeting" %>
 <%= render "conversation_notes" %>
-
 <%= render "conversation_email" %>
 
 <%= render "conversation_sharedusers" %>
