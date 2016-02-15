@@ -116,10 +116,16 @@
                 </div>
 
       <div class="mb40"></div>
-      <h5 class="subtitle">Conversation</h5>
+
+      <% if has_permissions({ "Conversation"=>{"actions"=>["read","manage"]}, "all"=>{"actions"=>"manage"} }) %>
+        <h5 class="subtitle">Conversation</h5>
+      <% end %>
+
         <div class="row">
           <div class="col-sm-6">
+          <% if has_permissions({ "ConversationItem"=>{"actions"=>["read","manage"]}, "all"=>{"actions"=>"manage"} }) %>
             <%= render "conversation_search" %>
+          <% end %>
           </div>
           <div class="col-sm-6">
             <% if has_permissions({ "Conversation"=>{"actions"=>["manage"]}, "all"=>{"actions"=>"manage"} }) || has_permissions({ "Account"=>{"actions"=>["manage"]}, "all"=>{"actions"=>"manage"} }) %>
@@ -137,7 +143,9 @@
                     <% end %>
 
                   <% if has_permissions({ "Account"=>{"actions"=>["manage"]}, "all"=>{"actions"=>"manage"} }) %>
-                    <li class="divider"></li>
+
+                    <% if has_permissions({ "ConversationItem"=>{"actions"=>["manage"]}, "all"=>{"actions"=>"manage"} }) %><li class="divider"></li><% end %>
+
                     <li><a href="<%= edit_account_path(@account) %>">Edit Account</a></li>
                   <% end %>
                 </ul>
@@ -151,9 +159,12 @@
 
       <div class="mb20"></div>
 
-      <!--- Timeline Start -->
-      <%= render "conversation_timeline" %>
-      <!-- Timeline End -->
+      <% if has_permissions({ "ConversationItem"=>{"actions"=>["read","manage"]}, "all"=>{"actions"=>"manage"} }) %>
+        <!--- Timeline Start -->
+        <%= render "conversation_timeline" %>
+        <!-- Timeline End -->
+      <% end %>
+
     </div> <!-- col-sm-9 -->
   </div><!-- row -->
 </div><!-- profile-header -->
