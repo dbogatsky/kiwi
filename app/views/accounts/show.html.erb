@@ -52,11 +52,10 @@
 
               <% if (index > 0) %>
                 <%= link_to account_address_path(@account, address.id), { method: :delete, remote: true, data: { confirm: 'Are you sure you want to delete this address?', toggle: "tooltip", placement: "top"}, class: "account_icons", title: "Remove"} do %>
-                <i class="fa fa-trash-o"></i>
+                <i class="fa fa-trash-o"></i><br/>
                 <% end %>
               <% end %>
-              <br/>
-
+              
               <a href="https://maps.google.com?daddr=<%= address.street_address %>+<%= address.city %>+<%= address.region %>+<%= address.country %>+<%= address.postcode %>" target="_blank">
               <%= address.street_address %><br>
               <%= address.city %>, <%= address.region %>, <%= address.country %><br />
@@ -116,27 +115,42 @@
                 </div>
 
       <div class="mb40"></div>
-      <h5 class="subtitle">Conversation</h5>
+
+      <% if has_permissions({ "Conversation"=>{"actions"=>["read","manage"]}, "all"=>{"actions"=>"manage"} }) %>
+        <h5 class="subtitle">Conversation</h5>
+      <% end %>
+
         <div class="row">
           <div class="col-sm-6">
+          <% if has_permissions({ "ConversationItem"=>{"actions"=>["read","manage"]}, "all"=>{"actions"=>"manage"} }) %>
             <%= render "conversation_search" %>
+          <% end %>
           </div>
           <div class="col-sm-6">
-           <div class="btn-group mr5 pull-right">
-              <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
-                  <i class="fa fa-plus-circle mr5"></i> Action
-                  <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu">
-                <li><a href="#" data-toggle="modal" data-target=".account-action-meeting">Schedule Meeting</a></li>
-                <li><a href="#" data-toggle="modal" data-target=".conversation-note-modal-form">Add Note</a></li>
-                <li><a href="#" data-toggle="modal" data-target=".account-action-email">Send Email</a></li>
-                <% if has_permissions({ "Account"=>{"actions"=>["manage"]}, "all"=>{"actions"=>"manage"} }) %>
-                  <li class="divider"></li>
-                  <li><a href="<%= edit_account_path(@account) %>">Edit Account</a></li>
-                <% end %>
-              </ul>
-            </div>
+            <% if has_permissions({ "Conversation"=>{"actions"=>["manage"]}, "all"=>{"actions"=>"manage"} }) || has_permissions({ "Account"=>{"actions"=>["manage"]}, "all"=>{"actions"=>"manage"} }) %>
+              <div class="btn-group mr5 pull-right">
+                <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
+                    <i class="fa fa-plus-circle mr5"></i> Action
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                  
+                  <% if has_permissions({ "ConversationItem"=>{"actions"=>["manage"]}, "all"=>{"actions"=>"manage"} }) %>
+                    <li><a href="#" data-toggle="modal" data-target=".account-action-meeting">Schedule Meeting</a></li>
+                    <li><a href="#" data-toggle="modal" data-target=".conversation-note-modal-form">Add Note</a></li>
+                    <li><a href="#" data-toggle="modal" data-target=".account-action-email">Send Email</a></li>
+                    <% end %>
+
+                  <% if has_permissions({ "Account"=>{"actions"=>["manage"]}, "all"=>{"actions"=>"manage"} }) %>
+
+                    <% if has_permissions({ "ConversationItem"=>{"actions"=>["manage"]}, "all"=>{"actions"=>"manage"} }) %><li class="divider"></li><% end %>
+
+                    <li><a href="<%= edit_account_path(@account) %>">Edit Account</a></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
+
           </div><!-- col -->
         </div><!-- row -->
 
@@ -144,9 +158,12 @@
 
       <div class="mb20"></div>
 
-      <!--- Timeline Start -->
-      <%= render "conversation_timeline" %>
-      <!-- Timeline End -->
+      <% if has_permissions({ "ConversationItem"=>{"actions"=>["read","manage"]}, "all"=>{"actions"=>"manage"} }) %>
+        <!--- Timeline Start -->
+        <%= render "conversation_timeline" %>
+        <!-- Timeline End -->
+      <% end %>
+
     </div> <!-- col-sm-9 -->
   </div><!-- row -->
 </div><!-- profile-header -->
