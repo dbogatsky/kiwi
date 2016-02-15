@@ -95,7 +95,7 @@ $('#add_shared_user_button').click(function(e){
   
 });
 
-$('.delete-row').click(function(e){
+$(document.body).on('click', '.delete-row' ,function(){
   var trid = $(this).closest('tr').attr('id');
   
   var delfield = $('<input>').attr({
