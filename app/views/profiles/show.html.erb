@@ -1,7 +1,7 @@
-<% content_for :pageheader do %> 
+<% content_for :pageheader do %>
   <h2><i class="fa fa-user"></i> My Profile</h2>
-<% end %>   
-   
+<% end %>
+
     <%= simple_form_for current_user, url: profile_path, method: :patch do |f| %>
       <div class="panel panel-default">
 
@@ -19,14 +19,15 @@
           <%= f.input :first_name, required: true %>
           <%= f.input :last_name, required: true %>
           <div class="form-group">
-            <label class="col-sm-3 control-label">Role<span class="asterisk">*</span></label>
+            <label class="col-sm-3 control-label">Role</label>
             <div class="col-sm-2">
-            <%rol = current_user.roles.present? ? current_user.roles.last.id : '' %>
-              <%=select_tag "user[role_ids][]", options_for_select(Role.all.map{|c| [c.name, c.id] }, selected: "#{rol}"), {prompt: "select", :class => 'form-control input-sm sel_role'}%>
+            <%#rol = current_user.roles.present? ? current_user.roles.last : '' %>
+              <%#=select_tag "user[role_ids][]", options_for_select(Role.all.map{|c| [c.name, c.id] }, selected: "#{rol}"), {prompt: "select", :class => 'form-control input-sm sel_role'}%>
+              <%=current_user.roles.present? ? current_user.roles.last.name : ''%>
             </div>
             <%en = (defined?(current_user.entity)).nil? ? 'display: none' : 'display: block' %>
             <div class="show_entity" style="<%=en%>">
-              <label class="col-sm-1 control-label">Entity<span class="asterisk">*</span></label>
+              <label class="col-sm-1 control-label">Entity</label>
                 <div class="col-sm-2">
                    <%en = (defined?(current_user.entity)).nil? ? '' : current_user.entity.id %>
                    <%=f.select(:company_entity_id, options_for_select(CompanyEntities.all.map{|c| [c.name, c.id] }, selected: "#{en}"), {prompt: "select"}, {:class => 'form-control sel_clear input-sm'})%>
@@ -36,12 +37,12 @@
               <label class="col-sm-1 control-label">Locale:<span class="asterisk">*</span></label>
               <%#=f.select(:locale, options_for_select([['English', 1],['French', 2]], selected: current_user.locale), {prompt: "select"}, {:class => 'form-control'})%>
             </div> -->
-
           </div>
           <div class="form-group">
-            <label class="col-sm-3 control-label">Locale<span class="asterisk">*</span></label>
+            <label class="col-sm-3 control-label">Locale</label>
             <div class="col-sm-6">
-              <%=f.select(:locale, options_for_select([['English', 1],['French', 2]], selected: current_user.locale), {prompt: "select"}, {:class => 'form-control input-sm'})%>
+              <%#=f.select(:locale, options_for_select([['English', 1],['French', 2]], selected: current_user.locale), {prompt: "select"}, {:class => 'form-control input-sm'})%>
+              <%=(current_user.locale == "1") ? "English" : ((current_user.locale == '') ? '' : "French")%>
             </div>
           </div>
           <%= f.input :title, required: true %>
@@ -62,7 +63,6 @@
           </div>
 
           <%#= f.input :locale, input_html: { class: 'form-control input-sm' }, collection: I18n.available_locales, prompt: "Select a locale"%>
-
           <%= f.input :time_zone, input_html: { class: 'form-control input-sm' }, priority: ActiveSupport::TimeZone.us_zones %>
 
           <%= f.fields_for :addresses_attributes do |add| %>
@@ -75,7 +75,7 @@
             <%address_region = @address.last.region rescue nil%>
             <%= add.input :region, required: true, label: "Province/State", :input_html => { :name => "user[addresses_attributes][][region]", :value => current_user.addresses.last.region} %>
             <div class="form-group">
-              <label class="col-sm-3 control-label">Country<span class="asterisk">*</span></label>
+              <label class="col-sm-3 control-label">Country</label>
               <div class="col-sm-6">
                 <%= add.input_field :country, { required: true, priority: [ "Canada", "United States", "United Kingdom" ],  class: "select2", name: "user[addresses_attributes][][country]", selected: current_user.addresses.last.country} %>
               </div>

@@ -25,6 +25,11 @@ class CompanyController < ApplicationController
     # Record the API error into the log.  Action with timestamp
   end
 
+  def display_sub_entites
+    entity = CompanyEntities.find(params[:id])
+    @sub_entites = entity.descendants
+  end
+
   def account_status
     # Save changes from Add/Edit Account Statuses page
 

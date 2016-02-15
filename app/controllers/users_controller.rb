@@ -37,18 +37,21 @@ class UsersController < ApplicationController
       if ( current_user.id == params['id'].to_i )
         @current_user = User.find(current_user.id, reload: true)
       end
-
-      redirect_to users_path, notice: 'User successfully updated!'
+      flash[:success] = 'User successfully updated!'
+      redirect_to users_path
     else
+      flash[:danger] = 'User not updated!'
       render :edit
     end
   end
 
   def destroy
     if @user.destroy
-      redirect_to users_path, notice: 'User successfully deleted.'
+      flash[:success] = 'User successfully deleted.'
+      redirect_to users_path
     else
-      redirect_to users_path, notice: 'User could not deleted.'
+      flash[:danger] = 'User could not deleted.'
+      redirect_to users_path
     end
   end
 

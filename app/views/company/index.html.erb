@@ -1,17 +1,5 @@
   <div class="profile-header">
   <div class="row">
-  	<% if flash[:success] %>
-    	<div class="alert alert-success">
-    		<strong><%= flash[:success] %></strong>
-    	</div>
-    <% end %>
-    <% if flash[:danger] %>
-    	<div class="alert alert-danger">
-    		<strong>Sorry!</strong> <%= flash[:danger] %>
-      </div>
-    <% end %>
-  </div>
-  <div class="row">
     <div class="col-sm-3">
     	<img src="/assets/bootstrap/images/photos/hd-profile.jpg" class="thumbnail img-responsive" alt="">
       <div class="mb30"></div>
@@ -138,34 +126,53 @@
                 <div class="col-md-8">
                   <% if @entites.present? %>
                     <div class="table-responsive">
-                      <table class="table mb30">
-                        <thead>
-                          <tr>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th></th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <% @entites.each do |entity| %>
-                            <tr>
-                              <td><%= entity.name %></td>
-                              <td><%= entity.description %></td>
-                              <td class="table-action">
-                                <a href="javascript:void(0);" class="edit-folder"
+                      <ul class="table_head">
+                        <li class="first_li">Name</li>
+                         <li class="second_li">Description</li>
+                          <li class="third_li">&nbsp;</li>
+                      </ul>
+                      <% @entites.each do |entity| %>
+                        <%unless entity.parent.present? %>
+                          <ul class="table_head table_content">
+                            <li class="first_li"><%= entity.name %></li>
+                            <li class="second_li"><%= entity.description %></li>
+                            <li class="third_li">
+                              <a href="javascript:void(0);" class="edit-folder"
                                   data-id="<%= entity.id %>"
                                   data-name="<%=entity.name %>"
                                   data-description="<%= entity.description %>"
                                   data-parent="<%= entity.parent.present? ? entity.parent.id : ''%>"
                                   data-toggle="modal" data-target=".edit_company_entity" class="modal-link"><i class="fa fa-pencil"></i></a>
-                                  <%=link_to company_entity_path(entity.id), method: :delete,data: {:confirm => 'Are you sure to delete company entity?'} do %>
-                                    <i class="fa fa-trash-o"></i>
-                                  <% end %>
-                              </td>
-                            </tr>
-                          <% end %>
-                        </tbody>
-                      </table>
+                              <%=link_to company_entity_path(entity.id), method: :delete,data: {:confirm => 'Are you sure to delete company entity?'} do %><i class="fa fa-trash-o"></i>
+                              <% end %>
+                            </li>
+                            <%if entity.descendants.present?%>
+                              <%entity.descendants.each do |des|%>
+                                <ul class="second_tree" id="add_sub_<%=des.id%>">
+                                  <% sub_ent = CompanyEntities.find(des.id)%>
+                                  <%if sub_ent.descendants.present?%>
+                                    <li class="first_li"><%=link_to des.name, company_display_sub_entites_path(des.id), remote: true, class: 'nested_link'%></li>
+                                  <%else%>
+                                     <li class="first_li"><%=des.name%></li>
+                                  <%end%>
+                                    <li class="second_li"><%= des.description %></li>
+                                    <li class="third_li">
+                                      <a href="javascript:void(0);" class="edit-folder"
+                                          data-id="<%= des.id %>"
+                                          data-name="<%=des.name %>"
+                                          data-description="<%= des.description %>"
+                                          data-parent="<%=sub_ent.parent.present? ? sub_ent.parent.id : '' %>"
+                                          data-toggle="modal" data-target=".edit_company_entity" class="modal-link"><i class="fa fa-pencil"></i></a>
+                                      <%=link_to company_entity_path(des.id), method: :delete,data: {:confirm => 'Are you sure to delete company entity?'} do %>
+                                            <i class="fa fa-trash-o"></i>
+                                      <% end %>
+                                    </li>
+                                </ul>
+                              <%end%>
+                            <%end%>
+                          </ul>
+                        <%end%>
+                      <%end%>
                     </div><!-- table-responsive -->
                   <% else %>
                     <p>Create and manage Entities here.</p>
@@ -233,5 +240,10 @@
     $("#account-status-name").val("");
     $("#account-status-color").val("");
     $("#account-status-desc").val("");
+  });
+
+  $(document).on('click', '.nested_link', function(){
+    $('#preloader').css('opacity', 0.3);
+    $('#preloader').show();
   });
 </script>

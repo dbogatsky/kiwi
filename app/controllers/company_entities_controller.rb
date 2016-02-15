@@ -7,18 +7,22 @@ class CompanyEntitiesController < ApplicationController
 	def create
 	  @company_entity = CompanyEntities.new(request: :create, company_entity: params[:company_entity])
     if @company_entity.save
-      redirect_to company_path, notice: 'Company Entity successfully created.'
+    	flash[:success] = 'Company Entity successfully created.'
+      redirect_to company_path
     else
-    	redirect_to company_path, alert: 'Company Entity could not created.'
+    	flash[:danger] = 'Company Entity could not created.'
+    	redirect_to company_path
     end
 	end
 
 	def update
 		@entity = CompanyEntities.find(params[:id])
 		if @entity.update_attributes(request: :update, company_entity: params[:company_entity])
-      redirect_to company_path, notice: 'Company Entity successfully updated.'
+      flash[:success] = 'Company Entity successfully updated.'
+      redirect_to company_path
     else
-    	redirect_to company_path, notice: 'Company Entity could not updated.'
+    	flash[:danger] = 'Company Entity could not updated.'
+    	redirect_to company_path
     end
 	end
 
@@ -29,9 +33,11 @@ class CompanyEntitiesController < ApplicationController
 	def destroy
 		@entity = CompanyEntities.find(params[:id])
 		if @entity.destroy
-		   redirect_to company_path, notice: 'Company Entity successfully deleted.'
+			flash[:success] = 'Company Entity successfully deleted.'
+		  redirect_to company_path
 		 else
-		 	redirect_to company_path, notice: 'Company Entity could not deleted.'
+		 	flash[:danger]  = 'Company Entity could not deleted.'
+		 	redirect_to company_path
 		 end
 	end
 end

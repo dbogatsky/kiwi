@@ -57,7 +57,7 @@
 	      <%= add.input :region, required: true, label: "Province/State", :input_html => { :name => "user[addresses_attributes][][region]", :value => address_region} %>
         <%postcode = @address.last.postcode rescue nil%>
 	      <%= add.input :postcode, required: true, label: "Postcode/Zipcode", :input_html => { :name => "user[addresses_attributes][][postcode]", :value => postcode}%>
-	      
+
 	      <div class="form-group">
 	        <label class="col-sm-3 control-label">Country<span class="asterisk">*</span></label>
 	        <div class="col-sm-6">
@@ -120,15 +120,15 @@ $(".simple_form").validate({
   success: function(element) {
     jQuery(element).closest('.form-group').removeClass('has-error');
   }
-});  
-  
+});
+
 // default case
 if ( $('.sel_role').val() == 1 || $(this).val() == '' ) {
   $(".show_entity").hide();
-  $(".sel_clear").val('');  
+  $(".sel_clear").val('');
 }
 
-// when an entity is selected  
+// when an entity is selected
 $('.sel_role').change(function(){
   if($(this).val() == 1 || $(this).val() == '' )
     {

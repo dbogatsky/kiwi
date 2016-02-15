@@ -16,7 +16,7 @@ class ContactsController < ApplicationController
       if @contact.save
         @status = "ok"
         @notification_message = "Contact created with success."
-        format.html { redirect_to @contact.account, notice: 'Contact was successfully created.' }
+        format.html { redirect_to @contact.account, success: 'Contact was successfully created.' }
         format.js   { }
         format.json { render :show, status: :created, location: @contact }
       else
