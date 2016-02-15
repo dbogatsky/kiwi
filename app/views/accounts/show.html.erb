@@ -122,21 +122,28 @@
             <%= render "conversation_search" %>
           </div>
           <div class="col-sm-6">
-           <div class="btn-group mr5 pull-right">
-              <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
-                  <i class="fa fa-plus-circle mr5"></i> Action
-                  <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu">
-                <li><a href="#" data-toggle="modal" data-target=".account-action-meeting">Schedule Meeting</a></li>
-                <li><a href="#" data-toggle="modal" data-target=".conversation-note-modal-form">Add Note</a></li>
-                <li><a href="#" data-toggle="modal" data-target=".account-action-email">Send Email</a></li>
-                <% if has_permissions({ "Account"=>{"actions"=>["manage"]}, "all"=>{"actions"=>"manage"} }) %>
-                  <li class="divider"></li>
-                  <li><a href="<%= edit_account_path(@account) %>">Edit Account</a></li>
-                <% end %>
-              </ul>
-            </div>
+            <% if has_permissions({ "Conversation"=>{"actions"=>["manage"]}, "all"=>{"actions"=>"manage"} }) || has_permissions({ "Account"=>{"actions"=>["manage"]}, "all"=>{"actions"=>"manage"} }) %>
+              <div class="btn-group mr5 pull-right">
+                <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
+                    <i class="fa fa-plus-circle mr5"></i> Action
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                  
+                  <% if has_permissions({ "ConversationItem"=>{"actions"=>["manage"]}, "all"=>{"actions"=>"manage"} }) %>
+                    <li><a href="#" data-toggle="modal" data-target=".account-action-meeting">Schedule Meeting</a></li>
+                    <li><a href="#" data-toggle="modal" data-target=".conversation-note-modal-form">Add Note</a></li>
+                    <li><a href="#" data-toggle="modal" data-target=".account-action-email">Send Email</a></li>
+                    <% end %>
+
+                  <% if has_permissions({ "Account"=>{"actions"=>["manage"]}, "all"=>{"actions"=>"manage"} }) %>
+                    <li class="divider"></li>
+                    <li><a href="<%= edit_account_path(@account) %>">Edit Account</a></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
+
           </div><!-- col -->
         </div><!-- row -->
 
