@@ -52,11 +52,10 @@
 
               <% if (index > 0) %>
                 <%= link_to account_address_path(@account, address.id), { method: :delete, remote: true, data: { confirm: 'Are you sure you want to delete this address?', toggle: "tooltip", placement: "top"}, class: "account_icons", title: "Remove"} do %>
-                <i class="fa fa-trash-o"></i>
+                <i class="fa fa-trash-o"></i><br/>
                 <% end %>
               <% end %>
-              <br/>
-
+              
               <a href="https://maps.google.com?daddr=<%= address.street_address %>+<%= address.city %>+<%= address.region %>+<%= address.country %>+<%= address.postcode %>" target="_blank">
               <%= address.street_address %><br>
               <%= address.city %>, <%= address.region %>, <%= address.country %><br />

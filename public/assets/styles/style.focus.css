@@ -760,6 +760,7 @@ body.notfound, body.signin {
    border-color: #222;
 }
 
+.open>.dropdown-toggle.btn-primary,
 .btn-primary:hover,
 .btn-primary:active,
 .btn-primary:focus {
