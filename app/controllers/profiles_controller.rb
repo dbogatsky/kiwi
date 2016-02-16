@@ -1,12 +1,13 @@
 class ProfilesController < ApplicationController
 
   def show
+    @current_user = User.find(current_user.id, reload: true)
   end
-
 
   def update
     current_user.update_attributes(request: :update, user: user_params, reload: true)
     save_avatar
+    flash[:success] = 'User profile successfully updated!'
     redirect_to profile_path
   end
 

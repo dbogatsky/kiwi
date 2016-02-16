@@ -1,2 +1,3 @@
 $('#add_sub_<%=params[:id]%>').append("<%= j render 'sub_entites', sub_entity: @sub_entites %>");
+$('#add_sub_<%=params[:id]%>').find('ul').css('padding-left', '10px');
 $('#preloader').hide();

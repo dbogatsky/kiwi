@@ -30,7 +30,7 @@
               <label class="col-sm-1 control-label">Entity</label>
                 <div class="col-sm-2">
                    <%en = (defined?(current_user.entity)).nil? ? '' : current_user.entity.id %>
-                   <%=f.select(:company_entity_id, options_for_select(CompanyEntities.all.map{|c| [c.name, c.id] }, selected: "#{en}"), {prompt: "select"}, {:class => 'form-control sel_clear input-sm'})%>
+                   <%=f.select(:company_entity_id, options_for_select(CompanyEntities.all.map{|c| [c.name, c.id] }, selected: "#{en}"), {prompt: "select"}, {:class => 'form-control sel_clear input-sm', required: true})%>
                 </div>
             </div>
             <!-- <div class="col-sm-4">
@@ -64,7 +64,6 @@
 
           <%#= f.input :locale, input_html: { class: 'form-control input-sm' }, collection: I18n.available_locales, prompt: "Select a locale"%>
           <%= f.input :time_zone, input_html: { class: 'form-control input-sm' }, priority: ActiveSupport::TimeZone.us_zones %>
-
           <%= f.fields_for :addresses_attributes do |add| %>
             <%st_address = @address.last.street_address rescue nil%>
             <%= add.input :street_address, required: true, label: "Street", :input_html => { :name => "user[addresses_attributes][][street_address]", :value => current_user.addresses.last.street_address}%>
@@ -90,7 +89,7 @@
               <div class="col-sm-2">
                 <%contact_value = current_user.contacts.first.value rescue nil%>
                 <%=c.hidden_field :type, value: 'phone', name: "user[contacts_attributes][][type]" %>
-                <%= c.input_field :value, { required: true, label: 'Phone', name: "user[contacts_attributes][][value]", class: "form-control", value: current_user.contacts.first.value}%>
+                <%= c.input_field :value, { label: 'Phone', name: "user[contacts_attributes][][value]", class: "form-control", value: current_user.contacts.first.value}%>
                 <% contact_id = current_user.contacts.first.id rescue nil %>
                 <%=c.hidden_field :id, value: contact_id, name: "user[contacts_attributes][][id]" %>
               </div>
@@ -98,7 +97,7 @@
               <div class="col-sm-2">
                 <%contact_value1 = current_user.contacts.last.value rescue nil%>
                 <%=c.hidden_field :type, value: 'mobile', name: "user[contacts_attributes][][type]" %>
-                <%= c.input_field :value, { required: true, label: 'Value', name: "user[contacts_attributes][][value]", class: "form-control", value: current_user.contacts.last.value}%>
+                <%= c.input_field :value, {label: 'Value', name: "user[contacts_attributes][][value]", class: "form-control", value: current_user.contacts.last.value}%>
                 <% contact_id1 = current_user.contacts.last.id rescue nil %>
                 <%=c.hidden_field :id, value: contact_id1, name: "user[contacts_attributes][][id]" %>
               </div>

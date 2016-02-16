@@ -16,16 +16,28 @@ ul.table_head{width: 100%;
     float: left;
     margin: 0px;
     padding: 0px;
-    border-bottom: 1px solid #ccc;}
+ }
 ul.table_head li{    width: 33.33%;
     float: left;
+    font-weight:bold;
     padding: 5px;
     list-style: none;}
-ul.table_head ul.second_tree{    float: left;
+ul.table_head ul.second_tree, ul.table_head ul.three_tree{    float: left;
     width: 100%;
-    margin: 0 0 0 20px;
+    margin: 0;
     padding: 0;}
+    ul.table_head.table_content li{font-weight:normal}
+ul.table_head li a{color:#666}
+ul.table_head ul.second_tree li.first_li {
+    padding-left: 15px
+}
 ul.table_head li.first_li{width:20%}
 ul.table_head li.second_li{width:70%;}
 
-ul.table_head li.third_li{width:10%}
+ul.table_head li.third_li{width:10%;float:right;}
+
+ul.table_head ul.three_tree li.first_li {
+    padding-left: 20px
+}
+
+ul.table_head ul.second_tree li.second_li{padding-left:17px;}
