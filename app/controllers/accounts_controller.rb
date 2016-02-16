@@ -1,7 +1,7 @@
 require 'net/http/post/multipart'
 class AccountsController < ApplicationController
   before_action :get_token
-  before_action :find_account, only: [:conversation, :edit, :update, :share]
+  before_action :find_account, only: [:conversation, :edit, :update, :share, :update_note, :delete_note]
 
   def index
     # Get all accounts
@@ -97,6 +97,32 @@ class AccountsController < ApplicationController
     redirect_to account_path(conversation_item_params[:account_id])
   end
 
+  def update_note
+    conversation_id = @account.conversation.id
+    note = @account.conversation.conversation_items
+    note.each do |n|
+      @conversation = n if n.id == params[:conversation_item][:id].to_i
+    end
+    if @conversation.update_attributes(conversation_item: params[:conversation_item], conversation_id: conversation_id)
+      flash[:success] = 'Note successfully updated!'
+    else
+      flash[:danger] = 'Note not updated!'
+    end
+    redirect_to account_path(params[:id])
+  end
+
+  def delete_note
+    note = @account.conversation.conversation_items
+    note.each do |n|
+      @conversation = n if n.id == params[:item_id].to_i
+    end
+    if @conversation.destroy
+      flash[:success] = 'Note successfully deleted'
+    else
+      flash[:danger] = 'Oops! Unable to delete the note'
+    end
+    redirect_to account_path(params[:id])
+  end
 
   def send_email
     c_id = Account.find(conversation_item_params[:account_id]).conversation.id
@@ -119,7 +145,7 @@ class AccountsController < ApplicationController
     end
     redirect_to account_path(params[:id])
   end
-  
+
 
 
   private
@@ -143,15 +169,15 @@ class AccountsController < ApplicationController
   def conversation_item_params
     params.require(:conversation_item).permit(:account_id, :type, :title, :body)
   end
-  
-  
+
+
   def shared_account_params
     params.require(:account).permit(
       user_account_sharings_attributes: [:user_id, :permission, :_destroy]
     )
   end
-  
-  
+
+
   def find_account
     @account = Account.find(params[:id])
   end

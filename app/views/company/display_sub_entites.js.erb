@@ -1,3 +1,10 @@
-$('#add_sub_<%=params[:id]%>').append("<%= j render 'sub_entites', sub_entity: @sub_entites %>");
-$('#add_sub_<%=params[:id]%>').find('ul').css('padding-left', '10px');
-$('#preloader').hide();
+if ($('#add_sub_<%=params[:id]%>').find('ul').length > 0)
+{
+  $('#add_sub_<%=params[:id]%>').find('ul').remove();
+  $('#preloader').hide();
+}else{
+	$('#add_sub_<%=params[:id]%>').append("<%= j render 'sub_entites', sub_entity: @sub_entites %>");
+	$('#add_sub_<%=params[:id]%>').find('ul').css('padding-left', '10px');
+	$('#preloader').hide();
+}
+

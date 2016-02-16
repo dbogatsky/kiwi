@@ -41,7 +41,7 @@
                 <i class="fa fa-trash-o"></i><br/>
                 <% end %>
               <% end %>
-              
+
               <a href="https://maps.google.com?daddr=<%= address.street_address %>+<%= address.city %>+<%= address.region %>+<%= address.country %>+<%= address.postcode %>" target="_blank">
               <%= address.street_address %><br>
               <%= address.city %>, <%= address.region %>, <%= address.country %><br />
@@ -124,7 +124,7 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
-                  
+
                   <% if has_permissions({ "ConversationItem"=>{"actions"=>["manage"]}, "all"=>{"actions"=>"manage"} }) %>
                     <li><a href="#" data-toggle="modal" data-target=".account-action-meeting">Schedule Meeting</a></li>
                     <li><a href="#" data-toggle="modal" data-target=".conversation-note-modal-form">Add Note</a></li>
@@ -159,54 +159,65 @@
 </div><!-- profile-header -->
 
 <% content_for :outside_section do %>
-<!-- add contact modal form -->
-<div id="contact-modal" class="modal fade contact-modal-form" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="panel panel-dark panel-alt">
-        <div class="panel-heading">
-          <button aria-hidden="true" data-dismiss="modal" class="close" type="button" style="color: white !important; opacity: 1.0 !important">&times;</button>
-          <h3 class="panel-title">New Contact</h3>
+  <!-- add contact modal form -->
+  <div id="contact-modal" class="modal fade contact-modal-form" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="panel panel-dark panel-alt">
+          <div class="panel-heading">
+            <button aria-hidden="true" data-dismiss="modal" class="close" type="button" style="color: white !important; opacity: 1.0 !important">&times;</button>
+            <h3 class="panel-title">New Contact</h3>
+          </div>
+          <div class="panel-body">
+            <%#= render :partial => "contacts/form", review: Contact.new(account_id: @account.id) %>
+            <%= render :partial => "contacts/form" %>
+          </div><!-- panel -->
         </div>
-        <div class="panel-body">
-          <%#= render :partial => "contacts/form", review: Contact.new(account_id: @account.id) %>
-          <%= render :partial => "contacts/form" %>
-        </div><!-- panel -->
       </div>
     </div>
   </div>
-</div>
-<!-- end of add contact modal form -->
+  <!-- end of add contact modal form -->
 
-<!-- add address modal form -->
-<div id="address-modal" class="modal fade address-modal-form" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="panel panel-dark panel-alt">
-        <div class="panel-heading">
-          <button aria-hidden="true" data-dismiss="modal" class="close" type="button" style="color: white !important; opacity: 1.0 !important">&times;</button>
-          <h3 class="panel-title">New Address</h3>
+  <!-- add address modal form -->
+  <div id="address-modal" class="modal fade address-modal-form" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="panel panel-dark panel-alt">
+          <div class="panel-heading">
+            <button aria-hidden="true" data-dismiss="modal" class="close" type="button" style="color: white !important; opacity: 1.0 !important">&times;</button>
+            <h3 class="panel-title">New Address</h3>
+          </div>
+          <div class="panel-body">
+            <%= render :partial => "addresses/form", review: Address.new(account_id: @account.id) %>
+          </div><!-- panel -->
         </div>
-        <div class="panel-body">
-          <%= render :partial => "addresses/form", review: Address.new(account_id: @account.id) %>
-        </div><!-- panel -->
       </div>
     </div>
   </div>
-</div>
-<!-- end of add address modal form -->
+  <!-- end of add address modal form -->
 
-<!-- add conversation schedule modal form -->
-<%= render "conversation_meeting" %>
-<%= render "conversation_notes" %>
-<%= render "conversation_email" %>
+  <!-- add conversation schedule modal form -->
+  <%= render "conversation_meeting" %>
+  <%= render "conversation_notes" %>
+  <%= render "conversation_email" %>
+  <%= render 'edit_conversation_note'%>
 
-<%= render "conversation_sharedusers" %>
+  <%= render "conversation_sharedusers" %>
 <% end %>
 
 
 <% content_for :custom_js do %>
 <script>
+  $(document).on('click', "a.edit_note", function(e){
+    id = $(this).attr('data-id')
+    $('input[name="conversation_item[title]"]').val($(this).attr('data-title'));
+    $('textarea[name="conversation_item[body]"]').val($(this).attr('data-description'));
+    $('input[name="conversation_item[id]"]').val($(this).attr('data-id'));
+
+    // $('#edit_company_entity').modal('show');
+    // $('#edit_company_entity').find('form').attr('action', '/company_entities/'+id)
+  });
+
   jQuery(document).ready(function(){
 
     $.fn.editable.defaults.ajaxOptions = {type: "PUT"};
@@ -350,7 +361,7 @@
 				$("#note-reminder-settings").hide(500);
 			}
 		});
-		
+
 
 		$('#scheduledDatePicker').datepicker();
 		$('#scheduledTimePicker').timepicker({minuteStep: 5});
@@ -366,11 +377,11 @@
 			else {
 				$("#email-sendlater-settings").hide(500);
 			}
-		});		
-		
-		
-		
-		
+		});
+
+
+
+
   });
   </script>
 <% end %>

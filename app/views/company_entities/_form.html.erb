@@ -18,10 +18,16 @@
 			<label class="col-sm-3 control-label">Parent Entity</label>
 			<div class="col-sm-6">
         <select name="company_entity[parent_id]" class="form-control input-sm">
-          <!-- <option value="audi" selected>Audi</option> -->
           <option value="">Default</option>
           <%CompanyEntities.all.each do |entity|%>
-            <option value="<%=entity.id%>"><%=entity.name%></option>
+            <%unless entity.parent.present?%>
+              <option value="<%=entity.id%>"><%=entity.name%></option>
+              <%if entity.descendants.present?%>
+                <%entity.descendants.each do |des|%>
+                  <option value="<%=des.id%>">&nbsp;&nbsp;&nbsp;&nbsp;<%=des.name%></option>
+                <%end%>
+              <%end%>
+            <%end%>
           <%end%>
 			  </select>
 			</div>

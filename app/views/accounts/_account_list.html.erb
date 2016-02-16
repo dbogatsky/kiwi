@@ -11,10 +11,10 @@
           <div class="people-item">
             <div class="media">
               <div class="media-body">
-                <h4 class="person-name"><a href="<%= account_path(account.id) %>"><%= link_to account.name, account_path(account.id) %></a></h4>               
+                <h4 class="person-name"><a href="<%= account_path(account.id) %>"><%= link_to account.name, account_path(account.id) %></a></h4>
                 <%= get_styled_status(account) %>
-                <div class="text-muted"> 
-                    <% if !account.addresses.empty? %>                     
+                <div class="text-muted">
+                    <% if !account.addresses.empty? %>
                   	<address>
                   	  <% if !account.addresses.empty? %>
                         <% account.addresses.each_with_index do |address, i| %>
@@ -41,7 +41,7 @@
                       <% end %>
                     </address>
                     <% end %>
-                </div> 
+                </div>
                 <ul class="social-list">
                   <% if !account.addresses.empty? %>
                     <li><a href="https://maps.google.com?daddr=<%= account.addresses[0].street_address %>+<%= account.addresses[0].city %>+<%= account.addresses[0].region %>+<%= account.addresses[0].country %>+<%= account.addresses[0].postcode %>" target="_blank" class="tooltips" data-toggle="tooltip" data-placement="top" title="Map"><i class="fa fa-map-marker"></i></a></li>
@@ -52,14 +52,14 @@
                   	<% elsif contact.type.eql? "email" %>
                   	  <li><a href="mailto:<%= contact.value %>" class="tooltips" data-toggle="tooltip" data-placement="top" title="Email: <%= contact.value %>"><i class="fa fa-<%= contact.icon_name %>"></i></a></li>
                   	<% end %>
-                  <% end %>                  
-             
+                  <% end %>
+
                   <li class="pull-right"><span class="badge" style="color:#333; background-color: #fcfcfc; border-color: #fcfcfc;"><%= (account.assigned_to.nil? ? "Unkonwn" : "#{account.assigned_to.first_name} #{account.assigned_to.last_name}") %></span><i class="fa fa-users"></i></li>
                 </ul>
               </div>
             </div>
           </div>
-        </div><!-- col-md-6 -->	    
+        </div><!-- col-md-6 -->
       <% end %>
     <% end %>
   </div><!-- row -->
