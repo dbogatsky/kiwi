@@ -85,14 +85,15 @@ class AccountsController < ApplicationController
 
 
   def add_note
-    c_id = Account.find(conversation_item_params[:account_id]).conversation.id
+    binding.pry
+    # c_id = Account.find(conversation_item_params[:account_id]).conversation.id
 
-    ci = ConversationItem.create(conversation_item: {title: conversation_item_params[:title], body: conversation_item_params[:body]}, conversation_id: c_id, type: conversation_item_params[:type])
-    if ci
-      flash[:success] = 'Your note has been added to the conversation'
-    else
-      flash[:danger] = 'Oops! Unable to add note'
-    end
+    # ci = ConversationItem.create(conversation_item: {title: conversation_item_params[:title], body: conversation_item_params[:body]}, conversation_id: c_id, type: conversation_item_params[:type])
+    # if ci
+    #   flash[:success] = 'Your note has been added to the conversation'
+    # else
+    #   flash[:danger] = 'Oops! Unable to add note'
+    # end
 
     redirect_to account_path(conversation_item_params[:account_id])
   end
@@ -167,7 +168,7 @@ class AccountsController < ApplicationController
 
 
   def conversation_item_params
-    params.require(:conversation_item).permit(:account_id, :type, :title, :body)
+    params.require(:conversation_item).permit(:account_id, :type, :scheduled_at, :title, :body)
   end
 
 
