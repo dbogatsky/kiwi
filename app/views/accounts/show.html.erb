@@ -210,16 +210,13 @@
 <script>
   $(document).on('click', "a.edit_note", function(e){
     id = $(this).attr('data-id')
-    $('input[name="conversation_item[title]"]').val($(this).attr('data-title'));
-    $('textarea[name="conversation_item[body]"]').val($(this).attr('data-description'));
-    $('input[name="conversation_item[id]"]').val($(this).attr('data-id'));
-
-    // $('#edit_company_entity').modal('show');
-    // $('#edit_company_entity').find('form').attr('action', '/company_entities/'+id)
+    $('.conversation-edit-note-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
+    // $('.conversation-edit-note-modal-form textarea[name="conversation_item[body]"]').val($(this).attr('data-description'));
+    text_editor.data("wysihtml5").editor.setValue($(this).attr('data-description'));
+    $('.conversation-edit-note-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
   });
 
-  jQuery(document).ready(function(){
-
+  $(document).ready(function(){
     $.fn.editable.defaults.ajaxOptions = {type: "PUT"};
     jQuery('.account-contact-editable').editable({
       send: 'always',

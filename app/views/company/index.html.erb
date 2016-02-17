@@ -133,8 +133,10 @@
                       </ul>
                       <% @entites.each do |entity| %>
                         <%unless entity.parent.present? %>
-                          <ul class="table_head table_content">
-                            <li class="first_li"><%= entity.name %></li>
+                          <ul class="table_head table_content plus_icon" id="entity_<%=entity.id%>">
+                            <li class="first_li">
+                              <%=link_to entity.name, company_display_sub_entites_path(entity), remote: true, class: 'nested_link'%>
+                            </li>
                             <li class="second_li"><%= entity.description %></li>
                             <li class="third_li">
                               <a href="javascript:void(0);" class="edit-folder"
@@ -146,30 +148,6 @@
                               <%=link_to company_entity_path(entity.id), method: :delete,data: {:confirm => 'Are you sure to delete company entity?'} do %><i class="fa fa-trash-o"></i>
                               <% end %>
                             </li>
-                            <%if entity.descendants.present?%>
-                              <%entity.descendants.each do |des|%>
-                                <ul class="second_tree" id="add_sub_<%=des.id%>">
-                                  <% sub_ent = CompanyEntities.find(des.id)%>
-                                  <%if sub_ent.descendants.present?%>
-                                    <li class="first_li"><%=link_to des.name, company_display_sub_entites_path(des.id), remote: true, class: 'nested_link'%></li>
-                                  <%else%>
-                                     <li class="first_li"><%=des.name%></li>
-                                  <%end%>
-                                    <li class="second_li"><%= des.description %></li>
-                                    <li class="third_li">
-                                      <a href="javascript:void(0);" class="edit-folder"
-                                          data-id="<%= des.id %>"
-                                          data-name="<%=des.name %>"
-                                          data-description="<%= des.description %>"
-                                          data-parent="<%=sub_ent.parent.present? ? sub_ent.parent.id : '' %>"
-                                          data-toggle="modal" data-target=".edit_company_entity" class="modal-link"><i class="fa fa-pencil"></i></a>
-                                      <%=link_to company_entity_path(des.id), method: :delete,data: {:confirm => 'Are you sure to delete company entity?'} do %>
-                                            <i class="fa fa-trash-o"></i>
-                                      <% end %>
-                                    </li>
-                                </ul>
-                              <%end%>
-                            <%end%>
                           </ul>
                         <%end%>
                       <%end%>

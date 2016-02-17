@@ -26,8 +26,8 @@ class CompanyController < ApplicationController
   end
 
   def display_sub_entites
-    entity = CompanyEntities.find(params[:id])
-    @sub_entites = entity.descendants
+    @entity = CompanyEntities.find(params[:id])
+    @sub_entites = @entity.descendants
   end
 
   def account_status

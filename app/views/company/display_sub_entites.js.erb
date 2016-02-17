@@ -1,10 +1,21 @@
-if ($('#add_sub_<%=params[:id]%>').find('ul').length > 0)
-{
-  $('#add_sub_<%=params[:id]%>').find('ul').remove();
-  $('#preloader').hide();
+if($("#entity_<%=@entity.id%>").find('ul').length > 0){
+  $("#entity_<%=@entity.id%>").find('ul').remove();
+  $("#entity_<%=@entity.id%>").removeClass('minus_icon');
+  $("#entity_<%=@entity.id%>").addClass('plus_icon');
 }else{
-	$('#add_sub_<%=params[:id]%>').append("<%= j render 'sub_entites', sub_entity: @sub_entites %>");
-	$('#add_sub_<%=params[:id]%>').find('ul').css('padding-left', '10px');
-	$('#preloader').hide();
+  $("#entity_<%=@entity.id%>").html("<%=j render 'entity', entity: @entity%>");
+  $("#entity_<%=@entity.id%>").removeClass('plus_icon');
+  $("#entity_<%=@entity.id%>").addClass('minus_icon');
 }
-
+$('#preloader').hide();
+if ($('#add_sub_<%=params[:id]%>').find('ul').length > 0){
+  $('#add_sub_<%=params[:id]%>').find('ul').remove();
+  $('#add_sub_<%=params[:id]%>').removeClass('minus_icon');
+  $('#add_sub_<%=params[:id]%>').addClass('plus_icon');
+}else{
+  $('#add_sub_<%=params[:id]%>').append("<%= j render 'sub_entites', sub_entity: @sub_entites %>");
+  $('#add_sub_<%=params[:id]%>').find('ul').css('padding-left', '10px');
+  $('#add_sub_<%=params[:id]%>').removeClass('plus_icon');
+  $('#add_sub_<%=params[:id]%>').addClass('minus_icon');
+}
+$('#preloader').hide();
