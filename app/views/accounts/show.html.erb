@@ -212,6 +212,7 @@
     id = $(this).attr('data-id')
     $('.conversation-edit-note-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
     // $('.conversation-edit-note-modal-form textarea[name="conversation_item[body]"]').val($(this).attr('data-description'));
+    console.log($(this).attr('data-description'))
     text_editor.data("wysihtml5").editor.setValue($(this).attr('data-description'));
     $('.conversation-edit-note-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
   });

@@ -1,6 +1,6 @@
 <%sub_entity.each do |sub|%>
-  <ul class="three_tree" id="add_sub_<%=sub.id%>">
-    <% sub_entty = CompanyEntities.find(sub.id)%>
+  <% sub_entty = CompanyEntities.find(sub.id)%>
+  <ul class="three_tree <%=sub_entty.descendants.present? ? 'plus_icon' : ''%>" id="add_sub_<%=sub.id%>">
     <%if sub_entty.descendants.present?%>
       <li class="first_li"><%=link_to sub.name, company_display_sub_entites_path(sub.id),remote: true, class: 'nested_link'%></li>
     <%else%>

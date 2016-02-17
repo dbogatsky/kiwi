@@ -12,8 +12,8 @@
 </li>
 <%if entity.descendants.present?%>
   <%entity.descendants.each do |des|%>
-    <ul class="second_tree plus_icon" id="add_sub_<%=des.id%>">
-      <% sub_ent = CompanyEntities.find(des.id)%>
+    <% sub_ent = CompanyEntities.find(des.id)%>
+    <ul class="second_tree <%=sub_ent.descendants.present? ? 'plus_icon' : ''%>" id="add_sub_<%=des.id%>">
       <%if sub_ent.descendants.present?%>
         <li class="first_li"><%=link_to des.name, company_display_sub_entites_path(des.id), remote: true, class: 'nested_link'%></li>
       <%else%>
