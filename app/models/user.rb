@@ -1,5 +1,5 @@
 class User < OrchardApiModel
-  cached_resource
+  cached_resource :ttl => 900
 
   schema do
     # define each attribute separately

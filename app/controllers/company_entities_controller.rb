@@ -8,6 +8,9 @@ class CompanyEntitiesController < ApplicationController
 	  @company_entity = CompanyEntities.new(request: :create, company_entity: params[:company_entity])
     if @company_entity.save
     	flash[:success] = 'Company Entity successfully created.'
+
+      #Refresh the company entities list stored in cache resource
+      #@entites = CompanyEntities.all(:reload => true)
       redirect_to company_path
     else
     	flash[:danger] = 'Company Entity could not created.'
@@ -19,6 +22,9 @@ class CompanyEntitiesController < ApplicationController
 		@entity = CompanyEntities.find(params[:id])
 		if @entity.update_attributes(request: :update, company_entity: params[:company_entity])
       flash[:success] = 'Company Entity successfully updated.'
+
+      #Refresh the company entities list stored in cache resource
+      #@entites = CompanyEntities.all(:reload => true)
       redirect_to company_path
     else
     	flash[:danger] = 'Company Entity could not updated.'
