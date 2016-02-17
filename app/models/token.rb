@@ -19,5 +19,17 @@ class Token < OrchardApiModel
       }
     )
   end
+
+  def self.bo_authenticate(email, password)
+    #initate api call and catch any errors
+    self.site = "#{ENV.fetch("ORCHARD_BO_API_HOST")}/"
+    @token = Token.create(
+      app_key: APP_CONFIG['api_app_key'],
+      support_user: {
+        email: email,
+        password: password
+      }
+    )
+  end  
 end
 

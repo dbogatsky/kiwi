@@ -4,21 +4,26 @@ class LoginController < ApplicationController
 
   def index
     if !session[:token].nil?
-      redirect_to dashboard_path
+      if(session[:user_id] == "superadmin")
+        #should redirect to SU panel exiting for now
+        exit
+      else
+        redirect_to dashboard_path
+      end
     else
       render :layout => false
     end
   end
 
   def login
-    #abort(current_user.inspest)
-    if params[:email] == APP_CONFIG['superadmin_email']
-      return redirect_to login_superadmin_path
-    end
 
     # Check username and password through the Authentication API
     begin
-      token = Token.authenticate(params[:email], params[:password])
+      if params[:email] == APP_CONFIG['superadmin_email']
+        token = Token.bo_authenticate(params[:email], params[:password])
+      else
+        token = Token.authenticate(params[:email], params[:password])
+      end
     rescue ActiveResource::ResourceNotFound,    # 404 ResourceNotFound - No match found with email/password provided
             ActiveResource::BadRequest,         # 400 BadRequest - Incorrect request sent 
             ActiveResource::UnauthorizedAccess, # 403 UnauthorizedAccess - No access to server 
@@ -37,45 +42,34 @@ class LoginController < ApplicationController
     end
 
     unless token.nil?
-      # Store user details into session
-      session[:user_id] = token.user_id
-      session[:token] = token.token
 
-      #set gloal var for token to be used in model, hack for now
-      set_current_user
+      #handle superadmin case
+      if params[:email] == APP_CONFIG['superadmin_email']
+        session[:token] = token.token
+        session[:user_id] = "superadmin"
 
-      #cache some stuff for performance
+        #should redirect to SU panel exiting for now
+        exit
+      else
+        # Store user details into session
+        session[:user_id] = token.user_id
+        session[:token] = token.token
 
-      # Log the user in and redirect to the main page: Dashboard first?
-      redirect_to dashboard_path
+        #set gloal var for token to be used in model, hack for now
+        set_current_user
+
+        # Log the user in and redirect to the main page: Dashboard first?
+        redirect_to dashboard_path
+      end
     end
   end
 
-  #superadmin company choice
-  def superadmin
-    #check if superadmin token exists
 
-    #get a list of companies
 
-    #show layout
-    render :layout => false
-  end
-
-  #superadmin login as company admin
-  def superadmin_auth
-    #check if superadmin token exists, if not boot user out
-
-    #login as admin user
-
-    #valid user so send to the dasbhoard
-    #redirect_to dashboard_path
-    exit #temp code to be removed after logic is placed
-  end
-
-  #forget password recover
   def forgot
     render :layout => false
   end
+
 
   def change_password
     @user = User.find(params[:id])
@@ -84,6 +78,7 @@ class LoginController < ApplicationController
       redirect_to users_path, notice: 'Password successfully updated.'
     end
   end
+
 
   def recover
     flash[:recover_success] = 'A link has been sent to your email to reset your password'
