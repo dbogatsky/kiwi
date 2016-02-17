@@ -9,13 +9,13 @@
         <%= form_tag(account_add_note_url) do %>
           <div class="panel panel-default">
               <div class="panel-body">
-                <div class="row row-pad-5">
+                <div class="row row-pad-5 mb30">
                   <div class="col-lg-12">
                     <input type="text" name="conversation_item[title]" placeholder="Title" class="form-control" required="required" />
                   </div>
                 </div>
 
-                <div class="row row-pad-5 mb30">
+                <div class="row row-pad-5">
                   <div class="col-lg-12">
                     <textarea class="form-control wysihtml5" id="new_editor" rows="5" placeholder="Message" required="required" name="conversation_item[body]"></textarea>
                   </div>
