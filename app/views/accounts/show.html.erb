@@ -211,8 +211,8 @@
   var new_editor, edit_editor;
 
   $(function(){
-    new_editor = $('#new_editor').wysihtml5({'image': false});
-    edit_editor = $('#edit_editor').wysihtml5({'image': false});
+    new_editor = $('#new_editor').wysihtml5({'font-styles': false, 'image': false});
+    edit_editor = $('#edit_editor').wysihtml5({'font-styles': false, 'image': false});
   });
 
   $(document).on('click', "a.edit_note", function(e){
