@@ -210,9 +210,9 @@
 <script>
   var new_editor, edit_editor;
 
-  $(function(){
-    new_editor = $('#new_editor').wysihtml5({'font-styles': false, 'image': false});
-    edit_editor = $('#edit_editor').wysihtml5({'font-styles': false, 'image': false});
+  $(function() {
+    new_editor = $('#new_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
+    edit_editor = $('#edit_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
   });
 
   $(document).on('click', "a.edit_note", function(e){
