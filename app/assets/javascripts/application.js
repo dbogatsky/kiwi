@@ -14,8 +14,3 @@
 //= require jquery_ujs
 //= require social-share-button
 //= require_tree .
-
-var text_editor;
-$(function(){
-  text_editor = $('.wysihtml5').wysihtml5({'image': false});
-});

@@ -208,12 +208,18 @@
 
 <% content_for :custom_js do %>
 <script>
+  var new_editor, edit_editor;
+
+  $(function(){
+    new_editor = $('#new_editor').wysihtml5({'image': false});
+    edit_editor = $('#edit_editor').wysihtml5({'image': false});
+  });
+
   $(document).on('click', "a.edit_note", function(e){
     id = $(this).attr('data-id')
     $('.conversation-edit-note-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
-    // $('.conversation-edit-note-modal-form textarea[name="conversation_item[body]"]').val($(this).attr('data-description'));
-    console.log($(this).attr('data-description'))
-    text_editor.data("wysihtml5").editor.setValue($(this).attr('data-description'));
+    // $('.conversation-edit-note-modal-form textarea[name="covnersation_item[body]"]').val($(this).attr('data-description'));
+    edit_editor.data("wysihtml5").editor.setValue($(this).attr('data-description'));
     $('.conversation-edit-note-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
   });
 
@@ -260,14 +266,6 @@
         jQuery(element).closest('.form-group').removeClass('has-error');
       }
     });
-
-
-
-
-
-
-
-
 
 		// Tags Input
 		jQuery('#invite-emails').tagsInput({
@@ -347,16 +345,22 @@
 		$('#reminderDatePicker').datepicker();
 		$('#reminderTimePicker').timepicker({minuteStep: 5});
 
+    $('#reminderDatePickerEdit').datepicker();
+    $('#reminderTimePickerEdit').timepicker({minuteStep: 5});
+
 		// by default hide reminder settings for notes
 		$("#note-reminder-settings").hide();
+    $("#note-reminder-settings-edit").hide();
 
 		// hide show note reminder settings
-		$('#note-reminder').change(function () {
-		    if ($("#note-reminder").is(':checked')) {
-			    $("#note-reminder-settings").show(500);
+		$('#note-reminder, #note-reminder-edit').change(function () {
+		  if ($(this).is(':checked')) {
+			  $("#note-reminder-settings").show(500);
+        $("#note-reminder-settings-edit").show(500);
 			}
 			else {
 				$("#note-reminder-settings").hide(500);
+        $("#note-reminder-settings-edit").hide(500);
 			}
 		});
 
