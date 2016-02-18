@@ -131,34 +131,20 @@
                          <li class="second_li">Description</li>
                           <li class="third_li">&nbsp;</li>
                       </ul>
-                      <% @entites.each do |entity| %>
-                        <%unless entity.parent.present? %>
-                          <ul class="table_head table_content plus_icon" id="entity_<%=entity.id%>">
-                            <li class="first_li">
-                              <%=link_to entity.name, company_display_sub_entites_path(entity), remote: true, class: 'nested_link'%>
-                            </li>
-                            <li class="second_li"><%= entity.description %></li>
-                            <li class="third_li">
-                              <a href="javascript:void(0);" class="edit-folder"
-                                  data-id="<%= entity.id %>"
-                                  data-name="<%=entity.name %>"
-                                  data-description="<%= entity.description %>"
-                                  data-parent="<%= entity.parent.present? ? entity.parent.id : ''%>"
-                                  data-toggle="modal" data-target=".edit_company_entity" class="modal-link"><i class="fa fa-pencil"></i></a>
-                              <%=link_to company_entity_path(entity.id), method: :delete,data: {:confirm => 'Are you sure to delete company entity?'} do %><i class="fa fa-trash-o"></i>
-                              <% end %>
-                            </li>
-                          </ul>
-                        <%end%>
-                      <%end%>
+                      <%# @entites.each do |entity| %>
+                        <%#unless entity.parent.present? %>
+                            <%#=get_children(entity.id)%>
+                        <%#end%>
+                      <%#end%>
+                      <%=nested_entities(@entites)%>
                     </div><!-- table-responsive -->
                   <% else %>
                     <p>Create and manage Entities here.</p>
                   <% end %>
                 </div>
+              </div>
             </div>
           </div>
-        </div>
         <!-- <ul class="panel-title"> -->
           <!-- <li><a href="#organization" data-toggle="tab"><strong>Company Entities</strong></a></li> -->
           <!-- <li><a href="#settings" data-toggle="tab"><strong>Account Statues</strong></a></li> -->
