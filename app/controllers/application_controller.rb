@@ -39,8 +39,8 @@ class ApplicationController < ActionController::Base
   def has_permission(subject_class, action, action_scope="")
     #example usage: has_permission("all", "manage")
     #               has_permission("User", "read", "company")
-    #               has_permission("Account", ["read", "write", "manage"])
-    #               has_permission("Account", ["read", "write", "manage"], ["company", "entity"])
+    #               has_permission("Account", ["read", "update", "manage"])
+    #               has_permission("Account", ["read", "update", "manage"], ["company", "entity"])
     #
     #subject_class: string
     #action:        string or an array
@@ -108,8 +108,8 @@ class ApplicationController < ActionController::Base
 
   # Check permission by multiple credential criteria
   def has_permissions(allowed_permissions)
-    #example usage: has_permissions({ "User"=>{"actions"=>["read","write","manage"], "action_scope"=>["company"]}, "all"=>{"actions"=>["read","write","manage"]} })
-    #allowed_permissions (hash) example: allowed_permissions = "User"=>{"actions"=>["read","write","manage"], "action_scope"=>["company"]}, "all"=>{"actions"=>["read","write","manage"]}
+    #example usage: has_permissions({ "User"=>{"actions"=>["read","update","manage"], "action_scope"=>["company"]}, "all"=>{"actions"=>["read","update","manage"]} })
+    #allowed_permissions (hash) example: allowed_permissions = "User"=>{"actions"=>["read","update","manage"], "action_scope"=>["company"]}, "all"=>{"actions"=>["read","update","manage"]}
     #Note: Hash "actions" and "action_scope" can be string or an array.  And "action_scope" is an optional parameter.
 
     #check allowed_permissions is not empty
@@ -145,7 +145,7 @@ class ApplicationController < ActionController::Base
 
 
   def has_page_permissions(allowed_permissions, message="", redirect_path="")
-    #example usage: has_page_permissions({ "User"=>{"actions"=>["read","write","manage"], "action_scope"=>["company"]}, "all"=>{"actions"=>["read","write"]} }, "Ok, I'll send you to Company page.", company_path)
+    #example usage: has_page_permissions({ "User"=>{"actions"=>["read","update","manage"], "action_scope"=>["company"]}, "all"=>{"actions"=>["read","update"]} }, "Ok, I'll send you to Company page.", company_path)
 
     return true if has_permissions(allowed_permissions)
 

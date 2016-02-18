@@ -13,18 +13,24 @@
       <label for="selectall">Select All</label>
     </div>
   </li>
-  <li>
-    <a href="javascript:void(0)" id="email-multiple" class="itemopt disabled"><i class="fa fa-envelope-o"></i> Email</a>
-  </li>
-  <li>
-    <a href="" class="itemopt disabled"><i class="fa fa-download"></i> Download</a>
-  </li>
+
+  <% if has_permissions({ "Medium"=>{"actions"=>["read","manage"]}, "all"=>{"actions"=>"manage"} }) %>
+    <li>
+      <a href="javascript:void(0)" id="email-multiple" class="itemopt disabled"><i class="fa fa-envelope-o"></i> Email</a>
+    </li>
+    <li>
+      <a href="" class="itemopt disabled"><i class="fa fa-download"></i> Download</a>
+    </li>
+  <% end %>
   <!--li>
     <a href="" class="itemopt disabled"><i class="fa fa-pencil"></i> Edit</a>
   </li-->
-  <li>
-    <a href="javascript:void(0);" class="itemopt disabled" id="destroy-multiple"><i class="fa fa-trash-o"></i> Delete</a>
-  </li>
+  <% if has_permissions({ "Medium"=>{"actions"=>"manage"}, "all"=>{"actions"=>"manage"} }) %>
+    <li>
+      <a href="javascript:void(0);" class="itemopt disabled" id="destroy-multiple"><i class="fa fa-trash-o"></i> Delete</a>
+    </li>
+  <% end %>
+
   <!--li class="filter-type">
       Show:
       <a href="all" class="active">All</a>
@@ -68,15 +74,22 @@
                     <button type="button" class="btn btn-default dropdown-toggle fm-toggle" data-toggle="dropdown">
                       <span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu fm-menu" role="menu">
-                      <!-- <li><a href="#"><i class="fa fa-share"></i> Share</a></li> -->
-                      <li><a class="email-media-file" href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
-                      <li><a class="rename-media-file" data-id= '<%=media.id%>' data-name='<%=media.name%>' href="#"><i class="fa fa-pencil"></i> Edit</a></li>
 
-                      <li><a target="_blank" href="<%=download_file_path(cdn_url, media.name)%>"><i class="fa fa-download"></i> Download</a></li>
+                    <% if has_permissions({ "Medium"=>{"actions"=>["read","manage"]}, "all"=>{"actions"=>"manage"} }) %>
+                      <ul class="dropdown-menu fm-menu" role="menu">
+                        <!-- <li><a href="#"><i class="fa fa-share"></i> Share</a></li> -->
+                        <li><a class="email-media-file" href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
+                        <li><a class="rename-media-file" data-id= '<%=media.id%>' data-name='<%=media.name%>' href="#"><i class="fa fa-pencil"></i> Edit</a></li>
 
-                      <li><a class="trash-media" data-id='<%=media.id%>' href="javascript:void(0)"><i class="fa fa-trash-o"></i> Delete</a></li>
-                    </ul>
+                        <li><a target="_blank" href="<%=download_file_path(cdn_url, media.name)%>"><i class="fa fa-download"></i> Download</a></li>
+
+                        <% if has_permissions({ "Medium"=>{"actions"=>["manage"]}, "all"=>{"actions"=>"manage"} }) %>
+                          <li><a class="trash-media" data-id='<%=media.id%>' href="javascript:void(0)"><i class="fa fa-trash-o"></i> Delete</a></li>
+                        <% end %>
+
+                      </ul>
+                    <% end %>
+
                 </div><!-- btn-group -->
                 <div class="thmb-prev">
                   <% if media.image? %>
@@ -107,7 +120,9 @@
   </div><!-- col-sm-9 -->
   <div class="col-sm-3">
     <div class="fm-sidebar">
-      <button class="btn btn-primary btn-block" id="upload-file">Upload File</button>
+      <% if has_permissions({ "Medium"=>{"actions"=>"manage"}, "all"=>{"actions"=>"manage"} }) %>
+        <button class="btn btn-primary btn-block" id="upload-file">Upload File</button>
+      <% end %>
 
       <!-- Upload file Popup -->
       <%= render 'upload_modal' %>
@@ -119,7 +134,9 @@
       <%= render 'rename_media_modal' %>
       <div class="mb30"></div>
       <h5 class="subtitle">Folders
-        <a class="pull-right" id="add-folder">+ Add New Folder</a>
+        <% if has_permissions({ "Medium"=>{"actions"=>"manage"}, "all"=>{"actions"=>"manage"} }) %>
+          <a class="pull-right" id="add-folder">+ Add New Folder</a>
+        <% end %>
       </h5>
       <div id="create-folder" style="display:none">
         <%= form_tag media_path do %>
