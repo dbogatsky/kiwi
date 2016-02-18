@@ -230,7 +230,7 @@
           $("#note-reminder-settings").hide(500);
           $("#note-reminder-settings-edit").hide(500);
         }
-         
+
     // $('.conversation-edit-note-modal-form textarea[name="covnersation_item[body]"]').val($(this).attr('data-description'));
     edit_editor.data("wysihtml5").editor.setValue($(this).attr('data-description'));
     $('.conversation-edit-note-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
@@ -355,10 +355,10 @@
 			}
 		});
 
-		$('#reminderDatePicker').datepicker();
+		$('#reminderDatePicker').datepicker('option', 'dateFormat', 'dd-mm-yy');
 		$('#reminderTimePicker').timepicker({minuteStep: 5});
 
-    $('#reminderDatePickerEdit').datepicker();
+    $('#reminderDatePickerEdit').datepicker('option', 'dateFormat', 'dd-mm-yy');
     $('#reminderTimePickerEdit').timepicker({minuteStep: 5});
 
 		// by default hide reminder settings for notes
