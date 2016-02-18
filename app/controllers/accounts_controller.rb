@@ -86,8 +86,13 @@ class AccountsController < ApplicationController
 
   def add_note
     c_id = Account.find(conversation_item_params[:account_id]).conversation.id
+    if params[:scheduled_date].present? && params[:scheduled_time].present?
+      d = params[:scheduled_date].to_date
+      t = params[:scheduled_time].to_time.utc
+      params[:conversation_item][:scheduled_at] = DateTime.new(d.year, d.month, d.day, t.hour, t.min, t.sec, t.zone)
+    end
 
-    ci = ConversationItem.create(conversation_item: {title: conversation_item_params[:title], body: conversation_item_params[:body]}, conversation_id: c_id, type: conversation_item_params[:type])
+    ci = ConversationItem.create(conversation_item: {title: conversation_item_params[:title], body: conversation_item_params[:body], scheduled_at: params[:conversation_item][:scheduled_at]}, conversation_id: c_id, type: conversation_item_params[:type])
     if ci
       flash[:success] = 'Your note has been added to the conversation'
     else
@@ -99,6 +104,17 @@ class AccountsController < ApplicationController
 
   def update_note
     conversation_id = @account.conversation.id
+    if params[:conversation_item][:reminder].present?
+      if params[:scheduled_date].present? && params[:scheduled_time].present?
+        d = params[:scheduled_date].to_date
+        t = params[:scheduled_time].to_time.utc
+        params[:conversation_item][:scheduled_at] = DateTime.new(d.year, d.month, d.day, t.hour, t.min, t.sec, t.zone)
+      end
+    else
+      params[:conversation_item][:scheduled_at] = nil
+      params[:conversation_item][:reminder] = nil
+    end    
+
     note = @account.conversation.conversation_items
     note.each do |n|
       @conversation = n if n.id == params[:conversation_item][:id].to_i
@@ -167,7 +183,7 @@ class AccountsController < ApplicationController
 
 
   def conversation_item_params
-    params.require(:conversation_item).permit(:account_id, :type, :scheduled_at, :title, :body)
+    params.require(:conversation_item).permit(:account_id, :type, :reminder, :scheduled_at, :title, :body)
   end
 
 
@@ -176,7 +192,6 @@ class AccountsController < ApplicationController
       user_account_sharings_attributes: [:user_id, :permission, :_destroy]
     )
   end
-
 
   def find_account
     @account = Account.find(params[:id])

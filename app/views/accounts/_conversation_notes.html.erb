@@ -6,7 +6,7 @@
         <h4 class="modal-title">Add Note</h4>
       </div>
       <div class="modal-body">
-        <%= form_tag(account_add_note_url) do %>
+        <%= form_tag(account_add_note_url, novalidate: 'novalidate') do %>
           <div class="panel panel-default">
               <div class="panel-body">
                 <div class="row row-pad-5 mb30">
@@ -42,7 +42,7 @@
                     <div class="col-lg-4">
                       <div class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-                        <div class="bootstrap-timepicker"><input id="reminderTimePicker" type="text" class="form-control" name="scheduled_time"/></div>
+                        <div class="bootstrap-timepicker"><input id="reminderTimePicker" type="text" class="form-control" placeholder="dd/mm/yyyy" name="scheduled_time"/></div>
                       </div>
                     </div>
                   </div>

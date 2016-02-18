@@ -218,6 +218,19 @@
   $(document).on('click', "a.edit_note", function(e){
     id = $(this).attr('data-id')
     $('.conversation-edit-note-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
+    $('.conversation-edit-note-modal-form input[name="scheduled_time"]').val($(this).attr('data-time'));
+    $('.conversation-edit-note-modal-form input[name="scheduled_date"]').val($(this).attr('data-date'));
+
+      if ($('.conversation-edit-note-modal-form input[name="scheduled_time"]').val()!="" || $('.conversation-edit-note-modal-form input[name="scheduled_date"]').val()!="")
+        {
+          $("#note-reminder-edit").attr('checked', true);
+          $("#note-reminder-settings").show(500);
+          $("#note-reminder-settings-edit").show(500);
+        }else{
+          $("#note-reminder-settings").hide(500);
+          $("#note-reminder-settings-edit").hide(500);
+        }
+         
     // $('.conversation-edit-note-modal-form textarea[name="covnersation_item[body]"]').val($(this).attr('data-description'));
     edit_editor.data("wysihtml5").editor.setValue($(this).attr('data-description'));
     $('.conversation-edit-note-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
@@ -353,12 +366,13 @@
     $("#note-reminder-settings-edit").hide();
 
 		// hide show note reminder settings
+
 		$('#note-reminder, #note-reminder-edit').change(function () {
 		  if ($(this).is(':checked')) {
-			  $("#note-reminder-settings").show(500);
+        $("#note-reminder-settings").show(500);
         $("#note-reminder-settings-edit").show(500);
-			}
-			else {
+      }
+      else {
 				$("#note-reminder-settings").hide(500);
         $("#note-reminder-settings-edit").hide(500);
 			}
