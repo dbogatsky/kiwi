@@ -25,18 +25,18 @@ class LoginController < ApplicationController
         token = Token.authenticate(params[:email], params[:password])
       end
     rescue ActiveResource::ResourceNotFound,    # 404 ResourceNotFound - No match found with email/password provided
-            ActiveResource::BadRequest,         # 400 BadRequest - Incorrect request sent 
-            ActiveResource::UnauthorizedAccess, # 403 UnauthorizedAccess - No access to server 
-            ActiveResource::MethodNotAllowed,   # 405 MethodNotAllowed - Incorrect request 
-            ActiveResource::ResourceConflict,   # 409 ResourceConflict - ? 
+            ActiveResource::BadRequest,         # 400 BadRequest - Incorrect request sent
+            ActiveResource::UnauthorizedAccess, # 403 UnauthorizedAccess - No access to server
+            ActiveResource::MethodNotAllowed,   # 405 MethodNotAllowed - Incorrect request
+            ActiveResource::ResourceConflict,   # 409 ResourceConflict - ?
             ActiveResource::ResourceGone,       # 410 ResourceGone - ?
             ActiveResource::ResourceInvalid     # 422 ResourceInvalid (rescued by save as validation errors) - ?
-            
+
       flash[:danger] = 'Your email or password is incorrect.  Please try again.'  # Log in error message
       return redirect_to user_login_path
-      
+
     rescue ActiveResource::ServerError, # 500..599 ServerError - Server Error or unresponsive
-            ActiveResource::ConnectionError # Other ConnectionError - No connection or other error      
+            ActiveResource::ConnectionError # Other ConnectionError - No connection or other error
       flash[:danger] = 'An unexpected error was encountered.'  # Log in error message
       return redirect_to user_login_path
     end
@@ -64,12 +64,9 @@ class LoginController < ApplicationController
     end
   end
 
-
-
   def forgot
     render :layout => false
   end
-
 
   def change_password
     @user = User.find(params[:id])
@@ -79,17 +76,23 @@ class LoginController < ApplicationController
     end
   end
 
-
   def recover
     flash[:recover_success] = 'A link has been sent to your email to reset your password'
     redirect_to root_path
   end
 
-
   def destroy
-    $user_token = nil
-    session[:user_id] = nil
-    session[:token] = nil
+    url = URI.parse("#{ENV.fetch("ORCHARD_API_HOST")}/logout")
+    http = Net::HTTP.new(url.host)
+    request = Net::HTTP::Delete.new(url.path)
+    response = http.request(request)
+    if response.code.eql?('200')
+      $user_token = nil
+      session[:user_id] = nil
+      session[:token] = nil
+    else
+      flash[:danger] = 'Invalid request'
+    end
     redirect_to root_path
   end
 
