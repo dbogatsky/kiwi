@@ -16,8 +16,8 @@
                  data-target=".conversation-edit-note-modal-form"
                  data-id="<%= citem.id %>"
                  data-title="<%=citem.title%>"
-                 data-date="<%=citem.scheduled_at.to_date if citem.scheduled_at.present?%>" 
-                 data-time="<%=citem.scheduled_at.to_time.strftime("%I:%M%p") if citem.scheduled_at.present? %>"
+                 data-date="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.scheduled_at.present?%>"
+                 data-time="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.scheduled_at.present? %>"
                  data-description="<%= citem.body %>">Edit</a>
             </li>
             <li>

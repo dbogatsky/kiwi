@@ -87,11 +87,8 @@ class AccountsController < ApplicationController
   def add_note
     c_id = Account.find(conversation_item_params[:account_id]).conversation.id
     if params[:scheduled_date].present? && params[:scheduled_time].present?
-      d = params[:scheduled_date].to_date
-      t = params[:scheduled_time].to_time.utc
-      params[:conversation_item][:scheduled_at] = DateTime.new(d.year, d.month, d.day, t.hour, t.min, t.sec, t.zone)
+      params[:conversation_item][:scheduled_at] = Chronic.parse("#{params[:scheduled_date]} at #{params[:scheduled_time]}").utc
     end
-
     ci = ConversationItem.create(conversation_item: {title: conversation_item_params[:title], body: conversation_item_params[:body], scheduled_at: params[:conversation_item][:scheduled_at]}, conversation_id: c_id, type: conversation_item_params[:type])
     if ci
       flash[:success] = 'Your note has been added to the conversation'
@@ -106,14 +103,12 @@ class AccountsController < ApplicationController
     conversation_id = @account.conversation.id
     if params[:conversation_item][:reminder].present?
       if params[:scheduled_date].present? && params[:scheduled_time].present?
-        d = params[:scheduled_date].to_date
-        t = params[:scheduled_time].to_time.utc
-        params[:conversation_item][:scheduled_at] = DateTime.new(d.year, d.month, d.day, t.hour, t.min, t.sec, t.zone)
+        params[:conversation_item][:scheduled_at] = Chronic.parse("#{params[:scheduled_date]} at #{params[:scheduled_time]}").utc
       end
     else
       params[:conversation_item][:scheduled_at] = nil
       params[:conversation_item][:reminder] = nil
-    end    
+    end
 
     note = @account.conversation.conversation_items
     note.each do |n|
