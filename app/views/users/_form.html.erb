@@ -40,7 +40,7 @@
 	        <%=f.select(:locale, options_for_select([['English', 1],['French', 2]], selected: @user.new_record? ? '' : @user.locale ), {prompt: "-- select --"}, {:class => 'form-control input-sm', required: true})%>
 	      </div>
 	    </div>
-      <%= f.input :time_zone, input_html: { class: 'form-control input-sm' }, priority: ActiveSupport::TimeZone.us_zones %>
+      <%= f.input :time_zone, input_html: { class: 'form-control input-sm' }, priority: ActiveSupport::TimeZone.us_zones, default: "Pacific Time (US & Canada)" %>
 	    <%= f.fields_for :addresses_attributes do |add| %>
 	    	<%st_address = @address.last.street_address rescue nil%>
 	      <%= add.input :street_address, required: true, label: "Street", :input_html => { :name => "user[addresses_attributes][][street_address]", :value => st_address}%>

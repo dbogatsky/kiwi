@@ -167,7 +167,7 @@ class ApplicationController < ActionController::Base
 #       render text: 'page loaded'
 #     end
 #   end
-#   
+#
 
 
 end
