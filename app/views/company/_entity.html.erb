@@ -2,12 +2,14 @@
 <li class="first_li"><i class="fa fa-cubes"></i><%#=link_to entity.name, 'javascript:;', remote: true, class: 'nested_link'%><%=entity.name%></li>
 <li class="second_li"><%= entity.description %></li>
 <li class="third_li">
-  <a href="javascript:void(0);" class="edit-folder"
-      data-id="<%= entity.id %>"
-      data-name="<%=entity.name %>"
-      data-description="<%= entity.description %>"
-      data-parent="<%= parent_entity.parent.present? ? parent_entity.parent.id : ''%>"
-      data-toggle="modal" data-target=".edit_company_entity" class="modal-link"><i class="fa fa-pencil"></i></a>
-  <%=link_to company_entity_path(entity.id), method: :delete,data: {:confirm => 'Are you sure to delete company entity?'} do %><i class="fa fa-trash-o"></i>
+  <% if has_permissions({ "CompanyEntity"=>{"actions"=>"manage"}, "all"=>{"actions"=>"manage"} }) %>
+	  <a href="javascript:void(0);" class="edit-folder"
+	      data-id="<%= entity.id %>"
+	      data-name="<%=entity.name %>"
+	      data-description="<%= entity.description %>"
+	      data-parent="<%= parent_entity.parent.present? ? parent_entity.parent.id : ''%>"
+	      data-toggle="modal" data-target=".edit_company_entity" class="modal-link"><i class="fa fa-pencil"></i></a>
+	  <%=link_to company_entity_path(entity.id), method: :delete,data: {:confirm => 'Are you sure to delete company entity?'} do %>&nbsp;&nbsp;&nbsp;<i class="fa fa-trash-o"></i>
+	  <% end %>
   <% end %>
 </li>
