@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Front-end Software Version: <%= APP_CONFIG['software_version'] %> -->
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="shortcut icon" href="" type="image/png">
+
+  <title><%= APP_CONFIG['software_title'] %></title>
+
+  <link rel="stylesheet" href="/assets/bootstrap/css/style.default.css" />
+  <link rel="stylesheet" href="/assets/styles/style.focus.css" />
+  <link rel="stylesheet" href="/assets/bootstrap/css/fullcalendar.css" />
+  <link rel="stylesheet" href="/assets/bootstrap/css/colorpicker.css" />
+  <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap-timepicker.min.css" /><!-- timepicker style -->
+  <link rel="stylesheet" href="/assets/bootstrap/css/jquery.tagsinput.css" /><!-- tag input style -->
+  <link rel="stylesheet" href="/assets/bootstrap/css/cropper.min.css" /> <!-- photo cropper style -->
+  <link rel="stylesheet" href="/assets/vertical-timeline/css/style.css" /> <!-- Resource style -->
+  <link rel="stylesheet" href="/assets/bootstrap/css/jquery.datatables.css" /> <!-- datatable style -->
+  <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap-editable.css" />
+  <link rel="stylesheet" href="/assets/bootstrap/css/jquery.gritter.css" />
+  <link rel="stylesheet" href="/assets/bootstrap/css/morris.css" /> <!-- morris charts -->
+  <link rel="stylesheet" href="/assets/styles/wyshtml5/wyshtml5.css" />
+  <link rel="stylesheet" href="/assets/styles/wyshtml5/wyshtml5-color.css" />
+
+  <!--<script src="/assets/vertical-timeline/js/modernizr.js"></script />--> <!-- Modernizr -->
+
+  <%#= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= stylesheet_link_tag 'application', media: 'all' %>
+  <%#= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application' %>
+  <%= render "shared/js" %>
+
+  <%= csrf_meta_tags %>
+
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="/assets/bootstrap/js/html5shiv.js"></script>
+  <script src="/assets/bootstrap/js/respond.min.js"></script>
+  <![endif]-->
+
+  <%= yield :custom_css %>
+  <%= yield :head_assets %>
+  <style>
+    #ui-datepicker-div{ z-index:9999 !important; }
+    .datepicker {
+      padding: 10px;
+    }
+    .colorpicker, .colorpicker * {
+      z-index: 9999 !important;
+    }
+  </style>
+</head>
+
+<body data-no-turbolink>
+  <!-- Preloader -->
+  <div id="preloader">
+    <div id="status"><i class="fa fa-spinner fa-spin"></i></div>
+  </div>
+  <section>
+    <%= render "layouts/admin/side_nav" %>
+    <div class="mainpanel">
+      <%= render "layouts/admin/admin_bar" %>
+      <div class="pageheader">
+        <%= yield :pageheader %>
+      </div>
+      <div class="contentpanel">
+        <%= render 'layouts/flash_messages'%>
+        <%= yield %>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

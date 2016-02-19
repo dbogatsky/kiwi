@@ -6,24 +6,37 @@ class ApplicationController < ActionController::Base
   before_filter :authentication
 #   before_filter :check_request
 
-  helper_method :current_user, :logged_in?
+  helper_method :current_user, :logged_in?, :superadmin_logged_in?
   helper_method :has_permission, :has_permissions, :has_page_permission, :has_page_permissions
 
   private
 
   def authentication
-     if session[:token].nil?
-      flash[:danger] = 'Your session has expired.  Please log in again.'  # Log in error message
-      redirect_to root_path
-     else
-       set_current_user
-     end
+    if session[:user_id].present? && superadmin_logged_in?
+      set_superadmin
+    else
+      if session[:token].nil?
+        flash[:danger] = 'Your session has expired.  Please log in again.'  # Log in error message
+        redirect_to root_path
+      else
+        set_current_user
+      end
+    end
   end
 
   def set_current_user
     $user_token = session[:token]
     @current_user = User.find(session[:user_id])
     @current_user.id = session[:user_id]
+  end
+
+  def set_superadmin
+    $user_token = session[:token]
+  end
+
+  def superadmin_logged_in?
+    return true if session[:user_id].eql?('superadmin')
+    false
   end
 
   def current_user

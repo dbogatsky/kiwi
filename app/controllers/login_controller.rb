@@ -5,8 +5,7 @@ class LoginController < ApplicationController
   def index
     if !session[:token].nil?
       if(session[:user_id] == "superadmin")
-        #should redirect to SU panel exiting for now
-        exit
+        redirect_to admin_companies_path
       else
         redirect_to dashboard_path
       end
@@ -18,38 +17,37 @@ class LoginController < ApplicationController
   def login
 
     # Check username and password through the Authentication API
-    begin
+    # begin
       if params[:email] == APP_CONFIG['superadmin_email']
         token = Token.bo_authenticate(params[:email], params[:password])
       else
         token = Token.authenticate(params[:email], params[:password])
       end
-    rescue ActiveResource::ResourceNotFound,    # 404 ResourceNotFound - No match found with email/password provided
-            ActiveResource::BadRequest,         # 400 BadRequest - Incorrect request sent
-            ActiveResource::UnauthorizedAccess, # 403 UnauthorizedAccess - No access to server
-            ActiveResource::MethodNotAllowed,   # 405 MethodNotAllowed - Incorrect request
-            ActiveResource::ResourceConflict,   # 409 ResourceConflict - ?
-            ActiveResource::ResourceGone,       # 410 ResourceGone - ?
-            ActiveResource::ResourceInvalid     # 422 ResourceInvalid (rescued by save as validation errors) - ?
+    # rescue ActiveResource::ResourceNotFound,    # 404 ResourceNotFound - No match found with email/password provided
+    #         ActiveResource::BadRequest,         # 400 BadRequest - Incorrect request sent
+    #         ActiveResource::UnauthorizedAccess, # 403 UnauthorizedAccess - No access to server
+    #         ActiveResource::MethodNotAllowed,   # 405 MethodNotAllowed - Incorrect request
+    #         ActiveResource::ResourceConflict,   # 409 ResourceConflict - ?
+    #         ActiveResource::ResourceGone,       # 410 ResourceGone - ?
+    #         ActiveResource::ResourceInvalid     # 422 ResourceInvalid (rescued by save as validation errors) - ?
 
-      flash[:danger] = 'Your email or password is incorrect.  Please try again.'  # Log in error message
-      return redirect_to user_login_path
+    #   flash[:danger] = 'Your email or password is incorrect.  Please try again.'  # Log in error message
+    #   return redirect_to user_login_path
 
-    rescue ActiveResource::ServerError, # 500..599 ServerError - Server Error or unresponsive
-            ActiveResource::ConnectionError # Other ConnectionError - No connection or other error
-      flash[:danger] = 'An unexpected error was encountered.'  # Log in error message
-      return redirect_to user_login_path
-    end
+    # rescue ActiveResource::ServerError, # 500..599 ServerError - Server Error or unresponsive
+    #         ActiveResource::ConnectionError # Other ConnectionError - No connection or other error
+    #   flash[:danger] = 'An unexpected error was encountered.'  # Log in error message
+    #   return redirect_to user_login_path
+    # end
 
     unless token.nil?
 
       #handle superadmin case
       if params[:email] == APP_CONFIG['superadmin_email']
-        session[:token] = token.token
         session[:user_id] = "superadmin"
-
-        #should redirect to SU panel exiting for now
-        exit
+        # set_superadmin
+        flash[:success] = 'Logged in as superadmin'
+        redirect_to admin_companies_path
       else
         # Store user details into session
         session[:user_id] = token.user_id
