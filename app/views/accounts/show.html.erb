@@ -114,7 +114,6 @@
           <div class="col-sm-6">
           <% if has_permissions({ "ConversationItem"=>{"actions"=>["read","manage"]}, "all"=>{"actions"=>"manage"} }) %>
             <%= render "conversation_search" %>
-          <% end %>
           </div>
           <div class="col-sm-6">
             <% if has_permissions({ "Conversation"=>{"actions"=>["manage"]}, "all"=>{"actions"=>"manage"} }) || has_permissions({ "Account"=>{"actions"=>["manage"]}, "all"=>{"actions"=>"manage"} }) %>
@@ -198,9 +197,6 @@
 
   <!-- add conversation schedule modal form -->
   <%= render "conversation_meeting" %>
-  <%= render "conversation_notes" %>
-  <%= render "conversation_email" %>
-  <%= render 'edit_conversation_note'%>
 
   <%= render "conversation_sharedusers" %>
 <% end %>

@@ -47,6 +47,10 @@ class ApplicationController < ActionController::Base
     current_user != nil
   end
 
+  def convert_datetime_to_utc(timezone, date, time="00:00:00")  
+     @parsed_datetime = Chronic.parse("#{date} at #{time}").strftime('%Y-%m-%d %H:%M:%S')
+     @utc_datetime = (DateTime.parse "#{@parsed_datetime} #{timezone}").utc.strftime("%Y-%m-%d %H:%M:%S %z")
+  end
 
   # Check permission by single credential criterion
   def has_permission(subject_class, action, action_scope="")

@@ -1,12 +1,18 @@
-<div class="cd-timeline-img cd-note">
-    <img src="/assets/vertical-timeline/img/cd-icon-comments.svg" alt="Note">
-</div>
+<% if (citem.scheduled_at.present?) %>
+    <div class="cd-timeline-img cd-reminder">
+        <img src="/assets/vertical-timeline/img/cd-icon-bell.svg" alt="Reminder">
+    </div>
+<% else %> 
+     <div class="cd-timeline-img cd-note">   
+        <img src="/assets/vertical-timeline/img/cd-icon-comments.svg" alt="Note">
+    </div>
+<% end %>
 <div class="cd-timeline-content">
     <span class="cd-date">
         <%= citem.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>
     </span>
     <div class="btn-group pull-right">
-        <a data-toggle="dropdown" class="dropdown-toggle">
+        <a data-toggle="dropdown" class="dropdown-toggle" aria-expanded="false">
             <i class="fa fa-cog"></i>
         </a>
         <ul role="menu" class="dropdown-menu pull-right">
@@ -24,7 +30,12 @@
                 <%=link_to 'Delete', delete_note_account_path(@account, item_id: citem.id), method: :delete,data: {confirm: 'Are you sure to delete this note?'}%>
             </li>
         </ul>
-    </div>
-    <h2 style="margin-top: 2px;margin-bottom: 5px;"><%= citem.title %></h2>
-    <p><div class="ci_note_body"><%= sanitize citem.body %></div></p>
+    </div>    
+    <h2 style="margin-top: 2px;margin-bottom: 5px;"><%= citem.title %></h2>  
+    <div class="ci_note_body"><%= sanitize citem.body %></div>
+    <% if (citem.scheduled_at.present?) %>
+        <div class="ci_footer">
+            <i class="fa fa-bell"></i><%= citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %>
+        </div>   
+    <% end %>      
 </div>

@@ -103,7 +103,7 @@ class AccountsController < ApplicationController
     conversation_id = @account.conversation.id
     if params[:conversation_item][:reminder].present?
       if params[:scheduled_date].present? && params[:scheduled_time].present?
-        params[:conversation_item][:scheduled_at] = Chronic.parse("#{params[:scheduled_date]} at #{params[:scheduled_time]}").utc
+        params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:scheduled_date], params[:scheduled_time]) 
       end
     else
       params[:conversation_item][:scheduled_at] = nil
