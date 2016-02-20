@@ -112,8 +112,9 @@
 
         <div class="row">
           <div class="col-sm-6">
-          <% if has_permissions({ "ConversationItem"=>{"actions"=>["read","manage"]}, "all"=>{"actions"=>"manage"} }) %>
-            <%= render "conversation_search" %>
+            <% if has_permissions({ "ConversationItem"=>{"actions"=>["read","manage"]}, "all"=>{"actions"=>"manage"} }) %>
+              <%= render "conversation_search" %>
+            <% end %>
           </div>
           <div class="col-sm-6">
             <% if has_permissions({ "Conversation"=>{"actions"=>["manage"]}, "all"=>{"actions"=>"manage"} }) || has_permissions({ "Account"=>{"actions"=>["manage"]}, "all"=>{"actions"=>"manage"} }) %>
@@ -197,6 +198,12 @@
 
   <!-- add conversation schedule modal form -->
   <%= render "conversation_meeting" %>
+  <%= render "conversation_email" %>
+  <%= render "conversation_email_edit" %>      
+  <%= render "conversation_note" %>
+  <%= render 'conversation_note_edit'%>  
+
+
 
   <%= render "conversation_sharedusers" %>
 <% end %>
@@ -210,6 +217,26 @@
     new_editor = $('#new_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
     edit_editor = $('#edit_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
   });
+
+  $(document).on('click', "a.edit_email", function(e){
+    id = $(this).attr('data-id')
+    $('.conversation-edit-email-modal-form input[name="conversation_item[invitees]"]').val($(this).attr('data-invitees'));
+    $('.conversation-edit-email-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
+    $('.conversation-edit-email-modal-form input[name="scheduled_time"]').val($(this).attr('data-time'));
+    $('.conversation-edit-email-modal-form input[name="scheduled_date"]').val($(this).attr('data-date'));
+    $('.conversation-edit-email-modal-form textarea[name="conversation_item[body]"]').val($(this).attr('data-body'));
+    $('.conversation-edit-email-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
+
+    if ($('.conversation-edit-email-modal-form input[name="scheduled_time"]').val()!="" || $('.conversation-edit-email-modal-form input[name="scheduled_date"]').val()!="") {
+      $("#send_later_edit").attr('checked', true);
+      $("#email-sendlater-settings").show(500);
+    } 
+    else {
+      $("#email-sendlater-settings").hide(500);
+    }
+
+  });
+
 
   $(document).on('click', "a.edit_note", function(e){
     id = $(this).attr('data-id')
@@ -378,10 +405,13 @@
 		$('#scheduledDatePicker').datepicker();
 		$('#scheduledTimePicker').timepicker({minuteStep: 5});
 
-		// by default hide reminder settings for notes
+    $('#emailDatePickerEdit').datepicker();
+    $('#emailTimePickerEdit').timepicker({minuteStep: 5});    
+
+		// by default hide reminder settings for emails
 		$("#email-sendlater-settings").hide();
 
-		// hide show note reminder settings
+		// hide show email reminder settings
 		$('#send-later').change(function () {
 		    if ($("#send-later").is(':checked')) {
 			    $("#email-sendlater-settings").show(500);

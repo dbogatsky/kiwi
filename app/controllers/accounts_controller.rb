@@ -1,7 +1,7 @@
 require 'net/http/post/multipart'
 class AccountsController < ApplicationController
   before_action :get_token
-  before_action :find_account, only: [:conversation, :edit, :update, :share, :update_note, :delete_note]
+  before_action :find_account, only: [:conversation, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email]
 
   def index
     # Get all accounts
@@ -87,7 +87,7 @@ class AccountsController < ApplicationController
   def add_note
     c_id = Account.find(conversation_item_params[:account_id]).conversation.id
     if params[:scheduled_date].present? && params[:scheduled_time].present?
-      params[:conversation_item][:scheduled_at] = Chronic.parse("#{params[:scheduled_date]} at #{params[:scheduled_time]}").utc
+      params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:scheduled_date], params[:scheduled_time])
     end
     ci = ConversationItem.create(conversation_item: {title: conversation_item_params[:title], body: conversation_item_params[:body], scheduled_at: params[:conversation_item][:scheduled_at]}, conversation_id: c_id, type: conversation_item_params[:type])
     if ci
@@ -135,9 +135,24 @@ class AccountsController < ApplicationController
     redirect_to account_path(params[:id])
   end
 
+
   def send_email
     c_id = Account.find(conversation_item_params[:account_id]).conversation.id
-    ci = ConversationItem.create(conversation_item: {title: conversation_item_params[:title], body: conversation_item_params[:body]}, conversation_id: c_id, type: "email")
+    if params[:scheduled_date].present? && params[:scheduled_time].present?
+      params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:scheduled_date], params[:scheduled_time])
+    else
+      params[:conversation_item][:scheduled_at] = nil
+      params[:conversation_item][:reminder] = nil
+    end
+
+    ci = ConversationItem.create(
+          conversation_item: {
+            title: conversation_item_params[:subject], 
+            body: conversation_item_params[:body],
+            invitees: conversation_item_params[:email],
+            scheduled_at: params[:conversation_item][:scheduled_at]
+          }, 
+        conversation_id: c_id, type: "email")
     if ci
       flash[:success] = 'Your email has been successfully sent'
     else
@@ -145,6 +160,49 @@ class AccountsController < ApplicationController
     end
     redirect_to account_path(conversation_item_params[:account_id])
   end
+
+
+  def update_email
+    conversation_id = @account.conversation.id
+    if params[:conversation_item][:send_later].present?
+      if params[:scheduled_date].present? && params[:scheduled_time].present?
+        params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:scheduled_date], params[:scheduled_time]) 
+      end
+    else
+      params[:conversation_item][:scheduled_at] = nil
+      params[:conversation_item][:reminder] = nil
+    end
+
+    email = @account.conversation.conversation_items
+    
+    email.each do |n|
+      @conversation = n if n.id == params[:conversation_item][:id].to_i
+    end
+
+    if @conversation.update_attributes(conversation_item: params[:conversation_item], conversation_id: conversation_id)
+      flash[:success] = 'Email successfully updated!'
+    else
+      flash[:danger] = 'Email not updated!'
+    end
+    redirect_to account_path(params[:id])
+  end
+
+  def delete_email
+    email = @account.conversation.conversation_items
+    email.each do |n|
+      @conversation = n if n.id == params[:item_id].to_i
+    end
+    if @conversation.destroy
+      flash[:success] = 'Email successfully deleted'
+    else
+      flash[:danger] = 'Oops! Unable to delete the email'
+    end
+    redirect_to account_path(params[:id])
+  end
+
+
+
+
 
 
   def share
@@ -178,7 +236,7 @@ class AccountsController < ApplicationController
 
 
   def conversation_item_params
-    params.require(:conversation_item).permit(:account_id, :type, :reminder, :scheduled_at, :title, :body)
+    params.require(:conversation_item).permit(:account_id, :type, :reminder, :scheduled_at, :subject, :body, :email, :send_later)
   end
 
 

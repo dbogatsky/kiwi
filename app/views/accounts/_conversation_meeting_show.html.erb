@@ -5,6 +5,6 @@
 	<span class="cd-date">
 		<%= citem.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>
 	</span>
-	<h2 style="margin-top: 2px;margin-bottom: 5px;"><%= citem.title %></h2>
+	<h2 class="ci_header"><%= citem.title %></h2>
 	<p><%= citem.body %></p>
 </div>

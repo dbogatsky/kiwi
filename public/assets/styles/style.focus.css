@@ -7,6 +7,12 @@ body,
     font-size:14px!important;
 }
 
+
+.ci_header {
+    margin-top: 2px;
+    margin-bottom: 10px;
+}
+
 .ci_footer {
     font-size: 12px!important;
     margin-top: 20px;

@@ -1,12 +1,6 @@
-<% if (citem.scheduled_at.present?) %>
-    <div class="cd-timeline-img cd-reminder">
-        <img src="/assets/vertical-timeline/img/cd-icon-bell.svg" alt="Reminder">
-    </div>
-<% else %> 
-     <div class="cd-timeline-img cd-note">   
-        <img src="/assets/vertical-timeline/img/cd-icon-comments.svg" alt="Note">
-    </div>
-<% end %>
+<div class="cd-timeline-img cd-email">
+    <img src="/assets/vertical-timeline/img/cd-icon-envelope-o.svg" alt="Email">
+</div>
 <div class="cd-timeline-content">
     <span class="cd-date">
         <%= citem.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>
@@ -17,17 +11,18 @@
         </a>
         <ul role="menu" class="dropdown-menu pull-right">
             <li>
-                <a class="edit_note" href="#"
+                <a class="edit_email" href="#"
                  data-toggle="modal"
-                 data-target=".conversation-edit-note-modal-form"
+                 data-target=".conversation-edit-email-modal-form"
                  data-id="<%= citem.id %>"
-                 data-title="<%=citem.title%>"
+                 data-invitees="<%=citem.invitees %>"
+                 data-title="<%=citem.title %>"
                  data-date="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.scheduled_at.present?%>"
                  data-time="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.scheduled_at.present? %>"
-                 data-description="<%= citem.body %>">Edit</a>
+                 data-body="<%= citem.body %>">Edit</a>
             </li>
             <li>
-                <%=link_to 'Delete', delete_note_account_path(@account, item_id: citem.id), method: :delete,data: {confirm: 'Are you sure to delete this note?'}%>
+                <%=link_to 'Delete', delete_email_account_path(@account, item_id: citem.id), method: :delete,data: {confirm: 'Are you sure to delete this email?'}%>
             </li>
         </ul>
     </div>    
@@ -35,7 +30,10 @@
     <div class="ci_note_body"><%= sanitize citem.body %></div>
     <% if (citem.scheduled_at.present?) %>
         <div class="ci_footer">
-            <i class="fa fa-bell"></i><%= citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %>
+            <% if !citem.invitees.nil? %>
+                <i class="fa fa-paper-plane-o"></i><%= citem.invitees %><br />
+            <% end %>
+            <i class="fa fa-calendar"></i><%= citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %>
         </div>   
     <% end %>      
 </div>
