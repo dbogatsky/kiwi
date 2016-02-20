@@ -1,30 +1,24 @@
 module CompanyHelper
 
-  def nested_entities(entites)
-    z = []
-    parents = entites.collect{|a| a if a.parent == nil}.compact
-    level = 0
-    set_items(parents, level, z)
-    z.map do |hash|
-      padding = 10 * (hash[:level].to_i -1)
-      content_tag(:ul, render('company/entity', entity: hash[:entity]),
-          class: "table_head table_content level_#{hash[:level]}", style: "padding-left: #{padding}px ")
-    end.join.html_safe
+  def nested_entities(entities)
+    entities = entities.as_json
+    generate_entities_table_recur(nil, entities, 1).html_safe
   end
 
   private
-    def set_items(items= [], level = 0, z)
-      level +=1
-      items.each do |i|
 
-        set_data(items, i, level, z)
+    def generate_entities_table_recur(parent_id, entities, level)
+      html = ''
+      entities.each do |entity|
+        entity_parent_id = entity["parent"].as_json.present? ? entity["parent"].as_json["id"] : nil
+        if entity_parent_id == parent_id
+          padding = level * 10
+          html += content_tag(:ul, render('company/entity', entity: entity),
+                    class: "table_head table_content level_#{level}", style: "padding-left: #{padding}px ")
+          html += generate_entities_table_recur(entity["id"], entities, level+1)
+        end
       end
+      html
     end
 
-    def set_data(parents, item, level, z)
-      entity = CompanyEntities.find(item.id)
-      z << {level: level, entity: item}
-      puts("level = #{level} id = #{entity.id}")
-      set_items(entity.descendants, level, z) if entity.descendants.present?
-    end
 end

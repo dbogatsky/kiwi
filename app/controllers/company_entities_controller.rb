@@ -10,7 +10,7 @@ class CompanyEntitiesController < ApplicationController
     	flash[:success] = 'Company Entity successfully created.'
 
       #Refresh the company entities list stored in cache resource
-      #@entites = CompanyEntities.all(:reload => true)
+      @entites = CompanyEntities.all(:reload => true)
       redirect_to company_path
     else
     	flash[:danger] = 'Company Entity could not created.'
@@ -24,7 +24,7 @@ class CompanyEntitiesController < ApplicationController
       flash[:success] = 'Company Entity successfully updated.'
 
       #Refresh the company entities list stored in cache resource
-      #@entites = CompanyEntities.all(:reload => true)
+      @entites = CompanyEntities.all(:reload => true)
       redirect_to company_path
     else
     	flash[:danger] = 'Company Entity could not updated.'
@@ -40,6 +40,9 @@ class CompanyEntitiesController < ApplicationController
 		@entity = CompanyEntities.find(params[:id])
 		if @entity.destroy
 			flash[:success] = 'Company Entity successfully deleted.'
+
+      #Refresh the company entities list stored in cache resource
+      @entites = CompanyEntities.all(:reload => true)
 		  redirect_to company_path
 		 else
 		 	flash[:danger]  = 'Company Entity could not deleted.'

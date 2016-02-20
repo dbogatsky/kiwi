@@ -1,3 +1,3 @@
 class CompanyEntities < OrchardApiModel
-  #cached_resource
+  cached_resource
 end
