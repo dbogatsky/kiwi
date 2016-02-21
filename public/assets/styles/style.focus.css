@@ -629,7 +629,6 @@ body,
     color: #6b6b6b; 
 }
 
-
 /* blog */
 
 .blog-item {
@@ -780,9 +779,10 @@ body.notfound, body.signin {
 
 
 .btn-primary {
-   background: #333;
-   color: #fff;
-   border-color: #222;
+    background: #333;
+    color: #fff;
+    border-color: #222;
+    border-radius: 2px;
 }
 
 .open>.dropdown-toggle.btn-primary,
