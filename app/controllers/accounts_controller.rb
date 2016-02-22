@@ -89,7 +89,7 @@ class AccountsController < ApplicationController
     if params[:scheduled_date].present? && params[:scheduled_time].present?
       params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:scheduled_date], params[:scheduled_time])
     end
-    ci = ConversationItem.create(conversation_item: {title: conversation_item_params[:title], body: conversation_item_params[:body], scheduled_at: params[:conversation_item][:scheduled_at]}, conversation_id: c_id, type: conversation_item_params[:type])
+    ci = ConversationItem.create(conversation_item: {title: conversation_item_params[:subject], body: conversation_item_params[:body], scheduled_at: params[:conversation_item][:scheduled_at]}, conversation_id: c_id, type: conversation_item_params[:type])
     if ci
       flash[:success] = 'Your note has been added to the conversation'
     else
@@ -103,7 +103,7 @@ class AccountsController < ApplicationController
     conversation_id = @account.conversation.id
     if params[:conversation_item][:reminder].present?
       if params[:scheduled_date].present? && params[:scheduled_time].present?
-        params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:scheduled_date], params[:scheduled_time]) 
+        params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:scheduled_date], params[:scheduled_time])
       end
     else
       params[:conversation_item][:scheduled_at] = nil
@@ -147,11 +147,11 @@ class AccountsController < ApplicationController
 
     ci = ConversationItem.create(
           conversation_item: {
-            title: conversation_item_params[:subject], 
+            title: conversation_item_params[:subject],
             body: conversation_item_params[:body],
             invitees: conversation_item_params[:email],
             scheduled_at: params[:conversation_item][:scheduled_at]
-          }, 
+          },
         conversation_id: c_id, type: "email")
     if ci
       flash[:success] = 'Your email has been successfully sent'
@@ -166,7 +166,7 @@ class AccountsController < ApplicationController
     conversation_id = @account.conversation.id
     if params[:conversation_item][:send_later].present?
       if params[:scheduled_date].present? && params[:scheduled_time].present?
-        params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:scheduled_date], params[:scheduled_time]) 
+        params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:scheduled_date], params[:scheduled_time])
       end
     else
       params[:conversation_item][:scheduled_at] = nil
@@ -174,7 +174,7 @@ class AccountsController < ApplicationController
     end
 
     email = @account.conversation.conversation_items
-    
+
     email.each do |n|
       @conversation = n if n.id == params[:conversation_item][:id].to_i
     end

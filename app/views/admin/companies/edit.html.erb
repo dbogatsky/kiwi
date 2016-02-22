@@ -1,0 +1,78 @@
+ <div class="panel-body panel-body-nopadding">
+    <%#= simple_form_for [:admin, @company], html: { id: "company-add-form", class: "form-horizontal" } do |f| %>
+      <div class="tab-content">
+        <div class="form-group">
+          <label class="col-sm-offset-2 col-sm-2 control-label">Company Name<span class="asterisk">*</span></label>
+          <div class="col-sm-4">
+           <%= text_field_tag 'company[name]' , nil, wrapper: :wizard_horizontal_form, class: 'form-control', required: true%>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-offset-2 col-sm-2 control-label">Sub Domain<span class="asterisk">*</span></label>
+          <div class="col-sm-4">
+           <%= text_field_tag 'company[subdomain]' , nil, wrapper: :wizard_horizontal_form, class: 'form-control',required: true%>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-offset-2 col-sm-2 control-label">Time Zone<span class="asterisk">*</span></label>
+          <div class="col-sm-4">
+           <%=select_tag('company[time_zone]', options_for_select(ActiveSupport::TimeZone.all.sort), {prompt: "-- select --", :class => 'form-control input-sm', required: true, wrapper: :wizard_horizontal_form})%>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-offset-2 col-sm-2 control-label">Locale<span class="asterisk">*</span></label>
+          <div class="col-sm-4">
+            <%=select_tag('company[locale]', options_for_select([['English', 1],['French', 2]], selected: '' ), {prompt: "-- select --", :class => 'form-control input-sm', required: true})%>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-offset-2 col-sm-2 control-label">Street Address<span class="asterisk">*</span></label>
+          <div class="col-sm-4">
+           <%= text_field_tag 'company[addresses_attributes][0][street_address]' , nil, wrapper: :wizard_horizontal_form, class: 'form-control', required: true%>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-offset-2 col-sm-2 control-label">City<span class="asterisk">*</span></label>
+          <div class="col-sm-4">
+           <%= text_field_tag 'company[addresses_attributes][0][city]' , nil, wrapper: :wizard_horizontal_form, class: 'form-control', required: true%>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-offset-2 col-sm-2 control-label">Province/State<span class="asterisk">*</span></label>
+          <div class="col-sm-4">
+           <%= text_field_tag 'company[addresses_attributes][0][region]' , nil, wrapper: :wizard_horizontal_form, class: 'form-control', required: true%>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-offset-2 col-sm-2 control-label">Post/Zipcode<span class="asterisk">*</span></label>
+          <div class="col-sm-4">
+           <%= text_field_tag 'company[addresses_attributes][0][postcode]' , nil, wrapper: :wizard_horizontal_form, class: 'form-control', required: true%>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-offset-2 col-sm-2 control-label">Country<span class="asterisk">*</span></label>
+          <div class="col-sm-4">
+          <%=country_select("company[addresses_attributes][0]", 'country', priority_countries: ["GB", "FR", "DE"], prompt: "-- select --", required: true)%>
+          </div>
+        </div>
+        <% t = Time.now.to_i %>
+        <div class="form-group">
+          <label class="col-sm-offset-1 col-sm-1 control-label">Contact<span class="asterisk">*</span></label>
+          <div class="col-sm-2">
+            <%=text_field_tag "company[contacts_attributes][#{t}][name]", nil, { required: true, class: "form-control", id: "company_contacts_attributes_name_1" } %>
+          </div>
+          <label class="col-sm-1 control-label">Type<span class="asterisk">*</span></label>
+          <div class="col-sm-1">
+            <%=select_tag("company[contacts_attributes][#{t}][type]", options_for_select(Contact::CONTACT_TYPES),{ :class => "select2", :id => "company_contacts_attributes_type_1", required: true } ) %>
+          </div>
+          <label class="col-sm-1 control-label">Value<span class="asterisk">*</span></label>
+          <div class="col-sm-2">
+            <%=text_field_tag "company[contacts_attributes][#{t}][value]",nil, { required: true, class: "form-control", id: "company_contacts_attributes_value_1" } %>
+          </div>
+        </div>
+        <button class="add-contact-button btn btn-success btn-xs">Add Contact</button>
+      </div><!-- tab-content -->
+      <%#=submit_tag "Finish"%>
+    <%# end %>
+    <!--</form>-->
+</div><!-- panel-body -->

@@ -45,6 +45,7 @@ class LoginController < ApplicationController
       #handle superadmin case
       if params[:email] == APP_CONFIG['superadmin_email']
         session[:user_id] = "superadmin"
+        session[:token] = token.token
         # set_superadmin
         flash[:success] = 'Logged in as superadmin'
         redirect_to admin_companies_path

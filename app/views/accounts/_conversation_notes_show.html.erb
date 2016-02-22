@@ -2,8 +2,8 @@
     <div class="cd-timeline-img cd-reminder">
         <img src="/assets/vertical-timeline/img/cd-icon-bell.svg" alt="Reminder">
     </div>
-<% else %> 
-     <div class="cd-timeline-img cd-note">   
+<% else %>
+     <div class="cd-timeline-img cd-note">
         <img src="/assets/vertical-timeline/img/cd-icon-comments.svg" alt="Note">
     </div>
 <% end %>
@@ -32,12 +32,12 @@
             </li>
           </ul>
         </div>
-    </div>    
-    <h2 class="ci_header"><%= citem.title %></h2>  
+    </div>
+    <h2 class="ci_header"><%= citem.title %></h2>
     <div class="ci_note_body"><%= sanitize citem.body %></div>
     <% if (citem.scheduled_at.present?) %>
         <div class="ci_footer">
             <i class="fa fa-bell"></i><%= citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %>
-        </div>   
-    <% end %>      
+        </div>
+    <% end %>
 </div>

@@ -19,7 +19,7 @@ class BoToken < OrchardBoApiModel
         password: password
       }
     )
-  end  
+  end
 end
 
 

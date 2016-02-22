@@ -1,3 +1,4 @@
 class Company < OrchardApiModel
-  include ActiveResource::Singleton
+	self.site = 'http://api.convo.code10.ca/backoffice/'
+  # include ActiveResource::Singleton
 end

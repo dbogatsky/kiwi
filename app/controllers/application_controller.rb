@@ -32,6 +32,7 @@ class ApplicationController < ActionController::Base
 
   def set_superadmin
     $user_token = session[:token]
+    @superadmin_email = APP_CONFIG['superadmin_email']
   end
 
   def superadmin_logged_in?
@@ -47,7 +48,7 @@ class ApplicationController < ActionController::Base
     current_user != nil
   end
 
-  def convert_datetime_to_utc(timezone, date, time="00:00:00")  
+  def convert_datetime_to_utc(timezone, date, time="00:00:00")
      @parsed_datetime = Chronic.parse("#{date} at #{time}").strftime('%Y-%m-%d %H:%M:%S')
      @utc_datetime = (DateTime.parse "#{@parsed_datetime} #{timezone}").utc.strftime("%Y-%m-%d %H:%M:%S %z")
   end
