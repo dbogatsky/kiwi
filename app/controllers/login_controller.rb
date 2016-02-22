@@ -19,7 +19,7 @@ class LoginController < ApplicationController
     # Check username and password through the Authentication API
     begin
       if params[:email] == APP_CONFIG['superadmin_email']
-        token = Token.bo_authenticate(params[:email], params[:password])
+        token = BoToken.authenticate(params[:email], params[:password])
       else
         token = Token.authenticate(params[:email], params[:password])
       end

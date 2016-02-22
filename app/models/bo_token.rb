@@ -1,7 +1,8 @@
-class Token < OrchardApiModel
+class BoToken < OrchardBoApiModel
 
-  include ActiveResource::Singleton
-  #self.headers['Authorization'] = ''
+  #can use self.element_name however it will pluralize
+  #self.collection_name will use as is
+  self.collection_name = "token"
 
   def self.headers
     new_headers = static_headers.clone
@@ -11,13 +12,14 @@ class Token < OrchardApiModel
 
   def self.authenticate(email, password)
     #initate api call and catch any errors
-    @token = Token.create(
+    @token = BoToken.create(
       app_key: APP_CONFIG['api_app_key'],
-      user: {
+      support_user: {
         email: email,
         password: password
       }
     )
-  end 
+  end  
 end
+
 
