@@ -28,12 +28,12 @@
     </div>  
     <h2 class="ci_header"><%= citem.title %></h2>  
     <div class="ci_note_body"><%= sanitize citem.body %></div>
-    <% if (citem.scheduled_at.present?) %>
-        <div class="ci_footer">
-            <% if !citem.invitees.nil? %>
-                <i class="fa fa-paper-plane-o"></i><%= citem.invitees %><br />
-            <% end %>
+    <div class="ci_footer">
+        <% if !citem.invitees.nil? %>
+            <i class="fa fa-paper-plane-o"></i><%= citem.invitees %><br />
+        <% end %>
+        <% if (citem.scheduled_at.present?) %>
             <i class="fa fa-calendar"></i><%= citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %>
-        </div>   
-    <% end %>      
+        <% end %> 
+    </div>        
 </div>
