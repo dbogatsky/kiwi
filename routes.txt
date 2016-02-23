@@ -1,0 +1,99 @@
+                     Prefix Verb      URI Pattern                                           Controller#Action
+        admin_company_users GET       /admin/companies/:company_id/users(.:format)          admin/users#index
+                            POST      /admin/companies/:company_id/users(.:format)          admin/users#create
+     new_admin_company_user GET       /admin/companies/:company_id/users/new(.:format)      admin/users#new
+    edit_admin_company_user GET       /admin/companies/:company_id/users/:id/edit(.:format) admin/users#edit
+         admin_company_user GET       /admin/companies/:company_id/users/:id(.:format)      admin/users#show
+                            PATCH     /admin/companies/:company_id/users/:id(.:format)      admin/users#update
+                            PUT       /admin/companies/:company_id/users/:id(.:format)      admin/users#update
+                            DELETE    /admin/companies/:company_id/users/:id(.:format)      admin/users#destroy
+            admin_companies GET       /admin/companies(.:format)                            admin/companies#index
+                            POST      /admin/companies(.:format)                            admin/companies#create
+          new_admin_company GET       /admin/companies/new(.:format)                        admin/companies#new
+         edit_admin_company GET       /admin/companies/:id/edit(.:format)                   admin/companies#edit
+              admin_company GET       /admin/companies/:id(.:format)                        admin/companies#show
+                            PATCH     /admin/companies/:id(.:format)                        admin/companies#update
+                            PUT       /admin/companies/:id(.:format)                        admin/companies#update
+                            DELETE    /admin/companies/:id(.:format)                        admin/companies#destroy
+                      login POST      /login(.:format)                                      login#login
+                 user_login GET       /login(.:format)                                      login#index
+                user_logout GET       /login/destroy(.:format)                              login#destroy
+               login_forgot GET       /login/forgot(.:format)                               login#forgot
+              login_recover POST      /login/recover(.:format)                              login#recover
+      login_change_password GET|PATCH /login/:id/change_password(.:format)                  login#change_password
+           login_superadmin GET       /login/superadmin(.:format)                           login#superadmin
+      login_superadmin_auth POST      /login/superadmin_auth(.:format)                      login#superadmin_auth
+                  dashboard GET       /dashboard(.:format)                                  dashboard#index
+                    profile POST      /profile(.:format)                                    profiles#create
+                new_profile GET       /profile/new(.:format)                                profiles#new
+               edit_profile GET       /profile/edit(.:format)                               profiles#edit
+                            GET       /profile(.:format)                                    profiles#show
+                            PATCH     /profile(.:format)                                    profiles#update
+                            PUT       /profile(.:format)                                    profiles#update
+                            DELETE    /profile(.:format)                                    profiles#destroy
+        update_note_account PATCH     /accounts/:id/update_note(.:format)                   accounts#update_note
+       update_email_account PATCH     /accounts/:id/update_email(.:format)                  accounts#update_email
+        delete_note_account DELETE    /accounts/:id/delete_note(.:format)                   accounts#delete_note
+       delete_email_account DELETE    /accounts/:id/delete_email(.:format)                  accounts#delete_email
+           account_contacts POST      /accounts/:account_id/contacts(.:format)              contacts#create
+       edit_account_contact GET       /accounts/:account_id/contacts/:id/edit(.:format)     contacts#edit
+            account_contact PATCH     /accounts/:account_id/contacts/:id(.:format)          contacts#update
+                            PUT       /accounts/:account_id/contacts/:id(.:format)          contacts#update
+                            DELETE    /accounts/:account_id/contacts/:id(.:format)          contacts#destroy
+          account_addresses POST      /accounts/:account_id/addresses(.:format)             addresses#create
+       edit_account_address GET       /accounts/:account_id/addresses/:id/edit(.:format)    addresses#edit
+            account_address PATCH     /accounts/:account_id/addresses/:id(.:format)         addresses#update
+                            PUT       /accounts/:account_id/addresses/:id(.:format)         addresses#update
+                            DELETE    /accounts/:account_id/addresses/:id(.:format)         addresses#destroy
+                   accounts GET       /accounts(.:format)                                   accounts#index
+                            POST      /accounts(.:format)                                   accounts#create
+                new_account GET       /accounts/new(.:format)                               accounts#new
+               edit_account GET       /accounts/:id/edit(.:format)                          accounts#edit
+                    account GET       /accounts/:id(.:format)                               accounts#show
+                            PATCH     /accounts/:id(.:format)                               accounts#update
+                            PUT       /accounts/:id(.:format)                               accounts#update
+                            DELETE    /accounts/:id(.:format)                               accounts#destroy
+           company_entities GET       /company_entities(.:format)                           company_entities#index
+                            POST      /company_entities(.:format)                           company_entities#create
+         new_company_entity GET       /company_entities/new(.:format)                       company_entities#new
+        edit_company_entity GET       /company_entities/:id/edit(.:format)                  company_entities#edit
+             company_entity GET       /company_entities/:id(.:format)                       company_entities#show
+                            PATCH     /company_entities/:id(.:format)                       company_entities#update
+                            PUT       /company_entities/:id(.:format)                       company_entities#update
+                            DELETE    /company_entities/:id(.:format)                       company_entities#destroy
+                      users GET       /users(.:format)                                      users#index
+                            POST      /users(.:format)                                      users#create
+                   new_user GET       /users/new(.:format)                                  users#new
+                  edit_user GET       /users/:id/edit(.:format)                             users#edit
+                       user GET       /users/:id(.:format)                                  users#show
+                            PATCH     /users/:id(.:format)                                  users#update
+                            PUT       /users/:id(.:format)                                  users#update
+                            DELETE    /users/:id(.:format)                                  users#destroy
+   account_schedule_meeting POST      /accounts/:id/schedule_meeting(.:format)              accounts#schedule_meeting
+           account_add_note POST      /accounts/:id/add_note(.:format)                      accounts#add_note
+         account_send_email POST      /accounts/:id/send_email(.:format)                    accounts#send_email
+              account_share POST      /accounts/:id/share(.:format)                         accounts#share
+                   schedule GET       /schedule(.:format)                                   schedule#index
+                      media GET       /media(.:format)                                      media#index
+              create_folder POST      /media/create_folder(.:format)                        media#create_folder
+                       show POST      /media/show(.:format)                                 media#show
+           show_large_image GET       /media/show_large_image(.:format)                     media#show_large_image
+                save_folder POST      /media/save_folder(.:format)                          media#save_folder
+                    destroy POST      /media/destroy(.:format)                              media#destroy
+           destroy_multiple POST      /media/destroy_multiple(.:format)                     media#destroy_multiple
+                upload_file POST      /media/upload_file(.:format)                          media#upload_file
+                 email_file POST      /media/email_file(.:format)                           media#email_file
+              download_file GET       /media/download_file/:url/:name(.:format)             media#download_file {:url=>/.*/}
+          rename_media_file POST      /media/rename_media_file(.:format)                    media#rename_media_file
+              notifications GET       /notifications(.:format)                              notifications#index
+                   messages GET       /messages(.:format)                                   messages#index
+                    company GET       /company(.:format)                                    company#index
+                company_add GET       /company/add(.:format)                                company#add
+               company_edit GET       /company/edit/:id(.:format)                           company#edit
+        company_edit_entity GET       /company/edit_entity/:id(.:format)                    company#edit_entity
+company_display_sub_entites GET       /company/:id/display_sub_entites(.:format)            company#display_sub_entites
+             company_delete POST      /company/delete/:id(.:format)                         company#delete
+             account_status POST      /company/account_status(.:format)                     company#account_status
+                   settings GET       /settings(.:format)                                   settings#index
+                       root GET       /                                                     login#index
+                            GET|POST  /*path(.:format)                                      errors#routing
