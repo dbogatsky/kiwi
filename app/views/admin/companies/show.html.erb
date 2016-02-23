@@ -1,0 +1,73 @@
+<% content_for :pageheader do %>
+  <h2><i class="fa fa-building"></i><%= @company.name %></h2>
+  <div class="breadcrumb-wrapper">
+    <span class="label">You are here:</span>
+    <ol class="breadcrumb">
+        <li><a href="/admin/companies">Companies</a></li>
+        <li class="active">Details</li>
+    </ol>
+  </div>
+<% end %>
+
+<div class="profile-header">
+  <div class="row">
+    <div class="col-sm-3">
+      <div class="mb30"></div>
+      <h5 class="subtitle">Connect
+      </h5>
+      <ul class="profile-social-list" id="account-contacts">
+        <%if @company.contacts.present?%>
+	        <% @company.contacts.each do |contact| %>
+	          <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name %>"></i><%= contact.value %></li>
+	        <% end %>
+        <% end %>
+      </ul>
+      <div class="mb30"></div>
+      <h5 class="subtitle">Address&nbsp;<i class="fa fa-map-marker"></i>
+      </h5>
+      <ul class="profile-social-list" id="account-addresses">
+        <%if @company.addresses.present?%>
+	        <% @company.addresses.each_with_index do |address, index| %>
+	          <li id="<%= dom_id(address) %>" style="border-bottom:0px;">
+	            <address>
+	              <% if address.name.present? %>
+	                <strong><%= address.name %></strong>
+	              <% end %>
+	              <a href="https://maps.google.com?daddr=<%= address.street_address %>+<%= address.city %>+<%= address.region %>+<%= address.country %>+<%= address.postcode %>" target="_blank">
+	              <%= address.street_address %><br>
+	              <%= address.city %>, <%= address.region %>, <%= address.country %><br />
+	              <%= address.postcode %>
+	              </a>
+	            </address>
+	          </li>
+	        <% end %>
+        <% end %>
+      </ul>
+    </div><!-- col-sm-3 -->
+    <div class="col-sm-9">
+      <div class="mb20"></div>
+      <div class="row">
+        <div class="col-sm-11">
+          <div class="row">
+            <small>
+              <div class="col-sm-5">
+                <div class="col-sm-5">
+                  <div class="row bars">
+                      <div class="col-xs-5" style="text-align:right"><strong>Locale</strong></div>
+                      <div class="col-xs-7"><%= @company.locale == 'en' ? 'English' : 'French'%></div>
+                  </div>
+                </div><!-- col-sm-4 -->
+              </div>
+              <div class="col-sm-7">
+                <div class="row bars">
+                    <div class="col-xs-5" style="text-align:right"><strong>Time Zone</strong></div>
+                    <div class="col-xs-7"><%= @company.time_zone%></div>
+                </div>
+              </div><!-- col-sm-4 -->
+            </small>
+          </div><!-- row -->
+        </div>
+      </div>
+    </div> <!-- col-sm-9 -->
+  </div><!-- row -->
+</div><!-- profile-header -->
