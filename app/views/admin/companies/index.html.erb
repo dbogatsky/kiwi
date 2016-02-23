@@ -23,8 +23,8 @@
             <table class="table table-striped" id="companyTable">
                 <thead>
                    <tr>
-                   <th></th>
                       <th>Name</th>
+                      <th>Sub Domain</th>
                       <th>Locale</th>
                       <th>Time Zone</th>
                       <th>Actions</th>
@@ -33,9 +33,9 @@
                 <tbody>
                   <% @companies.each do |company| %>
                     <tr>
-                      <td></td>
                       <td><%= company.name %></td>
-                      <td><%= company.locale %></td>
+                      <td><%= company.subdomain %></td>
+                      <td><%= company.locale == 'en' ? 'English' : 'French' %></td>
                       <td><%= company.time_zone %></td>
                       <td class="table-action">
                         <%=link_to admin_company_path(company.id) do %>

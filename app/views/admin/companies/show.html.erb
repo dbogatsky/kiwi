@@ -18,7 +18,7 @@
       <ul class="profile-social-list" id="account-contacts">
         <%if @company.contacts.present?%>
 	        <% @company.contacts.each do |contact| %>
-	          <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name %>"></i><%= contact.value %></li>
+	          <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.type %>"></i><%= contact.value %></li>
 	        <% end %>
         <% end %>
       </ul>
@@ -54,9 +54,13 @@
               <div class="col-sm-5">
                 <div class="col-sm-5">
                   <div class="row bars">
-                      <div class="col-xs-5" style="text-align:right"><strong>Locale</strong></div>
-                      <div class="col-xs-7"><%= @company.locale == 'en' ? 'English' : 'French'%></div>
+                      <div class="col-xs-9"><strong>Locale</strong></div>
+                      <div class="col-xs-2"><%= @company.locale == 'en' ? 'English' : 'French'%></div>
                   </div>
+                  <div class="row bars">
+                    <div class="col-xs-9"><strong>Sub Domain</strong></div>
+                    <div class="col-xs-2"><%= @company.subdomain %></div>
+                    </div>
                 </div><!-- col-sm-4 -->
               </div>
               <div class="col-sm-7">

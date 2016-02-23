@@ -41,7 +41,7 @@ class Admin::CompaniesController < Admin::AdminController
     else
       flash[:danger] = 'Company not updated!'
     end
-    redirect_to new_admin_company_path
+    redirect_to admin_companies_path
   end
 
   private
