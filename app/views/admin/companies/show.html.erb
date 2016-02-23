@@ -39,13 +39,14 @@
 	              <%= address.postcode %>
 	              </a>
 	            </address>
+              <%= link_to new_admin_company_user_path(@company), class: "btn btn-primary btn-block" do %><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add User<% end %>
 	          </li>
 	        <% end %>
         <% end %>
       </ul>
-      <%= link_to "Add User", new_admin_company_user_path(@company)%>
     </div><!-- col-sm-3 -->
     <div class="col-sm-9">
+      
       <div class="mb20"></div>
       <div class="row">
         <div class="col-sm-11">
@@ -75,4 +76,5 @@
       </div>
     </div> <!-- col-sm-9 -->
   </div><!-- row -->
+
 </div><!-- profile-header -->

@@ -1,10 +1,14 @@
 class Admin::UsersController < Admin::AdminController
 	before_action :get_token
+  before_action :find_company, only: [:new, :edit, :update, :destroy]
   before_action :find_user, only: [:edit, :update, :destroy]
 
-
-	def new
-		@user = User.new
+  def index
+    @all_users = User.find(:all, reload: true)
+  end
+	
+  def new
+    @user = User.new
 	end
 
   def edit
@@ -48,6 +52,24 @@ private
 
   def find_user
     @user = User.find(params[:id], reload: true)
+  end
+  
+  def find_company
+    @company = Company.find(params[:company_id])
+  end
+
+  def save_avatar
+    if params[:user][:avatar]
+      puts "sending avatar..."
+      url = URI.parse("#{ENV.fetch("ORCHARD_API_HOST")}/users/#{@user.id}")
+      #req = Net::HTTP::Put::Multipart.new url.path,  account: { :avatar => UploadIO.new(File.new(params[:avatar].tempfile), "image/jpeg", "image.jpg")}
+      req = Net::HTTP::Put::Multipart.new url.path, :avatar => UploadIO.new(File.new(params[:user][:avatar].tempfile), "image/jpeg", "image.jpg")
+      req.add_field("Authorization", "Token token=\"#{$user_token}\", app_key=\"#{APP_CONFIG['api_app_key']}\"")
+      #req.add_field("Content-Type", "application/json")
+      res = Net::HTTP.start(url.host, url.port) do |http|
+        http.request(req)
+      end
+    end
   end
 
 
