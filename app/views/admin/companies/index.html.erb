@@ -20,26 +20,29 @@
             <p>Below are list of companies</p>
             <br />
             <div class="table-responsive">
-            <table class="table table-striped" id="userTable">
+            <table class="table table-striped" id="companyTable">
                 <thead>
                    <tr>
                       <th>Name</th>
+                      <th>Sub Domain</th>
                       <th>Locale</th>
                       <th>Time Zone</th>
+                      <th>Actions</th>
                    </tr>
                 </thead>
                 <tbody>
                   <% @companies.each do |company| %>
                     <tr>
                       <td><%= company.name %></td>
-                      <td><%#= company.locale %></td>
-                      <td><%#= company.time_zone %></td>
+                      <td><%= company.subdomain %></td>
+                      <td><%= company.locale == 'en' ? 'English' : 'French' %></td>
+                      <td><%= company.time_zone %></td>
                       <td class="table-action">
-                        <%=link_to edit_admin_company_path(1) do %>
-                          <i class="fa fa-pencil"></i>
+                        <%=link_to admin_company_path(company.id) do %>
+                          <i class="fa fa-eye"></i>
                         <% end %>
-                        <%=link_to "#" do %>
-                          <i class="fa fa-trash-o"></i>
+                        <%=link_to edit_admin_company_path(company.id) do %>
+                          <i class="fa fa-pencil"></i>
                         <% end %>
                       </td>
                     </tr>
@@ -54,13 +57,13 @@
 </div>
 
 <script>
-  // jQuery(document).ready(function() {
+  jQuery(document).ready(function() {
 
-  //   //"use strict";
+    //"use strict";
 
-  //   jQuery('#userTable').dataTable({
-  //     "sPaginationType": "full_numbers"
-  //   });
+    jQuery('#companyTable').dataTable({
+      "sPaginationType": "full_numbers"
+    });
 
-  // });
+  });
 </script>

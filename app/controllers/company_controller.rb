@@ -1,6 +1,4 @@
 class CompanyController < ApplicationController
-  # Leaving this here for now
-  before_action :superadmin, only: [:index]
 
   def index
     #comapny details
@@ -73,10 +71,5 @@ class CompanyController < ApplicationController
     redirect_to company_path
   end
 
-  private
-
-    def superadmin
-      @superadmin = true
-    end
 
 end

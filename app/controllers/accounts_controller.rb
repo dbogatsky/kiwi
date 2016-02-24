@@ -147,7 +147,7 @@ class AccountsController < ApplicationController
 
     ci = ConversationItem.create(
           conversation_item: {
-            title: conversation_item_params[:subject],
+            title: conversation_item_params[:title],
             body: conversation_item_params[:body],
             invitees: conversation_item_params[:email],
             scheduled_at: params[:conversation_item][:scheduled_at]
@@ -236,7 +236,7 @@ class AccountsController < ApplicationController
 
 
   def conversation_item_params
-    params.require(:conversation_item).permit(:account_id, :type, :reminder, :scheduled_at, :subject, :body, :email, :send_later)
+    params.require(:conversation_item).permit(:account_id, :type, :reminder, :scheduled_at, :subject, :body, :email, :send_later, :title)
   end
 
 

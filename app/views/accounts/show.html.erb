@@ -199,9 +199,9 @@
   <!-- add conversation schedule modal form -->
   <%= render "conversation_meeting" %>
   <%= render "conversation_email" %>
-  <%= render "conversation_email_edit" %>      
+  <%= render "conversation_email_edit" %>
   <%= render "conversation_note" %>
-  <%= render 'conversation_note_edit'%>  
+  <%= render 'conversation_note_edit'%>
 
 
 
@@ -230,7 +230,7 @@
     if ($('.conversation-edit-email-modal-form input[name="scheduled_time"]').val()!="" || $('.conversation-edit-email-modal-form input[name="scheduled_date"]').val()!="") {
       $("#send_later_edit").attr('checked', true);
       $("#email-sendlater-settings").show(500);
-    } 
+    }
     else {
       $("#email-sendlater-settings").hide(500);
     }
@@ -406,7 +406,7 @@
 		$('#scheduledTimePicker').timepicker({minuteStep: 5});
 
     $('#emailDatePickerEdit').datepicker();
-    $('#emailTimePickerEdit').timepicker({minuteStep: 5});    
+    $('#emailTimePickerEdit').timepicker({minuteStep: 5});
 
 		// by default hide reminder settings for emails
 		$("#email-sendlater-settings").hide();
