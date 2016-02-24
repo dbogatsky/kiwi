@@ -2,8 +2,8 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :companies do
-      resources :users 
-    end  
+      resources :users
+    end
   end
 
   post '/login', to: 'login#login'

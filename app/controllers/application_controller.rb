@@ -66,7 +66,6 @@ class ApplicationController < ActionController::Base
 
     #check that subject_class and action are not empty
     unless subject_class.empty? && action.empty?
-
       roles = Role.all
       user_roles = @current_user.roles
 

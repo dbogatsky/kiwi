@@ -22,7 +22,6 @@
     <h5 class="sidebartitle">Main</h5>
     <ul class="nav nav-pills nav-stacked nav-bracket">
       <li><a href="<%= dashboard_path %>"><i class="fa fa-home"></i> <span>Dashboard</span></a></li>
-
       <% if has_permissions({ "Account"=>{"actions"=>["read","manage"]}, "all"=>{"actions"=>"manage"} }) %>
         <li><a href="<%= schedule_path %>"><i class="fa fa-calendar"></i> <span>Schedule</span></a></li>
       <% end %>

@@ -7,7 +7,7 @@
 		<p>Fill in the details below to add a user</p>
 	</div>
 	<div class="panel-body">
-	  <%= simple_form_for [:admin, @company, @user], html: {class: "form-horizontal", multipart: true } do |f| %>
+	  <%= simple_form_for @user, :url =>  new_admin_company_user_path, html: {class: "form-horizontal", multipart: true } do |f| %>
 
 	    <%= f.input :email, label: "Email", required: true %>
 
@@ -95,7 +95,7 @@
 		<div class="panel-footer">
 			<div class="row">
 				<div class="col-sm-6 col-sm-offset-3">
-				 <%=submit_tag 'Save', disabled: true, class: 'btn btn-primary'%>
+				 <%=submit_tag 'Save', class: 'btn btn-primary'%>
 					&nbsp;
 					<button class="btn btn-default" name="cancel" id="cancel">Cancel</button>
 				</div>
@@ -136,7 +136,7 @@
 	});
 	<% if @user.new_record?%>
 		$(function(){
-			$( "#user_form" ).validate({
+			$( "#new_user" ).validate({
 				debug: true,
 			  rules: {
 			   'user[password]': {
@@ -149,7 +149,7 @@
 			    }
 			  },
 			  submitHandler: function (form) {
-			  	// form.submit();
+			  	form.submit();
 	      }
 			});
 		});

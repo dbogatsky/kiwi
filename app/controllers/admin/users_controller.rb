@@ -1,12 +1,12 @@
 class Admin::UsersController < Admin::AdminController
 	before_action :get_token
-  before_action :find_company, only: [:new, :edit, :update, :destroy]
-  before_action :find_user, only: [:edit, :update, :destroy]
+  before_action :find_company, only: [:edit, :update]
+  before_action :find_user, only: [:edit, :update]
 
   def index
     @all_users = User.find(:all, reload: true)
   end
-	
+
   def new
     @user = User.new
 	end
@@ -53,9 +53,9 @@ private
   def find_user
     @user = User.find(params[:id], reload: true)
   end
-  
+
   def find_company
-    @company = Company.find(params[:company_id])
+    @company = BoCompany.find(params[:company_id])
   end
 
   def save_avatar
