@@ -8,11 +8,11 @@
       </div>
       <div class="modal-body">
         <%= form_tag(account_share_url) do |f| %>
-        <div class="row">        
+        <div class="row">
           <div class="col-sm-6">
             <select class="select2" id="add_shared_user" data-placeholder="Select a User">
               <option value="">Select a User</option>
-            	<%= options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] }) %>
+            	<%= options_for_select(@users.reject{|u| @shared_user.map(&:id).include?(u.id)}.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] }) %>
           	</select>
           </div>
           <div class="col-sm-6">
@@ -53,11 +53,11 @@
           </div><!-- panel-body -->
 
           <div class="panel-footer">
-            <div class="row">     
+            <div class="row">
               <div class="col-sm-12">
                 <button type="submit" value="submit" class="btn btn-primary">Save</button>
               </div>
-            </div>          
+            </div>
           </div><!-- panel footer -->
         </div><!-- panel -->
         <% end %>
@@ -67,38 +67,38 @@
 </div><!-- modal -->
 
 <script type="text/javascript">
-  
-toggleButton();  
 
-$("#add_shared_user").on("change", function (e) { 
+toggleButton();
+
+$("#add_shared_user").on("change", function (e) {
   toggleButton();
-});  
+});
 
 $('#add_shared_user_button').click(function(e){
-  
+
   // append to table
   var added_user_id = $('#add_shared_user').val();
   var added_user    = $("#add_shared_user option:selected").text();
-  
+
   var cell1 = '<input type="hidden" name="account[user_account_sharings_attributes]['+added_user_id+'][user_id]" value="'+added_user_id+'"/>'+added_user;
   var cell2 = '<select class="input-sm" name="account[user_account_sharings_attributes]['+added_user_id+'][permission]">\
                 <option value="read">Read Only</option>\
                 <option value="read">Can Update</option>\
               </select>';
   var cell3 = '<a class="delete-row"><i class="fa fa-trash-o"></i></a>';
-  
+
   $('#shared_user_list tr:last').after('<tr id="'+added_user_id+'"><td>'+cell1+'</td><td>'+cell2+'</td><td class="table-action">'+cell3+'</td></tr>');
-  
+
   // remove option from add list
   $("#add_shared_user option:selected").remove();
   $("#add_shared_user").select2("val", "");
   toggleButton();
-  
+
 });
 
 $(document.body).on('click', '.delete-row' ,function(){
   var trid = $(this).closest('tr').attr('id');
-  
+
   var delfield = $('<input>').attr({
     type: 'hidden',
     name: 'account[user_account_sharings_attributes]['+trid+'][_destroy]',
@@ -115,8 +115,8 @@ function toggleButton() {
     $('#add_shared_user_button').hide();
   }
   else {
-    $('#add_shared_user_button').show(); 
+    $('#add_shared_user_button').show();
   }
 }
-    
+
 </script>

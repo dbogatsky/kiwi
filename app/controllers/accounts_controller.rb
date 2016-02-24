@@ -12,6 +12,8 @@ class AccountsController < ApplicationController
   def show
     # Get the acount info and conversation based on id given
     @account = Account.find(params[:id])
+    @shared_user = []
+    @account.user_account_sharings.each {|u| @shared_user << u.user}
     @users = User.all
   end
 

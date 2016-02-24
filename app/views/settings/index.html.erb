@@ -1,6 +1,70 @@
-Settings page
-
-
-<script src="assets/bootstrap/js/retina.min.js"></script>
-<script src="assets/bootstrap/js/fullcalendar.min.js"></script>
-<script src="assets/bootstrap/js/jquery.ui.touch-punch.min.js"></script>
+<% content_for :pageheader do %>
+  <h2><i class="fa fa-cogs"></i>Settings</h2>
+<% end %>
+<div class="profile-header">
+  <div class="row row-pad-5">
+    <div class="col-md-12 mb20">
+      <!-- Nav tabs -->
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <div class="panel-btns">
+            <a href="" class="minimize">−</a>
+          </div><!-- panel-btns -->
+          <h3 class="panel-title">Authentication</h3>
+        </div>
+        <div class="panel-body">
+          <div class="tab-pane" id="authentication">
+            <div class="row row-pad-5">
+            </div><!-- row pad 5-->
+            <div class="row row-pad-5">
+              <div class="col-md-8">
+              </div><!-- col-md-8 -->
+            </div><!-- row pad 5-->
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <div class="panel-btns">
+            <a href="" class="minimize">−</a>
+          </div><!-- panel-btns -->
+          <h3 class="panel-title">Quota</h3>
+        </div>
+        <div class="panel-body">
+          <div class="tab-pane" id="quota">
+            <div class="row row-pad-5">
+            </div><!-- row -->
+            <div class="row row-pad-5">
+              <div class="col-md-8">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <div class="panel-btns">
+            <a href="" class="minimize">−</a>
+          </div><!-- panel-btns -->
+          <h3 class="panel-title">Preferences</h3>
+        </div>
+        <div class="panel-body">
+          <div class="tab-pane" id="preferences">
+            <div class="row row-pad-5">
+              <div class="form-group">
+                  <label class="col-sm-2 control-label">Preview Timeline(<span title="Preview Timeline">?</span>)</label>
+                  <div class="col-sm-2">
+                    <%=select_tag('timeline',options_for_select(perview_timeline_select_options), prompt: '-select-', class: "form-control")%>
+                  </div>
+              </div>
+            </div><!-- row -->
+            <div class="row row-pad-5">
+              <div class="col-md-8">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> <!-- col- -->
+  </div><!-- row -->
+</div><!-- profile-header -->
