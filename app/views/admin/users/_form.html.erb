@@ -7,7 +7,7 @@
 		<p>Fill in the details below to add a user</p>
 	</div>
 	<div class="panel-body">
-	  <%= simple_form_for @user, :url =>  new_admin_company_user_path, html: {class: "form-horizontal", multipart: true } do |f| %>
+	  <%= simple_form_for @user, :url =>  admin_company_users_path, html: {class: "form-horizontal", multipart: true } do |f| %>
 
 	    <%= f.input :email, label: "Email", required: true %>
 
