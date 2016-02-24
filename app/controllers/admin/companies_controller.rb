@@ -2,20 +2,20 @@ class Admin::CompaniesController < Admin::AdminController
  before_action :find_company, only: [:edit, :show, :update]
 
   def new
-    @company = Company.new
+    @company = BoCompany.new
     @address = []
     @contacts = []
   end
 
 
   def index
-    @companies = Company.all
+    @companies = BoCompany.all
   end
 
   def create
   	params[:company][:contacts_attributes] = params[:company][:contacts_attributes].values
     params[:company][:addresses_attributes] = params[:company][:addresses_attributes].values
-    @company = Company.new(request: :create, company: params[:company])
+    @company = BoCompany.new(request: :create, company: params[:company])
     if @company.save
       flash[:success] = 'Company successfully created.'
       redirect_to admin_companies_path
@@ -47,6 +47,6 @@ class Admin::CompaniesController < Admin::AdminController
   private
 
   def find_company
-    @company = Company.find(params[:id], reload: true)
+    @company = BoCompany.find(params[:id], reload: true)
   end
 end

@@ -8,7 +8,7 @@
       <li><a href="#vtab2" data-toggle="tab"><span>Step 2:</span> Address</a></li>
       <li><a href="#vtab3" data-toggle="tab"><span>Step 3:</span> Contact Details</a></li>
     </ul>
-    <%= simple_form_for [:admin, @company], html: { id: "company-add-form", class: "form-horizontal" } do |f| %>
+    <%= simple_form_for [:admin, @company], :url => admin_company_path, html: { id: "company-add-form", class: "form-horizontal" } do |f| %>
       <div class="tab-content">
         <div class="tab-pane" id="vtab1">
             <div class="form-group">
