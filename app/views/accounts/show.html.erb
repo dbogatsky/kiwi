@@ -218,13 +218,21 @@
     edit_editor = $('#edit_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
   });
 
+  var email_new_editor, email_edit_editor;
+
+  $(function() {
+    email_new_editor = $('#email_new_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
+    email_edit_editor = $('#email_edit_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
+  });
+
   $(document).on('click', "a.edit_email", function(e){
     id = $(this).attr('data-id')
     $('.conversation-edit-email-modal-form input[name="conversation_item[invitees]"]').val($(this).attr('data-invitees'));
     $('.conversation-edit-email-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
     $('.conversation-edit-email-modal-form input[name="scheduled_time"]').val($(this).attr('data-time'));
     $('.conversation-edit-email-modal-form input[name="scheduled_date"]').val($(this).attr('data-date'));
-    $('.conversation-edit-email-modal-form textarea[name="conversation_item[body]"]').val($(this).attr('data-body'));
+    // $('.conversation-edit-email-modal-form textarea[name="conversation_item[body]"]').val($(this).attr('data-body'));
+    email_edit_editor.data("wysihtml5").editor.setValue($(this).attr('data-body'));
     $('.conversation-edit-email-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
 
     if ($('.conversation-edit-email-modal-form input[name="scheduled_time"]').val()!="" || $('.conversation-edit-email-modal-form input[name="scheduled_date"]').val()!="") {
