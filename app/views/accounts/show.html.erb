@@ -9,7 +9,6 @@
   </div>
 <% end %>
 
-
 <div class="profile-header">
   <div class="row">
     <div class="col-sm-3">
@@ -197,14 +196,12 @@
   <!-- end of add address modal form -->
 
   <!-- add conversation schedule modal form -->
-  <%= render "conversation_meeting" %>
+  <%= render "conversation_meeting", account: @account %>
   <%= render "conversation_email" %>
   <%= render "conversation_email_edit" %>
   <%= render "conversation_note" %>
   <%= render 'conversation_note_edit'%>
-
-
-
+  <%= render "conversation_meeting_edit" %>
   <%= render "conversation_sharedusers" %>
 <% end %>
 
@@ -258,6 +255,7 @@
           $("#note-reminder-settings").show(500);
           $("#note-reminder-settings-edit").show(500);
         }else{
+          $("#note-reminder-edit").attr('checked', false);
           $("#note-reminder-settings").hide(500);
           $("#note-reminder-settings-edit").hide(500);
         }
@@ -265,6 +263,30 @@
     // $('.conversation-edit-note-modal-form textarea[name="covnersation_item[body]"]').val($(this).attr('data-description'));
     edit_editor.data("wysihtml5").editor.setValue($(this).attr('data-description'));
     $('.conversation-edit-note-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
+  });
+
+  $(document).on('click', "a.edit_meeting", function(e){
+    id = $(this).attr('data-id')
+    // $('.conversation-edit-meeting-modal-form input[name="conversation_item[invitees]"]').val($(this).attr('data-invitees'));
+    $('.conversation-edit-meeting-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
+    // $('.conversation-edit-meeting-modal-form input[name="conversation_item[location]"]').val($(this).attr('data-location'));
+    $('.conversation-edit-meeting-modal-form input[name="scheduled_time"]').val($(this).attr('data-time'));
+    $('.conversation-edit-meeting-modal-form input[name="scheduled_date"]').val($(this).attr('data-date'));
+
+      if ($('.conversation-edit-meeting-modal-form input[name="scheduled_time"]').val()!="" && $('.conversation-edit-meeting-modal-form input[name="scheduled_date"]').val()!="")
+        {
+          $("#meeting-reminder-edit").attr('checked', true);
+          $("#meeting-reminder-settings-edit").show(500);
+          $("#meeting-reminder-settings-edit").show(500);
+        }else{
+          $("#meeting-reminder-edit").attr('checked', false);
+          $("#meeting-reminder-settings-edit").hide(500);
+          $("#meeting-reminder-settings-edit").hide(500);
+          $('.conversation-edit-meeting-modal-form input[name="scheduled_date"]').val(null);
+
+        }
+    $('.conversation-edit-meeting-modal-form textarea[name="conversation_item[body]"]').val($(this).attr('data-body'));
+    $('.conversation-edit-meeting-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
   });
 
   $(document).ready(function(){
@@ -327,62 +349,63 @@
 		    }
 		};
 
-		$('#meeting-reminder-time').timepicker({minuteStep: 5});
+		$('#meeting-reminder-time, #meeting-reminder-time-edit').timepicker({minuteStep: 5});
 
 		// by default hide reminder settings for meetings
 		$("#meeting-reminder-settings").hide();
 
 		// hide show note reminder settings for meetings
-		$('#meeting-reminder').change(function () {
-		    if ($("#meeting-reminder").is(':checked')) {
-			    $("#meeting-reminder-settings").show(500);
+		$('#meeting-reminder, #meeting-reminder-edit').change(function () {
+		    if ($(this).is(':checked')) {
+			    $("#meeting-reminder-settings, #meeting-reminder-settings-edit").show(500);
 			}
 			else {
-				$("#meeting-reminder-settings").hide(500);
+				$("#meeting-reminder-settings, #meeting-reminder-settings-edit").hide(500);
+        $('.conversation-edit-meeting-modal-form input[name="scheduled_date"]').val(null);
 			}
 		});
 
 		// by default hide repeat settings for meetings
-		$("#meeting-repeat-settings").hide();
-		$("#repeat-frequency-week").hide();
-		$("#repeat-frequency-month").hide();
-		$("#repeat-frequency-year").hide();
+		$("#meeting-repeat-settings, #meeting-repeat-settings-edit ").hide();
+		$("#repeat-frequency-week, #repeat-frequency-week-edit").hide();
+		$("#repeat-frequency-month, #repeat-frequency-month-edit").hide();
+		$("#repeat-frequency-year, #repeat-frequency-year-edit ").hide();
 
 		// hide show note reminder settings for meetings
-		$('#meeting-repeat').change(function () {
-		    if ($("#meeting-repeat").is(':checked')) {
-			    $("#meeting-repeat-settings").show(500);
+		$('#meeting-repeat, #meeting-repeat-edit').change(function () {
+		    if ($(this).is(':checked')) {
+			    $("#meeting-repeat-settings, #meeting-repeat-settings-edit").show(500);
 			}
 			else {
-				$("#meeting-repeat-settings").hide(500);
+				$("#meeting-repeat-settings, #meeting-repeat-settings-edit").hide(500);
 			}
 		});
 
 		// hide show note reminder settings for meetings
-		$('#repeat-frequency').change(function () {
-			if($('#repeat-frequency').val() == "daily") {
-				$("#repeat-frequency-day").show(500);
-				$("#repeat-frequency-week").hide(500);
-				$("#repeat-frequency-month").hide(500);
-				$("#repeat-frequency-year").hide(500);
+		$('#repeat-frequency, #repeat-frequency-edit').change(function () {
+			if($(this).val() == "daily") {
+				$("#repeat-frequency-day, #repeat-frequency-day-edit").show(500);
+				$("#repeat-frequency-week, #repeat-frequency-week-edit").hide(500);
+				$("#repeat-frequency-month, #repeat-frequency-month-edit").hide(500);
+				$("#repeat-frequency-year, #repeat-frequency-year-edit").hide(500);
 			}
-			else if($('#repeat-frequency').val() == "weekly"){
-				$("#repeat-frequency-day").hide(500);
-				$("#repeat-frequency-week").show(500);
-				$("#repeat-frequency-month").hide(500);
-				$("#repeat-frequency-year").hide(500);
+			else if($(this).val() == "weekly"){
+				$("#repeat-frequency-day, #repeat-frequency-day-edit").hide(500);
+				$("#repeat-frequency-week, #repeat-frequency-week-edit").show(500);
+				$("#repeat-frequency-month, #repeat-frequency-month-edit").hide(500);
+				$("#repeat-frequency-year, #repeat-frequency-year-edit").hide(500);
 			}
-			else if($('#repeat-frequency').val() == "monthly"){
-				$("#repeat-frequency-day").hide(500);
-				$("#repeat-frequency-week").hide(500);
-				$("#repeat-frequency-month").show(500);
-				$("#repeat-frequency-year").hide(500);
+			else if($(this).val() == "monthly"){
+				$("#repeat-frequency-day, #repeat-frequency-day-edit").hide(500);
+				$("#repeat-frequency-week, #repeat-frequency-week-edit").hide(500);
+				$("#repeat-frequency-month, #repeat-frequency-month-edit").show(500);
+				$("#repeat-frequency-year, #repeat-frequency-year-edit").hide(500);
 			}
-			else if($('#repeat-frequency').val() == "yearly"){
-				$("#repeat-frequency-day").hide(500);
-				$("#repeat-frequency-week").hide(500);
-				$("#repeat-frequency-month").hide(500);
-				$("#repeat-frequency-year").show(500);
+			else if($(this).val() == "yearly"){
+				$("#repeat-frequency-day, #repeat-frequency-day-edit").hide(500);
+				$("#repeat-frequency-week, #repeat-frequency-week-edit").hide(500);
+				$("#repeat-frequency-month, #repeat-frequency-month-edit").hide(500);
+				$("#repeat-frequency-year, #repeat-frequency-year-edit").show(500);
 			}
 		});
 

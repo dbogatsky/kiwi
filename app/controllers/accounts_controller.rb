@@ -1,7 +1,7 @@
 require 'net/http/post/multipart'
 class AccountsController < ApplicationController
   before_action :get_token
-  before_action :find_account, only: [:conversation, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email]
+  before_action :find_account, only: [:conversation, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting]
 
   def index
     # Get all accounts
@@ -81,8 +81,61 @@ class AccountsController < ApplicationController
 
 
   def schedule_meeting
-    flash[:success] = 'Your meeting has been successfully scheduled'
-    redirect_to accounts_conversation_path(id)
+    c_id = @account.conversation.id
+    if params[:scheduled_date].present? && params[:scheduled_time].present?
+      params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:scheduled_date], params[:scheduled_time])
+    else
+      params[:conversation_item][:scheduled_at] = nil
+      params[:conversation_item][:reminder] = nil
+    end
+    ci = ConversationItem.create(
+          conversation_item: {
+            title: conversation_item_params[:title],
+            body: conversation_item_params[:body],
+            invitees: params[:conversation_item][:emails],
+            scheduled_at: params[:conversation_item][:scheduled_at],
+            location: params[:conversation_item][:location]
+          },
+        conversation_id: c_id, type: "meeting")
+    if ci
+      flash[:success] = 'Your meeting has been successfully scheduled'
+    else
+      flash[:danger] = 'Oops! Unable to scheduled meeting'
+    end
+    redirect_to account_path(params[:id])
+  end
+
+  def delete_meeting
+    meeting = @account.conversation.conversation_items
+    meeting.each do |n|
+      @conversation = n if n.id == params[:item_id].to_i
+    end
+    if @conversation.destroy
+      flash[:success] = 'Meeting successfully deleted'
+    else
+      flash[:danger] = 'Oops! Unable to delete the meeting'
+    end
+    redirect_to account_path(params[:id])
+  end
+
+  def update_meeting
+    conversation_id = @account.conversation.id
+    if params[:scheduled_date].present? && params[:scheduled_time].present?
+      params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:scheduled_date], params[:scheduled_time])
+    else
+      params[:conversation_item][:scheduled_at] = nil
+    end
+
+    meeting = @account.conversation.conversation_items
+    meeting.each do |n|
+      @conversation = n if n.id == params[:conversation_item][:id].to_i
+    end
+    if @conversation.update_attributes(conversation_item: params[:conversation_item], conversation_id: conversation_id)
+      flash[:success] = 'Meeting successfully updated!'
+    else
+      flash[:danger] = 'Meeting not updated!'
+    end
+    redirect_to account_path(params[:id])
   end
 
 
@@ -201,11 +254,6 @@ class AccountsController < ApplicationController
     end
     redirect_to account_path(params[:id])
   end
-
-
-
-
-
 
   def share
     params[:account][:user_account_sharings_attributes] = params[:account][:user_account_sharings_attributes].values

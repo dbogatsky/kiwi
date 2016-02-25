@@ -23,10 +23,12 @@ Rails.application.routes.draw do
   resource :profile
   resources :accounts do
     member do
-      patch :update_note
-      patch :update_email
+      patch  :update_note
+      patch  :update_email
+      patch  :update_meeting
       delete :delete_note
       delete :delete_email
+      delete :delete_meeting
     end
     resources :contacts, only: [:edit, :create, :update, :destroy]
     resources :addresses, only: [:edit, :create, :update, :destroy]
@@ -34,7 +36,7 @@ Rails.application.routes.draw do
   resources :company_entities
   resources :users
 
-  post '/accounts/:id/schedule_meeting', to:'accounts#schedule_meeting', as: :account_schedule_meeting
+  post '/accounts/schedule_meeting', to:'accounts#schedule_meeting', as: :account_schedule_meeting
   post '/accounts/:id/add_note', to:'accounts#add_note', as: :account_add_note
   post '/accounts/:id/send_email', to:'accounts#send_email', as: :account_send_email
   post '/accounts/:id/share', to:'accounts#share', as: :account_share

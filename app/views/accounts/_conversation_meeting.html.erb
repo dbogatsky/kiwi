@@ -1,34 +1,53 @@
 <div class="modal fade account-action-meeting" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-        <div class="modal-header">
-            <button aria-hidden="true" data-dismiss="modal" class="close" type="button">&times;</button>
-            <h4 class="modal-title">Schedule Meeting</h4>
-        </div>
-        <div class="modal-body">
+      <div class="modal-header">
+          <button aria-hidden="true" data-dismiss="modal" class="close" type="button">&times;</button>
+          <h4 class="modal-title">Schedule Meeting</h4>
+      </div>
+      <div class="modal-body">
         <p>Provide the details below to schedule a meeting</p>
         <%= form_tag(account_schedule_meeting_url) do |f| %>
-        <div class="panel panel-default">
+          <div class="panel panel-default">
             <div class="panel-body">
-
               <div class="row row-pad-5">
                 <div class="col-lg-12">
-                  <input type="text" name="schedule-title" placeholder="Event" class="form-control" required="required" />
+                  <input type="text" name="conversation_item[title]" placeholder="Event" class="form-control" required="required" />
+                </div>
+              </div><!-- row -->
+              <%if account.present? && account.addresses.present? %>
+               <%address = "#{account.addresses.last.street_address}" +', ' + "#{account.addresses.last.city}" +', ' + "#{account.addresses.last.postcode}" +', ' + "#{account.addresses.last.region}" +', ' + "#{account.addresses.last.country}"%>
+              <%else%>
+               <%address = ''%>
+              <%end%>
+              <div class="row row-pad-5">
+                <div class="col-lg-12">
+                  <input type="text" name="conversation_item[location]" id="gmaps-input-address" placeholder="Add Location" value="<%=address%>"class="form-control" required="required"/>
                 </div>
               </div><!-- row -->
 
               <div class="row row-pad-5">
                 <div class="col-lg-12">
-                  <input type="text" name="schedule-location" placeholder="Add Location" class="form-control" required="required" value="2529 Canada Way, Vancouver, Canada, V5G 1G4"/>
+                  <select class="form-control select2" multiple="multiple" name="conversation_item[emails][]" placeholder="-Select invitees-" required="required">
+                   <%=User.all.each do |u|%>
+											<option value="<%=u.email%>"><%=u.email%></option>
+									 <%end%>
+								  </select>
                 </div>
               </div><!-- row -->
+              <%unless account.present?%>
+	              <div class="row row-pad-5">
+	                <div class="col-lg-12">
+	                  <select class="form-control select2" name="id" placeholder="-Select account-" required="required">
+	                  <option value="">-Select account-</option>
+	                   <%Account.all.each do |a|%>
+												<option value="<%=a.id%>"><%=a.name%></option>
+										 <%end%>
+									  </select>
+	                </div>
+	              </div><!-- row -->
+	            <%end%>
 
-              <div class="row row-pad-5">
-                <div class="col-lg-12">
-                  <input name="invite-emails" id="invite-emails" class="form-control" value="" />
-                </div>
-              </div><!-- row -->
-              
               <div class="row">
 	              <div class="col-lg-4">
 	              <h5>Starts</h5>
@@ -51,7 +70,6 @@
                 </div>
               </div><!-- row -->
 
-
               <div class="row">
 	              <div class="col-lg-4">
 	              <h5>Ends</h5>
@@ -72,7 +90,7 @@
                     <div class="bootstrap-timepicker"><input name="schedule-to-timepicker"  id="schedule-to-timepicker" type="text" class="form-control" required="required" /></div>
                   </div>
                 </div>
-              </div><!-- row -->         
+              </div><!-- row -->
 
               <div class="row row-pad-5">
                 <div class="col-lg-6">
@@ -89,162 +107,158 @@
                 </div>
               </div><!-- row -->
 
-			  <div id="meeting-reminder-settings">
+			        <div id="meeting-reminder-settings">
 	              <div class="row row-pad-5">
 	                <div class="col-lg-4">
 	                  <div class="input-group">
 	                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-	                    <input type="text" class="form-control" placeholder="mm/dd/yyyy" name="meeting-reminder-date" id="meeting-reminder-date" />
-	                   </div>  
+	                    <input type="text" class="form-control" placeholder="mm/dd/yyyy" name="scheduled_date" id="meeting-reminder-date" />
+	                   </div>
 	                </div>
-	
+
 	                <div class="col-lg-4">
 	                  <div class="input-group">
 	                    <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-	                    <div class="bootstrap-timepicker"><input name="meeting-reminder-time" id="meeting-reminder-time" type="text" class="form-control" /></div>
+	                    <div class="bootstrap-timepicker"><input name="scheduled_time" id="meeting-reminder-time" type="text" class="form-control" /></div>
 	                  </div>
 	                </div>
-	              </div><!-- row -->     
-			  </div><!-- meeting reminder settings -->   
+	              </div><!-- row -->
+			        </div><!-- meeting reminder settings -->
 
-				<div id="meeting-repeat-settings">
-					<div class="row row-pad-5">
-						<div class="col-sm-6">
-							<label for="repeat-frequency">Frequency:</label>
-							<select class="form-control input-sm mb15" id="repeat-frequency">
-								<option value="daily">Daily</option>
-								<option value="weekly">Weekly</option>
-								<option value="monthly">Monthly</option>
-								<option value="yearly">Yearly</option>
-							</select>
-						</div>
-						<div class="col-sm-6">
-							<label for="repeat-occurrences">Stop After:</label>
-							<select class="form-control input-sm mb15" id="repeat-occurrences">							
-								<% (1..50).each do |i| %>
-								<option value="<%= i %>">
-									<%= pluralize(i, 'Occurrence') %>
-								</option>  
-								<% end %>
-							</select>
-						</div>							
-					</div><!-- row -->
-					
-					
-					<div id="repeat-frequency-day">
-						<div class="row row-pad-5">
-							<div class="col-sm-6">
-								<label for="repeat-every-day">Repeat Every:</label>
-								<select class="form-control input-sm mb15" id="repeat-every-day">							
-									<% (1..6).each do |i| %>
-									<option value="<%= i %>">
-									  	<% if i == 1 %>
-										  	Day
-										<% else %>
-											<%= "#{i.ordinalize} Day" %> 
-										<% end %> 
-									</option>  
-									<% end %>
-								</select>
-							</div>							
-						</div>
-					</div><!-- row repeat frequency day -->
-					
-					
-					
-					<div id="repeat-frequency-week">
-						<div class="row row-pad-5">
-							<div class="col-sm-6">
-								<label for="repeat-every-week">Repeat Every:</label>
-								<select class="form-control input-sm mb15" id="repeat-every-week">							
-									<% (1..52).each do |i| %>
-									<option value="<%= i %>">
-									  	<% if i == 1 %>
-                                            Week
-                                        <% else %>
-                                            <%= "#{i.ordinalize} Week" %> 
-                                        <% end %>
-									</option>  
-									<% end %>
-								</select>
-							</div>							
-							<div class="col-sm-6">
-								<div id="repeat-frequency-weekday-on">
-									Repeat On:<br/>
-									<input type="checkbox" id="repeat-day-mon">
-									<label for="repeat-day-mon" style="padding:4px;">M</label>
-									<input type="checkbox" id="repeat-day-tue">
-									<label for="repeat-day-tue" style="padding:4px;">T</label>
-									<input type="checkbox" id="repeat-day-wed">
-									<label for="repeat-day-wed" style="padding:5px;">W</label>
-									<input type="checkbox" id="repeat-day-thu">
-									<label for="repeat-day-thu" style="padding:4px;">T</label>
-									<input type="checkbox" id="repeat-day-fri">
-									<label for="repeat-day-fri" style="padding:4px;">F</label>
-									<input type="checkbox" id="repeat-day-sat">
-									<label for="repeat-day-sat" style="padding:4px;">S</label>
-									<input type="checkbox" id="repeat-day-sun">
-									<label for="repeat-day-sun" style="padding:4px;">S</label>
-								</div>
-							</div>
-						</div>
-					</div><!-- row repeat frequency month -->
-					
-					
-					<div id="repeat-frequency-month">
-						<div class="row row-pad-5">
-							<div class="col-sm-6">
-								<label for="repeat-every-month">Repeat Every:</label>
-								<select class="form-control input-sm mb15" id="repeat-every-month">							
-									<% (1..12).each do |i| %>
-									<option value="<%= i %>">
-									  	<%= pluralize(i, 'Month') %>
-									</option>  
-									<% end %>
-								</select>
-							</div>							
-							<div class="col-sm-6">
-								<label for="repeat-every-month-on">Repeat On:</label>
-								<select class="form-control input-sm mb15" id="repeat-every-month-on">							
-									<option value="dayofmonth">Day of the Month</option>
-									<option value="dayofweek">Day of the Week</option>
-								</select>
-							</div>
-						</div>
-					</div><!-- row repeat frequency month -->
-					
-					
-					<div id="repeat-frequency-year">
-						<div class="row row-pad-5">
-							<div class="col-sm-6">
-								<label for="repeat-every-year">Repeat every:</label>
-								<select class="form-control input-sm mb15" id="repeat-every-year">							
-									<% (1..4).each do |i| %>
-									<option value="<%= i %>">
-									  	<%= pluralize(i, 'Year') %> 
-									</option>  
-									<% end %>
-								</select>
-							</div>							
-						</div>
-					</div><!-- row repeat frequency year -->					
-				</div><!-- meeting repeat settings -->          
+							<div id="meeting-repeat-settings">
+								<div class="row row-pad-5">
+									<div class="col-sm-6">
+										<label for="repeat-frequency">Frequency:</label>
+										<select class="form-control input-sm mb15" id="repeat-frequency">
+											<option value="daily">Daily</option>
+											<option value="weekly">Weekly</option>
+											<option value="monthly">Monthly</option>
+											<option value="yearly">Yearly</option>
+										</select>
+									</div>
+									<div class="col-sm-6">
+										<label for="repeat-occurrences">Stop After:</label>
+										<select class="form-control input-sm mb15" id="repeat-occurrences">
+											<% (1..50).each do |i| %>
+											<option value="<%= i %>">
+												<%= pluralize(i, 'Occurrence') %>
+											</option>
+											<% end %>
+										</select>
+									</div>
+								</div><!-- row -->
+
+								<div id="repeat-frequency-day">
+									<div class="row row-pad-5">
+										<div class="col-sm-6">
+											<label for="repeat-every-day">Repeat Every:</label>
+											<select class="form-control input-sm mb15" id="repeat-every-day">
+												<% (1..6).each do |i| %>
+												<option value="<%= i %>">
+												  	<% if i == 1 %>
+													  	Day
+													<% else %>
+														<%= "#{i.ordinalize} Day" %>
+													<% end %>
+												</option>
+												<% end %>
+											</select>
+										</div>
+									</div>
+								</div><!-- row repeat frequency day -->
+
+								<div id="repeat-frequency-week">
+									<div class="row row-pad-5">
+										<div class="col-sm-6">
+											<label for="repeat-every-week">Repeat Every:</label>
+											<select class="form-control input-sm mb15" id="repeat-every-week">
+												<% (1..52).each do |i| %>
+												<option value="<%= i %>">
+												  	<% if i == 1 %>
+                                Week
+                            <% else %>
+                                <%= "#{i.ordinalize} Week" %>
+                            <% end %>
+												</option>
+												<% end %>
+											</select>
+										</div>
+										<div class="col-sm-6">
+											<div id="repeat-frequency-weekday-on">
+												Repeat On:<br/>
+												<input type="checkbox" id="repeat-day-mon">
+												<label for="repeat-day-mon" style="padding:4px;">M</label>
+												<input type="checkbox" id="repeat-day-tue">
+												<label for="repeat-day-tue" style="padding:4px;">T</label>
+												<input type="checkbox" id="repeat-day-wed">
+												<label for="repeat-day-wed" style="padding:5px;">W</label>
+												<input type="checkbox" id="repeat-day-thu">
+												<label for="repeat-day-thu" style="padding:4px;">T</label>
+												<input type="checkbox" id="repeat-day-fri">
+												<label for="repeat-day-fri" style="padding:4px;">F</label>
+												<input type="checkbox" id="repeat-day-sat">
+												<label for="repeat-day-sat" style="padding:4px;">S</label>
+												<input type="checkbox" id="repeat-day-sun">
+												<label for="repeat-day-sun" style="padding:4px;">S</label>
+											</div>
+										</div>
+									</div>
+								</div><!-- row repeat frequency month -->
 
 
+								<div id="repeat-frequency-month">
+									<div class="row row-pad-5">
+										<div class="col-sm-6">
+											<label for="repeat-every-month">Repeat Every:</label>
+											<select class="form-control input-sm mb15" id="repeat-every-month">
+												<% (1..12).each do |i| %>
+												<option value="<%= i %>">
+												  	<%= pluralize(i, 'Month') %>
+												</option>
+												<% end %>
+											</select>
+										</div>
+										<div class="col-sm-6">
+											<label for="repeat-every-month-on">Repeat On:</label>
+											<select class="form-control input-sm mb15" id="repeat-every-month-on">
+												<option value="dayofmonth">Day of the Month</option>
+												<option value="dayofweek">Day of the Week</option>
+											</select>
+										</div>
+									</div>
+								</div><!-- row repeat frequency month -->
+
+								<div id="repeat-frequency-year">
+									<div class="row row-pad-5">
+										<div class="col-sm-6">
+											<label for="repeat-every-year">Repeat every:</label>
+											<select class="form-control input-sm mb15" id="repeat-every-year">
+												<% (1..4).each do |i| %>
+												<option value="<%= i %>">
+												  	<%= pluralize(i, 'Year') %>
+												</option>
+												<% end %>
+											</select>
+										</div>
+									</div>
+								</div><!-- row repeat frequency year -->
+							</div><!-- meeting repeat settings -->
 
               <div class="row row-pad-5">
                 <div class="col-lg-12 mb15">
-                  <textarea class="form-control" rows="5" placeholder="Agenda"></textarea>
+                  <textarea class="form-control" name="conversation_item[body]"  rows="5" placeholder="Agenda" required="required"></textarea>
                 </div>
               </div><!-- row -->
-
+            <%if account.present?%>
+              <input type="hidden" name="id" value="account.id%>">
+            <%end%>
             </div><!-- panel-body -->
             <div class="panel-footer">
               <button type="submit" value="submit" class="btn btn-primary">Save</button>
             </div>
-        </div><!-- panel -->
+          </div><!-- panel -->
         <% end %> <!-- end form -->
-        </div><!-- modal body -->
+      </div><!-- modal body -->
     </div><!-- modal content -->
   </div><!-- modal dialog -->
 </div><!-- modal -->

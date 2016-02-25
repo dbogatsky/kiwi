@@ -6,7 +6,7 @@
 <script src="/assets/bootstrap/js/modernizr.min.js"></script>
 <script src="/assets/bootstrap/js/jquery.sparkline.min.js"></script>
 <script src="/assets/bootstrap/js/toggles.min.js"></script>
-<!-- <script src="/assets/bootstrap/js/retina.min.js"></script> -->
+<script src="/assets/bootstrap/js/retina.min.js"></script>
 
 <script src="/assets/bootstrap/js/morris.min.js"></script>
 <script src="/assets/bootstrap/js/raphael-2.1.0.min.js"></script>
@@ -43,6 +43,9 @@
 <!-- end test -->
 
 <script src="/assets/bootstrap/js/custom.js"></script>
+<script src="/assets/scripts/gmap.js"></script>
+
+
 
 <script>
 	$(document).ready(function() {
@@ -63,18 +66,18 @@
     });
 
     $('.datepicker').datepicker();
-    $('#schedule-from-datepicker').datepicker({
-      dateFormat: 'dd/mm/yy',
-      altField: "#schedule-to-datepicker",
-      altFormat: "dd/mm/yy"
+    $('#schedule-from-datepicker, #schedule-from-datepicker-edit,#meeting-reminder-date, #meeting-reminder-date-edit').datepicker({
+      dateFormat: 'mm/dd/yy',
+      altField: "#schedule-to-datepicker, #schedule-from-datepicker-edit",
+      altFormat: "mm/dd/yy"
     });
-    $('#schedule-to-datepicker').datepicker({
-      dateFormat: 'dd/mm/yy'
+    $('#schedule-to-datepicker, #schedule-to-datepicker-edit').datepicker({
+      dateFormat: 'mm/dd/yy'
     });
-    $('#schedule-from-timepicker').timepicker({
+    $('#schedule-from-timepicker, #schedule-from-timepicker-edit').timepicker({
       minuteStep: 15
     });
-    $('#schedule-to-timepicker').timepicker({
+    $('#schedule-to-timepicker, #schedule-to-timepicker-edit').timepicker({
       minuteStep: 15
     });
     $('#scheduleFromTimePicker').timepicker().on('hide.timepicker', function(e) {

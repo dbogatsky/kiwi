@@ -3,12 +3,12 @@
     <div class="media">
       <a href="<%= account_path(account.id) %>" class="pull-left">
         <img alt="" src="<%= (account.avatar.nil?) ? '/assets/images/default_account_avatar.png' : account.avatar %>" class="thumbnail media-object">
-      </a> 
+      </a>
       <div class="media-body">
         <h4 class="person-name"><%= link_to account.name, account_path(account.id) %></h4>
-    
+
         <!--<%# if !@account_statuses[account.status].nil? %>
-          <span class="badge pull-right" style="background-color: #<%#= @account_statuses[account.status]['color']%>; border-color: #<%#= @account_statuses[account.status]['color']%>;"><%#= @account_statuses[account.status]['name']%></span> 
+          <span class="badge pull-right" style="background-color: #<%#= @account_statuses[account.status]['color']%>; border-color: #<%#= @account_statuses[account.status]['color']%>;"><%#= @account_statuses[account.status]['name']%></span>
         <%# else %>
           <span class="badge pull-right" style="background-color: #ffffff; border-color: #ffffff;">&nbsp;</span>
         <%# end %>-->
@@ -51,5 +51,5 @@
       </div>
     </div>
   </div>
-</div><!-- col-md-6 -->          
+</div><!-- col-md-6 -->
 
