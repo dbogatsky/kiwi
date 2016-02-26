@@ -29,6 +29,7 @@ Rails.application.routes.draw do
       delete :delete_note
       delete :delete_email
       delete :delete_meeting
+      patch  :meeting_completed
     end
     resources :contacts, only: [:edit, :create, :update, :destroy]
     resources :addresses, only: [:edit, :create, :update, :destroy]

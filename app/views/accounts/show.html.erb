@@ -202,6 +202,7 @@
   <%= render "conversation_note" %>
   <%= render 'conversation_note_edit'%>
   <%= render "conversation_meeting_edit" %>
+  <%= render "conversation_meeting_complete" %>
   <%= render "conversation_sharedusers" %>
 <% end %>
 
@@ -220,6 +221,13 @@
   $(function() {
     email_new_editor = $('#email_new_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
     email_edit_editor = $('#email_edit_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
+  });
+
+  var meeting_new_editor, meeting_edit_editor;
+
+  $(function() {
+    meeting_new_editor = $('#meeting_new_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
+    meeting_edit_editor = $('#meeting_edit_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
   });
 
   $(document).on('click', "a.edit_email", function(e){
@@ -285,8 +293,15 @@
           $('.conversation-edit-meeting-modal-form input[name="scheduled_date"]').val(null);
 
         }
-    $('.conversation-edit-meeting-modal-form textarea[name="conversation_item[body]"]').val($(this).attr('data-body'));
+    // $('.conversation-edit-meeting-modal-form textarea[name="conversation_item[body]"]').val($(this).attr('data-body'));
+     meeting_edit_editor.data("wysihtml5").editor.setValue($(this).attr('data-body'));
+
     $('.conversation-edit-meeting-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
+  });
+
+  $(document).on('click', "a.complete_meeting", function(e){
+    id = $(this).attr('data-id')
+    $('.conversation-complete-meeting-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
   });
 
   $(document).ready(function(){

@@ -24,8 +24,26 @@
         <li>
             <%=link_to 'Delete', delete_meeting_account_path(@account, item_id: citem.id), method: :delete,data: {confirm: 'Are you sure to delete this meeting?'}%>
         </li>
+        <li>
+          <a class="complete_meeting" href="#"
+             data-toggle="modal"
+             data-target=".conversation-complete-meeting-modal-form"
+             data-id="<%=citem.id%>">Complete</a>
+        </li>
       </ul>
     </div>
 	<h2 class="ci_header"><%= citem.title %></h2>
-	<p><%= citem.body %></p>
+	<p><%= sanitize citem.body %></p>
+  <div class="ci_footer">
+
+    <div>Created by: <%=citem.created_by.first_name%> <%=citem.created_by.last_name%></div>
+    <div>Start date:</div>
+    <div>End date:</div>
+    <% if !citem.invitees.nil? %>
+        <i class="fa fa-paper-plane-o"></i><%= citem.invitees %><br />
+    <% end %>
+    <% if (citem.scheduled_at.present?) %>
+        <i class="fa fa-calendar"></i><%= citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %>
+    <% end %>
+  </div>
 </div>

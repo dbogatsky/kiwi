@@ -1,0 +1,36 @@
+<div class="modal fade conversation-complete-meeting-modal-form" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">&times;</button>
+        <h4 class="modal-title">Meeting Status</h4>
+      </div>
+      <div class="modal-body">
+        <%= form_tag(update_meeting_account_path(@account), novalidate: 'novalidate', method: :patch) do %>
+          <div class="panel panel-default">
+              <div class="panel-body">
+                <div class="row row-pad-5 mb30">
+                  <div class="col-lg-12">
+                   <select class="form-control" name="conversation_item[status]" placeholder="" required="required">
+                      <option value=''>-select status-</option>
+                      <option value="completed">Completed</option>
+                      <option value="cancelled">Cancelled</option>
+                  </select>
+                  </div>
+                </div>
+                <div class="row row-pad-5">
+                  <div class="col-lg-12">
+                    <textarea class="form-control"rows="5" placeholder="Outcome of the meeting" required="required" name="conversation_item[status_body]"></textarea>
+                  </div>
+                </div>
+                 <input type="hidden" name="conversation_item[id]">
+              </div><!-- panel-body -->
+              <div class="panel-footer">
+                <button type="submit" class="btn btn-primary">Save</button>
+              </div>
+          </div><!-- panel -->
+        <% end %>
+      </div><!-- modal body -->
+    </div><!-- modal content -->
+  </div><!-- modal dialog -->
+</div><!-- modal -->

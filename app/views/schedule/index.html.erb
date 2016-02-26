@@ -125,86 +125,86 @@
     </div><!-- row -->
   </div>
 </div>
-<%= render "accounts/conversation_meeting",account: nil %>
+<%#= render "accounts/conversation_meeting",account: nil %>
 
 <script src="assets/bootstrap/js/fullcalendar.min.js"></script>
 <script src="assets/bootstrap/js/jquery.ui.touch-punch.min.js"></script>
 
 <script>
-  $(document).ready(function(){
-    $('#meeting-reminder-time').timepicker({minuteStep: 5});
+  // $(document).ready(function(){
+  //   $('#meeting-reminder-time').timepicker({minuteStep: 5});
 
-    // by default hide reminder settings for meetings
-    $("#meeting-reminder-settings").hide();
+  //   // by default hide reminder settings for meetings
+  //   $("#meeting-reminder-settings").hide();
 
-    // hide show note reminder settings for meetings
-    $('#meeting-reminder').change(function () {
-        if ($(this).is(':checked')) {
-          $("#meeting-reminder-settings").show(500);
-      }
-      else {
-        $("#meeting-reminder-settings").hide(500);
-      }
-    });
+  //   // hide show note reminder settings for meetings
+  //   $('#meeting-reminder').change(function () {
+  //       if ($(this).is(':checked')) {
+  //         $("#meeting-reminder-settings").show(500);
+  //     }
+  //     else {
+  //       $("#meeting-reminder-settings").hide(500);
+  //     }
+  //   });
 
-    // by default hide repeat settings for meetings
-    $("#meeting-repeat-settings").hide();
-    $("#repeat-frequency-week").hide();
-    $("#repeat-frequency-month").hide();
-    $("#repeat-frequency-year").hide();
+  //   // by default hide repeat settings for meetings
+  //   $("#meeting-repeat-settings").hide();
+  //   $("#repeat-frequency-week").hide();
+  //   $("#repeat-frequency-month").hide();
+  //   $("#repeat-frequency-year").hide();
 
-    // hide show note reminder settings for meetings
-    $('#meeting-repeat').change(function () {
-        if ($(this).is(':checked')) {
-          $("#meeting-repeat-settings").show(500);
-      }
-      else {
-        $("#meeting-repeat-settings").hide(500);
-      }
-    });
+  //   // hide show note reminder settings for meetings
+  //   $('#meeting-repeat').change(function () {
+  //       if ($(this).is(':checked')) {
+  //         $("#meeting-repeat-settings").show(500);
+  //     }
+  //     else {
+  //       $("#meeting-repeat-settings").hide(500);
+  //     }
+  //   });
 
-    // hide show note reminder settings for meetings
-    $('#repeat-frequency').change(function () {
-      if($(this).val() == "daily") {
-        $("#repeat-frequency-day").show(500);
-        $("#repeat-frequency-week").hide(500);
-        $("#repeat-frequency-month").hide(500);
-        $("#repeat-frequency-year,").hide(500);
-      }
-      else if($(this).val() == "weekly"){
-        $("#repeat-frequency-day").hide(500);
-        $("#repeat-frequency-week").show(500);
-        $("#repeat-frequency-month").hide(500);
-        $("#repeat-frequency-year").hide(500);
-      }
-      else if($(this).val() == "monthly"){
-        $("#repeat-frequency-day").hide(500);
-        $("#repeat-frequency-week").hide(500);
-        $("#repeat-frequency-month").show(500);
-        $("#repeat-frequency-year").hide(500);
-      }
-      else if($(this).val() == "yearly"){
-        $("#repeat-frequency-day").hide(500);
-        $("#repeat-frequency-week").hide(500);
-        $("#repeat-frequency-month").hide(500);
-        $("#repeat-frequency-year").show(500);
-      }
-    });
+  //   // hide show note reminder settings for meetings
+  //   $('#repeat-frequency').change(function () {
+  //     if($(this).val() == "daily") {
+  //       $("#repeat-frequency-day").show(500);
+  //       $("#repeat-frequency-week").hide(500);
+  //       $("#repeat-frequency-month").hide(500);
+  //       $("#repeat-frequency-year,").hide(500);
+  //     }
+  //     else if($(this).val() == "weekly"){
+  //       $("#repeat-frequency-day").hide(500);
+  //       $("#repeat-frequency-week").show(500);
+  //       $("#repeat-frequency-month").hide(500);
+  //       $("#repeat-frequency-year").hide(500);
+  //     }
+  //     else if($(this).val() == "monthly"){
+  //       $("#repeat-frequency-day").hide(500);
+  //       $("#repeat-frequency-week").hide(500);
+  //       $("#repeat-frequency-month").show(500);
+  //       $("#repeat-frequency-year").hide(500);
+  //     }
+  //     else if($(this).val() == "yearly"){
+  //       $("#repeat-frequency-day").hide(500);
+  //       $("#repeat-frequency-week").hide(500);
+  //       $("#repeat-frequency-month").hide(500);
+  //       $("#repeat-frequency-year").show(500);
+  //     }
+  //   });
 
-    // by default hide reminder settings for notes
-    $("#note-reminder-settings").hide();
+  //   // by default hide reminder settings for notes
+  //   $("#note-reminder-settings").hide();
 
-    // hide show note reminder settings
+  //   // hide show note reminder settings
 
-    $('#note-reminder').change(function () {
-      if ($(this).is(':checked')) {
-        $("#note-reminder-settings").show(500);
-      }
-      else {
-        $("#note-reminder-settings").hide(500);
-      }
-    });
-  });
+  //   $('#note-reminder').change(function () {
+  //     if ($(this).is(':checked')) {
+  //       $("#note-reminder-settings").show(500);
+  //     }
+  //     else {
+  //       $("#note-reminder-settings").hide(500);
+  //     }
+  //   });
+  // });
 
   jQuery(document).ready(function() {
 

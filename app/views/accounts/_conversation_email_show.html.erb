@@ -25,8 +25,8 @@
             <%=link_to 'Delete', delete_email_account_path(@account, item_id: citem.id), method: :delete,data: {confirm: 'Are you sure to delete this email?'}%>
         </li>
       </ul>
-    </div>  
-    <h2 class="ci_header"><%= citem.title %></h2>  
+    </div>
+    <h2 class="ci_header"><%= citem.title %></h2>
     <div class="ci_note_body"><%= sanitize citem.body %></div>
     <div class="ci_footer">
         <% if !citem.invitees.nil? %>
@@ -34,6 +34,6 @@
         <% end %>
         <% if (citem.scheduled_at.present?) %>
             <i class="fa fa-calendar"></i><%= citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %>
-        <% end %> 
-    </div>        
+        <% end %>
+    </div>
 </div>

@@ -95,7 +95,7 @@
               <div class="row row-pad-5">
                 <div class="col-lg-6">
                   <div class="ckbox ckbox-primary">
-                    <input type="checkbox" id="meeting-reminder" name="meeting-reminder">
+                    <input type="checkbox" id="meeting-reminder" name="conversation_item[reminder]">
                     <label for="meeting-reminder">Set a Custom Reminder</label>
                   </div>
                 </div>
@@ -246,11 +246,11 @@
 
               <div class="row row-pad-5">
                 <div class="col-lg-12 mb15">
-                  <textarea class="form-control" name="conversation_item[body]"  rows="5" placeholder="Agenda" required="required"></textarea>
+                  <textarea class="form-control wysihtml5" name="conversation_item[body]" id="meeting_new_editor"  rows="5" placeholder="Agenda" required="required"></textarea>
                 </div>
               </div><!-- row -->
             <%if account.present?%>
-              <input type="hidden" name="id" value="account.id%>">
+              <input type="hidden" name="id" value="<%=account.id%>">
             <%end%>
             </div><!-- panel-body -->
             <div class="panel-footer">

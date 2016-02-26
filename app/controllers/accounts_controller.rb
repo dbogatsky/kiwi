@@ -94,7 +94,8 @@ class AccountsController < ApplicationController
             body: conversation_item_params[:body],
             invitees: params[:conversation_item][:emails],
             scheduled_at: params[:conversation_item][:scheduled_at],
-            location: params[:conversation_item][:location]
+            location: params[:conversation_item][:location],
+            reminder: params[:conversation_item][:reminder]
           },
         conversation_id: c_id, type: "meeting")
     if ci
@@ -120,12 +121,14 @@ class AccountsController < ApplicationController
 
   def update_meeting
     conversation_id = @account.conversation.id
-    if params[:scheduled_date].present? && params[:scheduled_time].present?
-      params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:scheduled_date], params[:scheduled_time])
-    else
-      params[:conversation_item][:scheduled_at] = nil
+    unless params[:conversation_item][:status].present?
+      if params[:scheduled_date].present? && params[:scheduled_time].present?
+        params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:scheduled_date], params[:scheduled_time])
+      else
+        params[:conversation_item][:scheduled_at] = nil
+        params[:conversation_item][:reminder] = nil
+      end
     end
-
     meeting = @account.conversation.conversation_items
     meeting.each do |n|
       @conversation = n if n.id == params[:conversation_item][:id].to_i
