@@ -22,7 +22,7 @@
               <%end%>
               <div class="row row-pad-5">
                 <div class="col-lg-12">
-                  <input type="text" name="conversation_item[location]" id="gmaps-input-address" placeholder="Add Location" value="<%=address%>"class="form-control" required="required"/>
+                  <input type="text" name="conversation_item[location]" id="keyword" placeholder="Add Location" value="<%=address%>"class="form-control" required="required"/>
                 </div>
               </div><!-- row -->
 
@@ -262,3 +262,9 @@
     </div><!-- modal content -->
   </div><!-- modal dialog -->
 </div><!-- modal -->
+<script type="text/javascript">
+  $(".account-action-meeting").on("shown.bs.modal", function(){
+    var input = document.getElementById("keyword");
+    var autocomplete = new google.maps.places.Autocomplete(input);
+  });
+</script>
