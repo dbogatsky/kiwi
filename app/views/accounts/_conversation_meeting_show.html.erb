@@ -19,6 +19,10 @@
              data-title="<%=citem.title %>"
              data-date="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.scheduled_at.present?%>"
              data-time="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.scheduled_at.present? %>"
+             data-starts-date="<%=Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.starts_at.present? %>"
+             data-starts-time="<%=Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.starts_at.present? %>"
+             data-ends-date="<%=Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.ends_at.present? %>"
+             data-ends-time="<%=Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.ends_at.present? %>"
              data-body="<%= citem.body %>">Edit</a>
         </li>
         <li>
@@ -35,15 +39,23 @@
 	<h2 class="ci_header"><%= citem.title %></h2>
 	<p><%= sanitize citem.body %></p>
   <div class="ci_footer">
-
     <div>Created by: <%=citem.created_by.first_name%> <%=citem.created_by.last_name%></div>
-    <div>Start date:</div>
-    <div>End date:</div>
+
+    <%if citem.starts_at.present?%>
+      <div>Start date: <%=citem.starts_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%> </div>
+    <%end%>
+
+    <%if citem.ends_at.present?%>
+      <div>End date: <%=citem.ends_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%></div>
+    <%end%>
+
     <% if !citem.invitees.nil? %>
         <i class="fa fa-paper-plane-o"></i><%= citem.invitees %><br />
     <% end %>
+
     <% if (citem.scheduled_at.present?) %>
         <i class="fa fa-calendar"></i><%= citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %>
     <% end %>
+
   </div>
 </div>

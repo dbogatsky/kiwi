@@ -88,14 +88,18 @@ class AccountsController < ApplicationController
       params[:conversation_item][:scheduled_at] = nil
       params[:conversation_item][:reminder] = nil
     end
+    params[:conversation_item][:starts_at] = convert_datetime_to_utc(current_user.time_zone, params[:starts_date], params[:starts_time])
+    params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone, params[:ends_date], params[:ends_time])
     ci = ConversationItem.create(
           conversation_item: {
             title: conversation_item_params[:title],
             body: conversation_item_params[:body],
-            invitees: params[:conversation_item][:emails],
+            invitees: params[:conversation_item][:invitees],
             scheduled_at: params[:conversation_item][:scheduled_at],
             location: params[:conversation_item][:location],
-            reminder: params[:conversation_item][:reminder]
+            reminder: params[:conversation_item][:reminder],
+            starts_at: params[:conversation_item][:starts_at],
+            ends_at:   params[:conversation_item][:ends_at]
           },
         conversation_id: c_id, type: "meeting")
     if ci
@@ -129,11 +133,13 @@ class AccountsController < ApplicationController
         params[:conversation_item][:reminder] = nil
       end
     end
+    params[:conversation_item][:starts_at] = convert_datetime_to_utc(current_user.time_zone, params[:starts_date], params[:starts_time]) if params[:starts_date] && params[:starts_time]
+    params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone, params[:ends_date], params[:ends_time]) if params[:ends_date] && params[:ends_time]
     meeting = @account.conversation.conversation_items
     meeting.each do |n|
       @conversation = n if n.id == params[:conversation_item][:id].to_i
     end
-    if @conversation.update_attributes(conversation_item: params[:conversation_item], conversation_id: conversation_id)
+    if @conversation.update_attributes(conversation_item: params[:conversation_item], conversation_id: conversation_id, reload: true)
       flash[:success] = 'Meeting successfully updated!'
     else
       flash[:danger] = 'Meeting not updated!'

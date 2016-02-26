@@ -28,7 +28,8 @@
 
               <div class="row row-pad-5">
                 <div class="col-lg-12">
-                  <select class="form-control select2" multiple="multiple" name="conversation_item[emails][]" placeholder="-Select invitees-" required="required">
+                  <select class="form-control" name="conversation_item[invitees]" placeholder="-Select invitees-" required="required">
+                   <option value="">-select invitees-</option>
                    <%=User.all.each do |u|%>
 											<option value="<%=u.email%>"><%=u.email%></option>
 									 <%end%>
@@ -58,14 +59,14 @@
                 <div class="col-lg-4">
                   <div class="input-group ">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                    <input type="text" class="form-control" placeholder="dd/mm/yy" name="schedule-from-datepicker" id="schedule-from-datepicker" required="required" />
+                    <input type="text" class="form-control" placeholder="dd/mm/yy" name="starts_date" id="schedule-from-datepicker" required="required" />
                   </div>
                 </div>
 
                 <div class="col-lg-4">
                   <div class="input-group ">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-                    <div class="bootstrap-timepicker"><input id="schedule-from-timepicker" name="schedule-from-timepicker" type="text" class="form-control" required="required" /></div>
+                    <div class="bootstrap-timepicker"><input id="schedule-from-timepicker" name="starts_time" type="text" class="form-control" required="required" /></div>
                   </div>
                 </div>
               </div><!-- row -->
@@ -80,14 +81,14 @@
                 <div class="col-lg-4">
                   <div class="input-group ">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                    <input type="text" class="form-control" placeholder="dd/mm/yy" name="schedule-to-datepicker"  id="schedule-to-datepicker" required="required" />
+                    <input type="text" class="form-control" placeholder="dd/mm/yy" name="ends_date"  id="schedule-to-datepicker" required="required" />
                   </div>
                 </div>
 
                 <div class="col-lg-4">
                   <div class="input-group mb15">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-                    <div class="bootstrap-timepicker"><input name="schedule-to-timepicker"  id="schedule-to-timepicker" type="text" class="form-control" required="required" /></div>
+                    <div class="bootstrap-timepicker"><input name="ends_time"  id="schedule-to-timepicker" type="text" class="form-control" required="required" /></div>
                   </div>
                 </div>
               </div><!-- row -->
