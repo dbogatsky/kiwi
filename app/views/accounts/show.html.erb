@@ -275,7 +275,7 @@
 
   $(document).on('click', "a.edit_meeting", function(e){
     id = $(this).attr('data-id')
-    $('.conversation-edit-meeting-modal-form select[name="conversation_item[invitees]"]').val($(this).attr('data-invitees'));
+    $('.conversation-edit-meeting-modal-form input[name="conversation_item[invitees]"]').val($(this).attr('data-invitees'));
     $('.conversation-edit-meeting-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
     // $('.conversation-edit-meeting-modal-form input[name="conversation_item[location]"]').val($(this).attr('data-location'));
     $('.conversation-edit-meeting-modal-form input[name="scheduled_time"]').val($(this).attr('data-time'));

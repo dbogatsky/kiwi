@@ -28,12 +28,7 @@
 
               <div class="row row-pad-5">
                 <div class="col-lg-12">
-                  <select class="form-control" name="conversation_item[invitees]" placeholder="-Select invitees-" required="required">
-                   <option value="">-select invitees-</option>
-                   <%=User.all.each do |u|%>
-											<option value="<%=u.email%>"><%=u.email%></option>
-									 <%end%>
-								  </select>
+								  <input type="text" name="conversation_item[invitees]" placeholder="Invitees email" class="form-control" required="required"/>
                 </div>
               </div><!-- row -->
               <%unless account.present?%>
