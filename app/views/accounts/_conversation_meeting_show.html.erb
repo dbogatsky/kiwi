@@ -2,14 +2,24 @@
 	<img src="/assets/vertical-timeline/img/cd-icon-calendar.svg" alt="Meeting">
 </div>
 <div class="cd-timeline-content">
-	<span class="cd-date">
-		<%= citem.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>
-	</span>
+    <%if citem.starts_at.present? && citem.ends_at.present? %>
+		<span class="cd-date"><%= citem.starts_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y - %l:%M %p")%> to <%=citem.ends_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%l:%M %p")%>&nbsp;&nbsp;</span>
+            <%= get_styled_meetingstatus(citem, false) %>
+    <% else %>
+        <span class="cd-date"><%= citem.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%></span>
+    <% end %>
 	<div class="btn-group mr5 pull-right">
       <button data-toggle="dropdown" class="btn btn-sm btn-white dropdown-toggle" type="button" style="border-radius: 2px">
         <i class="fa fa-cog mr5"></i><span class="caret"></span>
       </button>
       <ul class="dropdown-menu">
+        <li>
+          <a class="complete_meeting" href="#"
+             data-toggle="modal"
+             data-target=".conversation-complete-meeting-modal-form"
+             data-id="<%=citem.id%>">Complete
+            </a>
+        </li>      
         <li>
             <a class="edit_meeting" href="#"
              data-toggle="modal"
@@ -28,34 +38,28 @@
         <li>
             <%=link_to 'Delete', delete_meeting_account_path(@account, item_id: citem.id), method: :delete,data: {confirm: 'Are you sure to delete this meeting?'}%>
         </li>
-        <li>
-          <a class="complete_meeting" href="#"
-             data-toggle="modal"
-             data-target=".conversation-complete-meeting-modal-form"
-             data-id="<%=citem.id%>">Complete</a>
-        </li>
       </ul>
     </div>
 	<h2 class="ci_header"><%= citem.title %></h2>
-	<p><%= sanitize citem.body %></p>
+	<p><span class="subheading">Agenda:<br/></span><%= sanitize citem.body %></p>
+    <% if (!citem.notes.nil?) %> 
+        <p><span class="subheading">Notes:<br/></span><%= sanitize citem.notes %></p>
+    <% end %>
+    <% if citem.status = "scheduled" %>
+        <button class="btn btn-xs btn-default" style="padding:2px 5px; border: 1px;"><i class="fa fa-sign-in mr5"></i>Check In</button>
+    <% end %>
   <div class="ci_footer">
-    <div>Created by: <%=citem.created_by.first_name%> <%=citem.created_by.last_name%></div>
+    <% if (citem.scheduled_at.present?) %>
+        <i class="fa fa-bell tooltips" data-toggle="tooltip" data-original-title="Reminder"></i><%= citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %><br />
+    <% end %>
 
-    <%if citem.starts_at.present?%>
-      <div>Start date: <%=citem.starts_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%> </div>
-    <%end%>
-
-    <%if citem.ends_at.present?%>
-      <div>End date: <%=citem.ends_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%></div>
-    <%end%>
+    <i class="fa fa-user tooltips" data-toggle="tooltip" data-original-title="Created by"></i><%=citem.created_by.first_name%> <%=citem.created_by.last_name%><br />
 
     <% if !citem.invitees.nil? %>
-        <i class="fa fa-paper-plane-o"></i><%= citem.invitees %><br />
+        <i class="fa fa-users tooltips" data-toggle="tooltip" data-original-title="Invitees"></i><%= citem.invitees %>
     <% end %>
 
-    <% if (citem.scheduled_at.present?) %>
-        <i class="fa fa-calendar"></i><%= citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %>
-    <% end %>
+
 
   </div>
 </div>

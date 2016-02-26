@@ -3,6 +3,14 @@ body,
     background: none;    
 }
 
+.subheading {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #999;
+    margin-bottom: 15px;
+    margin-top: 0;
+}
+
 .ci_note_body {
     font-size:14px!important;
 }
