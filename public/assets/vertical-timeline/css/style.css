@@ -197,6 +197,7 @@ Main components
   clear: both;
 }
 .cd-timeline-content h2 {
+  font-size: 18px;
   color: #303e49;
 }
 .cd-timeline-content p, .cd-timeline-content .cd-read-more, .cd-timeline-content .cd-date {
@@ -225,7 +226,7 @@ Main components
   float: left;
   padding: .8em 0;
 */
-  opacity: .7;
+  opacity: .8;
 }
 .cd-timeline-content::before {
   content: '';
