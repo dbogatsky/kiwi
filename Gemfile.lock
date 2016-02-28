@@ -57,6 +57,7 @@ GEM
       activesupport (>= 3.2)
       nilio (>= 1.0)
       rake
+    cancancan (1.13.1)
     chronic (0.10.2)
     coderay (1.1.0)
     coffee-rails (4.1.1)
@@ -214,6 +215,7 @@ DEPENDENCIES
   better_errors
   byebug
   cached_resource
+  cancancan (~> 1.10)
   chronic
   coffee-rails (~> 4.1.0)
   country_select (~> 2.4)
@@ -232,3 +234,6 @@ DEPENDENCIES
   social-share-button (~> 0.1.6)
   uglifier (>= 1.3.0)
   web-console (~> 2.0)
+
+BUNDLED WITH
+   1.11.2
