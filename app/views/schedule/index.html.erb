@@ -1,104 +1,66 @@
+<% content_for :pageheader do %>
+  <h2><i class="fa fa-home"></i> Schedule</h2>
+<% end %>
+
+
 <div class="row">
   <div class="col-md-4">
     <div class="panel panel-default panel-alt">
       <div class="media padding10">
-        <a class="pull-left" href="#">
-          <img alt="" src="assets/bootstrap/images/photos/user2.png" class="thumbnail media-object" style="margin-bottom:0px;">
+        <a class="pull-left">
+          <% if !current_user.avatar_url.present? %>
+            <img src="/assets/bootstrap/images/user.png" class="media-object" />
+          <% else %>
+            <img alt="" src="<%= current_user.avatar_url %>" class="thumbnail media-object" style="margin-bottom:0px; height:100px;">
+          <% end %>
         </a>
         <div class="media-body event-body">
-          <h3 class="subtitle-lined">John Doe</h3>
-          <small>Sunday November 1, 2015</small>
-          <small>Pacific Time (GMT -8:00)</small>
+          <h3 class="subtitle-lined"><%= current_user.first_name rescue nil %> <%= current_user.last_name rescue nil%></h3>
+          <small><%= current_user.time_zone %></small>
         </div>
       </div>
       <div class="ibox-content ibox-heading">
-          <h3>You have a busy day today!</h3>
-          <small><i class="fa fa-map-marker"></i>&nbsp;&nbsp;Your next meeting is at 6:00am, check below for details</small>
+        <span class="badge " style="margin-top: -3px; background-color: white; color: #428BCA; border: 1px solid #428BCA;">scheduled</span>      
+        <div class="btn-group mr5 pull-right">
+          <button data-toggle="dropdown" class="btn btn-sm btn-white dropdown-toggle" type="button" style="border-radius: 2px">
+            <i class="fa fa-cog mr5"></i><span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="complete_meeting" href="#" data-toggle="modal" data-target=".conversation-complete-meeting-modal-form" data-id="99">Complete
+                </a>
+            </li>      
+            <li>
+                <a class="edit_meeting" href="#" data-toggle="modal" data-target=".conversation-edit-meeting-modal-form" data-id="99" data-invitees="me@dierbro.com, me+test@dierbro.com" data-title="TESTMEETING_edited" data-date="03/02/2016" data-time="01:37AM" data-starts-date="03/01/2016" data-starts-time="11:40PM" data-ends-date="03/02/2016" data-ends-time="12:40AM" data-body="TESTMEETING_editted">Edit</a>
+            </li>
+            <li>
+                <a data-confirm="Are you sure to delete this meeting?" rel="nofollow" data-method="delete" href="/accounts/61/delete_meeting?item_id=99">Delete</a>
+            </li>
+          </ul>
+        </div>
+        <h3>Meeting Title Here</h3>
+        <small><i class="fa fa-map-marker" style="margin-right:10px"></i>&nbsp;&nbsp;123 somewhere street, toronto</small><br />
+        <small><i class="fa fa-calendar" style="margin-right:10px"></i>Tue Mar 01 2016</small><br />
+        <small><i class="fa fa-clock-o" style="margin-right:10px"></i>11:40 PM to 12:40 AM</small><br />
       </div>
       <div class="panel-body">
-        <div class="inspinia-timeline">
-          <div class="timeline-item">
-            <div class="row">
-                <div class="col-xs-3 date">
-                    <i class="fa fa-briefcase"></i>
-                    6:00 am
-                </div>
-                <div class="col-xs-7 content no-top-border">
-                    <p><strong>Meeting</strong></p>
-
-                    <p><small>Conference on the sales results for the previous year. Monica please examine sales trends in marketing and products. Below please find the current status of the sale.</small></p>
-                </div>
+        <button class="btn btn-xs btn-default pull-right mr5"><i class="fa fa-sign-in mr5"></i>Check In</button>
+        <p>
+          <span class="subheading">Agenda:<br></span>
+          Place meeting agenda details here
+        </p>
+        <p>
+          <span class="subheading">Notes:<br></span>
+          Place meeting notes here
+        </p>  
+        <div class="row ci_footer">
+            <div class="col-sm-10">
+              <i class="fa fa-bell tooltips mr10" data-toggle="tooltip" data-original-title="Reminder"></i>Wed Mar 02 2016 at  1:37 AM<br>
+              <i class="fa fa-user tooltips mr10" data-toggle="tooltip" data-original-title="Created by"></i>Gurpreet Jajj<br>
+              <i class="fa fa-users tooltips mr10" data-toggle="tooltip" data-original-title="Invitees"></i>me@dierbro.com, me+test@dierbro.com
             </div>
-          </div>
-          <div class="timeline-item">
-            <div class="row">
-                <div class="col-xs-3 date">
-                    <i class="fa fa-file-text"></i>
-                    7:00 am
-                </div>
-                <div class="col-xs-7 content">
-                    <p class="m-b-xs"><strong>Send documents to Mike</strong></p>
-                    <p><small>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since.</small></p>
-                </div>
+            <div class="col-sm-2">
             </div>
-          </div>
-          <div class="timeline-item">
-            <div class="row">
-                <div class="col-xs-3 date">
-                    <i class="fa fa-coffee"></i>
-                    8:00 am
-                </div>
-                <div class="col-xs-7 content">
-                    <p class="m-b-xs"><strong>Coffee Break</strong></p>
-                    <p><small>
-                        Go to shop and find some products.
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's.
-                    </small></p>
-                </div>
-            </div>
-          </div>
-          <div class="timeline-item">
-            <div class="row">
-                <div class="col-xs-3 date">
-                    <i class="fa fa-phone"></i>
-                    11:00 am
-                </div>
-                <div class="col-xs-7 content">
-                    <p class="m-b-xs"><strong>Phone with Jeronimo</strong></p>
-                    <p><small>
-                        Lorem Ipsum has been the industry's standard dummy text ever since.
-                    </small></p>
-                </div>
-            </div>
-          </div>
-          <div class="timeline-item">
-            <div class="row">
-                <div class="col-xs-3 date">
-                    <i class="fa fa-user-md"></i>
-                    09:00 pm
-                </div>
-                <div class="col-xs-7 content">
-                    <p class="m-b-xs"><strong>Go to the doctor dr Smith</strong></p>
-                    <p><small>
-                        Find some issue and go to doctor.
-                    </small></p>
-                </div>
-            </div>
-          </div>
-          <div class="timeline-item">
-            <div class="row">
-                <div class="col-xs-3 date">
-                    <i class="fa fa-comments"></i>
-                    12:50 pm
-                </div>
-                <div class="col-xs-7 content">
-                    <p class="m-b-xs"><strong>Chat with Monica and Sandra</strong></p>
-                    <p><small>
-                        Web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-                    </small></p>
-                </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -106,14 +68,13 @@
   <div class="col-md-8">
     <div class="row">
       <div class="col-sm-12">
-        <div class="btn-group">
-          <button data-toggle="dropdown" class="btn btn-success dropdown-toggle" type="button">
+        <div class="btn-group mr5 pull-right">
+          <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
               <i class="fa fa-plus-circle mr5"></i>Add
               <span class="caret"></span>
           </button>
           <ul class="dropdown-menu">
               <li><a href="#" data-toggle="modal" data-target=".account-action-meeting">Schedule Meeting</a></li>
-              <li><a href="#">Add Reminder</a></li>
           </ul>
         </div>
       </div>
@@ -121,91 +82,12 @@
     <div class="row">
       <div class="col-sm-12">
         <div id="calendar"></div>
-      </div>
+      </div>§
     </div><!-- row -->
   </div>
 </div>
-<%#= render "accounts/conversation_meeting",account: nil %>
-
-<script src="assets/bootstrap/js/fullcalendar.min.js"></script>
-<script src="assets/bootstrap/js/jquery.ui.touch-punch.min.js"></script>
 
 <script>
-  // $(document).ready(function(){
-  //   $('#meeting-reminder-time').timepicker({minuteStep: 5});
-
-  //   // by default hide reminder settings for meetings
-  //   $("#meeting-reminder-settings").hide();
-
-  //   // hide show note reminder settings for meetings
-  //   $('#meeting-reminder').change(function () {
-  //       if ($(this).is(':checked')) {
-  //         $("#meeting-reminder-settings").show(500);
-  //     }
-  //     else {
-  //       $("#meeting-reminder-settings").hide(500);
-  //     }
-  //   });
-
-  //   // by default hide repeat settings for meetings
-  //   $("#meeting-repeat-settings").hide();
-  //   $("#repeat-frequency-week").hide();
-  //   $("#repeat-frequency-month").hide();
-  //   $("#repeat-frequency-year").hide();
-
-  //   // hide show note reminder settings for meetings
-  //   $('#meeting-repeat').change(function () {
-  //       if ($(this).is(':checked')) {
-  //         $("#meeting-repeat-settings").show(500);
-  //     }
-  //     else {
-  //       $("#meeting-repeat-settings").hide(500);
-  //     }
-  //   });
-
-  //   // hide show note reminder settings for meetings
-  //   $('#repeat-frequency').change(function () {
-  //     if($(this).val() == "daily") {
-  //       $("#repeat-frequency-day").show(500);
-  //       $("#repeat-frequency-week").hide(500);
-  //       $("#repeat-frequency-month").hide(500);
-  //       $("#repeat-frequency-year,").hide(500);
-  //     }
-  //     else if($(this).val() == "weekly"){
-  //       $("#repeat-frequency-day").hide(500);
-  //       $("#repeat-frequency-week").show(500);
-  //       $("#repeat-frequency-month").hide(500);
-  //       $("#repeat-frequency-year").hide(500);
-  //     }
-  //     else if($(this).val() == "monthly"){
-  //       $("#repeat-frequency-day").hide(500);
-  //       $("#repeat-frequency-week").hide(500);
-  //       $("#repeat-frequency-month").show(500);
-  //       $("#repeat-frequency-year").hide(500);
-  //     }
-  //     else if($(this).val() == "yearly"){
-  //       $("#repeat-frequency-day").hide(500);
-  //       $("#repeat-frequency-week").hide(500);
-  //       $("#repeat-frequency-month").hide(500);
-  //       $("#repeat-frequency-year").show(500);
-  //     }
-  //   });
-
-  //   // by default hide reminder settings for notes
-  //   $("#note-reminder-settings").hide();
-
-  //   // hide show note reminder settings
-
-  //   $('#note-reminder').change(function () {
-  //     if ($(this).is(':checked')) {
-  //       $("#note-reminder-settings").show(500);
-  //     }
-  //     else {
-  //       $("#note-reminder-settings").hide(500);
-  //     }
-  //   });
-  // });
-
   jQuery(document).ready(function() {
 
     "use strict";

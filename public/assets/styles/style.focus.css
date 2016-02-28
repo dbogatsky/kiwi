@@ -17,7 +17,7 @@ body,
 
 
 .ci_header {
-    margin-top: 2px;
+    margin-top: 5px;
     margin-bottom: 10px;
 }
 
@@ -545,7 +545,7 @@ body,
 */
 
 .panel {
-    background: none;
+    background: #fff;
 }
 
 .panel-body {
@@ -808,4 +808,14 @@ body.notfound, body.signin {
 
 .nav-dark > li > a {
     color: #555;
+}
+
+#calendar {
+    padding: 20px;
+    background: white;
+}
+
+#calendar h2 {
+    font-size:18px;
+    padding: 10px;
 }
