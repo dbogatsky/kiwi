@@ -148,14 +148,14 @@ class ApplicationController < ActionController::Base
   def has_page_permission(subject_class, action, action_scope="", message="", redirect_path="")
     return true if has_permission(subject_class, action, action_scope)
 
-    if message.blank?
-      flash[:danger] = 'Oops! You seems to be lost. Here you go, back safely to the dashboard page.'
-    else
+    unless message.blank?
       flash[:danger] = message
     end
 
     if redirect_path.blank?
-      redirect_to dashboard_path
+      #redirect_to dashboard_path
+      #render :file => "#{Rails.root}/public/404.html",  :status => 404, :layout => false
+      render :file => "#{Rails.root}/public/404.html",  :status => 404
     else
       redirect_to redirect_path
     end
@@ -167,14 +167,14 @@ class ApplicationController < ActionController::Base
 
     return true if has_permissions(allowed_permissions)
 
-    if message.blank?
-      flash[:danger] = 'Oops! You seems to be lost. Here you go, back safely to the dashboard page.'
-    else
+    unless message.blank?
       flash[:danger] = message
     end
 
     if redirect_path.blank?
-      redirect_to dashboard_path
+      #redirect_to dashboard_path
+      #render :file => "#{Rails.root}/public/404.html",  :status => 404, :layout => false
+      render :file => "#{Rails.root}/public/404.html",  :status => 404
     else
       redirect_to redirect_path
     end
