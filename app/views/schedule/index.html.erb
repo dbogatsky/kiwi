@@ -67,7 +67,14 @@
   </div><!-- col-->
   <div class="col-md-8">
     <div class="row">
-      <div class="col-sm-12">
+      <div class="col-sm-6 mb10">
+        <% if (@users.count > 1) %>
+          <select class="select2" multiple="multiple" id="schedule_user_list" data-placeholder="Filter schedule by user">
+            <%= options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] }) %>
+          </select>
+        <% end %>
+      </div>
+      <div class="col-sm-6">
         <div class="btn-group mr5 pull-right">
           <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
               <i class="fa fa-plus-circle mr5"></i>Add
@@ -82,12 +89,20 @@
     <div class="row">
       <div class="col-sm-12">
         <div id="calendar"></div>
-      </div>§
+      </div>
     </div><!-- row -->
   </div>
 </div>
 
 <script>
+  // Select2
+  $("#schedule_user_list").select2({
+    width: '100%',
+    maximumSelectionLength: 5,   
+  });
+
+
+
   jQuery(document).ready(function() {
 
     "use strict";
