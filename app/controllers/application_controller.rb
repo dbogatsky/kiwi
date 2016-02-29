@@ -9,6 +9,10 @@ class ApplicationController < ActionController::Base
   helper_method :current_user, :logged_in?, :superadmin_logged_in?
   helper_method :has_permission, :has_permissions, :has_page_permission, :has_page_permissions
 
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_to root_url, :alert => exception.message
+  end
+
   private
 
   def authentication

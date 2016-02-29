@@ -5,6 +5,7 @@ class Ability
 
     user ||= User.new # guest user (not logged in)
     roles = Role.all
+    abilities_debug = Array.new
 
     # match user's roles with the roles list
     user.roles.each do | current_user_role |
@@ -12,13 +13,22 @@ class Ability
 
         # match found, extract all the permissions and define abilities
         if current_user_role.id == current_role.id
-          current_role.permissions.each do | permissions |
+          current_role.permissions.each do | permission |
 
             #define abilities
-            if permissions.subject_class == 'all' && permissions.action == 'manage'
+            if permission.subject_class == 'all' && permission.action == 'manage'
               can :manage, :all
-            else 
+              # can permission.action.to_sym, permission.subject_class.to_sym
 
+              abilities_debug.push("can :manage, :all")
+              #abilities_debug.push("can :" + permission.action + ", :" + permission.subject_class)
+            else 
+              # defining ability with subject class as just the class name
+              can permission.action.to_sym, permission.subject_class
+              abilities_debug.push("can :" + permission.action + ", :" + permission.subject_class)
+
+              # defining ability with subject class being constantized (tries to find a declared constant with the name specified in the string)
+              #can permission.action.to_sym, permission.subject_class.constantize
             end
           end
         end
