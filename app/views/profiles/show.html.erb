@@ -76,7 +76,7 @@
             <div class="form-group">
               <label class="col-sm-3 control-label">Country</label>
               <div class="col-sm-6">
-                <%= add.input_field :country, { required: true, priority: [ "Canada", "United States", "United Kingdom" ],  class: "select2", name: "user[addresses_attributes][][country]", selected: current_user.addresses.last.country} %>
+                <%= add.input_field :country, { required: true, priority: [ "Canada", "United States", "United Kingdom" ],  class: "select2Country", name: "user[addresses_attributes][][country]", selected: current_user.addresses.last.country} %>
               </div>
             </div>
             <% address_id = current_user.addresses.last.id rescue nil %>
@@ -135,6 +135,10 @@
 
 
 <script>
+
+  $(".select2Country").select2({
+    width: '100%'
+  });
 
   // Form validation
   jQuery(".simple_form").validate({
