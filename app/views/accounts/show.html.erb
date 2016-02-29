@@ -209,6 +209,12 @@
 
 <% content_for :custom_js do %>
 <script>
+
+  $("#add_shared_user").select2({
+    width: '100%'
+  });
+
+
   var new_editor, edit_editor;
 
   $(function() {
