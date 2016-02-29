@@ -20,14 +20,14 @@
           <div class="form-group">
             <label class="col-sm-offset-2 col-sm-2 control-label">Account Status<span class="asterisk">*</span></label>
             <div class="col-sm-4">
-              <%= f.select( :status_id, options_for_select(AccountStatus.all.collect{ |a| ["#{a.name}", a.id] }, @account.status.nil? ? "" : @account.status.id), {}, { :class => 'select2' }) %>
+              <%= f.select( :status_id, options_for_select(AccountStatus.all.collect{ |a| ["#{a.name}", a.id] }, @account.status.nil? ? "" : @account.status.id), {}, { :class => 'select2AccountStatus' }) %>
             </div>
           </div>
 
           <div class="form-group">
             <label class="col-sm-offset-2 col-sm-2 control-label">Assign To<span class="asterisk">*</span></label>
             <div class="col-sm-4">
-                    <%= f.select( :assign_to, options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] }, @account.assign_to.nil? ? "" : @account.assign_to ), {}, { :class => 'select2' })%>
+                    <%= f.select( :assign_to, options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] }, @account.assign_to.nil? ? "" : @account.assign_to ), {}, { :class => 'select2AssignTo' })%>
             </div>
           </div>
       </div>
@@ -42,7 +42,7 @@
           <div class="form-group">
             <label class="col-sm-offset-2 col-sm-2 control-label">Country<span class="asterisk">*</span></label>
             <div class="col-sm-4">
-            <%= add.input_field :country, { required: true, priority: [ "Canada", "United States", "United Kingdom" ],  class: "select2", name: "account[addresses_attributes][][country]", selected: @addresses.first.country } %>
+            <%= add.input_field :country, { required: true, priority: [ "Canada", "United States", "United Kingdom" ],  class: "select2Country", name: "account[addresses_attributes][][country]", selected: @addresses.first.country } %>
             </div>
           </div>
         <% end %>
@@ -55,15 +55,15 @@
           <%= f.simple_fields_for :contacts_attributes do |c| %>
             <div class="form-group">
               <input type="hidden" name="account[contacts_attributes][<%= current_contact.id %>][id]" value="<%= current_contact.id %>" >
-              <label class="col-sm-offset-1 col-sm-2 control-label">Contact<span class="asterisk">*</span></label>
+              <label class="col-sm-2 control-label">Name<span class="asterisk">*</span></label>
               <div class="col-sm-2">
                 <%#= c.input :name, required: true, label: 'Contact', :input_html => { :name => "account[contacts_attributes][][name]" } %>
                 <%= c.input_field :name, { required: true, label: 'Contact', name: "account[contacts_attributes][#{current_contact.id}][name]", class: "form-control", :value => current_contact.name, :id => "account_contacts_attributes_name_#{current_contact.id}" } %>
               </div>
 
               <label class="col-sm-1 control-label">Type<span class="asterisk">*</span></label>
-              <div class="col-sm-1">
-                <%= c.select( :type, options_for_select(Contact::CONTACT_TYPES, current_contact.type), {}, { :class => "select2", :name => "account[contacts_attributes][#{current_contact.id}][type]", :id => "account_contacts_attributes_type_#{current_contact.id}" } ) %>
+              <div class="col-sm-2">
+                <%= c.select( :type, options_for_select(Contact::CONTACT_TYPES, current_contact.type), {}, { :class => "select2ContactTypes", :name => "account[contacts_attributes][#{current_contact.id}][type]", :id => "account_contacts_attributes_type_#{current_contact.id}" } ) %>
               </div>
 
               <label class="col-sm-1 control-label">Value<span class="asterisk">*</span></label>
@@ -82,7 +82,7 @@
 
       <div class="tab-pane" id="vtab4">
         <div class="form-group">
-          <label class="col-sm-offset-2 col-sm-2 control-label">Avatar</label>
+          <label class="col-sm-offset-2 col-sm-2 control-label">Picture</label>
           <div class="col-sm-4">
             <label title="Upload image file" for="inputImage" class="btn btn-white">
               <%= f.file_field :avatar, { name: "avatar" }  %>
@@ -112,54 +112,71 @@
 </div><!-- panel-body -->
 
 <script>
-    var max_fields      = 5; //maximum input boxes allowed
-    var wrapper         = $(".contact-form-wrap"); //Fields wrapper
-    var add_button      = $(".add-contact-button"); //Add button ID
+  $(".select2AccountStatus").select2({
+    width: '100%',
+    minimumResultsForSearch: Infinity
+  });
 
-    <%
-      @contact_types = ""
-      Contact::CONTACT_TYPES.each { |x| @contact_types << '<option value="'+x+'">'+x+'</option>' }
-    %>
+  $(".select2AssignTo").select2({
+    width: '100%'
+  });
 
-    //var x = 1; //initlal text box count
-    var x = <%= @contacts.size %>; //initlal text box count
-    $(add_button).click(function(e){ //on add input button click
-        e.preventDefault();
-        if(x < max_fields){ //max input box allowed
-          x++;
+  $(".select2Country").select2({
+    width: '100%'
+  });
 
-          t = (new Date()).getTime();
-            str_html = '\
-            <div class="contact-element" style="padding-bottom: 10px;">\
-              <div class="form-group">\
-                <label class="col-sm-offset-1 col-sm-2 control-label">Contact<span class="asterisk">*</span></label>\
-                <div class="col-sm-2">\
-                  <input label="Contact" name="account[contacts_attributes]['+t+'][name]" class="form-control" required id="account_contacts_attributes_name_'+t+'" type="text">\
-                </div>\
-                <label class="col-sm-1 control-label">Type<span class="asterisk">*</span></label>\
-                <div class="col-sm-1">\
-                  <select class="select2" id="account_contacts_attributes_type_'+t+'" name="account[contacts_attributes]['+t+'][type]"><%= raw(@contact_types) %></select>\
-                </div>\
-                <label class="col-sm-1 control-label">Value<span class="asterisk">*</span></label>\
-                <div class="col-sm-2">\
-                  <input label="Value" name="account[contacts_attributes]['+t+'][value]" class="form-control" required id="account_contacts_attributes_value_'+t+'" type="text">\
-                </div>\
-                <div class="col-sm-1"><button class="remove-contact-button btn btn-danger btn-xs">Remove</button></div>\
+   $(".select2ContactTypes").select2({
+    width: '100%'
+  }); 
+
+  var max_fields      = 5; //maximum input boxes allowed
+  var wrapper         = $(".contact-form-wrap"); //Fields wrapper
+  var add_button      = $(".add-contact-button"); //Add button ID
+
+  <%
+    @contact_types = ""
+    Contact::CONTACT_TYPES.each { |x| @contact_types << '<option value="'+x+'">'+x+'</option>' }
+  %>
+
+  //var x = 1; //initlal text box count
+  var x = <%= @contacts.size %>; //initlal text box count
+  $(add_button).click(function(e){ //on add input button click
+      e.preventDefault();
+      if(x < max_fields){ //max input box allowed
+        x++;
+
+        t = (new Date()).getTime();
+          str_html = '\
+          <div class="contact-element" style="padding-bottom: 10px;">\
+            <div class="form-group">\
+              <label class="col-sm-2 control-label">Contact<span class="asterisk">*</span></label>\
+              <div class="col-sm-2">\
+                <input label="Name" name="account[contacts_attributes]['+t+'][name]" class="form-control" required id="account_contacts_attributes_name_'+t+'" type="text">\
               </div>\
-            </div>';
-            $(wrapper).append(str_html);
-            $("#account_contacts_attributes_type_"+t).select2({ width: '100%'});
-        }
-    });
+              <label class="col-sm-1 control-label">Type<span class="asterisk">*</span></label>\
+              <div class="col-sm-2">\
+                <select class="select2ContactTypes" id="account_contacts_attributes_type_'+t+'" name="account[contacts_attributes]['+t+'][type]"><%= raw(@contact_types) %></select>\
+              </div>\
+              <label class="col-sm-1 control-label">Value<span class="asterisk">*</span></label>\
+              <div class="col-sm-2">\
+                <input label="Value" name="account[contacts_attributes]['+t+'][value]" class="form-control" required id="account_contacts_attributes_value_'+t+'" type="text">\
+              </div>\
+              <div class="col-sm-1"><button class="remove-contact-button btn btn-danger btn-xs">Remove</button></div>\
+            </div>\
+          </div>';
+          $(wrapper).append(str_html);
+          $("#account_contacts_attributes_type_"+t).select2({ width: '100%'});
+      }
+  });
 
-    $(wrapper).on("click",".remove-contact-button", function(e){ //user click on remove text
-        e.preventDefault();
-        $(this).closest('div.contact-element').hide(); x--;
-        elem_id = $(this).closest('div.contact-element').data('id');
-        if(typeof(elem_id) != "undefined"){
-          $(this).closest('div.contact-element').append("<input type='hidden' name='account[contacts_attributes]["+elem_id+"][_destroy]' value='true' >");
-        }else{
-          $(this).closest('div.contact-element').remove(); x--;
-        }
-    })
+  $(wrapper).on("click",".remove-contact-button", function(e){ //user click on remove text
+      e.preventDefault();
+      $(this).closest('div.contact-element').hide(); x--;
+      elem_id = $(this).closest('div.contact-element').data('id');
+      if(typeof(elem_id) != "undefined"){
+        $(this).closest('div.contact-element').append("<input type='hidden' name='account[contacts_attributes]["+elem_id+"][_destroy]' value='true' >");
+      }else{
+        $(this).closest('div.contact-element').remove(); x--;
+      }
+  })
 </script>
