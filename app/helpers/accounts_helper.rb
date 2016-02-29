@@ -15,15 +15,14 @@ module AccountsHelper
 
 	def get_styled_meetingstatus(citem, pulled_right=true)
 		pulled_right_class= "pull-right"
-		
+
 		# status colors
-		statusColor = Hash["scheduled" => "#428BCA", "cancelled" => "#999", "compelted" => "#1CC7C2"]
+		statusColor = Hash["scheduled" => "#428BCA", "cancelled" => "#999", "completed" => "#1CC7C2"]
 
 		if pulled_right == false
 			pulled_right_class = ""
 		end
-
-		if citem.status = "scheduled" or citem.stauts = "cancelled" or citem.stauts = "completed"
+		if citem.status == "scheduled" or citem.status == "cancelled" or citem.status == "completed"
 			color = statusColor[citem.status]
 			html = "<span class='badge " + pulled_right_class + "' style='margin-top: -3px; background-color: white; color: #{color}; border: 1px solid #{color};'>#{citem.status}</span>"
 		else citem.status.nil?
@@ -31,8 +30,4 @@ module AccountsHelper
 		end
 		html.html_safe
 	end
-
-
-
-
 end

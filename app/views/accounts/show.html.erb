@@ -230,6 +230,12 @@
     meeting_edit_editor = $('#meeting_edit_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
   });
 
+  var complete_meeting_editor;
+
+  $(function() {
+    complete_meeting_editor = $('#complete_meeting_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
+  });
+
   $(document).on('click', "a.edit_email", function(e){
     id = $(this).attr('data-id')
     $('.conversation-edit-email-modal-form input[name="conversation_item[invitees]"]').val($(this).attr('data-invitees'));
@@ -247,7 +253,6 @@
     else {
       $("#email-sendlater-settings").hide(500);
     }
-
   });
 
 
@@ -277,7 +282,7 @@
     id = $(this).attr('data-id')
     $('.conversation-edit-meeting-modal-form input[name="conversation_item[invitees]"]').val($(this).attr('data-invitees'));
     $('.conversation-edit-meeting-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
-    // $('.conversation-edit-meeting-modal-form input[name="conversation_item[location]"]').val($(this).attr('data-location'));
+    $('.conversation-edit-meeting-modal-form input[name="conversation_item[location]"]').val($(this).attr('data-location'));
     $('.conversation-edit-meeting-modal-form input[name="scheduled_time"]').val($(this).attr('data-time'));
     $('.conversation-edit-meeting-modal-form input[name="scheduled_date"]').val($(this).attr('data-date'));
     $('.conversation-edit-meeting-modal-form input[name="starts_date"]').val($(this).attr('data-starts-date'));

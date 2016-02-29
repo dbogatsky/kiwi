@@ -1,7 +1,7 @@
 require 'net/http/post/multipart'
 class AccountsController < ApplicationController
   before_action :get_token
-  before_action :find_account, only: [:conversation, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting]
+  before_action :find_account, only: [:conversation, :jump_in, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting]
 
   def index
     # Get all accounts
@@ -139,6 +139,7 @@ class AccountsController < ApplicationController
     meeting.each do |n|
       @conversation = n if n.id == params[:conversation_item][:id].to_i
     end
+
     if @conversation.update_attributes(conversation_item: params[:conversation_item], conversation_id: conversation_id, reload: true)
       flash[:success] = 'Meeting successfully updated!'
     else
@@ -147,6 +148,42 @@ class AccountsController < ApplicationController
     redirect_to account_path(params[:id])
   end
 
+  def check_in
+    ce = ConversationItemEvent.create(lat: request.location.latitude, long: request.location.longitude, ip_address: request.location.ip, type: "check_in", conversation_item_id: params[:conversation_item_id], user_id: current_user.id)
+    if ce
+      flash[:success] = 'Successfully Checked In'
+    else
+      flash[:danger] = "Couldn't Checked In"
+    end
+    redirect_to account_path(params[:id])
+  end
+
+  def check_out
+    ce = ConversationItemEvent.create(lat: request.location.latitude, long: request.location.longitude, ip_address: request.location.ip, type: "check_out", conversation_item_id: params[:conversation_item_id], user_id: current_user.id)
+    if ce
+        flash[:success] = 'Successfully Checked Out'
+      else
+        flash[:danger] = "Couldn't Checked Out"
+      end
+    redirect_to account_path(params[:id])
+  end
+
+  def jump_in
+    c_id = @account.conversation.id
+    items = @account.conversation.conversation_items
+    items.each do |n|
+      @meeting = n if n.id == params[:conversation_item_id].to_i
+    end
+    params[:conversation_item] ={}
+    params[:conversation_item][:id] = params[:conversation_item_id]
+    params[:conversation_item][:invitees] = @meeting.invitees+','+"#{current_user.email}"
+    if @meeting.update_attributes(request: :update, conversation_item: params[:conversation_item], conversation_id: c_id, reload: true)
+      flash[:success] = 'successfully jumped!'
+    else
+      flash[:danger] = "Couldn't jumped!"
+    end
+    redirect_to account_path(params[:id])
+  end
 
   def add_note
     c_id = Account.find(conversation_item_params[:account_id]).conversation.id
