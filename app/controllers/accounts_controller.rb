@@ -90,6 +90,7 @@ class AccountsController < ApplicationController
     end
     params[:conversation_item][:starts_at] = convert_datetime_to_utc(current_user.time_zone, params[:starts_date], params[:starts_time])
     params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone, params[:ends_date], params[:ends_time])
+
     ci = ConversationItem.create(
           conversation_item: {
             title: conversation_item_params[:title],

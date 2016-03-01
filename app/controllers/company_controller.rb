@@ -71,5 +71,15 @@ class CompanyController < ApplicationController
     redirect_to company_path
   end
 
+  def get_users
+    binding.pry
+    email_json = []
+    User.all.each do |user|
+      if user.email.include?(params[:term])
+        email_json << {email: user.email, value: user.email}
+      end
+    end
+    render json: email_json
+  end
 
 end
