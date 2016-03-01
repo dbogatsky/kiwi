@@ -105,6 +105,7 @@ class AccountsController < ApplicationController
     elsif params[:conversation_item][:repetition_rule][:repeat_year].present?
       params[:conversation_item][:repetition_rule][:frequency] = params[:conversation_item][:repetition_rule][:repeat_month]
     end
+
     ci = ConversationItem.create(
           conversation_item: {
             title:              conversation_item_params[:title],

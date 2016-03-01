@@ -81,6 +81,7 @@ Rails.application.routes.draw do
   # post '/users/delete/:id', to: 'users#delete', as: :users_delete
 
   match '/settings', to: 'settings#index', as: :settings, via: [:get]
+  get :get_users, to: 'company#get_users'
 
   root 'login#index'
 
