@@ -72,7 +72,6 @@ class CompanyController < ApplicationController
   end
 
   def get_users
-    binding.pry
     email_json = []
     User.all.each do |user|
       if user.email.include?(params[:term])
