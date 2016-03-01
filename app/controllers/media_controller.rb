@@ -1,5 +1,6 @@
 class MediaController < ApplicationController
-	skip_before_filter :verify_authenticity_token, :only => [:create_folder, :save_folder, :destroy, :destroy_multiple, :show, :email_file, :rename_media_file]
+	load_and_authorize_resource
+  skip_before_filter :verify_authenticity_token, :only => [:create_folder, :save_folder, :destroy, :destroy_multiple, :show, :email_file, :rename_media_file]
   before_action :get_token
   before_action :get_api_values, only: [:index, :show, :save_folder,
                                         :email_file, :rename_media_file,

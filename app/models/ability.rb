@@ -25,7 +25,7 @@ class Ability
             else 
               # defining ability with subject class as just the class name
               can permission.action.to_sym, permission.subject_class
-              abilities_debug.push("can :" + permission.action + ", :" + permission.subject_class)
+              abilities_debug.push("can :" + permission.action + ", " + permission.subject_class)
 
               # defining ability with subject class being constantized (tries to find a declared constant with the name specified in the string)
               #can permission.action.to_sym, permission.subject_class.constantize

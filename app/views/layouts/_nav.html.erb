@@ -34,7 +34,7 @@
         <li><a href="<%= accounts_path %>"><i class="fa fa-briefcase"></i><span>Accounts</span></a></li>
       <% end %>
 
-      <% if has_permissions({ "Medium"=>{"actions"=>["read","manage"]}, "all"=>{"actions"=>"manage"} }) %>
+      <% if can? :read, Medium %>
         <li><a href="<%= media_path %>"><i class="fa fa-picture-o"></i><span>Media</span></a></li>
       <% end %>
 
