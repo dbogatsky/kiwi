@@ -215,6 +215,7 @@
   });
 
 
+
   var new_editor, edit_editor;
 
   $(function() {
@@ -401,10 +402,12 @@
 		});
 
 		// by default hide repeat settings for meetings
-		$("#meeting-repeat-settings, #meeting-repeat-settings-edit ").hide();
+		$("#meeting-repeat-settings, #meeting-repeat-settings-edit").hide();
 		$("#repeat-frequency-week, #repeat-frequency-week-edit").hide();
 		$("#repeat-frequency-month, #repeat-frequency-month-edit").hide();
-		$("#repeat-frequency-year, #repeat-frequency-year-edit ").hide();
+		$("#repeat-frequency-year, #repeat-frequency-year-edit").hide();
+    $("#repeat-frequency-weekday-on, #repeat-frequency-weekday-on-edit").hide();
+    $("#repeat-frequency-month-on, #repeat-frequency-month-on-edit").hide();
 
 		// hide show note reminder settings for meetings
 		$('#meeting-repeat, #meeting-repeat-edit').change(function () {
@@ -420,6 +423,7 @@
         $('#repeat-every-month').val(null);
         $('#repeat-every-year').val(null);
         $('#repeat-every-month-on').val(null);
+        $('#repeat-frequency-weekday-on').val(null);
 			}
 		});
 
@@ -430,24 +434,32 @@
 				$("#repeat-frequency-week, #repeat-frequency-week-edit").hide(500);
 				$("#repeat-frequency-month, #repeat-frequency-month-edit").hide(500);
 				$("#repeat-frequency-year, #repeat-frequency-year-edit").hide(500);
+        $("#repeat-frequency-weekday-on, #repeat-frequency-weekday-on-edit").hide(500);
+        $("#repeat-frequency-month-on, #repeat-frequency-month-on-edit").hide(500);       
 			}
 			else if($(this).val() == "weekly"){
 				$("#repeat-frequency-day, #repeat-frequency-day-edit").hide(500);
 				$("#repeat-frequency-week, #repeat-frequency-week-edit").show(500);
 				$("#repeat-frequency-month, #repeat-frequency-month-edit").hide(500);
 				$("#repeat-frequency-year, #repeat-frequency-year-edit").hide(500);
+        $("#repeat-frequency-weekday-on, #repeat-frequency-weekday-on-edit").show(500);
+        $("#repeat-frequency-month-on, #repeat-frequency-month-on-edit").hide(500);
 			}
 			else if($(this).val() == "monthly"){
 				$("#repeat-frequency-day, #repeat-frequency-day-edit").hide(500);
 				$("#repeat-frequency-week, #repeat-frequency-week-edit").hide(500);
 				$("#repeat-frequency-month, #repeat-frequency-month-edit").show(500);
 				$("#repeat-frequency-year, #repeat-frequency-year-edit").hide(500);
+        $("#repeat-frequency-weekday-on, #repeat-frequency-weekday-on-edit").hide(500);
+        $("#repeat-frequency-month-on, #repeat-frequency-month-on-edit").show(500);
 			}
 			else if($(this).val() == "yearly"){
 				$("#repeat-frequency-day, #repeat-frequency-day-edit").hide(500);
 				$("#repeat-frequency-week, #repeat-frequency-week-edit").hide(500);
 				$("#repeat-frequency-month, #repeat-frequency-month-edit").hide(500);
 				$("#repeat-frequency-year, #repeat-frequency-year-edit").show(500);
+        $("#repeat-frequency-weekday-on, #repeat-frequency-weekday-on-edit").hide(500);
+        $("#repeat-frequency-month-on, #repeat-frequency-month-on-edit").hide(500);          
 			}
 		});
 

@@ -17,7 +17,7 @@ module AccountsHelper
 		pulled_right_class= "pull-right"
 
 		# status colors
-		statusColor = Hash["scheduled" => "#428BCA", "canceled" => "#999", "completed" => "#1CC7C2"]
+		statusColor = Hash["scheduled" => "#428BCA", "canceled" => "#999", "completed" => "#4CAF50"]
 
 		if pulled_right == false
 			pulled_right_class = ""

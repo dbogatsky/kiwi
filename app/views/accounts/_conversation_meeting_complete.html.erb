@@ -6,12 +6,13 @@
         <h4 class="modal-title">Meeting Status</h4>
       </div>
       <div class="modal-body">
+        <p>Update the status and any notes to complete the meeting</p>
         <%= form_tag(update_meeting_account_path(@account), novalidate: 'novalidate', method: :patch) do %>
           <div class="panel panel-default">
               <div class="panel-body">
-                <div class="row row-pad-5 mb30">
+                <div class="row row-pad-5">
                   <div class="col-lg-12">
-                   <select class="form-control" name="conversation_item[status]" placeholder="" required="required">
+                   <select class="form-control input-sm" name="conversation_item[status]" placeholder="" required="required">
                       <option value=''>-select status-</option>
                       <option value="completed">Completed</option>
                       <option value="canceled">Cancelled</option>
@@ -20,7 +21,7 @@
                 </div>
                 <div class="row row-pad-5">
                   <div class="col-lg-12">
-                    <textarea class="form-control wysihtml5"rows="5" placeholder="Outcome of the meeting" id='complete_meeting_editor'required="required" name="conversation_item[notes]"></textarea>
+                    <textarea class="form-control wysihtml5"rows="5" placeholder="Notes" id='complete_meeting_editor'required="required" name="conversation_item[notes]"></textarea>
                   </div>
                 </div>
                  <input type="hidden" name="conversation_item[id]">
