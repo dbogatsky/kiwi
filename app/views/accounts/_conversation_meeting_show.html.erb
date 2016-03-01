@@ -35,6 +35,11 @@
                data-starts-time="<%=Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.starts_at.present? %>"
                data-ends-date="<%=Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.ends_at.present? %>"
                data-ends-time="<%=Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.ends_at.present? %>"
+               data-frequency ="<%=%>"
+               data-stop-after="<%=%>"
+               data-repeat="<%=%>"
+               data-repeat-on="<%=%>"
+
                data-location="<%= citem.location%>"
                data-body="<%= citem.body %>">Edit</a>
           </li>
@@ -44,16 +49,11 @@
         </ul>
       </div>
     <%end%>
-	<h2 class="ci_header"><%= citem.title %></h2>
-	<p>
-        <span class="subheading">Agenda:<br/></span>
-        <%= sanitize citem.body %>
-    </p>
+	  <h2 class="ci_header"><%= citem.title %></h2>
+	  <p><span class="subheading">Agenda:<br/></span><%= sanitize citem.body %></p>
     <% if (!citem.notes.nil?) %>
         <p><span class="subheading">Notes:<br/></span><%= sanitize citem.notes %></p>
     <% end %>
-
-
     <div class="row ci_footer">
         <div class="col-sm-10">
             <% if (citem.scheduled_at.present?) %>
@@ -70,35 +70,11 @@
         <div class="col-sm-2">
            <%time = citem.ends_at.present? ? (DateTime.now.in_time_zone(current_user.time_zone) > citem.ends_at.to_datetime.in_time_zone(current_user.time_zone)+1.hour) : false%>
             <% if citem.status == "scheduled" && !time%>
-                <%if citem.check_ins.present?%>
-                  <%citem.check_ins.each do |ci|%>
-                     <%if ci.user_id.to_i == current_user.id%>
-                        <%check_in = false%>
-                        <%break%>
-                      <%else%>
-                         <%check_in = true%>
-                      <%end%>
-                  <%end%>
-                <%else%>
-                  <%check_in = true%>
-                <%end%>
-                <%if citem.check_outs.present?%>
-                  <%citem.check_outs.each do |co|%>
-                     <%if co.user_id.to_i == current_user.id%>
-                        <%check_out = false%>
-                        <%break%>
-                      <%else%>
-                         <%check_out = true%>
-                      <%end%>
-                  <%end%>
-                <%else%>
-                  <%check_out = true%>
-                <%end%>
                 <%if current_user.id == citem.created_by.id || invitees.include?(current_user.email)%>
-                  <%if check_in%>
+                  <%if check_in(citem)%>
                     <button class="btn btn-xs btn-default pull-right mr5"><i class="fa fa-sign-in mr5"></i><%=link_to 'Check In', check_in_account_path(conversation_item_id: citem.id), method: :post%></button>
                   <%end%>
-                  <%if !check_in && check_out%>
+                  <%if !check_in(citem) && check_out(citem)%>
                     <button class="btn btn-xs btn-default pull-right mr5"><i class="fa fa-sign-in mr5"></i><%=link_to 'Check Out', check_out_account_path(conversation_item_id: citem.id), method: :post%></button>
                   <%end%>
                 <%else%>

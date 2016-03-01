@@ -408,6 +408,13 @@
 			}
 			else {
 				$("#meeting-repeat-settings, #meeting-repeat-settings-edit").hide(500);
+        $("#repeat-frequency").val(null);
+        $("#repeat-occurrences").val(null);
+        $('#repeat-every-day').val(null);
+        $('#repeat-every-week').val(null);
+        $('#repeat-every-month').val(null);
+        $('#repeat-every-year').val(null);
+        $('#repeat-every-month-on').val(null);
 			}
 		});
 
@@ -481,10 +488,6 @@
 				$("#email-sendlater-settings").hide(500);
 			}
 		});
-
-
-
-
   });
   </script>
 <% end %>

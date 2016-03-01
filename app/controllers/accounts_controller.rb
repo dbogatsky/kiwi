@@ -90,16 +90,39 @@ class AccountsController < ApplicationController
     end
     params[:conversation_item][:starts_at] = convert_datetime_to_utc(current_user.time_zone, params[:starts_date], params[:starts_time])
     params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone, params[:ends_date], params[:ends_time])
+    if params[:conversation_item][:repetition_rule][:frequency_type] == "monthly"
+       params[:conversation_item][:repetition_rule][:day_of_month] = params[:conversation_item][:starts_at].day if params[:month_week] == "dayofmonth"
+       params[:conversation_item][:repetition_rule][:weekday_of_month] = Date::DAYNAMES[params[:conversation_item][:starts_at].wday].first(2).upcase if params[:month_week] == "dayofweek"
+    elsif params[:conversation_item][:repetition_rule][:frequency_type] == "weekly"
+       params[:conversation_item][:repetition_rule][:day_of_week] = params[:conversation_item][:repetition_rule][:day_of_week].join(",") if params[:conversation_item][:repetition_rule][:day_of_week].present?
+    end
+    if params[:conversation_item][:repetition_rule][:repeat_day].present?
+      params[:conversation_item][:repetition_rule][:frequency] = params[:conversation_item][:repetition_rule][:repeat_day]
+    elsif params[:conversation_item][:repetition_rule][:repeat_week].present?
+      params[:conversation_item][:repetition_rule][:frequency] = params[:conversation_item][:repetition_rule][:repeat_week]
+    elsif params[:conversation_item][:repetition_rule][:repeat_month].present?
+      params[:conversation_item][:repetition_rule][:frequency] = params[:conversation_item][:repetition_rule][:repeat_month]
+    elsif params[:conversation_item][:repetition_rule][:repeat_year].present?
+      params[:conversation_item][:repetition_rule][:frequency] = params[:conversation_item][:repetition_rule][:repeat_month]
+    end
     ci = ConversationItem.create(
           conversation_item: {
-            title: conversation_item_params[:title],
-            body: conversation_item_params[:body],
-            invitees: params[:conversation_item][:invitees],
-            scheduled_at: params[:conversation_item][:scheduled_at],
-            location: params[:conversation_item][:location],
-            reminder: params[:conversation_item][:reminder],
-            starts_at: params[:conversation_item][:starts_at],
-            ends_at:   params[:conversation_item][:ends_at]
+            title:              conversation_item_params[:title],
+            body:               conversation_item_params[:body],
+            invitees:           params[:conversation_item][:invitees],
+            scheduled_at:       params[:conversation_item][:scheduled_at],
+            location:           params[:conversation_item][:location],
+            reminder:           params[:conversation_item][:reminder],
+            starts_at:          params[:conversation_item][:starts_at],
+            ends_at:            params[:conversation_item][:ends_at],
+            repetition_rule: {
+            frequency_type:     params[:conversation_item][:repetition_rule][:frequency_type],
+            frequency:          params[:conversation_item][:repetition_rule][:frequency],
+            repeat_occurrences: params[:conversation_item][:repetition_rule][:repeat_occurrences],
+            day_of_week:        params[:conversation_item][:repetition_rule][:day_of_week],
+            day_of_month:       params[:conversation_item][:repetition_rule][:day_of_month],
+            weekday_of_month:   params[:conversation_item][:repetition_rule][:weekday_of_month]
+            }
           },
         conversation_id: c_id, type: "meeting")
     if ci
@@ -139,7 +162,6 @@ class AccountsController < ApplicationController
     meeting.each do |n|
       @conversation = n if n.id == params[:conversation_item][:id].to_i
     end
-
     if @conversation.update_attributes(conversation_item: params[:conversation_item], conversation_id: conversation_id, reload: true)
       flash[:success] = 'Meeting successfully updated!'
     else
