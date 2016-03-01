@@ -199,7 +199,7 @@ class AccountsController < ApplicationController
     end
     params[:conversation_item] ={}
     params[:conversation_item][:id] = params[:conversation_item_id]
-    params[:conversation_item][:invitees] = @meeting.invitees+','+"#{current_user.email}"
+    params[:conversation_item][:invitees] = @meeting.invitees+', '+"#{current_user.email}"
     if @meeting.update_attributes(request: :update, conversation_item: params[:conversation_item], conversation_id: c_id, reload: true)
       flash[:success] = 'successfully jumped!'
     else

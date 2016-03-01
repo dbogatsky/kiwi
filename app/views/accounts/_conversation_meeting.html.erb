@@ -284,9 +284,19 @@
       }
     });
     $('#tags').on('click', 'span', function() {
-      if(confirm("Remove "+ $(this).text() +"?")) $(this).remove();
+      if(confirm("Remove "+ $(this).text() +"?")) {
+      	emails_array = $('#invitee_emails').val().split(',')
+      	del_obj_index = emails_array.indexOf($(this).text());
+      	emails_array.splice(del_obj_index,1)
+      	$('#invitee_emails').val(emails_array.join(','));
+      	if($('#tags').find('span').length < 2){
+      		$('#tag_input').attr('required', true);
+      	}
+      	$(this).remove();
+      }
     });
     $( "#tag_input" ).autocomplete({
+
       source: "/get_users",
       minLength: 2,
       select: function( event, ui ){}

@@ -23,7 +23,13 @@
 
                 <div class="row row-pad-5">
                   <div class="col-lg-12">
-                    <input type="text" name="conversation_item[invitees]" placeholder="Invitees email" class="form-control" required="required"/>
+                    <div class="invitee_emails">
+
+                      <div id="edit_tags">
+                        <input type="text" id="edit_tag_input" placeholder="Invitees email" class="form-control" required="required"/>
+                        <input type="hidden" name="conversation_item[invitees]" id="edit_invitee_emails" />
+                      </div>
+                    </div>
                   </div>
                 </div><!-- row -->
 
@@ -240,8 +246,50 @@
   </div><!-- modal dialog -->
 </div><!-- modal -->
 <script type="text/javascript">
+  $(".conversation-edit-meeting-modal-form").on("hidden.bs.modal", function(){
+    $("#edit_tags").find('span').remove();
+  });
   $(".conversation-edit-meeting-modal-form").on("shown.bs.modal", function(){
     var input = document.getElementById("edit_location");
     var autocomplete = new google.maps.places.Autocomplete(input);
+    $("#edit_tags input").on({
+      focusout : function() {
+        // var txt = this.value.replace(/[^a-z0-9\+\-\.\#]/ig,''); // allowed characters
+        var txt = this.value.replace(',','').replace(' ', '');
+        var pattern = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
+        if( txt && pattern.test(txt.trim())){
+          $("<span/>", {text:txt.toLowerCase(), insertBefore:this});
+          $('#edit_tag_input').attr('required', false);
+          emails = $('#edit_invitee_emails').val();
+          values = emails ? emails+', '+txt : txt;
+          $('#edit_invitee_emails').val(values);
+        }
+        this.value = "";
+      },
+      keyup : function(ev) {
+        // if: comma|enter (delimit more keyCodes with | pipe)
+        if(/(188|13|32)/.test(ev.which)){
+          $(this).focusout();
+        }
+      }
+    });
+    $('#edit_tags').on('click', 'span', function() {
+      if(confirm("Remove "+ $(this).text() +"?")) {
+        emails_array = $('#edit_invitee_emails').val().split(', ')
+        del_obj_index = emails_array.indexOf($(this).text());
+        emails_array.splice(del_obj_index,1)
+        $('#edit_invitee_emails').val(emails_array.join(','));
+        if($('#edit_tags').find('span').length < 2){
+          $('#edit_tag_input').attr('required', true);
+        }
+        $(this).remove();
+      }
+    });
+    $( "#edit_tag_input" ).autocomplete({
+
+      source: "/get_users",
+      minLength: 2,
+      select: function( event, ui ){}
+    });
   });
 </script>
