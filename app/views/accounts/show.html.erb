@@ -105,18 +105,18 @@
 
       <div class="mb40"></div>
 
-      <% if has_permissions({ "Conversation"=>{"actions"=>["read","manage"]}, "all"=>{"actions"=>"manage"} }) %>
+      <% if can? :read, Conversation %>
         <h5 class="subtitle">Conversation</h5>
       <% end %>
 
         <div class="row">
           <div class="col-sm-6">
-            <% if has_permissions({ "ConversationItem"=>{"actions"=>["read","manage"]}, "all"=>{"actions"=>"manage"} }) %>
+            <% if can? :read, ConversationItem %>
               <%= render "conversation_search" %>
             <% end %>
           </div>
           <div class="col-sm-6">
-            <% if has_permissions({ "Conversation"=>{"actions"=>["manage"]}, "all"=>{"actions"=>"manage"} }) || has_permissions({ "Account"=>{"actions"=>["manage"]}, "all"=>{"actions"=>"manage"} }) %>
+            <% if ( can? :manage, Conversation ) || ( can? :manage, Account ) %>
               <div class="btn-group mr5 pull-right">
                 <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
                     <i class="fa fa-plus-circle mr5"></i> Action
@@ -124,15 +124,15 @@
                 </button>
                 <ul class="dropdown-menu">
 
-                  <% if has_permissions({ "ConversationItem"=>{"actions"=>["manage"]}, "all"=>{"actions"=>"manage"} }) %>
+                  <% if can? :manage, ConversationItem %>
                     <li><a href="#" data-toggle="modal" data-target=".account-action-meeting">Schedule Meeting</a></li>
                     <li><a href="#" data-toggle="modal" data-target=".conversation-note-modal-form">Add Note</a></li>
                     <li><a href="#" data-toggle="modal" data-target=".account-action-email">Send Email</a></li>
                     <% end %>
 
-                  <% if has_permissions({ "Account"=>{"actions"=>["manage"]}, "all"=>{"actions"=>"manage"} }) %>
+                  <% if can? :manage, Account %>
 
-                    <% if has_permissions({ "ConversationItem"=>{"actions"=>["manage"]}, "all"=>{"actions"=>"manage"} }) %><li class="divider"></li><% end %>
+                    <% if can? :manage, ConversationItem %><li class="divider"></li><% end %>
 
                     <li><a href="<%= edit_account_path(@account) %>">Edit Account</a></li>
                   <% end %>
@@ -147,7 +147,7 @@
 
       <div class="mb20"></div>
 
-      <% if has_permissions({ "ConversationItem"=>{"actions"=>["read","manage"]}, "all"=>{"actions"=>"manage"} }) %>
+      <% if can? :read, ConversationItem %>
         <!--- Timeline Start -->
         <%= render "conversation_timeline" %>
         <!-- Timeline End -->

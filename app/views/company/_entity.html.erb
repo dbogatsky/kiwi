@@ -1,7 +1,7 @@
 <li class="first_li"><i class="fa fa-cubes"></i><%= entity["name"] %></li>
 <li class="second_li"><%= entity["description"] %></li>
 <li class="third_li">
-<% if has_permissions({ "CompanyEntity"=>{"actions"=>"manage"}, "all"=>{"actions"=>"manage"} }) %>
+<% if can? :manage, CompanyEntities %>
   <a href="javascript:void(0);" class="edit-folder"
       data-id="<%= entity["id"] %>"
       data-name="<%=entity["name"] %>"

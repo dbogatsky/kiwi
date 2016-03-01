@@ -53,8 +53,7 @@
   <div class="row row-pad-5">
     <div class="col-md-12 mb20">
       <!-- Nav tabs -->
-
-      <% if has_permissions({ "AccountStatus"=>{"actions"=>["read","manage"]}, "all"=>{"actions"=>"manage"} }) %>
+      <% if can? :read, AccountStatus %>
         <div class="panel panel-default">
           <div class="panel-heading">
             <div class="panel-btns">
@@ -71,7 +70,7 @@
                     </p>
                   </div>
                   <div class="col-md-2">
-                    <% if has_permissions({ "AccountStatus"=>{"actions"=>"manage"}, "all"=>{"actions"=>"manage"} }) %>
+                    <% if can? :manage, AccountStatus %>
                       <a href="#" id="add_status" class="btn btn-primary btn-block" data-toggle="modal" data-target=".account-status-add"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Status</a>
                     <% end %>
                   </div>
@@ -93,7 +92,7 @@
                             <td><span class="badge" style="background-color: <%= status.color %>; border-color: <%= status.color %>;"><%= status.name %></span></td>
                             <td><%= status.description %></td>
                             <td class="table-action">
-                              <% if has_permissions({ "AccountStatus"=>{"actions"=>"manage"}, "all"=>{"actions"=>"manage"} }) %>
+                              <% if can? :manage, AccountStatus %>
                                 <a href="#"
                                 data-id="<%= status.id %>"
                                 data-statname="<%= status.name %>"
@@ -114,7 +113,7 @@
           </div>
         <% end %>
 
-        <% if has_permissions({ "CompanyEntity"=>{"actions"=>["read","manage"]}, "all"=>{"actions"=>"manage"} }) %>
+        <% if can? :read, CompanyEntities %>
           <div class="panel panel-default">
             <div class="panel-heading">
               <div class="panel-btns">
@@ -131,7 +130,7 @@
                     <p>Use entities to describe how your organization is structured</p>
                   </div>
                   <div class="col-md-2">
-                    <% if has_permissions({ "CompanyEntity"=>{"actions"=>"manage"}, "all"=>{"actions"=>"manage"} }) %>
+                    <% if can? :manage, CompanyEntities %>
                       <a href="<%= new_company_entity_path %>" class="btn btn-primary btn-block"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Entities</a>
                     <% end %>
                   </div>
