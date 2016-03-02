@@ -33,6 +33,7 @@ Rails.application.routes.draw do
       post   :check_in
       post   :check_out
       patch  :jump_in
+      get    :search
     end
     resources :contacts, only: [:edit, :create, :update, :destroy]
     resources :addresses, only: [:edit, :create, :update, :destroy]

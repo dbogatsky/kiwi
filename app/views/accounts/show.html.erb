@@ -149,7 +149,9 @@
 
       <% if can? :read, ConversationItem %>
         <!--- Timeline Start -->
-        <%= render "conversation_timeline" %>
+        <div id="timeline_show">
+         <%= render "conversation_timeline" %>
+        </div>
         <!-- Timeline End -->
       <% end %>
 
@@ -209,6 +211,15 @@
 
 <% content_for :custom_js do %>
 <script>
+  $(document).on('click', '.ui-datepicker-next, .ui-datepicker-prev', function(e){
+    e.stopPropagation();
+  });
+
+  $(".submit_search").click(function(){
+    $( ".close_tab").trigger("click");
+    $('#preloader').css('opacity', 0.3);
+    $('#preloader').show();
+  });
 
   $("#add_shared_user").select2({
     width: '100%'
@@ -435,7 +446,7 @@
 				$("#repeat-frequency-month, #repeat-frequency-month-edit").hide(500);
 				$("#repeat-frequency-year, #repeat-frequency-year-edit").hide(500);
         $("#repeat-frequency-weekday-on, #repeat-frequency-weekday-on-edit").hide(500);
-        $("#repeat-frequency-month-on, #repeat-frequency-month-on-edit").hide(500);       
+        $("#repeat-frequency-month-on, #repeat-frequency-month-on-edit").hide(500);
 			}
 			else if($(this).val() == "weekly"){
 				$("#repeat-frequency-day, #repeat-frequency-day-edit").hide(500);
@@ -459,7 +470,7 @@
 				$("#repeat-frequency-month, #repeat-frequency-month-edit").hide(500);
 				$("#repeat-frequency-year, #repeat-frequency-year-edit").show(500);
         $("#repeat-frequency-weekday-on, #repeat-frequency-weekday-on-edit").hide(500);
-        $("#repeat-frequency-month-on, #repeat-frequency-month-on-edit").hide(500);          
+        $("#repeat-frequency-month-on, #repeat-frequency-month-on-edit").hide(500);
 			}
 		});
 

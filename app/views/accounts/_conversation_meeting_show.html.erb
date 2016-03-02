@@ -37,8 +37,9 @@
              data-frequency ="<%=%>"
              data-stop-after="<%=%>"
              data-repeat="<%=%>"
-             data-repeat-on="<%=%>"
-
+             data-day-of-week="<%=%>"
+             day-of-month="<%=%>"
+             weekday-of-month="<%=%>"
              data-location="<%= citem.location%>"
              data-body="<%= citem.body %>">Edit</a>
         </li>
@@ -58,7 +59,7 @@
                 <i class="fa fa-bell tooltips mr10" data-toggle="tooltip" data-original-title="Reminder"></i><%= citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %><br />
             <% end %>
 
-            <i class="fa fa-user tooltips mr10" data-toggle="tooltip" data-original-title="Created by"></i><%=citem.created_by.first_name%> <%=citem.created_by.last_name%><br />
+            <i class="fa fa-user tooltips mr10" data-toggle="tooltip" data-original-title="Created by"></i><%=created_by.first_name%> <%=created_by.last_name%><br />
 
             <% if !citem.invitees.nil? %>
                 <i class="fa fa-users tooltips mr10" data-toggle="tooltip" data-original-title="Invitees"></i><%= citem.invitees %>
@@ -68,11 +69,11 @@
         <div class="col-sm-2">
            <%time = citem.ends_at.present? ? (DateTime.now.in_time_zone(current_user.time_zone) > citem.ends_at.to_datetime.in_time_zone(current_user.time_zone)+1.hour) : false%>
             <% if citem.status == "scheduled" && !time%>
-                <%if current_user.id == citem.created_by.id || invitees.include?(current_user.email)%>
-                  <%if check_in(citem)%>
+                <%if current_user.id == created_by.id || invitees.include?(current_user.email)%>
+                  <%if check_in(citem,info)%>
                     <button class="btn btn-xs btn-default pull-right mr5"><i class="fa fa-sign-in mr5"></i><%=link_to 'Check In', check_in_account_path(conversation_item_id: citem.id), method: :post%></button>
                   <%end%>
-                  <%if !check_in(citem) && check_out(citem)%>
+                  <%if !check_in(citem,info) && check_out(citem,info)%>
                     <button class="btn btn-xs btn-default pull-right mr5"><i class="fa fa-sign-in mr5"></i><%=link_to 'Check Out', check_out_account_path(conversation_item_id: citem.id), method: :post%></button>
                   <%end%>
                 <%else%>

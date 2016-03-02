@@ -1,8 +1,6 @@
 <% content_for :pageheader do %>
   <h2><i class="fa fa-home"></i> Schedule</h2>
 <% end %>
-
-
 <div class="row">
   <div class="col-md-4">
     <div class="panel panel-default panel-alt">
@@ -20,7 +18,7 @@
         </div>
       </div>
       <div class="ibox-content ibox-heading">
-        <span class="badge " style="margin-top: -3px; background-color: white; color: #428BCA; border: 1px solid #428BCA;">scheduled</span>      
+        <span class="badge " style="margin-top: -3px; background-color: white; color: #428BCA; border: 1px solid #428BCA;">scheduled</span>
         <div class="btn-group mr5 pull-right">
           <button data-toggle="dropdown" class="btn btn-sm btn-white dropdown-toggle" type="button" style="border-radius: 2px">
             <i class="fa fa-cog mr5"></i><span class="caret"></span>
@@ -29,7 +27,7 @@
             <li>
               <a class="complete_meeting" href="#" data-toggle="modal" data-target=".conversation-complete-meeting-modal-form" data-id="99">Complete
                 </a>
-            </li>      
+            </li>
             <li>
                 <a class="edit_meeting" href="#" data-toggle="modal" data-target=".conversation-edit-meeting-modal-form" data-id="99" data-invitees="me@dierbro.com, me+test@dierbro.com" data-title="TESTMEETING_edited" data-date="03/02/2016" data-time="01:37AM" data-starts-date="03/01/2016" data-starts-time="11:40PM" data-ends-date="03/02/2016" data-ends-time="12:40AM" data-body="TESTMEETING_editted">Edit</a>
             </li>
@@ -52,7 +50,7 @@
         <p>
           <span class="subheading">Notes:<br></span>
           Place meeting notes here
-        </p>  
+        </p>
         <div class="row ci_footer">
             <div class="col-sm-10">
               <i class="fa fa-bell tooltips mr10" data-toggle="tooltip" data-original-title="Reminder"></i>Wed Mar 02 2016 at  1:37 AM<br>
@@ -93,15 +91,117 @@
     </div><!-- row -->
   </div>
 </div>
-
+<%= render "accounts/conversation_meeting", account: nil %>
 <script>
+
+  var meeting_new_editor, meeting_edit_editor;
+
+  $(function() {
+    meeting_new_editor = $('#meeting_new_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
+  });
+
+  $(document).ready(function(){
+
+    // Tags Input
+    jQuery('#invite-emails').tagsInput({
+      width:'100%',
+      height: 'auto',
+      onAddTag:isValidEmailAddress,
+      defaultText:'Invitees'
+    });
+    function isValidEmailAddress(emailAddress) {
+        var pattern = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
+
+        if (pattern.test(emailAddress) == false) {
+        alert("Please add a valid email address");
+        $('#invite-emails').removeTag(emailAddress);
+        }
+    };
+
+    $('#meeting-reminder-time').timepicker({minuteStep: 5});
+
+    // by default hide reminder settings for meetings
+    $("#meeting-reminder-settings").hide();
+
+    // hide show note reminder settings for meetings
+    $('#meeting-reminder').change(function () {
+        if ($(this).is(':checked')) {
+          $("#meeting-reminder-settings").show(500);
+      }
+      else {
+        $("#meeting-reminder-settings").hide(500);
+        // $('.conversation-edit-meeting-modal-form input[name="scheduled_date"]').val(null);
+      }
+    });
+
+    // by default hide repeat settings for meetings
+    $("#meeting-repeat-settings").hide();
+    $("#repeat-frequency-week").hide();
+    $("#repeat-frequency-month").hide();
+    $("#repeat-frequency-year").hide();
+    $("#repeat-frequency-weekday-on").hide();
+    $("#repeat-frequency-month-on").hide();
+
+    // hide show note reminder settings for meetings
+    $('#meeting-repeat').change(function () {
+        if ($(this).is(':checked')) {
+          $("#meeting-repeat-settings").show(500);
+      }
+      else {
+        $("#meeting-repeat-settings").hide(500);
+        $("#repeat-frequency").val(null);
+        $("#repeat-occurrences").val(null);
+        $('#repeat-every-day').val(null);
+        $('#repeat-every-week').val(null);
+        $('#repeat-every-month').val(null);
+        $('#repeat-every-year').val(null);
+        $('#repeat-every-month-on').val(null);
+        $('#repeat-frequency-weekday-on').val(null);
+      }
+    });
+
+    // hide show note reminder settings for meetings
+    $('#repeat-frequency').change(function () {
+      if($(this).val() == "daily") {
+        $("#repeat-frequency-day").show(500);
+        $("#repeat-frequency-week").hide(500);
+        $("#repeat-frequency-month").hide(500);
+        $("#repeat-frequency-year").hide(500);
+        $("#repeat-frequency-weekday-on").hide(500);
+        $("#repeat-frequency-month-on").hide(500);
+      }
+      else if($(this).val() == "weekly"){
+        $("#repeat-frequency-day").hide(500);
+        $("#repeat-frequency-week").show(500);
+        $("#repeat-frequency-month").hide(500);
+        $("#repeat-frequency-year").hide(500);
+        $("#repeat-frequency-weekday-on").show(500);
+        $("#repeat-frequency-month-on").hide(500);
+      }
+      else if($(this).val() == "monthly"){
+        $("#repeat-frequency-day").hide(500);
+        $("#repeat-frequency-week").hide(500);
+        $("#repeat-frequency-month").show(500);
+        $("#repeat-frequency-year").hide(500);
+        $("#repeat-frequency-weekday-on").hide(500);
+        $("#repeat-frequency-month-on").show(500);
+      }
+      else if($(this).val() == "yearly"){
+        $("#repeat-frequency-day").hide(500);
+        $("#repeat-frequency-week").hide(500);
+        $("#repeat-frequency-month").hide(500);
+        $("#repeat-frequency-year").show(500);
+        $("#repeat-frequency-weekday-on").hide(500);
+        $("#repeat-frequency-month-on").hide(500);
+      }
+    });
+  });
+
   // Select2
   $("#schedule_user_list").select2({
     width: '100%',
-    maximumSelectionLength: 5,   
+    maximumSelectionLength: 5,
   });
-
-
 
   jQuery(document).ready(function() {
 

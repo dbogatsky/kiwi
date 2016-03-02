@@ -31,9 +31,10 @@ module AccountsHelper
 		html.html_safe
 	end
 
-	def check_in(citem)
+	def check_in(citem, info)
 		if citem.check_ins.present?
         citem.check_ins.each do |ci|
+			  ci = info.present? ? OpenStruct.new(ci) : ci
           if ci.user_id.to_i == current_user.id
              check_in = false
              break
@@ -47,9 +48,10 @@ module AccountsHelper
     return check_in
 	end
 
-	def check_out(citem)
+	def check_out(citem, info)
 		if citem.check_outs.present?
       citem.check_outs.each do |co|
+      	co = info.present? ? OpenStruct.new(co) : co
         if co.user_id.to_i == current_user.id
           check_out = false
           break

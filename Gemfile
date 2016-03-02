@@ -15,6 +15,7 @@ gem 'cached_resource'
 gem 'chronic'
 gem 'activesupport'
 gem 'cancancan', '~> 1.10'
+gem 'httparty'
 
 # This gem is for accessing REST services in an ActiveRecord style.
 #gem 'active_rest_client', '1.2.0'

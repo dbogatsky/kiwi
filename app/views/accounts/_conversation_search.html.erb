@@ -5,28 +5,28 @@
       <div class="input-group-btn">
         <div class="btn-group" role="group">
           <div class="dropdown dropdown-lg">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
-            <div class="dropdown-menu dropdown-menu-right conversation-search" role="menu">
-              <form class="form-horizontal" style="margin-top:25px; margin-bottom:25px;" role="form">
+            <button type="button" class="btn btn-default dropdown-toggle close_tab" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+            <div class="dropdown-menu dropdown-menu-right conversation-search" id="conversation_search_div" role="menu">
+              <%= form_tag search_account_path, method: :get, remote: :true do |f| %>
                 <div class="form-group mb20">
                   <label for="filter">Filter by Type</label>
-                  <select name="filter_type" class="form-control input-sm">
-                      <option value="all" selected="">All</option>
-                      <option value="meetings">Meetings</option>
-                      <option value="notes">Notes & Reminders</option>
-                      <option value="emails">Emails</option>
+                  <select name="search[type_cont]" class="form-control input-sm">
+                      <option value="" selected="">All</option>
+                      <option value="meeting">Meetings</option>
+                      <option value="note">Notes & Reminders</option>
+                      <option value="email">Emails</option>
                   </select>
                 </div>
                 <div class="form-group mb30">
                   <label for="filter">Filter Date</label>
                     <div class="input-daterange input-group">
-                      <input type="text" class="form-control datepicker" placeholder="dd/mm/yy" name="search-from-datepicker" id="search-from-datepicker" required="required" />
+                      <input type="text" class="form-control datepicker" placeholder="dd/mm/yy" name="search[data_gteq]" id="search-from-datepicker"/>
                          <span class="input-group-addon">to</span>
-                      <input type="text" class="form-control datepicker" placeholder="dd/mm/yy" name="search_datepicker_end" id="search_datepicker_end">
+                      <input type="text" class="form-control datepicker" placeholder="dd/mm/yy" name="search[date_lteq]" id="search_datepicker_end">
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search</button>
-              </form>
+                <button type="submit" class="btn btn-primary submit_search"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search</button>
+              <%end%>
             </div>
           </div>
         </div>
@@ -35,49 +35,48 @@
   </div>
 </div>
 
-
 <% content_for :custom_css do %>
-<style>
-.dropdown.dropdown-lg .dropdown-menu {
-    margin-top: 0px;
-    padding: 6px 20px;
-}
-.input-group-btn .btn-group {
-    display: flex !important;
-}
-.btn-group .btn {
-    margin-left: -1px;
-}
-.btn-group .btn:last-child {
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
-}
-.btn-group .form-horizontal .btn[type="submit"] {
-  border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px;
-}
-.form-horizontal .form-group {
-    margin-left: 0;
-    margin-right: 0;
-}
-/*
-.form-group .form-control:last-child {
-    border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
-}
-*/
+  <style>
+    .dropdown.dropdown-lg .dropdown-menu {
+        margin-top: 0px;
+        padding: 6px 20px;
+    }
+    .input-group-btn .btn-group {
+        display: flex !important;
+    }
+    .btn-group .btn {
+        margin-left: -1px;
+    }
+    .btn-group .btn:last-child {
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+    }
+    .btn-group .form-horizontal .btn[type="submit"] {
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+    }
+    .form-horizontal .form-group {
+        margin-left: 0;
+        margin-right: 0;
+    }
+    /*
+    .form-group .form-control:last-child {
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+    }
+    */
 
-@media screen and (min-width: 768px) {
-  #adv-search {
-      width: auto;
-      margin: 0 auto;
-  }
-  .dropdown.dropdown-lg {
-      /*position: static !important;*/
-  }
-  .dropdown.dropdown-lg .dropdown-menu {
-      min-width: 400px;
-  }
-}
-</style>
+    @media screen and (min-width: 768px) {
+      #adv-search {
+          width: auto;
+          margin: 0 auto;
+      }
+      .dropdown.dropdown-lg {
+          /*position: static !important;*/
+      }
+      .dropdown.dropdown-lg .dropdown-menu {
+          min-width: 400px;
+      }
+    }
+  </style>
 <% end %>

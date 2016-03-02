@@ -9,7 +9,7 @@
         <% elsif i.type.eql? 'call' %>
           <%= render "conversation_phone_show", :citem => i %>
         <% elsif i.type.eql? 'meeting' %>
-          <%= render "conversation_meeting_show", :citem => i %>
+          <%= render "conversation_meeting_show",info: nil, created_by: i.created_by, :citem => i %>
         <% end %>
     </div>
   <% end %>

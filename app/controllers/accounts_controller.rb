@@ -1,8 +1,8 @@
 require 'net/http/post/multipart'
 class AccountsController < ApplicationController
   before_action :get_token
-  before_action :find_account, only: [:conversation, :jump_in, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting]
-
+  before_action :find_account, only: [:conversation, :search, :jump_in, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting]
+  before_action :get_api_values,only: [:search]
   def index
     # Get all accounts
     @accounts = Account.all(params: {search: params[:search]})
@@ -90,20 +90,18 @@ class AccountsController < ApplicationController
     end
     params[:conversation_item][:starts_at] = convert_datetime_to_utc(current_user.time_zone, params[:starts_date], params[:starts_time])
     params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone, params[:ends_date], params[:ends_time])
+
     if params[:conversation_item][:repetition_rule][:frequency_type] == "monthly"
        params[:conversation_item][:repetition_rule][:day_of_month] = params[:conversation_item][:starts_at].day if params[:month_week] == "dayofmonth"
        params[:conversation_item][:repetition_rule][:weekday_of_month] = Date::DAYNAMES[params[:conversation_item][:starts_at].wday].first(2).upcase if params[:month_week] == "dayofweek"
+       params[:conversation_item][:repetition_rule][:frequency] = params[:conversation_item][:repetition_rule][:repeat_month]
     elsif params[:conversation_item][:repetition_rule][:frequency_type] == "weekly"
        params[:conversation_item][:repetition_rule][:day_of_week] = params[:conversation_item][:repetition_rule][:day_of_week].join(",") if params[:conversation_item][:repetition_rule][:day_of_week].present?
-    end
-    if params[:conversation_item][:repetition_rule][:repeat_day].present?
-      params[:conversation_item][:repetition_rule][:frequency] = params[:conversation_item][:repetition_rule][:repeat_day]
-    elsif params[:conversation_item][:repetition_rule][:repeat_week].present?
-      params[:conversation_item][:repetition_rule][:frequency] = params[:conversation_item][:repetition_rule][:repeat_week]
-    elsif params[:conversation_item][:repetition_rule][:repeat_month].present?
-      params[:conversation_item][:repetition_rule][:frequency] = params[:conversation_item][:repetition_rule][:repeat_month]
-    elsif params[:conversation_item][:repetition_rule][:repeat_year].present?
-      params[:conversation_item][:repetition_rule][:frequency] = params[:conversation_item][:repetition_rule][:repeat_month]
+       params[:conversation_item][:repetition_rule][:frequency] = params[:conversation_item][:repetition_rule][:repeat_week]
+    elsif params[:conversation_item][:repetition_rule][:frequency_type] == "daily"
+       params[:conversation_item][:repetition_rule][:frequency] = params[:conversation_item][:repetition_rule][:repeat_day]
+    elsif params[:conversation_item][:repetition_rule][:frequency_type] == "yearly"
+         params[:conversation_item][:repetition_rule][:frequency] = params[:conversation_item][:repetition_rule][:repeat_year]
     end
 
     ci = ConversationItem.create(
@@ -131,7 +129,11 @@ class AccountsController < ApplicationController
     else
       flash[:danger] = 'Oops! Unable to scheduled meeting'
     end
-    redirect_to account_path(params[:id])
+    if params[:add_from_schedule].present?
+      redirect_to schedule_path
+    else
+      redirect_to account_path(params[:id])
+    end
   end
 
   def delete_meeting
@@ -334,6 +336,15 @@ class AccountsController < ApplicationController
     redirect_to account_path(params[:id])
   end
 
+  def search
+    c_id = @account.conversation.id
+    apiURL = APP_CONFIG['api_url'] + '//conversations/'+ "#{c_id}" + '/items?'
+    apiFullUrl = apiURL +  "search[type_cont]=#{params[:search][:type_cont]}&starts_at_gteq=#{params[:search][:data_gteq]}&starts_at_lteq=#{params[:search][:date_lteq]}";
+    headers = {}
+    headers["Authorization"] = "Token token=\"#{@token}\",email=\"#{@email}\", app_key=\"#{@appKey}\""
+    @conversation_items = HTTParty.get(apiFullUrl,headers: headers)
+  end
+
 
 
   private
@@ -368,5 +379,12 @@ class AccountsController < ApplicationController
   def find_account
     @account = Account.find(params[:id])
   end
+
+  def get_api_values
+    @email = current_user.email
+    @appKey = APP_CONFIG['api_app_key']
+    @token = session[:token]
+  end
+
 
 end
