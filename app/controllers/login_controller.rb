@@ -81,7 +81,7 @@ class LoginController < ApplicationController
   end
 
   def destroy
-    url = URI.parse("#{ENV.fetch("ORCHARD_API_HOST")}/logout")
+    url = URI.parse("http://#{$tenant}-api.code10.ca/api/v1/logout")
     http = Net::HTTP.new(url.host)
     request = Net::HTTP::Delete.new(url.path)
     response = http.request(request)

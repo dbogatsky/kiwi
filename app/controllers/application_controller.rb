@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
+  before_filter :get_tenant_by_subdomain #need to do before auth to get tenant
 
   before_filter :authentication
 #   before_filter :check_request
@@ -14,6 +15,13 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def get_tenant_by_subdomain
+    if request.subdomains.any?
+      $tenant = request.subdomain
+    end
+  end
+
 
   def authentication
     if session[:user_id].present? && superadmin_logged_in?
@@ -28,29 +36,35 @@ class ApplicationController < ActionController::Base
     end
   end
 
+
   def set_current_user
     $user_token = session[:token]
     @current_user = User.find(session[:user_id])
     @current_user.id = session[:user_id]
   end
 
+
   def set_superadmin
     $user_token = session[:token]
     @superadmin_email = APP_CONFIG['superadmin_email']
   end
+
 
   def superadmin_logged_in?
     return true if session[:user_id].eql?('superadmin')
     false
   end
 
+
   def current_user
     @current_user
   end
 
+
   def logged_in?
     current_user != nil
   end
+
 
   def convert_datetime_to_utc(timezone, date, time="00:00:00")
      @parsed_datetime = Chronic.parse("#{date} at #{time}").strftime('%Y-%m-%d %H:%M:%S')
