@@ -3,11 +3,10 @@ class CompanyController < ApplicationController
   def index
     #comapny details
     @company = Company.find
-    #entities
-    @entites = CompanyEntities.all
 
-    #get status cached upon login from session
-    @account_statuses = AccountStatus.all
+    #lets get a fresh batch of Entities and Statues, not from cache
+    @entites = CompanyEntities.all(reload: true)
+    @account_statuses = AccountStatus.all(reload: true)
   end
 
   def edit_entity
