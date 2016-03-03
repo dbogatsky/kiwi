@@ -9,7 +9,7 @@
             <div class="dropdown-menu dropdown-menu-right conversation-search" id="conversation_search_div" role="menu">
               <%= form_tag search_account_path, method: :get, remote: :true do |f| %>
                 <div class="form-group mb20">
-                  <label for="filter">Filter by Type</label>
+                  <label for="filter">Type</label>
                   <select name="search[type_cont]" class="form-control input-sm">
                       <option value="" selected="">All</option>
                       <option value="meeting">Meetings</option>
@@ -18,7 +18,7 @@
                   </select>
                 </div>
                 <div class="form-group mb30">
-                  <label for="filter">Filter Date</label>
+                  <label for="filter">Date Range</label>
                     <div class="input-daterange input-group">
                       <input type="text" class="form-control datepicker" placeholder="dd/mm/yy" name="search[data_gteq]" id="search-from-datepicker"/>
                          <span class="input-group-addon">to</span>
