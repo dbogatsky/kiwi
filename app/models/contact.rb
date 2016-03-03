@@ -1,5 +1,5 @@
 class Contact < OrchardApiModel
-  self.site = "http://#{RequestStore.store[:tenant]}-api.code10.ca/api/v1/accounts/:account_id/"
+  self.prefix = "/accounts/:account_id/"
   CONTACT_TYPES = ["phone", "mobile", "email", "fax", "twitter", "facebook", "youtube"]
   belongs_to :account
 

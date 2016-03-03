@@ -1,7 +1,6 @@
 class OrchardApiModel < ActiveResource::Base
 
   cattr_accessor :static_headers
-  self.site = "http://#{RequestStore.store[:tenant]}-api.code10.ca/api/v1"
   self.static_headers = headers
 
   def self.headers

@@ -22,6 +22,8 @@ class ApplicationController < ActionController::Base
     else
       RequestStore.store[:tenant] = "convo"
     end
+    #move into a service 
+    OrchardApiModel.site = "http://#{RequestStore.store[:tenant]}-api.code10.ca/api/v1" 
   end
 
 
@@ -41,6 +43,9 @@ class ApplicationController < ActionController::Base
 
   def set_current_user
     RequestStore.store[:user_token] = session[:token]
+    #Move into a service
+    OrchardApiModel.headers['Authorization'] = "Token token=\"#{RequestStore.store[:user_token]}\", app_key=\"#{APP_CONFIG['api_app_key']}\""
+
     @current_user = User.find(session[:user_id])
     @current_user.id = session[:user_id]
   end
