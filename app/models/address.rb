@@ -1,5 +1,5 @@
 class Address < OrchardApiModel
-  self.site = "#{ENV.fetch("ORCHARD_API_HOST")}/accounts/:account_id/"
+  self.site = "http://#{RequestStore.store[:tenant]}-api.code10.ca/api/v1/accounts/:account_id/"
   belongs_to :account
 
   schema do
