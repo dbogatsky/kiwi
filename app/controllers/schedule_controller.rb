@@ -6,10 +6,8 @@ class ScheduleController < ApplicationController
 
   def calendar_event
   	if params[:users].present?
-  	events = []
   	users = params[:users].split(',')
-  	    users.each do |u|
-  	    end
+    @events = ConversationItem.find(:all,params: {conversation_id: 61,users_id: users})
   	end
   end
 end

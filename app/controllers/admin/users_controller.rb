@@ -1,7 +1,7 @@
 class Admin::UsersController < Admin::AdminController
 	before_action :get_token
-  # before_action :find_company, only: [:edit, :update]
-  # before_action :find_user, only: [:edit, :update]
+  before_action :find_company, only: [:edit, :update]
+  before_action :find_user, only: [:edit, :update, :destroy]
 
   def index
     @all_users = User.find(:all, reload: true)
@@ -13,10 +13,10 @@ class Admin::UsersController < Admin::AdminController
     @contacts = []
 	end
 
- #  def edit
- #    @address = @user.addresses
- #    @contact = @user.contacts
-	# end
+  def edit
+    @address = @user.addresses.last
+    @contact = @user.contacts
+	end
 
   def create
     # Create new user
@@ -31,20 +31,26 @@ class Admin::UsersController < Admin::AdminController
     redirect_to admin_company_path(params[:company_id])
   end
 
-  # def update
-  #   if @user.update_attributes(request: :update, user: params[:user], reload: true)
-  #     save_avatar
-  #     #in the event we are updating the logged in user refresh the detail
-  #     if ( current_user.id == params['id'].to_i )
-  #       @current_user = User.find(current_user.id, reload: true)
-  #     end
-  #     flash[:success] = 'User successfully updated!'
-  #     redirect_to users_path
-  #   else
-  #     flash[:danger] = 'User not updated!'
-  #     render :edit
-  #   end
-  # end
+  def update
+    params[:user][:addresses_attributes] = params[:user][:addresses_attributes].values
+    if @user.update_attributes(request: :update, user: params[:user], company_id: params[:company_id], reload: true)
+      save_avatar
+      flash[:success] = 'User successfully updated!'
+      redirect_to admin_company_path(params[:company_id])
+    else
+      flash[:danger] = 'User not updated!'
+      redirect_to edit_admin_company_user_path(company_id:  @company.id, id: @user.id)
+    end
+  end
+
+  def destroy
+    if @user.destroy
+      flash[:success] = 'User successfully deleted.'
+    else
+      flash[:danger] = 'User could not deleted.'
+    end
+    redirect_to admin_company_path(params[:company_id])
+  end
 
 private
 
@@ -53,13 +59,13 @@ private
 	  $user_token = session[:token]
 	end
 
-  # def find_user
-  #   @user = BoUser.find(params[:id], reload: true)
-  # end
+  def find_user
+     @user = BoUser.find(params[:id], params: {company_id: params[:company_id]})
+  end
 
-  # def find_company
-  #   @company = BoCompany.find(params[:company_id])
-  # end
+  def find_company
+    @company = BoCompany.find(params[:company_id])
+  end
 
   def save_avatar
     if params[:user][:avatar]

@@ -4,7 +4,15 @@
       <%conversation_items['conversation_items/meetings'].each do |i| %>
            <%item = OpenStruct.new(i)%>
         <div class="cd-timeline-block">
-          <%= render "conversation_meeting_show",info: 'search_result', created_by: OpenStruct.new(item.created_by), :citem => item  %>
+            <% if item.type.eql? 'meeting' %>
+              <%= render "conversation_meeting_show",info: 'search_result', created_by: OpenStruct.new(item.created_by), :citem => item  %>
+            <%elsif item.type.eql? 'note'%>
+              <%= render "conversation_notes_show", :citem => item%>
+            <%elsif item.type.eql? 'email'%>
+              <%= render "conversation_email_show", :citem => item %>
+            <%elsif item.type.eql? 'call'%>
+              <%= render "conversation_phone_show", :citem => item %>
+            <%end%>
         </div>
       <%end%>
     <%elsif conversation_items['conversation_items/notes'].present? %>
