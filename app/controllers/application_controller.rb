@@ -18,7 +18,9 @@ class ApplicationController < ActionController::Base
 
   def get_tenant_by_subdomain
     if request.subdomains.any?
-      $tenant = request.subdomain
+      RequestStore.store[:tenant] = request.subdomain
+    else
+      RequestStore.store[:tenant] = "convo"
     end
   end
 
@@ -38,14 +40,14 @@ class ApplicationController < ActionController::Base
 
 
   def set_current_user
-    $user_token = session[:token]
+    RequestStore.store[:user_token] = session[:token]
     @current_user = User.find(session[:user_id])
     @current_user.id = session[:user_id]
   end
 
 
   def set_superadmin
-    $user_token = session[:token]
+    RequestStore.store[:user_token] = session[:token]
     @superadmin_email = APP_CONFIG['superadmin_email']
   end
 
