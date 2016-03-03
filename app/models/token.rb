@@ -18,6 +18,6 @@ class Token < OrchardApiModel
         password: password
       }
     )
-  end 
+  end
 end
 

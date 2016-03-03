@@ -31,6 +31,7 @@ class Admin::CompaniesController < Admin::AdminController
   end
 
   def show
+    @users = BoUser.find(:all,params: {company_id: params[:id]}, reload: true)
   end
 
   def update

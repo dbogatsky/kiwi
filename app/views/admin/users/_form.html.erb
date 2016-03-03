@@ -9,84 +9,120 @@
 	<div class="panel-body">
 	  <%= simple_form_for @user, :url =>  admin_company_users_path, html: {class: "form-horizontal", multipart: true } do |f| %>
 
-	    <%= f.input :email, label: "Email", required: true %>
-
-	    <%= f.input :first_name, label: "First Name", required: true %>
-
-	    <%= f.input :last_name, label: "Last Name", required: true %>
+	    <div class="form-group">
+	      <label class="col-sm-3 control-label">Email<span class="asterisk">*</span></label>
+	      <div class="col-sm-6">
+	        <%=email_field_tag 'user[email]', nil, class: 'form-control', required: true%>
+	      </div>
+	    </div>
+	    <div class="form-group">
+	      <label class="col-sm-3 control-label">First Name<span class="asterisk">*</span></label>
+	      <div class="col-sm-6">
+	        <%=text_field_tag 'user[first_name]', nil, class: 'form-control', required: true%>
+	      </div>
+	    </div>
+	    <div class="form-group">
+	      <label class="col-sm-3 control-label">Last Name<span class="asterisk">*</span></label>
+	      <div class="col-sm-6">
+	        <%=text_field_tag 'user[last_name]', nil, class: 'form-control', required: true%>
+	      </div>
+	    </div>
       <% if @user.new_record? %>
-	       <%= f.input :password, label: "Password", required: true %>
+	      <div class="form-group">
+	        <label class="col-sm-3 control-label">Password<span class="asterisk">*</span></label>
+		      <div class="col-sm-6">
+		        <%=password_field_tag 'user[password]', nil, class: 'form-control', required: true%>
+		      </div>
+	      </div>
 
-	       <%= f.input :confirm_password, label: "Confirm Password", required: true %>
+	      <div class="form-group">
+	        <label class="col-sm-3 control-label">Confirm Password<span class="asterisk">*</span></label>
+		      <div class="col-sm-6">
+		        <%=password_field_tag 'user[confirm_password]', nil, class: 'form-control', required: true%>
+		      </div>
+	      </div>
       <%end%>
 
-	    <div class="form-group">
+	    <!-- <div class="form-group">
 	      <label class="col-sm-3 control-label">Role<span class="asterisk">*</span></label>
 	      <div class="col-sm-2">
-	      <%rol = @user.new_record? ? '' : (@user.roles.present? ? @user.roles.last.id : '')%>
+	      <%#rol = @user.new_record? ? '' : (@user.roles.present? ? @user.roles.last.id : '')%>
 	       <%#=select_tag "user[role_ids][]", options_for_select(Role.all.map{|c| [c.name, c.id] }, selected: "#{rol}"), {prompt: "-- select --", :class => 'form-control input-sm sel_role', required: true}%>
 	      </div>
 	      <div class="show_entity">
 		      <label class="col-sm-1 control-label">Entity<span class="asterisk">*</span></label>
 			      <div class="col-sm-2">
-			         <%en = @user.new_record? ? '' : (@user.entity.present? ? @user.entity.id : '') %>
+			         <%#en = @user.new_record? ? '' : (@user.entity.present? ? @user.entity.id : '') %>
 			         <%#=f.select(:company_entity_id, options_for_select(CompanyEntities.all.map{|c| [c.name, c.id] }, selected: "#{en}"), {prompt: "-- select --"}, {:class => 'form-control sel_clear input-sm', required: true})%>
 			      </div>
 	      </div>
-	    </div>
+	    </div> -->
 	    <div class="form-group">
 	      <label class="col-sm-3 control-label">Locale<span class="asterisk">*</span></label>
 	      <div class="col-sm-6">
-	        <%=f.select(:locale, options_for_select([['English', 1],['French', 2]], selected: @user.new_record? ? '' : @user.locale ), {prompt: "-- select --"}, {:class => 'form-control input-sm', required: true})%>
+	        <%=select_tag('user[locale]', options_for_select([['English', 'en'],['French', 'fr']], selected: @user.try(:locale) ), {prompt: "-- select --", :class => 'form-control input-sm', required: true})%>
 	      </div>
 	    </div>
-      <%= f.input :time_zone, input_html: { class: 'form-control input-sm' }, priority: ActiveSupport::TimeZone.us_zones, default: "Pacific Time (US & Canada)" %>
-	    <%= f.fields_for :addresses_attributes do |add| %>
-	    	<%st_address = @address.last.street_address rescue nil%>
-	      <%= add.input :street_address, required: true, label: "Street", :input_html => { :name => "user[addresses_attributes][][street_address]", :value => st_address}%>
-	      <%city = @address.last.city rescue nil%>
-	      <%= add.input :city, required: true, label: "City", :input_html => { :name => "user[addresses_attributes][][city]", :value => city} %>
-        <%address_region = @address.last.region rescue nil%>
-	      <%= add.input :region, required: true, label: "Province/State", :input_html => { :name => "user[addresses_attributes][][region]", :value => address_region} %>
-        <%postcode = @address.last.postcode rescue nil%>
-	      <%= add.input :postcode, required: true, label: "Postcode/Zipcode", :input_html => { :name => "user[addresses_attributes][][postcode]", :value => postcode}%>
-
-	      <div class="form-group">
-	        <label class="col-sm-3 control-label">Country<span class="asterisk">*</span></label>
-	        <div class="col-sm-6">
-	  				<%= add.input_field :country, { required: true, priority: [ "Canada", "United States", "United Kingdom" ],  class: "select2", name: "user[addresses_attributes][][country]", selected: @address.present? ? @address.last.country : '' } %>
-	  			</div>
+      <div class="form-group">
+        <label class="col-sm-3 control-label">Time Zone<span class="asterisk">*</span></label>
+	      <div class="col-sm-6">
+	        <%=select_tag('user[time_zone]', options_for_select(ActiveSupport::TimeZone.all.sort,selected: @user.try(:time_zone)), {prompt: "-- select --", :class => 'form-control input-sm', required: true})%>
 	      </div>
-	      <% address_id = @address.last.id rescue nil %>
-	      <%= add.hidden_field :id, value: address_id, name: "user[addresses_attributes][][id]" %>
-	    <% end %>
-
-	    <%= f.simple_fields_for :contacts_attributes do |c| %>
-	      <div class="form-group">
-	        <label class="col-sm-3 control-label">Phone:</label>
-	        <div class="col-sm-2">
-            <%contact_value = @contact.first.value rescue nil%>
-	          <%=c.hidden_field :type, value: 'phone', name: "user[contacts_attributes][][type]" %>
-	          <%= c.input_field :value, { label: 'Phone', name: "user[contacts_attributes][][value]", class: "form-control", value: contact_value}%>
-	          <% contact_id = @contact.first.id rescue nil %>
-	          <%=c.hidden_field :id, value: contact_id, name: "user[contacts_attributes][][id]" %>
-	        </div>
-	        <label class="col-sm-1 control-label">Mobile:</label>
-	        <div class="col-sm-2">
-	          <%contact_value1 = @contact.last.value rescue nil%>
-	          <%=c.hidden_field :type, value: 'mobile', name: "user[contacts_attributes][][type]" %>
-	          <%= c.input_field :value, { label: 'Value', name: "user[contacts_attributes][][value]", class: "form-control", value: contact_value1}%>
-	          <% contact_id1 = @contact.last.id rescue nil %>
-	          <%=c.hidden_field :id, value: contact_id1, name: "user[contacts_attributes][][id]" %>
-	        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-3 control-label">Street Address<span class="asterisk">*</span></label>
+	      <div class="col-sm-6">
+	        <%= text_field_tag 'user[addresses_attributes][0][street_address]' , @address.try(:street_address), class: 'form-control', required: true%>
 	      </div>
-	    <% end %>
-
+      </div>
+      <div class="form-group">
+        <label class="col-sm-3 control-label">City<span class="asterisk">*</span></label>
+	      <div class="col-sm-6">
+	        <%= text_field_tag 'user[addresses_attributes][0][city]', @address.try(:city), class: 'form-control', required: true%>
+	      </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-3 control-label">Province/State<span class="asterisk">*</span></label>
+	      <div class="col-sm-6">
+	        <%= text_field_tag 'user[addresses_attributes][0][region]', @address.try(:region), class: 'form-control', required: true%>
+	      </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-3 control-label">Post/Zipcode<span class="asterisk">*</span></label>
+	      <div class="col-sm-6">
+	        <%= text_field_tag 'user[addresses_attributes][0][postcode]' ,@address.try(:postcode), class: 'form-control', required: true%>
+	      </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-3 control-label">Country<span class="asterisk">*</span></label>
+	      <div class="col-sm-6">
+	        <%=country_select("user[addresses_attributes][0]", 'country', {priority_countries: ["GB", "FR", "DE"], selected: @address.try(:country) }, {class: 'form-control', prompt: "Select Country", required: true})%>
+	      </div>
+      </div>
+      <%=hidden_field_tag 'user[addresses_attributes][0][id]',@address.try(:id)%>
+      <div class="form-group">
+        <label class="col-sm-3 control-label">Phone:</label>
+        <div class="col-sm-2">
+          <%contact_value = @contact.first.value rescue nil%>
+          <%=hidden_field_tag "user[contacts_attributes][][type]",'phone'%>
+          <%=text_field_tag "user[contacts_attributes][][value]",contact_value, {class: "form-control"}%>
+          <% contact_id = @contact.first.id rescue nil %>
+          <%=hidden_field_tag "user[contacts_attributes][][id]",contact_id%>
+        </div>
+        <label class="col-sm-1 control-label">Mobile:</label>
+        <div class="col-sm-2">
+          <%contact_value1 = @contact.last.value rescue nil%>
+          <%=hidden_field_tag "user[contacts_attributes][][type]",'mobile'%>
+          <%=text_field_tag "user[contacts_attributes][][value]",contact_value1, {class: "form-control"}%>
+          <% contact_id1 = @contact.last.id rescue nil %>
+          <%=hidden_field_tag "user[contacts_attributes][][id]",contact_id1%>
+        </div>
+      </div>
 	    <div class="form-group">
 	      <label class="col-sm-3 control-label">Picture</label>
 	      <div class="col-sm-6">
 	        <label title="Upload image file" for="inputImage" class="btn btn-white">
-	          <%= f.file_field :avatar, { name: "user[avatar]" }  %>
+	          <%=file_field_tag "user[avatar]"%>
 	        </label>
 	      </div>
 	    </div>
@@ -117,23 +153,23 @@
 		});
 
 		// default case
-		if ( $('.sel_role').val() == 1 || $('.sel_role').val() == '' ) {
-		  $(".show_entity").hide();
-		  $(".sel_clear").val('');
-		}
+		// if ( $('.sel_role').val() == 1 || $('.sel_role').val() == '' ) {
+		//   $(".show_entity").hide();
+		//   $(".sel_clear").val('');
+		// }
 	});
 
 	// when an entity is selected
-	$('.sel_role').change(function(){
-	  if($(this).val() == 1 || $(this).val() == '' )
-	    {
-	      $(".show_entity").hide();
-	    	$(".sel_clear").val('');
-	    }else
-	    {
-	     $(".show_entity").show();
-	    }
-	});
+	// $('.sel_role').change(function(){
+	//   if($(this).val() == 1 || $(this).val() == '' )
+	//     {
+	//       $(".show_entity").hide();
+	//     	$(".sel_clear").val('');
+	//     }else
+	//     {
+	//      $(".show_entity").show();
+	//     }
+	// });
 	<% if @user.new_record?%>
 		$(function(){
 			$( "#new_user" ).validate({

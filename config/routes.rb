@@ -47,6 +47,7 @@ Rails.application.routes.draw do
   post '/accounts/:id/share', to:'accounts#share', as: :account_share
 
   match '/schedule', to: 'schedule#index', as: :schedule, via: [:get]
+  get   '/schedule/calendar_event', to: 'schedule#calendar_event', as: :schedule_calendar_event
   match '/media', to: 'media#index', as: :media, via: [:get]
 
   post '/media/create_folder', to:'media#create_folder', as: :create_folder
