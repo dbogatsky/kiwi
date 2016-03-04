@@ -25,7 +25,10 @@
                       <input type="text" class="form-control datepicker" placeholder="dd/mm/yy" name="search[date_lteq]" id="search_datepicker_end">
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary submit_search"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search</button>
+                <div>
+                  <button type="submit" class="btn btn-primary submit_search"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search</button>
+                  &nbsp;&nbsp;&nbsp;<a href="<%= account_path(@account.id)%>" class="btn btn-primary" style="width: 92px">Reset</a>
+                </div>
               <%end%>
             </div>
           </div>
