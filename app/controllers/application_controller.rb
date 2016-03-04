@@ -23,7 +23,8 @@ class ApplicationController < ActionController::Base
       RequestStore.store[:tenant] = "convo"
     end
     #move into a service 
-    OrchardApiModel.site = "http://#{RequestStore.store[:tenant]}-api.code10.ca/api/v1" 
+    RequestStore.store[:api_url] = "http://#{RequestStore.store[:tenant]}-api.code10.ca/api/v1" 
+    OrchardApiModel.site = RequestStore.store[:api_url]
   end
 
 
