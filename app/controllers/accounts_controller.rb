@@ -338,7 +338,7 @@ class AccountsController < ApplicationController
 
   def search
     c_id = @account.conversation.id
-    apiURL = APP_CONFIG['api_url'] + '//conversations/'+ "#{c_id}" + '/items?'
+    apiURL = RequestStore.store[:api_url] + '/conversations/'+ "#{c_id}" + '/items?'
     apiFullUrl = apiURL +  "search[type_cont]=#{params[:search][:type_cont]}&starts_at_gteq=#{params[:search][:data_gteq]}&starts_at_lteq=#{params[:search][:date_lteq]}";
     headers = {}
     headers["Authorization"] = "Token token=\"#{@token}\",email=\"#{@email}\", app_key=\"#{@appKey}\""

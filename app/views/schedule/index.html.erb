@@ -203,15 +203,15 @@
     maximumSelectionLength: 5,
   });
 
-  // $("#schedule_user_list").change(function(){
-  //   var user_id = $(this).val()
-  //   $.ajax({
-  //     type: "GET",
-  //     url: '/schedule/calendar_event?users='+ user_id,
-  //     success: function (data) {
-  //     }
-  //   });
-  // })
+  $("#schedule_user_list").change(function(){
+    var user_id = $(this).val()
+    $.ajax({
+      type: "GET",
+      url: '/schedule/calendar_event?users='+ user_id,
+      success: function (data) {
+      }
+    });
+  })
 
   jQuery(document).ready(function() {
 
@@ -219,10 +219,10 @@
 
     /* initialize the calendar
      -----------------------------------------------------------------*/
-    var date = new Date();
-    var d = date.getDate();
-    var m = date.getMonth();
-    var y = date.getFullYear();
+    // var date = new Date();
+    // var d = date.getDate();
+    // var m = date.getMonth();
+    // var y = date.getFullYear();
 
     $('#calendar').fullCalendar({
         header: {
@@ -230,40 +230,18 @@
             center: 'title',
             right: 'month,agendaWeek,agendaDay'
         },
-        editable: false,
-        droppable: false, // this allows things to be dropped onto the calendar
-        events: [
-            {
-                id: 1,
-
-                title: 'Follow up with Logan Automtive',
-                start: new Date(y, m, d, 9, 0),
-                end: new Date(y, m, d, 10, 0),
-                allDay: false
-            },
-            {
-                id: 1,
-
-                title: 'Lunch Meeting with Harley Davidson',
-                start: new Date(y, m, d, 12, 0),
-                end: new Date(y, m, d, 14, 0),
-                allDay: false
-            },
-            {
-                id: 2,
-                title: 'New Product Demo',
-                start: new Date(y, m, d, 15, 0),
-                end: new Date(y, m, d, 16, 0),
-                allDay: false
-            },
-            {
-                id: 3,
-                title: 'Submission Reminder',
-                start: new Date(y, m, d+1, 19, 0),
-                end: new Date(y, m, d+1, 22, 30),
-                allDay: false
+        eventClick: function (calEvent, jsEvent, view) {
+          var c_id = calEvent.id
+          $.ajax({
+            type: "GET",
+            url: '/schedule/get_meeting?citem_id='+ c_id,
+            success: function (data) {
             }
-        ]
+          });
+        },
+        editable: true,
+        droppable: false, // this allows things to be dropped onto the calendar
+        events: []
     });
 	});
 </script>

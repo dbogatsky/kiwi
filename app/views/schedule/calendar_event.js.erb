@@ -1,0 +1,13 @@
+$('#calendar').fullCalendar('removeEvents');
+<%@meetings.each do |i|%>
+  <%s_date = Chronic.parse(i.starts_at).in_time_zone(current_user.time_zone)%>
+  <%e_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone) %>
+  event_data = {
+    id: <%=i.id%>,
+    title: '<%=i.title%>',
+    start: new Date(<%=s_date.year%>, <%=s_date.month%>, <%=s_date.day%>, <%=s_date.hour%>, <%=s_date.min%> ),
+    end: new Date(<%=e_date.year%>, <%=e_date.month%>, <%=e_date.day%>, <%=e_date.hour%>, <%=e_date.min%> ),
+    allDay: false
+  }
+  $('#calendar').fullCalendar('renderEvent', event_data , true);
+<%end%>
