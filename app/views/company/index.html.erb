@@ -113,7 +113,7 @@
           </div>
         <% end %>
 
-        <% if can? :read, CompanyEntities %>
+        <% if can? :read, CompanyEntity %>
           <div class="panel panel-default">
             <div class="panel-heading">
               <div class="panel-btns">
@@ -130,7 +130,7 @@
                     <p>Use entities to describe how your organization is structured</p>
                   </div>
                   <div class="col-md-2">
-                    <% if can? :manage, CompanyEntities %>
+                    <% if can? :manage, CompanyEntity %>
                       <a href="<%= new_company_entity_path %>" class="btn btn-primary btn-block"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Entities</a>
                     <% end %>
                   </div>

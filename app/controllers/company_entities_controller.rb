@@ -1,16 +1,16 @@
 class CompanyEntitiesController < ApplicationController
 
 	def new
-		@company_entity = CompanyEntities.new
+		@company_entity = CompanyEntity.new
 	end
 
 	def create
-	  @company_entity = CompanyEntities.new(request: :create, company_entity: params[:company_entity])
+	  @company_entity = CompanyEntity.new(request: :create, company_entity: params[:company_entity])
     if @company_entity.save
     	flash[:success] = 'Company Entity successfully created.'
 
       #Refresh the company entities list stored in cache resource
-      @entites = CompanyEntities.all(:reload => true)
+      @entites = CompanyEntity.all(:reload => true)
       redirect_to company_path
     else
     	flash[:danger] = 'Company Entity could not created.'
@@ -19,12 +19,12 @@ class CompanyEntitiesController < ApplicationController
 	end
 
 	def update
-		@entity = CompanyEntities.find(params[:id])
+		@entity = CompanyEntity.find(params[:id])
 		if @entity.update_attributes(request: :update, company_entity: params[:company_entity])
       flash[:success] = 'Company Entity successfully updated.'
 
       #Refresh the company entities list stored in cache resource
-      @entites = CompanyEntities.all(:reload => true)
+      @entites = CompanyEntity.all(:reload => true)
       redirect_to company_path
     else
     	flash[:danger] = 'Company Entity could not updated.'
@@ -33,16 +33,16 @@ class CompanyEntitiesController < ApplicationController
 	end
 
 	def show
-		@entity = CompanyEntities.find(params[:id])
+		@entity = CompanyEntity.find(params[:id])
 	end
 
 	def destroy
-		@entity = CompanyEntities.find(params[:id])
+		@entity = CompanyEntity.find(params[:id])
 		if @entity.destroy
 			flash[:success] = 'Company Entity successfully deleted.'
 
       #Refresh the company entities list stored in cache resource
-      @entites = CompanyEntities.all(:reload => true)
+      @entites = CompanyEntity.all(:reload => true)
 		  redirect_to company_path
 		 else
 		 	flash[:danger]  = 'Company Entity could not deleted.'

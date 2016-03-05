@@ -52,7 +52,7 @@
 		      <label class="col-sm-1 control-label">Entity<span class="asterisk">*</span></label>
 			      <div class="col-sm-2">
 			         <%#en = @user.new_record? ? '' : (@user.entity.present? ? @user.entity.id : '') %>
-			         <%#=f.select(:company_entity_id, options_for_select(CompanyEntities.all.map{|c| [c.name, c.id] }, selected: "#{en}"), {prompt: "-- select --"}, {:class => 'form-control sel_clear input-sm', required: true})%>
+			         <%#=f.select(:company_entity_id, options_for_select(CompanyEntity.all.map{|c| [c.name, c.id] }, selected: "#{en}"), {prompt: "-- select --"}, {:class => 'form-control sel_clear input-sm', required: true})%>
 			      </div>
 	      </div>
 	    </div> -->

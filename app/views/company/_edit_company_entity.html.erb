@@ -26,7 +26,7 @@
                     <label class="control-label">Parent Entity:</label>
                     <select name="company_entity[parent_id]" class="form-control input-sm">
                       <option value="">Default</option>
-                      <%CompanyEntities.all.each do |entity|%>
+                      <%CompanyEntity.all.each do |entity|%>
                         <%unless entity.parent.present?%>
                           <option value="<%=entity.id%>"><%=entity.name%></option>
                           <%if entity.descendants.present?%>

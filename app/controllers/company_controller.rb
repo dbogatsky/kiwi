@@ -5,7 +5,7 @@ class CompanyController < ApplicationController
     @company = Company.find
 
     #lets get a fresh batch of Entities and Statues, not from cache
-    @entites = CompanyEntities.all(reload: true)
+    @entites = CompanyEntity.all(reload: true)
     @account_statuses = AccountStatus.all(reload: true)
   end
 
@@ -23,7 +23,7 @@ class CompanyController < ApplicationController
   end
 
   def display_sub_entites
-    @entity = CompanyEntities.find(params[:id])
+    @entity = CompanyEntity.find(params[:id])
     @sub_entites = @entity.descendants
   end
 

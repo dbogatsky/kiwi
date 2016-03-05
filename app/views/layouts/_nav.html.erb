@@ -43,11 +43,11 @@
       <% end %>
     </ul>
 
-    <% if ( can? :read, Company ) || ( can? :read, CompanyEntities ) %>
+    <% if ( can? :read, Company ) || ( can? :read, CompanyEntity ) %>
       <h5 class="sidebartitle">Admin</h5>
       <ul class="nav nav-pills nav-stacked nav-bracket">
 
-      <% if ( can? :read, Company ) || ( can? :read, CompanyEntities ) %>
+      <% if ( can? :read, Company ) || ( can? :read, CompanyEntity ) %>
         <li><a href="<%= company_path %>"><i class="fa fa-building"></i> <span>Company</span></a></li>
       <% end %>
 
