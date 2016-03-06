@@ -1,5 +1,5 @@
 class MediaController < ApplicationController
-	load_and_authorize_resource
+	#load_and_authorize_resource
   skip_before_filter :verify_authenticity_token, :only => [:create_folder, :save_folder, :destroy, :destroy_multiple, :show, :email_file, :rename_media_file]
   before_action :get_token
   before_action :get_api_values, only: [:index, :show, :save_folder,
@@ -11,7 +11,7 @@ class MediaController < ApplicationController
 	def index
     if request.format.html?
       @medias = Media.all
-      @apiURL = APP_CONFIG['api_url'] + '/download/media'
+      @apiURL = RequestStore.store[:api_url] + '/download/media'
     else
       render text: 'Not an html request'
     end
@@ -26,7 +26,7 @@ class MediaController < ApplicationController
       else
         @medias = Media.all
       end
-      apiURL = APP_CONFIG['api_url'] + '/download/media'
+      apiURL = RequestStore.store[:api_url] + '/download/media'
       mediaArray = []
       @medias.each do |media|
         if media.image?
@@ -52,7 +52,7 @@ class MediaController < ApplicationController
 
   def show_large_image
     uid = params[:uid]
-    apiURL = APP_CONFIG['api_url'] + '/download/media'
+    apiURL = RequestStore.store[:api_url] + '/download/media'
     apiFullUrl = apiURL + "/" +  uid + "?style=web"
     curlRes = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" "#{apiFullUrl}"`
     curlRes = JSON.parse(curlRes);
@@ -72,7 +72,7 @@ class MediaController < ApplicationController
   # Edit existing folder
 	def save_folder
     if(request.xhr?)
-      apiURL = APP_CONFIG['api_url'] + '/download/media'
+      apiURL = RequestStore.store[:api_url] + '/download/media'
       id = params[:id]
       apiFullUrl = apiURL + "/" +  id;
       new_name = params[:name]
@@ -105,7 +105,7 @@ class MediaController < ApplicationController
     subject = params[:subject]
     message = params[:message]
 
-    apiURL = APP_CONFIG['api_url'] + '/download/media'
+    apiURL = RequestStore.store[:api_url] + '/download/media'
     mediaArray = []
     #attachments = params[:attachments]
     attachments = params[:attachments].split(",")
@@ -131,7 +131,7 @@ class MediaController < ApplicationController
   # rename media file
   def rename_media_file
     if(request.xhr?)
-      apiURL = APP_CONFIG['api_url'] + '/download/media'
+      apiURL = RequestStore.store[:api_url] + '/download/media'
       id = params[:id]
       apiFullUrl = apiURL + "/" +  id;
       new_name = params[:name]
@@ -160,7 +160,7 @@ class MediaController < ApplicationController
     elsif (content_type == 'video/x-flv' || content_type == 'video/x-flv' || content_type == 'video/MP2T' || content_type == 'video/3gpp' || content_type == 'video/quicktime' || content_type == ' video/x-msvideo' || content_type == 'video/x-ms-wmv' || content_type == 'video/mpeg')
       type = 'video'
     end
-    apiURL = APP_CONFIG['api_url'] + '/media' #http://api.convo.code10.ca/api/v1/media/
+    apiURL = RequestStore.store[:api_url] + '/media' #http://api.convo.code10.ca/api/v1/media/
     curlRes = `curl -X POST -F"medium[payload]=#{serverPath};type=#{content_type}" -F"type=#{type}" -F"medium[name]=#{filename}" -F"medium[parent_id]=#{folderId}" -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" "#{apiURL}" -v`;
     #abort(curlRes.inspect)
     message = ''
