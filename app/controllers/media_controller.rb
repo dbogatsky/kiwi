@@ -10,7 +10,7 @@ class MediaController < ApplicationController
   # Display all folders
 	def index
     if request.format.html?
-      @medias = Media.all
+      @medias = Medium.all
       @apiURL = RequestStore.store[:api_url] + '/download/media'
     else
       render text: 'Not an html request'
@@ -22,9 +22,9 @@ class MediaController < ApplicationController
     if(request.xhr?)
       if params[:folder_id].present?
         id = params[:folder_id]
-        @medias = Media.all(params: {folder_id: id})
+        @medias = Medium.all(params: {folder_id: id})
       else
-        @medias = Media.all
+        @medias = Medium.all
       end
       apiURL = RequestStore.store[:api_url] + '/download/media'
       mediaArray = []
@@ -62,7 +62,7 @@ class MediaController < ApplicationController
 	# Create a new media folder
 	def create_folder
     if(request.xhr?)
-      @medias = Media.new(resource_params)
+      @medias = Medium.new(resource_params)
       @medias.type = params[:type]
       @medias.name = params[:name]
       render :text => (@medias.save ? @medias.id : 0) and return
@@ -84,14 +84,14 @@ class MediaController < ApplicationController
 
   # Used to delete the media folder
   def destroy
-    render :text => (Media.delete(params[:id]) ? 1 : 0) and return
+    render :text => (Medium.delete(params[:id]) ? 1 : 0) and return
   end
 
   # Used to delete the media files
   def destroy_multiple
     duplicates = params[:ids].split(",")
     duplicates.each do | duplicate |
-      Media.delete(duplicate)
+      Medium.delete(duplicate)
     end
     render :text => ( 1 ? 1 : 0) and return
   end
