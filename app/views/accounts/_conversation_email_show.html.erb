@@ -5,27 +5,29 @@
     <span class="cd-date">
         <%= citem.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>
     </span>
-    <div class="btn-group mr5 pull-right">
-      <button data-toggle="dropdown" class="btn btn-sm btn-white dropdown-toggle" type="button" style="border-radius: 2px">
-        <i class="fa fa-cog mr5"></i><span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu">
-        <li>
-            <a class="edit_email" href="#"
-             data-toggle="modal"
-             data-target=".conversation-edit-email-modal-form"
-             data-id="<%= citem.id %>"
-             data-invitees="<%=citem.invitees %>"
-             data-title="<%=citem.title %>"
-             data-date="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.scheduled_at.present?%>"
-             data-time="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.scheduled_at.present? %>"
-             data-body="<%= citem.body %>">Edit</a>
-        </li>
-        <li>
-            <%=link_to 'Delete', delete_email_account_path(@account, item_id: citem.id), method: :delete,data: {confirm: 'Are you sure to delete this email?'}%>
-        </li>
-      </ul>
-    </div>
+    <% if citem.status != 'sent'%>
+      <div class="btn-group mr5 pull-right">
+        <button data-toggle="dropdown" class="btn btn-sm btn-white dropdown-toggle" type="button" style="border-radius: 2px">
+          <i class="fa fa-cog mr5"></i><span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li>
+              <a class="edit_email" href="#"
+               data-toggle="modal"
+               data-target=".conversation-edit-email-modal-form"
+               data-id="<%= citem.id %>"
+               data-invitees="<%=citem.invitees %>"
+               data-title="<%=citem.title %>"
+               data-date="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.scheduled_at.present?%>"
+               data-time="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.scheduled_at.present? %>"
+               data-body="<%= citem.body %>">Edit</a>
+          </li>
+          <li>
+              <%=link_to 'Delete', delete_email_account_path(@account, item_id: citem.id), method: :delete,data: {confirm: 'Are you sure to delete this email?'}%>
+          </li>
+        </ul>
+      </div>
+    <%end%>
     <h2 class="ci_header"><%= citem.title %></h2>
     <div class="ci_note_body"><%= sanitize citem.body %></div>
     <div class="ci_footer">

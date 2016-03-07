@@ -30,8 +30,8 @@ Rails.application.routes.draw do
       delete :delete_email
       delete :delete_meeting
       patch  :meeting_completed
-      post   :check_in
-      post   :check_out
+      # post   :check_in
+      # post   :check_out
       patch  :jump_in
       get    :search
     end
@@ -42,6 +42,8 @@ Rails.application.routes.draw do
   resources :users
 
   post '/accounts/schedule_meeting', to:'accounts#schedule_meeting', as: :account_schedule_meeting
+  post '/accounts/check_in', to:'accounts#check_in', as: :account_check_in
+  post '/accounts/check_out', to:'accounts#check_out', as: :account_check_out
   post '/accounts/:id/add_note', to:'accounts#add_note', as: :account_add_note
   post '/accounts/:id/send_email', to:'accounts#send_email', as: :account_send_email
   post '/accounts/:id/share', to:'accounts#share', as: :account_share

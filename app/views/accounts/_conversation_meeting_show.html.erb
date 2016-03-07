@@ -8,7 +8,6 @@
     <% else %>
         <span class="cd-date"><%= citem.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%></span>
     <% end %>
-    <%time = citem.ends_at.present? ? (DateTime.now.in_time_zone(current_user.time_zone) > citem.ends_at.to_datetime.in_time_zone(current_user.time_zone)+1.hour) : false%>
 	  <div class="btn-group mr5 pull-right">
       <button data-toggle="dropdown" class="btn btn-sm btn-white dropdown-toggle" type="button" style="border-radius: 2px">
         <i class="fa fa-cog mr5"></i><span class="caret"></span>
@@ -71,10 +70,10 @@
             <% if citem.status == "scheduled" && !time%>
                 <%if current_user.id == created_by.id || invitees.include?(current_user.email)%>
                   <%if check_in(citem,info)%>
-                    <button class="btn btn-xs btn-default pull-right mr5"><i class="fa fa-sign-in mr5"></i><%=link_to 'Check In', check_in_account_path(conversation_item_id: citem.id), method: :post%></button>
+                    <button class="btn btn-xs btn-default pull-right mr5"><i class="fa fa-sign-in mr5"></i><%=link_to 'Check In', account_check_in_path(conversation_item_id: citem.id), method: :post%></button>
                   <%end%>
                   <%if !check_in(citem,info) && check_out(citem,info)%>
-                    <button class="btn btn-xs btn-default pull-right mr5"><i class="fa fa-sign-in mr5"></i><%=link_to 'Check Out', check_out_account_path(conversation_item_id: citem.id), method: :post%></button>
+                    <button class="btn btn-xs btn-default pull-right mr5"><i class="fa fa-sign-in mr5"></i><%=link_to 'Check Out', account_check_out_path(conversation_item_id: citem.id), method: :post%></button>
                   <%end%>
                 <%else%>
                     <button class="btn btn-xs btn-default pull-right mr5"><i class="fa fa-sign-in mr5"></i><%=link_to 'Jump In', jump_in_account_path(conversation_item_id: citem.id), method: :patch%></button>

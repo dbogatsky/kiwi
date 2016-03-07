@@ -180,7 +180,11 @@ class AccountsController < ApplicationController
     else
       flash[:danger] = "Couldn't Checked In"
     end
-    redirect_to account_path(params[:id])
+    if params[:info].present?
+      redirect_to schedule_path
+    else
+      redirect_to account_path(params[:id])
+    end
   end
 
   def check_out
@@ -190,7 +194,11 @@ class AccountsController < ApplicationController
       else
         flash[:danger] = "Couldn't Checked Out"
       end
-    redirect_to account_path(params[:id])
+    if params[:info].present?
+      redirect_to schedule_path
+    else
+      redirect_to account_path(params[:id])
+    end
   end
 
   def jump_in
@@ -207,7 +215,11 @@ class AccountsController < ApplicationController
     else
       flash[:danger] = "Couldn't jumped!"
     end
-    redirect_to account_path(params[:id])
+    if params[:info].present?
+      redirect_to schedule_path
+    else
+      redirect_to account_path(params[:id])
+    end
   end
 
   def add_note

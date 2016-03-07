@@ -17,50 +17,7 @@
           <small><%= current_user.time_zone %></small>
         </div>
       </div>
-      <div class="ibox-content ibox-heading">
-        <span class="badge " style="margin-top: -3px; background-color: white; color: #428BCA; border: 1px solid #428BCA;">scheduled</span>
-        <div class="btn-group mr5 pull-right">
-          <button data-toggle="dropdown" class="btn btn-sm btn-white dropdown-toggle" type="button" style="border-radius: 2px">
-            <i class="fa fa-cog mr5"></i><span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu">
-            <li>
-              <a class="complete_meeting" href="#" data-toggle="modal" data-target=".conversation-complete-meeting-modal-form" data-id="99">Complete
-                </a>
-            </li>
-            <li>
-                <a class="edit_meeting" href="#" data-toggle="modal" data-target=".conversation-edit-meeting-modal-form" data-id="99" data-invitees="me@dierbro.com, me+test@dierbro.com" data-title="TESTMEETING_edited" data-date="03/02/2016" data-time="01:37AM" data-starts-date="03/01/2016" data-starts-time="11:40PM" data-ends-date="03/02/2016" data-ends-time="12:40AM" data-body="TESTMEETING_editted">Edit</a>
-            </li>
-            <li>
-                <a data-confirm="Are you sure to delete this meeting?" rel="nofollow" data-method="delete" href="/accounts/61/delete_meeting?item_id=99">Delete</a>
-            </li>
-          </ul>
-        </div>
-        <h3>Meeting Title Here</h3>
-        <small><i class="fa fa-map-marker" style="margin-right:10px"></i>&nbsp;&nbsp;123 somewhere street, toronto</small><br />
-        <small><i class="fa fa-calendar" style="margin-right:10px"></i>Tue Mar 01 2016</small><br />
-        <small><i class="fa fa-clock-o" style="margin-right:10px"></i>11:40 PM to 12:40 AM</small><br />
-      </div>
-      <div class="panel-body">
-        <button class="btn btn-xs btn-default pull-right mr5"><i class="fa fa-sign-in mr5"></i>Check In</button>
-        <p>
-          <span class="subheading">Agenda:<br></span>
-          Place meeting agenda details here
-        </p>
-        <p>
-          <span class="subheading">Notes:<br></span>
-          Place meeting notes here
-        </p>
-        <div class="row ci_footer">
-            <div class="col-sm-10">
-              <i class="fa fa-bell tooltips mr10" data-toggle="tooltip" data-original-title="Reminder"></i>Wed Mar 02 2016 at  1:37 AM<br>
-              <i class="fa fa-user tooltips mr10" data-toggle="tooltip" data-original-title="Created by"></i>Gurpreet Jajj<br>
-              <i class="fa fa-users tooltips mr10" data-toggle="tooltip" data-original-title="Invitees"></i>me@dierbro.com, me+test@dierbro.com
-            </div>
-            <div class="col-sm-2">
-            </div>
-        </div>
-      </div>
+      <div id="conversation_item_details"></div>
     </div>
   </div><!-- col-->
   <div class="col-md-8">
@@ -92,6 +49,8 @@
   </div>
 </div>
 <%= render "accounts/conversation_meeting", account: nil %>
+<%#= render "accounts/conversation_meeting_complete"%>
+
 <script>
 
   var meeting_new_editor, meeting_edit_editor;
@@ -204,6 +163,8 @@
   });
 
   $("#schedule_user_list").change(function(){
+    $('#preloader').css('opacity', 0.3);
+    $('#preloader').show();
     var user_id = $(this).val()
     $.ajax({
       type: "GET",
@@ -231,6 +192,8 @@
             right: 'month,agendaWeek,agendaDay'
         },
         eventClick: function (calEvent, jsEvent, view) {
+          $('#preloader').css('opacity', 0.3);
+          $('#preloader').show();
           var c_id = calEvent.id
           $.ajax({
             type: "GET",
