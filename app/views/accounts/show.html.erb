@@ -202,7 +202,7 @@
   <%= render "conversation_email" %>
   <%= render "conversation_email_edit" %>
   <%= render "conversation_note" %>
-  <%= render 'conversation_note_edit'%>
+  <%= render 'conversation_note_edit', account: @account%>
   <%= render "conversation_meeting_edit", account: @account %>
   <%= render "conversation_meeting_complete", account: @account %>
   <%= render "conversation_sharedusers" %>

@@ -5,12 +5,13 @@ class ScheduleController < ApplicationController
   end
 
   def calendar_event
-  	if params[:users].present?
+    @meetings = []
+  	if params[:users] != "null"
 	  	users = params[:users].split(',')
 	    events = ConversationItem.find(:all,params: {conversation_id: 61,users_id: users})
-	  	@meetings = []
+
 	  	events.each do |citem|
-	  	  @meetings << citem if citem.type.eql? 'meeting'
+	  	  @meetings << citem if citem.type ==  'meeting' || (citem.type == 'note' && citem.scheduled_at.present?)
 	  	end
 	  end
   end
