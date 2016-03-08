@@ -16,6 +16,8 @@ class ScheduleController < ApplicationController
   end
 
   def get_meeting
-     @meeting = ConversationItem.find(params[:citem_id],params: {conversation_id: 61})
+    @account = Account.find(params[:account_id])
+    c_id = @account.conversation.id
+    @meeting = ConversationItem.find(params[:citem_id],params: {conversation_id: c_id})
   end
 end

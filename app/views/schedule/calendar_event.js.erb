@@ -3,6 +3,7 @@ $('#calendar').fullCalendar('removeEvents');
   <%s_date = Chronic.parse(i.starts_at).in_time_zone(current_user.time_zone)%>
   <%e_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone) %>
   event_data = {
+    account_id: <%=i.account_id%>,
     id: <%=i.id%>,
     title: '<%=i.title%>',
     start: new Date(<%=s_date.year%>, <%=s_date.month%>, <%=s_date.day%>, <%=s_date.hour%>, <%=s_date.min%> ),

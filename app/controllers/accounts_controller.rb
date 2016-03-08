@@ -5,6 +5,7 @@ class AccountsController < ApplicationController
   before_action :get_api_values,only: [:search]
   def index
     # Get all accounts
+    binding.pry
     @accounts = Account.all(params: {search: params[:search]})
   end
 
@@ -146,7 +147,11 @@ class AccountsController < ApplicationController
     else
       flash[:danger] = 'Oops! Unable to delete the meeting'
     end
-    redirect_to account_path(params[:id])
+    if params[:info].present?
+      redirect_to schedule_path
+    else
+      redirect_to account_path(params[:id])
+    end
   end
 
   def update_meeting
@@ -170,7 +175,11 @@ class AccountsController < ApplicationController
     else
       flash[:danger] = 'Meeting not updated!'
     end
-    redirect_to account_path(params[:id])
+    if params[:info].present?
+      redirect_to schedule_path
+    else
+      redirect_to account_path(params[:id])
+    end
   end
 
   def check_in

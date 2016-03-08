@@ -6,14 +6,38 @@
     </button>
     <ul class="dropdown-menu">
       <li>
-        <a class="complete_meeting" href="#" data-toggle="modal" data-target=".conversation-complete-meeting-modal-form" data-id="<%=citem.id%>">Complete
+        <a class="complete_meeting" href="#"
+           data-toggle="modal"
+           data-target=".conversation-complete-meeting-modal-form"
+           data-id="<%=citem.id%>"
+           data-account-id="<%=citem.account_id%>">Complete
         </a>
       </li>
       <li>
-          <a class="edit_meeting" href="#" data-toggle="modal" data-target=".conversation-edit-meeting-modal-form" data-id="99" data-invitees="me@dierbro.com, me+test@dierbro.com" data-title="TESTMEETING_edited" data-date="03/02/2016" data-time="01:37AM" data-starts-date="03/01/2016" data-starts-time="11:40PM" data-ends-date="03/02/2016" data-ends-time="12:40AM" data-body="TESTMEETING_editted">Edit</a>
+          <a class="edit_meeting" href="#"
+             data-toggle="modal"
+             data-target=".conversation-edit-meeting-modal-form"
+             data-id="<%= citem.id %>"
+             data-invitees="<%=citem.invitees%>"
+             data-title="<%=citem.title %>"
+             data-date="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.scheduled_at.present?%>"
+             data-time="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.scheduled_at.present? %>"
+             data-starts-date="<%=Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.starts_at.present? %>"
+             data-starts-time="<%=Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.starts_at.present? %>"
+             data-ends-date="<%=Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.ends_at.present? %>"
+             data-ends-time="<%=Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.ends_at.present? %>"
+             data-frequency ="<%=%>"
+             data-stop-after="<%=%>"
+             data-repeat="<%=%>"
+             data-day-of-week="<%=%>"
+             day-of-month="<%=%>"
+             weekday-of-month="<%=%>"
+             data-location="<%= citem.location%>"
+             data-body="<%= citem.body %>">Edit
+          </a>
       </li>
       <li>
-          <a data-confirm="Are you sure to delete this meeting?" rel="nofollow" data-method="delete" href="/accounts/61/delete_meeting?item_id=99">Delete</a>
+        <%=link_to 'Delete', delete_meeting_account_path(account, item_id: citem.id, info: true), method: :delete,data: {confirm: 'Are you sure to delete this meeting?'}%>
       </li>
     </ul>
   </div>
@@ -34,7 +58,7 @@
         <button class="btn btn-xs btn-default pull-right mr5"><i class="fa fa-sign-in mr5"></i><%=link_to 'Check Out', account_check_out_path(conversation_item_id: citem.id, info: true), method: :post%></button>
       <%end%>
     <%else%>
-        <button class="btn btn-xs btn-default pull-right mr5"><i class="fa fa-sign-in mr5"></i><%=link_to 'Jump In', jump_in_account_path(conversation_item_id: citem.id, info: true), method: :patch%></button>
+        <button class="btn btn-xs btn-default pull-right mr5"><i class="fa fa-sign-in mr5"></i><%=link_to 'Jump In', jump_in_account_path(citem.account_id,conversation_item_id: citem.id, info: true), method: :patch%></button>
     <%end%>
   <% end %>
   <p>
@@ -57,3 +81,137 @@
       </div>
   </div>
 </div>
+<%= render "accounts/conversation_meeting_complete", account: account, info: true%>
+<%= render "accounts/conversation_meeting_edit", account: account, info: true%>
+
+
+<script type="text/javascript">
+  $(document).on('click', "a.complete_meeting", function(e){
+    id = $(this).attr('data-id')
+    $('.conversation-complete-meeting-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
+    $('.conversation-complete-meeting-modal-form input[name="info"]').val(true);
+  });
+
+  var meeting_edit_editor;
+
+  $(function() {
+    meeting_edit_editor = $('#meeting_edit_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
+  });
+
+
+  $(document).on('click', "a.edit_meeting", function(e){
+    id = $(this).attr('data-id')
+    invitees = $(this).attr('data-invitees')
+    invitees_array = invitees.split(',')
+    $.each(invitees_array, function(index, value){
+      $("#edit_tag_input").before( "<span>"+value+"</span>");;
+    });
+    $('.conversation-edit-meeting-modal-form input[name="conversation_item[invitees]"]').val($(this).attr('data-invitees'));
+    $('.conversation-edit-meeting-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
+    $('.conversation-edit-meeting-modal-form input[name="conversation_item[location]"]').val($(this).attr('data-location'));
+    $('.conversation-edit-meeting-modal-form input[name="scheduled_time"]').val($(this).attr('data-time'));
+    $('.conversation-edit-meeting-modal-form input[name="scheduled_date"]').val($(this).attr('data-date'));
+    $('.conversation-edit-meeting-modal-form input[name="starts_date"]').val($(this).attr('data-starts-date'));
+    $('.conversation-edit-meeting-modal-form input[name="starts_time"]').val($(this).attr('data-starts-time'));
+    $('.conversation-edit-meeting-modal-form input[name="ends_date"]').val($(this).attr('data-ends-date'));
+    $('.conversation-edit-meeting-modal-form input[name="ends_time"]').val($(this).attr('data-ends-time'));
+    $('.conversation-edit-meeting-modal-form input[name="info"]').val(true);
+
+      if ($('.conversation-edit-meeting-modal-form input[name="scheduled_time"]').val()!="" && $('.conversation-edit-meeting-modal-form input[name="scheduled_date"]').val()!="")
+        {
+          $("#meeting-reminder-edit").attr('checked', true);
+          $("#meeting-reminder-settings-edit").show(500);
+          $("#meeting-reminder-settings-edit").show(500);
+        }else{
+          $("#meeting-reminder-edit").attr('checked', false);
+          $("#meeting-reminder-settings-edit").hide(500);
+          $("#meeting-reminder-settings-edit").hide(500);
+          $('.conversation-edit-meeting-modal-form input[name="scheduled_date"]').val(null);
+
+        }
+     meeting_edit_editor.data("wysihtml5").editor.setValue($(this).attr('data-body'));
+
+    $('.conversation-edit-meeting-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
+  });
+
+  $(document).ready(function(){
+
+    $('#meeting-reminder-time-edit').timepicker({minuteStep: 5});
+
+    // by default hide reminder settings for meetings
+    $("#meeting-reminder-settings-edit").hide();
+
+    // hide show note reminder settings for meetings
+    $('#meeting-reminder-edit').change(function () {
+        if ($(this).is(':checked')) {
+          $("#meeting-reminder-settings-edit").show(500);
+      }
+      else {
+        $("#meeting-reminder-settings-edit").hide(500);
+        // $('.conversation-edit-meeting-modal-form input[name="scheduled_date"]').val(null);
+      }
+    });
+
+    // by default hide repeat settings for meetings
+    $("#meeting-repeat-settings-edit").hide();
+    $("#repeat-frequency-week-edit").hide();
+    $("#repeat-frequency-month-edit").hide();
+    $("#repeat-frequency-year-edit").hide();
+    $("#repeat-frequency-weekday-on-edit").hide();
+    $("#repeat-frequency-month-on-edit").hide();
+
+    // hide show note reminder settings for meetings
+    $('#meeting-repeat-edit').change(function () {
+        if ($(this).is(':checked')) {
+          $("#meeting-repeat-settings-edit").show(500);
+      }
+      else {
+        $("#meeting-repeat-settings-edit").hide(500);
+        $("#repeat-frequency").val('');
+        $("#repeat-occurrences").val('');
+        $('#repeat-every-day').val('');
+        $('#repeat-every-week').val('');
+        $('#repeat-every-month').val('');
+        $('#repeat-every-year').val('');
+        $('#repeat-every-month-on').val('');
+        $('#repeat-frequency-weekday-on').val('');
+      }
+    });
+
+    // hide show note reminder settings for meetings
+    $('#repeat-frequency').change(function () {
+      if($(this).val() == "daily") {
+        $("#repeat-frequency-day-edit").show(500);
+        $("#repeat-frequency-week-edit").hide(500);
+        $("#repeat-frequency-month-edit").hide(500);
+        $("#repeat-frequency-year-edit").hide(500);
+        $("#repeat-frequency-weekday-on-edit").hide(500);
+        $("#repeat-frequency-month-on-edit").hide(500);
+      }
+      else if($(this).val() == "weekly"){
+        $("#repeat-frequency-day-edit").hide(500);
+        $("#repeat-frequency-week-edit").show(500);
+        $("#repeat-frequency-month-edit").hide(500);
+        $("#repeat-frequency-year-edit").hide(500);
+        $("#repeat-frequency-weekday-on-edit").show(500);
+        $("#repeat-frequency-month-on-edit").hide(500);
+      }
+      else if($(this).val() == "monthly"){
+        $("#repeat-frequency-day-edit").hide(500);
+        $("#repeat-frequency-week-edit").hide(500);
+        $("#repeat-frequency-month-edit").show(500);
+        $("#repeat-frequency-year-edit").hide(500);
+        $("#repeat-frequency-weekday-on-edit").hide(500);
+        $("#repeat-frequency-month-on-edit").show(500);
+      }
+      else if($(this).val() == "yearly"){
+        $("#repeat-frequency-day-edit").hide(500);
+        $("#repeat-frequency-week-edit").hide(500);
+        $("#repeat-frequency-month-edit").hide(500);
+        $("#repeat-frequency-year-edit").show(500);
+        $("#repeat-frequency-weekday-on-edit").hide(500);
+        $("#repeat-frequency-month-on-edit").hide(500);
+      }
+    });
+  });
+</script>

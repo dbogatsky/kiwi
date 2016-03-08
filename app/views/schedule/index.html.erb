@@ -49,11 +49,14 @@
   </div>
 </div>
 <%= render "accounts/conversation_meeting", account: nil %>
-<%#= render "accounts/conversation_meeting_complete"%>
 
 <script>
-
-  var meeting_new_editor, meeting_edit_editor;
+  $(document).on('click', "a.complete_meeting", function(e){
+    id = $(this).attr('data-id')
+    $('.conversation-complete-meeting-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
+    $('.conversation-complete-meeting-modal-form input[name="id"]').val($(this).attr('data-account-id'));
+  });
+  var meeting_new_editor
 
   $(function() {
     meeting_new_editor = $('#meeting_new_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
@@ -195,9 +198,10 @@
           $('#preloader').css('opacity', 0.3);
           $('#preloader').show();
           var c_id = calEvent.id
+          var account_id = calEvent.account_id
           $.ajax({
             type: "GET",
-            url: '/schedule/get_meeting?citem_id='+ c_id,
+            url: '/schedule/get_meeting?citem_id='+ c_id + "&account_id=" + account_id,
             success: function (data) {
             }
           });
