@@ -1,4 +1,4 @@
-<% if !@account.conversation.conversation_items.nil? %>
+<% if !@account.conversation.conversation_items.nil? && @account.conversation.conversation_items.count > 0 %>
 <section id="cd-timeline" class="cd-container" >
   <% @account.conversation.conversation_items.each do |i| %>
     <div class="cd-timeline-block">
@@ -14,14 +14,13 @@
     </div>
   <% end %>
 </section> <!-- cd-timeline -->
-
 <% else %>
 <div class="row">
   <div class="col-sm-12">
     <div class="row">
       <div class="col-md-12">
         <!--<section class="cd-container">-->
-          <h3>No conversation items found</h3>
+          <h3>No items available</h3>
         <!--</section>-->
       </div>
     </div>

@@ -46,7 +46,7 @@ class CompanyController < ApplicationController
         flash[:success] = 'Account status has been added successfully'
       else
         # Create an error message
-        flash[:danger] = 'Ops! Unable to add the account status'  # Log in error message
+        flash[:danger] = 'Ops! Unable to add the account status.  It may have been previously created and deleted, check with your Admin.'  # Log in error message
       end
     else
       # Edit account status
