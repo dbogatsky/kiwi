@@ -146,7 +146,11 @@ class AccountsController < ApplicationController
     else
       flash[:danger] = 'Oops! Unable to delete the meeting'
     end
-    redirect_to account_path(params[:id])
+    if params[:info].present?
+      redirect_to schedule_path
+    else
+      redirect_to account_path(params[:id])
+    end
   end
 
   def update_meeting
@@ -170,7 +174,11 @@ class AccountsController < ApplicationController
     else
       flash[:danger] = 'Meeting not updated!'
     end
-    redirect_to account_path(params[:id])
+    if params[:info].present?
+      redirect_to schedule_path
+    else
+      redirect_to account_path(params[:id])
+    end
   end
 
   def check_in
@@ -257,7 +265,11 @@ class AccountsController < ApplicationController
     else
       flash[:danger] = 'Note not updated!'
     end
-    redirect_to account_path(params[:id])
+    if params[:info].present?
+      redirect_to schedule_path
+    else
+      redirect_to account_path(params[:id])
+    end
   end
 
   def delete_note
@@ -270,7 +282,11 @@ class AccountsController < ApplicationController
     else
       flash[:danger] = 'Oops! Unable to delete the note'
     end
-    redirect_to account_path(params[:id])
+    if params[:info].present?
+      redirect_to schedule_path
+    else
+      redirect_to account_path(params[:id])
+    end
   end
 
 
@@ -350,8 +366,10 @@ class AccountsController < ApplicationController
 
   def search
     c_id = @account.conversation.id
+    s_date = Chronic.parse(params[:search][:data_gteq])
+    e_date = Chronic.parse(params[:search][:date_lteq])
     apiURL = RequestStore.store[:api_url] + '/conversations/'+ "#{c_id}" + '/items?'
-    apiFullUrl = apiURL +  "search[type_cont]=#{params[:search][:type_cont]}&starts_at_gteq=#{params[:search][:data_gteq]}&starts_at_lteq=#{params[:search][:date_lteq]}";
+    apiFullUrl = apiURL +  "search[type_cont]=#{params[:search][:type_cont]}&starts_at_gteq=#{s_date}&starts_at_lteq=#{e_date}";
     headers = {}
     headers["Authorization"] = "Token token=\"#{@token}\",email=\"#{@email}\", app_key=\"#{@appKey}\""
     @conversation_items = HTTParty.get(apiFullUrl,headers: headers)

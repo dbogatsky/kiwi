@@ -1,2 +1,6 @@
-$("#conversation_item_details").html("<%=j render 'conversation_item_details', citem: @meeting%>")
+<%if @meeting.type.eql? 'meeting'%>
+  $("#conversation_item_details").html("<%=j render 'conversation_item_details', citem: @meeting, account: @account%>")
+<%else%>
+  $("#conversation_item_details").html("<%=j render 'conversation_item_note_details', citem: @meeting, account: @account%>")
+<%end%>
 $('#preloader').hide();

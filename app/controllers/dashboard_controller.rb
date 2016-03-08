@@ -5,6 +5,7 @@ class DashboardController < ApplicationController
 
     # Generate greeting message in the dashboard
     # to get the current time zone of t is t.zone
+    @meetings = ConversationItem.find(:all,params: {conversation_id: 61})
     current_time = Time.current
     current_time_zone = "UTC" # Stays UTC for now.  Get the time zone from settings later.
 

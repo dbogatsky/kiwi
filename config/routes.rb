@@ -29,9 +29,6 @@ Rails.application.routes.draw do
       delete :delete_note
       delete :delete_email
       delete :delete_meeting
-      patch  :meeting_completed
-      # post   :check_in
-      # post   :check_out
       patch  :jump_in
       get    :search
     end
