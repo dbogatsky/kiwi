@@ -19,7 +19,7 @@ class ProfilesController < ApplicationController
     def save_avatar
       if params[:user][:avatar]
         puts "sending avatar..."
-        url = URI.parse("#{ENV.fetch("ORCHARD_API_HOST")}/users/#{current_user.id}")
+        url = URI.parse("#{RequestStore.store[:api_url]}/users/#{current_user.id}")
         #req = Net::HTTP::Put::Multipart.new url.path,  account: { :avatar => UploadIO.new(File.new(params[:avatar].tempfile), "image/jpeg", "image.jpg")}
         req = Net::HTTP::Put::Multipart.new url.path, :avatar => UploadIO.new(File.new(params[:user][:avatar].tempfile), "image/jpeg", "image.jpg")
         req.add_field("Authorization", "Token token=\"#{$user_token}\", app_key=\"#{APP_CONFIG['api_app_key']}\"")

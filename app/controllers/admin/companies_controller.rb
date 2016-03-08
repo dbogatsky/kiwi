@@ -56,7 +56,7 @@ class Admin::CompaniesController < Admin::AdminController
   def save_avatar
     if params[:company][:avatar]
       puts "sending avatar..."
-      url = URI.parse("#{ENV.fetch("ORCHARD_API_HOST")}/companies/#{@company.id}")
+      url = URI.parse("#{RequestStore.store[:api_url]}/companies/#{@company.id}")
       req = Net::HTTP::Put::Multipart.new url.path, :avatar => UploadIO.new(File.new(params[:company][:avatar].tempfile), "image/jpeg", "image.jpg")
       req.add_field("Authorization", "Token token=\"#{$user_token}\", app_key=\"#{APP_CONFIG['api_app_key']}\"")
       res = Net::HTTP.start(url.host, url.port) do |http|

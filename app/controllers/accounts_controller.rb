@@ -46,7 +46,7 @@ class AccountsController < ApplicationController
       if @account.save
         if params.has_key?(:avatar)
           puts "sending avatar..."
-          url = URI.parse("#{ENV.fetch("ORCHARD_API_HOST")}/accounts/#{@account.id}")
+          url = URI.parse("#{RequestStore.store[:api_url]}/accounts/#{@account.id}")
           #req = Net::HTTP::Put::Multipart.new url.path,  account: { :avatar => UploadIO.new(File.new(params[:avatar].tempfile), "image/jpeg", "image.jpg")}
           req = Net::HTTP::Put::Multipart.new url.path, :avatar => UploadIO.new(File.new(params[:avatar].tempfile), "image/jpeg", "image.jpg")
           req.add_field("Authorization", "Token token=\"#{$user_token}\", app_key=\"#{APP_CONFIG['api_app_key']}\"")
