@@ -1,4 +1,5 @@
 class CompanyController < ApplicationController
+  load_and_authorize_resource
 
   def index
     #comapny details
