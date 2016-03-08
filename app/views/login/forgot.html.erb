@@ -11,7 +11,8 @@
 
   <title><%= APP_CONFIG['software_title'] %></title>
 
-  <link href="/assets/bootstrap/css/style.default.css" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/bootstrap/css/style.default.css" />
+  <link rel="stylesheet" href="/assets/styles/style.focus.css" />
 
   <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!--[if lt IE 9]>
@@ -35,14 +36,25 @@
 				<div class="col-md-7">
 					<%= form_tag(login_recover_url) do |f| %>
 
-						<img src="/assets/images/code10.png" height="50" alt="Code10" />
-						<br /><br />
+					<div class="row">
+            <div class="col-xs-1"></div>
+            <div class="col-xs-10">
+						  <img src="/assets/images/logo_focus.png" width="90%" alt="Code10" class="img-responsive center-block" />
+						  <div class="mb30"></div>
+					  </div>
+					  <div class="col-xs-1"></div>
+          </div>
 						
-						<p>Enter your email address and we'll help you reset your password.</p>
-						
-						<input type="text" name="email" id="email" class="form-control uname" placeholder="Email" autofocus required>
-						<br /><br />
-						<input type="submit" class="btn btn-block btn-primary sharp" value="Recover Password">                 
+          <div class="row">
+            <div class="col-md-12">
+              <p>Enter your email address and we'll help you reset your password.</p>
+
+              <input type="text" name="email" id="email" class="form-control uname" placeholder="Email" autofocus required>
+              <br /><br />
+              <input type="submit" class="btn btn-block btn-primary sharp" value="Recover Password">
+            </div><!-- col 12 -->
+          </div>
+
 					<% end %>
 				</div>
 				
