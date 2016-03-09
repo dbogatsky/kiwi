@@ -58,7 +58,6 @@ class AccountsController < ApplicationController
     # Update account
     if params.has_key?(:save)
       params[:account][:contacts_attributes] = params[:account][:contacts_attributes].values
-      #params[:account][:addresses_attributes] = params[:account][:addresses_attributes].values
       if @account.update_attributes(name: @account.name, account: account_params)
          save_avatar
         flash[:success] = 'Account has been edited successfully'
@@ -374,7 +373,7 @@ class AccountsController < ApplicationController
 
   def get_token
     #set gloal var for token to be used in model, hack for now
-    $user_token = session[:token]
+    RequestStore.store[:user_token]
   end
 
 
@@ -410,11 +409,11 @@ class AccountsController < ApplicationController
 
   def save_avatar
     if params.has_key?(:avatar)
-      puts "sending avatar..."
       url = URI.parse("#{RequestStore.store[:api_url]}/accounts/#{@account.id}")
+      puts "sending avatar...#{url}"
       #req = Net::HTTP::Put::Multipart.new url.path,  account: { :avatar => UploadIO.new(File.new(params[:avatar].tempfile), "image/jpeg", "image.jpg")}
       req = Net::HTTP::Put::Multipart.new url.path, :avatar => UploadIO.new(File.new(params[:avatar].tempfile), "image/jpeg", "image.jpg")
-      req.add_field("Authorization", "Token token=\"#{$user_token}\", app_key=\"#{APP_CONFIG['api_app_key']}\"")
+      req.add_field("Authorization", "Token token=\"#{RequestStore.store[:user_token]}\", app_key=\"#{APP_CONFIG['api_app_key']}\"")
       #req.add_field("Content-Type", "application/json")
       res = Net::HTTP.start(url.host, url.port) do |http|
         http.request(req)
