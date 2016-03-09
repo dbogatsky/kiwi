@@ -33,7 +33,7 @@ class ApplicationController < ActionController::Base
     if request.subdomains.any?
       RequestStore.store[:tenant] = request.subdomain
     else
-      RequestStore.store[:tenant] = "convo"
+      RequestStore.store[:tenant] = "acme" #sandbox
     end
     #move into a service
     RequestStore.store[:api_url] = "http://#{RequestStore.store[:tenant]}-api.code10.ca/api/v1"
