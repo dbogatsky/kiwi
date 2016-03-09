@@ -86,7 +86,7 @@ class UsersController < ApplicationController
         url = URI.parse("#{RequestStore.store[:api_url]}/users/#{@user.id}")
         #req = Net::HTTP::Put::Multipart.new url.path,  account: { :avatar => UploadIO.new(File.new(params[:avatar].tempfile), "image/jpeg", "image.jpg")}
         req = Net::HTTP::Put::Multipart.new url.path, :avatar => UploadIO.new(File.new(params[:user][:avatar].tempfile), "image/jpeg", "image.jpg")
-        req.add_field("Authorization", "Token token=\"#{$user_token}\", app_key=\"#{APP_CONFIG['api_app_key']}\"")
+        req.add_field("Authorization", "Token token=\"#{RequestStore.store[:user_token]}\", app_key=\"#{APP_CONFIG['api_app_key']}\"")
         #req.add_field("Content-Type", "application/json")
         res = Net::HTTP.start(url.host, url.port) do |http|
           http.request(req)
