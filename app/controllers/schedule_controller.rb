@@ -10,7 +10,7 @@ class ScheduleController < ApplicationController
     if params[:users] != "null"
       users = params[:users].split(',')
       apiURL = RequestStore.store[:api_url] + '/conversation_items/search?'
-      apiFullUrl = apiURL +  "user_ids=1";
+      apiFullUrl = apiURL +  "user_ids= #{users}";
       headers = {}
       headers["Authorization"] = "Token token=\"#{@token}\",email=\"#{@email}\", app_key=\"#{@appKey}\""
       events = HTTParty.get(apiFullUrl,headers: headers)
