@@ -50,6 +50,9 @@ GEM
       rack (>= 0.9.0)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
+    browser-timezone-rails (0.0.8)
+      jquery-rails
+      rails (>= 3.1)
     builder (3.2.2)
     byebug (8.2.2)
     cached_resource (4.2.0)
@@ -218,6 +221,7 @@ DEPENDENCIES
   activesupport
   activesupport-json_encoder
   better_errors
+  browser-timezone-rails
   byebug
   cached_resource
   cancancan (~> 1.10)

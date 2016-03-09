@@ -1,0 +1,27 @@
+<div class="modal fade change-timezone-modal-form" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">&times;</button>
+        <h4 class="modal-title">Update Your TimeZone</h4>
+      </div>
+      <div class="modal-body">
+        <%= form_tag(users_update_time_zone_path(current_user.id), method: :patch, novalidate: 'novalidate') do %>
+          <div class="panel panel-default">
+              <div class="panel-body">
+                <div class="row row-pad-5">
+                  <p><b>Hi &nbsp;<%=current_user.first_name%>,</b><p>
+                  <p>This is general announcement to update you timezone in your profile. Currently you are accessing <b><%=cookies["browser.timezone"]%></b> from a timezone which is different from the timezone <b><%=current_user.time_zone%></b> saved in your profile.</p>
+                  <p><b>Note: </b>All events and calender entries will show up in the timezone update.</p>
+                </div>
+              </div><!-- panel-body -->
+              <div class="panel-footer">
+                <button type="submit" class="btn btn-primary">Yes, Update Now</button>
+                <button type="reset" class="btn btn-default" id="close_zone_modal"><%=link_to "No, Not Now", users_not_update_time_zone_path(current_user.id)%></button>
+              </div>
+          </div><!-- panel -->
+        <% end %>
+      </div><!-- modal body -->
+    </div><!-- modal content -->
+  </div><!-- modal dialog -->
+</div><!-- modal -->

@@ -2,7 +2,7 @@ require 'net/http/post/multipart'
 class UsersController < ApplicationController
 	load_and_authorize_resource
   before_action :get_token
-  before_action :find_user, only: [:edit, :update, :destroy]
+  before_action :find_user, only: [:edit, :update, :destroy, :update_time_zone]
 
 
 	def index
@@ -21,7 +21,7 @@ class UsersController < ApplicationController
 
   def create
     # Create new user
-    @user = User.new(request: :create, user: params[:user], reload: true)
+    @user = User.new(request: :create, user: params[:user])
     if @user.save
       save_avatar
       flash[:success] = 'User has been added successfully'
@@ -44,6 +44,20 @@ class UsersController < ApplicationController
       flash[:danger] = 'User not updated!'
       render :edit
     end
+  end
+
+  def update_time_zone
+     if @user.update_attributes(request: :update, user: {time_zone: browser_timezone}, reload: true)
+       flash[:success] = 'TimeZone successfully updated!'
+     else
+       flash[:danger] = 'TimeZone not updated!'
+     end
+     redirect_to :back
+  end
+
+  def not_update_time_zone
+      session['time_zone_not_now'] = true
+      redirect_to :back
   end
 
   def destroy

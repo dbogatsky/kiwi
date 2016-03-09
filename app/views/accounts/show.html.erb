@@ -8,11 +8,10 @@
     </ol>
   </div>
 <% end %>
-
 <div class="profile-header">
   <div class="row">
     <div class="col-sm-3">
-      <img src="<%= (@account.avatar_url.eql? "/avatars/thumb/missing.png") ? '/assets/images/default_account_avatar.png' : @account.avatar_url %>" class="thumbnail img-responsive" alt="">
+      <img src="<%= (@account.avatar_url.eql? "/avatars/web/missing.png") ? '/assets/images/default_account_avatar.png' : @account.avatar_url %>" class="thumbnail img-responsive" alt="">
       <div class="mb30"></div>
       <h5 class="subtitle">Connect
         <!--<a href="#" data-toggle="modal" data-target=".contact-modal-form" class="pull-right account_icons">+ Add</a>-->
@@ -331,7 +330,15 @@
 
   $(document).on('click', "a.complete_meeting", function(e){
     id = $(this).attr('data-id')
+    status = $(this).attr('data-status')
+    notes = $(this).attr('data-notes')
     $('.conversation-complete-meeting-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
+    if (status != "scheduled"){
+      $('.conversation-complete-meeting-modal-form select[name="conversation_item[status]"]').val(status);
+    }
+    if (notes != ''){
+      complete_meeting_editor.data("wysihtml5").editor.setValue(notes);
+    }
   });
 
   $(document).ready(function(){

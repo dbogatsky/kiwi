@@ -2,7 +2,6 @@ require 'open_weather'
 class DashboardController < ApplicationController
 
   def index
-
     # Generate greeting message in the dashboard
     # to get the current time zone of t is t.zone
     @meetings = ConversationItem.find(:all,params: {conversation_id: 61})

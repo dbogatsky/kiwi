@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
 
   before_filter :authentication
 #   before_filter :check_request
+  around_filter :set_time_zone
 
   helper_method :current_user, :logged_in?, :superadmin_logged_in?
   helper_method :has_permission, :has_permissions, :has_page_permission, :has_page_permissions
@@ -15,6 +16,18 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def set_time_zone
+    old_time_zone = Time.zone
+    Time.zone = browser_timezone if browser_timezone.present?
+    yield
+  ensure
+    Time.zone = old_time_zone
+  end
+
+  def browser_timezone
+    cookies["browser.timezone"]
+  end
 
   def get_tenant_by_subdomain
     if request.subdomains.any?

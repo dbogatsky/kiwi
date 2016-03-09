@@ -38,6 +38,8 @@ Rails.application.routes.draw do
   resources :company_entities
   resources :users
 
+  match '/users/:id/update_time_zone', to: 'users#update_time_zone', as: :users_update_time_zone, via: [:patch]
+  get  '/users/:id/not_update_time_zone', to: 'users#not_update_time_zone', as: :users_not_update_time_zone
   post '/accounts/schedule_meeting', to:'accounts#schedule_meeting', as: :account_schedule_meeting
   post '/accounts/check_in', to:'accounts#check_in', as: :account_check_in
   post '/accounts/check_out', to:'accounts#check_out', as: :account_check_out

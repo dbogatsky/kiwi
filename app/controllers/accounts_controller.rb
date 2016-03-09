@@ -44,23 +44,12 @@ class AccountsController < ApplicationController
       @account = Account.new(request: :create, account: account_params)
 
       if @account.save
-        if params.has_key?(:avatar)
-          puts "sending avatar..."
-          url = URI.parse("#{RequestStore.store[:api_url]}/accounts/#{@account.id}")
-          #req = Net::HTTP::Put::Multipart.new url.path,  account: { :avatar => UploadIO.new(File.new(params[:avatar].tempfile), "image/jpeg", "image.jpg")}
-          req = Net::HTTP::Put::Multipart.new url.path, :avatar => UploadIO.new(File.new(params[:avatar].tempfile), "image/jpeg", "image.jpg")
-          req.add_field("Authorization", "Token token=\"#{$user_token}\", app_key=\"#{APP_CONFIG['api_app_key']}\"")
-          #req.add_field("Content-Type", "application/json")
-          res = Net::HTTP.start(url.host, url.port) do |http|
-            http.request(req)
-          end
-        end
+        save_avatar
         flash[:success] = 'Account has been added successfully'
       else
         flash[:danger] = 'Oops! Unable to add the account'
       end
     end
-
     redirect_to accounts_path
   end
 
@@ -71,6 +60,7 @@ class AccountsController < ApplicationController
       params[:account][:contacts_attributes] = params[:account][:contacts_attributes].values
       #params[:account][:addresses_attributes] = params[:account][:addresses_attributes].values
       if @account.update_attributes(name: @account.name, account: account_params)
+         save_avatar
         flash[:success] = 'Account has been edited successfully'
       else
         flash[:danger] = 'Oops! Unable to edit the account'
@@ -120,7 +110,8 @@ class AccountsController < ApplicationController
             repeat_occurrences: params[:conversation_item][:repetition_rule][:repeat_occurrences],
             day_of_week:        params[:conversation_item][:repetition_rule][:day_of_week],
             day_of_month:       params[:conversation_item][:repetition_rule][:day_of_month],
-            weekday_of_month:   params[:conversation_item][:repetition_rule][:weekday_of_month]
+            weekday_of_month:   params[:conversation_item][:repetition_rule][:weekday_of_month],
+            created_by_id: current_user.id
             }
           },
         conversation_id: c_id, type: "meeting")
@@ -191,7 +182,7 @@ class AccountsController < ApplicationController
     if params[:info].present?
       redirect_to schedule_path
     else
-      redirect_to account_path(params[:id])
+      redirect_to :back
     end
   end
 
@@ -205,7 +196,7 @@ class AccountsController < ApplicationController
     if params[:info].present?
       redirect_to schedule_path
     else
-      redirect_to account_path(params[:id])
+      redirect_to :back
     end
   end
 
@@ -235,7 +226,7 @@ class AccountsController < ApplicationController
     if params[:scheduled_date].present? && params[:scheduled_time].present?
       params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:scheduled_date], params[:scheduled_time])
     end
-    ci = ConversationItem.create(conversation_item: {title: conversation_item_params[:subject], body: conversation_item_params[:body], scheduled_at: params[:conversation_item][:scheduled_at]}, conversation_id: c_id, type: conversation_item_params[:type])
+    ci = ConversationItem.create(conversation_item: {title: conversation_item_params[:subject], body: conversation_item_params[:body], scheduled_at: params[:conversation_item][:scheduled_at], created_by_id: current_user.id}, conversation_id: c_id, type: conversation_item_params[:type])
     if ci
       flash[:success] = 'Your note has been added to the conversation'
     else
@@ -304,7 +295,8 @@ class AccountsController < ApplicationController
             title: conversation_item_params[:title],
             body: conversation_item_params[:body],
             invitees: conversation_item_params[:email],
-            scheduled_at: params[:conversation_item][:scheduled_at]
+            scheduled_at: params[:conversation_item][:scheduled_at],
+            created_by_id: current_user.id
           },
         conversation_id: c_id, type: "email")
     if ci
@@ -416,5 +408,17 @@ class AccountsController < ApplicationController
     @token = session[:token]
   end
 
-
+  def save_avatar
+    if params.has_key?(:avatar)
+      puts "sending avatar..."
+      url = URI.parse("#{RequestStore.store[:api_url]}/accounts/#{@account.id}")
+      #req = Net::HTTP::Put::Multipart.new url.path,  account: { :avatar => UploadIO.new(File.new(params[:avatar].tempfile), "image/jpeg", "image.jpg")}
+      req = Net::HTTP::Put::Multipart.new url.path, :avatar => UploadIO.new(File.new(params[:avatar].tempfile), "image/jpeg", "image.jpg")
+      req.add_field("Authorization", "Token token=\"#{$user_token}\", app_key=\"#{APP_CONFIG['api_app_key']}\"")
+      #req.add_field("Content-Type", "application/json")
+      res = Net::HTTP.start(url.host, url.port) do |http|
+        http.request(req)
+      end
+    end
+  end
 end
