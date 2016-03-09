@@ -20,7 +20,7 @@
           <div class="form-group">
             <label class="col-sm-offset-2 col-sm-2 control-label">Account Status<span class="asterisk">*</span></label>
             <div class="col-sm-4">
-              <%= f.select( :status_id, options_for_select(AccountStatus.all.collect{ |a| ["#{a.name}", a.id] }, @account.status.nil? ? "" : @account.status.id), {}, { :class => 'select2AccountStatus' }) %>
+              <%= f.select( :status_id, options_for_select(AccountStatus.all(uid: RequestStore.store[:tenant]).collect{ |a| ["#{a.name}", a.id] }, @account.status.nil? ? "" : @account.status.id), {}, { :class => 'select2AccountStatus' }) %>
             </div>
           </div>
 
@@ -57,7 +57,6 @@
               <input type="hidden" name="account[contacts_attributes][<%= current_contact.id %>][id]" value="<%= current_contact.id %>" >
               <label class="col-sm-2 control-label">Name<span class="asterisk">*</span></label>
               <div class="col-sm-2">
-                <%#= c.input :name, required: true, label: 'Contact', :input_html => { :name => "account[contacts_attributes][][name]" } %>
                 <%= c.input_field :name, { required: true, label: 'Contact', name: "account[contacts_attributes][#{current_contact.id}][name]", class: "form-control", :value => current_contact.name, :id => "account_contacts_attributes_name_#{current_contact.id}" } %>
               </div>
 
@@ -149,7 +148,7 @@
           str_html = '\
           <div class="contact-element" style="padding-bottom: 10px;">\
             <div class="form-group">\
-              <label class="col-sm-2 control-label">Contact<span class="asterisk">*</span></label>\
+              <label class="col-sm-2 control-label">Name<span class="asterisk">*</span></label>\
               <div class="col-sm-2">\
                 <input label="Name" name="account[contacts_attributes]['+t+'][name]" class="form-control" required id="account_contacts_attributes_name_'+t+'" type="text">\
               </div>\

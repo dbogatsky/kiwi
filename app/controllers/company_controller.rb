@@ -3,11 +3,11 @@ class CompanyController < ApplicationController
 
   def index
     #comapny details
-    @company = Company.find
+    @company = Company.find(uid: RequestStore.store[:tenant])
 
     #lets get a fresh batch of Entities and Statues, not from cache
-    @entites = CompanyEntity.all(reload: true)
-    @account_statuses = AccountStatus.all(reload: true)
+    @entites = CompanyEntity.all(uid: RequestStore.store[:tenant], reload: true)
+    @account_statuses = AccountStatus.all(uid: RequestStore.store[:tenant], reload: true)
   end
 
   def edit_entity
@@ -40,7 +40,7 @@ class CompanyController < ApplicationController
       # Create new account status
       if @status.save
         #update status list stored in session
-        @account_statuses = AccountStatus.all(:reload => true)
+        @account_statuses = AccountStatus.all(uid: RequestStore.store[:tenant], :reload => true)
         #session["account"]["statuses"] = @account_statuses
 
         flash[:success] = 'Account status has been added successfully'
@@ -58,7 +58,7 @@ class CompanyController < ApplicationController
       if @status.update_attributes(attributes)
 
         #update status list stored in session
-        @account_statuses = AccountStatus.all(:reload => true)
+        @account_statuses = AccountStatus.all(uid: RequestStore.store[:tenant], :reload => true)
         #session["account"]["statuses"] = @account_statuses
 
         flash[:success] = 'Account status has been edited successfully'
