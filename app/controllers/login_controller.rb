@@ -86,7 +86,7 @@ class LoginController < ApplicationController
     request = Net::HTTP::Delete.new(url.path)
     response = http.request(request)
     if response.code.eql?('200')
-      $user_token = nil
+      RequestStore.store[:user_token] = nil
       session[:user_id] = nil
       session[:token] = nil
     else
