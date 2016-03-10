@@ -6,7 +6,7 @@ class DashboardController < ApplicationController
     # Generate greeting message in the dashboard
     # to get the current time zone of t is t.zone
     apiURL = RequestStore.store[:api_url] + '/conversation_items/search?'
-    apiURL += "user_ids[]=1"
+    apiURL += "user_ids[]=#{current_user.id}"
     headers = {}
     headers["Authorization"] = "Token token=\"#{@token}\",email=\"#{@email}\", app_key=\"#{@appKey}\""
     events = HTTParty.get(apiURL,headers: headers)
