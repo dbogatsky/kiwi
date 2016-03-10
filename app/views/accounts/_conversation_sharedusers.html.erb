@@ -12,7 +12,7 @@
           <div class="col-sm-6">
             <select class="select2" id="add_shared_user" data-placeholder="Select a User">
               <option value="">Select a User</option>
-            	<%= options_for_select(@users.reject{|u| @shared_user.map(&:id).include?(u.id)}.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] }) %>
+            	<%= options_for_select(@users.reject{|u| @shared_user.map(&:id).include?(u.id)}.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] if @account.assigned_to.id != u.id }) %>
           	</select>
           </div>
           <div class="col-sm-6">

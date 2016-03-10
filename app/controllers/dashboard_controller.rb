@@ -1,10 +1,22 @@
 require 'open_weather'
 class DashboardController < ApplicationController
+  before_action :get_api_values,only: [:index]
 
   def index
     # Generate greeting message in the dashboard
     # to get the current time zone of t is t.zone
-    @meetings = ConversationItem.find(:all,params: {conversation_id: 61})
+    apiURL = RequestStore.store[:api_url] + '/conversation_items/search?'
+    apiURL += "user_ids[]=1"
+    headers = {}
+    headers["Authorization"] = "Token token=\"#{@token}\",email=\"#{@email}\", app_key=\"#{@appKey}\""
+    events = HTTParty.get(apiURL,headers: headers)
+    @meetings = []
+    if events['conversation_items/meetings'].present?
+      events['conversation_items/meetings'].each do |citem|
+        c_item = OpenStruct.new(citem)
+        @meetings << c_item if c_item.type ==  'meeting'
+      end
+    end
     current_time = Time.current
     current_time_zone = "UTC" # Stays UTC for now.  Get the time zone from settings later.
 
@@ -51,6 +63,15 @@ class DashboardController < ApplicationController
       @weather['icon'] = "wi-day-sunny"
     end
 
+  end
+
+
+  private
+
+  def get_api_values
+    @email = current_user.email
+    @appKey = APP_CONFIG['api_app_key']
+    @token = session[:token]
   end
 
 end

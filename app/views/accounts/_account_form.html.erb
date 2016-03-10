@@ -26,7 +26,7 @@
           <div class="form-group">
             <label class="col-sm-offset-2 col-sm-2 control-label">Assign To<span class="asterisk">*</span></label>
             <div class="col-sm-4">
-                    <%= f.select( :assign_to, options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] }), {}, { :class => 'select2AssignTo' })%>
+                    <%= f.select( :assign_to, options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] }, selected: current_user.id), {}, { :class => 'select2AssignTo' })%>
             </div>
           </div>
       </div>
@@ -120,7 +120,7 @@
 
    $(".select2ContactTypes").select2({
     width: '100%'
-  }); 
+  });
 
 
     var max_fields      = 5; //maximum input boxes allowed

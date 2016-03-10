@@ -17,7 +17,7 @@
               </div><!-- panel-body -->
               <div class="panel-footer">
                 <button type="submit" class="btn btn-primary">Yes, Update Now</button>
-                <button type="reset" class="btn btn-default" id="close_zone_modal"><%=link_to "No, Not Now", users_not_update_time_zone_path(current_user.id)%></button>
+                <%=link_to "No, Not Now", users_not_update_time_zone_path(current_user.id), class: "btn btn-default"%></button>
               </div>
           </div><!-- panel -->
         <% end %>

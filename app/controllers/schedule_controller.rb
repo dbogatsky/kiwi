@@ -2,7 +2,7 @@ class ScheduleController < ApplicationController
   before_action :get_api_values,only: [:calendar_event]
 
   def index
-    @users = User.all
+    @users = User.all(reload: true)
   end
 
   def calendar_event
@@ -10,13 +10,16 @@ class ScheduleController < ApplicationController
     if params[:users] != "null"
       users = params[:users].split(',')
       apiURL = RequestStore.store[:api_url] + '/conversation_items/search?'
-      apiFullUrl = apiURL +  "user_ids= #{users}";
+      users.each do |user_id|
+        apiURL += "user_ids[]=#{user_id}&"
+      end
       headers = {}
       headers["Authorization"] = "Token token=\"#{@token}\",email=\"#{@email}\", app_key=\"#{@appKey}\""
-      events = HTTParty.get(apiFullUrl,headers: headers)
-  	  if events.present?
-        events.each do |citem|
-    	  	@meetings << citem if citem.type ==  'meeting' || (citem.type == 'note' && citem.scheduled_at.present?)
+      events = HTTParty.get(apiURL,headers: headers)
+      if events['conversation_items/meetings'].present?
+        events['conversation_items/meetings'].each do |citem|
+          c_item = OpenStruct.new(citem)
+    	  	@meetings << c_item if c_item.type ==  'meeting' || (c_item.type == 'note' && c_item.scheduled_at.present?)
     	  end
   	  end
     end

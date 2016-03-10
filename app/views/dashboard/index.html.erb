@@ -220,22 +220,20 @@
         </div>
         <div class="panel-body">
           <div class="inspinia-timeline">
-            <% if !@meetings.nil? %>
+            <% if !@meetings.blank? %>
               <%@meetings.each do |m|%>
-                <%if m.type.eql? 'meeting'%>
-                  <div class="timeline-item">
-                    <div class="row">
-                      <div class="col-xs-3 date">
-                        <i class="fa fa-briefcase"></i>
-                        <%= m.starts_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%l:%M %p") if m.starts_at.present? %>
-                      </div>
-                      <div class="col-xs-7 content no-top-border">
-                        <p><strong><%=m.title%></strong></p>
-                        <p><small><%= sanitize m.body %></small></p>
-                      </div>
+                <div class="timeline-item">
+                  <div class="row">
+                    <div class="col-xs-3 date">
+                      <i class="fa fa-briefcase"></i>
+                      <%= m.starts_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%l:%M %p") if m.starts_at.present? %>
+                    </div>
+                    <div class="col-xs-7 content no-top-border">
+                      <p><strong><%=m.title%></strong></p>
+                      <p><small><%= sanitize m.body %></small></p>
                     </div>
                   </div>
-                <%end%>
+                </div>
               <%end%>
             <% else %>
               <div class="timeline-item">
