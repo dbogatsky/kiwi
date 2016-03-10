@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   before_filter :get_tenant_by_subdomain #need to do before auth to get tenant
-
+  before_filter :set_cache_headers
   before_filter :authentication
 #   before_filter :check_request
   around_filter :set_time_zone
@@ -16,6 +16,11 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def set_cache_headers
+    response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+  end
 
   def set_time_zone
     old_time_zone = Time.zone
@@ -60,7 +65,7 @@ class ApplicationController < ActionController::Base
     #Move into a service
     OrchardApiModel.headers['Authorization'] = "Token token=\"#{RequestStore.store[:user_token]}\", app_key=\"#{APP_CONFIG['api_app_key']}\""
 
-    @current_user = User.find(session[:user_id])
+    @current_user = User.find(session[:user_id], reload: true)
     @current_user.id = session[:user_id]
   end
 

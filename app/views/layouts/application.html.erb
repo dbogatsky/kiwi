@@ -83,16 +83,12 @@
   <%= yield :custom_js %>
   <script type="text/javascript">
     $(document).ready(function(){
-      var tz = jstz.determine();
+      var t_zone = "<%=cookies['browser.timezone']%>"
       var not_now = "<%=session['time_zone_not_now']%>";
-      var c_zone = '<%=current_user.time_zone%>'
-      t_zone = tz.name();
+      var c_zone = "<%=current_user.time_zone%>"
       if (t_zone != c_zone && not_now != 'true'){
          $(".change-timezone-modal-form").modal('show');
       }
-    });
-    $("#close_zone_modal").click(function(){
-      $(".change-timezone-modal-form").modal('hide');
     });
   </script>
 </body>

@@ -298,10 +298,10 @@
       	del_obj_index = emails_array.indexOf($(this).text());
       	emails_array.splice(del_obj_index,1)
       	$('#invitee_emails').val(emails_array.join(','));
-      	if($('#tags').find('span').length < 2){
-      		$('#tag_input').attr('required', true);
-      	}
       	$(this).remove();
+        if($('#tags').find('span').length < 2){
+          $('#tag_input').attr('required', true);
+        }
       }
     });
     $( "#tag_input" ).autocomplete({
