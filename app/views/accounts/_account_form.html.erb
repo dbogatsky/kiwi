@@ -24,9 +24,23 @@
           </div>
 
           <div class="form-group">
+            <label class="col-sm-offset-2 col-sm-2 control-label">Contact Name<span class="asterisk">*</span></label>
+            <div class="col-sm-4">
+               <%=text_field_tag "account[contact_name]",nil,class: "form-control", required: true%>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-offset-2 col-sm-2 control-label">Contact Title<span class="asterisk">*</span></label>
+            <div class="col-sm-4">
+               <%=text_field_tag "account[contact_title]",nil,class: "form-control"%>
+            </div>
+          </div> -->
+
+          <div class="form-group">
             <label class="col-sm-offset-2 col-sm-2 control-label">Assign To<span class="asterisk">*</span></label>
             <div class="col-sm-4">
-                    <%= f.select( :assign_to, options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] }, selected: current_user.id), {}, { :class => 'select2AssignTo' })%>
+                <%= f.select( :assign_to, options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] }, selected: current_user.id), {}, { :class => 'select2AssignTo' })%>
             </div>
           </div>
       </div>

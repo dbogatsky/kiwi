@@ -42,7 +42,6 @@ class AccountsController < ApplicationController
       params[:account][:contacts_attributes] = params[:account][:contacts_attributes].values
       params[:account][:addresses_attributes] = params[:account][:addresses_attributes]
       @account = Account.new(request: :create, account: account_params)
-
       if @account.save
         save_avatar
         flash[:success] = 'Account has been added successfully'
@@ -379,7 +378,7 @@ class AccountsController < ApplicationController
 
   def account_params
     params.require(:account).permit(
-      :name, :status_id, :assign_to, :shared_with, :about, :quick_facts, :avatar,
+      :name, :status_id, :contact_name, :contact_title, :assign_to, :shared_with, :about, :quick_facts, :avatar,
       addresses_attributes: [:id, :name, :street_address, :postcode, :city, :region, :country, :_destroy],
       contacts_attributes: [:id, :type, :name, :value, :_destroy]
     )

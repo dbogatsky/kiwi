@@ -23,6 +23,9 @@
               <%= f.select( :status_id, options_for_select(AccountStatus.all(uid: RequestStore.store[:tenant]).collect{ |a| ["#{a.name}", a.id] }, @account.status.nil? ? "" : @account.status.id), {}, { :class => 'select2AccountStatus' }) %>
             </div>
           </div>
+           <%= f.input :contact_name, wrapper: :wizard_horizontal_form, label: "Contact Name", required: true %>
+
+           <%= f.input :contact_title, wrapper: :wizard_horizontal_form, label: "Contact Title"%>
 
           <div class="form-group">
             <label class="col-sm-offset-2 col-sm-2 control-label">Assign To<span class="asterisk">*</span></label>
