@@ -1,6 +1,7 @@
 <% if !@account.conversation.conversation_items.nil? && @account.conversation.conversation_items.count > 0 %>
 <section id="cd-timeline" class="cd-container" >
   <% @account.conversation.conversation_items.each do |i| %>
+    <%binding.pry%>
     <div class="cd-timeline-block">
         <% if i.type.eql? 'note' %>
           <%= render "conversation_notes_show", :citem => i %>

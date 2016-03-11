@@ -14,7 +14,15 @@ class DashboardController < ApplicationController
     if events['conversation_items/meetings'].present?
       events['conversation_items/meetings'].each do |citem|
         c_item = OpenStruct.new(citem)
-        @meetings << c_item if c_item.type ==  'meeting'
+        # Time.zone = current_user.time_zone
+        # Chronic.time_class = Time.zone
+        if c_item.starts_at.present?
+          # c_item_starts_at = Chronic.parse(c_item.starts_at).strftime('%d-%m-%Y')
+          today = Chronic.parse(Date.current).strftime('%d-%m-%Y')
+          # if c_item_starts_at == today
+            @meetings << c_item if c_item.type ==  'meeting'
+          # end
+        end
       end
     end
     current_time = Time.current

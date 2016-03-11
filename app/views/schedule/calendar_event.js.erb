@@ -2,11 +2,11 @@ $('#calendar').fullCalendar('removeEvents');
 <%if @meetings.present?%>
   <%@meetings.each do |i|%>
     <%if i.type.eql? 'meeting'%>
-      <%s_date = Chronic.parse(i.starts_at).in_time_zone(current_user.time_zone)%>
-      <%e_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone) %>
+      <%s_date = Chronic.parse(i.starts_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S")%>
+      <%e_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S") %>
     <%else%>
-      <%s_date = Chronic.parse(i.scheduled_at).in_time_zone(current_user.time_zone)%>
-      <%e_date = Chronic.parse(i.scheduled_at).in_time_zone(current_user.time_zone) %>
+      <%s_date = Chronic.parse(i.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S")%>
+      <%e_date = Chronic.parse(i.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S") %>
     <%end%>
     event_data = {
       account_id: <%=i.account_id%>,
@@ -14,7 +14,7 @@ $('#calendar').fullCalendar('removeEvents');
       title: '<%=i.title%>',
       start: new Date(<%=s_date.year%>, <%=s_date.month%>, <%=s_date.day%>, <%=s_date.hour%>, <%=s_date.min%> ),
       end: new Date(<%=e_date.year%>, <%=e_date.month%>, <%=e_date.day%>, <%=e_date.hour%>, <%=e_date.min%> ),
-      allDay: false
+      allDay: true
     }
     $('#calendar').fullCalendar('renderEvent', event_data , true);
   <%end%>

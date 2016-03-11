@@ -187,12 +187,31 @@
     // var d = date.getDate();
     // var m = date.getMonth();
     // var y = date.getFullYear();
-
+    var events = []
+    <%@meetings.each do |i|%>
+      <%if i.type.eql? 'meeting'%>
+        <%s_date = Chronic.parse(i.starts_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S")%>
+        <%e_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S") %>
+      <%else%>
+        <%s_date = Chronic.parse(i.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S")%>
+        <%e_date = Chronic.parse(i.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S") %>
+      <%end%>
+      var event_data = {
+        account_id: <%=i.account_id%>,
+        id: <%=i.id%>,
+        title: '<%=i.title%>',
+        start: '<%=s_date%>',
+        end: '<%=e_date%>',
+        allDay: true
+      }
+      events.push(event_data)
+    <%end%>
+    console.log(events)
     $('#calendar').fullCalendar({
         header: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'month,agendaWeek,agendaDay'
+          left: 'prev,next today',
+          center: 'title',
+          right: 'month,agendaWeek,agendaDay'
         },
         eventClick: function (calEvent, jsEvent, view) {
           $('#preloader').css('opacity', 0.3);
@@ -208,7 +227,7 @@
         },
         editable: true,
         droppable: false, // this allows things to be dropped onto the calendar
-        events: []
+        events: events
     });
 	});
 </script>
