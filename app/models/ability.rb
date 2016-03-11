@@ -4,7 +4,7 @@ class Ability
   def initialize(user)
 
     user ||= User.new # guest user (not logged in)
-    roles = Role.all #(uid: RequestStore.store[:tenant], :reload => true)
+    roles = Role.all(:reload => true) #(uid: RequestStore.store[:tenant], :reload => true)
     abilities_debug = Array.new
 
     # match user's roles with the roles list
