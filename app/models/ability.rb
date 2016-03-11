@@ -4,7 +4,7 @@ class Ability
   def initialize(user)
 
     user ||= User.new # guest user (not logged in)
-    roles = Role.all
+    roles = Role.all #(uid: RequestStore.store[:tenant], :reload => true)
     abilities_debug = Array.new
 
     # match user's roles with the roles list
@@ -24,7 +24,7 @@ class Ability
               #abilities_debug.push("can :" + permission.action + ", :" + permission.subject_class)
             else 
               # defining ability with subject class as just the class name
-              can permission.action.to_sym, permission.subject_class
+              can permission.action.to_sym, permission.subject_class.constantize
               abilities_debug.push("can :" + permission.action + ", " + permission.subject_class)
 
               # defining ability with subject class being constantized (tries to find a declared constant with the name specified in the string)
