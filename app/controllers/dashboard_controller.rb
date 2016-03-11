@@ -3,27 +3,29 @@ class DashboardController < ApplicationController
   before_action :get_api_values,only: [:index]
 
   def index
-    user_ids = Array.new
-    user_ids.push(current_user.id)
-    events = ConversationItemSearch.all(params: {user_ids: user_ids})
 
-    @meetings = []
-    if events.present?
-      events.each do |citem|
-        # Time.zone = current_user.time_zone
-        # Chronic.time_class = Time.zone
-        if citem.starts_at.present?
-          # c_item_starts_at = Chronic.parse(c_item.starts_at).strftime('%d-%m-%Y')
-          today = Chronic.parse(Date.current).strftime('%d-%m-%Y')
-          # if c_item_starts_at == today
-            @meetings << citem if citem.type ==  'meeting'
-          # end
-        end
-      end
-    end
-    
+    #
+    # schedule widget
+    #
+    user_ids = Array.new
+    user_ids.push(current_user.id) #push any additional user_id'
+
+    #get the current date
+    @current_date = Time.current.in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
+
+    search = Hash.new
+    search[:type_eq]="ConversationItems::Meeting"
+    search[:starts_at_gteq]="#{@current_date} 00:00:00"
+    search[:starts_at_lteq]="#{@current_date} 23:59:59"
+
+    @meetings = ConversationItemSearch.all(params: {user_ids: user_ids, search: search})
+
+
+    #
+    # quick stats widget
+    #
     current_time = Time.current
-    current_time_zone = "UTC" # Stays UTC for now.  Get the time zone from settings later.
+    current_time_zone = current_user.time_zone
 
     if ( current_time.in_time_zone(current_time_zone).hour < 12 ) # Morning - Before 12:00
       greeting = 'Good morning '
@@ -37,7 +39,10 @@ class DashboardController < ApplicationController
 
     @GreetingMessage = greeting + (current_user.first_name || "")
 
-    #country and city should be loaded from user profile settings
+
+    #
+    # weather widget
+    #
     wcity = current_user.addresses.last.city
     wcountry = current_user.addresses.last.country
 

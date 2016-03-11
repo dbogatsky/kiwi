@@ -216,9 +216,13 @@
 
       <div class="panel panel-dark panel-alt">
         <div class="panel-heading">
-          <h3 class="panel-title">Your Schedule</h3>
+          <h3 class="panel-title">My Schedule</h3>
         </div>
         <div class="panel-body">
+          <div class="mb20">
+            <h4 class="subtitle-lined"><%= @current_date.to_datetime.strftime("%a %B %e, %Y") %></h4>
+            <small><%= current_user.time_zone %></small>
+          </div>
           <div class="inspinia-timeline">
             <% if @meetings.present? %>
               <%@meetings.each do |m|%>
