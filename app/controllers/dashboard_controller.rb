@@ -6,7 +6,7 @@ class DashboardController < ApplicationController
     user_ids = Array.new
     user_ids.push(current_user.id)
     events = ConversationItemSearch.all(params: {user_ids: user_ids})
-    
+
     @meetings = []
     if events.present?
       events.each do |citem|
@@ -21,6 +21,7 @@ class DashboardController < ApplicationController
         end
       end
     end
+    
     current_time = Time.current
     current_time_zone = "UTC" # Stays UTC for now.  Get the time zone from settings later.
 

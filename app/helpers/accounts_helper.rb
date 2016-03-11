@@ -16,7 +16,7 @@ module AccountsHelper
 		if citem.check_ins.present?
       citem.check_ins.each do |ci|
 		  ci = info.present? ? OpenStruct.new(ci) : ci
-        if ci['user_id'].to_i == current_user.id
+        if ci.user_id.to_i == current_user.id
           check_in = false
           break
         else
@@ -33,7 +33,7 @@ module AccountsHelper
 		if citem.check_outs.present?
       citem.check_outs.each do |co|
       	co = info.present? ? OpenStruct.new(co) : co
-        if co['user_id'].to_i == current_user.id
+        if co.user_id.to_i == current_user.id
           check_out = false
           break
         else
