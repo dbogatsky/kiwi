@@ -13,14 +13,23 @@
     <div class="col-sm-3">
       <img src="<%= (@account.avatar_url.eql? "/avatars/web/missing.png") ? '/assets/images/default_account_avatar.png' : @account.avatar_url %>" class="thumbnail img-responsive" alt="">
       <div class="mb30"></div>
-      <h5 class="subtitle">Connect
-        <!--<a href="#" data-toggle="modal" data-target=".contact-modal-form" class="pull-right account_icons">+ Add</a>-->
-      </h5>
-      <ul class="profile-social-list" id="account-contacts">
-        <% @account.contacts.each do |contact| %>
-          <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name %>"></i><%= contact.value %></li>
-        <% end %>
-      </ul>
+      <h5 class="subtitle">Contact</h5>
+      <% if !@account.contact_name.nil? %>
+        <ul class="profile-social-list" id="account-contacts">
+          <li><i class="fa fa-briefcase"></i>  <%= @account.contact_name %>
+            <% if !@account.contact_title.nil? %>
+               <br ><div style="margin-left: 30px;"><small><%= @account.contact_title %></small></div>
+            <% end %>
+          </li>
+          <% @account.contacts.each do |contact| %>
+            <% if contact.type == "email" %>
+              <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name %>"></i><a href="mailto:<%= contact.value %>"><%= contact.value %></a></li>
+            <% else %>
+              <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name %>"></i><%= contact.value %></li>
+            <% end %>
+          <% end %>
+        </ul>
+      <% end %>
       <div class="mb30"></div>
 
       <h5 class="subtitle">Address&nbsp;<i class="fa fa-map-marker"></i>
@@ -50,7 +59,6 @@
         <% end %>
       </ul>
 
-      <div class="mb30"></div>
       <h5 class="subtitle">About</h5>
       <p class="mb30"><%= @account.about%></p>
 

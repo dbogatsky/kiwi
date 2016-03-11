@@ -24,17 +24,23 @@
                   	<address>
                   	  <% if !account.addresses.empty? %>
                         <% account.addresses.each_with_index do |address, i| %>
-                          <i class="fa fa-map-marker"></i>  <%= address.street_address %><br>
-                          <%= address.city %>, <%= address.region %>, <%= address.country %>, <%= address.postcode %>
+                          <small><i class="fa fa-map-marker" style="margin-right:10px;"></i>  <%= address.street_address %>, <%= address.city %>, <%= address.region %>, <%= address.country %>, <%= address.postcode %></small>
+                          <br />
                           <% break end %>
-                      <% end %><br /><br />
-                      <a href="#" class="pull-left">
+                      <% end %>
+                      <% if !account.contact_name.nil? %>
+                        <small><i class="fa fa-briefcase"></i>  <%= account.contact_name %><% if !account.contact_title.nil? %> - <%= account.contact_title %><% end %></small>
+                      <% else %>
+                        <small>&nbsp;</small>
+                      <% end %>
+                      <br /><br />
+                      <a href="<%= account_path(account.id) %>" class="pull-left">
                         <img alt="" src="<%= (account.avatar_url.eql? "/avatars/thumb/missing.png") ? '/assets/images/default_account_avatar.png' : account.avatar_url %>" class="thumbnail media-object">
                       </a>
                       <% counter = 0 %>
                       <% account.contacts.each do |contact, index| %>
                         <% if contact.type.eql? "phone"  or  contact.type.eql? "mobile"  or  contact.type.eql? "fax" %>
-                          <abbr title="<%= contact.type.capitalize %>" style="color:#666;"><i class="fa fa-<%= contact.icon_name %>"></i></abbr>&nbsp;<%= contact.value %><br />
+                          <abbr title="<%= contact.name.capitalize %>" style="color:#666;"><i class="fa fa-<%= contact.icon_name %>"></i></abbr>&nbsp;<%= contact.value %><br />
                           <% counter += 1 %>
                         <% end %>
                         <% if (counter > 2) %>
