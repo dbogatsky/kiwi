@@ -17,7 +17,17 @@
           <small><%= current_user.time_zone %></small>
         </div>
       </div>
-      <div id="conversation_item_details"></div>
+      <div id="conversation_item_details">
+        <%@meetings.each do |meeting|%>
+          <%meeting_start_date = Chronic.parse(meeting.starts_at).in_time_zone(current_user.time_zone)%>
+          <%today = Chronic.parse(Date.current).in_time_zone(current_user.time_zone)%>
+          <%if today <= meeting_start_date%>
+            <%account = Account.find(meeting.account_id)%>
+            <%created_by= OpenStruct.new(meeting.created_by)%>
+            <%= render 'conversation_item_details', citem: meeting, account: account, citem_created_by: created_by%>
+          <%end%>
+        <%end%>
+      </div>
     </div>
   </div><!-- col-->
   <div class="col-md-8">

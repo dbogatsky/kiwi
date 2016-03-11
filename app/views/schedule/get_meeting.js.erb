@@ -1,6 +1,6 @@
 <%if @meeting.type.eql? 'meeting'%>
-  $("#conversation_item_details").html("<%=j render 'conversation_item_details', citem: @meeting, account: @account%>")
+  $("#conversation_item_details").html("<%=j render 'conversation_item_details', citem: @meeting, account: @account, citem_created_by: @meeting.created_by%>")
 <%else%>
-  $("#conversation_item_details").html("<%=j render 'conversation_item_note_details', citem: @meeting, account: @account%>")
+  $("#conversation_item_details").html("<%=j render 'conversation_item_note_details', citem: @meeting, account: @account, citem_created_by: @meeting.created_by%>")
 <%end%>
 $('#preloader').hide();

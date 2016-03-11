@@ -50,7 +50,7 @@
 <%invitees = citem.invitees.present? ? citem.invitees.split(', ') : []%>
 <div class="panel-body">
   <% if citem.status == "scheduled" && !time%>
-    <%if current_user.id == citem.created_by.id || invitees.include?(current_user.email)%>
+    <%if current_user.id == citem_created_by.id || invitees.include?(current_user.email)%>
       <%if check_in(citem,false)%>
         <button class="btn btn-xs btn-default pull-right mr5"><i class="fa fa-sign-in mr5"></i><%=link_to 'Check In', account_check_in_path(conversation_item_id: citem.id, info: true), method: :post%></button>
       <%end%>
@@ -74,7 +74,7 @@
         <%if citem.scheduled_at.present? %>
           <i class="fa fa-bell tooltips mr10" data-toggle="tooltip" data-original-title="Reminder"></i><%= citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%><br>
         <%end%>
-        <i class="fa fa-user tooltips mr10" data-toggle="tooltip" data-original-title="Created by"></i><%=citem.created_by.first_name%> <%=citem.created_by.last_name%><br>
+        <i class="fa fa-user tooltips mr10" data-toggle="tooltip" data-original-title="Created by"></i><%=citem_created_by.first_name%> <%=citem_created_by.last_name%><br>
         <i class="fa fa-users tooltips mr10" data-toggle="tooltip" data-original-title="Invitees"></i><%= citem.invitees %>
       </div>
       <div class="col-sm-2">

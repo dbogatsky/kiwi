@@ -12,7 +12,11 @@
           <div class="col-sm-6">
             <select class="select2" id="add_shared_user" data-placeholder="Select a User">
               <option value="">Select a User</option>
-            	<%= options_for_select(@users.reject{|u| @shared_user.map(&:id).include?(u.id)}.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] if @account.assigned_to.id != u.id }) %>
+              <%if @shared_user.compact.present? %>
+            	  <%= options_for_select(@users.reject{|u| @shared_user.map(&:id).include?(u.id)}.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] if @account.assigned_to.id != u.id }) %>
+              <%else%>
+                <%= options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] if @account.assigned_to.id != u.id }) %>
+              <%end%>
           	</select>
           </div>
           <div class="col-sm-6">
@@ -32,20 +36,22 @@
                 </thead>
                 <tbody>
                   <% @account.user_account_sharings.each do |shared_user| %>
-                  <tr id="<%= shared_user.user.id %>">
-                    <td>
-                      <input type="hidden" name="account[user_account_sharings_attributes][<%= shared_user.user.id %>][user_id]" value="<%= shared_user.user.id %>" >
-                      <%= shared_user.user.first_name %>&nbsp;<%= shared_user.user.last_name %>
-                    </td>
-                    <td>
-                      <select class="input-sm" name="account[user_account_sharings_attributes][<%= shared_user.user.id %>][permission]">
-                        <%= options_for_select({ "Read Only" => "read", "Can Update" => "update" }, shared_user.permission) %>
-                      </select>
-                      </td>
-                    <td class="table-action">
-                      <a class="delete-row"><i class="fa fa-trash-o"></i></a>
-                    </td>
-                  </tr>
+                    <%if shared_user.user.present? %>
+                      <tr id="<%= shared_user.user.id %>">
+                        <td>
+                          <input type="hidden" name="account[user_account_sharings_attributes][<%= shared_user.user.id %>][user_id]" value="<%= shared_user.user.id %>" >
+                          <%= shared_user.user.first_name %>&nbsp;<%= shared_user.user.last_name %>
+                        </td>
+                        <td>
+                          <select class="input-sm" name="account[user_account_sharings_attributes][<%= shared_user.user.id %>][permission]">
+                          <%= options_for_select({ "Read Only" => "read", "Can Update" => "update" }, shared_user.permission) %>
+                          </select>
+                        </td>
+                        <td class="table-action">
+                          <a class="delete-row"><i class="fa fa-trash-o"></i></a>
+                        </td>
+                      </tr>
+                    <%end%>
                   <% end %>
                 </tbody>
               </table>
