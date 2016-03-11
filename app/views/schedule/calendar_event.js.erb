@@ -12,8 +12,8 @@ $('#calendar').fullCalendar('removeEvents');
       account_id: <%=i.account_id%>,
       id: <%=i.id%>,
       title: '<%=i.title%>',
-      start: new Date(<%=s_date.year%>, <%=s_date.month%>, <%=s_date.day%>, <%=s_date.hour%>, <%=s_date.min%> ),
-      end: new Date(<%=e_date.year%>, <%=e_date.month%>, <%=e_date.day%>, <%=e_date.hour%>, <%=e_date.min%> ),
+      start: '<%=s_date%>',
+      end: '<%=e_date%>',
       allDay: true
     }
     $('#calendar').fullCalendar('renderEvent', event_data , true);
