@@ -240,7 +240,7 @@
                         style="border-left: 1px solid <%= get_meetingstatus_color(m.status) %>"
                       <% end %>
                     >
-                      <p><strong><%=m.title%></strong></p>
+                      <p><strong><a href="/schedule?mid=<%= m.id %>"><%=m.title%></a></strong></p>
                       <p><small><%= sanitize m.body.gsub(/<br\s*\/?>/, '') %></small></p>
                     </div>
                   </div>
