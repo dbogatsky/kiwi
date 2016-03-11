@@ -3,24 +3,20 @@ class DashboardController < ApplicationController
   before_action :get_api_values,only: [:index]
 
   def index
-    # Generate greeting message in the dashboard
-    # to get the current time zone of t is t.zone
-    apiURL = RequestStore.store[:api_url] + '/conversation_items/search?'
-    apiURL += "user_ids[]=#{current_user.id}"
-    headers = {}
-    headers["Authorization"] = "Token token=\"#{@token}\",email=\"#{@email}\", app_key=\"#{@appKey}\""
-    events = HTTParty.get(apiURL,headers: headers)
+    user_ids = Array.new
+    user_ids.push(current_user.id)
+    events = ConversationItemSearch.all(params: {user_ids: user_ids})
+    
     @meetings = []
-    if events['conversation_items/meetings'].present?
-      events['conversation_items/meetings'].each do |citem|
-        c_item = OpenStruct.new(citem)
+    if events.present?
+      events.each do |citem|
         # Time.zone = current_user.time_zone
         # Chronic.time_class = Time.zone
-        if c_item.starts_at.present?
+        if citem.starts_at.present?
           # c_item_starts_at = Chronic.parse(c_item.starts_at).strftime('%d-%m-%Y')
           today = Chronic.parse(Date.current).strftime('%d-%m-%Y')
           # if c_item_starts_at == today
-            @meetings << c_item if c_item.type ==  'meeting'
+            @meetings << citem if citem.type ==  'meeting'
           # end
         end
       end

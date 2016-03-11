@@ -216,7 +216,7 @@
 
       <div class="panel panel-dark panel-alt">
         <div class="panel-heading">
-          <h3 class="panel-title">Schedule</h3>
+          <h3 class="panel-title">Your Schedule</h3>
         </div>
         <div class="panel-body">
           <div class="inspinia-timeline">
@@ -226,11 +226,18 @@
                   <div class="row">
                     <div class="col-xs-3 date">
                       <i class="fa fa-briefcase"></i>
-                      <%= m.starts_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%l:%M %p") if m.starts_at.present? %>
+                      <small>
+                        <%= m.starts_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%l:%M %p") if m.starts_at.present? %><br />
+                        <%= m.ends_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%l:%M %p") if m.ends_at.present? %>
+                      </small>
                     </div>
-                    <div class="col-xs-7 content no-top-border">
+                    <div class="col-xs-7 content no-top-border"
+                      <% if m.type == "meeting" %>
+                        style="border-left: 1px solid <%= get_meetingstatus_color(m.status) %>"
+                      <% end %>
+                    >
                       <p><strong><%=m.title%></strong></p>
-                      <p><small><%= sanitize m.body %></small></p>
+                      <p><small><%= sanitize m.body.gsub(/<br\s*\/?>/, '') %></small></p>
                     </div>
                   </div>
                 </div>

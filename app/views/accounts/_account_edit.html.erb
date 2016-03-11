@@ -28,7 +28,7 @@
            <%= f.input :contact_title, wrapper: :wizard_horizontal_form, label: "Contact Title"%>
 
           <div class="form-group">
-            <label class="col-sm-offset-2 col-sm-2 control-label">Assign Account To<span class="asterisk">*</span></label>
+            <label class="col-sm-offset-2 col-sm-2 control-label">Assign To<span class="asterisk">*</span></label>
             <div class="col-sm-4">
                 <%= f.select( :assign_to, options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] }, selected: (@account.assigned_to.nil? ? "" : @account.assigned_to.id) ), {}, { :class => 'select2AssignTo' })%>
             </div>
