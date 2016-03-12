@@ -12,7 +12,7 @@
           <div class="panel-body">
             <div class="row">
               <div class="col-sm-12">
-                <h4 class="subtitle-lined mb5"><%= @GreetingMessage %></h4>
+                <h4 class="subtitle-lined mb5"><%= @greeting_message %></h4>
                 <br/>
               </div>
             </div>
@@ -22,19 +22,19 @@
                 <table class="table small">
                   <tbody>
                     <tr>
-                      <td align="right"><span class="badge">10</span></td>
+                      <td align="right"><span class="badge"><%= @quick_stats.accounts_updated %></span></td>
                       <td align="left"><i class="fa fa-comments"></i>&nbsp;&nbsp;Accounts updated</td>
                     </tr>
                     <tr>
-                      <td align="right"><span class="badge">22</span></td>
+                      <td align="right"><span class="badge"><%= @quick_stats.shared_account_updated %></span></td>
                       <td align="left"><i class="fa fa-share-alt"></i>&nbsp;&nbsp;Shared Accounts updated</td>
                     </tr>
                     <tr>
-                      <td align="right"><span class="badge">10</span></td>
+                      <td align="right"><span class="badge"><%= @quick_stats.meetings %></span></td>
                       <td align="left"><i class="fa fa-calendar"></i>&nbsp;&nbsp;Meetings</td>
                     </tr>
                     <tr>
-                      <td align="right"><span class="badge">3</span></td>
+                      <td align="right"><span class="badge">0</span></td>
                       <td align="left"><i class="fa fa-bell"></i>&nbsp;&nbsp;Notifications</td>
                     </tr>
                   </tbody>
@@ -240,7 +240,7 @@
                         style="border-left: 1px solid <%= get_meetingstatus_color(m.status) %>"
                       <% end %>
                     >
-                      <p><strong><a href="/schedule?mid=<%= m.id %>"><%=m.title%></a></strong></p>
+                      <p><strong><a href="/schedule?mid=<%= m.id %>" style="color:#636e7b;"><%=m.title%></a></strong></p>
                       <p><small><%= sanitize m.body.gsub(/<br\s*\/?>/, '') %></small></p>
                     </div>
                   </div>
@@ -250,7 +250,7 @@
               <div class="timeline-item">
                 <div class="row">
                   <div class="text-center">
-                    There was no items found on your scheudle<br/>
+                    There was no items found on your schedule<br/>
                     Looks like you have a free day<br /><br />
                     <img src="/assets/images/penguin.png" class="img-responsive" style="display: block; margin: 0 auto;">
                   </div>
