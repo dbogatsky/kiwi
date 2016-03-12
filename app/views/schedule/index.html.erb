@@ -18,15 +18,7 @@
         </div>
       </div>
       <div id="conversation_item_details">
-        <%@meetings.each do |meeting|%>
-          <%meeting_start_date = Chronic.parse(meeting.starts_at).in_time_zone(current_user.time_zone)%>
-          <%today = Chronic.parse(Date.current).in_time_zone(current_user.time_zone)%>
-          <%if today <= meeting_start_date%>
-            <%account = Account.find(meeting.account_id)%>
-            <%created_by= OpenStruct.new(meeting.created_by)%>
-            <%= render 'conversation_item_details', citem: meeting, account: account, citem_created_by: created_by%>
-          <%end%>
-        <%end%>
+
       </div>
     </div>
   </div><!-- col-->
@@ -193,30 +185,6 @@
 
     /* initialize the calendar
      -----------------------------------------------------------------*/
-    // var date = new Date();
-    // var d = date.getDate();
-    // var m = date.getMonth();
-    // var y = date.getFullYear();
-    var events = []
-    <%@meetings.each do |i|%>
-      <%if i.type.eql? 'meeting'%>
-        <%s_date = Chronic.parse(i.starts_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S")%>
-        <%e_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S") %>
-      <%else%>
-        <%s_date = Chronic.parse(i.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S")%>
-        <%e_date = Chronic.parse(i.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S") %>
-      <%end%>
-      var event_data = {
-        account_id: <%=i.account_id%>,
-        id: <%=i.id%>,
-        title: '<%=i.title%>',
-        start: '<%=s_date%>',
-        end: '<%=e_date%>',
-        allDay: true
-      }
-      events.push(event_data)
-    <%end%>
-    console.log(events)
     $('#calendar').fullCalendar({
         header: {
           left: 'prev,next today',
@@ -235,9 +203,9 @@
             }
           });
         },
-        editable: true,
+        editable: false,
         droppable: false, // this allows things to be dropped onto the calendar
-        events: events
+        events: '/schedule/get_events'
     });
 	});
 </script>

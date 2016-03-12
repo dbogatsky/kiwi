@@ -224,8 +224,8 @@
             <small><%= current_user.time_zone %></small>
           </div>
           <div class="inspinia-timeline">
-            <% if @meetings.present? %>
-              <%@meetings.each do |m|%>
+            <% if @meetings.present? && @meetings.count > 0 %>
+              <% @meetings.each do |m|%>
                 <div class="timeline-item">
                   <div class="row">
                     <div class="col-xs-3 date">

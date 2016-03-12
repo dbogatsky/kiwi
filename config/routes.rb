@@ -50,6 +50,7 @@ Rails.application.routes.draw do
   match '/schedule', to: 'schedule#index', as: :schedule, via: [:get]
   get   '/schedule/calendar_event', to: 'schedule#calendar_event', as: :schedule_calendar_event
   get   '/schedule/get_meeting', to: 'schedule#get_meeting', as: :schedule_get_meeting
+  get   '/schedule/get_events', to: 'schedule#get_events', as: :schedule_get_events 
   match '/media', to: 'media#index', as: :media, via: [:get]
 
   post '/media/create_folder', to:'media#create_folder', as: :create_folder
