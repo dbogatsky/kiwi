@@ -27,7 +27,7 @@
       <div class="col-sm-6 mb10">
         <% if (@users.count > 1) %>
           <select class="select2" multiple="multiple" id="schedule_user_list" data-placeholder="Filter schedule by user">
-            <%= options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] }) %>
+            <%= options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] if current_user.id != u.id }) %>
           </select>
         <% end %>
       </div>
