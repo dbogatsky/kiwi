@@ -91,11 +91,12 @@ class AccountsController < ApplicationController
     elsif params[:conversation_item][:repetition_rule][:frequency_type] == "yearly"
          params[:conversation_item][:repetition_rule][:frequency] = params[:conversation_item][:repetition_rule][:repeat_year]
     end
-
     ci = ConversationItem.create(
           conversation_item: {
             title:              conversation_item_params[:title],
             body:               conversation_item_params[:body],
+            latitude:           params[:conversation_item][:latitude].to_f,
+            longitude:          params[:conversation_item][:longitude].to_f,
             invitees:           params[:conversation_item][:invitees],
             scheduled_at:       params[:conversation_item][:scheduled_at],
             location:           params[:conversation_item][:location],

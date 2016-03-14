@@ -18,7 +18,11 @@
         </div>
       </div>
       <div id="conversation_item_details">
-
+        <%if @meetings.present? && @next_meeting.present?%>
+          <%account = Account.find(@next_meeting.first.account_id)%>
+          <%created_by = OpenStruct.new(@next_meeting.first.created_by)%>
+          <%=render 'conversation_item_details', citem: @next_meeting.first, account: account, citem_created_by: created_by%>
+        <%end%>
       </div>
     </div>
   </div><!-- col-->
@@ -26,9 +30,16 @@
     <div class="row">
       <div class="col-sm-6 mb10">
         <% if (@users.count > 1) %>
-          <select class="select2" multiple="multiple" id="schedule_user_list" data-placeholder="Filter schedule by user">
-            <%= options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] if current_user.id != u.id }) %>
-          </select>
+          <%= form_tag schedule_calendar_event_path, novalidate: "novalidate", method: :get, remote: :true do |f| %>
+          <div class="col-sm-8 mb10">
+            <select class="select2" multiple="multiple" name="users[]" id="schedule_user_list" data-placeholder="Filter schedule by user">
+              <%= options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] if current_user.id != u.id }) %>
+            </select>
+          </div>
+          <div class="col-sm-2">
+            <button type="submit" class="btn btn-primary" id="show_calendar_eve">Show</button>
+          </div>
+          <%end%>
         <% end %>
       </div>
       <div class="col-sm-6">
@@ -167,16 +178,9 @@
     maximumSelectionLength: 5,
   });
 
-  $("#schedule_user_list").change(function(){
+  $("#show_calendar_eve").click(function(){
     $('#preloader').css('opacity', 0.3);
     $('#preloader').show();
-    var user_id = $(this).val()
-    $.ajax({
-      type: "GET",
-      url: '/schedule/calendar_event?users='+ user_id,
-      success: function (data) {
-      }
-    });
   })
 
   jQuery(document).ready(function() {

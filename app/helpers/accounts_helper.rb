@@ -15,7 +15,10 @@ module AccountsHelper
 	def check_in(citem, info)
 		if citem.check_ins.present?
       citem.check_ins.each do |ci|
-		  ci = info.present? ? OpenStruct.new(ci) : ci
+		    ci = info.present? ? OpenStruct.new(ci) : ci
+        unless ci.class.name == 'ConversationItem::CheckIn'
+          ci = OpenStruct.new(ci)
+        end
         if ci.user_id.to_i == current_user.id
           check_in = false
           break
@@ -33,6 +36,9 @@ module AccountsHelper
 		if citem.check_outs.present?
       citem.check_outs.each do |co|
       	co = info.present? ? OpenStruct.new(co) : co
+        unless co.class.name == 'ConversationItem::CheckOut'
+          co = OpenStruct.new(co)
+        end
         if co.user_id.to_i == current_user.id
           check_out = false
           break
