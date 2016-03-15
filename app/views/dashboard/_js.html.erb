@@ -2,34 +2,7 @@
 <!-- dashboard javascript -->
 <!--<script src="/assets/bootstrap/js/dashboard.js"></script>-->
 <script>
-  var map_marker = new GMaps({
-    div: '#gmap-marker',
-    lat: -12.043333,
-    lng: -77.028333
-  });
-  map_marker.addMarker({
-    lat: -12.043333,
-    lng: -77.019333,
-    label: "GJ",
-    click: function(e) {
-      alert('You clicked in this marker');
-    }
-  });
-  map_marker.addMarker({
-    lat: -12.043333,
-    lng: -77.028333,
-    label: "RJ",
-    title: 'Hello World!'
-  }); 
-  map_marker.addMarker({
-    lat: -12.043333,
-    lng: -77.022333,
-    label: "DY",
-    click: function(e) {
-      alert('You clicked in this marker');
-    }
-  });   
-  
+
   var m4 = new Morris.Bar({
         // ID of the element in which to draw the chart.
         element: 'accounts-status-breakdown',
@@ -55,9 +28,9 @@
       });
 
   jQuery(document).ready(function(){
-	
+
 	"use strict";
-	
+
 	function showTooltip(x, y, contents) {
 		jQuery('<div id="tooltip" class="tooltipflot">' + contents + '</div>').css( {
 		  position: 'absolute',
@@ -66,16 +39,16 @@
 		  left: x + 5
 		}).appendTo("body").fadeIn(200);
 	}
-    
+
    var uploads = [[0, 2], [1, 9], [2,5], [3, 13], [4, 6], [5, 13], [6, 8]];
 	var downloads = [[0, 0], [1, 6.5], [2,4], [3, 10], [4, 2], [5, 10], [6, 4]];
-	
-	
+
+
 	// Trigger Resize in Morris Chart
    var delay = (function() {
     var timer = 0;
 		return function(callback, ms) {
-			clearTimeout(timer);  
+			clearTimeout(timer);
 			timer = setTimeout(callback, ms);
 		};
     })();
@@ -85,16 +58,16 @@
 			m4.redraw();
 	}, 500);
    }).trigger('resize');
-    
+
    jQuery('#sparkline').sparkline([4,3,3,1,4,3,2,2,3,10,9,6], {
-		  type: 'bar', 
+		  type: 'bar',
 		  height:'30px',
         barColor: '#428BCA'
    });
-	
-    
+
+
     jQuery('#sparkline2').sparkline([9,8,8,6,9,10,6,5,6,3,4,2], {
-		  type: 'bar', 
+		  type: 'bar',
 		  height:'30px',
         barColor: '#999'
     });
