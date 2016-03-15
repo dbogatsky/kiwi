@@ -38,6 +38,16 @@
         <li><a href="<%= media_path %>"><i class="fa fa-picture-o"></i><span>Media</span></a></li>
       <% end %>
 
+      <li class="nav-parent"><a href=""><i class="fa fa-edit"></i> <span>Reports</span></a>
+        <ul class="children">
+          <li>
+            <%=link_to meeting_report_path do %>
+              <i class="fa fa-caret-right"></i> Meeting Report
+            <%end%>
+          </li>
+        </ul>
+      </li>
+
       <% if can? :read, Account %>
         <li><a href="<%= notifications_path %>"><span class="pull-right badge badge-success">1</span><i class="fa fa-envelope-o"></i><span>Notifications</span></a></li>
       <% end %>

@@ -1,0 +1,50 @@
+<% content_for :pageheader do %>
+  <h2><i class="fa fa-home"></i> Meeting Report</h2>
+<% end %>
+<div class="contentpanel">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-btns">
+        <a href="" class="minimize">−</a>
+      </div>
+      <h4 class="panel-title">Meeting Report Form</h4>
+    </div>
+    <div class="panel-body">
+      <form class="">
+      <%=form_tag meeting_report_result_path, method: :get do%>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label class="control-label">Start Date</label>
+              <input type="text" name="search[date_gteq]" class="form-control" placeholder="Start Date" id="from_datepicker">
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label class="control-label">End Date</label>
+              <input type="text" class="form-control" name="search[date_lteq]" placeholder="End Date"id="to_datepicker">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label">Users</label>
+          <select class="select2" id="select_users" name="users[]" multiple="multiple" class="form-control" data-placeholder="Filter report by user(s)">
+            <%= options_for_select(User.all(reload: true).collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] }) %>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Get Report</button>
+        <button type="reset" class="btn btn-default">Reset</button>
+      <%end%>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $("#select_users").select2({
+    width: '100%'
+  });
+  $('#from_datepicker, #to_datepicker').datepicker({
+    dateFormat: 'mm/dd/yy',
+    altField: "#to_datepicker",
+    altFormat: "mm/dd/yy"
+  });
+</script>

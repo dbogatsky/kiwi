@@ -90,6 +90,8 @@ Rails.application.routes.draw do
 
   root 'login#index'
 
+  get :meeting_report, to: 'reports#meeting_report'
+  get :meeting_report_result, to: 'reports#meeting_report_result'
 
   match '*path', to: 'errors#routing', via: [:get, :post]
 

@@ -357,7 +357,7 @@ class AccountsController < ApplicationController
 
   def search
     c_id = @account.conversation.id
-    s_date = Chronic.parse(params[:search][:data_gteq])
+    s_date = Chronic.parse(params[:search][:date_gteq])
     e_date = Chronic.parse(params[:search][:date_lteq])
     apiURL = RequestStore.store[:api_url] + '/conversations/'+ "#{c_id}" + '/items?'
     apiFullUrl = apiURL +  "search[type_cont]=#{params[:search][:type_cont]}&starts_at_gteq=#{s_date}&starts_at_lteq=#{e_date}";
