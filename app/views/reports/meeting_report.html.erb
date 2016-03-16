@@ -10,25 +10,24 @@
       <h4 class="panel-title">Meeting Report Form</h4>
     </div>
     <div class="panel-body">
-      <form class="">
       <%=form_tag meeting_report_result_path, method: :get do%>
         <div class="row">
           <div class="col-sm-6">
             <div class="form-group">
               <label class="control-label">Start Date</label>
-              <input type="text" name="search[date_gteq]" class="form-control" placeholder="Start Date" id="from_datepicker">
+              <input type="text" name="search[date_gteq]" class="form-control" placeholder="Start Date" id="from_datepicker" required="required">
             </div>
           </div>
           <div class="col-sm-6">
             <div class="form-group">
               <label class="control-label">End Date</label>
-              <input type="text" class="form-control" name="search[date_lteq]" placeholder="End Date"id="to_datepicker">
+              <input type="text" class="form-control" name="search[date_lteq]" placeholder="End Date"id="to_datepicker" required="required">
             </div>
           </div>
         </div>
         <div class="form-group">
           <label class="control-label">Users</label>
-          <select class="select2" id="select_users" name="users[]" multiple="multiple" class="form-control" data-placeholder="Filter report by user(s)">
+          <select class="select2" id="select_users" name="users[]" multiple="multiple" required="required" class="form-control" data-placeholder="Filter report by user(s)">
             <%= options_for_select(User.all(reload: true).collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] }) %>
           </select>
         </div>
