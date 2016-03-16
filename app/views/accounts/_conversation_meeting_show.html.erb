@@ -72,13 +72,19 @@
             <% if citem.status == "scheduled" && !time%>
                 <%if current_user.id == created_by.id || invitees.include?(current_user.email)%>
                   <%if check_in(citem,info)%>
-                    <button class="btn btn-xs btn-default pull-right mr5"><i class="fa fa-sign-in mr5"></i><%=link_to 'Check In', account_check_in_path(conversation_item_id: citem.id), method: :post%></button>
+                    <%=link_to account_check_in_path(conversation_item_id: citem.id), method: :post, class: "btn btn-xs btn-default pull-right mr5" do%>
+                    <i class="fa fa-sign-in mr5"></i>Check In
+                    <%end%>
                   <%end%>
                   <%if !check_in(citem,info) && check_out(citem,info)%>
-                    <button class="btn btn-xs btn-default pull-right mr5"><i class="fa fa-sign-in mr5"></i><%=link_to 'Check Out', account_check_out_path(conversation_item_id: citem.id), method: :post%></button>
+                    <%=link_to account_check_out_path(conversation_item_id: citem.id),method: :post, class: 'btn btn-xs btn-default pull-right mr5' do%>
+                      <i class="fa fa-sign-in mr5"></i>Check Out
+                    <%end%>
                   <%end%>
                 <%else%>
-                    <button class="btn btn-xs btn-default pull-right mr5"><i class="fa fa-sign-in mr5"></i><%=link_to 'Jump In', jump_in_account_path(conversation_item_id: citem.id), method: :patch%></button>
+                    <%=link_to  jump_in_account_path(conversation_item_id: citem.id),method: :patch, class: 'btn btn-xs btn-default pull-right mr5' do%>
+                      <i class="fa fa-sign-in mr5"></i>Jump In
+                    <%end%>
                 <%end%>
             <% end %>
         </div>

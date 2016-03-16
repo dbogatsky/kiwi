@@ -246,6 +246,26 @@
   </div><!-- modal dialog -->
 </div><!-- modal -->
 <script type="text/javascript">
+
+  $('#schedule-from-datepicker-edit').datepicker({
+    dateFormat: 'mm/dd/yy',
+    altField: "#schedule-from-datepicker-edit",
+    altFormat: "mm/dd/yy"
+  });
+  $('#schedule-to-datepicker-edit').datepicker({
+    dateFormat: 'mm/dd/yy'
+  });
+  $('#schedule-from-timepicker-edit').timepicker({
+    minuteStep: 15
+  });
+  $('#schedule-to-timepicker-edit').timepicker({
+    minuteStep: 15
+  });
+  $('#meeting-reminder-date-edit').datepicker({
+    dateFormat: 'mm/dd/yy',
+    altFormat: "mm/dd/yy"
+  });
+
   $(".conversation-edit-meeting-modal-form").on("hidden.bs.modal", function(){
     $("#edit_tags").find('span').remove();
   });
