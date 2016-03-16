@@ -186,7 +186,16 @@
   jQuery(document).ready(function() {
 
     "use strict";
-
+    <%if params[:mid].present? && params[:acc_id].present? %>
+      var c_id = '<%=params[:mid]%>';
+      var acc_id = '<%=params[:acc_id]%>';
+      $.ajax({
+        type: "GET",
+        url: '/schedule/get_meeting?citem_id='+ c_id + "&account_id=" + acc_id,
+        success: function (data) {
+        }
+      });
+    <%end%>
     /* initialize the calendar
      -----------------------------------------------------------------*/
     $('#calendar').fullCalendar({

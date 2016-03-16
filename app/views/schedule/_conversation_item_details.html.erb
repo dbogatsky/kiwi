@@ -39,6 +39,8 @@
       <li>
         <%=link_to 'Delete', delete_meeting_account_path(account, item_id: citem.id, info: true), method: :delete,data: {confirm: 'Are you sure to delete this meeting?'}%>
       </li>
+      <li class="divider"></li>
+      <li><%= link_to "Open Account", account_path(citem.account_id) %></li>
     </ul>
   </div>
   <h3><%=citem.title%></h3>

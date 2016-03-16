@@ -52,16 +52,7 @@
 
     <div class="row">
       <div class="col-sm-6">
-        <div class="panel panel-dark panel-alt">
-          <div class="panel-heading">
-            <h3 class="panel-title">Meetings Map</h3>
-          </div>
-          <div class="panel-body">
-            <p>See your schedule today on the map below</p>
-            <div id="gmap-marker" style="height: 300px"></div>
-          </div><!-- panel-body -->
-        </div>
-
+        <%= render 'meeting_map' %>
 
         <div class="panel panel-dark panel-alt widget-slider">
           <div class="panel-heading">
@@ -240,7 +231,7 @@
                         style="border-left: 1px solid <%= get_meetingstatus_color(m.status) %>"
                       <% end %>
                     >
-                      <p><strong><a href="/schedule?mid=<%= m.id %>" style="color:#636e7b;"><%=m.title%></a></strong></p>
+                      <p><strong><a href="/schedule?mid=<%= m.id %>&acc_id=<%=m.account_id%>" style="color:#636e7b;"><%=m.title%></a></strong></p>
                       <p><small><%= sanitize m.body.gsub(/<br\s*\/?>/, '') %></small></p>
                     </div>
                   </div>

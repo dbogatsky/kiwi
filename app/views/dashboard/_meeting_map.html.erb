@@ -1,0 +1,35 @@
+<div class="panel panel-dark panel-alt">
+  <div class="panel-heading">
+    <h3 class="panel-title">Meetings Map</h3>
+  </div>
+  <div class="panel-body">
+    <p>See your schedule today on the map below</p>
+    <div id="gmap-marker" style="height: 300px"></div>
+  </div><!-- panel-body -->
+</div>
+<script type="text/javascript">
+  var latitude = '<%=@meetings.first.try(:latitude)%>';
+  var longitude = '<%=@meetings.first.try(:longitude)%>';
+  var map_marker = new GMaps({
+    div: '#gmap-marker',
+    lat: latitude,
+    lng: longitude
+  });
+  <%if @meetings.present?%>
+    <%@meetings.each do |meeting|%>
+      var latitude = '<%=meeting.latitude%>';
+      var longitude = '<%=meeting.longitude%>';
+      var title = '<%=meeting.title%>';
+      var address = '<%=meeting.location%>'
+
+      map_marker.addMarker({
+        lat: latitude,
+        lng: longitude,
+        label: title,
+        click: function(e) {
+          alert(address);
+        }
+      });
+    <%end%>
+  <%end%>
+</script>
