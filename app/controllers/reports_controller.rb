@@ -33,16 +33,16 @@ class ReportsController < ApplicationController
 	      longest_duration   =  meeting_duration if longest_duration < meeting_duration
 	      shortest_duration  =  meeting_duration if shortest_duration > meeting_duration
 	    end
-      minutes = ((@meeting_time_in_second / @total_meetings) / 60) % 60
-      hours = (@meeting_time_in_second / @total_meetings) / (60 * 60)
+      minutes = ((@meeting_time_in_second / @total_meetings) / 60) % 60 rescue 0
+      hours = (@meeting_time_in_second / @total_meetings) / (60 * 60)  rescue 0
       @average_time_for_meeting = format("%02d:%02d", hours, minutes)
 
-      longest_meeting_time_minutes = ((longest_duration) / 60) % 60
-      longest_meeting_time_hours = (longest_duration) / (60 * 60)
+      longest_meeting_time_minutes = ((longest_duration) / 60) % 60  rescue 0
+      longest_meeting_time_hours = (longest_duration) / (60 * 60)  rescue 0
       @longest_meeting_time = format("%02d:%02d", longest_meeting_time_hours, longest_meeting_time_minutes)
 
-	    shortest_meeting_time_minutes = ((shortest_duration) / 60) % 60
-      shortest_meeting_time_hours = (shortest_duration) / (60 * 60)
+	    shortest_meeting_time_minutes = ((shortest_duration) / 60) % 60  rescue 0
+      shortest_meeting_time_hours = (shortest_duration) / (60 * 60)  rescue 0
       @shortest_meeting_time = format("%02d:%02d", shortest_meeting_time_hours, shortest_meeting_time_minutes)
 	  end
   end

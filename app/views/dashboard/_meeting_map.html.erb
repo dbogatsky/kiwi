@@ -3,20 +3,22 @@
     <h3 class="panel-title">Meetings Map</h3>
   </div>
   <div class="panel-body">
-    <p>See your schedule today on the map below</p>
+    <p>See your schedule on the map below</p>
     <div id="gmap-marker" style="height: 300px"></div>
   </div><!-- panel-body -->
 </div>
 <script type="text/javascript">
-  var latitude = '<%=@meetings.first.try(:latitude)%>';
-  var longitude = '<%=@meetings.first.try(:longitude)%>';
+  var latitude = '<%=meetings.first.try(:latitude)%>';
+  var longitude = '<%=meetings.first.try(:longitude)%>';
+  var minZoomLevel = 1;
   var map_marker = new GMaps({
     div: '#gmap-marker',
+    zoom: minZoomLevel,
     lat: latitude,
     lng: longitude
   });
-  <%if @meetings.present?%>
-    <%@meetings.each do |meeting|%>
+  <%if meetings.present?%>
+    <%meetings.each do |meeting|%>
       var latitude = '<%=meeting.latitude%>';
       var longitude = '<%=meeting.longitude%>';
       var title = '<%=meeting.title%>';
