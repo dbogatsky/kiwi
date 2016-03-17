@@ -23,13 +23,27 @@
       var longitude = '<%=meeting.longitude%>';
       var title = '<%=meeting.title%>';
       var address = '<%=meeting.location%>'
+      var account_id = '<%=meeting.account_id %>'
+      var meeting_id = '<%=meeting.id%>'
+      // var time = '<%=meeting.ends_at.present? ? (DateTime.now.in_time_zone(current_user.time_zone) > meeting.ends_at.to_datetime.in_time_zone(current_user.time_zone)+1.hour) : false%>'
 
+      var check_in = '<%= check_in(meeting,false)%>'
+      var check_out = '<%= !check_in(meeting,false) && check_out(meeting,false)%>'
       map_marker.addMarker({
         lat: latitude,
         lng: longitude,
         label: title,
         click: function(e) {
-          alert(address);
+          console.log(check_in)
+          if(check_in){
+            $('.check_in').show();
+          }
+          if(check_out){
+            $('.check_out').show();
+          }
+          $(".check_in").prop('href','/accounts/check_in?conversation_item_id='+meeting_id)
+          $(".check_out").prop('href','/accounts/check_out?conversation_item_id='+meeting_id)
+          $(".check-in-check-out-modal-form").modal('show')
         }
       });
     <%end%>

@@ -22,5 +22,46 @@ module ApplicationHelper
 		statusColor[meeting_status]
 	end
 
+  def check_in(citem, info)
+    if citem.check_ins.present?
+      citem.check_ins.each do |ci|
+        ci = info.present? ? OpenStruct.new(ci) : ci
+        # unless ci.class.name == 'ConversationItem::CheckIn'
+        if info.present? || ci.class.name == "Hash"
+          ci = OpenStruct.new(ci)
+        end
+        if ci.user_id.to_i == current_user.id
+          check_in = false
+          break
+        else
+          check_in = true
+        end
+      end
+    else
+      check_in = true
+    end
+    return check_in
+	end
+
+	def check_out(citem, info)
+		if citem.check_outs.present?
+      citem.check_outs.each do |co|
+      	co = info.present? ? OpenStruct.new(co) : co
+        # unless co.class.name == 'ConversationItem::CheckOut'
+        if info.present? || co.class.name == "Hash"
+          co = OpenStruct.new(co)
+        end
+        if co.user_id.to_i == current_user.id
+          check_out = false
+          break
+        else
+          check_out = true
+        end
+      end
+    else
+      check_out = true
+    end
+    return check_out
+	end
 
 end
