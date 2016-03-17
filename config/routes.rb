@@ -2,7 +2,9 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :companies do
-      resources :users
+      resources :users do
+        match :change_password, via: [:get, :patch]
+      end
     end
   end
 

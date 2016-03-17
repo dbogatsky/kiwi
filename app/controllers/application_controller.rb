@@ -36,6 +36,7 @@ class ApplicationController < ActionController::Base
 
   def get_tenant_by_subdomain
     if request.subdomains.any?
+      # RequestStore.store[:tenant] = "acme"
       RequestStore.store[:tenant] = request.subdomain
     else
       RequestStore.store[:tenant] = "acme" #sandbox
