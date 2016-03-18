@@ -25,6 +25,8 @@
           <% @account.contacts.each do |contact| %>
             <% if contact.type == "email" %>
               <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name %>"></i><a href="mailto:<%= contact.value %>"><%= contact.value %></a></li>
+            <%elsif  contact.type == "website"%>
+             <li id="<%= dom_id(contact) %>"><i class="fa-external-link"></i><%= contact.value %></li>
             <% else %>
               <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name %>"></i><%= contact.value %></li>
             <% end %>
