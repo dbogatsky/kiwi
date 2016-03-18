@@ -178,16 +178,18 @@
       </div><!-- panel -->
     </div><!-- col-sm-3 -->
   </div><!-- row -->
-
   <div class="row">
-
-    <div class="col-sm-7">
+    <div class="col-sm-12">
       <table class="table table-striped" id="meetingTable">
         <thead>
            <tr>
               <th>Event Title</th>
               <th>Address</th>
+              <th>Start at</th>
+              <th>End at</th>
               <th>Agenda</th>
+              <th>Check Ins</th>
+              <th>Check Outs</th>
               <th>Invitees</th>
            </tr>
         </thead>
@@ -197,41 +199,86 @@
             <tr>
               <td><%= meeting.title %></td>
               <td><%= meeting.location %></td>
+              <td><%= meeting.starts_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y - %l:%M %p") rescue nil%></td>
+              <td><%= meeting.ends_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y - %l:%M %p") rescue nil%></td>
               <td><%= sanitize  meeting.body %></td>
+              <td><%= meeting.check_ins.count %></td>
+              <td><%= meeting.check_outs.count %></td>
               <td><%= meeting.invitees %></td>
             </tr>
           <% end %>
         <%end%>
         </tbody>
       </table>
-
     </div><!-- col-sm-7 -->
 
     <div class="col-sm-5">
-
       <div class="panel panel-success">
-        <div class="panel-heading padding5">
-          <div class="ex-line-chart" id="line-chart" style="position: relative;"><svg height="248" version="1.1" width="405" xmlns="http://www.w3.org/2000/svg" style="overflow: hidden; position: relative; top: -0.299988px;"><desc>Created with Raphaël 2.1.0</desc><defs/><text style="text-anchor: end; font: 12px sans-serif;" x="40.5" y="208" text-anchor="end" font="10px &quot;Arial&quot;" stroke="none" fill="#ffffff" font-size="12px" font-family="sans-serif" font-weight="normal" fill-opacity="0.5"><tspan dy="4">0</tspan></text><text style="text-anchor: end; font: 12px sans-serif;" x="40.5" y="162.25" text-anchor="end" font="10px &quot;Arial&quot;" stroke="none" fill="#ffffff" font-size="12px" font-family="sans-serif" font-weight="normal" fill-opacity="0.5"><tspan dy="4">17.5</tspan></text><text style="text-anchor: end; font: 12px sans-serif;" x="40.5" y="116.5" text-anchor="end" font="10px &quot;Arial&quot;" stroke="none" fill="#ffffff" font-size="12px" font-family="sans-serif" font-weight="normal" fill-opacity="0.5"><tspan dy="4">35</tspan></text><text style="text-anchor: end; font: 12px sans-serif;" x="40.5" y="70.75" text-anchor="end" font="10px &quot;Arial&quot;" stroke="none" fill="#ffffff" font-size="12px" font-family="sans-serif" font-weight="normal" fill-opacity="0.5"><tspan dy="4">52.5</tspan></text><text style="text-anchor: end; font: 12px sans-serif;" x="40.5" y="25" text-anchor="end" font="10px &quot;Arial&quot;" stroke="none" fill="#ffffff" font-size="12px" font-family="sans-serif" font-weight="normal" fill-opacity="0.5"><tspan dy="4">70</tspan></text><text style="text-anchor: middle; font: 12px sans-serif;" x="380" y="220.5" text-anchor="middle" font="10px &quot;Arial&quot;" stroke="none" fill="#ffffff" font-size="12px" font-family="sans-serif" font-weight="normal" fill-opacity="0.5" transform="matrix(1,0,0,1,0,7.5)"><tspan dy="4">2012</tspan></text><text style="text-anchor: middle; font: 12px sans-serif;" x="271.0497489730717" y="220.5" text-anchor="middle" font="10px &quot;Arial&quot;" stroke="none" fill="#ffffff" font-size="12px" font-family="sans-serif" font-weight="normal" fill-opacity="0.5" transform="matrix(1,0,0,1,0,7.5)"><tspan dy="4">2010</tspan></text><text style="text-anchor: middle; font: 12px sans-serif;" x="161.95025102692836" y="220.5" text-anchor="middle" font="10px &quot;Arial&quot;" stroke="none" fill="#ffffff" font-size="12px" font-family="sans-serif" font-weight="normal" fill-opacity="0.5" transform="matrix(1,0,0,1,0,7.5)"><tspan dy="4">2008</tspan></text><text style="text-anchor: middle; font: 12px sans-serif;" x="53" y="220.5" text-anchor="middle" font="10px &quot;Arial&quot;" stroke="none" fill="#ffffff" font-size="12px" font-family="sans-serif" font-weight="normal" fill-opacity="0.5" transform="matrix(1,0,0,1,0,7.5)"><tspan dy="4">2006</tspan></text><path style="" fill="none" stroke="#fdd2a4" d="M53,208L107.47512551346418,142.64285714285714L161.95025102692836,129.57142857142856L216.5746234596075,155.71428571428572L271.0497489730717,116.5L325.52487448653585,77.28571428571428L380,64.21428571428572" stroke-width="2px"/><path style="" fill="none" stroke="#ffffff" d="M53,77.28571428571428L107.47512551346418,51.14285714285714L161.95025102692836,90.35714285714286L216.5746234596075,103.42857142857143L271.0497489730717,77.28571428571428L325.52487448653585,51.14285714285714L380,38.071428571428555" stroke-width="2px"/><circle cx="53" cy="208" r="4" fill="#fdd2a4" stroke="#ffffff" style="" stroke-width="1"/><circle cx="107.47512551346418" cy="142.64285714285714" r="4" fill="#fdd2a4" stroke="#ffffff" style="" stroke-width="1"/><circle cx="161.95025102692836" cy="129.57142857142856" r="4" fill="#fdd2a4" stroke="#ffffff" style="" stroke-width="1"/><circle cx="216.5746234596075" cy="155.71428571428572" r="4" fill="#fdd2a4" stroke="#ffffff" style="" stroke-width="1"/><circle cx="271.0497489730717" cy="116.5" r="4" fill="#fdd2a4" stroke="#ffffff" style="" stroke-width="1"/><circle cx="325.52487448653585" cy="77.28571428571428" r="4" fill="#fdd2a4" stroke="#ffffff" style="" stroke-width="1"/><circle cx="380" cy="64.21428571428572" r="4" fill="#fdd2a4" stroke="#ffffff" style="" stroke-width="1"/><circle cx="53" cy="77.28571428571428" r="4" fill="#ffffff" stroke="#ffffff" style="" stroke-width="1"/><circle cx="107.47512551346418" cy="51.14285714285714" r="4" fill="#ffffff" stroke="#ffffff" style="" stroke-width="1"/><circle cx="161.95025102692836" cy="90.35714285714286" r="4" fill="#ffffff" stroke="#ffffff" style="" stroke-width="1"/><circle cx="216.5746234596075" cy="103.42857142857143" r="4" fill="#ffffff" stroke="#ffffff" style="" stroke-width="1"/><circle cx="271.0497489730717" cy="77.28571428571428" r="4" fill="#ffffff" stroke="#ffffff" style="" stroke-width="1"/><circle cx="325.52487448653585" cy="51.14285714285714" r="4" fill="#ffffff" stroke="#ffffff" style="" stroke-width="1"/><circle cx="380" cy="38.071428571428555" r="4" fill="#ffffff" stroke="#ffffff" style="" stroke-width="1"/></svg></div>
-        </div>
-        <div class="panel-body">
+        <!-- <div class="panel-heading padding5"> -->
+   <!--        <div class="ex-line-chart" id="line-chart" style="position: relative;"><svg height="248" version="1.1" width="405" xmlns="http://www.w3.org/2000/svg" style="overflow: hidden; position: relative; top: -0.299988px;"><desc>Created with Raphaël 2.1.0</desc><defs/><text style="text-anchor: end; font: 12px sans-serif;" x="40.5" y="208" text-anchor="end" font="10px &quot;Arial&quot;" stroke="none" fill="#ffffff" font-size="12px" font-family="sans-serif" font-weight="normal" fill-opacity="0.5"><tspan dy="4">0</tspan></text><text style="text-anchor: end; font: 12px sans-serif;" x="40.5" y="162.25" text-anchor="end" font="10px &quot;Arial&quot;" stroke="none" fill="#ffffff" font-size="12px" font-family="sans-serif" font-weight="normal" fill-opacity="0.5"><tspan dy="4">17.5</tspan></text><text style="text-anchor: end; font: 12px sans-serif;" x="40.5" y="116.5" text-anchor="end" font="10px &quot;Arial&quot;" stroke="none" fill="#ffffff" font-size="12px" font-family="sans-serif" font-weight="normal" fill-opacity="0.5"><tspan dy="4">35</tspan></text><text style="text-anchor: end; font: 12px sans-serif;" x="40.5" y="70.75" text-anchor="end" font="10px &quot;Arial&quot;" stroke="none" fill="#ffffff" font-size="12px" font-family="sans-serif" font-weight="normal" fill-opacity="0.5"><tspan dy="4">52.5</tspan></text><text style="text-anchor: end; font: 12px sans-serif;" x="40.5" y="25" text-anchor="end" font="10px &quot;Arial&quot;" stroke="none" fill="#ffffff" font-size="12px" font-family="sans-serif" font-weight="normal" fill-opacity="0.5"><tspan dy="4">70</tspan></text><text style="text-anchor: middle; font: 12px sans-serif;" x="380" y="220.5" text-anchor="middle" font="10px &quot;Arial&quot;" stroke="none" fill="#ffffff" font-size="12px" font-family="sans-serif" font-weight="normal" fill-opacity="0.5" transform="matrix(1,0,0,1,0,7.5)"><tspan dy="4">2012</tspan></text><text style="text-anchor: middle; font: 12px sans-serif;" x="271.0497489730717" y="220.5" text-anchor="middle" font="10px &quot;Arial&quot;" stroke="none" fill="#ffffff" font-size="12px" font-family="sans-serif" font-weight="normal" fill-opacity="0.5" transform="matrix(1,0,0,1,0,7.5)"><tspan dy="4">2010</tspan></text><text style="text-anchor: middle; font: 12px sans-serif;" x="161.95025102692836" y="220.5" text-anchor="middle" font="10px &quot;Arial&quot;" stroke="none" fill="#ffffff" font-size="12px" font-family="sans-serif" font-weight="normal" fill-opacity="0.5" transform="matrix(1,0,0,1,0,7.5)"><tspan dy="4">2008</tspan></text><text style="text-anchor: middle; font: 12px sans-serif;" x="53" y="220.5" text-anchor="middle" font="10px &quot;Arial&quot;" stroke="none" fill="#ffffff" font-size="12px" font-family="sans-serif" font-weight="normal" fill-opacity="0.5" transform="matrix(1,0,0,1,0,7.5)"><tspan dy="4">2006</tspan></text><path style="" fill="none" stroke="#fdd2a4" d="M53,208L107.47512551346418,142.64285714285714L161.95025102692836,129.57142857142856L216.5746234596075,155.71428571428572L271.0497489730717,116.5L325.52487448653585,77.28571428571428L380,64.21428571428572" stroke-width="2px"/><path style="" fill="none" stroke="#ffffff" d="M53,77.28571428571428L107.47512551346418,51.14285714285714L161.95025102692836,90.35714285714286L216.5746234596075,103.42857142857143L271.0497489730717,77.28571428571428L325.52487448653585,51.14285714285714L380,38.071428571428555" stroke-width="2px"/><circle cx="53" cy="208" r="4" fill="#fdd2a4" stroke="#ffffff" style="" stroke-width="1"/><circle cx="107.47512551346418" cy="142.64285714285714" r="4" fill="#fdd2a4" stroke="#ffffff" style="" stroke-width="1"/><circle cx="161.95025102692836" cy="129.57142857142856" r="4" fill="#fdd2a4" stroke="#ffffff" style="" stroke-width="1"/><circle cx="216.5746234596075" cy="155.71428571428572" r="4" fill="#fdd2a4" stroke="#ffffff" style="" stroke-width="1"/><circle cx="271.0497489730717" cy="116.5" r="4" fill="#fdd2a4" stroke="#ffffff" style="" stroke-width="1"/><circle cx="325.52487448653585" cy="77.28571428571428" r="4" fill="#fdd2a4" stroke="#ffffff" style="" stroke-width="1"/><circle cx="380" cy="64.21428571428572" r="4" fill="#fdd2a4" stroke="#ffffff" style="" stroke-width="1"/><circle cx="53" cy="77.28571428571428" r="4" fill="#ffffff" stroke="#ffffff" style="" stroke-width="1"/><circle cx="107.47512551346418" cy="51.14285714285714" r="4" fill="#ffffff" stroke="#ffffff" style="" stroke-width="1"/><circle cx="161.95025102692836" cy="90.35714285714286" r="4" fill="#ffffff" stroke="#ffffff" style="" stroke-width="1"/><circle cx="216.5746234596075" cy="103.42857142857143" r="4" fill="#ffffff" stroke="#ffffff" style="" stroke-width="1"/><circle cx="271.0497489730717" cy="77.28571428571428" r="4" fill="#ffffff" stroke="#ffffff" style="" stroke-width="1"/><circle cx="325.52487448653585" cy="51.14285714285714" r="4" fill="#ffffff" stroke="#ffffff" style="" stroke-width="1"/><circle cx="380" cy="38.071428571428555" r="4" fill="#ffffff" stroke="#ffffff" style="" stroke-width="1"/></svg></div> -->
+        <!-- </div> -->
+        <!-- <div class="panel-body">
           <div class="tinystat pull-left">
             <div class="chart mt5" id="sparkline"><canvas style="display: inline-block; width: 59px; height: 30px; vertical-align: top;" width="59" height="30"></canvas></div>
             <div class="datainfo">
               <span class="text-muted">Average Sales</span>
               <h4>$630,201</h4>
             </div>
-          </div><!-- tinystat -->
+          </div>
           <div class="tinystat pull-right">
             <div class="chart mt5" id="sparkline2"><canvas style="display: inline-block; width: 59px; height: 30px; vertical-align: top;" width="59" height="30"></canvas></div>
             <div class="datainfo">
               <span class="text-muted">Total Sales</span>
               <h4>$139,201</h4>
             </div>
-          </div><!-- tinystat -->
-        </div>
-      </div><!-- panel -->
-
+          </div>
+        </div> -->
+      </div>
     </div><!-- col-sm-6 -->
+  </div><!-- row -->
+  <b>Check Ins/Check Outs</b>
+  <div class="mb20"></div>
+  <div class="row">
+    <div class="col-sm-12">
+      <table class="table table-striped" id="check_inTable">
+        <thead>
+           <tr>
+              <th>Event Title</th>
+              <th>Type</th>
+              <th>User</th>
+              <th>Date/Time</th>
+           </tr>
+        </thead>
+        <tbody>
+        <%if @meetings.present?%>
+          <% @meetings.each do |meeting| %>
+            <%if meeting.check_ins.present?%>
+              <%meeting.check_ins.each do |ci|%>
+                <tr>
+                  <td><%= meeting.title %></td>
+                  <td>Check In</td>
+                  <%user = User.find(ci.user_id)%>
+                  <td><%=user.first_name%> <%= user.last_name%></td>
+                  <td><%=ci.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y - %l:%M %p") rescue nil%></td>
+                </tr>
+              <%end%>
+            <%end%>
+            <%if meeting.check_outs.present?%>
+              <%meeting.check_outs.each do |co|%>
+                <tr>
+                  <td><%= meeting.title %></td>
+                  <td>Check Out</td>
+                   <%user = User.find(co.user_id)%>
+                  <td><%=user.first_name%> <%= user.last_name%></td>
+                  <td><%=co.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y - %l:%M %p") rescue nil%></td>
+                </tr>
+              <%end%>
+            <%end%>
+          <% end %>
+        <%end%>
+        </tbody>
+      </table>
+    </div><!-- col-sm-7 -->
   </div><!-- row -->
 
   <div class="row">
@@ -357,6 +404,12 @@
   jQuery(document).ready(function() {
     //"use strict";
     jQuery('#meetingTable').dataTable({
+      "sPaginationType": "full_numbers",
+      "lengthMenu": [[5, 10, 15, -1], [5, 10, 15, "All"]],
+      "pageLength": 5
+    });
+
+    jQuery('#check_inTable').dataTable({
       "sPaginationType": "full_numbers",
       "lengthMenu": [[5, 10, 15, -1], [5, 10, 15, "All"]],
       "pageLength": 5
