@@ -94,9 +94,14 @@ class ApplicationController < ActionController::Base
 
 
   def convert_datetime_to_utc(timezone, date, time="00:00:00")
-     @parsed_datetime = Chronic.parse("#{date} at #{time}").strftime('%Y-%m-%d %H:%M:%S')
-     @timezone_short = TZInfo::Timezone.get("#{timezone}").period_for_utc(Time.now).abbreviation.to_s
-     @utc_datetime = (DateTime.parse "#{@parsed_datetime} #{@timezone_short}").utc.strftime("%Y-%m-%d %H:%M:%S %z")
+    @parsed_datetime = Chronic.parse("#{date} at #{time}").strftime('%Y-%m-%d %H:%M:%S')
+    begin
+      @timezone_short = TZInfo::Timezone.get("#{timezone}").period_for_utc(Time.now).abbreviation.to_s
+    rescue 
+      @timezone_short = timezone
+    end
+    
+    @utc_datetime = (DateTime.parse "#{@parsed_datetime} #{@timezone_short}").utc.strftime("%Y-%m-%d %H:%M:%S %z")
   end
 
   # Check permission by single credential criterion
