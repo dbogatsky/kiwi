@@ -64,18 +64,18 @@
     });
 
     $('.datepicker').datepicker();
-    $('#schedule-from-datepicker, #schedule-from-datepicker-edit,#meeting-reminder-date, #meeting-reminder-date-edit').datepicker({
+    $('#schedule-from-datepicker, #meeting-reminder-date').datepicker({
       dateFormat: 'mm/dd/yy',
-      altField: "#schedule-to-datepicker, #schedule-from-datepicker-edit",
+      altField: "#schedule-to-datepicker",
       altFormat: "mm/dd/yy"
     });
-    $('#schedule-to-datepicker, #schedule-to-datepicker-edit').datepicker({
+    $('#schedule-to-datepicker').datepicker({
       dateFormat: 'mm/dd/yy'
     });
-    $('#schedule-from-timepicker, #schedule-from-timepicker-edit').timepicker({
+    $('#schedule-from-timepicker').timepicker({
       minuteStep: 15
     });
-    $('#schedule-to-timepicker, #schedule-to-timepicker-edit').timepicker({
+    $('#schedule-to-timepicker').timepicker({
       minuteStep: 15
     });
     $('#scheduleFromTimePicker').timepicker().on('hide.timepicker', function(e) {

@@ -16,7 +16,7 @@ $('#calendar').fullCalendar('removeEvents');
       start: '<%=s_date%>',
       end: '<%=e_date%>',
       color: '<%=@user_color[created_by]%>',
-      allDay: true
+      allDay: false
     }
     $('#calendar').fullCalendar('renderEvent', event_data , true);
   <%end%>

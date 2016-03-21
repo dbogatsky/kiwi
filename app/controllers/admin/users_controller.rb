@@ -1,6 +1,6 @@
 class Admin::UsersController < Admin::AdminController
 	before_action :get_token
-  before_action :find_company, only: [:edit, :update]
+  before_action :find_company, only: [:edit, :update, :change_password]
   before_action :find_user, only: [:edit, :update, :destroy]
 
   def index
@@ -50,6 +50,18 @@ class Admin::UsersController < Admin::AdminController
       flash[:danger] = 'User could not deleted.'
     end
     redirect_to admin_company_path(params[:company_id])
+  end
+
+  def change_password
+    @user = BoUser.find(params[:user_id], params: {company_id: params[:company_id]})
+    if request.patch?
+      if @user.update_attributes(request: :update, user: params[:user],company_id: params[:company_id], reload: true)
+         flash[:success] = 'Password successfully updated.'
+      else
+        flash[:danger] = 'Password could not updated.'
+      end
+      redirect_to admin_company_path(params[:company_id])
+    end
   end
 
 private

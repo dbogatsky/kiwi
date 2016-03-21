@@ -23,6 +23,7 @@ class ScheduleController < ApplicationController
   def calendar_event
     if params[:users].present?
       user_ids = params[:users]
+      user_ids.push(current_user.id.to_s)
     else
       user_ids = [current_user.id]
     end
