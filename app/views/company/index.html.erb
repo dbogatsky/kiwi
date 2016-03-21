@@ -5,7 +5,7 @@
 <div class="profile-header">
   <div class="row">
     <div class="col-sm-3">
-    	<img src="/assets/bootstrap/images/photos/hd-profile.jpg" class="thumbnail img-responsive" alt="">
+    	<img src="/assets/bootstrap/images/photos/default_firm_picture.jpg" class="thumbnail img-responsive" alt="">
       <div class="mb30"></div>
     </div><!-- col-sm-3 -->
     <div class="col-sm-9">
@@ -22,11 +22,38 @@
                   </div>
                   <div class="row bars">
                       <div class="col-xs-5" style="text-align:right"><strong>Address</strong></div>
-                      <div class="col-xs-7">???</div>
+                      <div class="col-xs-7">
+                       <ul class="profile-social-list" id="account-addresses">
+                          <%if @company.addresses.present?%>
+                            <% @company.addresses.each_with_index do |address, index| %>
+                              <li id="<%= dom_id(address) %>" style="border-bottom:0px;">
+                                <address>
+                                  <% if address.name.present? %>
+                                    <strong><%= address.name %></strong>
+                                  <% end %>
+                                  <a href="https://maps.google.com?daddr=<%= address.street_address %>+<%= address.city %>+<%= address.region %>+<%= address.country %>+<%= address.postcode %>" target="_blank">
+                                  <%= address.street_address %><br>
+                                  <%= address.city %>, <%= address.region %>, <%= address.country %><br />
+                                  <%= address.postcode %>
+                                  </a>
+                                </address>
+                              </li>
+                            <% end %>
+                          <% end %>
+                        </ul>
+                      </div>
                   </div>
                   <div class="row bars">
                       <div class="col-xs-5" style="text-align:right"><strong>Contact</strong></div>
-                      <div class="col-xs-7">???</div>
+                      <div class="col-xs-7">
+                        <ul class="profile-social-list">
+                          <%if @company.contacts.present?%>
+                            <% @company.contacts.each do |contact| %>
+                              <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.type %>"></i><%= contact.value %></li>
+                            <% end %>
+                          <% end %>
+                        </ul>
+                      </div>
                   </div>
               </div><!-- col-sm-4 -->
               <div class="col-sm-7">
