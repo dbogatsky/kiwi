@@ -8,14 +8,20 @@ class ScheduleController < ApplicationController
     @sort_meeting = []
     @next_meeting = []
     if @meetings.present?
-      @sort_meeting =  @meetings.sort_by do |meeting|
-          meeting[:starts_at].to_datetime.in_time_zone(current_user.time_zone)
+      @meeting_with_date = []
+      @meetings.each do |m|
+        @meeting_with_date << m if m.starts_at.present?
       end
-      @sort_meeting.each do |meeting|
-         meeting_end_time = meeting.ends_at.to_datetime.in_time_zone(current_user.time_zone)
-         meeting_start_time = meeting.ends_at.to_datetime.in_time_zone(current_user.time_zone)
-         current_time = Time.now.in_time_zone(current_user.time_zone)
-         @next_meeting << meeting if meeting_end_time > current_time
+      if @meeting_with_date.present?
+        @sort_meeting =  @meeting_with_date.sort_by do |meeting|
+            meeting[:starts_at].to_datetime.in_time_zone(current_user.time_zone)
+        end
+        @sort_meeting.each do |meeting|
+           meeting_end_time = meeting.ends_at.to_datetime.in_time_zone(current_user.time_zone)
+           # meeting_start_time = meeting.ends_at.to_datetime.in_time_zone(current_user.time_zone)
+           current_time = Time.now.in_time_zone(current_user.time_zone)
+           @next_meeting << meeting if meeting_end_time > current_time
+        end
       end
     end
   end
@@ -44,26 +50,36 @@ class ScheduleController < ApplicationController
     start_date = params['start']
     end_date = params['end']
 
-    search = Hash.new
-    search[:type_eq]="ConversationItems::Meeting"
-    search[:starts_at_gteq]="#{start_date} 00:00:00"
-    search[:starts_at_lteq]="#{end_date} 23:59:59"
+    # search = Hash.new
+    # search[:type_eq]="ConversationItems::Meeting"
+    # search[:starts_at_gteq]="#{start_date} 00:00:00"
+    # search[:starts_at_lteq]="#{end_date} 23:59:59"
 
-    @meetings = ConversationItemSearch.all(params: {user_ids: user_ids, search: search})
+    @meetings = ConversationItemSearch.all(params: {user_ids: user_ids})
 
     events = Array.new
     @meetings.each do |i|
-      s_date = Chronic.parse(i.starts_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S")
-      e_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S")
-      event_data = {
-        account_id: i.account_id,
-        id: i.id,
-        title: i.title,
-        start: s_date,
-        end: e_date,
-        allDay: false
-      }
-      events.push(event_data)
+      if i.type == "meeting" || (i.type == 'note' && i.scheduled_at.present?)
+        if i.type == "meeting"
+          s_date = Chronic.parse(i.starts_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S")
+          e_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S")
+          color = "#3a87ad"
+        elsif i.type == 'note'
+          s_date = Chronic.parse(i.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S")
+          e_date = Chronic.parse(i.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S")
+          color = "#77003c"
+        end
+        event_data = {
+          account_id: i.account_id,
+          id: i.id,
+          title: i.title,
+          start: s_date,
+          end: e_date,
+          color: color,
+          allDay: false
+        }
+        events.push(event_data)
+      end
     end
     render json: events
   end

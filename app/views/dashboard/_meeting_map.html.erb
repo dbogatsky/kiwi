@@ -8,12 +8,14 @@
   </div><!-- panel-body -->
 </div>
 <script type="text/javascript">
-  var latitude = '<%=@meetings.first.try(:latitude)%>';
-  var longitude = '<%=@meetings.first.try(:longitude)%>';
+  var latitude = '<%=request.location.latitude%>';
+  var longitude = '<%=request.location.longitude%>';
+  var minZoomLevel = 1;
   var map_marker = new GMaps({
     div: '#gmap-marker',
     lat: latitude,
-    lng: longitude
+    lng: longitude,
+    zoom: minZoomLevel
   });
   <%if @meetings.present?%>
     <%@meetings.each do |meeting|%>
