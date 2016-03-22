@@ -17,21 +17,23 @@
     lng: longitude,
     zoom: minZoomLevel
   });
-  <%if @meetings.present?%>
+  <%if @meetings.present? && @meetings.count > 0%>
     <%@meetings.each do |meeting|%>
-      var latitude = '<%=meeting.latitude%>';
-      var longitude = '<%=meeting.longitude%>';
-      var title = '<%=meeting.title%>';
-      var address = '<%=meeting.location%>'
+      <% if !meeting.latitude.nil? && !meeting.longitude.nil? %>
+        var latitude = '<%= meeting.latitude %>'; 
+        var longitude = '<%= meeting.longitude %>';
+        var title = '<%= meeting.title %>';
+        var address = '<%= meeting.location %>'
 
-      map_marker.addMarker({
-        lat: latitude,
-        lng: longitude,
-        label: title,
-        click: function(e) {
-          alert(address);
-        }
-      });
-    <%end%>
+        map_marker.addMarker({
+          lat: latitude,
+          lng: longitude,
+          label: title,
+          click: function(e) {
+            alert(address);
+          }
+        });
+      <% end %>
+    <% end %>
   <%end%>
 </script>
