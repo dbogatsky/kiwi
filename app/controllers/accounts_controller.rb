@@ -172,7 +172,6 @@ class AccountsController < ApplicationController
   end
 
   def check_in
-    binding.pry
     ce = ConversationItemEvent.create(lat: request.location.latitude, long: request.location.longitude, ip_address: request.location.ip, type: "check_in", conversation_item_id: params[:conversation_item_id], user_id: current_user.id)
     if ce
       flash[:success] = 'Successfully Checked In'
