@@ -8,15 +8,19 @@
   </div><!-- panel-body -->
 </div>
 <script type="text/javascript">
-  var latitude = '<%=request.location.latitude%>';
-  var longitude = '<%=request.location.longitude%>';
-  var minZoomLevel = 1;
-  var map_marker = new GMaps({
-    div: '#gmap-marker',
-    lat: latitude,
-    lng: longitude,
-    zoom: minZoomLevel
-  });
+  
+  <% if !request.location.nil? && !request.location.nil? %>
+    var latitude = '<%=request.location.latitude%>';
+    var longitude = '<%=request.location.longitude%>';
+    var minZoomLevel = 1;
+    var map_marker = new GMaps({
+      div: '#gmap-marker',
+      lat: latitude,
+      lng: longitude,
+      zoom: minZoomLevel
+    });
+  <% end %>
+
   <%if @meetings.present? && @meetings.count > 0%>
     <%@meetings.each do |meeting|%>
       <% if !meeting.latitude.nil? && !meeting.longitude.nil? %>
