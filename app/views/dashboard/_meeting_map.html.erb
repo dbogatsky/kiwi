@@ -19,6 +19,11 @@
       lng: longitude,
       zoom: minZoomLevel
     });
+  <% else %>
+      var map_marker = new GMaps({
+      div: '#gmap-marker',
+      zoom: 1
+    });
   <% end %>
 
   <%if @meetings.present? && @meetings.count > 0%>
