@@ -12,6 +12,7 @@
 <div class="profile-header">
   <div class="row">
     <div class="col-sm-3">
+      <img src="<%= (@company.avatar_url.eql? "/avatars/web/missing.png") ? '/assets/bootstrap/images/photos/default_firm_picture.jpg' : @company.avatar_url %>" class="thumbnail img-responsive" alt="">
       <div class="mb30"></div>
       <h5 class="subtitle">Connect
       </h5>
@@ -91,6 +92,7 @@
                   <th>Email</th>
                   <th>First Name</th>
                   <th>Last Name</th>
+                  <th>Role</th>
                   <th>Actions</th>
                </tr>
             </thead>
@@ -100,6 +102,7 @@
                   <td><%= user.email %></td>
                   <td><%= user.first_name %></td>
                   <td><%= user.last_name %></td>
+                  <td><%=user.roles.present? ? user.roles.last.name : ''%></td>
                   <td class="table-action">
                     <%=link_to edit_admin_company_user_path(company_id: @company.id, id: user.id) do %>
                       <i class="fa fa-pencil"></i>

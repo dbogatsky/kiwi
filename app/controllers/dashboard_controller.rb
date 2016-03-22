@@ -62,36 +62,39 @@ class DashboardController < ApplicationController
     #
     # weather widget
     #
-    wcity = current_user.addresses.last.city
-    wcountry = current_user.addresses.last.country
+    if current_user.addresses.present?
+      wcity = current_user.addresses.last.city
+      wcountry = current_user.addresses.last.country
 
-    wapi_options = { units: "metric", APPID: APP_CONFIG['open_weather_map'] }
-    wresponse = OpenWeather::Current.city( wcity + "," + wcountry , wapi_options)
+      wapi_options = { units: "metric", APPID: APP_CONFIG['open_weather_map'] }
+      wresponse = OpenWeather::Current.city( wcity + "," + wcountry , wapi_options)
 
-    @weather = Hash.new
-    @weather["city"] = wcity
-    @weather['country'] = wcountry
-    @weather['condition'] = wresponse['weather'][0]["main"]
-    @weather['temp'] = wresponse["main"]["temp"].ceil
-    @weather['temp_max'] = wresponse["main"]["temp_max"].ceil
-    @weather['wind'] = wresponse["wind"]["speed"].ceil
+      @weather = Hash.new
+      @weather["city"] = wcity
+      @weather['country'] = wcountry
+      @weather['condition'] = wresponse['weather'][0]["main"]
+      @weather['temp'] = wresponse["main"]["temp"].ceil
+      @weather['temp_max'] = wresponse["main"]["temp_max"].ceil
+      @weather['wind'] = wresponse["wind"]["speed"].ceil
 
-    if ( @weather['condition'] == "Clouds" )
-      @weather['icon'] = "wi-cloudy"
-    elsif ( @weather['condition'] == "Rain" )
-      @weather['icon'] = "wi-rain"
-    elsif ( @weather['condition'] == "Drizzle" )
-      @weather['icon'] = "wi-sprinkle"
-    elsif ( @weather['condition'] == "Thunderstorm" )
-      @weather['icon'] = "wi-rain"
-    elsif ( @weather['condition'] == "Snow" )
-      @weather['icon'] = " wi-snow"
-    elsif ( @weather['condition'] == "Extreme" )
-      @weather['icon'] = "wi-tornado"
+      if ( @weather['condition'] == "Clouds" )
+        @weather['icon'] = "wi-cloudy"
+      elsif ( @weather['condition'] == "Rain" )
+        @weather['icon'] = "wi-rain"
+      elsif ( @weather['condition'] == "Drizzle" )
+        @weather['icon'] = "wi-sprinkle"
+      elsif ( @weather['condition'] == "Thunderstorm" )
+        @weather['icon'] = "wi-rain"
+      elsif ( @weather['condition'] == "Snow" )
+        @weather['icon'] = " wi-snow"
+      elsif ( @weather['condition'] == "Extreme" )
+        @weather['icon'] = "wi-tornado"
+      else
+        @weather['icon'] = "wi-day-sunny"
+      end
     else
-      @weather['icon'] = "wi-day-sunny"
+      @weather = Hash.new
     end
-
   end
 
 

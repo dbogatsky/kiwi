@@ -38,6 +38,7 @@ class Admin::CompaniesController < Admin::AdminController
   def update
     params[:company][:contacts_attributes] = params[:company][:contacts_attributes].values
     params[:company][:addresses_attributes] = params[:company][:addresses_attributes].values
+
     if @company.update_attributes(request: :update, company: params[:company], reload: true)
       save_avatar
       flash[:success] = 'Company successfully updated!'
@@ -56,11 +57,11 @@ class Admin::CompaniesController < Admin::AdminController
   def save_avatar
     if params[:company][:avatar]
       puts "sending avatar..."
-      url = URI.parse("#{RequestStore.store[:api_url]}/companies/#{@company.id}")
+      url = URI.parse("#{ENV['ORCHARD_BO_API_HOST']}/companies/#{@company.id}")
       req = Net::HTTP::Put::Multipart.new url.path, :avatar => UploadIO.new(File.new(params[:company][:avatar].tempfile), "image/jpeg", "image.jpg")
-      req.add_field("Authorization", "Token token=\"#{$user_token}\", app_key=\"#{APP_CONFIG['api_app_key']}\"")
+      req.add_field("Authorization", "Token token=\"#{RequestStore.store[:user_token]}\", app_key=\"#{APP_CONFIG['api_app_key']}\"")
       res = Net::HTTP.start(url.host, url.port) do |http|
-      http.request(req)
+        http.request(req)
       end
     end
   end

@@ -3,180 +3,97 @@
 <% end %>
 <div class="contentpanel">
   <div class="row">
-    <div class="col-sm-6 col-md-2">
+    <div class="col-sm-6 col-md-3">
       <div class="panel panel-success panel-stat">
-        <div class="panel-heading">
+        <div class="panel-heading hight_145">
           <div class="stat">
             <div class="row">
-              <!-- <div class="col-xs-4">
-                <img alt="" src="images/is-user.png">
-              </div> -->
-              <div class="col-xs-10">
-                <small class="stat-label">Total number of meetings</small>
+              <div class="col-xs-4">
+                <i class="fa fa-calendar"></i>
+              </div>
+              <div class="col-xs-8">
+                <small class="stat-label">Total Meetings</small>
                 <h1><%=@total_meetings%></h1>
               </div>
             </div><!-- row -->
-            <div class="mb15"></div>
-
-           <!--  <div class="row">
-              <div class="col-xs-6">
-                <small class="stat-label">Pages / Visit</small>
-                <h4>7.80</h4>
-              </div>
-
-              <div class="col-xs-6">
-                <small class="stat-label">% New Visits</small>
-                <h4>76.43%</h4>
-              </div>
-            </div> -->
           </div><!-- stat -->
         </div><!-- panel-heading -->
-      </div><!-- panel -->
+      </div>
     </div><!-- col-sm-6 -->
-
-    <div class="col-sm-6 col-md-2">
+    <div class="col-sm-6 col-md-3">
       <div class="panel panel-danger panel-stat">
-        <div class="panel-heading">
+        <div class="panel-heading hight_145">
           <div class="stat">
             <div class="row">
-             <!--  <div class="col-xs-4">
-                <img alt="" src="images/is-document.png">
-              </div> -->
+              <div class="col-xs-4">
+                <i class="fa fa-sign-in"></i>
+              </div>
               <div class="col-xs-8">
-                <small class="stat-label">Total check in</small>
-                <h1><%=@total_check_in %></h1>
+                <small class="stat-label">Total check ins</small>
+                <h1><%=@total_check_in%></h1>
               </div>
             </div><!-- row -->
-            <div class="mb15"></div>
-          <!--   <small class="stat-label">Avg. Visit Duration</small>
-            <h4>01:80:22</h4> -->
           </div><!-- stat -->
         </div><!-- panel-heading -->
       </div><!-- panel -->
     </div><!-- col-sm-6 -->
-
-    <div class="col-sm-6 col-md-2">
+    <div class="col-sm-6 col-md-3">
       <div class="panel panel-primary panel-stat">
-        <div class="panel-heading">
+        <div class="panel-heading hight_145">
           <div class="stat">
             <div class="row">
-            <!--   <div class="col-xs-4">
-                <img alt="" src="images/is-document.png">
-              </div> -->
+              <div class="col-xs-4">
+               <i class="fa fa-sign-out"></i>
+              </div>
               <div class="col-xs-8">
-                <small class="stat-label">Total check out</small>
-                <h1><%=@total_check_out %></h1>
+                <small class="stat-label">Total check outs</small>
+                <h1><%=@total_check_out%></h1>
               </div>
             </div><!-- row -->
-            <div class="mb15"></div>
-           <!--  <small class="stat-label">% Bounce Rate</small>
-            <h4>34.23%</h4> -->
           </div><!-- stat -->
         </div><!-- panel-heading -->
       </div><!-- panel -->
     </div><!-- col-sm-6 -->
-
-    <div class="col-sm-6 col-md-2">
+    <div class="col-sm-6 col-md-3">
       <div class="panel panel-dark panel-stat">
         <div class="panel-heading">
           <div class="stat">
             <div class="row">
-             <!--  <div class="col-xs-4">
-                <img alt="" src="images/is-money.png">
-              </div> -->
-              <div class="col-xs-10">
-                <small class="stat-label">Average time for meeting</small>
-                <h1><%=@average_time_for_meeting%></h1>
+              <div class="col-xs-4">
+                <i class="fa fa-clock-o"></i>
+              </div>
+              <div class="col-xs-8">
+                <small class="stat-label">Duration Average</small>
+                <h3><%=@average_time_for_meeting%></h3>
               </div>
             </div><!-- row -->
             <div class="mb15"></div>
-           <!--  <div class="row">
-              <div class="col-xs-6">
-                <small class="stat-label">Last Week</small>
-                <h4>$32,322</h4>
-              </div>
-              <div class="col-xs-6">
-                <small class="stat-label">Last Month</small>
-                <h4>$503,000</h4>
-              </div>
-            </div> -->
-          </div><!-- stat -->
-        </div><!-- panel-heading -->
-      </div><!-- panel -->
-    </div><!-- col-sm-6 -->
-    <div class="col-sm-6 col-md-2">
-      <div class="panel panel-info panel-stat">
-        <div class="panel-heading">
-          <div class="stat">
             <div class="row">
-             <!--  <div class="col-xs-4">
-                <img alt="" src="images/is-money.png">
-              </div> -->
-              <div class="col-xs-10">
-                <small class="stat-label">Longest meeting</small>
-                <h1><%=@longest_meeting_time%></h1>
-              </div>
-            </div><!-- row -->
-            <div class="mb15"></div>
-           <!--  <div class="row">
               <div class="col-xs-6">
-                <small class="stat-label">Last Week</small>
-                <h4>$32,322</h4>
+                <small class="stat-label">Longest</small>
+                <h5><%=@longest_meeting_time%></h5>
               </div>
               <div class="col-xs-6">
-                <small class="stat-label">Last Month</small>
-                <h4>$503,000</h4>
+                <small class="stat-label">Shortest</small>
+                <h5><%=@shortest_meeting_time%></h5>
               </div>
-            </div> -->
-          </div><!-- stat -->
-        </div><!-- panel-heading -->
-      </div><!-- panel -->
-    </div><!-- col-sm-6 -->
-    <div class="col-sm-6 col-md-2">
-      <div class="panel panel-warning panel-stat">
-        <div class="panel-heading">
-          <div class="stat">
-            <div class="row">
-             <!--  <div class="col-xs-4">
-                <img alt="" src="images/is-money.png">
-              </div> -->
-              <div class="col-xs-10">
-                <small class="stat-label">Shortest meeting</small>
-                <h1><%=@shortest_meeting_time %></h1>
-              </div>
-            </div><!-- row -->
-            <div class="mb15"></div>
-           <!--  <div class="row">
-              <div class="col-xs-6">
-                <small class="stat-label">Last Week</small>
-                <h4>$32,322</h4>
-              </div>
-              <div class="col-xs-6">
-                <small class="stat-label">Last Month</small>
-                <h4>$503,000</h4>
-              </div>
-            </div> -->
+            </div>
           </div><!-- stat -->
         </div><!-- panel-heading -->
       </div><!-- panel -->
     </div><!-- col-sm-6 -->
   </div><!-- row -->
-
   <div class="row">
-    <div class="col-sm-8 col-md-9">
+    <div class="col-sm-8 col-md-12">
       <%=render "dashboard/meeting_map", meetings: @meetings %>
     </div><!-- col-sm-9 -->
-
-    <div class="col-sm-4 col-md-3">
-
+   <!--  <div class="col-sm-4 col-md-3">
       <div class="panel panel-default">
         <div class="panel-body">
         <h5 class="subtitle mb5">Most Browser Used</h5>
-        <p class="mb15">Duis autem vel eum iriure dolor in hendrerit in vulputate...</p>
-        <div class="ex-donut-chart" id="donut-chart2"><svg height="298" version="1.1" width="201" xmlns="http://www.w3.org/2000/svg" style="overflow: hidden; position: relative; top: -0.299988px;"><desc>Created with Raphaël 2.1.0</desc><defs/><path style="opacity: 1;" fill="none" stroke="#d9534f" d="M100.5,209.33333333333334A60.333333333333336,60.333333333333336,0,0,0,158.60500914023473,132.75441524830978" stroke-width="2" opacity="1"/><path style="" fill="#d9534f" stroke="#ffffff" d="M100.5,212.33333333333334A63.333333333333336,63.333333333333336,0,0,0,161.49420848974916,131.94662374131968L187.65751371035208,124.6316228724647A90.5,90.5,0,0,1,100.5,239.5Z" stroke-width="3"/><path style="opacity: 0;" fill="none" stroke="#1caf9a" d="M158.60500914023473,132.75441524830978A60.333333333333336,60.333333333333336,0,0,0,103.00875362494861,88.71884816660834" stroke-width="2" opacity="0"/><path style="" fill="#1caf9a" stroke="#ffffff" d="M161.49420848974916,131.94662374131968A63.333333333333336,63.333333333333336,0,0,0,103.1334982803328,85.72144282682643L104.05522267844928,63.57394781621569A85.5,85.5,0,0,1,182.84218146116137,125.97794205078156Z" stroke-width="3"/><path style="opacity: 0;" fill="none" stroke="#428bca" d="M103.00875362494861,88.71884816660834A60.333333333333336,60.333333333333336,0,0,0,43.94578569571323,127.98257971263084" stroke-width="2" opacity="0"/><path style="" fill="#428bca" stroke="#ffffff" d="M103.1334982803328,85.72144282682643A63.333333333333336,63.333333333333336,0,0,0,41.13369769163267,126.93751461546883L20.355491883704104,119.21564473088291A85.5,85.5,0,0,1,104.05522267844928,63.57394781621569Z" stroke-width="3"/><path style="opacity: 0;" fill="none" stroke="#5bc0de" d="M43.94578569571323,127.98257971263084A60.333333333333336,60.333333333333336,0,0,0,63.03206081693244,196.2891599046236" stroke-width="2" opacity="0"/><path style="" fill="#5bc0de" stroke="#ffffff" d="M41.13369769163267,126.93751461546883A63.333333333333336,63.333333333333336,0,0,0,61.1690141172219,198.64055459601374L47.40316905824957,216.01474870461854A85.5,85.5,0,0,1,20.355491883704104,119.21564473088291Z" stroke-width="3"/><path style="opacity: 0;" fill="none" stroke="#428bca" d="M63.03206081693244,196.2891599046236A60.333333333333336,60.333333333333336,0,0,0,100.48104572463514,209.3333303560027" stroke-width="2" opacity="0"/><path style="" fill="#428bca" stroke="#ffffff" d="M61.1690141172219,198.64055459601374A63.333333333333336,63.333333333333336,0,0,0,100.48010324685455,212.33333020795862L100.47313938325365,234.49999578074414A85.5,85.5,0,0,1,47.40316905824957,216.01474870461854Z" stroke-width="3"/><text style="text-anchor: middle; font: 800 15px &quot;Arial&quot;;" x="100.5" y="139" text-anchor="middle" font="10px &quot;Arial&quot;" stroke="none" fill="#000000" font-size="15px" font-weight="800" transform="matrix(1.6759,0,0,1.6759,-67.9306,-100.037)" stroke-width="0.5966850828729281"><tspan dy="5">Chrome</tspan></text><text style="text-anchor: middle; font: 14px &quot;Arial&quot;;" x="100.5" y="159" text-anchor="middle" font="10px &quot;Arial&quot;" stroke="none" fill="#000000" font-size="14px" transform="matrix(1.2569,0,0,1.2569,-25.8229,-38.7986)" stroke-width="0.7955801104972375"><tspan dy="5">30</tspan></text></svg></div>
-        </div><!-- panel-body -->
-      </div><!-- panel -->
-    </div><!-- col-sm-3 -->
+        </div>
+      </div>
+    </div> -->
   </div><!-- row -->
   <div class="row">
     <div class="col-sm-12">
@@ -187,7 +104,6 @@
               <th>Address</th>
               <th>Start at</th>
               <th>End at</th>
-              <th>Agenda</th>
               <th>Check Ins</th>
               <th>Check Outs</th>
               <th>Invitees</th>
@@ -201,7 +117,6 @@
               <td><%= meeting.location %></td>
               <td><%= meeting.starts_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y - %l:%M %p") rescue nil%></td>
               <td><%= meeting.ends_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y - %l:%M %p") rescue nil%></td>
-              <td><%= sanitize  meeting.body %></td>
               <td><%= meeting.check_ins.count %></td>
               <td><%= meeting.check_outs.count %></td>
               <td><%= meeting.invitees %></td>
@@ -211,30 +126,6 @@
         </tbody>
       </table>
     </div><!-- col-sm-7 -->
-
-    <div class="col-sm-5">
-      <div class="panel panel-success">
-        <!-- <div class="panel-heading padding5"> -->
-   <!--        <div class="ex-line-chart" id="line-chart" style="position: relative;"><svg height="248" version="1.1" width="405" xmlns="http://www.w3.org/2000/svg" style="overflow: hidden; position: relative; top: -0.299988px;"><desc>Created with Raphaël 2.1.0</desc><defs/><text style="text-anchor: end; font: 12px sans-serif;" x="40.5" y="208" text-anchor="end" font="10px &quot;Arial&quot;" stroke="none" fill="#ffffff" font-size="12px" font-family="sans-serif" font-weight="normal" fill-opacity="0.5"><tspan dy="4">0</tspan></text><text style="text-anchor: end; font: 12px sans-serif;" x="40.5" y="162.25" text-anchor="end" font="10px &quot;Arial&quot;" stroke="none" fill="#ffffff" font-size="12px" font-family="sans-serif" font-weight="normal" fill-opacity="0.5"><tspan dy="4">17.5</tspan></text><text style="text-anchor: end; font: 12px sans-serif;" x="40.5" y="116.5" text-anchor="end" font="10px &quot;Arial&quot;" stroke="none" fill="#ffffff" font-size="12px" font-family="sans-serif" font-weight="normal" fill-opacity="0.5"><tspan dy="4">35</tspan></text><text style="text-anchor: end; font: 12px sans-serif;" x="40.5" y="70.75" text-anchor="end" font="10px &quot;Arial&quot;" stroke="none" fill="#ffffff" font-size="12px" font-family="sans-serif" font-weight="normal" fill-opacity="0.5"><tspan dy="4">52.5</tspan></text><text style="text-anchor: end; font: 12px sans-serif;" x="40.5" y="25" text-anchor="end" font="10px &quot;Arial&quot;" stroke="none" fill="#ffffff" font-size="12px" font-family="sans-serif" font-weight="normal" fill-opacity="0.5"><tspan dy="4">70</tspan></text><text style="text-anchor: middle; font: 12px sans-serif;" x="380" y="220.5" text-anchor="middle" font="10px &quot;Arial&quot;" stroke="none" fill="#ffffff" font-size="12px" font-family="sans-serif" font-weight="normal" fill-opacity="0.5" transform="matrix(1,0,0,1,0,7.5)"><tspan dy="4">2012</tspan></text><text style="text-anchor: middle; font: 12px sans-serif;" x="271.0497489730717" y="220.5" text-anchor="middle" font="10px &quot;Arial&quot;" stroke="none" fill="#ffffff" font-size="12px" font-family="sans-serif" font-weight="normal" fill-opacity="0.5" transform="matrix(1,0,0,1,0,7.5)"><tspan dy="4">2010</tspan></text><text style="text-anchor: middle; font: 12px sans-serif;" x="161.95025102692836" y="220.5" text-anchor="middle" font="10px &quot;Arial&quot;" stroke="none" fill="#ffffff" font-size="12px" font-family="sans-serif" font-weight="normal" fill-opacity="0.5" transform="matrix(1,0,0,1,0,7.5)"><tspan dy="4">2008</tspan></text><text style="text-anchor: middle; font: 12px sans-serif;" x="53" y="220.5" text-anchor="middle" font="10px &quot;Arial&quot;" stroke="none" fill="#ffffff" font-size="12px" font-family="sans-serif" font-weight="normal" fill-opacity="0.5" transform="matrix(1,0,0,1,0,7.5)"><tspan dy="4">2006</tspan></text><path style="" fill="none" stroke="#fdd2a4" d="M53,208L107.47512551346418,142.64285714285714L161.95025102692836,129.57142857142856L216.5746234596075,155.71428571428572L271.0497489730717,116.5L325.52487448653585,77.28571428571428L380,64.21428571428572" stroke-width="2px"/><path style="" fill="none" stroke="#ffffff" d="M53,77.28571428571428L107.47512551346418,51.14285714285714L161.95025102692836,90.35714285714286L216.5746234596075,103.42857142857143L271.0497489730717,77.28571428571428L325.52487448653585,51.14285714285714L380,38.071428571428555" stroke-width="2px"/><circle cx="53" cy="208" r="4" fill="#fdd2a4" stroke="#ffffff" style="" stroke-width="1"/><circle cx="107.47512551346418" cy="142.64285714285714" r="4" fill="#fdd2a4" stroke="#ffffff" style="" stroke-width="1"/><circle cx="161.95025102692836" cy="129.57142857142856" r="4" fill="#fdd2a4" stroke="#ffffff" style="" stroke-width="1"/><circle cx="216.5746234596075" cy="155.71428571428572" r="4" fill="#fdd2a4" stroke="#ffffff" style="" stroke-width="1"/><circle cx="271.0497489730717" cy="116.5" r="4" fill="#fdd2a4" stroke="#ffffff" style="" stroke-width="1"/><circle cx="325.52487448653585" cy="77.28571428571428" r="4" fill="#fdd2a4" stroke="#ffffff" style="" stroke-width="1"/><circle cx="380" cy="64.21428571428572" r="4" fill="#fdd2a4" stroke="#ffffff" style="" stroke-width="1"/><circle cx="53" cy="77.28571428571428" r="4" fill="#ffffff" stroke="#ffffff" style="" stroke-width="1"/><circle cx="107.47512551346418" cy="51.14285714285714" r="4" fill="#ffffff" stroke="#ffffff" style="" stroke-width="1"/><circle cx="161.95025102692836" cy="90.35714285714286" r="4" fill="#ffffff" stroke="#ffffff" style="" stroke-width="1"/><circle cx="216.5746234596075" cy="103.42857142857143" r="4" fill="#ffffff" stroke="#ffffff" style="" stroke-width="1"/><circle cx="271.0497489730717" cy="77.28571428571428" r="4" fill="#ffffff" stroke="#ffffff" style="" stroke-width="1"/><circle cx="325.52487448653585" cy="51.14285714285714" r="4" fill="#ffffff" stroke="#ffffff" style="" stroke-width="1"/><circle cx="380" cy="38.071428571428555" r="4" fill="#ffffff" stroke="#ffffff" style="" stroke-width="1"/></svg></div> -->
-        <!-- </div> -->
-        <!-- <div class="panel-body">
-          <div class="tinystat pull-left">
-            <div class="chart mt5" id="sparkline"><canvas style="display: inline-block; width: 59px; height: 30px; vertical-align: top;" width="59" height="30"></canvas></div>
-            <div class="datainfo">
-              <span class="text-muted">Average Sales</span>
-              <h4>$630,201</h4>
-            </div>
-          </div>
-          <div class="tinystat pull-right">
-            <div class="chart mt5" id="sparkline2"><canvas style="display: inline-block; width: 59px; height: 30px; vertical-align: top;" width="59" height="30"></canvas></div>
-            <div class="datainfo">
-              <span class="text-muted">Total Sales</span>
-              <h4>$139,201</h4>
-            </div>
-          </div>
-        </div> -->
-      </div>
-    </div><!-- col-sm-6 -->
   </div><!-- row -->
   <b>Check Ins/Check Outs</b>
   <div class="mb20"></div>
@@ -280,126 +171,8 @@
       </table>
     </div><!-- col-sm-7 -->
   </div><!-- row -->
-
-  <div class="row">
-    <div class="col-sm-6 col-md-4">
-      <div class="panel panel-default widget-photoday">
-        <div class="panel-body">
-          <a class="photoday" href=""><img alt="" src="images/photos/photo1.png"></a>
-          <div class="photo-details">
-            <h4 class="photo-title">Strawhat In The Beach</h4>
-            <small class="text-muted"><i class="fa fa-map-marker"></i> San Franciso, California, USA</small>
-            <small>By: <a href="">ThemePixels</a></small>
-          </div><!-- photo-details -->
-          <ul class="photo-meta">
-            <li><span><i class="fa fa-eye"></i> 32,102</span></li>
-            <li><a href="#"><i class="fa fa-heart"></i> 1,003</a></li>
-            <li><a href="#"><i class="fa fa-comments"></i> 52</a></li>
-          </ul>
-        </div><!-- panel-body -->
-      </div><!-- panel -->
-    </div><!-- col-sm-6 -->
-
-    <div class="col-sm-6 col-md-4">
-      <div class="panel panel-default panel-alt widget-messaging">
-      <div class="panel-heading">
-          <div class="panel-btns">
-            <a class="panel-edit" href=""><i class="fa fa-edit"></i></a>
-          </div><!-- panel-btns -->
-          <h3 class="panel-title">Messaging</h3>
-        </div>
-        <div class="panel-body">
-          <ul>
-            <li>
-              <small class="pull-right">Dec 10</small>
-              <h4 class="sender">Jennier Lawrence</h4>
-              <small>Lorem ipsum dolor sit amet...</small>
-            </li>
-            <li>
-              <small class="pull-right">Dec 9</small>
-              <h4 class="sender">Marsha Mellow</h4>
-              <small>Lorem ipsum dolor sit amet...</small>
-            </li>
-            <li>
-              <small class="pull-right">Dec 9</small>
-              <h4 class="sender">Holly Golightly</h4>
-              <small>Lorem ipsum dolor sit amet...</small>
-            </li>
-            <li>
-              <small class="pull-right">Dec 10</small>
-              <h4 class="sender">Jennier Lawrence</h4>
-              <small>Lorem ipsum dolor sit amet...</small>
-            </li>
-            <li>
-              <small class="pull-right">Dec 9</small>
-              <h4 class="sender">Marsha Mellow</h4>
-              <small>Lorem ipsum dolor sit amet...</small>
-            </li>
-          </ul>
-        </div><!-- panel-body -->
-      </div><!-- panel -->
-    </div><!-- col-sm-6 -->
-
-    <div class="col-sm-6 col-md-4">
-      <div class="panel panel-dark panel-alt widget-quick-status-post">
-      <div class="panel-heading">
-          <div class="panel-btns">
-            <a class="panel-close" href="">×</a>
-            <a class="minimize" href="">−</a>
-          </div><!-- panel-btns -->
-          <h3 class="panel-title">Quick Status Post</h3>
-        </div>
-        <div class="panel-body">
-          <ul class="nav nav-tabs nav-justified">
-            <li class="active"><a data-toggle="tab" href="#post-status"><i class="fa fa-pencil"></i> <strong>Status</strong></a></li>
-            <li><a data-toggle="tab" href="#post-photo"><i class="fa fa-picture-o"></i> <strong>Photo</strong></a></li>
-            <li><a data-toggle="tab" href="#post-checkin"><i class="fa fa-map-marker"></i> <strong>Check-In</strong></a></li>
-          </ul>
-          <div class="tab-content">
-            <div class="tab-pane active" id="post-status">
-              <input type="text" placeholder="What's your status?" class="form-control">
-            </div>
-            <div class="tab-pane" id="post-photo">
-              <input type="text" placeholder="Choose photo" class="form-control">
-            </div>
-            <div class="tab-pane" id="post-checkin">
-              <input type="text" placeholder="Search location" class="form-control">
-            </div>
-            <button class="btn btn-primary btn-block mt10">Submit Post</button>
-          </div><!-- tab-content -->
-
-        </div><!-- panel-body -->
-      </div><!-- panel -->
-
-      <div class="mb20"></div>
-
-      <div class="row">
-        <div class="col-xs-6">
-          <div class="panel panel-warning panel-alt widget-today">
-            <div class="panel-heading text-center">
-              <i class="fa fa-calendar-o"></i>
-            </div>
-            <div class="panel-body text-center">
-              <h3 class="today">Fri, Dec 13</h3>
-            </div><!-- panel-body -->
-          </div><!-- panel -->
-        </div>
-
-        <div class="col-xs-6">
-          <div class="panel panel-danger panel-alt widget-time">
-            <div class="panel-heading text-center">
-              <i class="glyphicon glyphicon-time"></i>
-            </div>
-            <div class="panel-body text-center">
-              <h3 class="today">4:50AM PST</h3>
-            </div><!-- panel-body -->
-          </div><!-- panel -->
-        </div>
-      </div>
-    </div><!-- col-sm-6 -->
-  </div>
 </div><!-- contentpanel -->
-  <%=render "check_in_check_out"%>
+  <%#=render "check_in_check_out"%>
 <script>
   jQuery(document).ready(function() {
     //"use strict";

@@ -5,7 +5,7 @@
 <div class="profile-header">
   <div class="row">
     <div class="col-sm-3">
-    	<img src="/assets/bootstrap/images/photos/default_firm_picture.jpg" class="thumbnail img-responsive" alt="">
+    	<img src="<%= (@company.avatar_url.eql? "/avatars/web/missing.png") ? '/assets/bootstrap/images/photos/default_firm_picture.jpg' : @company.avatar_url %>" class="thumbnail img-responsive" alt="">
       <div class="mb30"></div>
     </div><!-- col-sm-3 -->
     <div class="col-sm-9">
@@ -59,7 +59,7 @@
               <div class="col-sm-7">
                   <div class="row bars">
                       <div class="col-xs-5" style="text-align:right"><strong>Created</strong></div>
-                      <div class="col-xs-7">???</div>
+                      <div class="col-xs-7"></div>
                   </div>
                   <div class="row bars">
                       <div class="col-xs-5" style="text-align:right"><strong>Language</strong></div>
