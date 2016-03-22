@@ -29,17 +29,19 @@
   <div class="col-md-8">
     <div class="row">
       <div class="col-sm-6 mb10">
-        <% if (@users.count > 1) %>
-          <%= form_tag schedule_calendar_event_path, novalidate: "novalidate", method: :get, remote: :true do |f| %>
-          <div class="col-sm-8 mb10">
-            <select class="select2" multiple="multiple" name="users[]" id="schedule_user_list" data-placeholder="Filter schedule by user">
-              <%= options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] if current_user.id != u.id }) %>
-            </select>
-          </div>
-          <div class="col-sm-2">
-            <button type="submit" class="btn btn-primary" id="show_calendar_eve">Show</button>
-          </div>
-          <%end%>
+        <% if can? :schedule_filter, Account %>
+          <% if (@users.count > 1) %>
+            <%= form_tag schedule_calendar_event_path, novalidate: "novalidate", method: :get, remote: :true do |f| %>
+            <div class="col-sm-8 mb10">
+              <select class="select2" multiple="multiple" name="users[]" id="schedule_user_list" data-placeholder="Filter schedule by user">
+                <%= options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] if current_user.id != u.id }) %>
+              </select>
+            </div>
+            <div class="col-sm-2">
+              <button type="submit" class="btn btn-primary" id="show_calendar_eve">Show</button>
+            </div>
+            <%end%>
+          <% end %>
         <% end %>
       </div>
       <div class="col-sm-6">

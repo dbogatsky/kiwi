@@ -4,7 +4,7 @@ class Ability
   def initialize(user)
 
     user ||= User.new # guest user (not logged in)
-    roles = Role.all(:reload => true) #(uid: RequestStore.store[:tenant], :reload => true)
+    roles = Role.all #(:reload => true) #(uid: RequestStore.store[:tenant], :reload => true)
     abilities_debug = Array.new
 
     # match user's roles with the roles list
@@ -31,6 +31,12 @@ class Ability
               #can permission.action.to_sym, permission.subject_class.constantize
             end
           end
+
+          # Permission for showing the schedule filter textbox (for Entity Admin)
+          if current_user_role.name == "Entity Admin"
+            can :schedule_filter, Account
+          end
+
         end
 
       end
