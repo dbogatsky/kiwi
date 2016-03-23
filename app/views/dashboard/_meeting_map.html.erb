@@ -3,20 +3,19 @@
     <h3 class="panel-title">Meetings Map</h3>
   </div>
   <div class="panel-body">
-    <p>See your schedule today on the map below</p>
+    <p>See your schedule on the map below</p>
     <div id="gmap-marker" style="height: 300px"></div>
   </div><!-- panel-body -->
 </div>
 <script type="text/javascript">
-  
   <% if !request.location.nil? && !request.location.nil? %>
-    var latitude = '<%=request.location.latitude%>';
-    var longitude = '<%=request.location.longitude%>';
+    var lati = '<%=request.location.latitude%>';
+    var longi = '<%=request.location.longitude%>';
     var minZoomLevel = 1;
     var map_marker = new GMaps({
       div: '#gmap-marker',
-      lat: latitude,
-      lng: longitude,
+      lat: lati,
+      lng: longi,
       zoom: minZoomLevel
     });
   <% else %>
@@ -28,23 +27,44 @@
     });
   <% end %>
 
-  <%if @meetings.present? && @meetings.count > 0%>
-    <%@meetings.each do |meeting|%>
+  <%if meetings.present?%>
+    <%meetings.each do |meeting|%>
       <% if !meeting.latitude.nil? && !meeting.longitude.nil? %>
-        var latitude = '<%= meeting.latitude %>'; 
-        var longitude = '<%= meeting.longitude %>';
-        var title = '<%= meeting.title %>';
-        var address = '<%= meeting.location %>'
+        var latitude = '<%=meeting.latitude%>';
+        var longitude = '<%=meeting.longitude%>';
+        var title = '<%=meeting.title%>';
+        var time = '<%=meeting.ends_at.present? ? (DateTime.now.in_time_zone(current_user.time_zone) > meeting.ends_at.to_datetime.in_time_zone(current_user.time_zone)+1.hour) : false%>';
+        var status = '<%=meeting.status%>';
+        var check_in = '<%= check_in(meeting,false)%>';
+        var check_out = '<%= !check_in(meeting,false) && check_out(meeting,false)%>';
 
-        map_marker.addMarker({
+        var contentString = '<div id="content">'+
+        '<div id="siteNotice">'+
+        '</div>'+
+        '<h3 id="firstHeading" class="firstHeading"><%=meeting.title%></h3>'+
+        '<div id="bodyContent">'+
+        '<p><b>Start at:  </b><%= meeting.starts_at.present? ? meeting.starts_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y - %l:%M %p") : ''%>' + '</br>' + '<b>End at:  </b><%= meeting.ends_at.present? ? meeting.ends_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y - %l:%M %p") : ''%>' + '</br>' + '<b>Location:  </b><%=meeting.location%>'+ '</br>' + '<a class="btn btn-xs btn-default mr5" id="check_in_<%=meeting.id%>" href="/accounts/check_in?conversation_item_id=<%=meeting.id%>"  data-method="post" style="display:none;"><i class="fa fa-sign-in mr5"></i>Check In</a>' + '<a class="btn btn-xs btn-default mr5" id="check_out_<%=meeting.id%>" href="/accounts/check_out?conversation_item_id=<%=meeting.id%>" data-method="post" style="display:none;"><i class="fa fa-sign-in mr5"></i>Check Out</a>'+'</p>'+'</div>'+
+        '</div>';
+
+        // if (status == "scheduled" && !time){
+        //   if(check_in){
+        //     $('#check_in_<%=meeting.id%>').show();
+        //   }
+        //   if(check_out){
+        //     $('#check_out_<%=meeting.id%>').show();
+        //   }
+        // }
+
+        var marker = map_marker.addMarker({
           lat: latitude,
           lng: longitude,
           label: title,
-          click: function(e) {
-            alert(address);
+          infoWindow:
+          {
+            content: contentString
           }
         });
-      <% end %>
-    <% end %>
+      <%end%>
+    <%end%>
   <%end%>
 </script>
