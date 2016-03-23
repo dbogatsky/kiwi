@@ -9,10 +9,12 @@ class ReportsController < ApplicationController
     search[:type_eq]="ConversationItems::Meeting"
     s_date = Chronic.parse(params[:search][:date_gteq]).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
     e_date = Chronic.parse(params[:search][:date_lteq]).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
+    no_of_day = ((e_date.to_date-s_date.to_date).to_i)+1
     search[:starts_at_gteq]="#{s_date} 00:00:00"
     search[:starts_at_lteq]="#{e_date} 23:59:59"
     @meetings = ConversationItemSearch.all(params: {user_ids: user_ids, search: search})
     @total_meetings = @meetings.count
+    @meetings_per_daye = (@total_meetings.to_f/no_of_day.to_f).ceil
     @total_check_in = 0
     @total_check_out = 0
     @meeting_time_in_second = 0
