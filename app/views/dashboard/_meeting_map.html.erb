@@ -19,11 +19,19 @@
       zoom: minZoomLevel
     });
   <% else %>
-      var map_marker = new GMaps({
-      div: '#gmap-marker',
-      lat: '43.7000',
-      lng: '79.4000',
-      zoom: 1
+    <%coordinates = Geocoder.coordinates(current_user.addresses.last.city)%>
+    <%if coordinates.present?%>
+     var lat = '<%=coordinates[0]%>';
+     var lng = '<%=coordinates[1]%>'
+    <%else%>
+     var lat = '43.7000'
+     var lng = '79.4000'
+    <%end%>
+    var map_marker = new GMaps({
+    div: '#gmap-marker',
+    lat: lat,
+    lng: lng,
+    zoom: 1
     });
   <% end %>
 

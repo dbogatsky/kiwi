@@ -234,6 +234,8 @@
                   </div>
                 </div><!-- row -->
               <input type="hidden" name="conversation_item[id]">
+              <input type="hidden" name="conversation_item[latitude]">
+              <input type="hidden" name="conversation_item[longitude]">
               <input type="hidden" name="info">
               </div><!-- panel-body -->
               <div class="panel-footer">
@@ -272,6 +274,16 @@
   $(".conversation-edit-meeting-modal-form").on("shown.bs.modal", function(){
     var input = document.getElementById("edit_location");
     var autocomplete = new google.maps.places.Autocomplete(input);
+
+    google.maps.event.addListener(autocomplete, 'place_changed', function() {
+      var place = autocomplete.getPlace();
+      var place = autocomplete.getPlace();
+      var lat = place.geometry.location.lat();
+      var lng = place.geometry.location.lng();
+      $(".conversation-edit-meeting-modal-form input[name='conversation_item[latitude]']").val(lat);
+      $(".conversation-edit-meeting-modal-form input[name='conversation_item[longitude]']").val(lng);
+    });
+
     $("#edit_tags input").on({
       focusout : function() {
         // var txt = this.value.replace(/[^a-z0-9\+\-\.\#]/ig,''); // allowed characters
