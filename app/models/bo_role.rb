@@ -1,3 +1,3 @@
 class BoRole < OrchardBoApiModel
- self.element_name = "roles"
+  self.element_name = "roles"
 end

@@ -19,7 +19,6 @@ class DashboardController < ApplicationController
     search[:starts_at_lteq] = convert_datetime_to_utc(current_user.time_zone, @current_date, "23:59:59")
 
     @meetings = ConversationItemSearch.all(params: {user_ids: user_ids, search: search})
-
     #
     # Account feed of last 24 hours
     #

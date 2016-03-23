@@ -336,6 +336,8 @@
      meeting_edit_editor.data("wysihtml5").editor.setValue($(this).attr('data-body'));
 
     $('.conversation-edit-meeting-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
+    $('.conversation-edit-meeting-modal-form input[name="conversation_item[latitude]"]').val($(this).attr('data-latitude'));
+    $('.conversation-edit-meeting-modal-form input[name="conversation_item[longitude]"]').val($(this).attr('data-longitude'));
   });
 
   $(document).on('click', "a.complete_meeting", function(e){

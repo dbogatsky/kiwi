@@ -9,23 +9,25 @@
 </div>
 <script type="text/javascript">
   <% if !request.location.nil? && !request.location.nil? %>
-    var lati = '<%=request.location.latitude%>';
-    var longi = '<%=request.location.longitude%>';
-    var minZoomLevel = 1;
-    var map_marker = new GMaps({
-      div: '#gmap-marker',
-      lat: lati,
-      lng: longi,
-      zoom: minZoomLevel
-    });
+    var lat = '<%=request.location.latitude%>';
+    var lng = '<%=request.location.longitude%>';
   <% else %>
-      var map_marker = new GMaps({
-      div: '#gmap-marker',
-      lat: '43.7000',
-      lng: '79.4000',
-      zoom: 1
-    });
+    <%coordinates = Geocoder.coordinates(current_user.addresses.last.city)%>
+    <%if coordinates.present?%>
+      var lat = '<%=coordinates[0]%>';
+      var lng = '<%=coordinates[1]%>'
+    <%else%>
+      var lat = '43.7000'
+      var lng = '79.4000'
+    <%end%>
   <% end %>
+
+  var map_marker = new GMaps({
+    div: '#gmap-marker',
+    lat: lat,
+    lng: lng,
+    zoom: 1
+  });
 
   <%if meetings.present?%>
     <%meetings.each do |meeting|%>

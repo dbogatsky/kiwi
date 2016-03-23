@@ -1,7 +1,5 @@
 module ApplicationHelper
 
-
-
 	def get_styled_meetingstatus(citem, pulled_right=true)
 		pulled_right_class= "pull-right"
 
@@ -63,5 +61,4 @@ module ApplicationHelper
     end
     return check_out
 	end
-
 end

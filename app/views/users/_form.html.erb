@@ -40,7 +40,7 @@
 	        <%=f.select(:locale, options_for_select([['English', 'en'],['French', 'fr']], selected: @user.new_record? ? '' : @user.locale ), {prompt: "-- select --"}, {:class => 'form-control input-sm', required: true})%>
 	      </div>
 	    </div>
-      <%#= f.input :time_zone, input_html: { class: 'form-control input-sm' }, priority: ActiveSupport::TimeZone.all.sort.map{|z| [z.name, z.name]}, default: "Pacific Time (US & Canada)" %>
+
       <div class="form-group">
         <label class="col-sm-3 control-label">Time Zone<span class="asterisk">*</span></label>
 	      <div class="col-sm-6">
