@@ -12,6 +12,7 @@
 <div class="profile-header">
   <div class="row">
     <div class="col-sm-3">
+      <img src="<%= (@company.avatar_url.eql? "/avatars/web/missing.png") ? '/assets/bootstrap/images/photos/default_firm_picture.jpg' : @company.avatar_url %>" class="thumbnail img-responsive" alt="">
       <div class="mb30"></div>
       <h5 class="subtitle">Connect
       </h5>
