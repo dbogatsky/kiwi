@@ -139,7 +139,7 @@
                     <li><a href="#" data-toggle="modal" data-target=".account-action-email">Send Email</a></li>
                     <% end %>
 
-                  <% if can? :manage, Account %>
+                  <% if can? :manage_shared_accounts, @account %>
 
                     <% if can? :manage, ConversationItem %><li class="divider"></li><% end %>
 
