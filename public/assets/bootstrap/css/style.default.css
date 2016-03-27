@@ -3224,7 +3224,7 @@ div.error label.error:before {
 }
 
 .signinpanel .uname {
-    background: #fff url(../images/user.png) no-repeat 95% center;
+    background: #fff url(../images/user_sm.png) no-repeat 95% center;
 }
 
 .signinpanel .pword {
