@@ -34,7 +34,7 @@
             <div class="form-group">
               <label class="col-sm-offset-2 col-sm-2 control-label">Locale<span class="asterisk">*</span></label>
               <div class="col-sm-4">
-                <%=select_tag('company[locale]', options_for_select([['English', 'en'],['French', 'fr']], selected: @company.try(:locale) ), {prompt: "-- select --", :class => 'form-control', required: true})%>
+                <%=select_tag('company[locale]', options_for_select([['English', 'en']], selected: @company.try(:locale) ), {prompt: "-- select --", :class => 'form-control', required: true})%>
               </div>
             </div>
         </div>
