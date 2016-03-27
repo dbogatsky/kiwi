@@ -312,7 +312,7 @@
         emails_array.splice(del_obj_index,1)
         $('#edit_invitee_emails').val(emails_array.join(','));
         if($('#edit_tags').find('span').length < 2){
-          $('#edit_tag_input').attr('required', true);
+          $('#edit_tag_input').attr('required', false);
         }
         $(this).remove();
       }
