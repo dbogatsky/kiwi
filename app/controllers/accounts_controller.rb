@@ -172,31 +172,52 @@ class AccountsController < ApplicationController
   end
 
   def check_in
-    ce = ConversationItemEvent.create(lat: request.location.latitude, long: request.location.longitude, ip_address: request.location.ip, type: "check_in", conversation_item_id: params[:conversation_item_id], user_id: current_user.id)
-    if ce
-      flash[:success] = 'Successfully Checked In'
+    output = nil
+
+    citem = params['cid']
+    lat = 0.0
+    lng = 0.0
+
+    if params['lat'].nil? || params['lng'].nil?
+      #todo - try to get lat & long from ip as failsafe
     else
-      flash[:danger] = "Couldn't Checked In"
+      lat = params['lat']
+      lng = params['lng']
     end
-    if params[:info].present?
-      redirect_to schedule_path
-    else
-      redirect_to :back
-    end
+
+    # ce = ConversationItemEvent.create(lat: lat, long: lng, ip_address: request.location.ip, type: "check_in", conversation_item_id: citem, user_id: current_user.id)
+    # if ce
+    #   flash[:success] = 'Successfully Checked In'
+    # else
+    #   flash[:danger] = "Couldn't Checked In"
+    # end
+    puts output
+    render json: output
   end
 
   def check_out
-    ce = ConversationItemEvent.create(lat: request.location.latitude, long: request.location.longitude, ip_address: request.location.ip, type: "check_out", conversation_item_id: params[:conversation_item_id], user_id: current_user.id)
-    if ce
-        flash[:success] = 'Successfully Checked Out'
-      else
-        flash[:danger] = "Couldn't Checked Out"
-      end
-    if params[:info].present?
-      redirect_to schedule_path
+    output = nil
+
+    citem = params['cid']
+    lat = 0.0
+    lng = 0.0
+
+    if params['lat'].nil? || params['lng'].nil?
+      #todo - try to get lat & long from ip as failsafe
     else
-      redirect_to :back
+      lat = params['lat']
+      lng = params['lng']
     end
+
+    # ce = ConversationItemEvent.create(lat: lat, long: lng, ip_address: request.location.ip, type: "check_out", conversation_item_id: citem, user_id: current_user.id)
+    # if ce
+    #   output = { :result => "success", :message => "Successfully Checked Out" }
+    # else
+    #   output = { :result => "error", :message => "Could not check out" }
+    # end
+    puts output
+    render json: output
+
   end
 
   def jump_in
