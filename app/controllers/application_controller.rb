@@ -97,10 +97,10 @@ class ApplicationController < ActionController::Base
     @parsed_datetime = Chronic.parse("#{date} at #{time}").strftime('%Y-%m-%d %H:%M:%S')
     begin
       @timezone_short = TZInfo::Timezone.get("#{timezone}").period_for_utc(Time.now).abbreviation.to_s
-    rescue 
+    rescue
       @timezone_short = timezone
     end
-    
+
     @utc_datetime = (DateTime.parse "#{@parsed_datetime} #{@timezone_short}").utc.strftime("%Y-%m-%d %H:%M:%S %z")
   end
 
