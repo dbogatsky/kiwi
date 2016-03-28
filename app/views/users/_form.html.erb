@@ -37,7 +37,7 @@
 	    <div class="form-group">
 	      <label class="col-sm-3 control-label">Locale<span class="asterisk">*</span></label>
 	      <div class="col-sm-6">
-	        <%=f.select(:locale, options_for_select([['English', 'en'],['French', 'fr']], selected: @user.new_record? ? '' : @user.locale ), {prompt: "-- select --"}, {:class => 'form-control input-sm', required: true})%>
+	        <%=f.select(:locale, options_for_select([['English', 'en']], selected: @user.new_record? ? '' : @user.locale ), {prompt: "-- select --"}, {:class => 'form-control input-sm', required: true})%>
 	      </div>
 	    </div>
 

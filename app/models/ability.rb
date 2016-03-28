@@ -2,10 +2,14 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
+    alias_action :create, :update, :to => :update_shared_accounts
+    alias_action :create, :update, :destroy, :to => :manage_shared_accounts
 
     user ||= User.new # guest user (not logged in)
     roles = Role.all #(:reload => true) #(uid: RequestStore.store[:tenant], :reload => true)
     abilities_debug = Array.new
+
+    admin_user = false
 
     # match user's roles with the roles list
     user.roles.each do | current_user_role |
@@ -17,10 +21,11 @@ class Ability
 
             #define abilities
             if permission.subject_class == 'all' && permission.action == 'manage'
+              admin_user = true
               can :manage, :all
-              # can permission.action.to_sym, permission.subject_class.to_sym
-
               abilities_debug.push("can :manage, :all")
+
+              # can permission.action.to_sym, permission.subject_class.to_sym
               #abilities_debug.push("can :" + permission.action + ", :" + permission.subject_class)
             else 
               # defining ability with subject class as just the class name
@@ -32,9 +37,30 @@ class Ability
             end
           end
 
-          # Permission for showing the schedule filter textbox (for Entity Admin)
-          if current_user_role.name == "Entity Admin"
-            can :schedule_filter, Account
+
+          unless admin_user
+
+            # Permission for showing the schedule filter textbox (for Entity Admin)
+            if current_user_role.name == "Entity Admin"
+              can :schedule_filter, Account
+              abilities_debug.push("can :schedule_filter, Account")
+            end
+
+            # Permission to definite managed shared accounts
+            can :manage_shared_accounts, Account do | account |
+              abilities_debug.push("can :manage_shared_accounts, Account") if account.assigned_to.id == user.id
+              account.assigned_to.id == user.id
+            end
+
+            # Permission to definite update shared accounts
+            can :update_shared_accounts, Account do | account |
+              shared_user_update = []
+              account.user_account_sharings.each {|u| shared_user_update << u.user if u.permission == "update"}
+
+              abilities_debug.push("can :update_shared_accounts, Account | NOTE: Account ID[#{account.id}]") if shared_user_update.include? user.id
+              shared_user_update.include? user.id
+            end
+
           end
 
         end

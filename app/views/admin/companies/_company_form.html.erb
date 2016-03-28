@@ -34,7 +34,7 @@
             <div class="form-group">
               <label class="col-sm-offset-2 col-sm-2 control-label">Locale<span class="asterisk">*</span></label>
               <div class="col-sm-4">
-                <%=select_tag('company[locale]', options_for_select([['English', 'en'],['French', 'fr']], selected: @company.try(:locale) ), {prompt: "-- select --", :class => 'form-control', required: true})%>
+                <%=select_tag('company[locale]', options_for_select([['English', 'en']], selected: @company.try(:locale) ), {prompt: "-- select --", :class => 'form-control', required: true})%>
               </div>
             </div>
         </div>
@@ -81,7 +81,7 @@
         </div>
         <div class="tab-pane" id="vtab4">
           <div class="form-group">
-            <label class="col-sm-offset-2 col-sm-2 control-label">Avatar</label>
+            <label class="col-sm-offset-2 col-sm-2 control-label">Picture</label>
             <div class="col-sm-4">
               <label title="Upload image file" for="inputImage" class="btn btn-white">
                 <%=file_field_tag "company[avatar]"%>
@@ -122,7 +122,7 @@
                   <input label="Contact" name="company[contacts_attributes]['+t+'][name]" class="form-control" required id="company_contacts_attributes_name_'+x+'" type="text">\
                 </div>\
                 <label class="col-sm-1 control-label">Type<span class="asterisk">*</span></label>\
-                <div class="col-sm-1">\
+                <div class="col-sm-2">\
                   <select class="select2 form-control" id="company_contacts_attributes_type_'+x+'" name="company[contacts_attributes]['+t+'][type]"><%= raw(@contact_types) %></select>\
                 </div>\
                 <label class="col-sm-1 control-label">Value<span class="asterisk">*</span></label>\

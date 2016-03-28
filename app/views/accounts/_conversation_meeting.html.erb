@@ -284,7 +284,7 @@
     });
 
     if($('#tags').find('span').length < 2){
-      $('#tag_input').attr('required', true);
+      $('#tag_input').attr('required', false);
     }
 
     $("#tags input").on({
@@ -317,7 +317,7 @@
       	$('#invitee_emails').val(emails_array.join(','));
       	$(this).remove();
         if($('#tags').find('span').length < 2){
-          $('#tag_input').attr('required', true);
+          $('#tag_input').attr('required', false);
         }
       }
     });
