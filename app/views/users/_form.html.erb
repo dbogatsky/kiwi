@@ -49,18 +49,18 @@
       </div>
 	    <%= f.fields_for :addresses_attributes do |add| %>
 	    	<%st_address = @address.last.street_address rescue nil%>
-	      <%= add.input :street_address, required: true, label: "Street", :input_html => { :name => "user[addresses_attributes][][street_address]", :value => st_address}%>
+	      <%= add.input :street_address, required: true, label: "Street", :input_html => { :name => "user[addresses_attributes][][street_address]",id: 'street_number', :value => st_address}%>
 	      <%city = @address.last.city rescue nil%>
-	      <%= add.input :city, required: true, label: "City", :input_html => { :name => "user[addresses_attributes][][city]", :value => city} %>
+	      <%= add.input :city, required: true, label: "City", :input_html => { :name => "user[addresses_attributes][][city]", :value => city, :readonly => true, id: 'locality'} %>
         <%address_region = @address.last.region rescue nil%>
-	      <%= add.input :region, required: true, label: "Province/State", :input_html => { :name => "user[addresses_attributes][][region]", :value => address_region} %>
+	      <%= add.input :region, required: true, label: "Province/State", :input_html => { :name => "user[addresses_attributes][][region]", :value => address_region, id: 'administrative_area_level_1', :readonly => true} %>
         <%postcode = @address.last.postcode rescue nil%>
-	      <%= add.input :postcode, required: true, label: "Postcode/Zipcode", :input_html => { :name => "user[addresses_attributes][][postcode]", :value => postcode}%>
+	      <%= add.input :postcode, required: true, label: "Postcode/Zipcode", :input_html => { :name => "user[addresses_attributes][][postcode]", :value => postcode, id: 'postal_code', :readonly => true}%>
 
 	      <div class="form-group">
 	        <label class="col-sm-3 control-label">Country<span class="asterisk">*</span></label>
 	        <div class="col-sm-6">
-	  				<%= add.input_field :country, { required: true, priority: [ "Canada", "United States", "United Kingdom" ],  class: "select2 form-control", name: "user[addresses_attributes][][country]", selected: @address.present? ? @address.last.country : '' } %>
+	  				<%= add.input_field :country, { required: true, priority: [ "Canada", "United States", "United Kingdom" ],  class: "select2 form-control", name: "user[addresses_attributes][][country]",id: 'country',:readonly => true, selected: @address.present? ? @address.last.country : '' } %>
 	  			</div>
 	      </div>
 	      <% address_id = @address.last.id rescue nil %>

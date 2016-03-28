@@ -251,12 +251,26 @@
 
   $('#schedule-from-datepicker-edit').datepicker({
     dateFormat: 'mm/dd/yy',
-    altField: "#schedule-from-datepicker-edit",
-    altFormat: "mm/dd/yy"
+    altField: "#schedule-to-datepicker-edit",
+    altFormat: "mm/dd/yy",
+    onSelect: function (selected) {
+      var dt = new Date(selected);
+      dt.setDate(dt.getDate());
+      $("#schedule-to-datepicker-edit").datepicker("option", "minDate", dt);
+    }
   });
+
+  $(".conversation-edit-meeting-modal-form").on("shown.bs.modal", function(){
+
+    var d = $('#schedule-from-datepicker-edit').val();
+    var new_d = new Date(Date.parse(d))
+    $("#schedule-to-datepicker-edit").datepicker("option", "minDate", new_d)
+  });
+
   $('#schedule-to-datepicker-edit').datepicker({
-    dateFormat: 'mm/dd/yy'
+    dateFormat: 'mm/dd/yy',
   });
+
   $('#schedule-from-timepicker-edit').timepicker({
     minuteStep: 15
   });

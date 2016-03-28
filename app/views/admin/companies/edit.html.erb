@@ -8,7 +8,13 @@
 <%=render 'company_form'%>
 
 <script>
+
   $(function(){
+
+    $("#locality").attr('readonly', false);
+    $('#administrative_area_level_1').attr('readonly', false);
+    $('#country').attr('readonly', false);
+    $('#postal_code').attr('readonly', false);
 
     var $validator = $("#company-add-form").validate({
       highlight: function(element) {
