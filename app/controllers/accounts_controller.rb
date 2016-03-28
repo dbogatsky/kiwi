@@ -172,31 +172,42 @@ class AccountsController < ApplicationController
   end
 
   def check_in
-    ce = ConversationItemEvent.create(lat: request.location.latitude, long: request.location.longitude, ip_address: request.location.ip, type: "check_in", conversation_item_id: params[:conversation_item_id], user_id: current_user.id)
-    if ce
-      flash[:success] = 'Successfully Checked In'
+    citem = params['cid']
+    lat = 0.0
+    lng = 0.0
+
+    if params['lat'].nil? || params['lng'].nil?
+      ip_address = request.location.ip
+      lat = request.location.latitude
+      lng = request.location.longitude
     else
-      flash[:danger] = "Couldn't Checked In"
+      ip_address = params[:ip_address]
+      lat = params['lat']
+      lng = params['lng']
     end
-    if params[:info].present?
-      redirect_to schedule_path
-    else
-      redirect_to :back
-    end
+    ci = ConversationItemEvent.create(lat: lat, long: lng, ip_address: ip_address, type: "check_in", conversation_item_id: citem, user_id: current_user.id)
+
+    render json: ci
   end
 
   def check_out
-    ce = ConversationItemEvent.create(lat: request.location.latitude, long: request.location.longitude, ip_address: request.location.ip, type: "check_out", conversation_item_id: params[:conversation_item_id], user_id: current_user.id)
-    if ce
-        flash[:success] = 'Successfully Checked Out'
-      else
-        flash[:danger] = "Couldn't Checked Out"
-      end
-    if params[:info].present?
-      redirect_to schedule_path
+    citem = params['cid']
+    lat = 0.0
+    lng = 0.0
+
+    if params['lat'].nil? || params['lng'].nil?
+      ip_address = request.location.ip
+      lat = request.location.latitude
+      lng = request.location.longitude
     else
-      redirect_to :back
+      ip_address = params[:ip_address]
+      lat = params['lat']
+      lng = params['lng']
     end
+
+    co = ConversationItemEvent.create(lat: lat, long: lng, ip_address: ip_address, type: "check_out", conversation_item_id: citem, user_id: current_user.id)
+
+    render json: co
   end
 
   def jump_in

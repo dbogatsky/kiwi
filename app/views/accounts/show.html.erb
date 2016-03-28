@@ -220,6 +220,9 @@
 
 <% content_for :custom_js do %>
 <script>
+  $('#preloader').css('opacity', 0.8);
+  $('#preloader').hide();
+
   $(document).on('click', '.ui-datepicker-next, .ui-datepicker-prev', function(e){
     e.stopPropagation();
   });
