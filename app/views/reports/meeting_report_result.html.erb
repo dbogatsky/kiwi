@@ -91,16 +91,31 @@
     </div><!-- col-sm-6 -->
   </div><!-- row -->
   <div class="row">
+    <div class="col-sm-8 col-md-6">
+      <div class="col-sm-7">
+       <p class="mb15"><small>Meetings by the day of week</small></p>
+        <div id="day_of_week_bar_chart"></div>
+      </div>
+    </div>
+    <div class="col-sm-8 col-md-6">
+      <div class="col-sm-7">
+       <p class="mb15"><small>Meetings by account status</small></p>
+        <div id="account_status_pie_chart"></div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-8 col-md-12">
+      <div class="col-sm-12">
+      <p class="mb15"><small>Meetings by the time of day</small></p>
+        <div id="time_of_day_bar_chart"></div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
     <div class="col-sm-8 col-md-12">
       <%=render "dashboard/meeting_map", meetings: @meetings %>
     </div><!-- col-sm-9 -->
-   <!--  <div class="col-sm-4 col-md-3">
-      <div class="panel panel-default">
-        <div class="panel-body">
-        <h5 class="subtitle mb5">Most Browser Used</h5>
-        </div>
-      </div>
-    </div> -->
   </div><!-- row -->
   <div class="row">
     <div class="col-sm-12">
@@ -181,6 +196,52 @@
 </div><!-- contentpanel -->
   <%#=render "check_in_check_out"%>
 <script>
+  var data = '<%=@data%>';
+  data = JSON.parse(data.replace(/&quot;/g,'"'))
+  var m4 = new Morris.Bar({
+    element: 'day_of_week_bar_chart',
+    data: data,
+    xkey: 'y',
+    ykeys: ['a'],
+    xLabelMargin: 5,
+    labels: ['Meetings'],
+    barColors: ['#1CAF9A'],
+    lineWidth: '1px',
+    fillOpacity: 0.8,
+    smooth: false,
+    stacked: true,
+    hideHover: true
+  });
+
+  var time_data = '<%=@time_data%>';
+  time_data = JSON.parse(time_data.replace(/&quot;/g,'"'))
+  var m5 = new Morris.Bar({
+    element: 'time_of_day_bar_chart',
+    data: time_data ,
+    xkey: 'y',
+    ykeys: ['a'],
+    xLabelMargin: 1,
+    labels: ['Meetings'],
+    barColors: ['#428BCA'],
+    lineWidth: '1px',
+    fillOpacity: 0.8,
+    smooth: false,
+    stacked: true,
+    hideHover: true
+  });
+
+  var account_data=  '<%=@account_data%>';
+  account_data = JSON.parse(account_data.replace(/&quot;/g,'"'))
+  var m6 =  new Morris.Donut({
+    element: 'account_status_pie_chart',
+    data: account_data,
+    colors: ['#1CAF9A', '#428BCA', '#ff860d', '#999999'],
+    formatter: function (y, data) { return y + '%'}
+  });
+
+
+
+
   jQuery(document).ready(function() {
     //"use strict";
     jQuery('#meetingTable').dataTable({
