@@ -249,6 +249,10 @@
 </div><!-- modal -->
 <script type="text/javascript">
 
+  $('#schedule-to-timepicker-edit').timepicker({
+    minuteStep: 15
+  });
+
   $('#schedule-from-datepicker-edit').datepicker({
     dateFormat: 'mm/dd/yy',
     altField: "#schedule-to-datepicker-edit",
@@ -259,6 +263,29 @@
       $("#schedule-to-datepicker-edit").datepicker("option", "minDate", dt);
     }
   });
+
+  $("#schedule-from-timepicker-edit").on('change', function(){
+    var d = new Date();
+    var t = $("#schedule-from-timepicker-edit").val();
+    var time = t.match(/(\d+)(?::(\d\d))?\s*(p?)/);
+    d.setHours( parseInt(time[1]) + (time[3] ? 12 : 0) );
+    d.setMinutes( parseInt(time[2]) || 0 );
+    var hh = d.getHours()+1;
+    var m = d.getMinutes();
+    var dd = 'AM';
+    var h = hh;
+    if (h >= 12) {
+        h = hh-12;
+        dd = "PM";
+    }
+    if (h == 0) {
+        h = 12;
+    }
+    m = m<10?"0"+m:m;
+    var current_time = h+":"+m+" "+dd;
+    $('#schedule-to-timepicker-edit').val(current_time);
+  });
+
 
   $(".conversation-edit-meeting-modal-form").on("shown.bs.modal", function(){
 
@@ -274,9 +301,7 @@
   $('#schedule-from-timepicker-edit').timepicker({
     minuteStep: 15
   });
-  $('#schedule-to-timepicker-edit').timepicker({
-    minuteStep: 15
-  });
+
   $('#meeting-reminder-date-edit').datepicker({
     dateFormat: 'mm/dd/yy',
     altFormat: "mm/dd/yy"

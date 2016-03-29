@@ -270,6 +270,30 @@
   </div><!-- modal dialog -->
 </div><!-- modal -->
 <script type="text/javascript">
+
+
+  $("#schedule-from-timepicker").on('change', function(){
+    var d = new Date();
+    var t = $("#schedule-from-timepicker").val();
+    var time = t.match(/(\d+)(?::(\d\d))?\s*(p?)/);
+    d.setHours( parseInt(time[1]) + (time[3] ? 12 : 0) );
+    d.setMinutes( parseInt(time[2]) || 0 );
+    var hh = d.getHours()+1;
+    var m = d.getMinutes();
+    var dd = 'AM';
+    var h = hh;
+    if (h >= 12) {
+        h = hh-12;
+        dd = "PM";
+    }
+    if (h == 0) {
+        h = 12;
+    }
+    m = m<10?"0"+m:m;
+    var current_time = h+":"+m+" "+dd;
+    $('#schedule-to-timepicker').val(current_time);
+  });
+
   $(".account-action-meeting").on("shown.bs.modal", function(){
     var input = document.getElementById("keyword");
     var autocomplete = new google.maps.places.Autocomplete(input);

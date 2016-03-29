@@ -55,6 +55,7 @@
 
   var componentForm = {
     street_number: 'short_name',
+    route: 'long_name',
     locality: 'long_name',
     administrative_area_level_1: 'long_name',
     country: 'short_name',
@@ -68,20 +69,27 @@
     var place = autocomplete.getPlace();
 
     for (var component in componentForm) {
-      $('#'+component).val('');
-      $('#'+component).attr('readonly', false)
+      if (component != 'route'){
+        $('#'+component).val('');
+        $('#'+component).attr('readonly', false)
+      }
     }
 
     for (var i = 0; i < place.address_components.length; i++) {
       var addressType = place.address_components[i].types[0];
       if (componentForm[addressType]) {
         var val = place.address_components[i][componentForm[addressType]];
-        if (addressType == 'country'){
-          $("#country").select2().val(val);
-          $("#country").select2().val();
+        if (addressType !='route'){
+          if (addressType == 'country'){
+            $("#country").select2().val(val);
+            $("#country").select2().val();
 
-        }else{
-          document.getElementById(addressType).value = val;
+          }else if (addressType == 'street_number'){
+            r = place.address_components[1][componentForm['route']]
+            document.getElementById(addressType).value = val+' '+r
+          }else{
+            document.getElementById(addressType).value = val;
+          }
         }
       }
     }
@@ -112,11 +120,9 @@
     $('#schedule-to-datepicker').datepicker({
       dateFormat: 'mm/dd/yy'
     });
-    $('#schedule-from-timepicker').timepicker({
-      minuteStep: 15
-    });
+
     var d = new Date();
-    var hh = d.getHours() + 1;
+    var hh = d.getHours();
     var m = d.getMinutes();
     var dd = 'AM';
     var h = hh;
@@ -128,10 +134,15 @@
         h = 12;
     }
     m = m<10?"0"+m:m;
-    var time = h+":"+m+" "+dd;
-    $('#schedule-to-timepicker').timepicker({
+    var current_time = h+":"+m+" "+dd;
+
+    $('#schedule-from-timepicker').timepicker({
       minuteStep: 15,
-      defaultTime: time
+      defaultTime: current_time
+    });
+
+    $('#schedule-to-timepicker').timepicker({
+      minuteStep: 15
     });
     $('#scheduleFromTimePicker').timepicker().on('hide.timepicker', function(e) {
       $('#schedule-to-timepicker').timepicker('setTime', e.time.value);
