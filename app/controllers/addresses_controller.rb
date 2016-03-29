@@ -7,7 +7,7 @@ class AddressesController < ApplicationController
   def create
     @address = Address.new(address_params)
     @account = Account.find(params[:account_id])
-    
+
     respond_to do |format|
       if @address.save
         @status = "ok"

@@ -44,7 +44,7 @@
 <script>
 jQuery(document).ready(function(){
     "use strict";
-  
+
 	// With Form Validation Wizard
 	var $validator = jQuery("#account-edit-form").validate({
 		highlight: function(element) {
@@ -54,7 +54,7 @@ jQuery(document).ready(function(){
 		  jQuery(element).closest('.form-group').removeClass('has-error');
 		}
 	});
-  
+
 	jQuery('#validationWizard').bootstrapWizard({
 		tabClass: 'nav nav-pills nav-justified nav-disabled-click',
 		onTabClick: function(tab, navigation, index) {
@@ -62,12 +62,12 @@ jQuery(document).ready(function(){
 		},
 		onNext: function(tab, navigation, index) {
 		  var $valid = jQuery('#account-edit-form').valid();
-		  
+
 		  if(!$valid) {
 		    $validator.focusInvalid();
 		    return false;
 		  }
-		  
+
 		},
 		onTabShow: function(tab, navigation, index){
 			if(index == 3){
@@ -77,11 +77,11 @@ jQuery(document).ready(function(){
 			  }else{
 			  	$(".pager .next").show();
 			  	$(".pager .finish").hide();
-			  }	
+			  }
 		}
 
 	});
-  	
+
   	$(".pager .finish").click(function(e){
   		e.preventDefault();
   		$("#account-edit-form").submit();

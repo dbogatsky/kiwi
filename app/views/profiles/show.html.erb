@@ -74,17 +74,17 @@
 
           <%= f.fields_for :addresses_attributes do |add| %>
             <%st_address = @address.last.street_address rescue nil%>
-            <%= add.input :street_address, required: true, label: "Street", :input_html => { :name => "user[addresses_attributes][][street_address]", :value => current_user.addresses.last.street_address}%>
+            <%= add.input :street_address, required: true, label: "Street", :input_html => { :name => "user[addresses_attributes][][street_address]", :value => current_user.addresses.last.street_address, id: 'street_number'}%>
             <%city = @address.last.city rescue nil%>
-            <%= add.input :city, required: true, label: "City", :input_html => { :name => "user[addresses_attributes][][city]", :value => current_user.addresses.last.city} %>
+            <%= add.input :city, required: true, label: "City", :input_html => { :name => "user[addresses_attributes][][city]", :value => current_user.addresses.last.city, id: 'locality'} %>
             <%postcode = @address.last.postcode rescue nil%>
-            <%= add.input :postcode, required: true, label: "Postcode/Zipcode", :input_html => { :name => "user[addresses_attributes][][postcode]", :value => current_user.addresses.last.postcode}%>
+            <%= add.input :postcode, required: true, label: "Postcode/Zipcode", :input_html => { :name => "user[addresses_attributes][][postcode]", :value => current_user.addresses.last.postcode, id: 'postal_code'}%>
             <%address_region = @address.last.region rescue nil%>
-            <%= add.input :region, required: true, label: "Province/State", :input_html => { :name => "user[addresses_attributes][][region]", :value => current_user.addresses.last.region} %>
+            <%= add.input :region, required: true, label: "Province/State", :input_html => { :name => "user[addresses_attributes][][region]", :value => current_user.addresses.last.region, id:'administrative_area_level_1'} %>
             <div class="form-group">
               <label class="col-sm-3 control-label">Country</label>
               <div class="col-sm-6">
-                <%= add.input_field :country, { required: true, priority: [ "Canada", "United States", "United Kingdom" ],  class: "select2Country", name: "user[addresses_attributes][][country]", selected: current_user.addresses.last.country} %>
+                <%= add.input_field :country, { required: true, priority: [ "Canada", "United States", "United Kingdom" ],  class: "select2Country", name: "user[addresses_attributes][][country]", selected: current_user.addresses.last.country, id: 'country'} %>
               </div>
             </div>
             <% address_id = current_user.addresses.last.id rescue nil %>

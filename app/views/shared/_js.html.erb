@@ -53,6 +53,48 @@
 <script>
 	$(document).ready(function() {
 
+  var componentForm = {
+    street_number: 'short_name',
+    route: 'long_name',
+    locality: 'long_name',
+    administrative_area_level_1: 'long_name',
+    country: 'short_name',
+    postal_code: 'short_name'
+  };
+  var input = document.getElementById("street_number");
+  var autocomplete = new google.maps.places.Autocomplete(input);
+  autocomplete.addListener('place_changed', fillInAddress);
+
+  function fillInAddress() {
+    var place = autocomplete.getPlace();
+
+    for (var component in componentForm) {
+      if (component != 'route'){
+        $('#'+component).val('');
+        $('#'+component).attr('readonly', false)
+      }
+    }
+
+    for (var i = 0; i < place.address_components.length; i++) {
+      var addressType = place.address_components[i].types[0];
+      if (componentForm[addressType]) {
+        var val = place.address_components[i][componentForm[addressType]];
+        if (addressType !='route'){
+          if (addressType == 'country'){
+            $("#country").select2().val(val);
+            $("#country").select2().val();
+
+          }else if (addressType == 'street_number'){
+            r = place.address_components[1][componentForm['route']]
+            document.getElementById(addressType).value = val+' '+r
+          }else{
+            document.getElementById(addressType).value = val;
+          }
+        }
+      }
+    }
+  }
+
     $('body').bind('ajax:beforeSend', function(event, xhr, settings) {
       console.log("ajax-beforesend");
       $("#preloader").show();
@@ -64,17 +106,41 @@
     });
 
     $('.datepicker').datepicker();
+
     $('#schedule-from-datepicker, #meeting-reminder-date').datepicker({
       dateFormat: 'mm/dd/yy',
       altField: "#schedule-to-datepicker",
-      altFormat: "mm/dd/yy"
+      altFormat: "mm/dd/yy",
+      onSelect: function (selected) {
+        var dt = new Date(selected);
+        dt.setDate(dt.getDate());
+        $("#schedule-to-datepicker").datepicker("option", "minDate", dt);
+      }
     });
     $('#schedule-to-datepicker').datepicker({
       dateFormat: 'mm/dd/yy'
     });
+
+    var d = new Date();
+    var hh = d.getHours();
+    var m = d.getMinutes();
+    var dd = 'AM';
+    var h = hh;
+    if (h >= 12) {
+        h = hh-12;
+        dd = "PM";
+    }
+    if (h == 0) {
+        h = 12;
+    }
+    m = m<10?"0"+m:m;
+    var current_time = h+":"+m+" "+dd;
+
     $('#schedule-from-timepicker').timepicker({
-      minuteStep: 15
+      minuteStep: 15,
+      defaultTime: current_time
     });
+
     $('#schedule-to-timepicker').timepicker({
       minuteStep: 15
     });
@@ -82,6 +148,5 @@
       $('#schedule-to-timepicker').timepicker('setTime', e.time.value);
     });
   });
-
 </script>
 <!-- end of shared javascript -->

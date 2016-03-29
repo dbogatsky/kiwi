@@ -17,3 +17,88 @@
 //= require jstz
 //= require browser_timezone_rails/set_time_zone
 //= require_tree .
+
+
+$(document).on('click', '.checkin', function(){
+  checkin(this);
+});
+
+$(document).on('click', '.checkout', function(){
+  checkout(this);
+});
+
+function checkin(parent) {
+  var self = parent;
+  //immediately show loader
+  $('#'+self.id).hide();
+  $('#preloader').show();
+
+  navigator.geolocation.getCurrentPosition(
+    function(position) {
+      savePosition(position, "checkin", "success", self.id);
+    },
+    function(position) {
+      savePosition(position, "checkin", "error", self.id);
+    }
+  );
+}
+
+function checkout(parent) {
+  var self = parent;
+  //immediately show loader
+  $('#'+self.id).hide();
+  $('#preloader').show();
+
+  navigator.geolocation.getCurrentPosition(
+    function(position) {
+      savePosition(position, "checkout", "success", self.id);
+    },
+    function(position) {
+      savePosition(position, "checkout", "error", self.id);
+    }
+  );
+}
+
+function savePosition(position, type, result, cid) {
+  var url = null;
+  var lat = null;
+  var lng = null;
+
+  if (result == "success") {
+    lat = position.coords.latitude;
+    lng = position.coords.longitude;
+  }
+
+  if(type == "checkin") {
+    url = '/accounts/check_in';
+  }
+
+  if(type == "checkout") {
+    url = '/accounts/check_out';
+  }
+
+  $.getJSON("http://jsonip.com/", function(data){
+    var ip_address = data.ip;
+    $.ajax({
+      url : url,
+      method: 'POST',
+      data: { cid: cid, lat: lat, lng: lng, ip_address: ip_address },
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+      },
+      complete: function() {
+        $('#preloader').hide();
+        if(type == "checkin"){
+          $('#'+cid).switchClass("checkin", "checkout");
+          $('#'+cid).parent().find('#position_button').text('Check Out');
+          $('#'+cid).parent().find('.fa-sign-in').switchClass("fa-sign-in", "fa-sign-out");
+          $('#'+cid).show();
+        }
+      },
+      success: function() {
+      },
+      error:function() {
+      }
+    });
+  });
+}

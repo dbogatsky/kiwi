@@ -37,15 +37,15 @@
       <div class="tab-pane" id="vtab2">
         <%= f.fields_for :addresses_attributes do |add| %>
           <input type="hidden" name="account[addresses_attributes][][id]" value="<%= @addresses.first.id %>" >
-          <%= add.input :street_address, wrapper: :wizard_horizontal_form, required: true, label: "Street Address", :input_html => { :name => "account[addresses_attributes][][street_address]", :value => @addresses.first.street_address } %>
-          <%= add.input :city, wrapper: :wizard_horizontal_form, required: true, label: "City", :input_html => { :name => "account[addresses_attributes][][city]", :value => @addresses.first.city } %>
-          <%= add.input :postcode, wrapper: :wizard_horizontal_form, required: true, label: "Post/Zipcode", :input_html => { :name => "account[addresses_attributes][][postcode]", :value => @addresses.first.postcode } %>
-          <%= add.input :region, wrapper: :wizard_horizontal_form, required: true, label: "Province/State", :input_html => { :name => "account[addresses_attributes][][region]", :value => @addresses.first.region } %>
+          <%= add.input :street_address, wrapper: :wizard_horizontal_form, required: true, label: "Street Address", :input_html => { :name => "account[addresses_attributes][][street_address]",id: "street_number", :value => @addresses.first.street_address } %>
+          <%= add.input :city, wrapper: :wizard_horizontal_form, required: true, label: "City", :input_html => { :name => "account[addresses_attributes][][city]",id: "locality", :value => @addresses.first.city } %>
+          <%= add.input :postcode, wrapper: :wizard_horizontal_form, required: true, label: "Post/Zipcode", :input_html => { :name => "account[addresses_attributes][][postcode]",id: "postal_code", :value => @addresses.first.postcode } %>
+          <%= add.input :region, wrapper: :wizard_horizontal_form, required: true, label: "Province/State", :input_html => { :name => "account[addresses_attributes][][region]",id: "administrative_area_level_1", :value => @addresses.first.region } %>
 
           <div class="form-group">
             <label class="col-sm-offset-2 col-sm-2 control-label">Country<span class="asterisk">*</span></label>
             <div class="col-sm-4">
-            <%= add.input_field :country, { required: true, priority: [ "Canada", "United States", "United Kingdom" ],  class: "select2Country", name: "account[addresses_attributes][][country]", selected: @addresses.first.country } %>
+            <%= add.input_field :country, { required: true, priority: [ "Canada", "United States", "United Kingdom" ],  class: "select2Country", name: "account[addresses_attributes][][country]",id: "country", selected: @addresses.first.country } %>
             </div>
           </div>
         <% end %>
@@ -60,7 +60,7 @@
               <input type="hidden" name="account[contacts_attributes][<%= current_contact.id %>][id]" value="<%= current_contact.id %>" >
               <label class="col-sm-2 control-label">Name<span class="asterisk">*</span></label>
               <div class="col-sm-2">
-                <%= c.input_field :name, { required: true, label: 'Contact', name: "account[contacts_attributes][#{current_contact.id}][name]", class: "form-control", :value => current_contact.name, :id => "account_contacts_attributes_name_#{current_contact.id}" } %>
+                <%= c.input_field :name, { required: true, label: 'Contact', name: "account[contacts_attributes][#{current_contact.id}][name]", class: "form-control", :value => current_contact.name, :id => "account_contacts_attributes_name_#{current_contact.id}", placeholder: "contact name" } %>
               </div>
 
               <label class="col-sm-1 control-label">Type<span class="asterisk">*</span></label>
@@ -153,7 +153,7 @@
             <div class="form-group">\
               <label class="col-sm-2 control-label">Name<span class="asterisk">*</span></label>\
               <div class="col-sm-2">\
-                <input label="Name" name="account[contacts_attributes]['+t+'][name]" class="form-control" required id="account_contacts_attributes_name_'+t+'" type="text">\
+                <input label="Name" name="account[contacts_attributes]['+t+'][name]" class="form-control" required id="account_contacts_attributes_name_'+t+'" type="text" placeholder="contact name">\
               </div>\
               <label class="col-sm-1 control-label">Type<span class="asterisk">*</span></label>\
               <div class="col-sm-2">\
@@ -161,7 +161,7 @@
               </div>\
               <label class="col-sm-1 control-label">Value<span class="asterisk">*</span></label>\
               <div class="col-sm-2">\
-                <input label="Value" name="account[contacts_attributes]['+t+'][value]" class="form-control" required id="account_contacts_attributes_value_'+t+'" type="text">\
+                <input label="Value" name="account[contacts_attributes]['+t+'][value]" class="form-control" required id="account_contacts_attributes_value_'+t+'" type="text" placeholder="contact value">\
               </div>\
               <div class="col-sm-1"><button class="remove-contact-button btn btn-danger btn-xs">Remove</button></div>\
             </div>\

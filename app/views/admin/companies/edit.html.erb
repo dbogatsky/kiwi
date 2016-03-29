@@ -1,7 +1,20 @@
+<div class="row">
+  <div class="col-md-10">
+  </div>
+  <div class="col-md-2 pull-right">
+  <%= link_to admin_companies_path, class: "btn btn-white btn-block" do %><i class="fa fa-minus-circle"></i>&nbsp;&nbsp;&nbsp;Cancel<% end %><br />
+  </div>
+</div>
 <%=render 'company_form'%>
 
 <script>
+
   $(function(){
+
+    $("#locality").attr('readonly', false);
+    $('#administrative_area_level_1').attr('readonly', false);
+    $('#country').attr('readonly', false);
+    $('#postal_code').attr('readonly', false);
 
     var $validator = $("#company-add-form").validate({
       highlight: function(element) {

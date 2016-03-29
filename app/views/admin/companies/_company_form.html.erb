@@ -42,31 +42,31 @@
             <div class="form-group">
               <label class="col-sm-offset-2 col-sm-2 control-label">Street Address<span class="asterisk">*</span></label>
               <div class="col-sm-4">
-               <%= text_field_tag 'company[addresses_attributes][0][street_address]' , @address.try(:street_address), wrapper: :wizard_horizontal_form, class: 'form-control', required: true%>
+               <%= text_field_tag 'company[addresses_attributes][0][street_address]' , @address.try(:street_address), wrapper: :wizard_horizontal_form, class: 'form-control', required: true, id: 'street_number'%>
               </div>
             </div>
             <div class="form-group">
               <label class="col-sm-offset-2 col-sm-2 control-label">City<span class="asterisk">*</span></label>
               <div class="col-sm-4">
-               <%= text_field_tag 'company[addresses_attributes][0][city]', @address.try(:city), wrapper: :wizard_horizontal_form, class: 'form-control', required: true%>
+               <%= text_field_tag 'company[addresses_attributes][0][city]', @address.try(:city), wrapper: :wizard_horizontal_form, class: 'form-control', required: true, id: 'locality', readonly: true%>
               </div>
             </div>
             <div class="form-group">
               <label class="col-sm-offset-2 col-sm-2 control-label">Province/State<span class="asterisk">*</span></label>
               <div class="col-sm-4">
-               <%= text_field_tag 'company[addresses_attributes][0][region]', @address.try(:region), wrapper: :wizard_horizontal_form, class: 'form-control', required: true%>
+               <%= text_field_tag 'company[addresses_attributes][0][region]', @address.try(:region), wrapper: :wizard_horizontal_form, class: 'form-control', required: true, id: 'administrative_area_level_1', readonly: true%>
               </div>
             </div>
             <div class="form-group">
               <label class="col-sm-offset-2 col-sm-2 control-label">Post/Zipcode<span class="asterisk">*</span></label>
               <div class="col-sm-4">
-               <%= text_field_tag 'company[addresses_attributes][0][postcode]' ,@address.try(:postcode), wrapper: :wizard_horizontal_form, class: 'form-control', required: true%>
+               <%= text_field_tag 'company[addresses_attributes][0][postcode]' ,@address.try(:postcode), wrapper: :wizard_horizontal_form, class: 'form-control', required: true, id: 'postal_code', readonly: true%>
               </div>
             </div>
             <div class="form-group">
               <label class="col-sm-offset-2 col-sm-2 control-label">Country<span class="asterisk">*</span></label>
               <div class="col-sm-4">
-              <%=country_select("company[addresses_attributes][0]", 'country', {priority_countries: ["GB", "FR", "DE"], selected: @address.try(:country) }, {class: 'form-control', prompt: "Select Country", required: true})%>
+              <%=country_select("company[addresses_attributes][0]", 'country', {priority_countries: ["GB", "FR", "DE"], selected: @address.try(:country) }, {class: 'form-control', prompt: "Select Country", required: true, id: 'country', readonly: true})%>
               </div>
             </div>
             <%=hidden_field_tag 'company[addresses_attributes][0][id]',@address.try(:id)%>
