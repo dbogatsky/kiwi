@@ -92,6 +92,8 @@
 	      </div>
       </div>
       <%=hidden_field_tag 'user[addresses_attributes][0][id]',@address.try(:id)%>
+      <%=hidden_field_tag 'user[addresses_attributes][0][latitude]', @address.try(:latitude), id: 'account_lat'%>
+      <%=hidden_field_tag 'user[addresses_attributes][0][longitude]', @address.try(:longitude), id: 'account_lng' %>
       <div class="form-group">
         <label class="col-sm-3 control-label">Phone:</label>
         <div class="col-sm-2">

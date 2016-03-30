@@ -17,58 +17,58 @@
 </div>
 
 <% content_for :custom_js do %>
+
 <script>
-jQuery(document).ready(function(){
-    "use strict";
+	jQuery(document).ready(function(){
+	    "use strict";
 
-	// With Form Validation Wizard
-	var $validator = jQuery("#account-add-form").validate({
-		highlight: function(element) {
-		  jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
-		},
-		success: function(element) {
-		  jQuery(element).closest('.form-group').removeClass('has-error');
-		}
-	});
+		// With Form Validation Wizard
+		var $validator = jQuery("#account-add-form").validate({
+			highlight: function(element) {
+			  jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+			},
+			success: function(element) {
+			  jQuery(element).closest('.form-group').removeClass('has-error');
+			}
+		});
 
-	jQuery('#validationWizard').bootstrapWizard({
-		tabClass: 'nav nav-pills nav-justified nav-disabled-click',
-		onTabClick: function(tab, navigation, index) {
-		  return false;
-		},
-		onNext: function(tab, navigation, index) {
-		  var $valid = jQuery('#account-add-form').valid();
+		jQuery('#validationWizard').bootstrapWizard({
+			tabClass: 'nav nav-pills nav-justified nav-disabled-click',
+			onTabClick: function(tab, navigation, index) {
+			  return false;
+			},
+			onNext: function(tab, navigation, index) {
+			  var $valid = jQuery('#account-add-form').valid();
 
-		  if(!$valid) {
-		    $validator.focusInvalid();
-		    return false;
-		  }
-
-		},
-		onTabShow: function(tab, navigation, index){
-			if(index == 3){
-		  		$(".pager .next").hide();
-		  		$('.pager .finish').removeClass('disabled');
-		  		$(".pager .finish").show();
-			  }else{
-			  	$(".pager .next").show();
-			  	$(".pager .finish").hide();
+			  if(!$valid) {
+			    $validator.focusInvalid();
+			    return false;
 			  }
-		}
 
+			},
+			onTabShow: function(tab, navigation, index){
+				if(index == 3){
+			  		$(".pager .next").hide();
+			  		$('.pager .finish').removeClass('disabled');
+			  		$(".pager .finish").show();
+				  }else{
+				  	$(".pager .next").show();
+				  	$(".pager .finish").hide();
+				  }
+			}
+
+		});
+
+	  	$(".pager .finish").click(function(e){
+	  		e.preventDefault();
+	  		$("#account-add-form").submit();
+	  	})
+
+
+		// Textarea Autogrow
+		jQuery('#account-about').autogrow();
+		jQuery('#account-facts').autogrow();
 	});
-
-  	$(".pager .finish").click(function(e){
-  		e.preventDefault();
-  		$("#account-add-form").submit();
-  	})
-
-
-	// Textarea Autogrow
-	jQuery('#account-about').autogrow();
-	jQuery('#account-facts').autogrow();
-
-});
 </script>
 <% end %>
 

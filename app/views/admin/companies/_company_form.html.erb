@@ -70,6 +70,8 @@
               </div>
             </div>
             <%=hidden_field_tag 'company[addresses_attributes][0][id]',@address.try(:id)%>
+            <%=hidden_field_tag 'company[addresses_attributes][0][latitude]',  @address.try(:latitude), id: 'account_lat'%>
+            <%=hidden_field_tag 'company[addresses_attributes][0][longitude]',  @address.try(:longitude), id: 'account_lng' %>
         </div>
         <div class="tab-pane" id="vtab3">
           <div class="contact-form-wrap">

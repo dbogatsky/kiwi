@@ -49,6 +49,8 @@
             </div>
           </div>
         <% end %>
+        <%=hidden_field_tag 'account[addresses_attributes][][latitude]', @addresses.first.try(:latitude), id: 'account_lat'%>
+        <%=hidden_field_tag 'account[addresses_attributes][][longitude]', @addresses.first.try(:longitude), id: 'account_lng' %>
       </div>
 
       <div class="tab-pane" id="vtab3">
