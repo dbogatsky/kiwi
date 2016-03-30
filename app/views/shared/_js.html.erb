@@ -67,6 +67,11 @@
 
   function fillInAddress() {
     var place = autocomplete.getPlace();
+    var lat = place.geometry.location.lat();
+    var lng = place.geometry.location.lng();
+
+    $("#account_lat").val(lat);
+    $("#account_lng").val(lng);
 
     for (var component in componentForm) {
       if (component != 'route'){

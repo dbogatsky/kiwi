@@ -50,7 +50,6 @@
           <%= add.input :city, wrapper: :wizard_horizontal_form, required: true, label: "City", :input_html => { :name => "account[addresses_attributes][][city]", id: "locality", :readonly => true} %>
           <%= add.input :region, wrapper: :wizard_horizontal_form, required: true, label: "Province/State", :input_html => { :name => "account[addresses_attributes][][region]", :readonly => true, id: "administrative_area_level_1"} %>
           <%= add.input :postcode, wrapper: :wizard_horizontal_form, required: true, label: "Post/Zipcode", :input_html => { :name => "account[addresses_attributes][][postcode]", :readonly => true, id: "postal_code"} %>
-
           <div class="form-group">
             <label class="col-sm-offset-2 col-sm-2 control-label">Country<span class="asterisk">*</span></label>
             <div class="col-sm-4">
@@ -58,6 +57,8 @@
             </div>
           </div>
         <% end %>
+        <%=hidden_field_tag 'account[addresses_attributes][][latitude]', nil, id: 'account_lat'%>
+        <%=hidden_field_tag 'account[addresses_attributes][][longitude]', nil, id: 'account_lng' %>
       </div>
 
       <div class="tab-pane" id="vtab3">
