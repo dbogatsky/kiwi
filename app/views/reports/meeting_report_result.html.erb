@@ -137,8 +137,8 @@
             <tr>
               <td><%= meeting.title %></td>
               <td><%= meeting.location %></td>
-              <td><%= meeting.starts_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y - %l:%M %p") rescue nil%></td>
-              <td><%= meeting.ends_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y - %l:%M %p") rescue nil%></td>
+              <td><%= meeting.starts_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%Y/%m/%d %I:%M:%S %p") rescue nil%></td>
+              <td><%= meeting.ends_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%Y/%m/%d %I:%M:%S %p") rescue nil%></td>
               <td><%= meeting.check_ins.count %></td>
               <td><%= meeting.check_outs.count %></td>
               <td><%= meeting.invitees %></td>
@@ -164,29 +164,23 @@
         </thead>
         <tbody>
         <%if @meetings.present?%>
-          <% @meetings.each do |meeting| %>
-            <%if meeting.check_ins.present?%>
-              <%meeting.check_ins.each do |ci|%>
-                <tr>
-                  <td><%= meeting.title %></td>
-                  <td>Check In</td>
-                  <%user = User.find(ci.user_id)%>
-                  <td><%=user.first_name%> <%= user.last_name%></td>
-                  <td><%=ci.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y - %l:%M %p") rescue nil%></td>
-                </tr>
+          <%@sort_meetings = @meetings.sort_by {|x| [x.created_at] }%>
+          <% @sort_meetings.each do |meeting| %>
+            <%@check_in_out = []%>
+            <%@check_in_out << meeting.check_ins if meeting.check_ins.present?%>
+            <%@check_in_out << meeting.check_outs if meeting.check_outs.present?%>
+              <%if @check_in_out.present?%>
+                <%@sort_data = @check_in_out.sort_by {|x| [x.last.user_id, x.last.created_at] }%>
+                <%@sort_data.each do |ci|%>
+                  <tr>
+                    <td><%= meeting.title %></td>
+                    <td><%= ci.last.type == 'check_in' ? 'Check In' : 'Check Out'%></td>
+                    <%user = User.find(ci.last.user_id)%>
+                    <td><%=user.first_name%> <%= user.last_name%></td>
+                    <td><%=ci.last.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%Y/%m/%d %I:%M:%S %p") rescue nil%></td>
+                  </tr>
+                <%end%>
               <%end%>
-            <%end%>
-            <%if meeting.check_outs.present?%>
-              <%meeting.check_outs.each do |co|%>
-                <tr>
-                  <td><%= meeting.title %></td>
-                  <td>Check Out</td>
-                   <%user = User.find(co.user_id)%>
-                  <td><%=user.first_name%> <%= user.last_name%></td>
-                  <td><%=co.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y - %l:%M %p") rescue nil%></td>
-                </tr>
-              <%end%>
-            <%end%>
           <% end %>
         <%end%>
         </tbody>
