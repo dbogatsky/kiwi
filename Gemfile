@@ -24,13 +24,20 @@ gem 'browser-timezone-rails'
 gem "activeresource", require: 'active_resource'
 gem 'puma'
 gem 'activesupport-json_encoder'
+gem 'web-console', '~> 2.0', group: :development
 
 group :development, :test do
+
+	gem 'rspec-rails'
+	gem 'factory_girl_rails'
+	gem 'shoulda-matchers', require: false
+	gem 'faker'
+	gem 'simplecov', require: false
+
   gem 'dotenv-rails'
   gem 'byebug'
   gem 'better_errors'
   gem 'jazz_fingers'
-  gem 'web-console', '~> 2.0'
   gem "http_logger"
   gem 'pry-rails'
 end
