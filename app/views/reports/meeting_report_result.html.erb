@@ -11,16 +11,16 @@
               <div class="col-xs-4">
                 <i class="fa fa-calendar"></i>
               </div>
-              <div class="col-xs-8">
-                <small class="stat-label">Total Meetings</small>
+              <div class="col-xs-8 text-center">
+                <small class="stat-label"><b>Total Meetings</b></small>
                 <h1><%=@total_meetings%></h1>
               </div>
             </div><!-- row -->
             <div class="mb15"></div>
             <div class="row">
-              <div class="col-xs-8">
-                <small class="stat-label">Average Meeting</small>
-                <h5><%=@meetings_per_daye%></h5>
+              <div class="col-xs-8 text-center" style="padding-left: 0px">
+                <small class="stat-label"><b>Average Meeting</b></small>
+                <h4><%=@meetings_per_daye%></h4>
               </div>
             </div>
           </div><!-- stat -->
@@ -35,8 +35,8 @@
               <div class="col-xs-4">
                 <i class="fa fa-sign-in"></i>
               </div>
-              <div class="col-xs-8">
-                <small class="stat-label">Total check ins</small>
+              <div class="col-xs-8 text-center">
+                <small class="stat-label"><b>Total check ins</b></small>
                 <h1><%=@total_check_in%></h1>
               </div>
             </div><!-- row -->
@@ -52,8 +52,8 @@
               <div class="col-xs-4">
                <i class="fa fa-sign-out"></i>
               </div>
-              <div class="col-xs-8">
-                <small class="stat-label">Total check outs</small>
+              <div class="col-xs-8 text-center">
+                <small class="stat-label"><b>Total check outs</b></small>
                 <h1><%=@total_check_out%></h1>
               </div>
             </div><!-- row -->
@@ -69,19 +69,19 @@
               <div class="col-xs-4">
                 <i class="fa fa-clock-o"></i>
               </div>
-              <div class="col-xs-8">
-                <small class="stat-label">Duration Average</small>
+              <div class="col-xs-8 text-center">
+                <small class="stat-label"><b>Duration Average</b></small>
                 <h3><%=@average_time_for_meeting%></h3>
               </div>
             </div><!-- row -->
             <div class="mb15"></div>
             <div class="row">
-              <div class="col-xs-6">
-                <small class="stat-label">Longest</small>
+              <div class="col-xs-6 text-center" style="padding-left: 0px">
+                <small class="stat-label"><b>Longest</b></small>
                 <h5><%=@longest_meeting_time%></h5>
               </div>
-              <div class="col-xs-6">
-                <small class="stat-label">Shortest</small>
+              <div class="col-xs-6 text-center" style="padding-right: 0px">
+                <small class="stat-label"><b>Shortest</b></small>
                 <h5><%=@shortest_meeting_time%></h5>
               </div>
             </div>
@@ -92,23 +92,35 @@
   </div><!-- row -->
   <div class="row">
     <div class="col-sm-8 col-md-6">
-      <div class="col-sm-7">
-       <p class="mb15"><small>Meetings by the day of week</small></p>
-        <div id="day_of_week_bar_chart"></div>
+      <div class="panel panel-dark panel-alt">
+        <div class="panel-heading">
+          <h3 class="panel-title">Meetings by the day of week</h3>
+        </div>
+        <div class="panel-body">
+         <div id="day_of_week_bar_chart"></div>
+        </div><!-- panel-body -->
       </div>
     </div>
     <div class="col-sm-8 col-md-6">
-      <div class="col-sm-7">
-       <p class="mb15"><small>Meetings by account status</small></p>
-        <div id="account_status_pie_chart"></div>
+      <div class="panel panel-dark panel-alt">
+        <div class="panel-heading">
+          <h3 class="panel-title">Meetings by account status</h3>
+        </div>
+        <div class="panel-body">
+         <div id="account_status_pie_chart"></div>
+        </div><!-- panel-body -->
       </div>
     </div>
   </div>
   <div class="row">
     <div class="col-sm-8 col-md-12">
-      <div class="col-sm-12">
-      <p class="mb15"><small>Meetings by the time of day</small></p>
-        <div id="time_of_day_bar_chart"></div>
+      <div class="panel panel-dark panel-alt">
+        <div class="panel-heading">
+          <h3 class="panel-title">Meetings by the time of day</h3>
+        </div>
+        <div class="panel-body">
+         <div id="time_of_day_bar_chart"></div>
+        </div><!-- panel-body -->
       </div>
     </div>
   </div>
@@ -122,6 +134,7 @@
       <table class="table table-striped" id="meetingTable">
         <thead>
            <tr>
+              <th></th>
               <th>Event Title</th>
               <th>Address</th>
               <th>Start at</th>
@@ -134,7 +147,12 @@
         <tbody>
         <%if @meetings.present?%>
           <% @meetings.each do |meeting| %>
-            <tr>
+            <tr id="meeting_<%=meeting.id%>">
+              <td class="check_in_out">
+                <%=link_to reports_check_in_check_out_path(meeting.id, ci_id: meeting.conversation_id), remote: :true do%>
+                  <i class="fa fa-plus-circle"></i>
+                <%end%>
+              </td>
               <td><%= meeting.title %></td>
               <td><%= meeting.location %></td>
               <td><%= meeting.starts_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%Y/%m/%d %I:%M:%S %p") rescue nil%></td>
@@ -149,47 +167,21 @@
       </table>
     </div><!-- col-sm-7 -->
   </div><!-- row -->
-  <b>Check Ins/Check Outs</b>
-  <div class="mb20"></div>
-  <div class="row">
-    <div class="col-sm-12">
-      <table class="table table-striped" id="check_inTable">
-        <thead>
-           <tr>
-              <th>Event Title</th>
-              <th>Type</th>
-              <th>User</th>
-              <th>Date/Time</th>
-           </tr>
-        </thead>
-        <tbody>
-        <%if @meetings.present?%>
-          <%@sort_meetings = @meetings.sort_by {|x| [x.created_at] }%>
-          <% @sort_meetings.each do |meeting| %>
-            <%@check_in_out = []%>
-            <%@check_in_out << meeting.check_ins if meeting.check_ins.present?%>
-            <%@check_in_out << meeting.check_outs if meeting.check_outs.present?%>
-              <%if @check_in_out.present?%>
-                <%@sort_data = @check_in_out.sort_by {|x| [x.last.user_id, x.last.created_at] }%>
-                <%@sort_data.each do |ci|%>
-                  <tr>
-                    <td><%= meeting.title %></td>
-                    <td><%= ci.last.type == 'check_in' ? 'Check In' : 'Check Out'%></td>
-                    <%user = User.find(ci.last.user_id)%>
-                    <td><%=user.first_name%> <%= user.last_name%></td>
-                    <td><%=ci.last.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%Y/%m/%d %I:%M:%S %p") rescue nil%></td>
-                  </tr>
-                <%end%>
-              <%end%>
-          <% end %>
-        <%end%>
-        </tbody>
-      </table>
-    </div><!-- col-sm-7 -->
-  </div><!-- row -->
 </div><!-- contentpanel -->
-  <%#=render "check_in_check_out"%>
-<script>
+
+
+<script type="text/javascript">
+
+  $('.check_in_out').click(function(){
+    $('#preloader').css('opacity', 0.8);
+    $('#preloader').show();
+    if ($(this).find('i').hasClass('fa-plus-circle')){
+        $(this).find('i').removeClass('fa-plus-circle').addClass('fa-minus-circle')
+      }else{
+        $(this).find('i').removeClass('fa-minus-circle').addClass('fa-plus-circle')
+      }
+  });
+
   var data = '<%=@data%>';
   data = JSON.parse(data.replace(/&quot;/g,'"'))
   var m4 = new Morris.Bar({
@@ -233,9 +225,6 @@
     formatter: function (y, data) { return y + '%'}
   });
 
-
-
-
   jQuery(document).ready(function() {
     //"use strict";
     jQuery('#meetingTable').dataTable({
@@ -249,6 +238,6 @@
       "lengthMenu": [[5, 10, 15, -1], [5, 10, 15, "All"]],
       "pageLength": 5
     });
-
   });
 </script>
+

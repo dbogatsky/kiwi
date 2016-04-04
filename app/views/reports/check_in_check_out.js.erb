@@ -1,0 +1,6 @@
+if($('.meeting_check_in_out_<%=@meeting.id%>').length > 0){
+   $('.meeting_check_in_out_<%=@meeting.id%>').remove()
+  }else{
+    $("<%= escape_javascript render(:partial => 'check_in_out', locals: { meeting: @meeting }) %>").insertAfter('#meeting_<%=@meeting.id%>');
+  }
+$('#preloader').hide();

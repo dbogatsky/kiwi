@@ -1,0 +1,41 @@
+<%@check_in_out = []%>
+<%@check_in_out << meeting.check_ins if meeting.check_ins.present?%>
+<%@check_in_out << meeting.check_outs if meeting.check_outs.present?%>
+<tr class="meeting_check_in_out_<%=meeting.id%>">
+  <%if @check_in_out.present?%>
+<!--       <table>
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>User</th>
+            <th>Date/Time</th>
+          </tr>
+        </thead> -->
+        <%@sort_data = @check_in_out.sort_by {|x| [x.last.user_id, x.last.created_at] }%>
+        <%@sort_data.each do |ci|%>
+          <!-- <tbody> -->
+            <tr class="meeting_check_in_out_<%=meeting.id%>">
+              <td></td>
+              <td></td>
+              <td><b>Type: </b><%= ci.last.type == 'check_in' ? 'Check In' : 'Check Out'%></td>
+              <%user = User.find(ci.last.user_id)%>
+              <td><b>User: </b><%=user.first_name%> <%= user.last_name%></td>
+              <td><b>Date/Time: </b><%=ci.last.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%Y/%m/%d %I:%M:%S %p") rescue nil%></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          <!-- </tbody> -->
+        <%end%>
+      <!-- </table> -->
+  <%else%>
+    <td></td>
+    <td></td>
+    <td>No data available</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  <%end%>
+</tr>
