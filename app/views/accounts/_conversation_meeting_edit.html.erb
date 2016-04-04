@@ -6,7 +6,7 @@
             <h4 class="modal-title">Edit Meeting</h4>
         </div>
         <div class="modal-body">
-          <%= form_tag update_meeting_account_path(account), novalidate: "novalidate", method: :patch do %>
+          <%= form_tag update_meeting_account_path(account), method: :patch do %>
             <div class="panel panel-default">
               <div class="panel-body">
                 <div class="row row-pad-5">
@@ -323,6 +323,11 @@
       $(".conversation-edit-meeting-modal-form input[name='conversation_item[longitude]']").val(lng);
     });
 
+    if($("#edit_invitee_emails").val() == ''){
+      $('#edit_tags').find('span').remove();
+      $('#edit_tag_input').attr('required', true)
+    }
+
     $("#edit_tags input").on({
       focusout : function() {
         // var txt = this.value.replace(/[^a-z0-9\+\-\.\#]/ig,''); // allowed characters
@@ -344,16 +349,18 @@
         }
       }
     });
+
     $('#edit_tags').on('click', 'span', function() {
+    // $('#edit_tags span').click(function(){
       if(confirm("Remove "+ $(this).text() +"?")) {
         emails_array = $('#edit_invitee_emails').val().split(', ')
         del_obj_index = emails_array.indexOf($(this).text());
         emails_array.splice(del_obj_index,1)
         $('#edit_invitee_emails').val(emails_array.join(','));
-        if($('#edit_tags').find('span').length < 2){
-          $('#edit_tag_input').attr('required', false);
-        }
         $(this).remove();
+        if($('#edit_tags').find('span').length < 2){
+          $('#edit_tag_input').attr('required', true);
+        }
       }
     });
     $( "#edit_tag_input" ).autocomplete({
