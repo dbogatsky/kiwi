@@ -307,7 +307,7 @@
     });
 
     if($('#tags').find('span').length < 2){
-      $('#tag_input').attr('required', false);
+      $('#tag_input').attr('required', true);
     }
 
     $("#tags input").on({
@@ -333,6 +333,7 @@
       }
     });
     $('#tags').on('click', 'span', function() {
+    // $('#tags span').click(function(){
       if(confirm("Remove "+ $(this).text() +"?")) {
       	emails_array = $('#invitee_emails').val().split(',')
       	del_obj_index = emails_array.indexOf($(this).text());
@@ -340,7 +341,7 @@
       	$('#invitee_emails').val(emails_array.join(','));
       	$(this).remove();
         if($('#tags').find('span').length < 2){
-          $('#tag_input').attr('required', false);
+          $('#tag_input').attr('required', true);
         }
       }
     });

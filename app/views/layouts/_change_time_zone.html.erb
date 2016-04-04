@@ -6,7 +6,7 @@
         <h4 class="modal-title">Update Your TimeZone</h4>
       </div>
       <div class="modal-body">
-        <%= form_tag(users_update_time_zone_path(current_user.id), method: :patch, novalidate: 'novalidate') do %>
+        <%= form_tag(users_update_time_zone_path(current_user.id), method: :patch) do %>
           <div class="panel panel-default">
               <div class="panel-body">
                 <div class="row row-pad-5">

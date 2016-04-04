@@ -7,7 +7,7 @@
       </div>
       <div class="modal-body">
         <p>Update the status and any notes to complete the meeting</p>
-        <%= form_tag(update_meeting_account_path(account), novalidate: 'novalidate', method: :patch) do %>
+        <%= form_tag(update_meeting_account_path(account), method: :patch) do %>
           <div class="panel panel-default">
               <div class="panel-body">
                 <div class="row row-pad-5">
