@@ -1,3 +1,4 @@
+require 'net/http/post/multipart'
 class Admin::CompaniesController < Admin::AdminController
  before_action :find_company, only: [:edit, :show, :update]
 
