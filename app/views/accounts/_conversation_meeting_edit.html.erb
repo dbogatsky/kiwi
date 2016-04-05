@@ -267,19 +267,32 @@
   $("#schedule-from-timepicker-edit").on('change', function(){
     var d = new Date();
     var t = $("#schedule-from-timepicker-edit").val();
-    var time = t.match(/(\d+)(?::(\d\d))?\s*(p?)/);
+    var time = t.match(/(\d+)(?::(\d\d))?\s*(P?)/);
     d.setHours( parseInt(time[1]) + (time[3] ? 12 : 0) );
     d.setMinutes( parseInt(time[2]) || 0 );
     var hh = d.getHours()+1;
     var m = d.getMinutes();
-    var dd = 'AM';
     var h = hh;
-    if (h >= 12) {
+    if (h > 12 && h != 24 && h != 13) {
         h = hh-12;
         dd = "PM";
+    }else if (h == 24){
+        h = 00
+        dd = 'AM'
+    }else if (h< 12){
+      dd = "AM"
+    }else if (h==12){
+      dd = 'PM'
+    }else if(h==13){
+        h = hh-12;
+        dd = "AM";
     }
-    if (h == 0) {
+    if (hh==0){
         h = 12;
+        dd = "AM"
+    }
+    if(hh==1){
+      dd = "PM"
     }
     m = m<10?"0"+m:m;
     var current_time = h+":"+m+" "+dd;
@@ -325,7 +338,7 @@
 
     if($("#edit_invitee_emails").val() == ''){
       $('#edit_tags').find('span').remove();
-      $('#edit_tag_input').attr('required', true)
+      $('#edit_tag_input').attr('required', false)
     }
 
     $("#edit_tags input").on({
@@ -359,7 +372,7 @@
         $('#edit_invitee_emails').val(emails_array.join(','));
         $(this).remove();
         if($('#edit_tags').find('span').length < 2){
-          $('#edit_tag_input').attr('required', true);
+          $('#edit_tag_input').attr('required', false);
         }
       }
     });
