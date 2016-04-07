@@ -434,108 +434,6 @@
 		  }
 		});
 
-		// by default hide repeat settings for meetings
-		$("#meeting-repeat-settings, #meeting-repeat-settings-edit").hide();
-		$("#repeat-frequency-week, #repeat-frequency-week-edit").hide();
-		$("#repeat-frequency-month, #repeat-frequency-month-edit").hide();
-		$("#repeat-frequency-year, #repeat-frequency-year-edit").hide();
-    $("#repeat-frequency-weekday-on, #repeat-frequency-weekday-on-edit").hide();
-    $("#repeat-frequency-month-on, #repeat-frequency-month-on-edit").hide();
-
-		// hide show note reminder settings for meetings
-		$('#meeting-repeat, #meeting-repeat-edit').change(function () {
-	    if ($(this).is(':checked')) {
-		    $("#meeting-repeat-settings, #meeting-repeat-settings-edit").show(500);
-        $("#meeting-reminder").attr('required', true);
-        $("#repeat-frequency").attr('required', true);
-        $("#repeat-occurrences").attr('required', true);
-        $("#repeat-every-day").attr('required', true);
-			}else {
-				$("#meeting-repeat-settings, #meeting-repeat-settings-edit").hide(500);
-        $("#repeat-frequency").val(null);
-        $("#repeat-occurrences").val(null);
-        $('#repeat-every-day').val(null);
-        $('#repeat-every-week').val(null);
-        $('#repeat-every-month').val(null);
-        $('#repeat-every-year').val(null);
-        $('#repeat-every-month-on').val(null);
-        $('#repeat-frequency-weekday-on').val(null);
-        $("#meeting-reminder").attr('required',false);
-        $("#repeat-frequency").attr('required', false);
-        $("#repeat-occurrences").attr('required', false);
-        $("#repeat-every-day").attr('required', false);
-			}
-		});
-
-		// hide show note reminder settings for meetings
-		$('#repeat-frequency, #repeat-frequency-edit').change(function () {
-			if($(this).val() == "daily") {
-				$("#repeat-frequency-day, #repeat-frequency-day-edit").show(500);
-				$("#repeat-frequency-week, #repeat-frequency-week-edit").hide(500);
-				$("#repeat-frequency-month, #repeat-frequency-month-edit").hide(500);
-				$("#repeat-frequency-year, #repeat-frequency-year-edit").hide(500);
-        $("#repeat-frequency-weekday-on, #repeat-frequency-weekday-on-edit").hide(500);
-        $("#repeat-frequency-month-on, #repeat-frequency-month-on-edit").hide(500);
-        $("#repeat-every-day").attr('required', true);
-        $("#repeat-every-week").attr('required', false);
-        $("#repeat-every-month").attr('required', false);
-        $("#repeat-every-year").attr('required', false);
-        $("#repeat-every-month-on").attr('required',false);
-			}
-			else if($(this).val() == "weekly"){
-				$("#repeat-frequency-day, #repeat-frequency-day-edit").hide(500);
-				$("#repeat-frequency-week, #repeat-frequency-week-edit").show(500);
-				$("#repeat-frequency-month, #repeat-frequency-month-edit").hide(500);
-				$("#repeat-frequency-year, #repeat-frequency-year-edit").hide(500);
-        $("#repeat-frequency-weekday-on, #repeat-frequency-weekday-on-edit").show(500);
-        $("#repeat-frequency-month-on, #repeat-frequency-month-on-edit").hide(500);
-        $("#repeat-every-day").attr('required', false);
-        $("#repeat-every-week").attr('required', true);
-        $("#repeat-every-month").attr('required', false);
-        $("#repeat-every-year").attr('required', false);
-        $("#repeat-every-month-on").attr('required',false);
-			}
-			else if($(this).val() == "monthly"){
-				$("#repeat-frequency-day, #repeat-frequency-day-edit").hide(500);
-				$("#repeat-frequency-week, #repeat-frequency-week-edit").hide(500);
-				$("#repeat-frequency-month, #repeat-frequency-month-edit").show(500);
-				$("#repeat-frequency-year, #repeat-frequency-year-edit").hide(500);
-        $("#repeat-frequency-weekday-on, #repeat-frequency-weekday-on-edit").hide(500);
-        $("#repeat-frequency-month-on, #repeat-frequency-month-on-edit").show(500);
-        $("#repeat-every-day").attr('required', false);
-        $("#repeat-every-week").attr('required', false);
-        $("#repeat-every-month").attr('required', true);
-        $("#repeat-every-year").attr('required', false);
-        $("#repeat-every-month-on").attr('required',true);
-			}
-			else if($(this).val() == "yearly"){
-				$("#repeat-frequency-day, #repeat-frequency-day-edit").hide(500);
-				$("#repeat-frequency-week, #repeat-frequency-week-edit").hide(500);
-				$("#repeat-frequency-month, #repeat-frequency-month-edit").hide(500);
-				$("#repeat-frequency-year, #repeat-frequency-year-edit").show(500);
-        $("#repeat-frequency-weekday-on, #repeat-frequency-weekday-on-edit").hide(500);
-        $("#repeat-frequency-month-on, #repeat-frequency-month-on-edit").hide(500);
-        $("#repeat-every-day").attr('required', false);
-        $("#repeat-every-week").attr('required', false);
-        $("#repeat-every-month").attr('required', false);
-        $("#repeat-every-year").attr('required', true);
-        $("#repeat-every-month-on").attr('required',false);
-			}
-      else if($(this).val() == ""){
-        $("#repeat-frequency-day, #repeat-frequency-day-edit").show(500);
-        $("#repeat-frequency-week, #repeat-frequency-week-edit").hide(500);
-        $("#repeat-frequency-month, #repeat-frequency-month-edit").hide(500);
-        $("#repeat-frequency-year, #repeat-frequency-year-edit").hide(500);
-        $("#repeat-frequency-weekday-on, #repeat-frequency-weekday-on-edit").hide(500);
-        $("#repeat-frequency-month-on, #repeat-frequency-month-on-edit").hide(500);
-        $("#repeat-every-day").attr('required', true);
-        $("#repeat-every-week").attr('required', false);
-        $("#repeat-every-month").attr('required', false);
-        $("#repeat-every-year").attr('required', false);
-        $("#repeat-every-month-on").attr('required',false);
-      }
-		});
-
 		$('#reminderDatePicker').datepicker('option', 'dateFormat', 'mm/dd/yy');
 		$('#reminderTimePicker').timepicker({minuteStep: 5});
 
@@ -558,7 +456,6 @@
         $("#note-reminder-settings-edit").hide(500);
 			}
 		});
-
 
 		$('#scheduledDatePicker').datepicker();
 		$('#scheduledTimePicker').timepicker({minuteStep: 5});

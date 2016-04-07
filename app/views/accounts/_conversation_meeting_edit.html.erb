@@ -113,8 +113,8 @@
               <div id="meeting-repeat-settings-edit">
                 <div class="row row-pad-5">
                   <div class="col-sm-4">
-                    <label for="repeat-frequency">Frequency:</label>
-                    <select class="form-control input-sm mb15" name="conversation_item[repetition_rule][frequency_type]" id="repeat-frequency" required: "required">
+                    <label for="repeat-frequency-edit">Frequency:</label>
+                    <select class="form-control input-sm mb15" name="conversation_item[repetition_rule][frequency_type]" id="repeat-frequency-edit">
                       <option value=''>-select type-</option>
                       <option value="daily">Daily</option>
                       <option value="weekly">Weekly</option>
@@ -124,8 +124,8 @@
                   </div>
 
                   <div class="col-sm-4">
-                    <label for="repeat-occurrences">Stop After:</label>
-                    <select class="form-control input-sm mb15" name="conversation_item[repetition_rule][repeat_occurrences]" id="repeat-occurrences" required: "required">
+                    <label for="repeat-occurrences-edit">Stop After:</label>
+                    <select class="form-control input-sm mb15" name="conversation_item[repetition_rule][repeat_occurrences]" id="repeat-occurrences-edit">
                       <option value=''>-select occurrence-</option>
                       <% (1..50).each do |i| %>
                       <option value="<%= i %>">
@@ -137,8 +137,8 @@
 
                   <div class="col-sm-4">
                     <div id="repeat-frequency-day-edit">
-                      <label for="repeat-every-day">Repeat Every:</label>
-                      <select class="form-control input-sm mb15" name="conversation_item[repetition_rule][repeat_day]" id="repeat-every-day" required: "required">
+                      <label for="repeat-every-day-edit">Repeat Every:</label>
+                      <select class="form-control input-sm mb15" name="conversation_item[repetition_rule][repeat_day]" id="repeat-every-day-edit">
                         <% (1..6).each do |i| %>
                         <option value="<%= i %>">
                             <% if i == 1 %>
@@ -152,8 +152,8 @@
                     </div><!-- repeat every: day -->
 
                     <div id="repeat-frequency-week-edit">
-                      <label for="repeat-every-week">Repeat Every:</label>
-                      <select class="form-control input-sm mb15"  name="conversation_item[repetition_rule][repeat_day]" id="repeat-every-week" required: "required">
+                      <label for="repeat-every-week-edit">Repeat Every:</label>
+                      <select class="form-control input-sm mb15"  name="conversation_item[repetition_rule][repeat_day]" id="repeat-every-week-edit">
                         <% (1..52).each do |i| %>
                         <option value="<%= i %>">
                             <% if i == 1 %>
@@ -167,8 +167,8 @@
                     </div><!-- repeat every: week -->
 
                     <div id="repeat-frequency-month-edit">
-                      <label for="repeat-every-month">Repeat Every:</label>
-                      <select class="form-control input-sm mb15" name="conversation_item[repetition_rule][repeat_month]" id="repeat-every-month" required: "required">
+                      <label for="repeat-every-month-edit">Repeat Every:</label>
+                      <select class="form-control input-sm mb15" name="conversation_item[repetition_rule][repeat_month]" id="repeat-every-month-edit">
                         <% (1..12).each do |i| %>
                         <option value="<%= i %>">
                             <%= pluralize(i, 'Month') %>
@@ -178,8 +178,8 @@
                     </div><!-- repeat every: month -->
 
                     <div id="repeat-frequency-year-edit">
-                      <label for="repeat-every-year">Repeat Every:</label>
-                      <select class="form-control input-sm mb15" name="conversation_item[repetition_rule][repeat_year]" id="repeat-every-year" required: "required">
+                      <label for="repeat-every-year-edit">Repeat Every:</label>
+                      <select class="form-control input-sm mb15" name="conversation_item[repetition_rule][repeat_year]" id="repeat-every-year-edit">
                         <% (1..4).each do |i| %>
                         <option value="<%= i %>">
                             <%= pluralize(i, 'Year') %>
@@ -217,8 +217,8 @@
                 <div id="repeat-frequency-month-on-edit">
                   <div class="row row-pad-5">
                     <div class="col-sm-12">
-                      <label for="repeat-every-month-on">Repeat On:</label>
-                      <select class="form-control input-sm mb15" name="conversation_item[repetition_rule][repeat_month]" id="repeat-every-month-on" required: "required">
+                      <label for="repeat-every-month-on-edit">Repeat On:</label>
+                      <select class="form-control input-sm mb15" name="conversation_item[repetition_rule][repeat_month]" id="repeat-every-month-on-edit">
                         <option value=''>-select-</option>
                         <option value="dayofmonth">Day of the Month</option>
                         <option value="dayofweek">Day of the Week</option>
@@ -250,6 +250,105 @@
   </div><!-- modal dialog -->
 </div><!-- modal -->
 <script type="text/javascript">
+
+  $("#meeting-repeat-settings-edit").hide();
+  $("#repeat-frequency-week-edit").hide();
+  $("#repeat-frequency-month-edit").hide();
+  $("#repeat-frequency-year-edit").hide();
+  $("#repeat-frequency-weekday-on-edit").hide();
+  $("#repeat-frequency-month-on-edit").hide();
+
+  $('#meeting-repeat-edit').change(function () {
+    if ($(this).is(':checked')) {
+      $("#meeting-repeat-settings-edit").show(500);
+      $("#meeting-reminder-edit").attr('required', true);
+      $("#repeat-frequency-edit").attr('required', true);
+      $("#repeat-occurrences-edit").attr('required', true);
+      $("#repeat-every-day-edit").attr('required', true);
+    }else {
+      $("#meeting-repeat-settings-edit").hide(500);
+      $("#repeat-frequency-edit").val(null);
+      $("#repeat-occurrences-edit").val(null);
+      $('#repeat-every-day-edit').val(null);
+      $('#repeat-every-week-edit').val(null);
+      $('#repeat-every-month-edit').val(null);
+      $('#repeat-every-year-edit').val(null);
+      $('#repeat-every-month-on-edit').val(null);
+      $('#repeat-frequency-weekday-on-edit').val(null);
+      $("#meeting-reminder-edit").attr('required',false);
+      $("#repeat-frequency-edit").attr('required', false);
+      $("#repeat-occurrences-edit").attr('required', false);
+      $("#repeat-every-day-edit").attr('required', false);
+    }
+  });
+
+  $('#repeat-frequency-edit').change(function () {
+    if($(this).val() == "daily") {
+      $("#repeat-frequency-day-edit").show(500);
+      $("#repeat-frequency-week-edit").hide(500);
+      $("#repeat-frequency-month-edit").hide(500);
+      $("#repeat-frequency-year-edit").hide(500);
+      $("#repeat-frequency-weekday-on-edit").hide(500);
+      $("#repeat-frequency-month-on-edit").hide(500);
+      $("#repeat-every-day-edit").attr('required', true);
+      $("#repeat-every-week-edit").attr('required', false);
+      $("#repeat-every-month-edit").attr('required', false);
+      $("#repeat-every-year-edit").attr('required', false);
+      $("#repeat-every-month-on-edit").attr('required',false);
+    }
+    else if($(this).val() == "weekly"){
+      $("#repeat-frequency-day-edit").hide(500);
+      $("#repeat-frequency-week-edit").show(500);
+      $("#repeat-frequency-month-edit").hide(500);
+      $("#repeat-frequency-year-edit").hide(500);
+      $("#repeat-frequency-weekday-on-edit").show(500);
+      $("#repeat-frequency-month-on-edit").hide(500);
+      $("#repeat-every-day-edit").attr('required', false);
+      $("#repeat-every-week-edit").attr('required', true);
+      $("#repeat-every-month-edit").attr('required', false);
+      $("#repeat-every-year-edit").attr('required', false);
+      $("#repeat-every-month-on-edit").attr('required',false);
+    }
+    else if($(this).val() == "monthly"){
+      $("#repeat-frequency-day-edit").hide(500);
+      $("#repeat-frequency-week-edit").hide(500);
+      $("#repeat-frequency-month-edit").show(500);
+      $("#repeat-frequency-year-edit").hide(500);
+      $("#repeat-frequency-weekday-on-edit").hide(500);
+      $("#repeat-frequency-month-on-edit").show(500);
+      $("#repeat-every-day-edit").attr('required', false);
+      $("#repeat-every-week-edit").attr('required', false);
+      $("#repeat-every-month-edit").attr('required', true);
+      $("#repeat-every-year-edit").attr('required', false);
+      $("#repeat-every-month-on-edit").attr('required',true);
+    }
+    else if($(this).val() == "yearly"){
+      $("#repeat-frequency-day-edit").hide(500);
+      $("#repeat-frequency-week-edit").hide(500);
+      $("#repeat-frequency-month-edit").hide(500);
+      $("#repeat-frequency-year-edit").show(500);
+      $("#repeat-frequency-weekday-on-edit").hide(500);
+      $("#repeat-frequency-month-on-edit").hide(500);
+      $("#repeat-every-day-edit").attr('required', false);
+      $("#repeat-every-week-edit").attr('required', false);
+      $("#repeat-every-month-edit").attr('required', false);
+      $("#repeat-every-year-edit").attr('required', true);
+      $("#repeat-every-month-on-edit").attr('required',false);
+    }
+    else if($(this).val() == ""){
+      $("#repeat-frequency-day-edit").show(500);
+      $("#repeat-frequency-week-edit").hide(500);
+      $("#repeat-frequency-month-edit").hide(500);
+      $("#repeat-frequency-year-edit").hide(500);
+      $("#repeat-frequency-weekday-on-edit").hide(500);
+      $("#repeat-frequency-month-on-edit").hide(500);
+      $("#repeat-every-day-edit").attr('required', true);
+      $("#repeat-every-week-edit").attr('required', false);
+      $("#repeat-every-month-edit").attr('required', false);
+      $("#repeat-every-year-edit").attr('required', false);
+      $("#repeat-every-month-on-edit").attr('required',false);
+    }
+  });
 
   $('#schedule-to-timepicker-edit').timepicker({
     minuteStep: 15
@@ -300,7 +399,6 @@
     var current_time = h+":"+m+" "+dd;
     $('#schedule-to-timepicker-edit').val(current_time);
   });
-
 
   $(".conversation-edit-meeting-modal-form").on("shown.bs.modal", function(){
 
@@ -378,6 +476,7 @@
         }
       }
     });
+
     $( "#edit_tag_input" ).autocomplete({
 
       source: "/get_users",
@@ -385,8 +484,7 @@
       select: function( event, ui ){}
     });
 
-
-    if($("#repetition_rule_value").val() != ''){
+    if($("#repetition_rule_value").val() == 'true'){
       $("#meeting-reminder-edit").attr('disabled', true);
       $("#meeting-reminder-date-edit").attr('required', true)
       $("#meeting-repeat-edit").attr('checked', true)
