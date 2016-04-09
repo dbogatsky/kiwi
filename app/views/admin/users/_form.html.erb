@@ -43,10 +43,17 @@
       <%end%>
 	    <div class="form-group">
 	      <label class="col-sm-3 control-label">Role<span class="asterisk">*</span></label>
-	      <div class="col-sm-6">
+	      <div class="col-sm-2">
 	      <%rol = @user.new_record? ? '' : (@user.roles.present? ? @user.roles.last.id : '')%>
 	       <%=select_tag "user[role_ids][]", options_for_select(BoRole.all.map{|c| [c.name, c.id] }, selected: "#{rol}"), {prompt: "-- select --", :class => 'form-control sel_role', required: true}%>
-	    </div>
+	      </div>
+	      <div class="show_entity">
+		      <label class="col-sm-1 control-label">Entity<span class="asterisk">*</span></label>
+			      <div class="col-sm-2">
+			         <%en = @user.new_record? ? '' : (@user.entity.present? ? @user.entity.id : '') %>
+			         <%=f.select(:company_entity_id, options_for_select(BoCompanyEntity.all.map{|c| [c.name, c.id] }, selected: "#{en}"), {prompt: "-- select --"}, {:class => 'form-control sel_clear input-sm', required: true})%>
+			      </div>
+	      </div>
 	    </div>
 	    <div class="form-group">
 	      <label class="col-sm-3 control-label">Locale<span class="asterisk">*</span></label>
@@ -147,23 +154,23 @@
 		});
 
 		// default case
-		// if ( $('.sel_role').val() == 1 || $('.sel_role').val() == '' ) {
-		//   $(".show_entity").hide();
-		//   $(".sel_clear").val('');
-		// }
+		if ( $('.sel_role').val() == 1 || $('.sel_role').val() == '' ) {
+		   $(".show_entity").hide();
+		   $(".sel_clear").val('');
+		}
 	});
 
 	// when an entity is selected
-	// $('.sel_role').change(function(){
-	//   if($(this).val() == 1 || $(this).val() == '' )
-	//     {
-	//       $(".show_entity").hide();
-	//     	$(".sel_clear").val('');
-	//     }else
-	//     {
-	//      $(".show_entity").show();
-	//     }
-	// });
+	$('.sel_role').change(function(){
+	  if($(this).val() == 1 || $(this).val() == '' )
+	    {
+	    	$(".show_entity").hide();
+	     	$(".sel_clear").val('');
+      }else
+	    {
+	      $(".show_entity").show();
+	    }
+	});
 	<% if @user.new_record?%>
 		$(function(){
 			$( "#new_user" ).validate({
