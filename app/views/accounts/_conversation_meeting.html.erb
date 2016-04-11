@@ -131,7 +131,7 @@
 								<div class="row row-pad-5">
 									<div class="col-sm-4">
 										<label for="repeat-frequency">Frequency:</label>
-										<select class="form-control input-sm mb15" name="conversation_item[repetition_rule][frequency_type]" id="repeat-frequency" required: "required">
+										<select class="form-control input-sm mb15" name="conversation_item[repetition_rule][frequency_type]" id="repeat-frequency">
 										  <option value=''>-select -</option>
 											<option value="daily">Daily</option>
 											<option value="weekly">Weekly</option>
@@ -142,7 +142,7 @@
 
 									<div class="col-sm-4">
 										<label for="repeat-occurrences">Stop After:</label>
-										<select class="form-control input-sm mb15" name="conversation_item[repetition_rule][repeat_occurrences]" id="repeat-occurrences" required: "required">
+										<select class="form-control input-sm mb15" name="conversation_item[repetition_rule][repeat_occurrences]" id="repeat-occurrences">
 										  <option value=''>-select -</option>
 											<% (1..50).each do |i| %>
 											<option value="<%= i %>">
@@ -155,7 +155,7 @@
                   <div class="col-sm-4">
                     <div id="repeat-frequency-day">
                       <label for="repeat-every-day">Repeat Every:</label>
-                      <select class="form-control input-sm mb15" name="conversation_item[repetition_rule][repeat_day]" id="repeat-every-day" required: "required">
+                      <select class="form-control input-sm mb15" name="conversation_item[repetition_rule][repeat_day]" id="repeat-every-day">
                         <option value=''>- select-</option>
                         <% (1..6).each do |i| %>
                         <option value="<%= i %>">
@@ -171,7 +171,7 @@
 
                     <div id="repeat-frequency-week">
                       <label for="repeat-every-week">Repeat Every:</label>
-                      <select class="form-control input-sm mb15"  name="conversation_item[repetition_rule][repeat_week]" id="repeat-every-week" required: "required">
+                      <select class="form-control input-sm mb15"  name="conversation_item[repetition_rule][repeat_week]" id="repeat-every-week">
                         <option value=''>- select-</option>
                         <% (1..52).each do |i| %>
                         <option value="<%= i %>">
@@ -187,7 +187,7 @@
 
                     <div id="repeat-frequency-month">
                       <label for="repeat-every-month">Repeat Every:</label>
-                      <select class="form-control input-sm mb15" name="conversation_item[repetition_rule][repeat_month]" id="repeat-every-month" required: "required">
+                      <select class="form-control input-sm mb15" name="conversation_item[repetition_rule][repeat_month]" id="repeat-every-month">
                         <option value=''>- select-</option>
                         <% (1..12).each do |i| %>
                         <option value="<%= i %>">
@@ -199,7 +199,7 @@
 
                     <div id="repeat-frequency-year">
                       <label for="repeat-every-year">Repeat Every:</label>
-                      <select class="form-control input-sm mb15" name="conversation_item[repetition_rule][repeat_year]" id="repeat-every-year" required: "required">
+                      <select class="form-control input-sm mb15" name="conversation_item[repetition_rule][repeat_year]" id="repeat-every-year">
                         <option value=''>- select-</option>
                         <% (1..4).each do |i| %>
                         <option value="<%= i %>">
@@ -216,19 +216,19 @@
                   <div class="row row-pad-5">
   									<div class="col-sm-12">
 											Repeat On:<br/>
-                        <input type="checkbox" id="repeat-day-mon" name="conversation_item][repetition_rule][day_of_week][]" value="MO">
+                        <input type="checkbox" id="repeat-day-mon" name="conversation_item][repetition_rule][day_of_week][]" value='1'>
                         <label for="repeat-day-mon" style="padding:4px;">M</label>
-                        <input type="checkbox" id="repeat-day-tue" name="conversation_item][repetition_rule][day_of_week][]" value="TU">
+                        <input type="checkbox" id="repeat-day-tue" name="conversation_item][repetition_rule][day_of_week][]" value="2">
                         <label for="repeat-day-tue" style="padding:4px;">T</label>
-                        <input type="checkbox" id="repeat-day-wed" name="conversation_item][repetition_rule][day_of_week][]" value="WE">
+                        <input type="checkbox" id="repeat-day-wed" name="conversation_item][repetition_rule][day_of_week][]" value="3">
                         <label for="repeat-day-wed" style="padding:5px;">W</label>
-                        <input type="checkbox" id="repeat-day-thu" name="conversation_item][repetition_rule][day_of_week][]" value="TH">
+                        <input type="checkbox" id="repeat-day-thu" name="conversation_item][repetition_rule][day_of_week][]" value="4">
                         <label for="repeat-day-thu" style="padding:4px;">T</label>
-                        <input type="checkbox" id="repeat-day-fri" name="conversation_item][repetition_rule][day_of_week][]" value="FR">
+                        <input type="checkbox" id="repeat-day-fri" name="conversation_item][repetition_rule][day_of_week][]" value="5">
                         <label for="repeat-day-fri" style="padding:4px;">F</label>
-                        <input type="checkbox" id="repeat-day-sat" name="conversation_item][repetition_rule][day_of_week][]" value="SA">
+                        <input type="checkbox" id="repeat-day-sat" name="conversation_item][repetition_rule][day_of_week][]" value="6">
                         <label for="repeat-day-sat" style="padding:4px;">S</label>
-                        <input type="checkbox" id="repeat-day-sun" name="conversation_item][repetition_rule][day_of_week][]" value="SN">
+                        <input type="checkbox" id="repeat-day-sun" name="conversation_item][repetition_rule][day_of_week][]" value="0">
                         <label for="repeat-day-sun" style="padding:4px;">S</label>
   									</div>
                   </div>
@@ -239,7 +239,7 @@
 									<div class="row row-pad-5">
 										<div class="col-sm-12">
 											<label for="repeat-every-month-on">Repeat On:</label>
-											<select class="form-control input-sm mb15" name="conversation_item[repetition_rule][repeat_month]" id="repeat-every-month-on" required: "required">
+											<select class="form-control input-sm mb15" name="month_week" id="repeat-every-month-on">
 											  <option value=''>-select-</option>
 												<option value="dayofmonth">Day of the Month</option>
 												<option value="dayofweek">Day of the Week</option>
@@ -251,7 +251,7 @@
 
               <div class="row row-pad-5">
                 <div class="col-lg-12 mb15">
-                  <textarea class="form-control wysihtml5" name="conversation_item[body]" id="meeting_new_editor"  rows="5" placeholder="Agenda" required="required"></textarea>
+                  <textarea class="form-control wysihtml5" name="conversation_item[body]" id="meeting_new_editor"  rows="5" placeholder="Agenda"></textarea>
                 </div>
               </div><!-- row -->
             <%if account.present?%>
@@ -271,6 +271,105 @@
 </div><!-- modal -->
 <script type="text/javascript">
 
+  $("#meeting-repeat-settings").hide();
+  $("#repeat-frequency-week").hide();
+  $("#repeat-frequency-month").hide();
+  $("#repeat-frequency-year").hide();
+  $("#repeat-frequency-weekday-on").hide();
+  $("#repeat-frequency-month-on").hide();
+
+  $('#meeting-repeat').change(function () {
+      if ($(this).is(':checked')) {
+        $("#meeting-repeat-settings").show(500);
+        $("#meeting-reminder").attr('required', true);
+        $("#repeat-frequency").attr('required', true);
+        $("#repeat-occurrences").attr('required', true);
+        $("#repeat-every-day").attr('required', true);
+      }
+      else {
+        $("#meeting-repeat-settings").hide(500);
+        $("#repeat-frequency").val(null);
+        $("#repeat-occurrences").val(null);
+        $('#repeat-every-day').val(null);
+        $('#repeat-every-week').val(null);
+        $('#repeat-every-month').val(null);
+        $('#repeat-every-year').val(null);
+        $('#repeat-every-month-on').val(null);
+        $('#repeat-frequency-weekday-on').val(null);
+        $("#meeting-reminder").attr('required',false);
+        $("#repeat-frequency").attr('required', false);
+        $("#repeat-occurrences").attr('required', false);
+        $("#repeat-every-day").attr('required', false);
+      }
+    });
+
+    $('#repeat-frequency').change(function () {
+      if($(this).val() == "daily") {
+        $("#repeat-frequency-day").show(500);
+        $("#repeat-frequency-week").hide(500);
+        $("#repeat-frequency-month").hide(500);
+        $("#repeat-frequency-year").hide(500);
+        $("#repeat-frequency-weekday-on").hide(500);
+        $("#repeat-frequency-month-on").hide(500);
+        $("#repeat-every-day").attr('required', true);
+        $("#repeat-every-week").attr('required', false);
+        $("#repeat-every-month").attr('required', false);
+        $("#repeat-every-year").attr('required', false);
+        $("#repeat-every-month-on").attr('required',false);
+      }
+      else if($(this).val() == "weekly"){
+        $("#repeat-frequency-day").hide(500);
+        $("#repeat-frequency-week").show(500);
+        $("#repeat-frequency-month").hide(500);
+        $("#repeat-frequency-year").hide(500);
+        $("#repeat-frequency-weekday-on").show(500);
+        $("#repeat-frequency-month-on").hide(500);
+        $("#repeat-every-day").attr('required', false);
+        $("#repeat-every-week").attr('required', true);
+        $("#repeat-every-month").attr('required', false);
+        $("#repeat-every-year").attr('required', false);
+        $("#repeat-every-month-on").attr('required',false);
+      }
+      else if($(this).val() == "monthly"){
+        $("#repeat-frequency-day").hide(500);
+        $("#repeat-frequency-week").hide(500);
+        $("#repeat-frequency-month").show(500);
+        $("#repeat-frequency-year").hide(500);
+        $("#repeat-frequency-weekday-on").hide(500);
+        $("#repeat-frequency-month-on").show(500);
+        $("#repeat-every-day").attr('required', false);
+        $("#repeat-every-week").attr('required', false);
+        $("#repeat-every-month").attr('required', true);
+        $("#repeat-every-year").attr('required', false);
+        $("#repeat-every-month-on").attr('required',true);
+      }
+      else if($(this).val() == "yearly"){
+        $("#repeat-frequency-day").hide(500);
+        $("#repeat-frequency-week").hide(500);
+        $("#repeat-frequency-month").hide(500);
+        $("#repeat-frequency-year").show(500);
+        $("#repeat-frequency-weekday-on").hide(500);
+        $("#repeat-frequency-month-on").hide(500);
+        $("#repeat-every-day").attr('required', false);
+        $("#repeat-every-week").attr('required', false);
+        $("#repeat-every-month").attr('required', false);
+        $("#repeat-every-year").attr('required', true);
+        $("#repeat-every-month-on").attr('required',false);
+      }
+      else if($(this).val() == ""){
+        $("#repeat-frequency-day").show(500);
+        $("#repeat-frequency-week").hide(500);
+        $("#repeat-frequency-month").hide(500);
+        $("#repeat-frequency-year").hide(500);
+        $("#repeat-frequency-weekday-on").hide(500);
+        $("#repeat-frequency-month-on").hide(500);
+        $("#repeat-every-day").attr('required', true);
+        $("#repeat-every-week").attr('required', false);
+        $("#repeat-every-month").attr('required', false);
+        $("#repeat-every-year").attr('required', false);
+        $("#repeat-every-month-on").attr('required',false);
+      }
+    });
 
   $("#schedule-from-timepicker").on('change', function(){
     var d = new Date();

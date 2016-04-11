@@ -104,72 +104,11 @@
     $('#meeting-reminder').change(function () {
         if ($(this).is(':checked')) {
           $("#meeting-reminder-settings").show(500);
+          $("#meeting-reminder-date").attr('required', true);
       }
       else {
         $("#meeting-reminder-settings").hide(500);
-        // $('.conversation-edit-meeting-modal-form input[name="scheduled_date"]').val(null);
-      }
-    });
-
-    // by default hide repeat settings for meetings
-    $("#meeting-repeat-settings").hide();
-    $("#repeat-frequency-week").hide();
-    $("#repeat-frequency-month").hide();
-    $("#repeat-frequency-year").hide();
-    $("#repeat-frequency-weekday-on").hide();
-    $("#repeat-frequency-month-on").hide();
-
-    // hide show note reminder settings for meetings
-    $('#meeting-repeat').change(function () {
-        if ($(this).is(':checked')) {
-          $("#meeting-repeat-settings").show(500);
-      }
-      else {
-        $("#meeting-repeat-settings").hide(500);
-        $("#repeat-frequency").val(null);
-        $("#repeat-occurrences").val(null);
-        $('#repeat-every-day').val(null);
-        $('#repeat-every-week').val(null);
-        $('#repeat-every-month').val(null);
-        $('#repeat-every-year').val(null);
-        $('#repeat-every-month-on').val(null);
-        $('#repeat-frequency-weekday-on').val(null);
-      }
-    });
-
-    // hide show note reminder settings for meetings
-    $('#repeat-frequency').change(function () {
-      if($(this).val() == "daily") {
-        $("#repeat-frequency-day").show(500);
-        $("#repeat-frequency-week").hide(500);
-        $("#repeat-frequency-month").hide(500);
-        $("#repeat-frequency-year").hide(500);
-        $("#repeat-frequency-weekday-on").hide(500);
-        $("#repeat-frequency-month-on").hide(500);
-      }
-      else if($(this).val() == "weekly"){
-        $("#repeat-frequency-day").hide(500);
-        $("#repeat-frequency-week").show(500);
-        $("#repeat-frequency-month").hide(500);
-        $("#repeat-frequency-year").hide(500);
-        $("#repeat-frequency-weekday-on").show(500);
-        $("#repeat-frequency-month-on").hide(500);
-      }
-      else if($(this).val() == "monthly"){
-        $("#repeat-frequency-day").hide(500);
-        $("#repeat-frequency-week").hide(500);
-        $("#repeat-frequency-month").show(500);
-        $("#repeat-frequency-year").hide(500);
-        $("#repeat-frequency-weekday-on").hide(500);
-        $("#repeat-frequency-month-on").show(500);
-      }
-      else if($(this).val() == "yearly"){
-        $("#repeat-frequency-day").hide(500);
-        $("#repeat-frequency-week").hide(500);
-        $("#repeat-frequency-month").hide(500);
-        $("#repeat-frequency-year").show(500);
-        $("#repeat-frequency-weekday-on").hide(500);
-        $("#repeat-frequency-month-on").hide(500);
+        $("#meeting-reminder-date").attr('required', false);
       }
     });
   });

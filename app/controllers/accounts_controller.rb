@@ -78,11 +78,11 @@ class AccountsController < ApplicationController
     params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone, params[:ends_date], params[:ends_time])
 
     if params[:conversation_item][:repetition_rule][:frequency_type] == "monthly"
-       params[:conversation_item][:repetition_rule][:day_of_month] = params[:conversation_item][:starts_at].day if params[:month_week] == "dayofmonth"
-       params[:conversation_item][:repetition_rule][:weekday_of_month] = Date::DAYNAMES[params[:conversation_item][:starts_at].wday].first(2).upcase if params[:month_week] == "dayofweek"
+       params[:conversation_item][:repetition_rule][:day_of_month] = params[:conversation_item][:starts_at].to_datetime.day if params[:month_week] == "dayofmonth"
+       params[:conversation_item][:repetition_rule][:weekday_of_month] = params[:conversation_item][:starts_at].to_datetime.wday if params[:month_week] == "dayofweek"
        params[:conversation_item][:repetition_rule][:frequency] = params[:conversation_item][:repetition_rule][:repeat_month]
     elsif params[:conversation_item][:repetition_rule][:frequency_type] == "weekly"
-       params[:conversation_item][:repetition_rule][:day_of_week] = params[:conversation_item][:repetition_rule][:day_of_week].join(",") if params[:conversation_item][:repetition_rule][:day_of_week].present?
+       params[:conversation_item][:repetition_rule][:day_of_week] = params[:conversation_item][:repetition_rule][:day_of_week].map{|x| x.to_i} if params[:conversation_item][:repetition_rule][:day_of_week].present?
        params[:conversation_item][:repetition_rule][:frequency] = params[:conversation_item][:repetition_rule][:repeat_week]
     elsif params[:conversation_item][:repetition_rule][:frequency_type] == "daily"
        params[:conversation_item][:repetition_rule][:frequency] = params[:conversation_item][:repetition_rule][:repeat_day]
@@ -101,7 +101,7 @@ class AccountsController < ApplicationController
             reminder:           params[:conversation_item][:reminder],
             starts_at:          params[:conversation_item][:starts_at],
             ends_at:            params[:conversation_item][:ends_at],
-            repetition_rule: {
+            repetition_rules: {
             frequency_type:     params[:conversation_item][:repetition_rule][:frequency_type],
             frequency:          params[:conversation_item][:repetition_rule][:frequency],
             repeat_occurrences: params[:conversation_item][:repetition_rule][:repeat_occurrences],

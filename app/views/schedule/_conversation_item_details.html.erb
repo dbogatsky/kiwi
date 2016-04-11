@@ -26,12 +26,7 @@
              data-starts-time="<%=Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.starts_at.present? %>"
              data-ends-date="<%=Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.ends_at.present? %>"
              data-ends-time="<%=Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.ends_at.present? %>"
-             data-frequency ="<%=%>"
-             data-stop-after="<%=%>"
-             data-repeat="<%=%>"
-             data-day-of-week="<%=%>"
-             day-of-month="<%=%>"
-             weekday-of-month="<%=%>"
+             data-repetition-rule ="<%=(citem.repetition_rule.present? || citem.related_to.present?) ? 'true' : 'false'%>"
              data-latitude="<%=citem.latitude%>"
              data-longitude="<%=citem.longitude%>"
              data-location="<%= citem.location%>"
@@ -127,6 +122,7 @@
     $('.conversation-edit-meeting-modal-form input[name="info"]').val(true);
     $('.conversation-edit-meeting-modal-form input[name="conversation_item[latitude]"]').val($(this).attr('data-latitude'));
     $('.conversation-edit-meeting-modal-form input[name="conversation_item[longitude]"]').val($(this).attr('data-longitude'));
+    $("#repetition_rule_value").val($(this).attr('data-repetition-rule'));
 
       if ($('.conversation-edit-meeting-modal-form input[name="scheduled_time"]').val()!="" && $('.conversation-edit-meeting-modal-form input[name="scheduled_date"]').val()!="")
         {
@@ -160,68 +156,6 @@
       else {
         $("#meeting-reminder-settings-edit").hide(500);
         // $('.conversation-edit-meeting-modal-form input[name="scheduled_date"]').val(null);
-      }
-    });
-
-    // by default hide repeat settings for meetings
-    $("#meeting-repeat-settings-edit").hide();
-    $("#repeat-frequency-week-edit").hide();
-    $("#repeat-frequency-month-edit").hide();
-    $("#repeat-frequency-year-edit").hide();
-    $("#repeat-frequency-weekday-on-edit").hide();
-    $("#repeat-frequency-month-on-edit").hide();
-
-    // hide show note reminder settings for meetings
-    $('#meeting-repeat-edit').change(function () {
-        if ($(this).is(':checked')) {
-          $("#meeting-repeat-settings-edit").show(500);
-      }
-      else {
-        $("#meeting-repeat-settings-edit").hide(500);
-        $("#repeat-frequency").val('');
-        $("#repeat-occurrences").val('');
-        $('#repeat-every-day').val('');
-        $('#repeat-every-week').val('');
-        $('#repeat-every-month').val('');
-        $('#repeat-every-year').val('');
-        $('#repeat-every-month-on').val('');
-        $('#repeat-frequency-weekday-on').val('');
-      }
-    });
-
-    // hide show note reminder settings for meetings
-    $('#repeat-frequency').change(function () {
-      if($(this).val() == "daily") {
-        $("#repeat-frequency-day-edit").show(500);
-        $("#repeat-frequency-week-edit").hide(500);
-        $("#repeat-frequency-month-edit").hide(500);
-        $("#repeat-frequency-year-edit").hide(500);
-        $("#repeat-frequency-weekday-on-edit").hide(500);
-        $("#repeat-frequency-month-on-edit").hide(500);
-      }
-      else if($(this).val() == "weekly"){
-        $("#repeat-frequency-day-edit").hide(500);
-        $("#repeat-frequency-week-edit").show(500);
-        $("#repeat-frequency-month-edit").hide(500);
-        $("#repeat-frequency-year-edit").hide(500);
-        $("#repeat-frequency-weekday-on-edit").show(500);
-        $("#repeat-frequency-month-on-edit").hide(500);
-      }
-      else if($(this).val() == "monthly"){
-        $("#repeat-frequency-day-edit").hide(500);
-        $("#repeat-frequency-week-edit").hide(500);
-        $("#repeat-frequency-month-edit").show(500);
-        $("#repeat-frequency-year-edit").hide(500);
-        $("#repeat-frequency-weekday-on-edit").hide(500);
-        $("#repeat-frequency-month-on-edit").show(500);
-      }
-      else if($(this).val() == "yearly"){
-        $("#repeat-frequency-day-edit").hide(500);
-        $("#repeat-frequency-week-edit").hide(500);
-        $("#repeat-frequency-month-edit").hide(500);
-        $("#repeat-frequency-year-edit").show(500);
-        $("#repeat-frequency-weekday-on-edit").hide(500);
-        $("#repeat-frequency-month-on-edit").hide(500);
       }
     });
   });
