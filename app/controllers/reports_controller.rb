@@ -120,10 +120,17 @@ class ReportsController < ApplicationController
     lead = (lead/meetings.count)*100 rescue 0
     suspended = (suspended/meetings.count)*100 rescue 0
     closed = (closed/meetings.count)*100 rescue 0
-    @account_data = {label: "Open", value: open},
-                    {label: "Leads", value: lead},
-                    {label: "Suspended", value: suspended},
-                    {label: "Closed", value: closed}
+    # @account_data = {label: "Open", value: open},
+    #                 {label: "Leads", value: lead},
+    #                 {label: "Suspended", value: suspended},
+    #                 {label: "Closed", value: closed}
+     @account_data =  {y: open, name: "Open Account Meetings", legendMarkerType: "square", color: "#1CAF9A"},
+                      {y: lead, name: "Leads Account Meetings", legendMarkerType: "square", color: "#428BCA"},
+                      {y: suspended, name: "Suspended Account Meetings", legendMarkerType: "square", color: "#ff860d"},
+                      {y: closed, name: "Closed Account Meetings", legendMarkerType: "square", color: "#999999"}
+
+
+
     @account_data = @account_data.to_json
   end
 
