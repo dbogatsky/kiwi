@@ -1,43 +1,47 @@
 <div class="row">
-	<div class="col-md-10">
-    <div class="input-group" id="adv-search">
-      <input type="text" class="form-control" style="height:41px;" placeholder="Search" />
-      <div class="input-group-btn">
-        <div class="btn-group" role="group">
-          <div class="dropdown dropdown-lg">
-            <button type="button" class="btn btn-default dropdown-toggle close_tab" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
-            <div class="dropdown-menu dropdown-menu-right conversation-search" id="conversation_search_div" role="menu">
-              <%= form_tag search_account_path, method: :get, remote: :true do |f| %>
-                <div class="form-group mb20">
-                  <label for="filter">Type</label>
-                  <select name="search[type_cont]" class="form-control input-sm">
-                      <option value="" selected="">All</option>
-                      <option value="meeting">Meetings</option>
-                      <option value="note">Notes & Reminders</option>
-                      <option value="email">Emails</option>
-                  </select>
-                </div>
-                <div class="form-group mb30">
-                  <label for="filter">Date Range</label>
-                    <div class="input-daterange input-group">
-                      <input type="text" class="form-control datepicker" placeholder="dd/mm/yy" name="search[data_gteq]" id="search-from-datepicker"/>
-                         <span class="input-group-addon">to</span>
-                      <input type="text" class="form-control datepicker" placeholder="dd/mm/yy" name="search[date_lteq]" id="search_datepicker_end">
-                    </div>
-                </div>
-                <div>
-                  <button type="submit" class="btn btn-primary submit_search"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search</button>
-                  &nbsp;&nbsp;&nbsp;<a href="<%= account_path(@account.id)%>" class="btn btn-primary" style="width: 92px">Reset</a>
-                </div>
-              <%end%>
+  <%= form_tag search_account_path, method: :get, remote: :true do |f| %>
+    <div class="col-md-10">
+      <div class="input-group" id="adv-search">
+        <input type="text" name="search[title]" class="form-control" style="height:41px;" id="search_title"placeholder="Search" />
+        <div class="input-group-btn">
+          <div class="btn-group" role="group">
+            <div class="dropdown dropdown-lg">
+              <button type="button" class="btn btn-default dropdown-toggle close_tab" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+              <div class="dropdown-menu dropdown-menu-right conversation-search" id="conversation_search_div" role="menu">
+                  <div class="form-group mb20">
+                    <label for="filter">Type</label>
+                    <select name="search[type_cont]" class="form-control input-sm" id="select_con_type">
+                        <option value="" selected="">All</option>
+                        <option value="meeting">Meetings</option>
+                        <option value="note">Notes & Reminders</option>
+                        <option value="email">Emails</option>
+                    </select>
+                  </div>
+                  <div class="form-group mb30">
+                    <label for="filter">Date Range</label>
+                      <div class="input-daterange input-group">
+                        <input type="text" class="form-control datepicker" placeholder="dd/mm/yy" name="search[data_gteq]" id="search-from-datepicker"/>
+                           <span class="input-group-addon">to</span>
+                        <input type="text" class="form-control datepicker" placeholder="dd/mm/yy" name="search[date_lteq]" id="search_datepicker_end">
+                      </div>
+                  </div>
+                  <div>
+                    <button type="submit" class="btn btn-primary submit_search"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search</button>
+                    &nbsp;&nbsp;&nbsp;<a href="<%= account_path(@account.id)%>" class="btn btn-primary" style="width: 92px">Reset</a>
+                  </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  <%end%>
 </div>
-
+<script type="text/javascript">
+  $('#select_con_type, #search-from-datepicker, #search_datepicker_end, #conversation_search_div').click(function(e){
+    e.stopPropagation();
+  })
+</script>
 <% content_for :custom_css do %>
   <style>
     .dropdown.dropdown-lg .dropdown-menu {

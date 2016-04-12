@@ -1,42 +1,29 @@
-<%if conversation_items.values.present?%>
-  <section id="cd-timeline" class="cd-container" >
-    <%if conversation_items['conversation_items/meetings'].present?%>
-      <%conversation_items['conversation_items/meetings'].each do |i| %>
-           <%item = OpenStruct.new(i)%>
-        <div class="cd-timeline-block">
-            <% if item.type.eql? 'meeting' %>
-              <%= render "conversation_meeting_show",info: 'search_result', created_by: OpenStruct.new(item.created_by), :citem => item  %>
-            <%elsif item.type.eql? 'note'%>
-              <%= render "conversation_notes_show", :citem => item%>
-            <%elsif item.type.eql? 'email'%>
-              <%= render "conversation_email_show", :citem => item %>
-            <%elsif item.type.eql? 'call'%>
-              <%= render "conversation_phone_show", :citem => item %>
-            <%end%>
-        </div>
-      <%end%>
-    <%elsif conversation_items['conversation_items/notes'].present? %>
-      <%conversation_items['conversation_items/notes'].each do |i|%>
-        <div class="cd-timeline-block">
-          <%= render "conversation_notes_show", :citem => OpenStruct.new(i) %>
-        </div>
-      <%end%>
-    <%elsif conversation_items['conversation_items/emails'].present?%>
-      <%conversation_items['conversation_items/emails'].each do |i|%>
-        <div class="cd-timeline-block">
-          <%= render "conversation_email_show", :citem => OpenStruct.new(i) %>
-        </div>
-      <%end%>
-    <%else%>
-      <div class="row">
-        <div class="col-sm-12">
-          <div class="row">
-            <div class="col-md-12">
-                <h3>No conversation items found</h3>
-            </div>
+<section id="cd-timeline" class="cd-container" >
+  <%if conversation_items.count > 0%>
+    <%conversation_items.each do |item| %>
+      <div class="cd-timeline-block">
+          <% if item.type.eql? 'meeting' %>
+            <%= render "conversation_meeting_show",info: 'search_result', created_by: item.created_by, :citem => item  %>
+          <%elsif item.type.eql? 'note'%>
+            <%= render "conversation_notes_show", :citem => item%>
+          <%elsif item.type.eql? 'email'%>
+            <%= render "conversation_email_show", :citem => item %>
+          <%elsif item.type.eql? 'call'%>
+            <%= render "conversation_phone_show", :citem => item %>
+          <%end%>
+      </div>
+    <%end%>
+  <%else%>
+  <div class="cd-timeline-block">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="row">
+          <div class="col-md-12">
+              <h3>No conversation items found</h3>
           </div>
         </div>
       </div>
-    <%end%>
-  </section>
-<% end %>
+    </div>
+  </div>
+  <% end %>
+</section>
