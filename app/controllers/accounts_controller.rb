@@ -366,17 +366,17 @@ class AccountsController < ApplicationController
 
   def search
     c_id = @account.conversation.id
-    s_date = Chronic.parse(params[:search][:data_gteq])
+    s_date = Chronic.parse(params[:search][:date_gteq])
     e_date = Chronic.parse(params[:search][:date_lteq])
+    s_date = s_date.in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") rescue nil
+    e_date = e_date.in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") rescue nil
     search = Hash.new
-    s_date = s_date.in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
-    e_date = e_date.in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
     if params[:search][:type_cont] == 'meeting'
-      search[:starts_at_gteq] = convert_datetime_to_utc(current_user.time_zone, s_date)
-      search[:starts_at_lteq] = convert_datetime_to_utc(current_user.time_zone, e_date)
+      search[:starts_at_gteq] = convert_datetime_to_utc(current_user.time_zone, s_date) rescue nil
+      search[:starts_at_lteq] = convert_datetime_to_utc(current_user.time_zone, e_date) rescue nil
     else
-      search[:created_at_gteq] = convert_datetime_to_utc(current_user.time_zone, s_date)
-      search[:created_at_lteq] = convert_datetime_to_utc(current_user.time_zone, e_date)
+      search[:created_at_gteq] = convert_datetime_to_utc(current_user.time_zone, s_date) rescue nil
+      search[:created_at_lteq] = convert_datetime_to_utc(current_user.time_zone, e_date) rescue nil
     end
     search[:title_cont] = params[:search][:title]
     search[:type_cont]=params[:search][:type_cont]
