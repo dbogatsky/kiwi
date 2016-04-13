@@ -94,21 +94,21 @@
     <div class="col-sm-8 col-md-6">
       <div class="panel panel-dark panel-alt">
         <div class="panel-heading panel_color">
-          <h3 class="panel-title">Meetings by the day of week</h3>
+          <h3 class="panel-title">Meetings by account status</h3>
         </div>
         <div class="panel-body">
-         <div id="day_of_week_bar_chart"></div>
+         <!-- <div id="account_status_pie_chart"></div> -->
+         <div id="account_status_pie_chart"></div>
         </div><!-- panel-body -->
       </div>
     </div>
     <div class="col-sm-8 col-md-6">
       <div class="panel panel-dark panel-alt">
         <div class="panel-heading panel_color">
-          <h3 class="panel-title">Meetings by account status</h3>
+          <h3 class="panel-title">Meetings by the day of week</h3>
         </div>
         <div class="panel-body">
-         <!-- <div id="account_status_pie_chart"></div> -->
-         <div id="account_status_pie_chart" style="height: 350px; width: 100%;"></div>
+         <div id="day_of_week_bar_chart"></div>
         </div><!-- panel-body -->
       </div>
     </div>
@@ -172,7 +172,6 @@
 
 
 <script type="text/javascript">
-
   $('.check_in_out').click(function(){
     $('#preloader').css('opacity', 0.8);
     $('#preloader').show();
@@ -197,6 +196,7 @@
     fillOpacity: 0.8,
     smooth: false,
     stacked: true,
+    resize: true,
     hideHover: true
   });
 
@@ -214,47 +214,48 @@
     fillOpacity: 0.8,
     smooth: false,
     stacked: true,
+    resize: true,
     hideHover: true
   });
 
   var account_data=  '<%=@account_data%>';
   account_data = JSON.parse(account_data.replace(/&quot;/g,'"'))
-  // var m6 =  new Morris.Donut({
-  //   element: 'account_status_pie_chart',
-  //   data: account_data,
-  //   colors: ['#1CAF9A', '#428BCA', '#ff860d', '#999999'],
-  //   formatter: function (y, data) { return y + '%'}
-  // });
-
-
-
-  var chart = new CanvasJS.Chart("account_status_pie_chart",
-  {
-
-    animationEnabled: true,
-    legend: {
-      verticalAlign: "bottom",
-      horizontalAlign: "center"
-    },
-    theme: "theme1",
-    data: [
-    {
-      type: "pie",
-      indexLabelFontFamily: "Garamond",
-      indexLabelFontSize: 20,
-      indexLabelFontWeight: "bold",
-      startAngle:0,
-      indexLabelFontColor: "MistyRose",
-      indexLabelLineColor: "darkgrey",
-      indexLabelPlacement: "inside",
-      toolTipContent: "{name}: {y}%",
-      showInLegend: true,
-      indexLabel: "#percent%",
-      dataPoints: account_data
-    }
-    ]
+  var m6 =  new Morris.Donut({
+    element: 'account_status_pie_chart',
+    data: account_data,
+    colors: ['#1CAF9A', '#428BCA', '#ff860d', '#999999'],
+    formatter: function (y, data) { return y + '%'}
   });
-  chart.render();
+
+
+
+  // var chart = new CanvasJS.Chart("account_status_pie_chart",
+  // {
+
+  //   animationEnabled: true,
+  //   legend: {
+  //     verticalAlign: "bottom",
+  //     horizontalAlign: "center"
+  //   },
+  //   theme: "theme1",
+  //   data: [
+  //   {
+  //     type: "pie",
+  //     indexLabelFontFamily: "Garamond",
+  //     indexLabelFontSize: 20,
+  //     indexLabelFontWeight: "bold",
+  //     startAngle:0,
+  //     indexLabelFontColor: "MistyRose",
+  //     indexLabelLineColor: "darkgrey",
+  //     indexLabelPlacement: "inside",
+  //     toolTipContent: "{name}: {y}%",
+  //     showInLegend: true,
+  //     indexLabel: "#percent%",
+  //     dataPoints: account_data
+  //   }
+  //   ]
+  // });
+  // chart.render();
 
   jQuery(document).ready(function() {
     //"use strict";
