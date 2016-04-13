@@ -12,15 +12,19 @@
                 <i class="fa fa-calendar"></i>
               </div>
               <div class="col-xs-8 text-center">
-                <small class="stat-label"><b>Total Meetings</b></small>
+                <small class="stat-label"><strong>Total Meetings</strong></small>
                 <h1><%=@total_meetings%></h1>
               </div>
             </div><!-- row -->
             <div class="mb15"></div>
             <div class="row">
-              <div class="col-xs-8 text-center" style="padding-left: 0px">
-                <small class="stat-label"><b>Average Meeting</b></small>
-                <h4><%=@meetings_per_daye%></h4>
+              <div class="col-xs-6 text-center" style="padding-left: 0px">
+                <small class="stat-label"><strong>Total Days</strong></small>
+                <h5><%= @no_of_day %></h5>
+              </div>
+              <div class="col-xs-6 text-center" style="padding-right: 0px">
+                <small class="stat-label"><strong>Avg / Day</strong></small>
+                <h5><%= @meetings_per_day %></h5>
               </div>
             </div>
           </div><!-- stat -->
@@ -36,10 +40,17 @@
                 <i class="fa fa-sign-in"></i>
               </div>
               <div class="col-xs-8 text-center">
-                <small class="stat-label"><b>Total check ins</b></small>
+                <small class="stat-label"><strong>Total check ins</strong></small>
                 <h1><%=@total_check_in%></h1>
               </div>
             </div><!-- row -->
+            <div class="mb15"></div>
+            <div class="row">
+              <div class="col-xs-6 text-center" style="padding-left: 0px">
+                <small class="stat-label"><strong>Total Check Outs</strong></small>
+                <h5><%=@total_check_out%></h5>
+              </div>
+            </div>            
           </div><!-- stat -->
         </div><!-- panel-heading -->
       </div><!-- panel -->
@@ -50,13 +61,20 @@
           <div class="stat">
             <div class="row">
               <div class="col-xs-4">
-               <i class="fa fa-sign-out"></i>
+               <i class="fa fa-users"></i>
               </div>
               <div class="col-xs-8 text-center">
-                <small class="stat-label"><b>Total check outs</b></small>
-                <h1><%=@total_check_out%></h1>
+                <small class="stat-label"><strong>Created By Me</strong></small>
+                <h1></h1>
+              </div><!-- row -->
+            </div>
+            <div class="mb15"></div>
+            <div class="row">
+              <div class="col-xs-6 text-center" style="padding-left: 0px">
+                <small class="stat-label"><strong>Invited Too</strong></small>
+                <h5></h5>
               </div>
-            </div><!-- row -->
+            </div>                
           </div><!-- stat -->
         </div><!-- panel-heading -->
       </div><!-- panel -->
@@ -70,18 +88,18 @@
                 <i class="fa fa-clock-o"></i>
               </div>
               <div class="col-xs-8 text-center">
-                <small class="stat-label"><b>Duration Average</b></small>
+                <small class="stat-label"><strong>Duration Average</strong></small>
                 <p class='tiles-font'><%=@average_time_for_meeting%></p>
               </div>
             </div><!-- row -->
             <div class="mb15"></div>
             <div class="row">
               <div class="col-xs-6 text-center" style="padding-left: 0px">
-                <small class="stat-label"><b>Longest</b></small>
+                <small class="stat-label"><strong>Longest</strong></small>
                 <h5><%=@longest_meeting_time%></h5>
               </div>
               <div class="col-xs-6 text-center" style="padding-right: 0px">
-                <small class="stat-label"><b>Shortest</b></small>
+                <small class="stat-label"><strong>Shortest</strong></small>
                 <h5><%=@shortest_meeting_time%></h5>
               </div>
             </div>
@@ -91,10 +109,10 @@
     </div><!-- col-sm-6 -->
   </div><!-- row -->
   <div class="row">
-    <div class="col-sm-8 col-md-6">
-      <div class="panel panel-dark panel-alt">
-        <div class="panel-heading panel_color">
-          <h3 class="panel-title">Meetings by account status</h3>
+    <div class="col-sm-6">
+      <div class="panel panel-report panel-alt">
+        <div class="panel-heading">
+          <h3 class="panel-title">Meetings by Account Status</h3>
         </div>
         <div class="panel-body">
          <!-- <div id="account_status_pie_chart"></div> -->
@@ -102,10 +120,10 @@
         </div><!-- panel-body -->
       </div>
     </div>
-    <div class="col-sm-8 col-md-6">
-      <div class="panel panel-dark panel-alt">
-        <div class="panel-heading panel_color">
-          <h3 class="panel-title">Meetings by the day of week</h3>
+    <div class="col-sm-6">
+      <div class="panel panel-report panel-alt">
+        <div class="panel-heading">
+          <h3 class="panel-title">Meetings by Day of Week</h3>
         </div>
         <div class="panel-body">
          <div id="day_of_week_bar_chart" class="chart-height"></div>
@@ -115,9 +133,9 @@
   </div>
   <div class="row">
     <div class="col-sm-8 col-md-12">
-      <div class="panel panel-dark panel-alt">
-        <div class="panel-heading panel_color">
-          <h3 class="panel-title">Meetings by the time of day</h3>
+      <div class="panel panel-report panel-alt">
+        <div class="panel-heading">
+          <h3 class="panel-title">Meetings by Time of Day</h3>
         </div>
         <div class="panel-body">
          <div id="time_of_day_bar_chart" class="chart-height"></div>
