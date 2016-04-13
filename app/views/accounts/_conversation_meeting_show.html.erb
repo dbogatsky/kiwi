@@ -36,7 +36,6 @@
              data-ends-date="<%=Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.ends_at.present? %>"
              data-ends-time="<%=Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.ends_at.present? %>"
              data-repetition-rule ="<%=(citem.repetition_rule.present? || citem.related_to.present?) ? 'true' : 'false'%>"
-             data-related-to="<%=citem.related_to.present? ? 'true' : 'false'%>"
              data-location="<%= citem.location%>"
              data-longitude="<%=citem.longitude%>"
              data-latitude="<%=citem.latitude%>"
