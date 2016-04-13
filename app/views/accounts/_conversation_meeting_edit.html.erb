@@ -239,7 +239,6 @@
               <input type="hidden" name="info">
               <input type="hidden" name="info">
               <input type="hidden" name="repetition_rule_val" id="repetition_rule_value">
-              <input type="hidden" name="related_to_val" id="related_to_value">
               </div><!-- panel-body -->
               <div class="panel-footer">
                 <button class="btn btn-primary">Update Meeting</button>
@@ -489,10 +488,6 @@
     if($("#repetition_rule_value").val() == 'true'){
       $("#meeting-repeat-edit").attr('checked', true)
       $("#meeting-repeat-edit").attr('disabled', true)
-    }
-
-    if($("#related_to_value").val() == 'true'){
-      $("#meeting-reminder-edit").attr('disabled', true)
     }
   });
 </script>
