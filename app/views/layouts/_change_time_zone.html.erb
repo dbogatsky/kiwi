@@ -11,8 +11,8 @@
               <div class="panel-body">
                 <div class="row row-pad-5">
                   <p><b>Hi &nbsp;<%=current_user.first_name%>,</b><p>
-                  <p>This is general announcement to update you timezone in your profile. Currently you are accessing <b><%=cookies["browser.timezone"]%></b> from a timezone which is different from the timezone <b><%=current_user.time_zone%></b> saved in your profile.</p>
-                  <p><b>Note: </b>All events and calender entries will show up in the timezone update.</p>
+                  <p>We noticed that your current timezone is <strong><%=cookies["browser.timezone"]%></strong> which is different from the timezone <strong><%=current_user.time_zone%></strong> saved in your profile.</p>
+                  <p>Would you like to update your profile? <strong>Note: </strong>All events and calender entries will show up in the updated timezone.</p>
                 </div>
               </div><!-- panel-body -->
               <div class="panel-footer">
