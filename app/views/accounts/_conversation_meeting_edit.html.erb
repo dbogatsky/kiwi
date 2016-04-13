@@ -239,6 +239,7 @@
               <input type="hidden" name="info">
               <input type="hidden" name="info">
               <input type="hidden" name="repetition_rule_val" id="repetition_rule_value">
+              <input type="hidden" name="related_to_val" id="related_to_value">
               </div><!-- panel-body -->
               <div class="panel-footer">
                 <button class="btn btn-primary">Update Meeting</button>
@@ -261,7 +262,6 @@
   $('#meeting-repeat-edit').change(function () {
     if ($(this).is(':checked')) {
       $("#meeting-repeat-settings-edit").show(500);
-      $("#meeting-reminder-edit").attr('required', true);
       $("#repeat-frequency-edit").attr('required', true);
       $("#repeat-occurrences-edit").attr('required', true);
       $("#repeat-every-day-edit").attr('required', true);
@@ -275,7 +275,6 @@
       $('#repeat-every-year-edit').val(null);
       $('#repeat-every-month-on-edit').val(null);
       $('#repeat-frequency-weekday-on-edit').val(null);
-      $("#meeting-reminder-edit").attr('required',false);
       $("#repeat-frequency-edit").attr('required', false);
       $("#repeat-occurrences-edit").attr('required', false);
       $("#repeat-every-day-edit").attr('required', false);
@@ -422,6 +421,9 @@
 
   $(".conversation-edit-meeting-modal-form").on("hidden.bs.modal", function(){
     $("#edit_tags").find('span').remove();
+    $("#meeting-repeat-edit").attr('checked', false)
+    $("#meeting-repeat-edit").attr('disabled', false)
+    $("#meeting-reminder-edit").attr('disabled', false)
   });
   $(".conversation-edit-meeting-modal-form").on("shown.bs.modal", function(){
     var input = document.getElementById("edit_location");
@@ -485,10 +487,12 @@
     });
 
     if($("#repetition_rule_value").val() == 'true'){
-      $("#meeting-reminder-edit").attr('disabled', true);
-      $("#meeting-reminder-date-edit").attr('required', true)
       $("#meeting-repeat-edit").attr('checked', true)
       $("#meeting-repeat-edit").attr('disabled', true)
+    }
+
+    if($("#related_to_value").val() == 'true'){
+      $("#meeting-reminder-edit").attr('disabled', true)
     }
   });
 </script>

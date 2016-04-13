@@ -366,68 +366,73 @@ class AccountsController < ApplicationController
 
   def search
     c_id = @account.conversation.id
-    s_date = Chronic.parse(params[:search][:data_gteq])
+    s_date = Chronic.parse(params[:search][:date_gteq])
     e_date = Chronic.parse(params[:search][:date_lteq])
-    apiURL = RequestStore.store[:api_url] + '/conversations/'+ "#{c_id}" + '/items?'
-    apiFullUrl = apiURL +  "search[type_cont]=#{params[:search][:type_cont]}&starts_at_gteq=#{s_date}&starts_at_lteq=#{e_date}";
-    headers = {}
-    headers["Authorization"] = "Token token=\"#{@token}\",email=\"#{@email}\", app_key=\"#{@appKey}\""
-    @conversation_items = HTTParty.get(apiFullUrl,headers: headers)
+    s_date = s_date.in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") rescue nil
+    e_date = e_date.in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") rescue nil
+    search = Hash.new
+    if params[:search][:type_cont] == 'meeting'
+      search[:starts_at_gteq] = convert_datetime_to_utc(current_user.time_zone, s_date) rescue nil
+      search[:starts_at_lteq] = convert_datetime_to_utc(current_user.time_zone, e_date) rescue nil
+    else
+      search[:created_at_gteq] = convert_datetime_to_utc(current_user.time_zone, s_date) rescue nil
+      search[:created_at_lteq] = convert_datetime_to_utc(current_user.time_zone, e_date) rescue nil
+    end
+    search[:title_cont] = params[:search][:title]
+    search[:type_cont]=params[:search][:type_cont]
+    @conversation_items = ConversationItem.all(params: {conversation_id: c_id, search: search})
   end
-
-
 
   private
 
-
-  def get_token
-    #set gloal var for token to be used in model, hack for now
-    RequestStore.store[:user_token]
-  end
-
-
-  def account_params
-    params.require(:account).permit(
-      :name, :status_id, :contact_name, :contact_title, :assign_to, :shared_with, :about, :quick_facts, :avatar,
-      addresses_attributes: [:id, :name, :street_address, :postcode, :city, :region, :latitude, :longitude, :country, :_destroy],
-      contacts_attributes: [:id, :type, :name, :value, :_destroy]
-    )
-  end
+    def get_token
+      #set gloal var for token to be used in model, hack for now
+      RequestStore.store[:user_token]
+    end
 
 
-  def conversation_item_params
-    params.require(:conversation_item).permit(:account_id, :type, :reminder, :scheduled_at, :subject, :body, :email, :send_later, :title)
-  end
+    def account_params
+      params.require(:account).permit(
+        :name, :status_id, :contact_name, :contact_title, :assign_to, :shared_with, :about, :quick_facts, :avatar,
+        addresses_attributes: [:id, :name, :street_address, :postcode, :city, :region, :latitude, :longitude, :country, :_destroy],
+        contacts_attributes: [:id, :type, :name, :value, :_destroy]
+      )
+    end
 
 
-  def shared_account_params
-    params.require(:account).permit(
-      user_account_sharings_attributes: [:user_id, :permission, :_destroy]
-    )
-  end
+    def conversation_item_params
+      params.require(:conversation_item).permit(:account_id, :type, :reminder, :scheduled_at, :subject, :body, :email, :send_later, :title)
+    end
 
-  def find_account
-    @account = Account.find(params[:id])
-  end
 
-  def get_api_values
-    @email = current_user.email
-    @appKey = APP_CONFIG['api_app_key']
-    @token = session[:token]
-  end
+    def shared_account_params
+      params.require(:account).permit(
+        user_account_sharings_attributes: [:user_id, :permission, :_destroy]
+      )
+    end
 
-  def save_avatar
-    if params.has_key?(:avatar)
-      url = URI.parse("#{RequestStore.store[:api_url]}/accounts/#{@account.id}")
-      puts "sending avatar...#{url}"
-      #req = Net::HTTP::Put::Multipart.new url.path,  account: { :avatar => UploadIO.new(File.new(params[:avatar].tempfile), "image/jpeg", "image.jpg")}
-      req = Net::HTTP::Put::Multipart.new url.path, :avatar => UploadIO.new(File.new(params[:avatar].tempfile), "image/jpeg", "image.jpg")
-      req.add_field("Authorization", "Token token=\"#{RequestStore.store[:user_token]}\", app_key=\"#{APP_CONFIG['api_app_key']}\"")
-      #req.add_field("Content-Type", "application/json")
+    def find_account
+      @account = Account.find(params[:id])
+    end
 
-      res = Net::HTTP.start(url.host, url.port) do |http|
-        http.request(req)
+    def get_api_values
+      @email = current_user.email
+      @appKey = APP_CONFIG['api_app_key']
+      @token = session[:token]
+    end
+
+    def save_avatar
+      if params.has_key?(:avatar)
+        url = URI.parse("#{RequestStore.store[:api_url]}/accounts/#{@account.id}")
+        puts "sending avatar...#{url}"
+        #req = Net::HTTP::Put::Multipart.new url.path,  account: { :avatar => UploadIO.new(File.new(params[:avatar].tempfile), "image/jpeg", "image.jpg")}
+        req = Net::HTTP::Put::Multipart.new url.path, :avatar => UploadIO.new(File.new(params[:avatar].tempfile), "image/jpeg", "image.jpg")
+        req.add_field("Authorization", "Token token=\"#{RequestStore.store[:user_token]}\", app_key=\"#{APP_CONFIG['api_app_key']}\"")
+        #req.add_field("Content-Type", "application/json")
+
+        res = Net::HTTP.start(url.host, url.port) do |http|
+          http.request(req)
+        end
       end
     end
-  end
 end

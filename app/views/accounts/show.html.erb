@@ -323,6 +323,7 @@
     $('.conversation-edit-meeting-modal-form input[name="ends_date"]').val($(this).attr('data-ends-date'));
     $('.conversation-edit-meeting-modal-form input[name="ends_time"]').val($(this).attr('data-ends-time'));
     $("#repetition_rule_value").val($(this).attr('data-repetition-rule'));
+    $("#related_to_value").val($(this).attr('data-related-to'));
 
     if ($('.conversation-edit-meeting-modal-form input[name="scheduled_time"]').val()!="" && $('.conversation-edit-meeting-modal-form input[name="scheduled_date"]').val()!="")
       {
@@ -427,10 +428,16 @@
 	    if ($(this).is(':checked')) {
 		    $("#meeting-reminder-settings, #meeting-reminder-settings-edit").show(500);
         $("#meeting-reminder-date").attr('required', true);
+        $("#meeting-reminder-time").attr('required', true)
+        $("#meeting-reminder-date-edit").attr('required', true);
+        $("#meeting-reminder-time-edit").attr('required', true)
       }else {
 			$("#meeting-reminder-settings, #meeting-reminder-settings-edit").hide(500);
       $('.conversation-edit-meeting-modal-form input[name="scheduled_date"]').val(null);
       $("#meeting-reminder-date").attr('required', false);
+      $("#meeting-reminder-time").attr('required', false)
+      $("#meeting-reminder-date-edit").attr('required', false);
+      $("#meeting-reminder-time-edit").attr('required', false)
 		  }
 		});
 
