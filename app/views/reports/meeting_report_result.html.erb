@@ -98,7 +98,7 @@
         </div>
         <div class="panel-body">
          <!-- <div id="account_status_pie_chart"></div> -->
-         <div id="account_status_pie_chart"></div>
+         <div id="account_status_pie_chart" class="chart-height"></div>
         </div><!-- panel-body -->
       </div>
     </div>
@@ -108,7 +108,7 @@
           <h3 class="panel-title">Meetings by the day of week</h3>
         </div>
         <div class="panel-body">
-         <div id="day_of_week_bar_chart"></div>
+         <div id="day_of_week_bar_chart" class="chart-height"></div>
         </div><!-- panel-body -->
       </div>
     </div>
@@ -120,7 +120,7 @@
           <h3 class="panel-title">Meetings by the time of day</h3>
         </div>
         <div class="panel-body">
-         <div id="time_of_day_bar_chart"></div>
+         <div id="time_of_day_bar_chart" class="chart-height"></div>
         </div><!-- panel-body -->
       </div>
     </div>
@@ -170,7 +170,6 @@
   </div><!-- row -->
 </div><!-- contentpanel -->
 
-
 <script type="text/javascript">
   $('.check_in_out').click(function(){
     $('#preloader').css('opacity', 0.8);
@@ -219,43 +218,16 @@
   });
 
   var account_data=  '<%=@account_data%>';
-  account_data = JSON.parse(account_data.replace(/&quot;/g,'"'))
+  var color = '<%=@color%>'
+  account_data = JSON.parse(account_data.replace(/&quot;/g,'"'));
+  color = JSON.parse(color.replace(/&quot;/g,'"'));
   var m6 =  new Morris.Donut({
     element: 'account_status_pie_chart',
     data: account_data,
-    colors: ['#1CAF9A', '#428BCA', '#ff860d', '#999999'],
+    resize: true,
+    colors: color,
     formatter: function (y, data) { return y + '%'}
   });
-
-
-
-  // var chart = new CanvasJS.Chart("account_status_pie_chart",
-  // {
-
-  //   animationEnabled: true,
-  //   legend: {
-  //     verticalAlign: "bottom",
-  //     horizontalAlign: "center"
-  //   },
-  //   theme: "theme1",
-  //   data: [
-  //   {
-  //     type: "pie",
-  //     indexLabelFontFamily: "Garamond",
-  //     indexLabelFontSize: 20,
-  //     indexLabelFontWeight: "bold",
-  //     startAngle:0,
-  //     indexLabelFontColor: "MistyRose",
-  //     indexLabelLineColor: "darkgrey",
-  //     indexLabelPlacement: "inside",
-  //     toolTipContent: "{name}: {y}%",
-  //     showInLegend: true,
-  //     indexLabel: "#percent%",
-  //     dataPoints: account_data
-  //   }
-  //   ]
-  // });
-  // chart.render();
 
   jQuery(document).ready(function() {
     //"use strict";
