@@ -225,6 +225,7 @@
     element: 'account_status_pie_chart',
     data: account_data,
     resize: true,
+    stacked: true,
     colors: color,
     formatter: function (y, data) { return y + '%'}
   });
@@ -244,8 +245,10 @@
     });
   });
 
-  // $(window).resize(function () {
-  //   window.location.reload();
-  // });
+  $(window).resize(function () {
+    m4.redraw();
+    m5.redraw();
+    m6.redraw();
+  });
 </script>
 
