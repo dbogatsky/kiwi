@@ -79,6 +79,51 @@
   </div><!-- row -->
   <div class="row row-pad-5">
     <div class="col-md-12 mb20">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <div class="panel-btns">
+            <a href="" class="minimize">−</a>
+          </div><!-- panel-btns -->
+          <h3 class="panel-title">Company News</h3>
+        </div>
+        <div class="panel-body">
+          <%= form_tag(nil) do |f| %>
+            <div class="tab-pane" id="news">
+              <div class="row row-pad-5">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">News1</label>
+                    <div class="col-sm-2">
+                      <%=text_area_tag 'news1', nil, class: 'comment_input'%>
+                    </div>
+                </div>
+              </div><!-- row -->
+              <div class="row row-pad-5">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">News2</label>
+                    <div class="col-sm-2">
+                      <%=text_area_tag 'news2', nil, class: 'comment_input'%>
+                    </div>
+                </div>
+              </div><!-- row -->
+              <div class="row row-pad-5">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">News3</label>
+                    <div class="col-sm-2">
+                      <%=text_area_tag 'news3', nil, class: 'comment_input'%>
+                    </div>
+                </div>
+              </div><!-- row -->
+              <div class="col-sm-2" style="padding-left: 23%">
+                <button type="submit" value="submit" class="btn btn-primary">Save</button>
+              </div>
+            </div>
+          <%end%>
+        </div>
+      </div>
+    </div> <!-- col- -->
+  </div><!-- row -->
+  <div class="row row-pad-5">
+    <div class="col-md-12 mb20">
       <!-- Nav tabs -->
       <% if can? :read, AccountStatus %>
         <div class="panel panel-default">
@@ -139,7 +184,6 @@
             </div>
           </div>
         <% end %>
-
         <% if can? :read, CompanyEntity %>
           <div class="panel panel-default">
             <div class="panel-heading">
@@ -153,7 +197,6 @@
 
                 <div class="row row-pad-5">
                   <div class="col-md-10">
-                    <!-- <h3 class="panel-title">Entities</h3> -->
                     <p>Use entities to describe how your organization is structured</p>
                   </div>
                   <div class="col-md-2">
@@ -162,7 +205,6 @@
                     <% end %>
                   </div>
                 </div><!-- row -->
-
                 <div class="row row-pad-5">
                   <div class="col-md-8">
                     <% if @entites.present? %>
@@ -172,14 +214,7 @@
                            <li class="second_li">Description</li>
                             <li class="third_li">&nbsp;</li>
                         </ul>
-                        <%# @entites.each do |entity| %>
-                          <%#unless entity.parent.present? %>
-                              <%#=get_children(entity.id)%>
-                          <%#end%>
-                        <%#end%>
-
                         <%=nested_entities(@entites)%>
-
                       </div><!-- table-responsive -->
                     <% else %>
                       <p>Create and manage Entities here.</p>
@@ -188,14 +223,8 @@
                 </div>
               </div>
             </div>
-          <!-- <ul class="panel-title"> -->
-            <!-- <li><a href="#organization" data-toggle="tab"><strong>Company Entities</strong></a></li> -->
-            <!-- <li><a href="#settings" data-toggle="tab"><strong>Account Statues</strong></a></li> -->
-          <!-- </ul> -->
-          <!-- Tab panes -->
         </div>
       <% end %>
-
     </div> <!-- col- -->
   </div><!-- row -->
 </div><!-- profile-header -->
