@@ -613,6 +613,26 @@ body,
     padding: 0;
 }
 
+.panel-report {
+    border: 1px solid #ccc;
+}
+.panel-report > .panel-heading {
+    color: #a94442;
+    background-color: #fff;
+    border-color: #ccc;
+}
+.panel-report > .panel-heading + .panel-collapse > .panel-body {
+    border-top-color: #ccc;
+}
+.panel-report > .panel-heading .badge {
+    color: #333;
+    background-color: #a94442;
+}
+.panel-report > .panel-footer + .panel-collapse > .panel-body {
+    border-bottom-color: #ccc;
+}
+
+
 .nav-email > li > a {
     padding: 7px 10px;
     border: 2px solid #fff;
