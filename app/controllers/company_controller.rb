@@ -71,6 +71,10 @@ class CompanyController < ApplicationController
     redirect_to company_path
   end
 
+  def company_news
+    redirect_to company_path
+  end
+
   def get_users
     email_json = []
     User.all.each do |user|
