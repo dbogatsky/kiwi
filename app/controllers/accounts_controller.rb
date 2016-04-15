@@ -1,7 +1,7 @@
 require 'net/http/post/multipart'
 class AccountsController < ApplicationController
   before_action :get_token
-  before_action :find_account, only: [:conversation, :search, :jump_in, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting]
+  before_action :find_account, only: [:conversation, :search, :jump_in, :edit, :update, :share, :update_note, :update_quote, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_quote]
   before_action :get_api_values,only: [:search]
   def index
     # Get all accounts
@@ -125,10 +125,7 @@ class AccountsController < ApplicationController
   end
 
   def delete_meeting
-    meeting = @account.conversation.conversation_items
-    meeting.each do |n|
-      @conversation = n if n.id == params[:item_id].to_i
-    end
+    @conversation = ConversationItem.find(params[:item_id], params:{conversation_id: @account.conversation.id})
     if @conversation.destroy
       flash[:success] = 'Meeting successfully deleted'
     else
@@ -153,10 +150,7 @@ class AccountsController < ApplicationController
     end
     params[:conversation_item][:starts_at] = convert_datetime_to_utc(current_user.time_zone, params[:starts_date], params[:starts_time]) if params[:starts_date] && params[:starts_time]
     params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone, params[:ends_date], params[:ends_time]) if params[:ends_date] && params[:ends_time]
-    meeting = @account.conversation.conversation_items
-    meeting.each do |n|
-      @conversation = n if n.id == params[:conversation_item][:id].to_i
-    end
+    @conversation = ConversationItem.find(params[:conversation_item][:id], params:{conversation_id: @account.conversation.id})
     if @conversation.update_attributes(conversation_item: params[:conversation_item], conversation_id: conversation_id, reload: true)
       flash[:success] = 'Meeting successfully updated!'
     else
@@ -244,6 +238,43 @@ class AccountsController < ApplicationController
     redirect_to account_path(conversation_item_params[:account_id])
   end
 
+  def add_quote
+    c_id = Account.find(conversation_item_params[:account_id]).conversation.id
+    params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:follow_date], params[:follow_time])
+     ci = ConversationItem.create(conversation_item: {title: conversation_item_params[:title], body: conversation_item_params[:body], scheduled_at: params[:conversation_item][:scheduled_at], status: conversation_item_params[:status],amount: conversation_item_params[:amount], created_by_id: current_user.id}, conversation_id: c_id, type: conversation_item_params[:type])
+    if ci
+      flash[:success] = 'Your quote has been added to the conversation'
+    else
+      flash[:danger] = 'Oops! Unable to add quote'
+    end
+
+    redirect_to account_path(conversation_item_params[:account_id])
+  end
+
+  def update_quote
+    conversation_id = @account.conversation.id
+    params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:follow_date], params[:follow_time])
+    @conversation = ConversationItem.find(params[:conversation_item][:id], params:{conversation_id: @account.conversation.id})
+    if @conversation.update_attributes(conversation_item: params[:conversation_item], conversation_id: conversation_id)
+      flash[:success] = 'Quote successfully updated!'
+    else
+      flash[:danger] = 'Quote not updated!'
+    end
+    redirect_to account_path(params[:id])
+  end
+
+
+  def delete_quote
+    @conversation = ConversationItem.find(params[:item_id], params:{conversation_id: @account.conversation.id})
+    if @conversation.destroy
+      flash[:success] = 'Quote successfully deleted'
+    else
+      flash[:danger] = 'Oops! Unable to delete the quote'
+    end
+    redirect_to account_path(params[:id])
+  end
+
+
   def update_note
     conversation_id = @account.conversation.id
     if params[:conversation_item][:reminder].present?
@@ -254,11 +285,7 @@ class AccountsController < ApplicationController
       params[:conversation_item][:scheduled_at] = nil
       params[:conversation_item][:reminder] = nil
     end
-
-    note = @account.conversation.conversation_items
-    note.each do |n|
-      @conversation = n if n.id == params[:conversation_item][:id].to_i
-    end
+    @conversation = ConversationItem.find(params[:conversation_item][:id], params:{conversation_id: @account.conversation.id})
     if @conversation.update_attributes(conversation_item: params[:conversation_item], conversation_id: conversation_id)
       flash[:success] = 'Note successfully updated!'
     else
@@ -272,10 +299,7 @@ class AccountsController < ApplicationController
   end
 
   def delete_note
-    note = @account.conversation.conversation_items
-    note.each do |n|
-      @conversation = n if n.id == params[:item_id].to_i
-    end
+    @conversation = ConversationItem.find(params[:item_id], params:{conversation_id: @account.conversation.id})
     if @conversation.destroy
       flash[:success] = 'Note successfully deleted'
     else
@@ -326,13 +350,7 @@ class AccountsController < ApplicationController
       params[:conversation_item][:scheduled_at] = nil
       params[:conversation_item][:reminder] = nil
     end
-
-    email = @account.conversation.conversation_items
-
-    email.each do |n|
-      @conversation = n if n.id == params[:conversation_item][:id].to_i
-    end
-
+    @conversation = ConversationItem.find(params[:conversation_item][:id], params:{conversation_id: @account.conversation.id})
     if @conversation.update_attributes(conversation_item: params[:conversation_item], conversation_id: conversation_id)
       flash[:success] = 'Email successfully updated!'
     else
@@ -342,10 +360,7 @@ class AccountsController < ApplicationController
   end
 
   def delete_email
-    email = @account.conversation.conversation_items
-    email.each do |n|
-      @conversation = n if n.id == params[:item_id].to_i
-    end
+    @conversation = ConversationItem.find(params[:item_id], params:{conversation_id: @account.conversation.id})
     if @conversation.destroy
       flash[:success] = 'Email successfully deleted'
     else
@@ -401,7 +416,7 @@ class AccountsController < ApplicationController
 
 
     def conversation_item_params
-      params.require(:conversation_item).permit(:account_id, :type, :reminder, :scheduled_at, :subject, :body, :email, :send_later, :title)
+      params.require(:conversation_item).permit(:account_id, :type, :reminder, :scheduled_at, :subject, :body, :email, :send_later, :title, :status, :amount)
     end
 
 

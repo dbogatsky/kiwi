@@ -10,6 +10,8 @@
           <%= render "conversation_phone_show", :citem => i %>
         <% elsif i.type.eql? 'meeting' %>
           <%= render "conversation_meeting_show",info: nil, created_by: i.created_by, :citem => i %>
+        <% elsif i.type.eql? 'quote' %>
+          <%= render "conversation_quotes_show",info: nil, created_by: i.created_by, :citem => i %>
         <% end %>
     </div>
   <% end %>
