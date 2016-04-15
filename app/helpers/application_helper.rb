@@ -15,10 +15,30 @@ module ApplicationHelper
 		html.html_safe
 	end
 
+  def get_styled_quotestatus(citem, pulled_right=true)
+    pulled_right_class= "pull-right"
+
+    if pulled_right == false
+      pulled_right_class = ""
+    end
+    if citem.status == "open" or citem.status == "accepted" or citem.status == "rejected" or citem.status == "closed"
+      color = get_quotestatus_color(citem.status)
+      html = "<span class='badge " + pulled_right_class + "' style='margin-top: -3px; background-color: white; color: #{color}; border: 1px solid #{color};'>#{citem.status}</span>"
+    else citem.status.nil?
+      html = "<span class='badge " + pulled_right_class + "' style='background-color: #ff860b; border-color: #ff860b;'>Unknown</span>"
+    end
+    html.html_safe
+  end
+
 	def get_meetingstatus_color(meeting_status)
 		statusColor = Hash["scheduled" => "#428BCA", "canceled" => "#999", "completed" => "#4CAF50"]
 		statusColor[meeting_status]
 	end
+
+  def get_quotestatus_color(meeting_status)
+    statusColor = Hash["open" => "#428BCA", "rejected" => "#999", "accepted" => "#4CAF50", "closed" => "#85FF7D"]
+    statusColor[meeting_status]
+  end
 
   def check_in(citem, info)
     if citem.check_ins.present?

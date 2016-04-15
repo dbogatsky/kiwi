@@ -29,10 +29,12 @@ Rails.application.routes.draw do
       patch  :update_note
       patch  :update_email
       patch  :update_meeting
+      patch  :update_quote
       delete :delete_note
       delete :delete_email
       get :delete_meeting
       delete :delete_future_meeting
+      delete :delete_quote
       patch  :jump_in
       get    :search
     end
@@ -48,6 +50,7 @@ Rails.application.routes.draw do
   post '/accounts/check_in', to:'accounts#check_in', as: :account_check_in
   post '/accounts/check_out', to:'accounts#check_out', as: :account_check_out
   post '/accounts/:id/add_note', to:'accounts#add_note', as: :account_add_note
+  post '/accounts/:id/add_quote', to:'accounts#add_quote', as: :account_add_quote
   post '/accounts/:id/send_email', to:'accounts#send_email', as: :account_send_email
   post '/accounts/:id/share', to:'accounts#share', as: :account_share
 

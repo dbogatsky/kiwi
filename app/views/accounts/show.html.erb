@@ -136,6 +136,7 @@
                   <% if can? :manage, ConversationItem %>
                     <li><a href="#" data-toggle="modal" data-target=".account-action-meeting">Schedule Meeting</a></li>
                     <li><a href="#" data-toggle="modal" data-target=".conversation-note-modal-form">Add Note</a></li>
+                    <li><a href="#" data-toggle="modal" data-target=".conversation-quote-modal-form">Add Quote</a></li>
                     <li><a href="#" data-toggle="modal" data-target=".account-action-email">Send Email</a></li>
                     <% end %>
 
@@ -213,7 +214,9 @@
   <%= render "conversation_note" %>
   <%= render 'conversation_note_edit', account: @account%>
   <%= render "conversation_meeting_edit", account: @account %>
+  <%= render "conversation_quote_edit", account: @account %>
   <%= render "conversation_meeting_complete", account: @account %>
+  <%= render "conversation_quote"%>
   <%= render "conversation_sharedusers" %>
 <% end %>
 
@@ -242,6 +245,13 @@
   $(function() {
     new_editor = $('#new_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
     edit_editor = $('#edit_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
+  });
+
+  var new_quote, edit_quote;
+
+  $(function() {
+    new_quote = $('#new_quote').wysihtml5({'font-styles': false, 'image': false, 'link':false});
+    edit_quote = $('#quote_edit').wysihtml5({'font-styles': false, 'image': false, 'link':false});
   });
 
   var email_new_editor, email_edit_editor;
@@ -357,6 +367,25 @@
     }
   });
 
+  $(document).on('click', "a.edit_quote", function(e){
+    id = $(this).attr('data-id')
+    status = $(this).attr('data-status')
+    body = $(this).attr('data-description')
+    $('.conversation-edit-quote-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
+    $('.conversation-edit-quote-modal-form select[name="conversation_item[status]"]').val(status);
+    $('.conversation-edit-quote-modal-form select[name="conversation_item[amount]"]').val($(this).attr('data-amount'));
+    if (status != ''){
+      edit_quote.data("wysihtml5").editor.setValue(body);
+    }
+    $('.conversation-edit-quote-modal-form input[name="follow_time"]').val($(this).attr('data-time'));
+    $('.conversation-edit-quote-modal-form input[name="follow_date"]').val($(this).attr('data-date'));
+    $('.conversation-edit-quote-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
+  });
+
+  $('#follow_time').timepicker({
+    minuteStep: 15
+  });
+
   $(document).ready(function(){
     $.fn.editable.defaults.ajaxOptions = {type: "PUT"};
     jQuery('.account-contact-editable').editable({
@@ -442,7 +471,6 @@
 
 		$('#reminderDatePicker').datepicker('option', 'dateFormat', 'mm/dd/yy');
 		$('#reminderTimePicker').timepicker({minuteStep: 5});
-
     $('#reminderDatePickerEdit').datepicker('option', 'dateFormat', 'mm/dd/yy');
     $('#reminderTimePickerEdit').timepicker({minuteStep: 5});
 
