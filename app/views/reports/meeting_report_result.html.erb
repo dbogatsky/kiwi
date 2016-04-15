@@ -81,7 +81,8 @@
     </div><!-- col-sm-6 -->
     <div class="col-sm-6 col-md-3">
       <div class="panel panel-dark panel-stat">
-        <div class="panel-heading">
+        <div class="panel-heading" style="
+    height: 165px;">
           <div class="stat">
             <div class="row">
               <div class="col-xs-4">
@@ -132,7 +133,17 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-sm-8 col-md-12">
+    <div class="col-sm-6">
+      <div class="panel panel-report panel-alt">
+        <div class="panel-heading">
+          <h3 class="panel-title">Meetings by Status</h3>
+        </div>
+        <div class="panel-body">
+         <div id="meeting_by_status_dognut_chart" class="chart-height"></div>
+        </div><!-- panel-body -->
+      </div>
+    </div>
+    <div class="col-sm-6">
       <div class="panel panel-report panel-alt">
         <div class="panel-heading">
           <h3 class="panel-title">Meetings by Time of Day</h3>
@@ -248,25 +259,31 @@
     formatter: function (y, data) { return y + '%'}
   });
 
+  var meeting_by_status=  '<%=@meeting_by_status%>';
+  meeting_by_status = JSON.parse(meeting_by_status.replace(/&quot;/g,'"'));
+  var m7 =  new Morris.Donut({
+    element: 'meeting_by_status_dognut_chart',
+    data: meeting_by_status,
+    resize: true,
+    stacked: true,
+    colors: ['#85FF7D', '#428BCA', '#ff860d'],
+    formatter: function (y, data) { return y + '%'}
+  });
+
   jQuery(document).ready(function() {
     //"use strict";
     jQuery('#meetingTable').dataTable({
       "sPaginationType": "full_numbers",
-      "lengthMenu": [[5, 10, 15, -1], [5, 10, 15, "All"]],
-      "pageLength": 5
-    });
-
-    jQuery('#check_inTable').dataTable({
-      "sPaginationType": "full_numbers",
-      "lengthMenu": [[5, 10, 15, -1], [5, 10, 15, "All"]],
-      "pageLength": 5
+      "lengthMenu": [[50, 100, 150, -1], [50, 100, 150, "All"]],
+      "pageLength": 50,
+      "bFilter": false
     });
   });
-
   $(window).resize(function () {
     m4.redraw();
     m5.redraw();
     m6.redraw();
+    m7.redraw();
   });
 </script>
 

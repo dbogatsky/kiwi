@@ -17,6 +17,7 @@ class ReportsController < ApplicationController
     day_of_Week_bar_chart_data(@meetings)
     time_of_day_bar_chart_data(@meetings)
     meetings_by_account_status_data(@meetings)
+    meeting_by_status_chart_data(@meetings)
 
     @total_meetings = @meetings.count
     @meetings_per_day = (@total_meetings.to_f/@no_of_day.to_f).round(1)
@@ -63,6 +64,28 @@ class ReportsController < ApplicationController
 
 
  private
+
+  def meeting_by_status_chart_data(meetings)
+    s, c, can = 0, 0, 0
+    if meetings.present?
+      meetings.each do |m|
+        if m.status == 'scheduled'
+          s = s + 1
+        elsif m.status == 'completed'
+          c = c + 1
+        elsif m.status == 'canceled'
+          can = can + 1
+        end
+      end
+    end
+    scheduled = (s.to_f/meetings.size.to_f)*100 rescue 0
+    completed = (c.to_f/meetings.size.to_f)*100 rescue 0
+    cancelled = (can.to_f/meetings.size.to_f)*100 rescue 0
+    @meeting_by_status = [{label: 'Scheduled', value: scheduled},
+                         {label: 'Completed', value: completed},
+                         {label: 'Canceled', value: cancelled}]
+    @meeting_by_status = @meeting_by_status.to_json
+  end
 
   def day_of_Week_bar_chart_data(meetings)
     su, mo, t, w, th, f, st = 0, 0, 0, 0, 0, 0, 0
@@ -120,7 +143,7 @@ class ReportsController < ApplicationController
     end
     arr = []
     statuses.each do |k, v|
-      v = (v/meetings.size)*100 rescue 0
+      v = (v.to_f/meetings.size.to_f)*100 rescue 0
       arr << {label: k.to_s, value: v}
     end
     @account_data = arr.to_json
