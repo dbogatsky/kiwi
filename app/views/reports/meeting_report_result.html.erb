@@ -172,6 +172,7 @@
               <th>Check Outs</th>
               <th>Status</th>
               <th></th>
+              <th></th>
            </tr>
         </thead>
         <tbody>
@@ -188,8 +189,11 @@
               <td>
                 <%=render 'meeting_details', meeting: meeting %>
                 <%=link_to '#', data: { toggle: "modal", target: ".meeting-detail_#{meeting.id}" } do%>
-                <i class="fa fa-eye"></i>
+                <i class="fa fa-eye" title="View Details"></i>
                 <%end%>
+              </td>
+              <td>
+                <%=link_to 'go to account',account_path(meeting.account_id)%>
               </td>
             </tr>
           <% end %>
