@@ -81,6 +81,7 @@ Rails.application.routes.draw do
 
   post '/company/account_status', to:'company#account_status', as: :account_status
   post '/company/:company_id/company_news', to:'company#company_news', as: :company_news
+  delete '/company/:company_id/delete_news', to:'company#delete_news', as: :delete_news
   # match '/users', to: 'users#index', as: :users, via: [:get]
   # get '/users/new', to: 'users#new', as: :users_new
   # get '/users/edit/:id', to: 'users#edit', as: :users_edit
