@@ -1,0 +1,24 @@
+<div id="account-status-add" class="modal fade add-company-news" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button aria-hidden="true" data-dismiss="modal" class="close" type="button">&times;</button>
+            <h4 class="modal-title">Company News</h4>
+        </div>
+        <div class="modal-body">
+        <%= form_tag company_news_path(company_id: @company.id), method: :post do |f| %>
+        <p>Add or edit the company news and clicking save</p>
+        <div class="panel panel-default">
+            <div class="panel-body">
+              <%=text_area_tag 'news', nil, maxlength: 150, size: "55x3", class: 'comment_input', required: true%>
+              <%=hidden_field_tag 'update_params',nil%>
+            </div><!-- panel-body -->
+            <div class="panel-footer">
+              <button class="btn btn-primary">Save</button>
+            </div>
+        </div><!-- panel -->
+        <% end %>
+        </div><!-- modal body -->
+    </div><!-- modal content -->
+  </div><!-- modal dialog -->
+</div><!-- modal -->
