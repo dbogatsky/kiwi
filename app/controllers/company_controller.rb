@@ -1,13 +1,17 @@
 class CompanyController < ApplicationController
   load_and_authorize_resource
+  before_action :get_api_values, only: [:company_news, :index]
 
   def index
     #comapny details
     @company = Company.find(uid: RequestStore.store[:tenant])
-
     #lets get a fresh batch of Entities and Statues, not from cache
     @entites = CompanyEntity.all(uid: RequestStore.store[:tenant], reload: true)
     @account_statuses = AccountStatus.all(uid: RequestStore.store[:tenant], reload: true)
+    get_news
+    @news = @news_data['company']['settings']['preferences']
+    @news_data = @news_data['company']['settings']['preferences'].values
+    @news_data.shift
   end
 
   def edit_entity
@@ -72,7 +76,25 @@ class CompanyController < ApplicationController
   end
 
   def company_news
+    apiFullUrl = RequestStore.store[:api_url] + '/company/settings/preferences'
+    if params[:update_params].present?
+      curlRes = `curl -X PUT -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -d '{"settings":{"#{params[:update_params]}": "#{params[:news]}"}}' '#{apiFullUrl}'`
+      flash[:success] = 'News successfully Updated'
+    else
+      get_news
+      news_data = @news_data['company']['settings']['preferences'].keys
+      news_data.shift
+      news_array = ['news1', 'news2', 'news3', 'news4', 'news5']
+      final_array = (news_array-news_data) | (news_data-news_array)
+      curlRes = `curl -X PUT -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -d '{"settings":{"#{final_array.first}": "#{params[:news]}"}}' '#{apiFullUrl}'`
+      flash[:success] = 'News successfully Created'
+    end
     redirect_to company_path
+  end
+
+  def delete_news
+    redirect_to company_path
+    flash[:success] = 'News successfully Deleted'
   end
 
   def get_users
@@ -83,6 +105,18 @@ class CompanyController < ApplicationController
       end
     end
     render json: email_json
+  end
+
+  def get_api_values
+    @email = current_user.email
+    @appKey = APP_CONFIG['api_app_key']
+    @token = session[:token]
+  end
+
+  def get_news
+    apiFullUrl = RequestStore.store[:api_url] + '/company/settings/preferences'
+    curlRes = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -H "Cache-Control: no-cache" "#{apiFullUrl}"`
+    @news_data = JSON.parse(curlRes)
   end
 
 end

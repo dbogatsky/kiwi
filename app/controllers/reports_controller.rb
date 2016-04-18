@@ -55,12 +55,12 @@ class ReportsController < ApplicationController
 	  end
   end
 
-  def check_in_check_out
-    @meeting = ConversationItem.find(params[:id], params: {conversation_id: params[:ci_id]})
-    @success = true
-  rescue
-    @success = false
-  end
+  # def check_in_check_out
+  #   @meeting = ConversationItem.find(params[:id], params: {conversation_id: params[:ci_id]})
+  #   @success = true
+  # rescue
+  #   @success = false
+  # end
 
 
  private

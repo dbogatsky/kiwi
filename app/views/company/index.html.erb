@@ -87,37 +87,55 @@
           <h3 class="panel-title">Company News</h3>
         </div>
         <div class="panel-body">
-          <%= form_tag company_news_path(company_id: @company.id), method: :post do |f| %>
-            <div class="tab-pane" id="news">
+          <div class="tab-pane" id="settings">
               <div class="row row-pad-5">
-                <div class="form-group">
-                    <label class="col-sm-2 control-label news-top">News1</label>
-                    <div class="col-sm-2">
-                      <%=text_area_tag 'news1', nil, maxlength: 150, size: "55x3", class: 'comment_input'%>
-                    </div>
-                </div>
-              </div><!-- row -->
+                <%if @news_data.size < 5%>
+                  <div class="col-md-10"></div>
+                  <div class="col-md-2">
+                      <a href="#" id="add_news" class="btn btn-primary btn-block" data-toggle="modal" data-target=".add-company-news"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add News</a>
+                  </div>
+                <%else%>
+                  <div class="col-md-9"></div>
+                  <div class="col-md-3">
+                    <span>you have reached the limit for the amount of news entries that can be added, please remove an entry first</span>
+                  </div>
+                <%end%>
+              </div><!-- row pad 5-->
               <div class="row row-pad-5">
-                <div class="form-group">
-                    <label class="col-sm-2 control-label news-top">News2</label>
-                    <div class="col-sm-2">
-                      <%=text_area_tag 'news2', nil, maxlength: 150, size: "55x3", class: 'comment_input'%>
-                    </div>
-                </div>
-              </div><!-- row -->
-              <div class="row row-pad-5">
-                <div class="form-group">
-                    <label class="col-sm-2 control-label news-top">News3</label>
-                    <div class="col-sm-2">
-                      <%=text_area_tag 'news3', nil, maxlength: 150, size: "55x3", class: 'comment_input'%>
-                    </div>
-                </div>
-              </div><!-- row -->
-              <div class="col-sm-2" style="padding-left: 35%">
-                <button type="submit" value="submit" class="btn btn-primary">Save</button>
-              </div>
-            </div>
-          <%end%>
+                <div class="col-md-8">
+                  <div class="table-responsive">
+                    <table class="table mb30">
+                      <thead>
+                        <tr>
+                          <th></th>
+                          <th></th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% @news.each do |k,v| %>
+                          <%if k !="timeline_days_in_the_future"%>
+                            <tr>
+                              <td><%=v.first(30)%></td>
+                              <td class="table-action">
+                                  <a href="#"
+                                  data-news = '<%=k%>'
+                                  data-news-val='<%=v%>'
+                                  data-toggle="modal" data-target=".add-company-news" class="edit_news"><i class="fa fa-pencil"></i></a>
+                              </td>
+                              <td>
+                               <%=link_to delete_news_path(company_id: @company.id, news: k), method: :delete, data: {confirm: 'Are you sure to delete this news?'} do%>
+                                <i class="fa fa-trash-o"></i><%end%>
+                                </td>
+                            </tr>
+                          <%end%>
+                        <% end %>
+                      </tbody>
+                    </table>
+                  </div><!-- table-responsive -->
+                </div><!-- col-md-6 -->
+              </div><!-- row pad 5-->
+          </div>
         </div>
       </div>
     </div> <!-- col- -->
@@ -233,6 +251,7 @@
 </section>
 <%= render "company_account_status" %>
 <%= render 'edit_company_entity' %>
+<%= render 'add_company_news'%>
 
 <script src="/assets/bootstrap/js/colorpicker.js"></script>
 <script src="/assets/bootstrap/js/chosen.jquery.min.js"></script>
@@ -284,4 +303,12 @@
     $('#preloader').css('opacity', 0.3);
     $('#preloader').show();
   });
+
+  $(document).on('click', "a.edit_news", function(e){
+    console.log($(this).attr('data-news'))
+    $('.add-company-news textarea[name="news"]').val($(this).attr('data-news-val'));
+    $('.add-company-news input[name="update_params"]').val($(this).attr('data-news'));
+  });
+
+
 </script>
