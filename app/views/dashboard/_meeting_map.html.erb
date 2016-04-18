@@ -8,18 +8,23 @@
   </div><!-- panel-body -->
 </div>
 <script type="text/javascript">
-  <% if !request.location.nil? && !request.location.nil? %>
-    var lat = '<%=request.location.latitude%>';
-    var lng = '<%=request.location.longitude%>';
-  <% else %>
-    <%coordinates = Geocoder.coordinates(current_user.addresses.last.city)%>
-    <%if coordinates.present?%>
-      var lat = '<%=coordinates[0]%>';
-      var lng = '<%=coordinates[1]%>'
-    <%else%>
-      var lat = '43.7000'
-      var lng = '79.4000'
-    <%end%>
+  <% begin %>
+    <% if !request.location.nil? && !request.location.nil? %>
+      var lat = '<%=request.location.latitude%>';
+      var lng = '<%=request.location.longitude%>';
+    <% else %>
+      <%coordinates = Geocoder.coordinates(current_user.addresses.last.city)%>
+      <%if coordinates.present?%>
+        var lat = '<%=coordinates[0]%>';
+        var lng = '<%=coordinates[1]%>'
+      <%else%>
+        var lat = '43.7000'
+        var lng = '79.4000'
+      <%end%>
+    <% end %>
+  <% rescue %>
+    var lat = '43.7000'
+    var lng = '79.4000' 
   <% end %>
 
   var map_marker = new GMaps({
