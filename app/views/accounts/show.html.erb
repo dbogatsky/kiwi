@@ -374,7 +374,7 @@
     $('.conversation-edit-quote-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
     $('.conversation-edit-quote-modal-form select[name="conversation_item[status]"]').val(status);
     $('.conversation-edit-quote-modal-form select[name="conversation_item[amount]"]').val($(this).attr('data-amount'));
-    if (status != ''){
+    if (body != ''){
       edit_quote.data("wysihtml5").editor.setValue(body);
     }
     $('.conversation-edit-quote-modal-form input[name="follow_time"]').val($(this).attr('data-time'));
