@@ -8,7 +8,7 @@ module ApplicationHelper
 		end
 		if citem.status == "scheduled" or citem.status == "canceled" or citem.status == "completed"
 			color = get_meetingstatus_color(citem.status)
-			html = "<span class='badge " + pulled_right_class + "' style='margin-top: -3px; background-color: white; color: #{color}; border: 1px solid #{color};'>#{citem.status}</span>"
+			html = "<span class='badge width-68 " + pulled_right_class + "' style='margin-top: -3px; background-color: white; color: #{color}; border: 1px solid #{color};'>#{citem.status}</span>"
 		else citem.status.nil?
 			html = "<span class='badge " + pulled_right_class + "' style='background-color: #ff860b; border-color: #ff860b;'>Unknown</span>"
 		end

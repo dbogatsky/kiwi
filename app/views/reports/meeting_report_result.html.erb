@@ -154,42 +154,43 @@
       </div>
     </div>
   </div>
-  <div class="row">
+ <!--  <div class="row">
     <div class="col-sm-8 col-md-12">
-      <%=render "dashboard/meeting_map", meetings: @meetings %>
-    </div><!-- col-sm-9 -->
-  </div><!-- row -->
+      <%#=render "dashboard/meeting_map", meetings: @meetings %>
+    </div>
+  </div> -->
   <div class="row">
     <div class="col-sm-12">
       <table class="table table-striped" id="meetingTable">
         <thead>
            <tr>
-              <th></th>
               <th>Event Title</th>
               <th>Address</th>
               <th>Start at</th>
-              <th>End at</th>
+              <th>Duration</th>
               <th>Check Ins</th>
               <th>Check Outs</th>
-              <th>Invitees</th>
+              <th>Status</th>
+              <th></th>
            </tr>
         </thead>
         <tbody>
         <%if @meetings.present?%>
           <% @meetings.each do |meeting| %>
             <tr id="meeting_<%=meeting.id%>">
-              <td class="check_in_out">
-                <%=link_to reports_check_in_check_out_path(meeting.id, ci_id: meeting.conversation_id), remote: :true do%>
-                  <i class="fa fa-plus-circle"></i>
-                <%end%>
-              </td>
               <td><%= meeting.title %></td>
               <td><%= meeting.location %></td>
               <td><%= meeting.starts_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%Y/%m/%d %I:%M:%S %p") rescue nil%></td>
-              <td><%= meeting.ends_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%Y/%m/%d %I:%M:%S %p") rescue nil%></td>
+              <td><%= meeting_duration(meeting)%></td>
               <td><%= meeting.check_ins.count %></td>
               <td><%= meeting.check_outs.count %></td>
-              <td><%= meeting.invitees %></td>
+              <td><%= get_styled_meetingstatus(meeting, false) %></td>
+              <td>
+                <%=render 'meeting_details', meeting: meeting %>
+                <%=link_to '#', data: { toggle: "modal", target: ".meeting-detail_#{meeting.id}" } do%>
+                <i class="fa fa-eye"></i>
+                <%end%>
+              </td>
             </tr>
           <% end %>
         <%end%>
@@ -200,15 +201,15 @@
 </div><!-- contentpanel -->
 
 <script type="text/javascript">
-  $('.check_in_out').click(function(){
-    $('#preloader').css('opacity', 0.8);
-    $('#preloader').show();
-    if ($(this).find('i').hasClass('fa-plus-circle')){
-        $(this).find('i').removeClass('fa-plus-circle').addClass('fa-minus-circle')
-      }else{
-        $(this).find('i').removeClass('fa-minus-circle').addClass('fa-plus-circle')
-      }
-  });
+  // $('.check_in_out').click(function(){
+  //   $('#preloader').css('opacity', 0.8);
+  //   $('#preloader').show();
+  //   if ($(this).find('i').hasClass('fa-plus-circle')){
+  //       $(this).find('i').removeClass('fa-plus-circle').addClass('fa-minus-circle')
+  //     }else{
+  //       $(this).find('i').removeClass('fa-minus-circle').addClass('fa-plus-circle')
+  //     }
+  // });
 
   var data = '<%=@data%>';
   data = JSON.parse(data.replace(/&quot;/g,'"'))
@@ -266,7 +267,7 @@
     data: meeting_by_status,
     resize: true,
     stacked: true,
-    colors: ['#85FF7D', '#428BCA', '#ff860d'],
+    colors: ['#428BCA', '#4CAF50', '#999'],
     formatter: function (y, data) { return y + '%'}
   });
 
