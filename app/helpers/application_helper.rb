@@ -36,7 +36,7 @@ module ApplicationHelper
 	end
 
   def get_quotestatus_color(meeting_status)
-    statusColor = Hash["open" => "#428BCA", "rejected" => "#999", "accepted" => "#4CAF50", "closed" => "#85FF7D"]
+    statusColor = Hash["open" => "#428BCA", "rejected" => "#999", "accepted" => "#4CAF50", "closed" => "#cc5252"]
     statusColor[meeting_status]
   end
 

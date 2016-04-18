@@ -241,7 +241,7 @@ class AccountsController < ApplicationController
   def add_quote
     c_id = Account.find(conversation_item_params[:account_id]).conversation.id
     params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:follow_date], params[:follow_time])
-     ci = ConversationItem.create(conversation_item: {title: conversation_item_params[:title], body: conversation_item_params[:body], scheduled_at: params[:conversation_item][:scheduled_at], status: conversation_item_params[:status],amount: conversation_item_params[:amount], created_by_id: current_user.id}, conversation_id: c_id, type: conversation_item_params[:type])
+    ci = ConversationItem.create(conversation_item: {title: conversation_item_params[:title], body: conversation_item_params[:body], scheduled_at: params[:conversation_item][:scheduled_at], status: conversation_item_params[:status],amount: conversation_item_params[:amount], created_by_id: current_user.id}, conversation_id: c_id, type: conversation_item_params[:type])
     if ci
       flash[:success] = 'Your quote has been added to the conversation'
     else

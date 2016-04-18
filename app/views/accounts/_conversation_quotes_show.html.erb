@@ -15,7 +15,7 @@
             <li>
                 <a class="edit_quote" href="#"
                  data-toggle="modal"
-                 data-target=""
+                 data-target=".conversation-edit-quote-modal-form"
                  data-id="<%= citem.id %>"
                  data-title="<%=citem.title%>"
                  data-date="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.scheduled_at.present?%>"
