@@ -373,7 +373,8 @@
     body = $(this).attr('data-description')
     $('.conversation-edit-quote-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
     $('.conversation-edit-quote-modal-form select[name="conversation_item[status]"]').val(status);
-    $('.conversation-edit-quote-modal-form select[name="conversation_item[amount]"]').val($(this).attr('data-amount'));
+    console.log($(this).attr('data-amount'))
+    $('.conversation-edit-quote-modal-form input[name="conversation_item[amount]"]').val($(this).attr('data-amount'));
     if (body != ''){
       edit_quote.data("wysihtml5").editor.setValue(body);
     }

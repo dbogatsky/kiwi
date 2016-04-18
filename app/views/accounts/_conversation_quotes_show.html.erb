@@ -20,8 +20,8 @@
                  data-title="<%=citem.title%>"
                  data-date="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.scheduled_at.present?%>"
                  data-time="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.scheduled_at.present? %>"
-                 data-status = ''
-                 data-amount = ''
+                 data-status = '<%=citem.status%>'
+                 data-amount = '<%=citem.amount%>'
                  data-description="<%= citem.body %>">Edit</a>
             </li>
             <li>
@@ -32,7 +32,7 @@
     </div>
     <h2 class="ci_header"><%= citem.title %></h2>
     <div class="ci_note_body"><%= sanitize citem.body %>
-      <p>$<%#=citem.amount%></p>
+      <p>$<%=citem.amount%></p>
     </div>
     <% if (citem.scheduled_at.present?) %>
         <div class="ci_footer">
