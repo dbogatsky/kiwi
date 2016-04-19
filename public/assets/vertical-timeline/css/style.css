@@ -95,6 +95,9 @@ Main components
 .cd-timeline-img.cd-note {
   background: #1c84c6;
 }
+.cd-timeline-img.cd-quote {
+  background: #e91e63;
+}
 .cd-timeline-img.cd-account {
   background: #c71c38;
 }
