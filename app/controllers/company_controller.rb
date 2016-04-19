@@ -1,6 +1,6 @@
 class CompanyController < ApplicationController
   load_and_authorize_resource
-  before_action :get_api_values, only: [:company_news, :index]
+  before_action :get_api_values, only: [:company_news, :index, :delete_news]
 
   def index
     #comapny details
@@ -9,9 +9,6 @@ class CompanyController < ApplicationController
     @entites = CompanyEntity.all(uid: RequestStore.store[:tenant], reload: true)
     @account_statuses = AccountStatus.all(uid: RequestStore.store[:tenant], reload: true)
     get_news
-    @news = @news_data['company']['settings']['preferences']
-    @news_data = @news_data['company']['settings']['preferences'].values
-    @news_data.shift
   end
 
   def edit_entity
@@ -82,8 +79,7 @@ class CompanyController < ApplicationController
       flash[:success] = 'News successfully Updated'
     else
       get_news
-      news_data = @news_data['company']['settings']['preferences'].keys
-      news_data.shift
+      news_data = @news_data.keys
       news_array = ['news1', 'news2', 'news3', 'news4', 'news5']
       final_array = (news_array-news_data) | (news_data-news_array)
       curlRes = `curl -X PUT -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -d '{"settings":{"#{final_array.first}": "#{params[:news]}"}}' '#{apiFullUrl}'`
@@ -93,6 +89,8 @@ class CompanyController < ApplicationController
   end
 
   def delete_news
+    apiFullUrl = RequestStore.store[:api_url] + '/company/settings/preferences'
+    curlRes = `curl -X PUT -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -d '{"settings":{"#{params[:news]}": ""}}' '#{apiFullUrl}'`
     redirect_to company_path
     flash[:success] = 'News successfully Deleted'
   end
@@ -116,7 +114,9 @@ class CompanyController < ApplicationController
   def get_news
     apiFullUrl = RequestStore.store[:api_url] + '/company/settings/preferences'
     curlRes = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -H "Cache-Control: no-cache" "#{apiFullUrl}"`
-    @news_data = JSON.parse(curlRes)
+    news_data = JSON.parse(curlRes)
+    news_data = news_data['company']['settings']['preferences']
+    news_data.shift
+    @news_data = news_data.delete_if { |key, value| value.blank? }
   end
-
 end
