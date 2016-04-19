@@ -113,8 +113,8 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <% @news.each do |k,v| %>
-                          <%if k !="timeline_days_in_the_future"%>
+                        <%if @news_data.present?%>
+                          <% @news_data.each do |k,v| %>
                             <tr>
                               <td><%=v.first(30)%></td>
                               <td class="table-action">
@@ -129,7 +129,9 @@
                                 </td>
                             </tr>
                           <%end%>
-                        <% end %>
+                        <%else%>
+                          <tr><td>no news available</td></tr>
+                        <%end%>
                       </tbody>
                     </table>
                   </div><!-- table-responsive -->
