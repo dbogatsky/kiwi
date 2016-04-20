@@ -14,17 +14,7 @@
                     <input type="text" name="conversation_item[title]" placeholder="Title" class="form-control" required="required" />
                   </div>
                 </div>
-                <div class="row row-pad-5">
-                  <div class="col-lg-12">
-                   <select class="form-control" name="conversation_item[status]" required="required">
-                      <option value=''>-select status-</option>
-                      <option value="open">Open</option>
-                      <option value="accepted">Accepted</option>
-                      <option value="rejected">Rejected</option>
-                      <option value="closed">Closed</option>
-                  </select>
-                  </div>
-                </div>
+                <input type="hidden" name="conversation_item[status]" value="open">
                 <div class="row row-pad-5">
                   <div class="col-lg-12">
                     <input type="text" name="conversation_item[amount]" placeholder="Amount" class="form-control"/>
