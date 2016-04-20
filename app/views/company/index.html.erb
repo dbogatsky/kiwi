@@ -116,7 +116,7 @@
                         <%if @news_data.present?%>
                           <% @news_data.each do |k,v| %>
                             <tr>
-                              <td><%=v.first(30)%></td>
+                              <td><%=truncate(v, :length => 30)%></td>
                               <td class="table-action">
                                   <a href="#"
                                   data-news = '<%=k%>'
