@@ -1,7 +1,8 @@
 require 'net/http/post/multipart'
 class AccountsController < ApplicationController
+  skip_before_filter :verify_authenticity_token, only: [:delete_future_meeting]
   before_action :get_token
-  before_action :find_account, only: [:conversation, :search, :jump_in, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting]
+  before_action :find_account, only: [:conversation, :search, :jump_in, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting]
   before_action :get_api_values,only: [:search]
   def index
     # Get all accounts
@@ -129,16 +130,39 @@ class AccountsController < ApplicationController
     meeting.each do |n|
       @conversation = n if n.id == params[:item_id].to_i
     end
-    if @conversation.destroy
+    if @conversation.present? && (@conversation.related_to.present? || @conversation.repetition_rule.present?)
+       @show_alert = true
+    else
+      # @conversation.destroy
+      # flash[:success] = 'Meeting successfully deleted'
+      @show_alert = false
+    end
+    @conversation = @conversation.id
+    respond_to do |format|
+      format.js {render template: 'accounts/delete_meeting.js.erb'}
+    end
+    # if @conversation.destroy
+    #   flash[:success] = 'Meeting successfully deleted'
+    # else
+    #   flash[:danger] = 'Oops! Unable to delete the meeting'
+    # end
+    # if params[:info].present?
+    #   redirect_to schedule_path
+    # else
+    #   redirect_to account_path(params[:id])
+    # end
+  end
+
+  def delete_future_meeting
+    @item = ConversationItem.find(params[:citem_id], params:{conversation_id: @account.conversation.id})
+    if params[:destroy_future_meetings].present?
+      ConversationItem.delete(@item.id, {destroy_future_meetings: true, conversation_id: @account.conversation.id})
+      flash[:success] = 'All future Meeting successfully deleted'
+    else
+      @item.destroy
       flash[:success] = 'Meeting successfully deleted'
-    else
-      flash[:danger] = 'Oops! Unable to delete the meeting'
     end
-    if params[:info].present?
-      redirect_to schedule_path
-    else
-      redirect_to account_path(params[:id])
-    end
+    render js: "window.location.reload()"
   end
 
   def update_meeting

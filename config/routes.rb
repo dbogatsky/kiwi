@@ -30,7 +30,8 @@ Rails.application.routes.draw do
       patch  :update_meeting
       delete :delete_note
       delete :delete_email
-      delete :delete_meeting
+      get :delete_meeting
+      delete :delete_future_meeting
       patch  :jump_in
       get    :search
     end
