@@ -95,10 +95,10 @@
                       <a href="#" id="add_news" class="btn btn-primary btn-block" data-toggle="modal" data-target=".add-company-news"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add News</a>
                   </div>
                 <%else%>
-                  <div class="col-md-9"></div>
-                  <div class="col-md-3">
-                    <span>you have reached the limit for the amount of news entries that can be added, please remove an entry first</span>
+                  <div class="col-md-10">
+                      <span>You have reached the limit (5 max) for the amount of news entries that can be added.<br />Please remove an entry or edit an existing one.</span>
                   </div>
+                  <div class="col-md-2"></div>
                 <%end%>
               </div><!-- row pad 5-->
               <div class="row row-pad-5">
@@ -116,21 +116,21 @@
                         <%if @news_data.present?%>
                           <% @news_data.each do |k,v| %>
                             <tr>
-                              <td><%=v.first(30)%></td>
+                              <td><%=truncate(v, :length => 30)%></td>
                               <td class="table-action">
                                   <a href="#"
                                   data-news = '<%=k%>'
                                   data-news-val='<%=v%>'
                                   data-toggle="modal" data-target=".add-company-news" class="edit_news"><i class="fa fa-pencil"></i></a>
                               </td>
-                              <td>
+                              <td class="table-action">
                                <%=link_to delete_news_path(company_id: @company.id, news: k), method: :delete, data: {confirm: 'Are you sure to delete this news?'} do%>
                                 <i class="fa fa-trash-o"></i><%end%>
                                 </td>
                             </tr>
                           <%end%>
                         <%else%>
-                          <tr><td>no news available</td></tr>
+                          <tr><td>No news available.</td></tr>
                         <%end%>
                       </tbody>
                     </table>

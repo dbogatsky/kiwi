@@ -42,7 +42,7 @@
              data-body="<%= citem.body %>">Edit</a>
         </li>
         <li>
-          <%=link_to 'Delete', delete_meeting_account_path(@account, item_id: citem.id), method: :delete,data: {confirm: 'Are you sure to delete this meeting?'}%>
+          <%=link_to 'Delete', delete_meeting_account_path(@account, item_id: citem.id), method: :get, data: {remote: :true}, class: "cls"%>
         </li>
       </ul>
     </div>
