@@ -20,6 +20,8 @@
                  data-title="<%=citem.title%>"
                  data-date="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.scheduled_at.present?%>"
                  data-time="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.scheduled_at.present? %>"
+                 data-ends-day="<%=(Chronic.parse(citem.ends_at).to_date - Date.today).to_i if citem.ends_at.present? %>"
+                 data-ends-date="<%=Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.ends_at.present?%>"
                  data-status = '<%=citem.status%>'
                  data-amount = '<%=citem.amount%>'
                  data-description="<%= citem.body %>">Edit</a>
@@ -33,6 +35,7 @@
     <h2 class="ci_header"><%= citem.title %></h2>
     <div class="ci_note_body"><%= sanitize citem.body %>
       <p>$<%=citem.amount%></p>
+      <p><span>Expire Date: &nbsp;&nbsp;</span><%=citem.ends_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y") if citem.ends_at.present?%></p>
     </div>
     <% if (citem.scheduled_at.present?) %>
         <div class="ci_footer">

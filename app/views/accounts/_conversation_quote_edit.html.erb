@@ -45,6 +45,35 @@
                     </div>
                   </div>
                 </div>
+
+                <div class="row row-pad-5">
+                  <div class="col-lg-4">
+                    <label class="radio-inline">
+                      <input type="radio" name="expires" id="exp_in" checked>Expires in
+                    </label>
+                  </div>
+                  <div class="col-lg-4">
+                    <input type="number" value = '30' class="form-control get_date" rows="5" name="expires_in"/>
+                  </div>
+                  <div class="col-lg-4">
+                    <input type="text" class="form-control display_date" style="border-width: 0px; background-color: white;" disabled="true" />
+                  </div>
+                </div>
+
+                <div class="row row-pad-5">
+                  <div class="col-lg-4">
+                    <label class="radio-inline">
+                      <input type="radio" name="expires" id= "exp_after">Expires after
+                    </label>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="input-group">
+                      <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                      <input type="text" class="form-control datepicker set_date" placeholder="mm/dd/yyyy" name="expires_after" disabled="true"/>
+                     </div>
+                  </div>
+                </div>
+
                 <div class="row row-pad-5">
                   <div class="col-lg-12">
                     <textarea class="form-control wysihtml5" id="quote_edit" rows="5" placeholder="Description" name="conversation_item[body]"></textarea>

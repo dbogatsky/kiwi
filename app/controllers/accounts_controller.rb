@@ -252,8 +252,14 @@ class AccountsController < ApplicationController
 
   def add_quote
     c_id = Account.find(conversation_item_params[:account_id]).conversation.id
+    if params[:expires_in].present?
+      new_date = Date.today + params[:expires_in].to_i.day
+      params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone,new_date)
+    elsif params[:expires_after].present?
+      params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone,params[:expires_after])
+    end
     params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:follow_date], params[:follow_time])
-    ci = ConversationItem.create(conversation_item: {title: conversation_item_params[:title], body: conversation_item_params[:body], scheduled_at: params[:conversation_item][:scheduled_at], status: conversation_item_params[:status],amount: conversation_item_params[:amount], created_by_id: current_user.id}, conversation_id: c_id, type: conversation_item_params[:type])
+    ci = ConversationItem.create(conversation_item: {title: conversation_item_params[:title], ends_at: conversation_item_params[:ends_at], body: conversation_item_params[:body], scheduled_at: params[:conversation_item][:scheduled_at], status: conversation_item_params[:status],amount: conversation_item_params[:amount], created_by_id: current_user.id}, conversation_id: c_id, type: conversation_item_params[:type])
     if ci
       flash[:success] = 'Your quote has been added to the conversation'
     else
@@ -265,6 +271,12 @@ class AccountsController < ApplicationController
 
   def update_quote
     conversation_id = @account.conversation.id
+    if params[:expires_in].present?
+      new_date = Date.today + params[:expires_in].to_i.day
+      params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone,new_date)
+    elsif params[:expires_after].present?
+      params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone,params[:expires_after])
+    end
     params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:follow_date], params[:follow_time])
     @conversation = ConversationItem.find(params[:conversation_item][:id], params:{conversation_id: @account.conversation.id})
     if @conversation.update_attributes(conversation_item: params[:conversation_item], conversation_id: conversation_id)
@@ -428,7 +440,7 @@ class AccountsController < ApplicationController
 
 
     def conversation_item_params
-      params.require(:conversation_item).permit(:account_id, :type, :reminder, :scheduled_at, :subject, :body, :email, :send_later, :title, :status, :amount)
+      params.require(:conversation_item).permit(:account_id, :type, :reminder, :scheduled_at, :subject, :body, :email, :send_later, :title, :status, :amount, :ends_at)
     end
 
 
