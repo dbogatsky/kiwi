@@ -220,14 +220,6 @@
 
 <% content_for :custom_js do %>
 <script>
-  $(".cls").click(function(){
-   var r =  confirm("Are you sure to delete this meeting?")
-   if (r){
-    $('#preloader').css('opacity', 0.3);
-    $('#preloader').show();
-   }
-  });
-
   $('#preloader').css('opacity', 0.8);
   $('#preloader').hide();
 

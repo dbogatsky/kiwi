@@ -1,4 +1,6 @@
-$('#preloader').hide();
+<%if @show_alert%>
+  $('#preloader').hide();
+<%end%>
 $('#preloader').css('opacity', 0.8);
 <%if @show_alert %>
   if (confirm("Delete all future/repeated meeting?")){

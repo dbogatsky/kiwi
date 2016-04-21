@@ -126,31 +126,16 @@ class AccountsController < ApplicationController
   end
 
   def delete_meeting
-    meeting = @account.conversation.conversation_items
-    meeting.each do |n|
-      @conversation = n if n.id == params[:item_id].to_i
-    end
+    @conversation= ConversationItem.find(params[:item_id], params:{conversation_id: @account.conversation.id})
     if @conversation.present? && (@conversation.related_to.present? || @conversation.repetition_rule.present?)
        @show_alert = true
     else
-      # @conversation.destroy
-      # flash[:success] = 'Meeting successfully deleted'
       @show_alert = false
     end
     @conversation = @conversation.id
     respond_to do |format|
       format.js {render template: 'accounts/delete_meeting.js.erb'}
     end
-    # if @conversation.destroy
-    #   flash[:success] = 'Meeting successfully deleted'
-    # else
-    #   flash[:danger] = 'Oops! Unable to delete the meeting'
-    # end
-    # if params[:info].present?
-    #   redirect_to schedule_path
-    # else
-    #   redirect_to account_path(params[:id])
-    # end
   end
 
   def delete_future_meeting
