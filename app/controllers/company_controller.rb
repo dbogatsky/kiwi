@@ -73,6 +73,7 @@ class CompanyController < ApplicationController
   end
 
   def company_news
+    params[:news] = params[:news].squish
     apiFullUrl = RequestStore.store[:api_url] + '/company/settings/preferences'
     if params[:update_params].present?
       curlRes = `curl -X PUT -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -d '{"settings":{"#{params[:update_params]}": "#{params[:news]}"}}' '#{apiFullUrl}'`

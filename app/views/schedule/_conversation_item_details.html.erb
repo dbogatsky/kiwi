@@ -34,7 +34,7 @@
           </a>
       </li>
       <li>
-        <%=link_to 'Delete', delete_meeting_account_path(account, item_id: citem.id, info: true), method: :delete,data: {confirm: 'Are you sure to delete this meeting?'}%>
+        <%=link_to 'Delete',"javascript:void(0)", id: "del_item_#{citem.id}"%>
       </li>
       <li class="divider"></li>
       <li><%= link_to "Open Account", account_path(citem.account_id) %></li>
@@ -90,6 +90,21 @@
 <%= render "accounts/conversation_meeting_edit", account: account, info: true%>
 
 <script type="text/javascript">
+
+  $("#del_item_<%=citem.id%>").click(function(e){
+   var r =  confirm("Are you sure to delete this meeting?")
+   if (r){
+    $('#preloader').css('opacity', 0.8);
+    $('#preloader').show();
+    $.ajax({
+      type: "GET",
+      url: '/accounts/<%=citem.account_id%>/delete_meeting?item_id=<%=citem.id%>',
+      success: function (data) {
+      }
+    });
+   }
+  })
+
   $(document).on('click', "a.complete_meeting", function(e){
     id = $(this).attr('data-id')
     $('.conversation-complete-meeting-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
