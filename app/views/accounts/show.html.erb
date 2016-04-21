@@ -381,6 +381,10 @@
     $('.conversation-edit-quote-modal-form input[name="follow_time"]').val($(this).attr('data-time'));
     $('.conversation-edit-quote-modal-form input[name="follow_date"]').val($(this).attr('data-date'));
     $('.conversation-edit-quote-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
+    $('.conversation-edit-quote-modal-form input[name="expires_in"]').val($(this).attr('data-ends-day'));
+    $('.conversation-edit-quote-modal-form input[name="expires_after"]').val($(this).attr('data-ends-date'));
+    getdate($(this).attr('data-ends-day'));
+    $(".display_date").val(final_date)
   });
 
   $('#follow_time').timepicker({
