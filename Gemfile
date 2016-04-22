@@ -18,6 +18,7 @@ gem 'cancancan', '~> 1.10'
 gem 'httparty'
 gem 'request_store'
 gem 'browser-timezone-rails'
+gem 'rollbar'
 
 # This gem is for accessing REST services in an ActiveRecord style.
 #gem 'active_rest_client', '1.2.0'
@@ -27,12 +28,11 @@ gem 'activesupport-json_encoder'
 gem 'web-console', '~> 2.0', group: :development
 
 group :development, :test do
-
-	gem 'rspec-rails'
-	gem 'factory_girl_rails'
-	gem 'shoulda-matchers', require: false
-	gem 'faker'
-	gem 'simplecov', require: false
+  gem 'rspec-rails'
+  gem 'factory_girl_rails'
+  gem 'shoulda-matchers', require: false
+  gem 'faker'
+  gem 'simplecov', require: false
 
   gem 'dotenv-rails'
   gem 'byebug'
