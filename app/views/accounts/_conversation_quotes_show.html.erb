@@ -33,13 +33,20 @@
         </div>
     </div>
     <h2 class="ci_header"><%= citem.title %></h2>
-    <div class="ci_note_body"><%= sanitize citem.body %>
-      <p>$<%=citem.amount%></p>
-      <p><span>Expire Date: &nbsp;&nbsp;</span><%=citem.ends_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y") if citem.ends_at.present?%></p>
+    <div class="ci_note_body">
+        <span class="subheading">Notes:<br></span>
+            <%= sanitize citem.body %>
+    </div>
+    <div class="ci_amount">
+        <span class="subheading">Amount:<br></span>
+        $<%=citem.amount%>
     </div>
     <% if (citem.scheduled_at.present?) %>
         <div class="ci_footer">
-            <i class="fa fa-clock-o"></i><%= citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %>
+            <% if citem.ends_at.present? %>
+                <i class="fa fa-clock-o"></i><%=citem.ends_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y")%><br />
+            <% end %>
+            <i class="fa fa-bell"></i><%= citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %>
         </div>
     <% end %>
 </div>
