@@ -21,23 +21,22 @@ gem 'browser-timezone-rails'
 gem 'rollbar'
 
 # This gem is for accessing REST services in an ActiveRecord style.
-#gem 'active_rest_client', '1.2.0'
-gem "activeresource", require: 'active_resource'
+gem 'activeresource', require: 'active_resource'
 gem 'puma'
 gem 'activesupport-json_encoder'
-gem 'web-console', '~> 2.0', group: :development
 
 group :development, :test do
-  gem 'rspec-rails'
-  gem 'factory_girl_rails'
-  gem 'shoulda-matchers', require: false
-  gem 'faker'
-  gem 'simplecov', require: false
-
-  gem 'dotenv-rails'
-  gem 'byebug'
   gem 'better_errors'
+  gem 'byebug'
+  gem 'dotenv-rails'
+  gem 'factory_girl_rails'
+  gem 'faker'
+  gem 'http_logger'
   gem 'jazz_fingers'
-  gem "http_logger"
   gem 'pry-rails'
+  gem 'rspec-rails'
+  gem 'shoulda-matchers', require: false
+  gem 'simplecov', require: false
+  gem 'rubocop'
+  gem 'web-console', '~> 2.0'
 end
