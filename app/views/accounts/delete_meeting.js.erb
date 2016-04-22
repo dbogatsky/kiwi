@@ -3,23 +3,29 @@
 <%end%>
 $('#preloader').css('opacity', 0.8);
 <%if @show_alert %>
-  if (confirm("Delete all future/repeated meeting?")){
-    $('#preloader').show();
-    $.ajax({
-      type: "DELETE",
-      url: '/accounts/<%=@account.id%>/delete_future_meeting?citem_id=<%=@conversation%>' + "&destroy_future_meetings=" + true,
-      success: function (data) {
-      }
-    });
-  }else{
-    $('#preloader').show();
-    $.ajax({
-      type: "DELETE",
-      url: '/accounts/<%=@account.id%>/delete_future_meeting?citem_id=<%=@conversation%>',
-      success: function (data) {
-      }
-    });
-  }
+  $.confirm({
+    text: "Delete only this event or all future meetings as well?",
+    confirmButton: "Yes",
+    cancelButton: "No",
+    confirm: function() {
+      $('#preloader').show();
+      $.ajax({
+        type: "DELETE",
+        url: '/accounts/<%=@account.id%>/delete_future_meeting?citem_id=<%=@conversation%>' + "&destroy_future_meetings=" + true,
+        success: function (data) {
+        }
+      });
+    },
+    cancel: function() {
+      $('#preloader').show();
+      $.ajax({
+        type: "DELETE",
+        url: '/accounts/<%=@account.id%>/delete_future_meeting?citem_id=<%=@conversation%>',
+        success: function (data) {
+        }
+      });
+    }
+  });
 <%else%>
   $.ajax({
     type: "DELETE",
