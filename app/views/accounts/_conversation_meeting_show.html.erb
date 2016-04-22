@@ -59,7 +59,7 @@
 
             <i class="fa fa-user tooltips mr10" data-toggle="tooltip" data-original-title="Created by"></i><%=created_by.first_name%> <%=created_by.last_name%><br />
 
-            <% if !citem.invitees.nil? %>
+            <% if citem.invitees.present? %>
                 <i class="fa fa-users tooltips mr10" data-toggle="tooltip" data-original-title="Invitees"></i><%= citem.invitees %>
             <% end %>
         </div>

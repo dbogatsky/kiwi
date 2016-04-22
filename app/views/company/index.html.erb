@@ -109,24 +109,21 @@
                         <tr>
                           <th></th>
                           <th></th>
-                          <th></th>
                         </tr>
                       </thead>
                       <tbody>
                         <%if @news_data.present?%>
                           <% @news_data.each do |k,v| %>
                             <tr>
-                              <td><%=truncate(v, :length => 30)%></td>
+                              <td><%=truncate(v, :length => 90)%></td>
                               <td class="table-action">
                                   <a href="#"
                                   data-news = '<%=k%>'
                                   data-news-val='<%=v%>'
                                   data-toggle="modal" data-target=".add-company-news" class="edit_news"><i class="fa fa-pencil"></i></a>
-                              </td>
-                              <td class="table-action">
-                               <%=link_to delete_news_path(company_id: @company.id, news: k), method: :delete, data: {confirm: 'Are you sure to delete this news?'} do%>
+                                  <%=link_to delete_news_path(company_id: @company.id, news: k), method: :delete, data: {confirm: 'Are you sure to delete this news?'} do%>
                                 <i class="fa fa-trash-o"></i><%end%>
-                                </td>
+                              </td>
                             </tr>
                           <%end%>
                         <%else%>

@@ -54,6 +54,7 @@
       <div class="col-sm-6">
         <%= render 'meeting_map', meetings: @meetings %>
 
+        <% if @news_data.present? %>
         <div class="panel panel-dark panel-alt widget-slider">
           <div class="panel-heading">
             <h5 class="panel-title">News</h5>
@@ -87,6 +88,8 @@
 
           </div><!-- panel-body -->
         </div>
+        <%end%>
+
 
       </div>
       <div class="col-sm-6">
