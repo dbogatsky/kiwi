@@ -1,36 +1,48 @@
+
 <div class="cd-timeline-img cd-quote">
     <img src="/assets/vertical-timeline/img/cd-icon-calculator.svg" alt="Quote">
 </div>
 <div class="cd-timeline-content">
-    <span class="cd-date">
-        <%= citem.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>
-    </span>
-    <%=get_styled_quotestatus(citem, false)%>
-    <div class="btn-group pull-right">
-        <div class="btn-group mr5 pull-right">
-          <button data-toggle="dropdown" class="btn btn-sm btn-white dropdown-toggle" type="button" style="border-radius: 2px">
-            <i class="fa fa-cog mr5"></i><span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu">
-            <li>
-                <a class="edit_quote" href="#"
-                 data-toggle="modal"
-                 data-target=".conversation-edit-quote-modal-form"
-                 data-id="<%= citem.id %>"
-                 data-title="<%=citem.title%>"
-                 data-date="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.scheduled_at.present?%>"
-                 data-time="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.scheduled_at.present? %>"
-                 data-ends-day="<%=(Chronic.parse(citem.ends_at).to_date - Date.today).to_i if citem.ends_at.present? %>"
-                 data-ends-date="<%=Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.ends_at.present?%>"
-                 data-status = '<%=citem.status%>'
-                 data-amount = '<%=citem.amount%>'
-                 data-description="<%= citem.body %>">Edit</a>
-            </li>
-            <li>
-                <%=link_to 'Delete', delete_quote_account_path(@account, item_id: citem.id), method: :delete,data: {confirm: 'Are you sure to delete this quote?'}%>
-            </li>
-          </ul>
-        </div>
+  <span class="cd-date">
+      <%= citem.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>
+  </span>
+  <%=get_styled_quotestatus(citem, false)%>
+  <div class="btn-group pull-right">
+      <div class="btn-group mr5 pull-right">
+        <button data-toggle="dropdown" class="btn btn-sm btn-white dropdown-toggle" type="button" style="border-radius: 2px">
+          <i class="fa fa-cog mr5"></i><span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li>
+              <a class="edit_quote" href="#"
+               data-toggle="modal"
+               data-target=".conversation-edit-quote-modal-form"
+               data-id="<%= citem.id %>"
+               data-title="<%=citem.title%>"
+               data-date="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.scheduled_at.present?%>"
+               data-time="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.scheduled_at.present? %>"
+               data-ends-day="<%=(Chronic.parse(citem.ends_at).to_date - Date.today).to_i if citem.ends_at.present? %>"
+               data-ends-date="<%=Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.ends_at.present?%>"
+               data-status = '<%=citem.status%>'
+               data-amount = '<%=citem.amount%>'
+               data-description="<%= citem.body %>">Edit</a>
+          </li>
+          <li>
+              <%=link_to 'Delete', delete_quote_account_path(@account, item_id: citem.id), method: :delete,data: {confirm: 'Are you sure to delete this quote?'}%>
+          </li>
+        </ul>
+      </div>
+  </div>
+  <h2 class="ci_header"><%= citem.title %></h2>
+  <div class="ci_note_body"><%= sanitize citem.body %>
+    <p>$<%=citem.amount%></p>
+    <p><span>Expire Date: &nbsp;&nbsp;</span><%=citem.ends_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y") if citem.ends_at.present?%></p>
+  </div>
+  <div class="row ci_footer">
+    <div class="col-sm-10">
+      <% if (citem.scheduled_at.present?) %>
+        <i class="fa fa-bell tooltips mr10" data-toggle="tooltip" data-original-title="Reminder"></i><%= citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %><br />
+      <% end %>
     </div>
     <h2 class="ci_header"><%= citem.title %></h2>
     <div class="ci_note_body">

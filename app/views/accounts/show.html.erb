@@ -223,6 +223,64 @@
 
 <% content_for :custom_js do %>
 <script>
+  $(".amount_val").keypress(function(event) {
+    if ((event.which != 46 || $(this).val().indexOf('.') != -1) &&
+      ((event.which < 48 || event.which > 57) &&
+        (event.which != 0 && event.which != 8))) {
+      event.preventDefault();
+    }
+    var text = $(this).val();
+    if ((text.indexOf('.') != -1) &&
+      (text.substring(text.indexOf('.')).length > 2) &&
+      (event.which != 0 && event.which != 8) &&
+      ($(this)[0].selectionStart >= text.length - 2)) {
+      event.preventDefault();
+    }
+  });
+
+  $(".amount_val").focusout(function(){
+     var re = /^-?[0-9]+$/;
+     var num = $(this).val();
+     if (re.test(num)){
+        num = num + '.00';
+        $(this).val(num);
+     }else if(!re.test(num) && num != '' ){
+       var length = parseFloat(num).toFixed(2).replace(/^-?\d*\.?|0+$/g, '').length
+       if(length == 1){
+        num = num + '0';
+        $(this).val(num);
+      }else if (length < 1){
+        num = parseFloat(num) + '.00';
+        $(this).val(num);
+      }
+    }
+  });
+
+
+  function Comma(num) {
+  var s = num.split('.');
+  if (s[0].length > 14) {
+    // Too many numbers before decimal.
+  }
+  if (s[1].length > 4) {
+    // Too many numbers after decimal.
+  }
+}
+
+  $(".exp_in").click(function(){
+    if($(this).is(':checked')){
+      $(".get_date").attr('disabled', false)
+      $(".set_date").attr('disabled', true)
+    }
+  })
+
+  $(".exp_after").click(function(){
+    if($(this).is(':checked')){
+      $(".set_date").attr('disabled', false)
+      $(".get_date").attr('disabled', true)
+    }
+  })
+
   $('#preloader').css('opacity', 0.8);
   $('#preloader').hide();
 
@@ -383,8 +441,21 @@
     $('.conversation-edit-quote-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
     $('.conversation-edit-quote-modal-form input[name="expires_in"]').val($(this).attr('data-ends-day'));
     $('.conversation-edit-quote-modal-form input[name="expires_after"]').val($(this).attr('data-ends-date'));
+    if ($(this).attr('data-time') != '' && $(this).attr('data-date') != ''){
+      $("#follow-reminder-edit").attr('checked', true);
+      $(".clear_date").attr('required', true);
+      $(".clear_time").attr('required', true);
+      $(".follow_time_div").show();
+    }else{
+      $("#follow-reminder-edit").attr('checked', false);
+      $(".follow_time_div").hide();
+      $(".clear_date").attr('required', false);
+      $(".clear_time").attr('required', false);
+    }
     getdate($(this).attr('data-ends-day'));
     $(".display_date").val(final_date)
+    $(".set_date").attr('disabled', true)
+    $(".get_date").attr('disabled', false)
   });
 
   $('#follow_time').timepicker({
@@ -514,6 +585,19 @@
 				$("#email-sendlater-settings").hide(500);
 			}
 		});
+
+    $(".conversation-quote-modal-form").on("shown.bs.modal", function(){
+      $(".follow_time_div").hide();
+      $("#follow-reminder").attr('checked', false)
+      $(".exp_in").attr('checked', true)
+      $(".get_date").attr('disabled', false)
+      $(".set_date").attr('disabled', true)
+    });
+
+    $(".conversation-edit-quote-modal-form").on("shown.bs.modal", function(){
+      $(".exp_in").attr('checked', true)
+      $(".set_date").attr('disabled', true)
+    });
   });
   </script>
 <% end %>
