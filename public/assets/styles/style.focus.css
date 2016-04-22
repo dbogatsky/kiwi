@@ -20,6 +20,13 @@ body,
     color: #999;
 }
 
+.ci_amount {
+    font-size: 18px!important;
+    color: #e91e63;
+    font-weight: bold;
+    margin-top:10px;
+}
+
 .ci_header {
     margin-top: 5px;
     margin-bottom: 10px;
