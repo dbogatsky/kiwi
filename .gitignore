@@ -12,14 +12,6 @@
 # Ignore this file created by Mac OS X
 *.DS_Store
 
-
-
-# Elastic Beanstalk Files
-.elasticbeanstalk/*
-!.elasticbeanstalk/*.cfg.yml
-!.elasticbeanstalk/*.global.yml
-
-
 # Ignore old files extension
 *.old
 /nbproject/private/

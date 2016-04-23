@@ -1,0 +1,10 @@
+branch-defaults:
+  master:
+    environment: focus-staging
+global:
+  application_name: focus
+  default_ec2_keyname: eb-deployer
+  default_platform: 64bit Amazon Linux 2015.03 v2.0.1 running Ruby 2.2 (Puma)
+  default_region: us-west-2
+  profile: eb-cli
+  sc: git
