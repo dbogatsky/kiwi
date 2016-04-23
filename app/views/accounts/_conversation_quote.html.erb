@@ -23,41 +23,30 @@
                     </div>
                   </div>
                 </div>
-                <div class="row row-pad-5">
-                  <div class="col-lg-6">
-                    <div class="ckbox ckbox-primary">
-                      <input type="checkbox" id="follow-reminder" name="conversation_item[reminder]">
-                      <label for="follow-reminder">Set a Custom Reminder</label>
-                    </div>
-                  </div>
-                </div>
-                <div class="row row-pad-5 follow_time_div">
-                  <div class="col-lg-4">
-                    <div class="input-group">
-                      <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                      <input type="text" class="form-control datepicker clear_date" placeholder="mm/dd/yyyy" id="" name="follow_date"/>
-                     </div>
-                  </div>
-                  <div class="col-lg-4">
-                    <div class="input-group">
-                      <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-                      <div class="bootstrap-timepicker"><input type="text" class="form-control follow_time" name="follow_time"/></div>
-                    </div>
-                  </div>
-                </div>
+
+
                 <div class="row row-pad-5">
                   <div class="col-lg-4">
                     <label class="radio-inline">
                       <input type="radio" name="expires" class="exp_in" checked>Expires in
                     </label>
                   </div>
-                  <div class="col-lg-4">
-                    <input type="number" value = '30' class="form-control get_date" rows="5" name="expires_in"/>
+                  <div class="col-lg-3">
+                    <div class="row">
+                      <div class="col-xs-7">
+                        <input type="number" value='30' class="form-control get_date" rows="5" name="expires_in" />
+                      </div>
+                      <div class="col-xs-5 pull-left">
+                        <p style="padding-top:10px;padding-right:10px;padding-bottom:10px;">days</p>
+                      </div>
+                    </div>
                   </div>
                   <div class="col-lg-4">
                     <input type="text" class="form-control display_date" style="border-width: 0px; background-color: white;" disabled="true" />
                   </div>
                 </div>
+
+
                 <div class="row row-pad-5">
                   <div class="col-lg-4">
                     <label class="radio-inline">
@@ -76,6 +65,38 @@
                     <textarea class="form-control wysihtml5" id="new_quote" rows="5" placeholder="Description" name="conversation_item[body]"></textarea>
                   </div>
                 </div>
+
+
+
+                <div class="row row-pad-5">
+                  <div class="col-lg-6">
+                    <div class="ckbox ckbox-primary">
+                      <input type="checkbox" id="quote-reminder" name="conversation_item[reminder]">
+                      <label for="quote-reminder">Set a Custom Reminder?</label>
+                    </div>
+                  </div>
+                </div> 
+
+
+                <div id="quote-reminder-settings">
+                  <div class="row row-pad-5">
+                    <div class="col-lg-4">
+                      <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                        <input type="text" class="form-control datepicker clear_date" placeholder="mm/dd/yyyy" id="" name="follow_date"/>
+                       </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                        <div class="bootstrap-timepicker"><input type="text" class="form-control follow_time" name="follow_time"/></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
                 <input type="hidden" name="conversation_item[account_id]" value=<%= @account.id %> >
                 <input type="hidden" name="conversation_item[type]" value="quote" >
               </div><!-- panel-body -->

@@ -425,6 +425,24 @@
     }
   });
 
+
+
+    // hide show quote reminder settings
+    $("#quote-reminder-settings").hide();
+    $("#quote-reminder-settings-edit").hide();
+    
+    $('#quote-reminder, #quote-reminder-edit').change(function () {
+      if ($(this).is(':checked')) {
+        $("#quote-reminder-settings").show(500);
+        $("#quote-reminder-settings-edit").show(500);
+      }
+      else {
+        $("#quote-reminder-settings").hide(500);
+        $("#quote-reminder-settings-edit").hide(500);
+      }
+    });
+
+
   $(document).on('click', "a.edit_quote", function(e){
     id = $(this).attr('data-id')
     status = $(this).attr('data-status')
@@ -442,13 +460,13 @@
     $('.conversation-edit-quote-modal-form input[name="expires_in"]').val($(this).attr('data-ends-day'));
     $('.conversation-edit-quote-modal-form input[name="expires_after"]').val($(this).attr('data-ends-date'));
     if ($(this).attr('data-time') != '' && $(this).attr('data-date') != ''){
-      $("#follow-reminder-edit").attr('checked', true);
+      $("#quote-reminder-edit").attr('checked', true);
       $(".clear_date").attr('required', true);
       $(".clear_time").attr('required', true);
-      $(".follow_time_div").show();
+      $("#quote-reminder-settings-edit").show();
     }else{
-      $("#follow-reminder-edit").attr('checked', false);
-      $(".follow_time_div").hide();
+      $("#quote-reminder-edit").attr('checked', false);
+      $("#quote-reminder-settings-edit").hide();
       $(".clear_date").attr('required', false);
       $(".clear_time").attr('required', false);
     }
@@ -566,6 +584,7 @@
         $("#note-reminder-settings-edit").hide(500);
 			}
 		});
+
 
 		$('#scheduledDatePicker').datepicker();
 		$('#scheduledTimePicker').timepicker({minuteStep: 5});
