@@ -2,7 +2,14 @@ class CompanyController < ApplicationController
   load_and_authorize_resource
   before_action :get_api_values, only: [:company_news, :index, :delete_news]
 
-
+  def index
+    #comapny details
+    @company = Company.find(uid: RequestStore.store[:tenant])
+    #lets get a fresh batch of Entities and Statues, not from cache
+    @entites = CompanyEntity.all(uid: RequestStore.store[:tenant], reload: true)
+    @account_statuses = AccountStatus.all(uid: RequestStore.store[:tenant], reload: true)
+    get_news
+  end
 
   def edit_entity
     # Edit entity
