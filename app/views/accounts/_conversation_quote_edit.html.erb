@@ -17,7 +17,7 @@
                 </div><!-- row -->
                 <div class="row row-pad-5">
                   <div class="col-lg-12">
-                   <select class="form-control" name="conversation_item[status]" required="required">
+                   <select class="form-control input-sm" name="conversation_item[status]" required="required">
                       <option value=''>-select status-</option>
                       <option value="open">Open</option>
                       <option value="accepted">Accepted</option>
@@ -28,28 +28,9 @@
                 </div>
                 <div class="row row-pad-5">
                   <div class="col-lg-12">
-                    <input type="text" name="conversation_item[amount]" placeholder="Amount" class="form-control amount_val"/>
-                  </div>
-                </div>
-                <div class="row row-pad-5">
-                  <div class="col-lg-6">
-                    <div class="ckbox ckbox-primary">
-                      <input type="checkbox" id="follow-reminder-edit" name="conversation_item[reminder]">
-                      <label for="follow-reminder-edit">Set a Custom Reminder</label>
-                    </div>
-                  </div>
-                </div>
-                <div class="row row-pad-5 follow_time_div">
-                  <div class="col-lg-4">
                     <div class="input-group">
-                      <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                      <input type="text" class="form-control datepicker clear_date" placeholder="mm/dd/yyyy" id="" name="follow_date"/>
-                     </div>
-                  </div>
-                  <div class="col-lg-4">
-                    <div class="input-group">
-                      <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-                      <div class="bootstrap-timepicker"><input id="follow_time" type="text" class="form-control clear_time" name="follow_time"/></div>
+                      <span class="input-group-addon">$</span>
+                      <input type="text" name="conversation_item[amount]" placeholder="Amount" class="form-control amount_val"/>
                     </div>
                   </div>
                 </div>
@@ -60,8 +41,15 @@
                       <input type="radio" name="expires" class="exp_in" checked>Expires in
                     </label>
                   </div>
-                  <div class="col-lg-4">
-                    <input type="number" value = '30' class="form-control get_date" rows="5" name="expires_in"/>
+                  <div class="col-lg-3">
+                    <div class="row">
+                      <div class="col-xs-7">
+                        <input type="number" value='30' class="form-control get_date" rows="5" name="expires_in" />
+                      </div>
+                      <div class="col-xs-5 pull-left">
+                        <p style="padding-top:10px;padding-right:10px;padding-bottom:10px;">days</p>
+                      </div>
+                    </div>
                   </div>
                   <div class="col-lg-4">
                     <input type="text" class="form-control display_date" style="border-width: 0px; background-color: white;" disabled="true" />
@@ -81,12 +69,35 @@
                      </div>
                   </div>
                 </div>
-
                 <div class="row row-pad-5">
                   <div class="col-lg-12">
                     <textarea class="form-control wysihtml5" id="quote_edit" rows="5" placeholder="Description" name="conversation_item[body]"></textarea>
                   </div>
                 </div>
+                <div class="row row-pad-5">
+                  <div class="col-lg-6">
+                    <div class="ckbox ckbox-primary">
+                      <input type="checkbox" id="quote-reminder-edit" name="conversation_item[reminder]">
+                      <label for="quote-reminder-edit">Set a Reminder</label>
+                    </div>
+                  </div>
+                </div> 
+                <div id="quote-reminder-settings-edit">
+                  <div class="row row-pad-5">
+                    <div class="col-lg-4">
+                      <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                        <input type="text" class="form-control datepicker clear_date" placeholder="mm/dd/yyyy" id="" name="follow_date"/>
+                       </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                        <div class="bootstrap-timepicker"><input id="follow_time" type="text" class="form-control clear_time" name="follow_time"/></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>         
                 <input type="hidden" name="conversation_item[id]">
                 <input type="hidden" name="info" >
               </div><!-- panel-body -->

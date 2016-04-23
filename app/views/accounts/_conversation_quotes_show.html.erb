@@ -39,7 +39,7 @@
     </div>
     <div class="ci_amount">
         <span class="subheading">Amount:<br></span>
-        $<%=citem.amount%>
+        $<%=number_with_precision(citem.amount, :precision => 2)%>
     </div>
     <% if (citem.scheduled_at.present?) %>
         <div class="ci_footer">
