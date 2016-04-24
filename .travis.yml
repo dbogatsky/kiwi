@@ -12,7 +12,8 @@ install:
 
 script: bundle exec rspec
 
-cache: bundler
+cache:
+  bundler: true
 
 notifications:
   email: false
