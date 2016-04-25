@@ -86,27 +86,27 @@ class AccountsController < ApplicationController
       params[:conversation_item][:repetition_rule][:frequency] = params[:conversation_item][:repetition_rule][:repeat_year]
     end
     ci = ConversationItem.create(
-          conversation_item: {
-            title:              conversation_item_params[:title],
-            body:               conversation_item_params[:body],
-            latitude:           params[:conversation_item][:latitude].to_f,
-            longitude:          params[:conversation_item][:longitude].to_f,
-            invitees:           params[:conversation_item][:invitees],
-            scheduled_at:       params[:conversation_item][:scheduled_at],
-            location:           params[:conversation_item][:location],
-            reminder:           params[:conversation_item][:reminder],
-            starts_at:          params[:conversation_item][:starts_at],
-            ends_at:            params[:conversation_item][:ends_at],
-            repetition_rules: {
-            frequency_type:     params[:conversation_item][:repetition_rule][:frequency_type],
-            frequency:          params[:conversation_item][:repetition_rule][:frequency],
-            repeat_occurrences: params[:conversation_item][:repetition_rule][:repeat_occurrences],
-            day_of_week:        params[:conversation_item][:repetition_rule][:day_of_week],
-            day_of_month:       params[:conversation_item][:repetition_rule][:day_of_month],
-            weekday_of_month:   params[:conversation_item][:repetition_rule][:weekday_of_month],
-            created_by_id: current_user.id
-            },
+      conversation_item: {
+        title:              conversation_item_params[:title],
+        body:               conversation_item_params[:body],
+        latitude:           params[:conversation_item][:latitude].to_f,
+        longitude:          params[:conversation_item][:longitude].to_f,
+        invitees:           params[:conversation_item][:invitees],
+        scheduled_at:       params[:conversation_item][:scheduled_at],
+        location:           params[:conversation_item][:location],
+        reminder:           params[:conversation_item][:reminder],
+        starts_at:          params[:conversation_item][:starts_at],
+        ends_at:            params[:conversation_item][:ends_at],
+        repetition_rules: {
+          frequency_type:     params[:conversation_item][:repetition_rule][:frequency_type],
+          frequency:          params[:conversation_item][:repetition_rule][:frequency],
+          repeat_occurrences: params[:conversation_item][:repetition_rule][:repeat_occurrences],
+          day_of_week:        params[:conversation_item][:repetition_rule][:day_of_week],
+          day_of_month:       params[:conversation_item][:repetition_rule][:day_of_month],
+          weekday_of_month:   params[:conversation_item][:repetition_rule][:weekday_of_month],
+          created_by_id: current_user.id
           },
+        },
         conversation_id: c_id, type: 'meeting')
     if ci
       flash[:success] = 'Your meeting has been successfully scheduled'
@@ -511,3 +511,4 @@ class AccountsController < ApplicationController
     end
   end
 end
+
