@@ -53,44 +53,41 @@
     <div class="row">
       <div class="col-sm-6">
         <%= render 'meeting_map', meetings: @meetings %>
-
-        <% if @news_data.present? %>
         <div class="panel panel-dark panel-alt widget-slider">
           <div class="panel-heading">
             <h5 class="panel-title">News</h5>
           </div>
           <div class="panel-body">
             <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-
               <!-- Wrapper for slides -->
               <div class="carousel-inner">
-               <%i=1%>
-                <%@news_data.each do |k,v|%>
-                  <div class="<%=i==1 ? 'item active' : 'item'%>">
-                    <div class="media">
-                      <div class="media-body">
-                        <small class="media-desc"><%=v%></small>
-                        <%i=i+1%>
+                <% if @news_data.present? %>
+                  <%i=1%>
+                  <%@news_data.each do |k,v|%>
+                    <div class="<%=i==1 ? 'item active' : 'item'%>">
+                      <div class="media">
+                        <div class="media-body">
+                          <small class="media-desc"><%=v%></small>
+                          <%i=i+1%>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  <%end%>
+                <%else%>
+                 <p>no news available</p>
                 <%end%>
               </div><!-- carousel-inner -->
-
               <!-- Controls -->
-              <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
-                <span class="fa fa-angle-left"></span>
-              </a>
-              <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
-                <span class="fa fa-angle-right"></span>
-              </a>
+            <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+              <span class="fa fa-angle-left"></span>
+            </a>
+            <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+              <span class="fa fa-angle-right"></span>
+            </a>
             </div><!-- carousel -->
 
           </div><!-- panel-body -->
         </div>
-        <%end%>
-
-
       </div>
       <div class="col-sm-6">
         <div class="panel panel-dark panel-alt">
@@ -114,6 +111,46 @@
                       <strong><%= a.updated_by.first_name %>&nbsp;<%= a.updated_by.last_name %></strong>&nbsp;updated the <%= link_to a.name, account_path(a.id) %> account<br>
                       <small class="text-muted"><%= a.updated_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%b %e at %l:%M %p") %></small>
                     </div>
+                  </div>
+                <% end %>
+              <% end %>
+            </div> <!-- feed activity list -->
+          </div><!-- panel-body -->
+        </div>
+        <div class="panel panel-dark panel-alt">
+          <div class="panel-heading">
+            <h3 class="panel-title">My Quote</h3>
+          </div>
+          <div class="panel-body">
+            <small><p>Below is a list of Today's Quotes </p></small>
+            <br />
+            <div class="feed-activity-list">
+              <% if @quotes.count == 0 %>
+                <p>No Quotes to follow up</p>
+              <% else %>
+                <% @quotes.each do |q|%>
+                  <div class="feed-element">
+                    <%=link_to account_path(q.account_id) do%>
+                      <%= q.title %>
+                    <%end%>
+
+                    <%=get_styled_quotestatus(q, false)%>
+                    <div class="ci_note_body">
+                        <span class="subheading">Notes:<br></span>
+                            <%= sanitize q.body %>
+                    </div>
+                    <div>
+                        <span class="subheading">Amount:</span>
+                        $<%=number_with_precision(q.amount, :precision => 2)%>
+                    </div>
+                    <% if (q.scheduled_at.present?) %>
+                      <div class="ci_footer">
+                        <% if q.ends_at.present? %>
+                            <i class="fa fa-clock-o"></i><%=q.ends_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y")%><br />
+                        <% end %>
+                        <i class="fa fa-bell"></i><%= q.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %>
+                      </div>
+                    <% end %>
                   </div>
                 <% end %>
               <% end %>

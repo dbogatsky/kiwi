@@ -23,7 +23,7 @@ module ApplicationHelper
     end
     if citem.status == "open" or citem.status == "accepted" or citem.status == "rejected" or citem.status == "closed"
       color = get_quotestatus_color(citem.status)
-      html = "<span class='badge " + pulled_right_class + "' style='margin-top: -3px; background-color: white; color: #{color}; border: 1px solid #{color};'>#{citem.status}</span>"
+      html = "<span class='badge " + pulled_right_class + "' style='margin-top: 0px; background-color: white; color: #{color}; border: 1px solid #{color};'>#{citem.status}</span>"
     else citem.status.nil?
       html = "<span class='badge " + pulled_right_class + "' style='background-color: #ff860b; border-color: #ff860b;'>Unknown</span>"
     end
