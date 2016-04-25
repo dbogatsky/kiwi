@@ -53,30 +53,30 @@
     <div class="row">
       <div class="col-sm-6">
         <%= render 'meeting_map', meetings: @meetings %>
-
-        <% if @news_data.present? %>
         <div class="panel panel-dark panel-alt widget-slider">
           <div class="panel-heading">
             <h5 class="panel-title">News</h5>
           </div>
           <div class="panel-body">
             <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-
               <!-- Wrapper for slides -->
               <div class="carousel-inner">
-               <%i=1%>
-                <%@news_data.each do |k,v|%>
-                  <div class="<%=i==1 ? 'item active' : 'item'%>">
-                    <div class="media">
-                      <div class="media-body">
-                        <small class="media-desc"><%=v%></small>
-                        <%i=i+1%>
+                <% if @news_data.present? %>
+                  <%i=1%>
+                  <%@news_data.each do |k,v|%>
+                    <div class="<%=i==1 ? 'item active' : 'item'%>">
+                      <div class="media">
+                        <div class="media-body">
+                          <small class="media-desc"><%=v%></small>
+                          <%i=i+1%>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  <%end%>
+                <%else%>
+                 <p>no news available</p>
                 <%end%>
               </div><!-- carousel-inner -->
-
               <!-- Controls -->
               <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
                 <span class="fa fa-angle-left"></span>
@@ -85,12 +85,8 @@
                 <span class="fa fa-angle-right"></span>
               </a>
             </div><!-- carousel -->
-
           </div><!-- panel-body -->
         </div>
-        <%end%>
-
-
       </div>
       <div class="col-sm-6">
         <div class="panel panel-dark panel-alt">
