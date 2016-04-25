@@ -86,7 +86,7 @@
       var t_zone = "<%=cookies['browser.timezone']%>"
       var not_now = "<%=session['time_zone_not_now']%>";
       var c_zone = "<%=current_user.time_zone%>"
-      if (t_zone != c_zone && not_now != 'true' && (t_zone != '' || t_zone != null)){
+      if (t_zone != c_zone && not_now != 'true' && t_zone != ''){
          $(".change-timezone-modal-form").modal('show');
       }
     });
