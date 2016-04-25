@@ -1,0 +1,62 @@
+<div class="modal fade conversation-edit-reminder-modal-form" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">&times;</button>
+        <h4 class="modal-title">Edit Reminder</h4>
+      </div>
+      <div class="modal-body">
+        <%= form_tag update_reminder_account_path(account), method: :patch do %>
+          <div class="panel panel-default">
+            <form>
+              <div class="panel-body">
+                <div class="row row-pad-5">
+                  <div class="col-lg-12">
+                    <input type="text" name="conversation_item[title]" placeholder="Subject" class="form-control" required="required"  />
+                  </div>
+                </div><!-- row -->
+
+                <div class="row row-pad-5">
+                  <div class="col-lg-12">
+                    <textarea class="form-control wysihtml5" id="edit_editor" rows="5" placeholder="Message" required="required" name="conversation_item[body]"></textarea>
+                  </div>
+                </div><!-- row -->
+
+                <div class="row row-pad-5">
+                  <div class="col-lg-12">
+                    <div class="ckbox ckbox-primary">
+                      <input type="checkbox" id="reminder-edit" name="conversation_item[reminder]">
+                      <label for="reminder-edit">Set a Reminder</label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row row-pad-5">
+                  <div class="col-lg-4">
+                    <div class="input-group">
+                      <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                      <input type="text" class="form-control datepicker" placeholder="mm/dd/yyyy" id="reminderDatePickerEdit" name="scheduled_date" />
+                     </div>
+                  </div>
+
+                  <div class="col-lg-4">
+                    <div class="input-group">
+                      <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                      <div class="bootstrap-timepicker"><input id="reminderTimePickerEdit" type="text" class="form-control" name="scheduled_time"/></div>
+                    </div>
+                  </div>
+                </div>
+
+                <input type="hidden" name="conversation_item[id]" value="reminder" >
+                <input type="hidden" name="info" >
+              </div><!-- panel-body -->
+              <div class="panel-footer">
+                <button type="submit" class="btn btn-primary">Update</button>
+                <button type="reset" class="btn btn-default">Reset</button>
+              </div>
+          </div><!-- panel -->
+        <% end %>
+      </div><!-- modal body -->
+    </div><!-- modal content -->
+  </div><!-- modal dialog -->
+</div><!-- modal -->

@@ -13,7 +13,7 @@ class AccountsController < ApplicationController
     # Get the acount info and conversation based on id given
     @account = Account.find(params[:id])
     @shared_user = []
-    @account.user_account_sharings.each {|u| @shared_user << u.user}
+    @account.user_account_sharings.each { |u| @shared_user << u.user }
     @users = User.all(uid: session[:user_id])
   end
 
@@ -72,17 +72,17 @@ class AccountsController < ApplicationController
     params[:conversation_item][:starts_at] = convert_datetime_to_utc(current_user.time_zone, params[:starts_date], params[:starts_time])
     params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone, params[:ends_date], params[:ends_time])
 
-    if params[:conversation_item][:repetition_rule][:frequency_type] == "monthly"
-       params[:conversation_item][:repetition_rule][:day_of_month] = params[:conversation_item][:starts_at].to_datetime.day if params[:month_week] == "dayofmonth"
-       params[:conversation_item][:repetition_rule][:weekday_of_month] = params[:conversation_item][:starts_at].to_datetime.wday if params[:month_week] == "dayofweek"
-       params[:conversation_item][:repetition_rule][:frequency] = params[:conversation_item][:repetition_rule][:repeat_month]
-    elsif params[:conversation_item][:repetition_rule][:frequency_type] == "weekly"
-       params[:conversation_item][:repetition_rule][:day_of_week] = params[:conversation_item][:repetition_rule][:day_of_week].map{|x| x.to_i} if params[:conversation_item][:repetition_rule][:day_of_week].present?
-       params[:conversation_item][:repetition_rule][:frequency] = params[:conversation_item][:repetition_rule][:repeat_week]
-    elsif params[:conversation_item][:repetition_rule][:frequency_type] == "daily"
-       params[:conversation_item][:repetition_rule][:frequency] = params[:conversation_item][:repetition_rule][:repeat_day]
-    elsif params[:conversation_item][:repetition_rule][:frequency_type] == "yearly"
-         params[:conversation_item][:repetition_rule][:frequency] = params[:conversation_item][:repetition_rule][:repeat_year]
+    if params[:conversation_item][:repetition_rule][:frequency_type] == 'monthly'
+      params[:conversation_item][:repetition_rule][:day_of_month] = params[:conversation_item][:starts_at].to_datetime.day if params[:month_week] == 'dayofmonth'
+      params[:conversation_item][:repetition_rule][:weekday_of_month] = params[:conversation_item][:starts_at].to_datetime.wday if params[:month_week] == 'dayofweek'
+      params[:conversation_item][:repetition_rule][:frequency] = params[:conversation_item][:repetition_rule][:repeat_month]
+    elsif params[:conversation_item][:repetition_rule][:frequency_type] == 'weekly'
+      params[:conversation_item][:repetition_rule][:day_of_week] = params[:conversation_item][:repetition_rule][:day_of_week].map{|x| x.to_i} if params[:conversation_item][:repetition_rule][:day_of_week].present?
+      params[:conversation_item][:repetition_rule][:frequency] = params[:conversation_item][:repetition_rule][:repeat_week]
+    elsif params[:conversation_item][:repetition_rule][:frequency_type] == 'daily'
+      params[:conversation_item][:repetition_rule][:frequency] = params[:conversation_item][:repetition_rule][:repeat_day]
+    elsif params[:conversation_item][:repetition_rule][:frequency_type] == 'yearly'
+      params[:conversation_item][:repetition_rule][:frequency] = params[:conversation_item][:repetition_rule][:repeat_year]
     end
     ci = ConversationItem.create(
           conversation_item: {
@@ -231,14 +231,11 @@ class AccountsController < ApplicationController
 
   def add_note
     c_id = Account.find(conversation_item_params[:account_id]).conversation.id
-    if params[:scheduled_date].present? && params[:scheduled_time].present?
-      params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:scheduled_date], params[:scheduled_time])
-    end
     ci = ConversationItem.create(conversation_item: { title: conversation_item_params[:subject], body: conversation_item_params[:body], scheduled_at: params[:conversation_item][:scheduled_at], created_by_id: current_user.id }, conversation_id: c_id, type: conversation_item_params[:type])
     if ci
-      flash[:success] = 'Your note has been added to the conversation'
+      flash[:success] = 'Your note has been added to the conversation!'
     else
-      flash[:danger] = 'Oops! Unable to add note'
+      flash[:danger] = 'Oops! Unable to add note.'
     end
 
     redirect_to account_path(conversation_item_params[:account_id])
@@ -303,14 +300,6 @@ class AccountsController < ApplicationController
 
   def update_note
     conversation_id = @account.conversation.id
-    if params[:conversation_item][:reminder].present?
-      if params[:scheduled_date].present? && params[:scheduled_time].present?
-        params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:scheduled_date], params[:scheduled_time])
-      end
-    else
-      params[:conversation_item][:scheduled_at] = nil
-      params[:conversation_item][:reminder] = nil
-    end
     @conversation = ConversationItem.find(params[:conversation_item][:id], params:{conversation_id: @account.conversation.id})
     if @conversation.update_attributes(conversation_item: params[:conversation_item], conversation_id: conversation_id)
       flash[:success] = 'Note successfully updated!'
@@ -327,9 +316,59 @@ class AccountsController < ApplicationController
   def delete_note
     @conversation = ConversationItem.find(params[:item_id], params:{conversation_id: @account.conversation.id})
     if @conversation.destroy
-      flash[:success] = 'Note successfully deleted'
+      flash[:success] = 'Note successfully deleted!'
     else
-      flash[:danger] = 'Oops! Unable to delete the note'
+      flash[:danger] = 'Oops! Unable to delete the note.'
+    end
+    if params[:info].present?
+      redirect_to schedule_path
+    else
+      redirect_to account_path(params[:id])
+    end
+  end
+
+  def add_reminder
+    c_id = Account.find(conversation_item_params[:account_id]).conversation.id
+    params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:scheduled_date], params[:scheduled_time])
+    ci = ConversationItem.create(conversation_item: { title: conversation_item_params[:subject], body: conversation_item_params[:body], scheduled_at: params[:conversation_item][:scheduled_at], created_by_id: current_user.id }, conversation_id: c_id, type: conversation_item_params[:type])
+    if ci
+      flash[:success] = 'Your reminder has been added to the conversation!'
+    else
+      flash[:danger] = 'Oops! Unable to add reminder.'
+    end
+
+    redirect_to account_path(conversation_item_params[:account_id])
+  end
+
+  def update_reminder
+    conversation_id = @account.conversation.id
+    params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:scheduled_date], params[:scheduled_time])
+
+    reminder = @account.conversation.conversation_items
+    reminder.each do |r|
+      @conversation = r if n.id == params[:conversation_item][:id].to_i
+    end
+    if @conversation.update_attributes(conversation_item: params[:conversation_item], conversation_id: conversation_id)
+      flash[:success] = 'Reminder successfully updated!'
+    else
+      flash[:danger] = 'Reminder not updated!'
+    end
+    if params[:info].present?
+      redirect_to schedule_path
+    else
+      redirect_to account_path(params[:id])
+    end
+  end
+
+  def delete_reminder
+    reminder = @account.conversation.conversation_items
+    reminder.each do |r|
+      @conversation = r if n.id == params[:item_id].to_i
+    end
+    if @conversation.destroy
+      flash[:success] = 'Reminder successfully deleted!'
+    else
+      flash[:danger] = 'Oops! Unable to delete the reminder.'
     end
     if params[:info].present?
       redirect_to schedule_path
@@ -348,18 +387,18 @@ class AccountsController < ApplicationController
     end
 
     ci = ConversationItem.create(
-          conversation_item: {
-            title: conversation_item_params[:title],
-            body: conversation_item_params[:body],
-            invitees: conversation_item_params[:email],
-            scheduled_at: params[:conversation_item][:scheduled_at],
-            created_by_id: current_user.id
-          },
-        conversation_id: c_id, type: 'email')
+      conversation_item: {
+        title: conversation_item_params[:title],
+        body: conversation_item_params[:body],
+        invitees: conversation_item_params[:email],
+        scheduled_at: params[:conversation_item][:scheduled_at],
+        created_by_id: current_user.id,
+        },
+      conversation_id: c_id, type: 'email')
     if ci
-      flash[:success] = 'Your email has been successfully sent'
+      flash[:success] = 'Your email has been successfully sent!'
     else
-      flash[:danger] = 'Oops! Looks like there was a problem sending your email'
+      flash[:danger] = 'Oops! Looks like there was a problem sending your email.'
     end
     redirect_to account_path(conversation_item_params[:account_id])
   end
@@ -386,9 +425,9 @@ class AccountsController < ApplicationController
   def delete_email
     @conversation = ConversationItem.find(params[:item_id], params:{conversation_id: @account.conversation.id})
     if @conversation.destroy
-      flash[:success] = 'Email successfully deleted'
+      flash[:success] = 'Email successfully deleted!'
     else
-      flash[:danger] = 'Oops! Unable to delete the email'
+      flash[:danger] = 'Oops! Unable to delete the email.'
     end
     redirect_to account_path(params[:id])
   end
@@ -396,9 +435,9 @@ class AccountsController < ApplicationController
   def share
     params[:account][:user_account_sharings_attributes] = params[:account][:user_account_sharings_attributes].values
     if @account.update_attributes(request: :update, account: shared_account_params)
-      flash[:success] = 'Shared users updated successfully'
+      flash[:success] = 'Shared users updated successfully!'
     else
-      flash[:danger] = 'Oops! Unable updated the shared users'
+      flash[:danger] = 'Oops! Unable updated the shared users.'
     end
     redirect_to account_path(params[:id])
   end

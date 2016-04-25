@@ -136,6 +136,7 @@
                   <% if can? :manage, ConversationItem %>
                     <li><a href="#" data-toggle="modal" data-target=".account-action-meeting">Schedule Meeting</a></li>
                     <li><a href="#" data-toggle="modal" data-target=".conversation-note-modal-form">Add Note</a></li>
+                    <li><a href="#" data-toggle="modal" data-target=".conversation-reminder-modal-form">Add Reminder</a></li>
                     <li><a href="#" data-toggle="modal" data-target=".conversation-quote-modal-form">Add Quote</a></li>
                     <li><a href="#" data-toggle="modal" data-target=".account-action-email">Send Email</a></li>
                     <% end %>
@@ -212,12 +213,14 @@
   <%= render "conversation_email" %>
   <%= render "conversation_email_edit" %>
   <%= render "conversation_note" %>
-  <%= render 'conversation_note_edit', account: @account%>
+  <%= render "conversation_note_edit", account: @account%>
   <%= render "conversation_meeting_edit", account: @account %>
   <%= render "conversation_quote_edit", account: @account %>
   <%= render "conversation_meeting_complete", account: @account %>
   <%= render "conversation_quote"%>
   <%= render "conversation_quote_complete"%>
+  <%= render "conversation_reminder" %>
+  <%= render "conversation_reminder_edit", account: @account%>
   <%= render "conversation_sharedusers" %>
 <% end %>
 
@@ -366,19 +369,17 @@
   $(document).on('click', "a.edit_note", function(e){
     id = $(this).attr('data-id')
     $('.conversation-edit-note-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
+
+    // $('.conversation-edit-note-modal-form textarea[name="covnersation_item[body]"]').val($(this).attr('data-description'));
+    edit_editor.data("wysihtml5").editor.setValue($(this).attr('data-description'));
+    $('.conversation-edit-note-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
+  });
+
+  $(document).on('click', "a.edit_reminder", function(e){
+    id = $(this).attr('data-id')
+    $('.conversation-edit-note-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
     $('.conversation-edit-note-modal-form input[name="scheduled_time"]').val($(this).attr('data-time'));
     $('.conversation-edit-note-modal-form input[name="scheduled_date"]').val($(this).attr('data-date'));
-
-      if ($('.conversation-edit-note-modal-form input[name="scheduled_time"]').val()!="" || $('.conversation-edit-note-modal-form input[name="scheduled_date"]').val()!="")
-        {
-          $("#note-reminder-edit").attr('checked', true);
-          $("#note-reminder-settings").show(500);
-          $("#note-reminder-settings-edit").show(500);
-        }else{
-          $("#note-reminder-edit").attr('checked', false);
-          $("#note-reminder-settings").hide(500);
-          $("#note-reminder-settings-edit").hide(500);
-        }
 
     // $('.conversation-edit-note-modal-form textarea[name="covnersation_item[body]"]').val($(this).attr('data-description'));
     edit_editor.data("wysihtml5").editor.setValue($(this).attr('data-description'));
@@ -612,24 +613,6 @@
 		$('#reminderTimePicker').timepicker({minuteStep: 5});
     $('#reminderDatePickerEdit').datepicker('option', 'dateFormat', 'mm/dd/yy');
     $('#reminderTimePickerEdit').timepicker({minuteStep: 5});
-
-		// by default hide reminder settings for notes
-		$("#note-reminder-settings").hide();
-    $("#note-reminder-settings-edit").hide();
-
-		// hide show note reminder settings
-
-		$('#note-reminder, #note-reminder-edit').change(function () {
-		  if ($(this).is(':checked')) {
-        $("#note-reminder-settings").show(500);
-        $("#note-reminder-settings-edit").show(500);
-      }
-      else {
-				$("#note-reminder-settings").hide(500);
-        $("#note-reminder-settings-edit").hide(500);
-			}
-		});
-
 
 		$('#scheduledDatePicker').datepicker();
 		$('#scheduledTimePicker').timepicker({minuteStep: 5});

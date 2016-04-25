@@ -1,12 +1,12 @@
-<div class="modal fade conversation-note-modal-form" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" aria-hidden="true">
+<div class="modal fade conversation-reminder-modal-form" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button aria-hidden="true" data-dismiss="modal" class="close" type="button">&times;</button>
-        <h4 class="modal-title">Add Note</h4>
+        <h4 class="modal-title">Add Reminder</h4>
       </div>
       <div class="modal-body">
-        <%= form_tag(account_add_note_url) do %>
+        <%= form_tag(account_add_reminder_url) do %>
           <div class="panel panel-default">
               <div class="panel-body">
                 <div class="row row-pad-5">
@@ -21,8 +21,24 @@
                   </div>
                 </div>
 
+                <div class="row row-pad-5">
+                  <div class="col-lg-4">
+                    <div class="input-group">
+                      <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                      <input type="text" class="form-control datepicker" placeholder="mm/dd/yyyy" id="reminderDatePicker" name="scheduled_date" />
+                     </div>
+                  </div>
+
+                  <div class="col-lg-4">
+                    <div class="input-group">
+                      <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                      <div class="bootstrap-timepicker"><input id="reminderTimePicker" type="text" class="form-control" name="scheduled_time"/></div>
+                    </div>
+                  </div>
+                </div>
+
                 <input type="hidden" name="conversation_item[account_id]" value=<%= @account.id %> >
-                <input type="hidden" name="conversation_item[type]" value="note" >
+                <input type="hidden" name="conversation_item[type]" value="reminder" >
               </div><!-- panel-body -->
               <div class="panel-footer">
                 <button type="submit" class="btn btn-primary">Save</button>
