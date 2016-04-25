@@ -14,7 +14,7 @@
     <div class="tab-content">
 
       <div class="tab-pane" id="vtab1">
-          <%= f.input :name, wrapper: :wizard_horizontal_form, label: "Account Name", required: true %>
+          <%= f.input :name, wrapper: :wizard_horizontal_form, label: "Account Name", required: true, placeholder: "" %>
 
           <div class="form-group">
             <label class="col-sm-offset-2 col-sm-2 control-label">Account Status<span class="asterisk">*</span></label>
@@ -112,7 +112,7 @@
 
     <ul class="pager wizard">
       <li class="previous"><a href="javascript:void(0)">Previous</a></li>
-      <li class="next"><a href="javascript:void(0)">Next</a></li>
+      <li class="next"><a href="javascript:void(0)" class="account_next">Next</a></li>
       <li class="next finish" style="display:none;"><a href="javascript:;">Finish</a></li>
     </ul>
 

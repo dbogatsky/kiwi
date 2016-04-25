@@ -52,54 +52,60 @@
 
 
 <script>
-	$(document).ready(function() {
+$(document).ready(function() {
+  function address_auto_fill(e){
+    var componentForm = {
+      street_number: 'short_name',
+      route: 'long_name',
+      locality: 'long_name',
+      administrative_area_level_1: 'long_name',
+      country: 'short_name',
+      postal_code: 'short_name'
+    };
+    var autocomplete = new google.maps.places.Autocomplete(e);
+    autocomplete.addListener('place_changed', fillInAddress);
 
-  var componentForm = {
-    street_number: 'short_name',
-    route: 'long_name',
-    locality: 'long_name',
-    administrative_area_level_1: 'long_name',
-    country: 'short_name',
-    postal_code: 'short_name'
-  };
-  var input = document.getElementById("street_number");
-  var autocomplete = new google.maps.places.Autocomplete(input);
-  autocomplete.addListener('place_changed', fillInAddress);
+    function fillInAddress() {
+      var place = autocomplete.getPlace();
+      var lat = place.geometry.location.lat();
+      var lng = place.geometry.location.lng();
 
-  function fillInAddress() {
-    var place = autocomplete.getPlace();
-    var lat = place.geometry.location.lat();
-    var lng = place.geometry.location.lng();
+      $("#account_lat").val(lat);
+      $("#account_lng").val(lng);
 
-    $("#account_lat").val(lat);
-    $("#account_lng").val(lng);
-
-    for (var component in componentForm) {
-      if (component != 'route'){
-        $('#'+component).val('');
-        $('#'+component).attr('readonly', false)
+      for (var component in componentForm) {
+        if (component != 'route'){
+          $('#'+component).val('');
+          $('#'+component).attr('readonly', false)
+        }
       }
-    }
 
-    for (var i = 0; i < place.address_components.length; i++) {
-      var addressType = place.address_components[i].types[0];
-      if (componentForm[addressType]) {
-        var val = place.address_components[i][componentForm[addressType]];
-        if (addressType !='route'){
-          if (addressType == 'country'){
-            $("#country").select2().val(val);
-            $("#country").select2().val();
+      for (var i = 0; i < place.address_components.length; i++) {
+        var addressType = place.address_components[i].types[0];
+        if (componentForm[addressType]) {
+          var val = place.address_components[i][componentForm[addressType]];
+          if (addressType !='route'){
+            if (addressType == 'country'){
+              $("#country").select2().val(val);
+              $("#country").select2().val();
 
-          }else if (addressType == 'street_number'){
-            r = place.address_components[1][componentForm['route']]
-            document.getElementById(addressType).value = val+' '+r
-          }else{
-            document.getElementById(addressType).value = val;
+            }else if (addressType == 'street_number'){
+              r = place.address_components[1][componentForm['route']]
+              document.getElementById(addressType).value = val+' '+r
+            }else{
+              document.getElementById(addressType).value = val;
+            }
           }
         }
       }
     }
   }
+
+    if (document.getElementById("account_name") != null){
+        address_auto_fill(document.getElementById("account_name"));
+      }else{
+        address_auto_fill(document.getElementById("street_number"));
+    }
 
     $('body').bind('ajax:beforeSend', function(event, xhr, settings) {
       console.log("ajax-beforesend");
@@ -153,6 +159,11 @@
     $('#scheduleFromTimePicker').timepicker().on('hide.timepicker', function(e) {
       $('#schedule-to-timepicker').timepicker('setTime', e.time.value);
     });
+
+    $(".account_next").click(function(){
+       address_auto_fill(document.getElementById("street_number"));
+    });
   });
+
 </script>
 <!-- end of shared javascript -->
