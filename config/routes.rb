@@ -21,7 +21,6 @@ Rails.application.routes.draw do
 
   match '/dashboard', to: 'dashboard#index', as: :dashboard, via: [:get]
 
-  # get '/my_profile', to: 'my_profile#show', as: :my_profile
   resource :profile, only: [:show, :update]
   resource :preference, only: [:show, :update]
   resources :accounts do

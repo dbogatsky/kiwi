@@ -287,7 +287,6 @@ class AccountsController < ApplicationController
     redirect_to account_path(params[:id])
   end
 
-
   def delete_quote
     @conversation = ConversationItem.find(params[:item_id], params:{conversation_id: @account.conversation.id})
     if @conversation.destroy
