@@ -20,18 +20,19 @@ class DashboardController < ApplicationController
     search[:starts_at_lteq] = convert_datetime_to_utc(current_user.time_zone, @current_date, "23:59:59")
 
     @meetings = ConversationItemSearch.all(params: {user_ids: user_ids, search: search})
+    quote_search = Hash.new
+    quote_search[:type_eq]="ConversationItems::Quote"
+    quote_search[:created_at_gteq] = convert_datetime_to_utc(current_user.time_zone, @current_date, "00:00:00")
+    quote_search[:created_at_lteq] = convert_datetime_to_utc(current_user.time_zone, @current_date, "23:59:59")
+    @quotes = ConversationItemSearch.all(params: {user_ids: user_ids, search: quote_search})
     #
     # Account feed of last 24 hours
     #
     search = Hash.new
-
     @current_date = Time.current.in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
     @current_time = Time.current.in_time_zone(current_user.time_zone).strftime("%H:%M:%S")
-
     @yesterday_date = Time.current.in_time_zone(current_user.time_zone).yesterday.strftime("%Y-%m-%d")
     @yesterday_time = Time.current.in_time_zone(current_user.time_zone).yesterday.strftime("%H:%M:%S")
-
-
     search[:updated_at_lteq] = convert_datetime_to_utc(current_user.time_zone, @current_date, @current_time)
     search[:updated_at_gteq] = convert_datetime_to_utc(current_user.time_zone, @yesterday_date , @yesterday_time)
     @accounts = Account.all(params: {search: search})
