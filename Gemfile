@@ -25,6 +25,10 @@ gem 'activeresource', require: 'active_resource'
 gem 'puma'
 gem 'activesupport-json_encoder'
 
+group :development do
+  gem 'web-console', '~> 2.0'
+end
+
 group :development, :test do
   gem 'better_errors'
   gem 'byebug'
@@ -38,5 +42,4 @@ group :development, :test do
   gem 'shoulda-matchers', require: false
   gem 'simplecov', require: false
   gem 'rubocop'
-  gem 'web-console', '~> 2.0'
 end
