@@ -91,11 +91,11 @@ ul.table_head ul.three_tree.minus_icon{
 .modal-backdrop{
   z-index: 10;
 }
-#tags, #edit_tags{
+#tags, #edit_tags, #reminder_tags{
   float:left;
   font-family:Arial;
 }
-#tags > span, #edit_tags > span{
+#tags > span, #edit_tags > span, #reminder_tags > span{
   cursor:pointer;
   display:block;
   float:left;
@@ -105,27 +105,27 @@ ul.table_head ul.three_tree.minus_icon{
   padding-right:25px;
   margin:4px;
 }
-#tags > span:hover, #edit_tags > span:hover{
+#tags > span:hover, #edit_tags > span:hover, #reminder_tags > span:hover{
   opacity:0.7;
 }
-#tags > span:after, #edit_tags > span:after{
+#tags > span:after, #edit_tags > span:after, #reminder_tags > span:after{
  position:absolute;
  content:"×";
  padding:0px 5px;
  margin-left:3px;
  font-size:14px;
 }
-#tags > input#tag_input, #edit_tags > input#edit_tag_input{
+#tags > input#tag_input, #edit_tags > input#edit_tag_input, #reminder_tags > input#reminder_tag_input{
   border:0;
   margin:4px;
   padding:6px;
   width:auto;
 }
-#tags > input#tag_input:focus, #edit_tags > input#edit_tag_input:focus{
+#tags > input#tag_input:focus, #edit_tags > input#edit_tag_input:focus, #reminder_tags > input#reminder_tag_input:focus{
   -webkit-box-shadow: none;
   box-shadow: none;
 }
-.invitee_emails{
+.invitee_emails, .notify_reminder{
   float: left;
   width: 100%;
   border: 1px solid #ccc;

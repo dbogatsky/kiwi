@@ -39,12 +39,15 @@ Rails.application.routes.draw do
       delete :delete_quote
       patch  :jump_in
       get    :search
+      get    :get_users_list  #get '/accounts/:id/get_users_list', to: 'accounts#get_users_list'
     end
     resources :contacts, only: [:edit, :create, :update, :destroy]
     resources :addresses, only: [:edit, :create, :update, :destroy]
   end
   resources :company_entities
   resources :users
+
+  
 
   match '/users/:id/update_time_zone', to: 'users#update_time_zone', as: :users_update_time_zone, via: [:patch]
   get  '/users/:id/not_update_time_zone', to: 'users#not_update_time_zone', as: :users_not_update_time_zone
