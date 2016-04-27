@@ -52,7 +52,7 @@ class ApplicationController < ActionController::Base
       set_superadmin
     else
       if session[:token].nil?
-        flash[:danger] = 'Your session has expired.  Please log in again.'  # Log in error message
+        flash[:danger] = 'Your session has expired. Please log in again.'  # Log in error message
         redirect_to root_path
       else
         set_current_user

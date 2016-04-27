@@ -25,8 +25,14 @@ gem 'activeresource', require: 'active_resource'
 gem 'puma'
 gem 'activesupport-json_encoder'
 
+
 group :development do
   gem 'web-console', '~> 2.0'
+end
+
+group :test do
+  gem 'vcr'
+  gem 'webmock'
 end
 
 group :development, :test do

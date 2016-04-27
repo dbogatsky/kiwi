@@ -1,0 +1,56 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://acme-api.code10.ca/api/v1/token.json
+    body:
+      encoding: UTF-8
+      string: '{"app_key":"app_LL1zKMy_vLixnHSyyiAB","user":{"email":"test@example.com","password":"12341234"}}'
+    headers:
+      Content-Type:
+      - application/json
+      Authorization:
+      - ''
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 25 Apr 2016 03:52:01 GMT
+      Etag:
+      - W/"4cf8fc0c834e34fabd73c10bdf84af67"
+      Server:
+      - nginx/1.8.1
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - fe5da9f4-6486-407c-8098-cb101d5822db
+      X-Runtime:
+      - '0.545824'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '115'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"user_id":1,"token":"secret_4sTtmAtebrqzHY1y2exw","email":"test@example.com","username":null}'
+    http_version: 
+  recorded_at: Mon, 25 Apr 2016 03:52:01 GMT
+recorded_with: VCR 3.0.1
