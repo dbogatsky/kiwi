@@ -15,6 +15,7 @@ class AccountsController < ApplicationController
     @shared_user = []
     @account.user_account_sharings.each { |u| @shared_user << u.user }
     @users = User.all(uid: session[:user_id])
+    @notifiable_users = notifiable_users_json
   end
 
   def new
@@ -331,7 +332,7 @@ class AccountsController < ApplicationController
 
     c_id = Account.find(conversation_item_params[:account_id]).conversation.id
     params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:scheduled_date], params[:scheduled_time])
-    ci = ConversationItem.create(conversation_item: { title: conversation_item_params[:subject], body: conversation_item_params[:body], scheduled_at: params[:conversation_item][:scheduled_at], created_by_id: current_user.id, notify_by_sms: params[:conversation_item][:notify_by_sms], notify_by_email: params[:conversation_item][:notify_by_email] }, conversation_id: c_id, type: conversation_item_params[:type])
+    ci = ConversationItem.create(conversation_item: { title: conversation_item_params[:subject], body: conversation_item_params[:body], scheduled_at: params[:conversation_item][:scheduled_at], created_by_id: current_user.id, notify_by_sms: params[:conversation_item][:notify_by_sms], notify_by_email: params[:conversation_item][:notify_by_email], users_to_notify_ids: params[:conversation_item][:users_to_notify_ids] }, conversation_id: c_id, type: conversation_item_params[:type])
     if ci
       flash[:success] = 'Your reminder has been added to the conversation!'
     else
@@ -364,7 +365,7 @@ class AccountsController < ApplicationController
   def delete_reminder
     reminder = @account.conversation.conversation_items
     reminder.each do |r|
-      @conversation = r if n.id == params[:item_id].to_i
+      @conversation = r if r.id == params[:item_id].to_i
     end
     if @conversation.destroy
       flash[:success] = 'Reminder successfully deleted!'
@@ -462,22 +463,16 @@ class AccountsController < ApplicationController
     @conversation_items = ConversationItem.all(params: { conversation_id: c_id, search: search })
   end
 
-  def get_users_list
-    users_list = []
-
-    notifiable_users = NotifiableUsers.all(params: { account_id: params[:id] })
-    if params[:term].present?
-      notifiable_users.each do |user|
-        if user.first_name.downcase.include?(params[:term].downcase) || user.last_name.downcase.include?(params[:term].downcase)
-          users_list << { id: user.id, value: user.first_name + ' ' + user.last_name }
-        end
-      end
-    end
-
-    render json: users_list
-  end
-
   private
+
+  def notifiable_users_json
+    users_list = []
+    notifiable_users = NotifiableUsers.all(params: { account_id: params[:id] })
+    notifiable_users.each do |user|
+      users_list << { id: user.id, text: user.first_name + ' ' + user.last_name }
+    end
+    users_list.to_json
+  end
 
   def get_token
     # set gloal var for token to be used in model, hack for now

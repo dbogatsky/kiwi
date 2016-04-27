@@ -37,16 +37,19 @@
                   </div>
                 </div>
 
-              <div class="row row-pad-5">
-                <div class="col-lg-12">
-                  <div class="notify_reminder">
-                    <div id="reminder_tags">
-                      <input type="text" id="reminder_tag_input" placeholder="Notify to..." class="form-control" />
-                      <input type="hidden" name="conversation_item[notifiable_users]" id="notify_reminder" />
+                <div class="row">
+                  <div class="col-lg-6">
+                    <h5>Notify to...</h5>
+                  </div>
+                </div><!-- row -->
+
+                <div class="row row-pad-5">
+                  <div class="col-lg-12">
+                    <div class="form-control">
+                      <select class="form-control" id="notifiable_users" multiple="multiple" style="width: 100%"  name="conversation_item[users_to_notify_ids][]"></select>
                     </div>
                   </div>
-                </div>
-              </div><!-- row -->
+                </div><!-- row -->
 
                 <div class="row">
                   <div class="col-lg-6">
@@ -99,49 +102,10 @@
       $(".conversation-reminder-modal-form input[name='conversation_item[latitude]']").val(lat);
       $(".conversation-reminder-modal-form input[name='conversation_item[longitude]']").val(lng);
     });
+  });
 
-    if($('#reminder_tags').find('span').length < 2){
-      $('#reminder_tag_input').attr('required', false);
-    }
-
-    $("#reminder_tags input").on({
-      focusout : function() {
-        // var txt = this.value.replace(/[^a-z0-9\+\-\.\#]/ig,''); // allowed characters
-
-        var txt = this.value.replace(',','');
-        if( txt ){
-          $("<span/>", {text:txt, insertBefore:this});
-          $('#reminder_tag_input').attr('required', false);
-          id = $('#notify_reminder').val();
-          values = id ? id+', '+txt : txt;
-          $('#notify_reminder').val(values);
-        }
-        this.value = "";
-      },
-      keyup : function(ev) {
-        // if: comma|enter (delimit more keyCodes with | pipe)
-        if(/(188|13|32)/.test(ev.which)){
-          $(this).focusout();
-        }
-      }
-    });
-    $('#reminder_tags').on('click', 'span', function() {
-    // $('#tags span').click(function(){
-      if(confirm("Remove "+ $(this).text() +"?")) {
-        emails_array = $('#notify_reminder').val().split(',')
-        del_obj_index = emails_array.indexOf($(this).text());
-        emails_array.splice(del_obj_index,1)
-        $('#notify_reminder').val(emails_array.join(','));
-        $(this).remove();
-        if($('#reminder_tags').find('span').length < 2){
-          $('#reminder_tag_input').attr('required', false);
-        }
-      }
-    });
-    $( "#reminder_tag_input" ).autocomplete({
-      source: "/accounts/<%= @account.id %>/get_users_list",
-      minLength: 2,
-      select: function( event, ui ){}
-    });
+  var data = <%= raw(@notifiable_users) %>;
+  $("#notifiable_users").select2({
+    data: data
   });
 </script>

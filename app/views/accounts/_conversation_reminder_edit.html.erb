@@ -23,15 +23,6 @@
                 </div><!-- row -->
 
                 <div class="row row-pad-5">
-                  <div class="col-lg-12">
-                    <div class="ckbox ckbox-primary">
-                      <input type="checkbox" id="reminder-edit" name="conversation_item[reminder]">
-                      <label for="reminder-edit">Set a Reminder</label>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row row-pad-5">
                   <div class="col-lg-4">
                     <div class="input-group">
                       <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
@@ -47,18 +38,43 @@
                   </div>
                 </div>
 
+                <div class="row">
+                  <div class="col-lg-6">
+                    <h5>Notify to...</h5>
+                  </div>
+                </div><!-- row -->
+
                 <div class="row row-pad-5">
                   <div class="col-lg-12">
-                    <div class="invitee_reminder">
-                      <div id="tags">
-                        <input type="text" id="tag_input" placeholder="Invitees email" class="form-control" />
-                        <input type="hidden" name="conversation_item[invitees]" id="invitee_reminder" />
-                      </div>
+                    <div class="form-control">
+                      <select class="form-control" id="notifiable_users_edit" multiple="multiple" style="width: 100%"  name="conversation_item[users_to_notify_ids][]"></select>
                     </div>
                   </div>
                 </div><!-- row -->
 
+                <div class="row">
+                  <div class="col-lg-6">
+                    <h5>How do you like to be reminded?</h5>
+                  </div>
+                </div><!-- row -->
 
+                <div class="row row-pad-5">
+                  <div class="col-lg-6">
+                    <div class="ckbox ckbox-primary">
+                      <input type="checkbox" id="reminder-email" name="conversation_item[notify_by_email]">
+                      <label for="reminder-email">Email</label>
+                    </div>
+                  </div>
+                </div><!-- row -->
+
+                <div class="row row-pad-5">
+                  <div class="col-lg-6">
+                    <div class="ckbox ckbox-primary">
+                      <input type="checkbox" id="reminder-sms" name="conversation_item[notify_by_sms]">
+                      <label for="reminder-sms">SMS Text</label>
+                    </div>
+                  </div>
+                </div><!-- row -->
 
                 <input type="hidden" name="conversation_item[id]" value="reminder" >
                 <input type="hidden" name="info" >
@@ -73,3 +89,24 @@
     </div><!-- modal content -->
   </div><!-- modal dialog -->
 </div><!-- modal -->
+
+<script type="text/javascript">
+
+  $(".conversation-edit-reminder-modal-form").on("shown.bs.modal", function(){
+    var input = document.getElementById("keyword");
+    var autocomplete = new google.maps.places.Autocomplete(input);
+
+    google.maps.event.addListener(autocomplete, 'place_changed', function() {
+      var place = autocomplete.getPlace();
+      var lat = place.geometry.location.lat();
+      var lng = place.geometry.location.lng();
+      $(".conversation-edit-reminder-modal-form[name='conversation_item[latitude]']").val(lat);
+      $(".conversation-edit-reminder-modal-form[name='conversation_item[longitude]']").val(lng);
+    });
+  });
+
+  var data = <%= raw(@notifiable_users) %>;
+  $("#notifiable_users_edit").select2({
+    data: data
+  });
+</script>
