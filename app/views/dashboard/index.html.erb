@@ -53,15 +53,15 @@
     <div class="row">
       <div class="col-sm-6">
         <%= render 'meeting_map', meetings: @meetings %>
-        <div class="panel panel-dark panel-alt widget-slider">
-          <div class="panel-heading">
-            <h5 class="panel-title">News</h5>
-          </div>
-          <div class="panel-body">
-            <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-              <!-- Wrapper for slides -->
-              <div class="carousel-inner">
-                <% if @news_data.present? %>
+        <% if @news_data.present? %>
+          <div class="panel panel-dark panel-alt widget-slider">
+            <div class="panel-heading">
+              <h5 class="panel-title">News</h5>
+            </div>
+            <div class="panel-body">
+              <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                <!-- Wrapper for slides -->
+                <div class="carousel-inner">
                   <%i=1%>
                   <%@news_data.each do |k,v|%>
                     <div class="<%=i==1 ? 'item active' : 'item'%>">
@@ -73,20 +73,18 @@
                       </div>
                     </div>
                   <%end%>
-                <%else%>
-                 <p>no news available</p>
-                <%end%>
-              </div><!-- carousel-inner -->
-              <!-- Controls -->
-              <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
-                <span class="fa fa-angle-left"></span>
-              </a>
-              <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
-                <span class="fa fa-angle-right"></span>
-              </a>
-            </div><!-- carousel -->
-          </div><!-- panel-body -->
-        </div>
+                </div><!-- carousel-inner -->
+                <!-- Controls -->
+                <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                  <span class="fa fa-angle-left"></span>
+                </a>
+                <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+                  <span class="fa fa-angle-right"></span>
+                </a>
+              </div><!-- carousel -->
+            </div><!-- panel-body -->
+          </div>
+        <%end%>
       </div>
       <div class="col-sm-6">
         <div class="panel panel-dark panel-alt">
