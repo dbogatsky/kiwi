@@ -454,19 +454,15 @@ class AccountsController < ApplicationController
     @conversation_items = ConversationItem.all(params: { conversation_id: c_id, search: search })
   end
 
-  def get_users_list
+  private
+
+  def notifiable_users_json
     users_list = []
-
     notifiable_users = NotifiableUsers.all(params: { account_id: params[:id] })
-    if params[:term].present?
-      notifiable_users.each do |user|
-        if user.first_name.downcase.include?(params[:term].downcase) || user.last_name.downcase.include?(params[:term].downcase)
-          users_list << { id: user.id, value: user.first_name + ' ' + user.last_name }
-        end
-      end
+    notifiable_users.each do |user|
+      users_list << { id: user.id, text: user.first_name + ' ' + user.last_name }
     end
-
-    render json: users_list
+    users_list.to_json
   end
 
   private
