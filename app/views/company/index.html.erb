@@ -1,7 +1,6 @@
 <% content_for :pageheader do %>
   <h2><i class="fa fa-home"></i> Company</h2>
 <% end %>
-
 <div class="profile-header">
   <div class="row">
     <div class="col-sm-3">
@@ -77,173 +76,149 @@
     </div><!-- col-sm-9 -->
     <div class="mb20"></div>
   </div><!-- row -->
-  <div class="row row-pad-5">
-    <div class="col-md-12 mb20">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <div class="panel-btns">
-            <a href="" class="minimize">−</a>
-          </div><!-- panel-btns -->
-          <h3 class="panel-title">Company News</h3>
-        </div>
-        <div class="panel-body">
-          <div class="tab-pane" id="settings">
-              <div class="row row-pad-5">
-                <%if @news_data.size < 5%>
-                  <div class="col-md-10"></div>
-                  <div class="col-md-2">
-                      <a href="#" id="add_news" class="btn btn-primary btn-block" data-toggle="modal" data-target=".add-company-news"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add News</a>
-                  </div>
-                <%else%>
-                  <div class="col-md-10">
-                      <span>You have reached the limit (5 max) for the amount of news entries that can be added.<br />Please remove an entry or edit an existing one.</span>
-                  </div>
-                  <div class="col-md-2"></div>
-                <%end%>
-              </div><!-- row pad 5-->
-              <div class="row row-pad-5">
-                <div class="col-md-8">
-                  <div class="table-responsive">
-                    <table class="table mb30">
-                      <thead>
-                        <tr>
-                          <th></th>
-                          <th></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <%if @news_data.present?%>
-                          <% @news_data.each do |k,v| %>
-                            <tr>
-                              <td><%=truncate(v, :length => 90)%></td>
-                              <td class="table-action">
-                                  <a href="#"
-                                  data-news = '<%=k%>'
-                                  data-news-val='<%=v%>'
-                                  data-toggle="modal" data-target=".add-company-news" class="edit_news"><i class="fa fa-pencil"></i></a>
-                                  <%=link_to delete_news_path(company_id: @company.id, news: k), method: :delete, data: {confirm: 'Are you sure to delete this news?'} do%>
-                                <i class="fa fa-trash-o"></i><%end%>
-                              </td>
-                            </tr>
-                          <%end%>
-                        <%else%>
-                          <tr><td>No news available.</td></tr>
-                        <%end%>
-                      </tbody>
-                    </table>
-                  </div><!-- table-responsive -->
-                </div><!-- col-md-6 -->
-              </div><!-- row pad 5-->
-          </div>
-        </div>
+  <div class="col-md-12 mb20">
+ <!--    <h5 class="subtitle mb5">Dark Nav Tabs</h5>
+    <p>You can use darker tab bar for a nicer look and feel.</p>
+    <br> -->
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs nav-dark">
+      <li class="active"><a href="#news" data-toggle="tab"><strong>Company News</strong></a></li>
+      <li class=""><a href="#account_status" data-toggle="tab"><strong>Account Statuses</strong></a></li>
+      <li class=""><a href="#company_entities" data-toggle="tab"><strong>Company Entities</strong></a></li>
+      <li class=""><a href="#general" data-toggle="tab"><strong>General</strong></a></li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content mb30">
+      <div class="tab-pane active" id="news">
+        <div class="row row-pad-5">
+          <%if @news_data.size < 5%>
+            <div class="col-md-10"></div>
+            <div class="col-md-2">
+                <a href="#" id="add_news" class="btn btn-primary btn-block" data-toggle="modal" data-target=".add-company-news"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add News</a>
+            </div>
+          <%else%>
+            <div class="col-md-10">
+                <span>You have reached the limit (5 max) for the amount of news entries that can be added.<br />Please remove an entry or edit an existing one.</span>
+            </div>
+            <div class="col-md-2"></div>
+          <%end%>
+        </div><!-- row pad 5-->
+        <div class="row row-pad-5">
+          <div class="col-md-8">
+            <div class="table-responsive">
+              <table class="table mb30">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <%if @news_data.present?%>
+                    <% @news_data.each do |k,v| %>
+                      <tr>
+                        <td><%=truncate(v, :length => 90)%></td>
+                        <td class="table-action">
+                            <a href="#"
+                            data-news = '<%=k%>'
+                            data-news-val='<%=v%>'
+                            data-toggle="modal" data-target=".add-company-news" class="edit_news"><i class="fa fa-pencil"></i></a>
+                            <%=link_to delete_news_path(company_id: @company.id, news: k), method: :delete, data: {confirm: 'Are you sure to delete this news?'} do%>
+                          <i class="fa fa-trash-o"></i><%end%>
+                        </td>
+                      </tr>
+                    <%end%>
+                  <%else%>
+                    <tr><td>No news available.</td></tr>
+                  <%end%>
+                </tbody>
+              </table>
+            </div><!-- table-responsive -->
+          </div><!-- col-md-6 -->
+        </div><!-- row pad 5-->
       </div>
-    </div> <!-- col- -->
-  </div><!-- row -->
-  <div class="row row-pad-5">
-    <div class="col-md-12 mb20">
-      <!-- Nav tabs -->
-      <% if can? :read, AccountStatus %>
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <div class="panel-btns">
-              <a href="" class="minimize">−</a>
-            </div><!-- panel-btns -->
-            <h3 class="panel-title">Account Statuses</h3>
-          </div>
-            <div class="panel-body">
-              <div class="tab-pane" id="settings">
-                <div class="row row-pad-5">
-                  <div class="col-md-10">
-                    <p>
-                      Each account is designated a status and can a great way to organize based on name and color.
-                    </p>
-                  </div>
-                  <div class="col-md-2">
-                    <% if can? :manage, AccountStatus %>
-                      <a href="#" id="add_status" class="btn btn-primary btn-block" data-toggle="modal" data-target=".account-status-add"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Status</a>
+      <div class="tab-pane" id="account_status">
+        <% if can? :read, AccountStatus %>
+          <div class="row row-pad-5">
+            <div class="col-md-10">
+              <p>
+                Each account is designated a status and can a great way to organize based on name and color.
+              </p>
+            </div>
+            <div class="col-md-2">
+              <% if can? :manage, AccountStatus %>
+                <a href="#" id="add_status" class="btn btn-primary btn-block" data-toggle="modal" data-target=".account-status-add"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Status</a>
+              <% end %>
+            </div>
+          </div><!-- row pad 5-->
+          <div class="row row-pad-5">
+            <div class="col-md-8">
+              <div class="table-responsive">
+                <table class="table mb30">
+                  <thead>
+                    <tr>
+                      <th>Status</th>
+                      <th>Description</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% @account_statuses.each do |status| %>
+                      <tr>
+                        <td><span class="badge" style="background-color: <%= status.color %>; border-color: <%= status.color %>;"><%= status.name %></span></td>
+                        <td><%= status.description %></td>
+                        <td class="table-action">
+                          <% if can? :manage, AccountStatus %>
+                            <a href="#"
+                            data-id="<%= status.id %>"
+                            data-statname="<%= status.name %>"
+                            data-statcolor="<%= status.color %>"
+                            data-statdesc="<%= status.description %>"
+                            data-toggle="modal" data-target=".account-status-add" class="modal-link"><i class="fa fa-pencil"></i></a>
+                          <% end %>
+                        </td>
+                      </tr>
                     <% end %>
-                  </div>
-                </div><!-- row pad 5-->
-              <div class="row row-pad-5">
-                <div class="col-md-8">
-                  <div class="table-responsive">
-                    <table class="table mb30">
-                      <thead>
-                        <tr>
-                          <th>Status</th>
-                          <th>Description</th>
-                          <th></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <% @account_statuses.each do |status| %>
-                          <tr>
-                            <td><span class="badge" style="background-color: <%= status.color %>; border-color: <%= status.color %>;"><%= status.name %></span></td>
-                            <td><%= status.description %></td>
-                            <td class="table-action">
-                              <% if can? :manage, AccountStatus %>
-                                <a href="#"
-                                data-id="<%= status.id %>"
-                                data-statname="<%= status.name %>"
-                                data-statcolor="<%= status.color %>"
-                                data-statdesc="<%= status.description %>"
-                                data-toggle="modal" data-target=".account-status-add" class="modal-link"><i class="fa fa-pencil"></i></a>
-                              <% end %>
-                            </td>
-                          </tr>
-                        <% end %>
-                      </tbody>
-                    </table>
-                  </div><!-- table-responsive -->
-                </div><!-- col-md-6 -->
-              </div><!-- row pad 5-->
-            </div>
-            </div>
-          </div>
-        <% end %>
+                  </tbody>
+                </table>
+              </div><!-- table-responsive -->
+            </div><!-- col-md-6 -->
+          </div><!-- row pad 5-->
+        <%end%>
+      </div>
+      <div class="tab-pane" id="company_entities">
         <% if can? :read, CompanyEntity %>
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <div class="panel-btns">
-                <a href="" class="minimize">−</a>
-              </div><!-- panel-btns -->
-              <h3 class="panel-title">Company Entities</h3>
+          <div class="row row-pad-5">
+            <div class="col-md-10">
+              <p>Use entities to describe how your organization is structured</p>
             </div>
-            <div class="panel-body">
-              <div class="tab-pane active" id="organization">
-
-                <div class="row row-pad-5">
-                  <div class="col-md-10">
-                    <p>Use entities to describe how your organization is structured</p>
-                  </div>
-                  <div class="col-md-2">
-                    <% if can? :manage, CompanyEntity %>
-                      <a href="<%= new_company_entity_path %>" class="btn btn-primary btn-block"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Entities</a>
-                    <% end %>
-                  </div>
-                </div><!-- row -->
-                <div class="row row-pad-5">
-                  <div class="col-md-8">
-                    <% if @entites.present? %>
-                      <div class="table-responsive">
-                        <ul class="table_head">
-                          <li class="first_li">Name</li>
-                           <li class="second_li">Description</li>
-                            <li class="third_li">&nbsp;</li>
-                        </ul>
-                        <%=nested_entities(@entites)%>
-                      </div><!-- table-responsive -->
-                    <% else %>
-                      <p>Create and manage Entities here.</p>
-                    <% end %>
-                  </div>
-                </div>
-              </div>
+            <div class="col-md-2">
+              <% if can? :manage, CompanyEntity %>
+                <a href="<%= new_company_entity_path %>" class="btn btn-primary btn-block"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Entities</a>
+              <% end %>
             </div>
-        </div>
-      <% end %>
-    </div> <!-- col- -->
-  </div><!-- row -->
+          </div><!-- row -->
+          <div class="row row-pad-5">
+            <div class="col-md-8">
+              <% if @entites.present? %>
+                <div class="table-responsive">
+                  <ul class="table_head">
+                    <li class="first_li">Name</li>
+                     <li class="second_li">Description</li>
+                      <li class="third_li">&nbsp;</li>
+                  </ul>
+                  <%=nested_entities(@entites)%>
+                </div><!-- table-responsive -->
+              <% else %>
+                <p>Create and manage Entities here.</p>
+              <% end %>
+            </div>
+          </div>
+        <%end%>
+      </div>
+      <div class="tab-pane" id="general">
+      </div>
+    </div>
 </div><!-- profile-header -->
 </div>
 </div><!-- mainpanel -->
