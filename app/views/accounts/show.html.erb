@@ -217,6 +217,7 @@
   <%= render "conversation_quote_edit", account: @account %>
   <%= render "conversation_meeting_complete", account: @account %>
   <%= render "conversation_quote"%>
+  <%= render "conversation_quote_complete"%>
   <%= render "conversation_sharedusers" %>
 <% end %>
 
@@ -332,6 +333,12 @@
     complete_meeting_editor = $('#complete_meeting_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
   });
 
+  var complete_quote_editor;
+
+  $(function() {
+    complete_quote_editor = $('#complete_quote_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
+  });
+
   $(document).on('click', "a.edit_email", function(e){
     id = $(this).attr('data-id')
     $('.conversation-edit-email-modal-form input[name="conversation_item[invitees]"]').val($(this).attr('data-invitees'));
@@ -425,12 +432,28 @@
     }
   });
 
+  $(document).on('click', "a.complete_quote", function(e){
+    id = $(this).attr('data-id')
+    var status = $(this).attr('data-status')
+    if (status == 'open'){
+       status = ''
+    }
+    var notes = $(this).attr('data-notes')
+    $('.conversation-complete-quote-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
+    if (status != "scheduled"){
+      $('.conversation-complete-quote-modal-form select[name="conversation_item[status]"]').val(status);
+    }
+    if (notes != ''){
+      complete_quote_editor.data("wysihtml5").editor.setValue(notes);
+    }
+  });
+
 
 
     // hide show quote reminder settings
     $("#quote-reminder-settings").hide();
     $("#quote-reminder-settings-edit").hide();
-    
+
     $('#quote-reminder, #quote-reminder-edit').change(function () {
       if ($(this).is(':checked')) {
         $("#quote-reminder-settings").show(500);
