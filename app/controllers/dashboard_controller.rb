@@ -23,6 +23,7 @@ class DashboardController < ApplicationController
 
     quote_search = {}
     quote_search[:type_eq] = 'ConversationItems::Quote'
+    quote_search[:status_eq] = 'Open'
     @quotes = ConversationItemSearch.all(params: { user_ids: user_ids, search: quote_search })
     #
     # Account feed of last 24 hours
