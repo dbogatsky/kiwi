@@ -119,41 +119,40 @@
             <h3 class="panel-title">My Quote</h3>
           </div>
           <div class="panel-body">
-            <small><p>Below is a list of Today's Quotes </p></small>
-            <br />
-            <div class="feed-activity-list">
-              <% if @quotes.count == 0 %>
-                <p>No Quotes to follow up</p>
-              <% else %>
+            <div class="inspinia-timeline">
+              <% if @quotes.present? && @quotes.count > 0 %>
                 <% @quotes.each do |q|%>
-                  <div class="feed-element">
-                    <%=link_to account_path(q.account_id) do%>
-                      <%= q.title %>
-                    <%end%>
-
-                    <%=get_styled_quotestatus(q, false)%>
-                    <div class="ci_note_body">
-                        <span class="subheading">Notes:<br></span>
-                            <%= sanitize q.body %>
-                    </div>
-                    <div>
-                        <span class="subheading">Amount:</span>
-                        $<%=number_with_precision(q.amount, :precision => 2)%>
-                    </div>
-                    <% if (q.scheduled_at.present?) %>
-                      <div class="ci_footer">
-                        <% if q.ends_at.present? %>
-                            <i class="fa fa-clock-o"></i><%=q.ends_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y")%><br />
-                        <% end %>
-                        <i class="fa fa-bell"></i><%= q.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %>
+                  <div class="timeline-item">
+                    <div class="row">
+                      <div class="col-xs-3 date">
+                        <i class="fa fa-usd"></i>
+                        <small>
+                          <%= q.ends_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y") if q.ends_at.present? %>
+                        </small>
                       </div>
-                    <% end %>
+                      <div class="col-xs-7 content no-top-border"
+                        <% if q.type == "quote" %>
+                          style="border-left: 1px solid <%= get_quotestatus_color(q.status) %>"
+                        <% end %>
+                      >
+                        <p><strong><a href="/accounts/<%=q.account_id%>" style="color:#636e7b;"><%=q.title%></a></strong></p>
+                        <p><small><%= sanitize q.body.gsub(/<br\s*\/?>/, '') %></small></p>
+                      </div>
+                    </div>
                   </div>
-                <% end %>
+                <%end%>
+              <% else %>
+                <div class="timeline-item">
+                  <div class="row">
+                    <div class="text-center">
+                      No Quotes to follow up
+                    </div>
+                  </div>
+                </div>
               <% end %>
-            </div> <!-- feed activity list -->
-          </div><!-- panel-body -->
-        </div>
+            </div>
+          </div>
+      </div>
       </div>
     </div>
   </div><!-- col-sm-8 -->
@@ -178,7 +177,6 @@
     </div>
 
     <div class="row">
-
       <div class="panel panel-dark panel-alt">
         <div class="panel-heading">
           <h3 class="panel-title">My Schedule</h3>

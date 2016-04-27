@@ -273,16 +273,18 @@ class AccountsController < ApplicationController
 
   def update_quote
     conversation_id = @account.conversation.id
-    if params[:expires_in].present?
-      new_date = Date.today + params[:expires_in].to_i.day
-      params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone,new_date)
-    elsif params[:expires_after].present?
-      params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone,params[:expires_after])
-    end
-    if params[:follow_date].present? && params[:follow_time].present?
-      params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:follow_date], params[:follow_time])
-    else
-      params[:conversation_item][:scheduled_at] = nil
+    unless params[:conversation_item][:status].present?
+      if params[:expires_in].present?
+        new_date = Date.today + params[:expires_in].to_i.day
+        params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone,new_date)
+      elsif params[:expires_after].present?
+        params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone,params[:expires_after])
+      end
+      if params[:follow_date].present? && params[:follow_time].present?
+        params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:follow_date], params[:follow_time])
+      else
+        params[:conversation_item][:scheduled_at] = nil
+      end
     end
     @conversation = ConversationItem.find(params[:conversation_item][:id], params:{conversation_id: @account.conversation.id})
     if @conversation.update_attributes(conversation_item: params[:conversation_item], conversation_id: conversation_id)

@@ -22,9 +22,17 @@
                  data-time="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.scheduled_at.present? %>"
                  data-ends-day="<%=(Chronic.parse(citem.ends_at).to_date - Date.today).to_i if citem.ends_at.present? %>"
                  data-ends-date="<%=Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.ends_at.present?%>"
-                 data-status = '<%=citem.status%>'
                  data-amount = '<%=citem.amount%>'
                  data-description="<%= citem.body %>">Edit</a>
+            </li>
+            <li>
+              <a class="complete_quote" href="#"
+                data-toggle="modal"
+                data-target=".conversation-complete-quote-modal-form"
+                data-status="<%= citem.status%>"
+                data-notes ="<%=citem.notes%>"
+                data-id="<%=citem.id%>">Complete
+              </a>
             </li>
             <li>
                 <%=link_to 'Delete', delete_quote_account_path(@account, item_id: citem.id), method: :delete,data: {confirm: 'Are you sure to delete this quote?'}%>
@@ -34,8 +42,11 @@
     </div>
     <h2 class="ci_header"><%= citem.title %></h2>
     <div class="ci_note_body">
-        <span class="subheading">Notes:<br></span>
+      <span class="subheading">Agenda:<br></span>
             <%= sanitize citem.body %>
+      <% if (!citem.notes.nil?) %>
+        <p><span class="subheading">Notes:<br/></span><%= sanitize citem.notes %></p>
+    <% end %>
     </div>
     <div class="ci_amount">
         <span class="subheading">Amount:<br></span>
