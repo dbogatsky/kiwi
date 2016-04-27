@@ -31,7 +31,7 @@ class LoginController < ApplicationController
             ActiveResource::ResourceGone,       # 410 ResourceGone - ?
             ActiveResource::ResourceInvalid     # 422 ResourceInvalid (rescued by save as validation errors) - ?
 
-      flash[:danger] = 'Your email or password is incorrect.  Please try again.'  # Log in error message
+      flash[:danger] = 'Your email or password is incorrect. Please try again.'  # Log in error message
       return redirect_to user_login_path
 
     rescue ActiveResource::ServerError, # 500..599 ServerError - Server Error or unresponsive

@@ -1,0 +1,22 @@
+[Cassette: 'authentication-utility'] Initialized with options: {:record=>:once, :match_requests_on=>[:method, :uri], :allow_unused_http_interactions=>true, :serialize_with=>:yaml, :persist_with=>:file_system}
+[webmock] Handling request: [post http://acme-api.code10.ca/api/v1/token.json] (disabled: false)
+  [Cassette: 'authentication-utility'] Initialized HTTPInteractionList with request matchers [:method, :uri] and 1 interaction(s): { [post http://acme-api.code10.ca/api/v1/token.json] => [201 "{\"user_id\":1,\"token\":\"secret_4sTtmAtebrqzHY1y2exw\",\"email\":\"test@example.com\",\"u"] }
+  [Cassette: 'authentication-utility'] Checking if [post http://acme-api.code10.ca/api/v1/token.json] matches [post http://acme-api.code10.ca/api/v1/token.json] using [:method, :uri]
+    [Cassette: 'authentication-utility'] method (matched): current request [post http://acme-api.code10.ca/api/v1/token.json] vs [post http://acme-api.code10.ca/api/v1/token.json]
+    [Cassette: 'authentication-utility'] uri (matched): current request [post http://acme-api.code10.ca/api/v1/token.json] vs [post http://acme-api.code10.ca/api/v1/token.json]
+  [Cassette: 'authentication-utility'] Found matching interaction for [post http://acme-api.code10.ca/api/v1/token.json] at index 0: [201 "{\"user_id\":1,\"token\":\"secret_4sTtmAtebrqzHY1y2exw\",\"email\":\"test@example.com\",\"u"]
+[webmock] Identified request type (stubbed_by_vcr) for [post http://acme-api.code10.ca/api/v1/token.json]
+[Cassette: 'add-account-ability'] Initialized with options: {:record=>:once, :match_requests_on=>[:method, :uri], :allow_unused_http_interactions=>true, :serialize_with=>:yaml, :persist_with=>:file_system}
+[webmock] Handling request: [get http://acme-api.code10.ca/api/v1/users/1.json] (disabled: false)
+  [Cassette: 'add-account-ability'] Initialized HTTPInteractionList with request matchers [:method, :uri] and 2 interaction(s): { [get http://acme-api.code10.ca/api/v1/users/1.json] => [200 "{\"user\":{\"id\":1,\"first_name\":\"Christopher\",\"last_name\":\"Smith\",\"email\":\"test@exa"], [get http://acme-api.code10.ca/api/v1/accounts.json?search=] => [200 "{\"accounts\":[{\"id\":76,\"name\":\"Test Lat\",\"contact_name\":\"Test\",\"contact_title\":\"L"] }
+  [Cassette: 'add-account-ability'] Checking if [get http://acme-api.code10.ca/api/v1/users/1.json] matches [get http://acme-api.code10.ca/api/v1/users/1.json] using [:method, :uri]
+    [Cassette: 'add-account-ability'] method (matched): current request [get http://acme-api.code10.ca/api/v1/users/1.json] vs [get http://acme-api.code10.ca/api/v1/users/1.json]
+    [Cassette: 'add-account-ability'] uri (matched): current request [get http://acme-api.code10.ca/api/v1/users/1.json] vs [get http://acme-api.code10.ca/api/v1/users/1.json]
+  [Cassette: 'add-account-ability'] Found matching interaction for [get http://acme-api.code10.ca/api/v1/users/1.json] at index 0: [200 "{\"user\":{\"id\":1,\"first_name\":\"Christopher\",\"last_name\":\"Smith\",\"email\":\"test@exa"]
+[webmock] Identified request type (stubbed_by_vcr) for [get http://acme-api.code10.ca/api/v1/users/1.json]
+[webmock] Handling request: [get http://acme-api.code10.ca/api/v1/accounts.json?search=] (disabled: false)
+  [Cassette: 'add-account-ability'] Checking if [get http://acme-api.code10.ca/api/v1/accounts.json?search=] matches [get http://acme-api.code10.ca/api/v1/accounts.json?search=] using [:method, :uri]
+    [Cassette: 'add-account-ability'] method (matched): current request [get http://acme-api.code10.ca/api/v1/accounts.json?search=] vs [get http://acme-api.code10.ca/api/v1/accounts.json?search=]
+    [Cassette: 'add-account-ability'] uri (matched): current request [get http://acme-api.code10.ca/api/v1/accounts.json?search=] vs [get http://acme-api.code10.ca/api/v1/accounts.json?search=]
+  [Cassette: 'add-account-ability'] Found matching interaction for [get http://acme-api.code10.ca/api/v1/accounts.json?search=] at index 0: [200 "{\"accounts\":[{\"id\":76,\"name\":\"Test Lat\",\"contact_name\":\"Test\",\"contact_title\":\"L"]
+[webmock] Identified request type (stubbed_by_vcr) for [get http://acme-api.code10.ca/api/v1/accounts.json?search=]
