@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://acme-api.code10.ca/api/v1/users/1.json
+    uri: https://acme-api.code10.ca/api/v1/users/1.json
     body:
       encoding: US-ASCII
       string: ''
@@ -110,7 +110,7 @@ http_interactions:
   recorded_at: Mon, 25 Apr 2016 04:06:46 GMT
 - request:
     method: get
-    uri: http://acme-api.code10.ca/api/v1/accounts.json?search=
+    uri: https://acme-api.code10.ca/api/v1/accounts.json?search=
     body:
       encoding: US-ASCII
       string: ''
