@@ -1,0 +1,84 @@
+[Cassette: 'login-success'] Initialized with options: {:record=>:once, :match_requests_on=>[:method, :uri], :allow_unused_http_interactions=>true, :serialize_with=>:yaml, :persist_with=>:file_system}
+[webmock] Handling request: [post https://acme-api.code10.ca/api/v1/token.json] (disabled: false)
+  [Cassette: 'login-success'] Initialized HTTPInteractionList with request matchers [:method, :uri] and 2 interaction(s): { [post https://acme-api.code10.ca/api/v1/token.json] => [201 "{\"user_id\":1,\"token\":\"secret_Crsty_opnh5b85UxrmXS\",\"email\":\"test@example.com\",\"u"], [get https://acme-api.code10.ca/api/v1/users/1.json] => [200 "{\"user\":{\"id\":1,\"first_name\":\"Christopher\",\"last_name\":\"Smith\",\"email\":\"test@exa"] }
+  [Cassette: 'login-success'] Checking if [post https://acme-api.code10.ca/api/v1/token.json] matches [post https://acme-api.code10.ca/api/v1/token.json] using [:method, :uri]
+    [Cassette: 'login-success'] method (matched): current request [post https://acme-api.code10.ca/api/v1/token.json] vs [post https://acme-api.code10.ca/api/v1/token.json]
+    [Cassette: 'login-success'] uri (matched): current request [post https://acme-api.code10.ca/api/v1/token.json] vs [post https://acme-api.code10.ca/api/v1/token.json]
+  [Cassette: 'login-success'] Found matching interaction for [post https://acme-api.code10.ca/api/v1/token.json] at index 0: [201 "{\"user_id\":1,\"token\":\"secret_Crsty_opnh5b85UxrmXS\",\"email\":\"test@example.com\",\"u"]
+[webmock] Identified request type (stubbed_by_vcr) for [post https://acme-api.code10.ca/api/v1/token.json]
+[webmock] Handling request: [get https://acme-api.code10.ca/api/v1/users/1.json] (disabled: false)
+  [Cassette: 'login-success'] Checking if [get https://acme-api.code10.ca/api/v1/users/1.json] matches [get https://acme-api.code10.ca/api/v1/users/1.json] using [:method, :uri]
+    [Cassette: 'login-success'] method (matched): current request [get https://acme-api.code10.ca/api/v1/users/1.json] vs [get https://acme-api.code10.ca/api/v1/users/1.json]
+    [Cassette: 'login-success'] uri (matched): current request [get https://acme-api.code10.ca/api/v1/users/1.json] vs [get https://acme-api.code10.ca/api/v1/users/1.json]
+  [Cassette: 'login-success'] Found matching interaction for [get https://acme-api.code10.ca/api/v1/users/1.json] at index 0: [200 "{\"user\":{\"id\":1,\"first_name\":\"Christopher\",\"last_name\":\"Smith\",\"email\":\"test@exa"]
+[webmock] Identified request type (stubbed_by_vcr) for [get https://acme-api.code10.ca/api/v1/users/1.json]
+[Cassette: 'login-success'] Initialized with options: {:record=>:once, :match_requests_on=>[:method, :uri], :allow_unused_http_interactions=>true, :serialize_with=>:yaml, :persist_with=>:file_system}
+[webmock] Handling request: [post https://acme-api.code10.ca/api/v1/token.json] (disabled: false)
+  [Cassette: 'login-success'] Initialized HTTPInteractionList with request matchers [:method, :uri] and 2 interaction(s): { [post https://acme-api.code10.ca/api/v1/token.json] => [201 "{\"user_id\":1,\"token\":\"secret_Crsty_opnh5b85UxrmXS\",\"email\":\"test@example.com\",\"u"], [get https://acme-api.code10.ca/api/v1/users/1.json] => [200 "{\"user\":{\"id\":1,\"first_name\":\"Christopher\",\"last_name\":\"Smith\",\"email\":\"test@exa"] }
+  [Cassette: 'login-success'] Checking if [post https://acme-api.code10.ca/api/v1/token.json] matches [post https://acme-api.code10.ca/api/v1/token.json] using [:method, :uri]
+    [Cassette: 'login-success'] method (matched): current request [post https://acme-api.code10.ca/api/v1/token.json] vs [post https://acme-api.code10.ca/api/v1/token.json]
+    [Cassette: 'login-success'] uri (matched): current request [post https://acme-api.code10.ca/api/v1/token.json] vs [post https://acme-api.code10.ca/api/v1/token.json]
+  [Cassette: 'login-success'] Found matching interaction for [post https://acme-api.code10.ca/api/v1/token.json] at index 0: [201 "{\"user_id\":1,\"token\":\"secret_Crsty_opnh5b85UxrmXS\",\"email\":\"test@example.com\",\"u"]
+[webmock] Identified request type (stubbed_by_vcr) for [post https://acme-api.code10.ca/api/v1/token.json]
+[webmock] Handling request: [get https://acme-api.code10.ca/api/v1/users/1.json] (disabled: false)
+  [Cassette: 'login-success'] Checking if [get https://acme-api.code10.ca/api/v1/users/1.json] matches [get https://acme-api.code10.ca/api/v1/users/1.json] using [:method, :uri]
+    [Cassette: 'login-success'] method (matched): current request [get https://acme-api.code10.ca/api/v1/users/1.json] vs [get https://acme-api.code10.ca/api/v1/users/1.json]
+    [Cassette: 'login-success'] uri (matched): current request [get https://acme-api.code10.ca/api/v1/users/1.json] vs [get https://acme-api.code10.ca/api/v1/users/1.json]
+  [Cassette: 'login-success'] Found matching interaction for [get https://acme-api.code10.ca/api/v1/users/1.json] at index 0: [200 "{\"user\":{\"id\":1,\"first_name\":\"Christopher\",\"last_name\":\"Smith\",\"email\":\"test@exa"]
+[webmock] Identified request type (stubbed_by_vcr) for [get https://acme-api.code10.ca/api/v1/users/1.json]
+[Cassette: 'login-failure'] Initialized with options: {:record=>:once, :match_requests_on=>[:method, :uri], :allow_unused_http_interactions=>true, :serialize_with=>:yaml, :persist_with=>:file_system}
+[webmock] Handling request: [post https://acme-api.code10.ca/api/v1/token.json] (disabled: false)
+  [Cassette: 'login-failure'] Initialized HTTPInteractionList with request matchers [:method, :uri] and 1 interaction(s): { [post https://acme-api.code10.ca/api/v1/token.json] => [401 "{\"error\":\"Invalid email or password.\"}"] }
+  [Cassette: 'login-failure'] Checking if [post https://acme-api.code10.ca/api/v1/token.json] matches [post https://acme-api.code10.ca/api/v1/token.json] using [:method, :uri]
+    [Cassette: 'login-failure'] method (matched): current request [post https://acme-api.code10.ca/api/v1/token.json] vs [post https://acme-api.code10.ca/api/v1/token.json]
+    [Cassette: 'login-failure'] uri (matched): current request [post https://acme-api.code10.ca/api/v1/token.json] vs [post https://acme-api.code10.ca/api/v1/token.json]
+  [Cassette: 'login-failure'] Found matching interaction for [post https://acme-api.code10.ca/api/v1/token.json] at index 0: [401 "{\"error\":\"Invalid email or password.\"}"]
+[webmock] Identified request type (stubbed_by_vcr) for [post https://acme-api.code10.ca/api/v1/token.json]
+[Cassette: 'login-failure'] Initialized with options: {:record=>:once, :match_requests_on=>[:method, :uri], :allow_unused_http_interactions=>true, :serialize_with=>:yaml, :persist_with=>:file_system}
+[webmock] Handling request: [post https://acme-api.code10.ca/api/v1/token.json] (disabled: false)
+  [Cassette: 'login-failure'] Initialized HTTPInteractionList with request matchers [:method, :uri] and 1 interaction(s): { [post https://acme-api.code10.ca/api/v1/token.json] => [401 "{\"error\":\"Invalid email or password.\"}"] }
+  [Cassette: 'login-failure'] Checking if [post https://acme-api.code10.ca/api/v1/token.json] matches [post https://acme-api.code10.ca/api/v1/token.json] using [:method, :uri]
+    [Cassette: 'login-failure'] method (matched): current request [post https://acme-api.code10.ca/api/v1/token.json] vs [post https://acme-api.code10.ca/api/v1/token.json]
+    [Cassette: 'login-failure'] uri (matched): current request [post https://acme-api.code10.ca/api/v1/token.json] vs [post https://acme-api.code10.ca/api/v1/token.json]
+  [Cassette: 'login-failure'] Found matching interaction for [post https://acme-api.code10.ca/api/v1/token.json] at index 0: [401 "{\"error\":\"Invalid email or password.\"}"]
+[webmock] Identified request type (stubbed_by_vcr) for [post https://acme-api.code10.ca/api/v1/token.json]
+[Cassette: 'authentication-utility'] Initialized with options: {:record=>:once, :match_requests_on=>[:method, :uri], :allow_unused_http_interactions=>true, :serialize_with=>:yaml, :persist_with=>:file_system}
+[webmock] Handling request: [post https://acme-api.code10.ca/api/v1/token.json] (disabled: false)
+  [Cassette: 'authentication-utility'] Initialized HTTPInteractionList with request matchers [:method, :uri] and 1 interaction(s): { [post https://acme-api.code10.ca/api/v1/token.json] => [201 "{\"user_id\":1,\"token\":\"secret_4sTtmAtebrqzHY1y2exw\",\"email\":\"test@example.com\",\"u"] }
+  [Cassette: 'authentication-utility'] Checking if [post https://acme-api.code10.ca/api/v1/token.json] matches [post https://acme-api.code10.ca/api/v1/token.json] using [:method, :uri]
+    [Cassette: 'authentication-utility'] method (matched): current request [post https://acme-api.code10.ca/api/v1/token.json] vs [post https://acme-api.code10.ca/api/v1/token.json]
+    [Cassette: 'authentication-utility'] uri (matched): current request [post https://acme-api.code10.ca/api/v1/token.json] vs [post https://acme-api.code10.ca/api/v1/token.json]
+  [Cassette: 'authentication-utility'] Found matching interaction for [post https://acme-api.code10.ca/api/v1/token.json] at index 0: [201 "{\"user_id\":1,\"token\":\"secret_4sTtmAtebrqzHY1y2exw\",\"email\":\"test@example.com\",\"u"]
+[webmock] Identified request type (stubbed_by_vcr) for [post https://acme-api.code10.ca/api/v1/token.json]
+[Cassette: 'logout-session-check'] Initialized with options: {:record=>:once, :match_requests_on=>[:method, :uri], :allow_unused_http_interactions=>true, :serialize_with=>:yaml, :persist_with=>:file_system}
+[webmock] Handling request: [get https://acme-api.code10.ca/api/v1/users/1.json] (disabled: false)
+  [Cassette: 'logout-session-check'] Initialized HTTPInteractionList with request matchers [:method, :uri] and 0 interaction(s): {  }
+[webmock] Identified request type (recordable) for [get https://acme-api.code10.ca/api/v1/users/1.json]
+[Cassette: 'logout-session-check'] Recorded HTTP interaction [get https://acme-api.code10.ca/api/v1/users/1.json] => [200 "{\"user\":{\"id\":1,\"first_name\":\"Christopher\",\"last_name\":\"Smith\",\"email\":\"test@exa"]
+[webmock] Handling request: [delete https://acme-api.code10.ca/api/v1/logout] (disabled: false)
+[webmock] Identified request type (recordable) for [delete https://acme-api.code10.ca/api/v1/logout]
+[Cassette: 'logout-session-check'] Recorded HTTP interaction [delete https://acme-api.code10.ca/api/v1/logout] => [200 ""]
+[Cassette: 'authentication-utility'] Initialized with options: {:record=>:once, :match_requests_on=>[:method, :uri], :allow_unused_http_interactions=>true, :serialize_with=>:yaml, :persist_with=>:file_system}
+[webmock] Handling request: [post https://acme-api.code10.ca/api/v1/token.json] (disabled: false)
+  [Cassette: 'authentication-utility'] Initialized HTTPInteractionList with request matchers [:method, :uri] and 1 interaction(s): { [post https://acme-api.code10.ca/api/v1/token.json] => [201 "{\"user_id\":1,\"token\":\"secret_4sTtmAtebrqzHY1y2exw\",\"email\":\"test@example.com\",\"u"] }
+  [Cassette: 'authentication-utility'] Checking if [post https://acme-api.code10.ca/api/v1/token.json] matches [post https://acme-api.code10.ca/api/v1/token.json] using [:method, :uri]
+    [Cassette: 'authentication-utility'] method (matched): current request [post https://acme-api.code10.ca/api/v1/token.json] vs [post https://acme-api.code10.ca/api/v1/token.json]
+    [Cassette: 'authentication-utility'] uri (matched): current request [post https://acme-api.code10.ca/api/v1/token.json] vs [post https://acme-api.code10.ca/api/v1/token.json]
+  [Cassette: 'authentication-utility'] Found matching interaction for [post https://acme-api.code10.ca/api/v1/token.json] at index 0: [201 "{\"user_id\":1,\"token\":\"secret_4sTtmAtebrqzHY1y2exw\",\"email\":\"test@example.com\",\"u"]
+[webmock] Identified request type (stubbed_by_vcr) for [post https://acme-api.code10.ca/api/v1/token.json]
+[Cassette: 'logout-redirect-check'] Initialized with options: {:record=>:once, :match_requests_on=>[:method, :uri], :allow_unused_http_interactions=>true, :serialize_with=>:yaml, :persist_with=>:file_system}
+[webmock] Handling request: [get https://acme-api.code10.ca/api/v1/users/1.json] (disabled: false)
+  [Cassette: 'logout-redirect-check'] Initialized HTTPInteractionList with request matchers [:method, :uri] and 0 interaction(s): {  }
+[webmock] Identified request type (recordable) for [get https://acme-api.code10.ca/api/v1/users/1.json]
+[Cassette: 'logout-redirect-check'] Recorded HTTP interaction [get https://acme-api.code10.ca/api/v1/users/1.json] => [200 "{\"user\":{\"id\":1,\"first_name\":\"Christopher\",\"last_name\":\"Smith\",\"email\":\"test@exa"]
+[webmock] Handling request: [delete https://acme-api.code10.ca/api/v1/logout] (disabled: false)
+[webmock] Identified request type (recordable) for [delete https://acme-api.code10.ca/api/v1/logout]
+[Cassette: 'logout-redirect-check'] Recorded HTTP interaction [delete https://acme-api.code10.ca/api/v1/logout] => [200 ""]
+[Cassette: 'authentication-utility'] Initialized with options: {:record=>:once, :match_requests_on=>[:method, :uri], :allow_unused_http_interactions=>true, :serialize_with=>:yaml, :persist_with=>:file_system}
+[webmock] Handling request: [post https://acme-api.code10.ca/api/v1/token.json] (disabled: false)
+  [Cassette: 'authentication-utility'] Initialized HTTPInteractionList with request matchers [:method, :uri] and 1 interaction(s): { [post https://acme-api.code10.ca/api/v1/token.json] => [201 "{\"user_id\":1,\"token\":\"secret_4sTtmAtebrqzHY1y2exw\",\"email\":\"test@example.com\",\"u"] }
+  [Cassette: 'authentication-utility'] Checking if [post https://acme-api.code10.ca/api/v1/token.json] matches [post https://acme-api.code10.ca/api/v1/token.json] using [:method, :uri]
+    [Cassette: 'authentication-utility'] method (matched): current request [post https://acme-api.code10.ca/api/v1/token.json] vs [post https://acme-api.code10.ca/api/v1/token.json]
+    [Cassette: 'authentication-utility'] uri (matched): current request [post https://acme-api.code10.ca/api/v1/token.json] vs [post https://acme-api.code10.ca/api/v1/token.json]
+  [Cassette: 'authentication-utility'] Found matching interaction for [post https://acme-api.code10.ca/api/v1/token.json] at index 0: [201 "{\"user_id\":1,\"token\":\"secret_4sTtmAtebrqzHY1y2exw\",\"email\":\"test@example.com\",\"u"]
+[webmock] Identified request type (stubbed_by_vcr) for [post https://acme-api.code10.ca/api/v1/token.json]

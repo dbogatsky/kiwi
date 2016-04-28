@@ -40,4 +40,28 @@ RSpec.describe LoginController, type: :controller do
       end
     end
   end
+
+  describe 'logout' do
+    it 'should route to the correct path login#destory' do
+      expect(get: '/login/destroy').to route_to(controller: 'login', action: 'destroy')
+    end
+
+    before(:each) do
+      sign_in('test@example.com', '1')
+    end
+
+    it 'should logout user and destroy token' do
+      VCR.use_cassette('logout-redirect-check', record: :once) do
+        get :destroy
+        expect(response).to redirect_to(root_path)
+      end
+    end
+
+    it 'session data should destroyed' do
+      VCR.use_cassette('logout-session-check', record: :once) do
+        get :destroy
+        expect(session[:token]).to eq(nil)
+      end
+    end
+  end
 end
