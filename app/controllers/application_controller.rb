@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   helper_method :has_permission, :has_permissions, :has_page_permission, :has_page_permissions
 
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to root_url, :alert => exception.message
+    redirect_to root_url, alert: exception.message
   end
 
   private
@@ -31,7 +31,7 @@ class ApplicationController < ActionController::Base
   end
 
   def browser_timezone
-    cookies["browser.timezone"]
+    cookies['browser.timezone']
   end
 
   def get_tenant_by_subdomain
