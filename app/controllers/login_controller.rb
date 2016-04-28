@@ -81,7 +81,7 @@ class LoginController < ApplicationController
   end
 
   def destroy
-    url = URI.parse("http://#{RequestStore.store[:tenant]}-api.code10.ca/api/v1/logout")
+    url = URI.parse("https://#{RequestStore.store[:tenant]}-api.code10.ca/api/v1/logout")
     http = Net::HTTP.new(url.host)
     request = Net::HTTP::Delete.new(url.path)
     response = http.request(request)
