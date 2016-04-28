@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
+  force_ssl if Rails.env.production?
+
   protect_from_forgery with: :exception
   before_filter :get_tenant_by_subdomain #need to do before auth to get tenant
   before_filter :set_cache_headers
