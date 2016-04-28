@@ -17,7 +17,7 @@
 
                 <div class="row row-pad-5">
                   <div class="col-lg-12">
-                    <textarea class="form-control wysihtml5" id="new_editor" rows="5" placeholder="Message" required="required" name="conversation_item[body]"></textarea>
+                    <textarea class="form-control wysihtml5" id="new_reminder" rows="5" placeholder="Message" name="conversation_item[body]"></textarea>
                   </div>
                 </div>
 
@@ -25,14 +25,14 @@
                   <div class="col-lg-4">
                     <div class="input-group">
                       <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                      <input type="text" class="form-control datepicker" placeholder="mm/dd/yyyy" id="reminderDatePicker" name="scheduled_date" />
+                      <input type="text" class="form-control datepicker" placeholder="mm/dd/yyyy" id="reminderDatePicker" name="scheduled_date" required="required" />
                      </div>
                   </div>
 
                   <div class="col-lg-4">
                     <div class="input-group">
                       <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-                      <div class="bootstrap-timepicker"><input id="reminderTimePicker" type="text" class="form-control" name="scheduled_time"/></div>
+                      <div class="bootstrap-timepicker"><input id="reminderTimePicker" type="text" class="form-control" name="scheduled_time" required="required"/></div>
                     </div>
                   </div>
                 </div>

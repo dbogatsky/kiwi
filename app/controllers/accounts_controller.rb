@@ -2,7 +2,7 @@ require 'net/http/post/multipart'
 class AccountsController < ApplicationController
   skip_before_filter :verify_authenticity_token, only: [:delete_future_meeting]
   before_action :get_token
-  before_action :find_account, only: [:conversation, :search, :jump_in, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting, :update_quote, :delete_quote, :update_reminder, :delete_reminder]
+  before_action :find_account, only: [:conversation, :search, :jump_in, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting, :update_quote, :delete_quote, :add_reminder, :update_reminder, :delete_reminder]
   before_action :get_api_values, only: [:search]
   def index
     # Get all accounts
@@ -329,8 +329,7 @@ class AccountsController < ApplicationController
   end
 
   def add_reminder
-
-    c_id = Account.find(conversation_item_params[:account_id]).conversation.id
+    c_id = @account.conversation.id
     params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:scheduled_date], params[:scheduled_time])
     ci = ConversationItem.create(conversation_item: { title: conversation_item_params[:subject], body: conversation_item_params[:body], scheduled_at: params[:conversation_item][:scheduled_at], created_by_id: current_user.id, notify_by_sms: params[:conversation_item][:notify_by_sms], notify_by_email: params[:conversation_item][:notify_by_email], users_to_notify_ids: params[:conversation_item][:users_to_notify_ids] }, conversation_id: c_id, type: conversation_item_params[:type])
     if ci
@@ -344,12 +343,8 @@ class AccountsController < ApplicationController
 
   def update_reminder
     conversation_id = @account.conversation.id
-    params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:scheduled_date], params[:scheduled_time])
-
-    reminder = @account.conversation.conversation_items
-    reminder.each do |r|
-      @conversation = r if n.id == params[:conversation_item][:id].to_i
-    end
+    params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:scheduled_date], params[:scheduled_time]) if params[:scheduled_date].present? && params[:scheduled_time].present?
+    @conversation =  ConversationItem.find(params[:conversation_item][:id], params:{conversation_id: conversation_id })
     if @conversation.update_attributes(conversation_item: params[:conversation_item], conversation_id: conversation_id)
       flash[:success] = 'Reminder successfully updated!'
     else
@@ -363,10 +358,7 @@ class AccountsController < ApplicationController
   end
 
   def delete_reminder
-    reminder = @account.conversation.conversation_items
-    reminder.each do |r|
-      @conversation = r if r.id == params[:item_id].to_i
-    end
+    @conversation =  ConversationItem.find(params[:item_id], params:{conversation_id: @account.conversation.id })
     if @conversation.destroy
       flash[:success] = 'Reminder successfully deleted!'
     else
