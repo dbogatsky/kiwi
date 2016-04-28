@@ -1,3 +1,5 @@
+
+<!-- time_ago_in_words -->
 <% content_for :pageheader do %>
   <h2><i class="fa fa-home"></i> Dashboard</h2>
 <% end %>
@@ -136,7 +138,18 @@
                         <% end %>
                       >
                         <p><strong><a href="/accounts/<%=q.account_id%>" style="color:#636e7b;"><%=q.title%></a></strong></p>
-                        <p><small><%= sanitize q.body.gsub(/<br\s*\/?>/, '') %></small></p>
+                        <p>Amount: &nbsp;$<%=number_with_precision(q.amount, :precision => 2)%></p>
+                        <%if q.ends_at.present?%>
+                          <%if q.ends_at.in_time_zone(current_user.time_zone).to_date > Date.today.in_time_zone(current_user.time_zone).to_date%>
+                            <p>Expires in <%= time_ago_in_words(q.ends_at.to_date).gsub('about','')%></p>
+                          <%elsif q.ends_at.in_time_zone(current_user.time_zone).to_date == Date.today.in_time_zone(current_user.time_zone).to_date %>
+                            <p>Expires today</p>
+                          <%elsif q.ends_at.in_time_zone(current_user.time_zone).to_date < Date.today.in_time_zone(current_user.time_zone).to_date%>
+                            <p style="color: red;">Expired <%= time_ago_in_words(q.ends_at.to_date).gsub('about','') + ' ago'%></p>
+                          <%end%>
+                        <%end%>
+
+                        <!-- <p><small><%#= sanitize q.body.gsub(/<br\s*\/?>/, '') %></small></p> -->
                       </div>
                     </div>
                   </div>
