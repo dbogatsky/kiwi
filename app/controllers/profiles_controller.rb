@@ -7,7 +7,7 @@ class ProfilesController < ApplicationController
   def update
     current_user.update_attributes(request: :update, user: user_params, reload: true)
     save_avatar
-    flash[:success] = 'User profile successfully updated!'
+    flash[:success] = 'Your profile has been successfully updated!'
     redirect_to profile_path
   end
 

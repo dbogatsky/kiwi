@@ -4252,7 +4252,7 @@ div.error label.error:before {
         position: relative;
     }
 
-    .headermenu li:nth-child(4) {
+    .headermenu li:nth-child(5) {
         display: none;
     }
 
@@ -4266,7 +4266,7 @@ div.error label.error:before {
     }
 
     .headermenu .dropdown-menu:after {
-        display: none;
+        /* display: none; */
     }
 
     .rightpanel .nav-tabs.nav-justified > li > a,

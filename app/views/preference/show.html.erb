@@ -1,0 +1,56 @@
+<% content_for :pageheader do %>
+  <h2><i class="fa fa-user"></i> My Preference</h2>
+<% end %>
+
+    <%= simple_form_for current_user, url: profile_path, method: :patch do |f| %>
+      <div class="panel panel-default">
+
+      	<div class="panel-heading">
+      		<p>Edit your preference below and click save</p>
+      	</div>
+
+      	<div class="panel-body">
+          <div class="form-group">
+            <label class="col-sm-3 control-label">Email</label>
+            <div class="col-sm-6">
+              <%= current_user.email %>
+            </div>
+          </div>
+          <%= f.input :first_name, required: true %>
+          <%= f.input :last_name, required: true %>
+
+          <div class="form-group">
+            <label class="col-sm-3 control-label">Locale</label>
+            <div class="col-sm-6">
+              <%#=f.select(:locale, options_for_select([['English', 1],['French', 2]], selected: current_user.locale), {prompt: "select"}, {:class => 'form-control input-sm'})%>
+              <%=(current_user.locale == "en") ? "English" : ""%>
+            </div>
+          </div>
+          <%= f.input :title, required: true %>
+
+
+      	<div class="panel-footer">
+      		<div class="row">
+      			<div class="col-sm-6 col-sm-offset-3">
+      				<button type="submit" class="btn btn-primary" name="save" id="save">Save</button>&nbsp;
+      				<a class="btn btn-default" href="/users">Cancel</a>
+      			</div>
+      		</div>
+      	</div><!-- panel-footer -->
+
+      </div>
+
+    <% end %>
+
+    </div><!-- contentpanel -->
+
+  </div><!-- mainpanel -->
+
+</section>
+
+<style>
+</style>
+
+
+<script>
+</script>
