@@ -5,6 +5,4 @@ class UserAccountSharing < OrchardApiModel
     attribute 'user_id', :string
     attribute 'permission', :string
   end
-
 end
-

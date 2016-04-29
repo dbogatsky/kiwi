@@ -1,21 +1,20 @@
 class LoginController < ApplicationController
-  #exclude the following methods from the authentication filter since the user is not logged in yet
-  before_filter :authentication, :except => [:index, :login, :forgot, :recover, :superadmin, :superadmin_auth]
+  # exclude the following methods from the authentication filter since the user is not logged in yet
+  before_filter :authentication, except: [:index, :login, :forgot, :recover, :superadmin, :superadmin_auth]
 
   def index
     if !session[:token].nil?
-      if(session[:user_id] == "superadmin")
+      if (session[:user_id] == 'superadmin')
         redirect_to admin_companies_path
       else
         redirect_to dashboard_path
       end
     else
-      render :layout => false
+      render layout: false
     end
   end
 
   def login
-
     # Check username and password through the Authentication API
     begin
       if params[:email] == APP_CONFIG['superadmin_email']
@@ -31,7 +30,7 @@ class LoginController < ApplicationController
             ActiveResource::ResourceGone,       # 410 ResourceGone - ?
             ActiveResource::ResourceInvalid     # 422 ResourceInvalid (rescued by save as validation errors) - ?
 
-      flash[:danger] = 'Your email or password is incorrect. Please try again.'  # Log in error message
+      flash[:danger] = 'Your email or password is incorrect. Please try again.' # Login error message
       return redirect_to user_login_path
 
     rescue ActiveResource::ServerError, # 500..599 ServerError - Server Error or unresponsive
@@ -42,9 +41,9 @@ class LoginController < ApplicationController
 
     unless token.nil?
 
-      #handle superadmin case
+      # handle superadmin case
       if params[:email] == APP_CONFIG['superadmin_email']
-        session[:user_id] = "superadmin"
+        session[:user_id] = 'superadmin'
         session[:token] = token.token
         # set_superadmin
         flash[:success] = 'Logged in as superadmin'
@@ -54,7 +53,7 @@ class LoginController < ApplicationController
         session[:user_id] = token.user_id
         session[:token] = token.token
 
-        #set gloal var for token to be used in model, hack for now
+        # set gloal var for token to be used in model, hack for now
         set_current_user
 
         # Log the user in and redirect to the main page: Dashboard first?
@@ -64,7 +63,7 @@ class LoginController < ApplicationController
   end
 
   def forgot
-    render :layout => false
+    render layout: false
   end
 
   def change_password
@@ -81,17 +80,10 @@ class LoginController < ApplicationController
   end
 
   def destroy
-    url = URI.parse("http://#{RequestStore.store[:tenant]}-api.code10.ca/api/v1/logout")
-    http = Net::HTTP.new(url.host)
-    request = Net::HTTP::Delete.new(url.path)
-    response = http.request(request)
-    if response.code.eql?('200')
-      RequestStore.store[:user_token] = nil
-      session[:user_id] = nil
-      session[:token] = nil
-    else
-      flash[:danger] = 'Invalid request'
-    end
+    RequestStore.store[:user_token] = nil
+    session[:user_id] = nil
+    session[:token] = nil
+    current_user.logout
     redirect_to root_path
   end
 

@@ -2,7 +2,7 @@ require 'net/http/post/multipart'
 class AccountsController < ApplicationController
   skip_before_filter :verify_authenticity_token, only: [:delete_future_meeting]
   before_action :get_token
-  before_action :find_account, only: [:conversation, :search, :jump_in, :edit, :update, :share, :update_note, :update_quote, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_quote, :delete_future_meeting]
+  before_action :find_account, only: [:conversation, :search, :jump_in, :edit, :update, :share, :update_note, :update_quote, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting, :delete_quote]
   before_action :get_api_values,only: [:search]
   def index
     # Get all accounts
@@ -472,10 +472,8 @@ class AccountsController < ApplicationController
       if params.has_key?(:avatar)
         url = URI.parse("#{RequestStore.store[:api_url]}/accounts/#{@account.id}")
         puts "sending avatar...#{url}"
-        #req = Net::HTTP::Put::Multipart.new url.path,  account: { :avatar => UploadIO.new(File.new(params[:avatar].tempfile), "image/jpeg", "image.jpg")}
         req = Net::HTTP::Put::Multipart.new url.path, :avatar => UploadIO.new(File.new(params[:avatar].tempfile), "image/jpeg", "image.jpg")
         req.add_field("Authorization", "Token token=\"#{RequestStore.store[:user_token]}\", app_key=\"#{APP_CONFIG['api_app_key']}\"")
-        #req.add_field("Content-Type", "application/json")
 
         res = Net::HTTP.start(url.host, url.port) do |http|
           http.request(req)

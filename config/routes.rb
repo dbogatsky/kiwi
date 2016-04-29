@@ -35,6 +35,7 @@ Rails.application.routes.draw do
       delete :delete_quote
       get    :delete_meeting
       delete :delete_future_meeting
+      delete :delete_quote
       patch  :jump_in
       get    :search
     end

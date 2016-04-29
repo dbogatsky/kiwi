@@ -1,5 +1,5 @@
 class User < OrchardApiModel
-  cached_resource :ttl => 900
+  cached_resource ttl: 900
 
   schema do
     # define each attribute separately
@@ -7,7 +7,6 @@ class User < OrchardApiModel
     attribute 'title', :string
     attribute 'first_name', :string
     attribute 'last_name', :string
-    #attribute 'username', :string
     attribute 'email', :string
     attribute 'company_id', :integer
     attribute 'company_entity_id', :string
@@ -19,4 +18,7 @@ class User < OrchardApiModel
     attribute 'avatar_url', :string
   end
 
+  def logout
+    ActiveResource::Connection.new(OrchardApiModel.site).delete('/api/v1/logout')
+  end
 end
