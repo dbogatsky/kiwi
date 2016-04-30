@@ -3,12 +3,11 @@ class AccountsController < ApplicationController
   skip_before_filter :verify_authenticity_token, only: [:delete_future_meeting]
   before_action :get_token
   before_action :find_account, only: [:conversation, :search, :jump_in, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting]
-  before_action :get_api_values,only: [:search]
+  before_action :get_api_values, only: [:search]
   def index
     # Get all accounts
-    @accounts = Account.all(params: {search: params[:search]})
+    @accounts = Account.all(params: { search: params[:search] })
   end
-
 
   def show
     # Get the acount info and conversation based on id given
@@ -18,13 +17,11 @@ class AccountsController < ApplicationController
     @users = User.all(uid: RequestStore.store[:tenant])
   end
 
-
   def new
     # Add an account
     @account = Account.new
     @users = User.all(uid: RequestStore.store[:tenant])
   end
-
 
   def edit
     # Edit an account
@@ -34,11 +31,10 @@ class AccountsController < ApplicationController
     @users = User.all(uid: RequestStore.store[:tenant])
   end
 
-
   def create
     puts "RECEIVED PARAMS = #{account_params}"
     # Create new account
-    if params.has_key?(:save)
+    if params.key?(:save)
       params[:account][:contacts_attributes] = params[:account][:contacts_attributes].values
       @account = Account.new(request: :create, account: account_params)
       if @account.save
@@ -51,13 +47,12 @@ class AccountsController < ApplicationController
     redirect_to accounts_path
   end
 
-
   def update
     # Update account
-    if params.has_key?(:save)
+    if params.key?(:save)
       params[:account][:contacts_attributes] = params[:account][:contacts_attributes].values
       if @account.update_attributes(name: @account.name, account: account_params)
-         save_avatar
+        save_avatar
         flash[:success] = 'Account has been edited successfully'
       else
         flash[:danger] = 'Oops! Unable to edit the account'
@@ -65,7 +60,6 @@ class AccountsController < ApplicationController
     end
     redirect_to account_path(params[:id])
   end
-
 
   def schedule_meeting
     c_id = @account.conversation.id
@@ -110,9 +104,9 @@ class AccountsController < ApplicationController
             day_of_month:       params[:conversation_item][:repetition_rule][:day_of_month],
             weekday_of_month:   params[:conversation_item][:repetition_rule][:weekday_of_month],
             created_by_id: current_user.id
-            }
+            },
           },
-        conversation_id: c_id, type: "meeting")
+        conversation_id: c_id, type: 'meeting')
     if ci
       flash[:success] = 'Your meeting has been successfully scheduled'
     else
@@ -126,28 +120,28 @@ class AccountsController < ApplicationController
   end
 
   def delete_meeting
-    @conversation= ConversationItem.find(params[:item_id], params:{conversation_id: @account.conversation.id})
+    @conversation = ConversationItem.find(params[:item_id], params: { conversation_id: @account.conversation.id })
     if @conversation.present? && (@conversation.related_to.present? || @conversation.repetition_rule.present?)
-       @show_alert = true
+      @show_alert = true
     else
       @show_alert = false
     end
     @conversation = @conversation.id
     respond_to do |format|
-      format.js {render template: 'accounts/delete_meeting.js.erb'}
+      format.js { render template: 'accounts/delete_meeting.js.erb' }
     end
   end
 
   def delete_future_meeting
-    @item = ConversationItem.find(params[:citem_id], params:{conversation_id: @account.conversation.id})
+    @item = ConversationItem.find(params[:citem_id], params: { conversation_id: @account.conversation.id })
     if params[:destroy_future_meetings].present?
-      ConversationItem.delete(@item.id, {destroy_future_meetings: true, conversation_id: @account.conversation.id})
+      ConversationItem.delete(@item.id, { destroy_future_meetings: true, conversation_id: @account.conversation.id })
       flash[:success] = 'All future Meeting successfully deleted'
     else
       @item.destroy
       flash[:success] = 'Meeting successfully deleted'
     end
-    render js: "window.location.reload()"
+    render js: 'window.location.reload()'
   end
 
   def update_meeting
@@ -192,7 +186,7 @@ class AccountsController < ApplicationController
       lat = params['lat']
       lng = params['lng']
     end
-    ci = ConversationItemEvent.create(lat: lat, long: lng, ip_address: ip_address, type: "check_in", conversation_item_id: citem, user_id: current_user.id)
+    ci = ConversationItemEvent.create(lat: lat, long: lng, ip_address: ip_address, type: 'check_in', conversation_item_id: citem, user_id: current_user.id)
 
     render json: ci
   end
@@ -212,7 +206,7 @@ class AccountsController < ApplicationController
       lng = params['lng']
     end
 
-    co = ConversationItemEvent.create(lat: lat, long: lng, ip_address: ip_address, type: "check_out", conversation_item_id: citem, user_id: current_user.id)
+    co = ConversationItemEvent.create(lat: lat, long: lng, ip_address: ip_address, type: 'check_out', conversation_item_id: citem, user_id: current_user.id)
 
     render json: co
   end
@@ -223,9 +217,9 @@ class AccountsController < ApplicationController
     items.each do |n|
       @meeting = n if n.id == params[:conversation_item_id].to_i
     end
-    params[:conversation_item] ={}
+    params[:conversation_item] = {}
     params[:conversation_item][:id] = params[:conversation_item_id]
-    params[:conversation_item][:invitees] = @meeting.invitees+', '+"#{current_user.email}"
+    params[:conversation_item][:invitees] = @meeting.invitees + ', ' + "#{current_user.email}"
     if @meeting.update_attributes(request: :update, conversation_item: params[:conversation_item], conversation_id: c_id, reload: true)
       flash[:success] = 'successfully jumped!'
     else
@@ -243,7 +237,7 @@ class AccountsController < ApplicationController
     if params[:scheduled_date].present? && params[:scheduled_time].present?
       params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:scheduled_date], params[:scheduled_time])
     end
-    ci = ConversationItem.create(conversation_item: {title: conversation_item_params[:subject], body: conversation_item_params[:body], scheduled_at: params[:conversation_item][:scheduled_at], created_by_id: current_user.id}, conversation_id: c_id, type: conversation_item_params[:type])
+    ci = ConversationItem.create(conversation_item: { title: conversation_item_params[:subject], body: conversation_item_params[:body], scheduled_at: params[:conversation_item][:scheduled_at], created_by_id: current_user.id }, conversation_id: c_id, type: conversation_item_params[:type])
     if ci
       flash[:success] = 'Your note has been added to the conversation'
     else
@@ -297,7 +291,6 @@ class AccountsController < ApplicationController
     end
   end
 
-
   def send_email
     c_id = Account.find(conversation_item_params[:account_id]).conversation.id
     if params[:scheduled_date].present? && params[:scheduled_time].present?
@@ -315,7 +308,7 @@ class AccountsController < ApplicationController
             scheduled_at: params[:conversation_item][:scheduled_at],
             created_by_id: current_user.id
           },
-        conversation_id: c_id, type: "email")
+        conversation_id: c_id, type: 'email')
     if ci
       flash[:success] = 'Your email has been successfully sent'
     else
@@ -323,7 +316,6 @@ class AccountsController < ApplicationController
     end
     redirect_to account_path(conversation_item_params[:account_id])
   end
-
 
   def update_email
     conversation_id = @account.conversation.id
@@ -388,41 +380,38 @@ class AccountsController < ApplicationController
       search[:created_at_lteq] = convert_datetime_to_utc(current_user.time_zone, e_date) rescue nil
     end
     search[:title_cont] = params[:search][:title]
-    search[:type_cont]=params[:search][:type_cont]
-    @conversation_items = ConversationItem.all(params: {conversation_id: c_id, search: search})
+    search[:type_cont] = params[:search][:type_cont]
+    @conversation_items = ConversationItem.all(params: { conversation_id: c_id, search: search })
   end
 
   private
 
-    def get_token
-      #set gloal var for token to be used in model, hack for now
-      RequestStore.store[:user_token]
-    end
+  def get_token
+    # set gloal var for token to be used in model, hack for now
+    RequestStore.store[:user_token]
+  end
 
+  def account_params
+    params.require(:account).permit(
+      :name, :status_id, :contact_name, :contact_title, :assign_to, :shared_with, :about, :quick_facts, :avatar,
+      addresses_attributes: [:id, :name, :street_address, :postcode, :city, :region, :latitude, :longitude, :country, :_destroy],
+      contacts_attributes: [:id, :type, :name, :value, :_destroy]
+    )
+  end
 
-    def account_params
-      params.require(:account).permit(
-        :name, :status_id, :contact_name, :contact_title, :assign_to, :shared_with, :about, :quick_facts, :avatar,
-        addresses_attributes: [:id, :name, :street_address, :postcode, :city, :region, :latitude, :longitude, :country, :_destroy],
-        contacts_attributes: [:id, :type, :name, :value, :_destroy]
-      )
-    end
+  def conversation_item_params
+    params.require(:conversation_item).permit(:account_id, :type, :reminder, :scheduled_at, :subject, :body, :email, :send_later, :title)
+  end
 
+  def shared_account_params
+    params.require(:account).permit(
+      user_account_sharings_attributes: [:user_id, :permission, :_destroy]
+    )
+  end
 
-    def conversation_item_params
-      params.require(:conversation_item).permit(:account_id, :type, :reminder, :scheduled_at, :subject, :body, :email, :send_later, :title)
-    end
-
-
-    def shared_account_params
-      params.require(:account).permit(
-        user_account_sharings_attributes: [:user_id, :permission, :_destroy]
-      )
-    end
-
-    def find_account
-      @account = Account.find(params[:id])
-    end
+  def find_account
+    @account = Account.find(params[:id])
+  end
 
   def get_api_values
     @email = current_user.email

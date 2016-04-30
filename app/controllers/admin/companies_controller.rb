@@ -1,13 +1,12 @@
 require 'net/http/post/multipart'
 class Admin::CompaniesController < Admin::AdminController
- before_action :find_company, only: [:edit, :show, :update]
+  before_action :find_company, only: [:edit, :show, :update]
 
   def new
     @company = BoCompany.new
     @address = []
     @contacts = []
   end
-
 
   def index
     @companies = BoCompany.all
@@ -33,7 +32,7 @@ class Admin::CompaniesController < Admin::AdminController
   end
 
   def show
-    @users = BoUser.find(:all,params: {company_id: params[:id]}, reload: true)
+    @users = BoUser.find(:all, params: { company_id: params[:id] }, reload: true)
   end
 
   def update
@@ -57,11 +56,11 @@ class Admin::CompaniesController < Admin::AdminController
 
   def save_avatar
     if params[:company][:avatar]
-      puts "sending avatar..."
+      puts 'sending avatar...'
       url = URI.parse("#{ENV['ORCHARD_BO_API_HOST']}/companies/#{@company.id}")
-      req = Net::HTTP::Put::Multipart.new url.path, :avatar => UploadIO.new(File.new(params[:company][:avatar].tempfile), "image/jpeg", "image.jpg")
+      req = Net::HTTP::Put::Multipart.new url.path, :avatar => UploadIO.new(File.new(params[:company][:avatar].tempfile), 'image/jpeg', 'image.jpg')
       req.add_field("Authorization", "Token token=\"#{RequestStore.store[:user_token]}\", app_key=\"#{APP_CONFIG['api_app_key']}\"")
-      res = Net::HTTP.start(url.host, url.port) do |http|
+      res = Net::HTTP.start(url.host, url.port, use_ssl: true) do |http|
         http.request(req)
       end
     end
