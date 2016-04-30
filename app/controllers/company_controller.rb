@@ -98,7 +98,7 @@ class CompanyController < ApplicationController
 
   def get_users
     email_json = []
-    User.all.each do |user|
+    User.all(uid: RequestStore.store[:tenant]).each do |user|
       if user.email.include?(params[:term])
         email_json << {email: user.email, value: user.email}
       end

@@ -3,7 +3,7 @@ class ScheduleController < ApplicationController
 
 
   def index
-    @users = User.all(reload: true)
+    @users = User.all(uid: RequestStore.store[:tenant])
     get_meetings([current_user.id])
     @sort_meeting = []
     @next_meeting = []
