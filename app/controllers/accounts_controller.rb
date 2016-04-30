@@ -424,22 +424,22 @@ class AccountsController < ApplicationController
       @account = Account.find(params[:id])
     end
 
-    def get_api_values
-      @email = current_user.email
-      @appKey = APP_CONFIG['api_app_key']
-      @token = session[:token]
-    end
+  def get_api_values
+    @email = current_user.email
+    @appKey = APP_CONFIG['api_app_key']
+    @token = session[:token]
+  end
 
-    def save_avatar
-      if params.has_key?(:avatar)
-        url = URI.parse("#{RequestStore.store[:api_url]}/accounts/#{@account.id}")
-        puts "sending avatar...#{url}"
-        req = Net::HTTP::Put::Multipart.new url.path, :avatar => UploadIO.new(File.new(params[:avatar].tempfile), "image/jpeg", "image.jpg")
-        req.add_field("Authorization", "Token token=\"#{RequestStore.store[:user_token]}\", app_key=\"#{APP_CONFIG['api_app_key']}\"")
+  def save_avatar
+    if params.key?(:avatar)
+      url = URI.parse("#{RequestStore.store[:api_url]}/accounts/#{@account.id}")
+      puts "sending avatar...#{url}"
+      req = Net::HTTP::Put::Multipart.new url.path, :avatar => UploadIO.new(File.new(params[:avatar].tempfile), 'image/jpeg', 'image.jpg')
+      req.add_field('Authorization', "Token token=\"#{RequestStore.store[:user_token]}\", app_key=\"#{APP_CONFIG['api_app_key']}\"")
 
-        res = Net::HTTP.start(url.host, url.port) do |http|
-          http.request(req)
-        end
+      res = Net::HTTP.start(url.host, url.port, use_ssl: true) do |http|
+        http.request(req)
       end
     end
+  end
 end
