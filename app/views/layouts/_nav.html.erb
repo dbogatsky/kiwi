@@ -50,7 +50,13 @@
       </li>
 
       <% if can? :read, Account %>
-        <li><a href="<%= notifications_path %>"><span class="pull-right badge badge-success">1</span><i class="fa fa-envelope-o"></i><span>Notifications</span></a></li>
+        <li>
+          <a href="<%= notifications_path %>">
+            <!-- <span class="pull-right badge badge-success">1</span> -->
+              <i class="fa fa-bell-o"></i>
+            <span>Notifications</span>
+          </a>
+        </li>
       <% end %>
     </ul>
 
