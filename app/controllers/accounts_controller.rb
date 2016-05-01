@@ -14,7 +14,7 @@ class AccountsController < ApplicationController
     @account = Account.find(params[:id])
     @shared_user = []
     @account.user_account_sharings.each {|u| @shared_user << u.user}
-    @users = User.all(session[:user_id])
+    @users = User.all(uid: session[:user_id])
   end
 
   def new
