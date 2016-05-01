@@ -53,7 +53,11 @@
 
     <div class="row">
       <div class="col-sm-6">
-        <%= render 'meeting_map', meetings: @meetings %>
+        <%= render 'widget_quotes', quotes: @quotes %>
+
+
+
+
         <% if @news_data.present? %>
           <div class="panel panel-dark panel-alt widget-slider">
             <div class="panel-heading">
@@ -115,57 +119,6 @@
             </div> <!-- feed activity list -->
           </div><!-- panel-body -->
         </div>
-        <div class="panel panel-dark panel-alt">
-          <div class="panel-heading">
-            <h3 class="panel-title">My Quote</h3>
-          </div>
-          <div class="panel-body">
-            <div class="inspinia-timeline">
-              <% if @quotes.present? && @quotes.count > 0 %>
-                <% @quotes.each do |q|%>
-                  <div class="quote-timeline-item">
-                    <div class="row">
-                      <div class="col-xs-3 date">
-                        <i class="fa fa-usd"></i>
-                        <small>
-                          <%= q.ends_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y") if q.ends_at.present? %>
-                        </small>
-                      </div>
-                      <div class="col-xs-7 content no-top-border"
-                        <% if q.type == "quote" %>
-                          style="border-left: 1px solid <%= get_quotestatus_color(q.status) %>"
-                        <% end %>
-                      >
-                        <p><strong><%=number_with_precision(q.amount, :precision => 2)%></strong></p>
-                        <p><strong><a href="/accounts/<%=q.account_id%>" style="color:#636e7b;"><%=q.title%></a></strong></p>
-                        <small>
-                        <%if q.ends_at.present?%>
-                          <%if q.ends_at.in_time_zone(current_user.time_zone).to_date > Date.today.in_time_zone(current_user.time_zone).to_date%>
-                            <p>Expires in <%= time_ago_in_words(q.ends_at.to_date).gsub('about','')%></p>
-                          <%elsif q.ends_at.in_time_zone(current_user.time_zone).to_date == Date.today.in_time_zone(current_user.time_zone).to_date %>
-                            <p>Expires today</p>
-                          <%elsif q.ends_at.in_time_zone(current_user.time_zone).to_date < Date.today.in_time_zone(current_user.time_zone).to_date%>
-                            <p style="color: red;">Expired <%= time_ago_in_words(q.ends_at.to_date).gsub('about','') + ' ago'%></p>
-                          <%end%>
-                        <%end%>
-                        </small>
-                        <!-- <p><small><%#= sanitize q.body.gsub(/<br\s*\/?>/, '') %></small></p> -->
-                      </div>
-                    </div>
-                  </div>
-                <%end%>
-              <% else %>
-                <div class="quote-timeline-item">
-                  <div class="row">
-                    <div class="text-center">
-                      No Quotes to follow up
-                    </div>
-                  </div>
-                </div>
-              <% end %>
-            </div>
-          </div>
-      </div>
       </div>
     </div>
   </div><!-- col-sm-8 -->

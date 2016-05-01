@@ -11,6 +11,26 @@ body,
     margin-top: 0;
 }
 
+.widget-messaging .quote-title {
+    font-size: 14px;
+    color: #333;
+    margin: 5px;
+    font-family: 'LatoBold';
+    line-height: normal;
+}
+
+.widget-messaging .quote-price {
+    font-size: 14px;
+    margin: 5px;
+    color:#e91e63;
+}
+.widget-messaging .quote-body {
+    margin: 5px;
+}
+.widget-messaging .quote-expiry {
+    margin: 5px;
+}
+
 .ci_note_body {
     font-size:14px!important;
 }
