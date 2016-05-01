@@ -17,8 +17,8 @@
                  data-target=".conversation-edit-reminder-modal-form"
                  data-id="<%= citem.id %>"
                  data-title="<%=citem.title%>"
-                 data-notify-by-sms="<%#=(citem.notify_by_sms.present?) ? 'true' : 'false'%>"
-                 data-notify-by-email="<%#=(citem.notify_by_email.present?) ? 'true' : 'false'%>"
+                 data-notify-by-sms="<%=(citem.notify_by_sms.present?) ? 'true' : 'false'%>"
+                 data-notify-by-email="<%=(citem.notify_by_email.present?) ? 'true' : 'false'%>"
                  data-users-to-notify-ids="<%#= citem.users_to_notify_ids %>"
                  data-date="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.scheduled_at.present?%>"
                  data-time="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.scheduled_at.present? %>"
@@ -35,6 +35,13 @@
     <% if (citem.scheduled_at.present?) %>
         <div class="ci_footer">
             <i class="fa fa-bell"></i><%= citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %>
+            <i class="mr10"></i>
+            <i class="fa fa-envelope tooltips mr10" data-toggle="tooltip" data-original-title="Email"></i>
+            <i class="fa fa-comment tooltips mr10" data-toggle="tooltip" data-original-title="SMS"></i>
+             <% if citem.conversation_item_user_to_notify.present? %>
+                <br />
+                <%=notified_users(citem)%>
+            <% end %>
         </div>
     <% end %>
 </div>

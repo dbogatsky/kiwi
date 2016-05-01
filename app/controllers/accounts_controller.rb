@@ -343,21 +343,27 @@ class AccountsController < ApplicationController
   def update_reminder
     conversation_id = @account.conversation.id
     params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:scheduled_date], params[:scheduled_time]) if params[:scheduled_date].present? && params[:scheduled_time].present?
-    @conversation =  ConversationItem.find(params[:conversation_item][:id], params:{conversation_id: conversation_id })
-    if @conversation.update_attributes(conversation_item: params[:conversation_item], conversation_id: conversation_id)
+
+    unless params[:conversation_item][:notify_by_email].present?
+      params[:conversation_item][:notify_by_email] = nil
+    end
+
+    unless params[:conversation_item][:notify_by_sms].present?
+      params[:conversation_item][:notify_by_sms] = nil
+    end
+
+    @conversation_item = ConversationItem.find(params[:conversation_item][:id], params: { conversation_id: conversation_id })
+    if @conversation_item.update_attributes(conversation_item: params[:conversation_item], conversation_id: conversation_id)
       flash[:success] = 'Reminder successfully updated!'
     else
       flash[:danger] = 'Reminder not updated!'
     end
-    if params[:info].present?
-      redirect_to schedule_path
-    else
-      redirect_to account_path(params[:id])
-    end
+
+    redirect_to account_path(params[:id])
   end
 
   def delete_reminder
-    @conversation =  ConversationItem.find(params[:item_id], params:{conversation_id: @account.conversation.id })
+    @conversation = ConversationItem.find(params[:item_id], params: { conversation_id: @account.conversation.id })
     if @conversation.destroy
       flash[:success] = 'Reminder successfully deleted!'
     else
@@ -452,17 +458,6 @@ class AccountsController < ApplicationController
     search[:title_cont] = params[:search][:title]
     search[:type_cont] = params[:search][:type_cont]
     @conversation_items = ConversationItem.all(params: { conversation_id: c_id, search: search })
-  end
-
-  private
-
-  def notifiable_users_json
-    users_list = []
-    notifiable_users = NotifiableUsers.all(params: { account_id: params[:id] })
-    notifiable_users.each do |user|
-      users_list << { id: user.id, text: user.first_name + ' ' + user.last_name }
-    end
-    users_list.to_json
   end
 
   private
