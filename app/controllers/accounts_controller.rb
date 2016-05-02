@@ -20,7 +20,7 @@ class AccountsController < ApplicationController
   def new
     # Add an account
     @account = Account.new
-    @users = User.all(session[:user_id])
+    @users = User.all(uid: session[:user_id])
   end
 
   def edit
@@ -28,7 +28,7 @@ class AccountsController < ApplicationController
     @account = Account.find(params[:id])
     @addresses = @account.addresses
     @contacts = @account.contacts
-    @users = User.all(session[:user_id])
+    @users = User.all(uid: session[:user_id])
   end
 
   def create
