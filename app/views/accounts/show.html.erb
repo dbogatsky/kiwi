@@ -384,6 +384,21 @@
     $('.conversation-edit-reminder-modal-form input[name="scheduled_time"]').val($(this).attr('data-time'));
     $('.conversation-edit-reminder-modal-form input[name="scheduled_date"]').val($(this).attr('data-date'));
     edit_reminder.data("wysihtml5").editor.setValue($(this).attr('data-description'));
+    var user_ids = $(this).attr('data-users-to-notify-ids')
+    user_ids.replace(/'/g, '"');
+    user_ids = JSON.parse(user_ids)
+    user_ids = user_ids.join().split(',')
+    $('.conversation-edit-reminder-modal-form select[name="conversation_item[users_to_notify_ids][]"]').select2().val(user_ids);
+    $('.conversation-edit-reminder-modal-form select[name="conversation_item[users_to_notify_ids][]"]').select2().val(user_ids);
+
+    if($(this).attr('data-notify-by-email') == 'true'){
+      $('#reminder-email-edit').attr('checked', true);
+    }
+
+    if($(this).attr('data-notify-by-sms') == 'true'){
+      $('#reminder-sms-edit').attr('checked', true);;
+    }
+
     $('.conversation-edit-reminder-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
     if ($(this).attr('data-notify-by-email')=='true') {
       $('.conversation-edit-reminder-modal-form input[name="conversation_item[notify_by_email]"]').prop('checked', true); }

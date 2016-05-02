@@ -19,7 +19,7 @@
                  data-title="<%=citem.title%>"
                  data-notify-by-sms="<%=(citem.notify_by_sms.present?) ? 'true' : 'false'%>"
                  data-notify-by-email="<%=(citem.notify_by_email.present?) ? 'true' : 'false'%>"
-                 data-users-to-notify-ids="<%#= citem.users_to_notify_ids %>"
+                 data-users-to-notify-ids="<%=citem.conversation_item_user_to_notify.map(&:user_id) if citem.conversation_item_user_to_notify.present? %>"
                  data-date="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.scheduled_at.present?%>"
                  data-time="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.scheduled_at.present? %>"
                  data-description="<%= citem.body %>">Edit</a>

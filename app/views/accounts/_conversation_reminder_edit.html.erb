@@ -109,4 +109,9 @@
   $("#notifiable_users_edit").select2({
     data: data
   });
+
+  $(".conversation-edit-reminder-modal-form").on("hidden.bs.modal", function(){
+    $('#reminder-email-edit').attr('checked', false);
+    $('#reminder-sms-edit').attr('checked', false);
+  });
 </script>
