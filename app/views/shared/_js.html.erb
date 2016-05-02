@@ -104,6 +104,12 @@ $(document).ready(function() {
     }
   }
 
+  jQuery(function($) {
+    $('#schedule-from-datepicker').on('change', function() {
+        $('#schedule-to-datepicker').prop('min', $(this).val());
+        $('#schedule-to-datepicker').val($(this).val());
+    });
+  });
     if (document.getElementById("account_name") != null){
         address_auto_fill(document.getElementById("account_name"));
       }else{
@@ -122,19 +128,19 @@ $(document).ready(function() {
 
     $('.datepicker').datepicker();
 
-    $('#schedule-from-datepicker, #meeting-reminder-date').datepicker({
-      dateFormat: 'mm/dd/yy',
-      altField: "#schedule-to-datepicker",
-      altFormat: "mm/dd/yy",
-      onSelect: function (selected) {
-        var dt = new Date(selected);
-        dt.setDate(dt.getDate());
-        $("#schedule-to-datepicker").datepicker("option", "minDate", dt);
-      }
-    });
-    $('#schedule-to-datepicker').datepicker({
-      dateFormat: 'mm/dd/yy'
-    });
+    // $('#schedule-from-datepicker, #meeting-reminder-date').datepicker({
+    //   dateFormat: 'mm/dd/yy',
+    //   altField: "#schedule-to-datepicker",
+    //   altFormat: "mm/dd/yy",
+    //   onSelect: function (selected) {
+    //     var dt = new Date(selected);
+    //     dt.setDate(dt.getDate());
+    //     $("#schedule-to-datepicker").datepicker("option", "minDate", dt);
+    //   }
+    // });
+    // $('#schedule-to-datepicker').datepicker({
+    //   dateFormat: 'mm/dd/yy'
+    // });
 
     var d = new Date();
     var hh = d.getHours();
