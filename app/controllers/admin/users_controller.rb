@@ -1,6 +1,6 @@
 require 'net/http/post/multipart'
 class Admin::UsersController < Admin::AdminController
-	before_action :get_token
+  before_action :get_token
   before_action :find_company, only: [:edit, :update, :change_password]
   before_action :find_user, only: [:edit, :update, :destroy]
 
@@ -12,12 +12,12 @@ class Admin::UsersController < Admin::AdminController
     @user = BoUser.new
     @address = []
     @contacts = []
-	end
+  end
 
   def edit
     @address = @user.addresses.last
     @contact = @user.contacts
-	end
+  end
 
   def create
     # Create new user
@@ -54,10 +54,10 @@ class Admin::UsersController < Admin::AdminController
   end
 
   def change_password
-    @user = BoUser.find(params[:user_id], params: {company_id: params[:company_id]})
+    @user = BoUser.find(params[:user_id], params: { company_id: params[:company_id] })
     if request.patch?
-      if @user.update_attributes(request: :update, user: params[:user],company_id: params[:company_id], reload: true)
-         flash[:success] = 'Password successfully updated.'
+      if @user.update_attributes(request: :update, user: params[:user], company_id: params[:company_id], reload: true)
+        flash[:success] = 'Password successfully updated.'
       else
         flash[:danger] = 'Password could not updated.'
       end
@@ -65,15 +65,15 @@ class Admin::UsersController < Admin::AdminController
     end
   end
 
-private
+  private
 
-	def get_token
-	  #set gloal var for token to be used in model, hack for now
-	  $user_token = session[:token]
-	end
+  def get_token
+    # set gloal var for token to be used in model, hack for now
+    $user_token = session[:token]
+  end
 
   def find_user
-     @user = BoUser.find(params[:id], params: {company_id: params[:company_id]})
+    @user = BoUser.find(params[:id], params: { company_id: params[:company_id] })
   end
 
   def find_company
@@ -82,11 +82,11 @@ private
 
   def save_avatar
     if params[:user][:avatar]
-      puts "sending avatar..."
+      puts 'sending avatar...'
       url = URI.parse("#{ENV['ORCHARD_BO_API_HOST']}/companies/#{params[:company_id]}/users/#{@user.id}")
-      req = Net::HTTP::Put::Multipart.new url.path, :avatar => UploadIO.new(File.new(params[:user][:avatar].tempfile), "image/jpeg", "image.jpg")
+      req = Net::HTTP::Put::Multipart.new url.path, :avatar => UploadIO.new(File.new(params[:user][:avatar].tempfile), 'image/jpeg', 'image.jpg')
       req.add_field("Authorization", "Token token=\"#{$user_token}\", app_key=\"#{APP_CONFIG['api_app_key']}\"")
-      res = Net::HTTP.start(url.host, url.port) do |http|
+      res = Net::HTTP.start(url.host, url.port, use_ssl: true) do |http|
         http.request(req)
       end
     end
