@@ -136,6 +136,7 @@
                   <% if can? :manage, ConversationItem %>
                     <li><a href="#" data-toggle="modal" data-target=".account-action-meeting">Schedule Meeting</a></li>
                     <li><a href="#" data-toggle="modal" data-target=".conversation-note-modal-form">Add Note</a></li>
+                    <li><a href="#" data-toggle="modal" data-target=".conversation-quote-modal-form">Add Quote</a></li>
                     <li><a href="#" data-toggle="modal" data-target=".account-action-email">Send Email</a></li>
                     <% end %>
 
@@ -213,13 +214,74 @@
   <%= render "conversation_note" %>
   <%= render 'conversation_note_edit', account: @account%>
   <%= render "conversation_meeting_edit", account: @account %>
+  <%= render "conversation_quote_edit", account: @account %>
   <%= render "conversation_meeting_complete", account: @account %>
+  <%= render "conversation_quote"%>
+  <%= render "conversation_quote_complete"%>
   <%= render "conversation_sharedusers" %>
 <% end %>
 
 
 <% content_for :custom_js do %>
 <script>
+  $(".amount_val").keypress(function(event) {
+    if ((event.which != 46 || $(this).val().indexOf('.') != -1) &&
+      ((event.which < 48 || event.which > 57) &&
+        (event.which != 0 && event.which != 8))) {
+      event.preventDefault();
+    }
+    var text = $(this).val();
+    if ((text.indexOf('.') != -1) &&
+      (text.substring(text.indexOf('.')).length > 2) &&
+      (event.which != 0 && event.which != 8) &&
+      ($(this)[0].selectionStart >= text.length - 2)) {
+      event.preventDefault();
+    }
+  });
+
+  $(".amount_val").focusout(function(){
+     var re = /^-?[0-9]+$/;
+     var num = $(this).val();
+     if (re.test(num)){
+        num = num + '.00';
+        $(this).val(num);
+     }else if(!re.test(num) && num != '' ){
+       var length = parseFloat(num).toFixed(2).replace(/^-?\d*\.?|0+$/g, '').length
+       if(length == 1){
+        num = num + '0';
+        $(this).val(num);
+      }else if (length < 1){
+        num = parseFloat(num) + '.00';
+        $(this).val(num);
+      }
+    }
+  });
+
+
+  function Comma(num) {
+  var s = num.split('.');
+  if (s[0].length > 14) {
+    // Too many numbers before decimal.
+  }
+  if (s[1].length > 4) {
+    // Too many numbers after decimal.
+  }
+}
+
+  $(".exp_in").click(function(){
+    if($(this).is(':checked')){
+      $(".get_date").attr('disabled', false)
+      $(".set_date").attr('disabled', true)
+    }
+  })
+
+  $(".exp_after").click(function(){
+    if($(this).is(':checked')){
+      $(".set_date").attr('disabled', false)
+      $(".get_date").attr('disabled', true)
+    }
+  })
+
   $('#preloader').css('opacity', 0.8);
   $('#preloader').hide();
 
@@ -244,6 +306,13 @@
     edit_editor = $('#edit_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
   });
 
+  var new_quote, edit_quote;
+
+  $(function() {
+    new_quote = $('#new_quote').wysihtml5({'font-styles': false, 'image': false, 'link':false});
+    edit_quote = $('#quote_edit').wysihtml5({'font-styles': false, 'image': false, 'link':false});
+  });
+
   var email_new_editor, email_edit_editor;
 
   $(function() {
@@ -262,6 +331,12 @@
 
   $(function() {
     complete_meeting_editor = $('#complete_meeting_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
+  });
+
+  var complete_quote_editor;
+
+  $(function() {
+    complete_quote_editor = $('#complete_quote_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
   });
 
   $(document).on('click', "a.edit_email", function(e){
@@ -357,6 +432,77 @@
     }
   });
 
+  $(document).on('click', "a.complete_quote", function(e){
+    id = $(this).attr('data-id')
+    var status = $(this).attr('data-status')
+    if (status == 'open'){
+       status = ''
+    }
+    var notes = $(this).attr('data-notes')
+    $('.conversation-complete-quote-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
+    if (status != "scheduled"){
+      $('.conversation-complete-quote-modal-form select[name="conversation_item[status]"]').val(status);
+    }
+    if (notes != ''){
+      complete_quote_editor.data("wysihtml5").editor.setValue(notes);
+    }
+  });
+
+
+
+    // hide show quote reminder settings
+    $("#quote-reminder-settings").hide();
+    $("#quote-reminder-settings-edit").hide();
+
+    $('#quote-reminder, #quote-reminder-edit').change(function () {
+      if ($(this).is(':checked')) {
+        $("#quote-reminder-settings").show(500);
+        $("#quote-reminder-settings-edit").show(500);
+      }
+      else {
+        $("#quote-reminder-settings").hide(500);
+        $("#quote-reminder-settings-edit").hide(500);
+      }
+    });
+
+
+  $(document).on('click', "a.edit_quote", function(e){
+    id = $(this).attr('data-id')
+    status = $(this).attr('data-status')
+    body = $(this).attr('data-description')
+    $('.conversation-edit-quote-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
+    $('.conversation-edit-quote-modal-form select[name="conversation_item[status]"]').val(status);
+    console.log($(this).attr('data-amount'))
+    $('.conversation-edit-quote-modal-form input[name="conversation_item[amount]"]').val($(this).attr('data-amount'));
+    if (body != ''){
+      edit_quote.data("wysihtml5").editor.setValue(body);
+    }
+    $('.conversation-edit-quote-modal-form input[name="follow_time"]').val($(this).attr('data-time'));
+    $('.conversation-edit-quote-modal-form input[name="follow_date"]').val($(this).attr('data-date'));
+    $('.conversation-edit-quote-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
+    $('.conversation-edit-quote-modal-form input[name="expires_in"]').val($(this).attr('data-ends-day'));
+    $('.conversation-edit-quote-modal-form input[name="expires_after"]').val($(this).attr('data-ends-date'));
+    if ($(this).attr('data-time') != '' && $(this).attr('data-date') != ''){
+      $("#quote-reminder-edit").attr('checked', true);
+      $(".clear_date").attr('required', true);
+      $(".clear_time").attr('required', true);
+      $("#quote-reminder-settings-edit").show();
+    }else{
+      $("#quote-reminder-edit").attr('checked', false);
+      $("#quote-reminder-settings-edit").hide();
+      $(".clear_date").attr('required', false);
+      $(".clear_time").attr('required', false);
+    }
+    getdate($(this).attr('data-ends-day'));
+    $(".display_date").val(final_date)
+    $(".set_date").attr('disabled', true)
+    $(".get_date").attr('disabled', false)
+  });
+
+  $('#follow_time').timepicker({
+    minuteStep: 15
+  });
+
   $(document).ready(function(){
     $.fn.editable.defaults.ajaxOptions = {type: "PUT"};
     jQuery('.account-contact-editable').editable({
@@ -442,7 +588,6 @@
 
 		$('#reminderDatePicker').datepicker('option', 'dateFormat', 'mm/dd/yy');
 		$('#reminderTimePicker').timepicker({minuteStep: 5});
-
     $('#reminderDatePickerEdit').datepicker('option', 'dateFormat', 'mm/dd/yy');
     $('#reminderTimePickerEdit').timepicker({minuteStep: 5});
 
@@ -463,6 +608,7 @@
 			}
 		});
 
+
 		$('#scheduledDatePicker').datepicker();
 		$('#scheduledTimePicker').timepicker({minuteStep: 5});
 
@@ -481,6 +627,19 @@
 				$("#email-sendlater-settings").hide(500);
 			}
 		});
+
+    $(".conversation-quote-modal-form").on("shown.bs.modal", function(){
+      $(".follow_time_div").hide();
+      $("#follow-reminder").attr('checked', false)
+      $(".exp_in").attr('checked', true)
+      $(".get_date").attr('disabled', false)
+      $(".set_date").attr('disabled', true)
+    });
+
+    $(".conversation-edit-quote-modal-form").on("shown.bs.modal", function(){
+      $(".exp_in").attr('checked', true)
+      $(".set_date").attr('disabled', true)
+    });
   });
   </script>
 <% end %>
