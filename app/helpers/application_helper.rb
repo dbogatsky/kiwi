@@ -83,6 +83,6 @@ module ApplicationHelper
 	end
 
   def mobile?
-    request_device?(:iphone) || request_device?(:android)
+    request_device?(:iphone) || request_device?(:android) || request_device?(:ipad)
   end
 end
