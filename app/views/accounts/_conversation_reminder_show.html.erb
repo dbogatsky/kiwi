@@ -5,6 +5,7 @@
     <span class="cd-date">
         <%= citem.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>
     </span>
+    <%if citem.scheduled_at.present? && (Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone)-5*60 >= DateTime.now.in_time_zone(current_user.time_zone))%>
     <div class="btn-group pull-right">
         <div class="btn-group mr5 pull-right">
           <button data-toggle="dropdown" class="btn btn-sm btn-white dropdown-toggle" type="button" style="border-radius: 2px">
@@ -30,6 +31,7 @@
           </ul>
         </div>
     </div>
+    <% end %>
     <h2 class="ci_header"><%= citem.title %></h2>
     <div class="ci_reminder_body"><%= sanitize citem.body %></div>
     <% if (citem.scheduled_at.present?) %>
