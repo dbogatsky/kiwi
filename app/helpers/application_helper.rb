@@ -81,4 +81,8 @@ module ApplicationHelper
     end
     return check_out
 	end
+
+  def mobile?
+    request_device?(:iphone) || request_device?(:android)
+  end
 end

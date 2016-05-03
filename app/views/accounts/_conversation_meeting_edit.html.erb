@@ -43,8 +43,11 @@
                   <div class="col-lg-5">
                     <div class="input-group ">
                       <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                      <!-- <input type="text" class="form-control" placeholder="dd/mm/yy" name="starts_date" id="schedule-from-datepicker-edit" required="required" /> -->
-                      <input id="schedule-from-datepicker-edit" type="date" name="starts_date" required="required"/>
+                      <%if mobile?%>
+                        <input id="schedule-from-datepicker-edit" type="date" name="starts_date" required="required"/>
+                      <%else%>
+                        <input type="text" class="form-control" placeholder="mm/dd/yy" name="starts_date" id="schedule-from-datepicker-edit" required="required" />
+                      <%end%>
                     </div>
                   </div>
 
@@ -66,8 +69,11 @@
                   <div class="col-lg-5">
                     <div class="input-group ">
                       <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                     <!--  <input type="text" class="form-control" placeholder="dd/mm/yy" name="ends_date"  id="schedule-to-datepicker-edit" required="required" /> -->
-                      <input id="schedule-to-datepicker-edit" type="date" name="ends_date" required="required"/>
+                      <%if mobile?%>
+                        <input id="schedule-to-datepicker-edit" type="date" name="ends_date" required="required"/>
+                      <%else%>
+                        <input type="text" class="form-control" placeholder="mm/dd/yy" name="ends_date"  id="schedule-to-datepicker-edit" required="required" />
+                      <%end%>
                     </div>
                   </div>
 
@@ -99,8 +105,11 @@
                     <div class="col-lg-5">
                       <div class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                       <!--  <input type="text" class="form-control" placeholder="mm/dd/yyyy" name="scheduled_date" id="meeting-reminder-date-edit" /> -->
-                        <input id="meeting-reminder-date-edit" type="date" name="scheduled_date"/>
+                        <%if mobile?%>
+                          <input id="meeting-reminder-date-edit" type="date" name="scheduled_date"/>
+                        <%else%>
+                          <input type="text" class="form-control" placeholder="mm/dd/yyyy" name="scheduled_date" id="meeting-reminder-date-edit" />
+                        <%end%>
                        </div>
                     </div>
 
@@ -253,7 +262,6 @@
   </div><!-- modal dialog -->
 </div><!-- modal -->
 <script type="text/javascript">
-
   $("#meeting-repeat-settings-edit").hide();
   $("#repeat-frequency-week-edit").hide();
   $("#repeat-frequency-month-edit").hide();
@@ -355,23 +363,26 @@
     minuteStep: 15
   });
 
-  // $('#schedule-from-datepicker-edit').datepicker({
-  //   dateFormat: 'mm/dd/yy',
-  //   altField: "#schedule-to-datepicker-edit",
-  //   altFormat: "mm/dd/yy",
-  //   onSelect: function (selected) {
-  //     var dt = new Date(selected);
-  //     dt.setDate(dt.getDate());
-  //     $("#schedule-to-datepicker-edit").datepicker("option", "minDate", dt);
-  //   }
-  // });
+  if(mobile == 'false'){
+    $('#schedule-from-datepicker-edit').datepicker({
+      dateFormat: 'mm/dd/yy',
+      altField: "#schedule-to-datepicker-edit",
+      altFormat: "mm/dd/yy",
+      onSelect: function (selected) {
+        var dt = new Date(selected);
+        dt.setDate(dt.getDate());
+        $("#schedule-to-datepicker-edit").datepicker("option", "minDate", dt);
+      }
+    });
+  }
 
-  jQuery(function($) {
+  if(mobile == 'true'){
     $('#schedule-from-datepicker-edit').on('change', function() {
         $('#schedule-to-datepicker-edit').prop('min', $(this).val());
         $('#schedule-to-datepicker-edit').val($(this).val());
     });
-  });
+  }
+
 
   $("#schedule-from-timepicker-edit").on('change', function(){
     var d = new Date();
@@ -409,24 +420,29 @@
   });
 
   $(".conversation-edit-meeting-modal-form").on("shown.bs.modal", function(){
-
     var d = $('#schedule-from-datepicker-edit').val();
-    var new_d = new Date(Date.parse(d))
-    $("#schedule-to-datepicker-edit").datepicker("option", "minDate", new_d)
-  });
-
-  $('#schedule-to-datepicker-edit').datepicker({
-    dateFormat: 'mm/dd/yy',
+    if(mobile == 'true'){
+      $('#schedule-to-datepicker-edit').prop('min', d);
+    }else{
+      var new_d = new Date(Date.parse(d))
+      $("#schedule-to-datepicker-edit").datepicker("option", "minDate", new_d)
+    }
   });
 
   $('#schedule-from-timepicker-edit').timepicker({
     minuteStep: 15
   });
 
-  // $('#meeting-reminder-date-edit').datepicker({
-  //   dateFormat: 'mm/dd/yy',
-  //   altFormat: "mm/dd/yy"
-  // });
+  if(mobile == 'false'){
+    $('#meeting-reminder-date-edit').datepicker({
+      dateFormat: 'mm/dd/yy',
+      altFormat: "mm/dd/yy"
+    });
+
+    $('#schedule-to-datepicker-edit').datepicker({
+      dateFormat: 'mm/dd/yy',
+    });
+  }
 
   $(".conversation-edit-meeting-modal-form").on("hidden.bs.modal", function(){
     $("#edit_tags").find('span').remove();

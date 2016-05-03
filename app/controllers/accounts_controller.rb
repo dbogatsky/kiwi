@@ -432,7 +432,7 @@ class AccountsController < ApplicationController
   def conversation_item_params
     params.require(:conversation_item).permit(:account_id, :type, :reminder, :scheduled_at, :subject, :body, :email, :send_later, :title, :status, :amount, :ends_at)
   end
-  
+
   def account_params
     params.require(:account).permit(
       :name, :status_id, :contact_name, :contact_title, :assign_to, :shared_with, :about, :quick_facts, :avatar,

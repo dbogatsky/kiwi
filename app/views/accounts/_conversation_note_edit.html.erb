@@ -33,10 +33,14 @@
 
                 <div id="note-reminder-settings-edit">
                   <div class="row row-pad-5">
-                    <div class="col-lg-4">
+                    <div class="col-lg-5">
                       <div class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                        <input type="text" class="form-control datepicker" placeholder="mm/dd/yyyy" id="reminderDatePickerEdit" name="scheduled_date" />
+                        <%if mobile?%>
+                          <input id="reminderDatePickerEdit" type="date" name="scheduled_date"/>
+                        <%else%>
+                          <input type="text" class="form-control datepicker" placeholder="mm/dd/yyyy" id="reminderDatePickerEdit" name="scheduled_date" />
+                        <%end%>
                        </div>
                     </div>
 

@@ -60,7 +60,11 @@
                 <div class="col-lg-5">
                   <div class="input-group ">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                     <input id="schedule-from-datepicker" type="date" name="starts_date" required="required"/>
+                    <%if mobile?%>
+                      <input id="schedule-from-datepicker" type="date" name="starts_date" required="required"/>
+                    <%else%>
+                      <input type="text" class="form-control" placeholder="mm/dd/yy" name="starts_date" id="schedule-from-datepicker" required="required" />
+                    <%end%>
                   </div>
                 </div>
 
@@ -82,7 +86,11 @@
                 <div class="col-lg-5">
                   <div class="input-group ">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                    <input id="schedule-to-datepicker" type="date" name="ends_date" required="required"/>
+                    <%if mobile?%>
+                      <input id="schedule-to-datepicker" type="date" name="ends_date" required="required"/>
+                    <%else%>
+                      <input type="text" class="form-control" placeholder="mm/dd/yy" name="ends_date" id="schedule-to-datepicker" required="required" />
+                    <%end%>
                   </div>
                 </div>
 
@@ -114,7 +122,11 @@
 	                <div class="col-lg-5">
 	                  <div class="input-group">
 	                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                      <input id="meeting-reminder-date" type="date" name="scheduled_date"/>
+                      <%if mobile?%>
+                        <input id="meeting-reminder-date" type="date" name="scheduled_date"/>
+                      <%else%>
+                        <input type="text" class="form-control" placeholder="mm/dd/yy" name="scheduled_date" id="meeting-reminder-date"/>
+                      <%end%>
 	                   </div>
 	                </div>
 

@@ -25,9 +25,15 @@
                 <div class="form-group mb30">
                   <label for="filter">Date Range</label>
                     <div class="input-daterange input-group">
-                      <input type="text" class="form-control datepicker" placeholder="dd/mm/yy" name="search[date_gteq]" id="search-from-datepicker"/>
-                         <span class="input-group-addon">to</span>
-                      <input type="text" class="form-control datepicker" placeholder="dd/mm/yy" name="search[date_lteq]" id="search_datepicker_end">
+                      <%if mobile?%>
+                        <input id="search-from-datepicker" type="date" name="search[date_gteq]"/>
+
+                        <input id="search_datepicker_end" type="date" name="search[date_lteq]"/>
+                      <%else%>
+                        <input type="text" class="form-control datepicker" placeholder="dd/mm/yy" name="search[date_gteq]" id="search-from-datepicker"/>
+                           <span class="input-group-addon">to</span>
+                        <input type="text" class="form-control datepicker" placeholder="dd/mm/yy" name="search[date_lteq]" id="search_datepicker_end">
+                      <%end%>
                     </div>
                 </div>
                 <div>
@@ -46,6 +52,20 @@
   $('#select_con_type, #search-from-datepicker, #search_datepicker_end, #conversation_search_div').click(function(e){
     e.stopPropagation();
   })
+
+  $('#search-from-datepicker').on('change', function() {
+    var d = $(this).val();
+    if(mobile == 'false'){
+      var dt = new Date(d);
+      dt.setDate(dt.getDate());
+      // $("#search_datepicker_end").datepicker("option", "minDate", dt);
+      $('#search_datepicker_end').val(d)
+    }else{
+      $('#search_datepicker_end').prop('min', d);
+      $('#search_datepicker_end').val(d);
+    }
+  });
+
 </script>
 <% content_for :custom_css do %>
   <style>

@@ -55,7 +55,11 @@
                   <div class="col-lg-4">
                     <div class="input-group">
                       <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                      <input type="text" class="form-control datepicker set_date" placeholder="mm/dd/yyyy" name="expires_after" disabled="true"/>
+                      <%if mobile?%>
+                        <input class="set_date" type="date" name="expires_after" disabled="true"/>
+                      <%else%>
+                        <input type="text" class="form-control datepicker set_date" placeholder="mm/dd/yyyy" name="expires_after" disabled="true"/>
+                      <%end%>
                      </div>
                   </div>
                 </div>
@@ -72,12 +76,16 @@
                     </div>
                   </div>
                 </div>
-                <div id="quote-reminder-settings-edit">
+                <div class="quote-reminder-settings">
                   <div class="row row-pad-5">
                     <div class="col-lg-4">
                       <div class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                        <input type="text" class="form-control datepicker clear_date" placeholder="mm/dd/yyyy" id="" name="follow_date"/>
+                        <%if mobile?%>
+                          <input class="clear_date" type="date" name="follow_date"/>
+                        <%else%>
+                          <input type="text" class="form-control datepicker clear_date" placeholder="mm/dd/yyyy" id="" name="follow_date"/>
+                        <%end%>
                        </div>
                     </div>
                     <div class="col-lg-4">

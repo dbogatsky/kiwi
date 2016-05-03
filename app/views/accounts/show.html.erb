@@ -345,16 +345,16 @@
     $('.conversation-edit-email-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
     $('.conversation-edit-email-modal-form input[name="scheduled_time"]').val($(this).attr('data-time'));
     $('.conversation-edit-email-modal-form input[name="scheduled_date"]').val($(this).attr('data-date'));
-    // $('.conversation-edit-email-modal-form textarea[name="conversation_item[body]"]').val($(this).attr('data-body'));
     email_edit_editor.data("wysihtml5").editor.setValue($(this).attr('data-body'));
     $('.conversation-edit-email-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
 
     if ($('.conversation-edit-email-modal-form input[name="scheduled_time"]').val()!="" || $('.conversation-edit-email-modal-form input[name="scheduled_date"]').val()!="") {
       $("#send_later_edit").attr('checked', true);
-      $("#email-sendlater-settings").show(500);
+      $("#email-sendlater-settings-edit").show(500);
     }
     else {
       $("#email-sendlater-settings").hide(500);
+      $("#send_later_edit").attr('checked', false);
     }
   });
 
@@ -448,24 +448,6 @@
     }
   });
 
-
-
-    // hide show quote reminder settings
-    $("#quote-reminder-settings").hide();
-    $("#quote-reminder-settings-edit").hide();
-
-    $('#quote-reminder, #quote-reminder-edit').change(function () {
-      if ($(this).is(':checked')) {
-        $("#quote-reminder-settings").show(500);
-        $("#quote-reminder-settings-edit").show(500);
-      }
-      else {
-        $("#quote-reminder-settings").hide(500);
-        $("#quote-reminder-settings-edit").hide(500);
-      }
-    });
-
-
   $(document).on('click', "a.edit_quote", function(e){
     id = $(this).attr('data-id')
     status = $(this).attr('data-status')
@@ -486,10 +468,10 @@
       $("#quote-reminder-edit").attr('checked', true);
       $(".clear_date").attr('required', true);
       $(".clear_time").attr('required', true);
-      $("#quote-reminder-settings-edit").show();
+      $(".quote-reminder-settings").show();
     }else{
       $("#quote-reminder-edit").attr('checked', false);
-      $("#quote-reminder-settings-edit").hide();
+      $(".quote-reminder-settings").hide();
       $(".clear_date").attr('required', false);
       $(".clear_time").attr('required', false);
     }
@@ -586,9 +568,12 @@
 		  }
 		});
 
-		$('#reminderDatePicker').datepicker('option', 'dateFormat', 'mm/dd/yy');
-		$('#reminderTimePicker').timepicker({minuteStep: 5});
-    $('#reminderDatePickerEdit').datepicker('option', 'dateFormat', 'mm/dd/yy');
+    if(mobile == 'false'){
+		  $('#reminderDatePicker').datepicker('option', 'dateFormat', 'mm/dd/yy');
+      $('#reminderDatePickerEdit').datepicker('option', 'dateFormat', 'mm/dd/yy');
+    }
+
+    $('#reminderTimePicker').timepicker({minuteStep: 5});
     $('#reminderTimePickerEdit').timepicker({minuteStep: 5});
 
 		// by default hide reminder settings for notes
@@ -608,23 +593,27 @@
 			}
 		});
 
+    if(mobile == 'false'){
+		  $('#scheduledDatePicker').datepicker();
+      $('#emailDatePickerEdit').datepicker();
+    }
+    $('#scheduledTimePicker').timepicker({minuteStep: 5});
 
-		$('#scheduledDatePicker').datepicker();
-		$('#scheduledTimePicker').timepicker({minuteStep: 5});
-
-    $('#emailDatePickerEdit').datepicker();
     $('#emailTimePickerEdit').timepicker({minuteStep: 5});
 
 		// by default hide reminder settings for emails
 		$("#email-sendlater-settings").hide();
+    $("#email-sendlater-settings-edit").hide();
 
 		// hide show email reminder settings
-		$('#send-later').change(function () {
-		    if ($("#send-later").is(':checked')) {
-			    $("#email-sendlater-settings").show(500);
+		$('#send-later, #send_later_edit').change(function () {
+		    if ($(this).is(':checked')) {
+			    $("#email-sendlater-settings, #email-sendlater-settings-edit").show(500);
 			}
 			else {
-				$("#email-sendlater-settings").hide(500);
+				$("#email-sendlater-settings, #email-sendlater-settings-edit").hide(500);
+        $("#scheduledDatePicker").val(null);
+        $("#emailDatePickerEdit").val(null);
 			}
 		});
 

@@ -52,64 +52,66 @@
 
 
 <script>
-$(document).ready(function() {
-  function address_auto_fill(e){
-    var componentForm = {
-      street_number: 'short_name',
-      route: 'long_name',
-      locality: 'long_name',
-      administrative_area_level_1: 'long_name',
-      country: 'short_name',
-      postal_code: 'short_name'
-    };
-    var autocomplete = new google.maps.places.Autocomplete(e);
-    autocomplete.addListener('place_changed', fillInAddress);
+  mobile = '<%=mobile?%>'
+  $(document).ready(function() {
+    function address_auto_fill(e){
+      var componentForm = {
+        street_number: 'short_name',
+        route: 'long_name',
+        locality: 'long_name',
+        administrative_area_level_1: 'long_name',
+        country: 'short_name',
+        postal_code: 'short_name'
+      };
+      var autocomplete = new google.maps.places.Autocomplete(e);
+      autocomplete.addListener('place_changed', fillInAddress);
 
-    function fillInAddress() {
-      var place = autocomplete.getPlace();
-      if (e.id == 'account_name'){
-        $("#account_name").val(place.name)
-      }
-      var lat = place.geometry.location.lat();
-      var lng = place.geometry.location.lng();
-
-      $("#account_lat").val(lat);
-      $("#account_lng").val(lng);
-
-      for (var component in componentForm) {
-        if (component != 'route'){
-          $('#'+component).val('');
-          $('#'+component).attr('readonly', false)
+      function fillInAddress() {
+        var place = autocomplete.getPlace();
+        if (e.id == 'account_name'){
+          $("#account_name").val(place.name)
         }
-      }
+        var lat = place.geometry.location.lat();
+        var lng = place.geometry.location.lng();
 
-      for (var i = 0; i < place.address_components.length; i++) {
-        var addressType = place.address_components[i].types[0];
-        if (componentForm[addressType]) {
-          var val = place.address_components[i][componentForm[addressType]];
-          if (addressType !='route'){
-            if (addressType == 'country'){
-              $("#country").select2().val(val);
-              $("#country").select2().val();
+        $("#account_lat").val(lat);
+        $("#account_lng").val(lng);
 
-            }else if (addressType == 'street_number'){
-              r = place.address_components[1][componentForm['route']]
-              document.getElementById(addressType).value = val+' '+r
-            }else{
-              document.getElementById(addressType).value = val;
+        for (var component in componentForm) {
+          if (component != 'route'){
+            $('#'+component).val('');
+            $('#'+component).attr('readonly', false)
+          }
+        }
+
+        for (var i = 0; i < place.address_components.length; i++) {
+          var addressType = place.address_components[i].types[0];
+          if (componentForm[addressType]) {
+            var val = place.address_components[i][componentForm[addressType]];
+            if (addressType !='route'){
+              if (addressType == 'country'){
+                $("#country").select2().val(val);
+                $("#country").select2().val();
+
+              }else if (addressType == 'street_number'){
+                r = place.address_components[1][componentForm['route']]
+                document.getElementById(addressType).value = val+' '+r
+              }else{
+                document.getElementById(addressType).value = val;
+              }
             }
           }
         }
       }
     }
-  }
 
-  jQuery(function($) {
-    $('#schedule-from-datepicker').on('change', function() {
-        $('#schedule-to-datepicker').prop('min', $(this).val());
-        $('#schedule-to-datepicker').val($(this).val());
-    });
-  });
+    if(mobile == 'true'){
+      $('#schedule-from-datepicker').on('change', function() {
+          $('#schedule-to-datepicker').prop('min', $(this).val());
+          $('#schedule-to-datepicker').val($(this).val());
+      });
+    }
+
     if (document.getElementById("account_name") != null){
         address_auto_fill(document.getElementById("account_name"));
       }else{
@@ -128,19 +130,21 @@ $(document).ready(function() {
 
     $('.datepicker').datepicker();
 
-    // $('#schedule-from-datepicker, #meeting-reminder-date').datepicker({
-    //   dateFormat: 'mm/dd/yy',
-    //   altField: "#schedule-to-datepicker",
-    //   altFormat: "mm/dd/yy",
-    //   onSelect: function (selected) {
-    //     var dt = new Date(selected);
-    //     dt.setDate(dt.getDate());
-    //     $("#schedule-to-datepicker").datepicker("option", "minDate", dt);
-    //   }
-    // });
-    // $('#schedule-to-datepicker').datepicker({
-    //   dateFormat: 'mm/dd/yy'
-    // });
+    if(mobile == 'false'){
+      $('#schedule-from-datepicker, #meeting-reminder-date').datepicker({
+        dateFormat: 'mm/dd/yy',
+        altField: "#schedule-to-datepicker",
+        altFormat: "mm/dd/yy",
+        onSelect: function (selected) {
+          var dt = new Date(selected);
+          dt.setDate(dt.getDate());
+          $("#schedule-to-datepicker").datepicker("option", "minDate", dt);
+        }
+      });
+      $('#schedule-to-datepicker').datepicker({
+        dateFormat: 'mm/dd/yy'
+      });
+    }
 
     var d = new Date();
     var hh = d.getHours();
