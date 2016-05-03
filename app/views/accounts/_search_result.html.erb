@@ -10,6 +10,8 @@
             <%= render "conversation_email_show", :citem => item %>
           <%elsif item.type.eql? 'call'%>
             <%= render "conversation_phone_show", :citem => item %>
+          <%elsif item.type.eql? 'quote'%>
+            <%= render "conversation_quotes_show", :citem => item %>
           <%end%>
       </div>
     <%end%>

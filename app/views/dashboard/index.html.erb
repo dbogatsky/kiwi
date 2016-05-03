@@ -1,3 +1,4 @@
+
 <% content_for :pageheader do %>
   <h2><i class="fa fa-home"></i> Dashboard</h2>
 <% end %>
@@ -52,7 +53,11 @@
 
     <div class="row">
       <div class="col-sm-6">
-        <%= render 'meeting_map', meetings: @meetings %>
+        <%= render 'widget_quotes', quotes: @quotes %>
+
+
+
+
         <% if @news_data.present? %>
           <div class="panel panel-dark panel-alt widget-slider">
             <div class="panel-heading">
@@ -138,7 +143,6 @@
     </div>
 
     <div class="row">
-
       <div class="panel panel-dark panel-alt">
         <div class="panel-heading">
           <h3 class="panel-title">My Schedule</h3>
@@ -219,9 +223,36 @@
     background: #f6f6f6;
   }
 
+ /* Quote Timeline */
+  .quote-timeline-item .date i {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 5px;
+    width: 30px;
+    text-align: center;
+    border-top: 1px solid #e7eaec;
+    border-bottom: 1px solid #e7eaec;
+    border-left: 1px solid #e7eaec;
+    background: #f8f8f8;
+  }
+  .quote-timeline-item .date {
+    text-align: right;
+    position: relative;
+    padding-top: 30px;
+  }
+  .quote-timeline-item .content {
+    border-left: 1px solid #e7eaec;
+    border-top: 1px solid #e7eaec;
+    padding-top: 4px;
+    padding-left: 5px;
+    min-height: 90px;
+  }
+  .quote-timeline-item .content:hover {
+    background: #f6f6f6;
+  }
+
   #accounts-status-breakdown > svg { width: 100% !important; }
-
-
 
   .feed-activity-list .feed-element {
     border-bottom: 1px solid #e7eaec;
