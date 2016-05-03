@@ -629,10 +629,11 @@
 		  }
 		});
 
-		$('#reminderDatePicker').datepicker('option', 'dateFormat', 'mm/dd/yy');
-		$('#reminderTimePicker').timepicker({minuteStep: 5});
-    $('#reminderDatePickerEdit').datepicker('option', 'dateFormat', 'mm/dd/yy');
-    $('#reminderTimePickerEdit').timepicker({minuteStep: 5});
+		$('#reminderDatePicker, #reminderDatePickerEdit').datepicker({
+      dateFormat: 'mm/dd/yy',
+      minDate: 0
+      });
+		$('#reminderTimePicker, #reminderTimePickerEdit').timepicker({minuteStep: 5});
 
 		$('#scheduledDatePicker').datepicker();
 		$('#scheduledTimePicker').timepicker({minuteStep: 5});
