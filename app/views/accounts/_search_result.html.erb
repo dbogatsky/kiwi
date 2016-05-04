@@ -12,6 +12,8 @@
             <%= render "conversation_phone_show", :citem => item %>
           <%elsif item.type.eql? 'quote'%>
             <%= render "conversation_quotes_show", :citem => item %>
+           <%elsif item.type.eql? 'reminder'%>
+           <%= render "conversation_reminder_show", :citem => item %>
           <%end%>
       </div>
     <%end%>

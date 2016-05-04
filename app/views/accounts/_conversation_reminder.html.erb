@@ -1,0 +1,111 @@
+<div class="modal fade conversation-reminder-modal-form" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">&times;</button>
+        <h4 class="modal-title">Add Reminder</h4>
+      </div>
+      <div class="modal-body">
+        <%= form_tag(account_add_reminder_url) do %>
+          <div class="panel panel-default">
+              <div class="panel-body">
+                <div class="row row-pad-5">
+                  <div class="col-lg-12">
+                    <input type="text" name="conversation_item[subject]" placeholder="Title" class="form-control" required="required" />
+                  </div>
+                </div>
+
+                <div class="row row-pad-5">
+                  <div class="col-lg-12">
+                    <textarea class="form-control wysihtml5" id="new_reminder" rows="5" placeholder="Message" name="conversation_item[body]"></textarea>
+                  </div>
+                </div>
+
+                <div class="row row-pad-5">
+                  <div class="col-lg-4">
+                    <div class="input-group">
+                      <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                      <input type="text" class="form-control" placeholder="mm/dd/yyyy" id="reminderDatePicker" name="scheduled_date" required="required" />
+                     </div>
+                  </div>
+
+                  <div class="col-lg-4">
+                    <div class="input-group">
+                      <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                      <div class="bootstrap-timepicker"><input id="reminderTimePicker" type="text" class="form-control" name="scheduled_time" required="required"/></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-6">
+                    <h5>Notify Who?</h5>
+                  </div>
+                </div><!-- row -->
+
+                <div class="row row-pad-5">
+                  <div class="col-lg-12">
+                    <select class="select2" id="notifiable_users" multiple="multiple" name="conversation_item[users_to_notify_ids][]" required="required"></select>
+                  </div>
+                </div><!-- row -->
+
+                <div class="row">
+                  <div class="col-lg-6">
+                    <h5>How do you like to be reminded?</h5>
+                  </div>
+                </div><!-- row -->
+
+                <div class="row row-pad-5">
+                  <div class="col-lg-6">
+                    <div class="ckbox ckbox-primary">
+                      <input type="checkbox" id="reminder-email" name="conversation_item[notify_by_email]">
+                      <label for="reminder-email">Email</label>
+                    </div>
+                  </div>
+                </div><!-- row -->
+
+                <div class="row row-pad-5">
+                  <div class="col-lg-6">
+                    <div class="ckbox ckbox-primary">
+                      <input type="checkbox" id="reminder-sms" name="conversation_item[notify_by_sms]">
+                      <label for="reminder-sms">SMS Text</label>
+                    </div>
+                  </div>
+                </div><!-- row -->
+
+                <input type="hidden" name="conversation_item[account_id]" value=<%= @account.id %> >
+                <input type="hidden" name="conversation_item[type]" value="reminder" >
+              </div><!-- panel-body -->
+              <div class="panel-footer">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="reset" class="btn btn-default">Reset</button>
+              </div>
+          </div><!-- panel -->
+        <% end %>
+      </div><!-- modal body -->
+    </div><!-- modal content -->
+  </div><!-- modal dialog -->
+</div><!-- modal -->
+
+<script type="text/javascript">
+
+  $(".conversation-reminder-modal-form").on("shown.bs.modal", function(){
+    var input = document.getElementById("keyword");
+    var autocomplete = new google.maps.places.Autocomplete(input);
+
+    google.maps.event.addListener(autocomplete, 'place_changed', function() {
+      var place = autocomplete.getPlace();
+      var lat = place.geometry.location.lat();
+      var lng = place.geometry.location.lng();
+      $(".conversation-reminder-modal-form input[name='conversation_item[latitude]']").val(lat);
+      $(".conversation-reminder-modal-form input[name='conversation_item[longitude]']").val(lng);
+    });
+  });
+
+  var data = <%= raw(@notifiable_users) %>;
+  $("#notifiable_users").select2({
+    data: data
+  });
+  $(".conversation-reminder-modal-form .select2").css('width', '100%');
+
+</script>

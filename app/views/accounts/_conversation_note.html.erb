@@ -21,37 +21,6 @@
                   </div>
                 </div>
 
-                <div class="row row-pad-5">
-                  <div class="col-lg-12">
-                    <div class="ckbox ckbox-primary">
-                      <input type="checkbox" id="note-reminder" name="conversation_item[reminder]">
-                      <label for="note-reminder">Set a Reminder</label>
-                    </div>
-                  </div>
-                </div>
-
-                <div id="note-reminder-settings">
-                  <div class="row row-pad-5">
-                    <div class="col-lg-4">
-                      <div class="input-group">
-                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                        <%if mobile?%>
-                          <input id="reminderDatePicker" type="date" name="scheduled_date"/>
-                        <%else%>
-                          <input type="text" class="form-control datepicker" placeholder="mm/dd/yyyy" id="reminderDatePicker" name="scheduled_date" />
-                        <%end%>
-                       </div>
-                    </div>
-
-                    <div class="col-lg-4">
-                      <div class="input-group">
-                        <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-                        <div class="bootstrap-timepicker"><input id="reminderTimePicker" type="text" class="form-control" name="scheduled_time"/></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
                 <input type="hidden" name="conversation_item[account_id]" value=<%= @account.id %> >
                 <input type="hidden" name="conversation_item[type]" value="note" >
               </div><!-- panel-body -->
