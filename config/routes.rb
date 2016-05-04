@@ -46,7 +46,7 @@ Rails.application.routes.draw do
   resources :company_entities
   resources :users
 
-  
+
 
   match '/users/:id/update_time_zone', to: 'users#update_time_zone', as: :users_update_time_zone, via: [:patch]
   get  '/users/:id/not_update_time_zone', to: 'users#not_update_time_zone', as: :users_not_update_time_zone

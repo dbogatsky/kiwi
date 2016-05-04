@@ -8,9 +8,23 @@
 	</div><!-- panel-head -->
 
 	<div class="panel-body">
-    <p>You have 0 Notifications</p>
+   <ul>
+    <%if @items.present?%>
+	    <%@items.each do |i|%>
+	      <%if i.present?%>
+			   	<li>
+			   		<span class="left_content"><a class="close_btn">x</a>
+			   		<span class="left_notification"><%=i.title%></span></span>
+			   		<span class="right_notification"><%=Chronic.parse(i.scheduled_at).in_time_zone(current_user.time_zone).strftime("%b %d")%></span>
+			   	</li>
+		    <%end%>
+	    <%end%>
+	  <%else%>
+      <p>You have 0 Notifications</p>
+	  <%end%>
+   </ul>
 	</div><!-- panel-body -->
 
 	<div class="panel-footer">
 	</div><!-- panel-footer -->
-</div>		
+</div>
