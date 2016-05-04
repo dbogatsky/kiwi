@@ -136,6 +136,7 @@
                   <% if can? :manage, ConversationItem %>
                     <li><a href="#" data-toggle="modal" data-target=".account-action-meeting">Schedule Meeting</a></li>
                     <li><a href="#" data-toggle="modal" data-target=".conversation-note-modal-form">Add Note</a></li>
+                    <li><a href="#" data-toggle="modal" data-target=".conversation-reminder-modal-form">Add Reminder</a></li>
                     <li><a href="#" data-toggle="modal" data-target=".conversation-quote-modal-form">Add Quote</a></li>
                     <li><a href="#" data-toggle="modal" data-target=".account-action-email">Send Email</a></li>
                     <% end %>
@@ -212,12 +213,14 @@
   <%= render "conversation_email" %>
   <%= render "conversation_email_edit" %>
   <%= render "conversation_note" %>
-  <%= render 'conversation_note_edit', account: @account%>
+  <%= render "conversation_note_edit", account: @account%>
   <%= render "conversation_meeting_edit", account: @account %>
   <%= render "conversation_quote_edit", account: @account %>
   <%= render "conversation_meeting_complete", account: @account %>
   <%= render "conversation_quote"%>
   <%= render "conversation_quote_complete"%>
+  <%= render "conversation_reminder" %>
+  <%= render "conversation_reminder_edit", account: @account%>
   <%= render "conversation_sharedusers" %>
 <% end %>
 
@@ -338,9 +341,13 @@
   });
 
   var complete_quote_editor;
-
   $(function() {
     complete_quote_editor = $('#complete_quote_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
+  
+  var new_reminder, edit_reminder;
+  $(function() {
+    new_reminder = $('#new_reminder').wysihtml5({'font-styles': false, 'image': false, 'link':false});
+    edit_reminder = $('#edit_reminder').wysihtml5({'font-styles': false, 'image': false, 'link':false});
   });
 
   $(document).on('click', "a.edit_email", function(e){
@@ -366,23 +373,37 @@
   $(document).on('click', "a.edit_note", function(e){
     id = $(this).attr('data-id')
     $('.conversation-edit-note-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
-    $('.conversation-edit-note-modal-form input[name="scheduled_time"]').val($(this).attr('data-time'));
-    $('.conversation-edit-note-modal-form input[name="scheduled_date"]').val($(this).attr('data-date'));
-
-      if ($('.conversation-edit-note-modal-form input[name="scheduled_time"]').val()!="" || $('.conversation-edit-note-modal-form input[name="scheduled_date"]').val()!="")
-        {
-          $("#note-reminder-edit").attr('checked', true);
-          $("#note-reminder-settings").show(500);
-          $("#note-reminder-settings-edit").show(500);
-        }else{
-          $("#note-reminder-edit").attr('checked', false);
-          $("#note-reminder-settings").hide(500);
-          $("#note-reminder-settings-edit").hide(500);
-        }
-
     // $('.conversation-edit-note-modal-form textarea[name="covnersation_item[body]"]').val($(this).attr('data-description'));
     edit_editor.data("wysihtml5").editor.setValue($(this).attr('data-description'));
     $('.conversation-edit-note-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
+  });
+
+  $(document).on('click', "a.edit_reminder", function(e){
+    id = $(this).attr('data-id')
+    $('.conversation-edit-reminder-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
+    $('.conversation-edit-reminder-modal-form input[name="scheduled_time"]').val($(this).attr('data-time'));
+    $('.conversation-edit-reminder-modal-form input[name="scheduled_date"]').val($(this).attr('data-date'));
+    edit_reminder.data("wysihtml5").editor.setValue($(this).attr('data-description'));
+    var user_ids = $(this).attr('data-users-to-notify-ids')
+    user_ids.replace(/'/g, '"');
+    user_ids = JSON.parse(user_ids)
+    user_ids = user_ids.join().split(',')
+    $('.conversation-edit-reminder-modal-form select[name="conversation_item[users_to_notify_ids][]"]').select2().val(user_ids);
+    $('.conversation-edit-reminder-modal-form select[name="conversation_item[users_to_notify_ids][]"]').select2().val(user_ids);
+
+    if($(this).attr('data-notify-by-email') == 'true'){
+      $('#reminder-email-edit').attr('checked', true);
+    }
+
+    if($(this).attr('data-notify-by-sms') == 'true'){
+      $('#reminder-sms-edit').attr('checked', true);;
+    }
+
+    $('.conversation-edit-reminder-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
+    if ($(this).attr('data-notify-by-email')=='true') {
+      $('.conversation-edit-reminder-modal-form input[name="conversation_item[notify_by_email]"]').prop('checked', true); }
+    if ($(this).attr('data-notify-by-sms')=='true') {
+    $('.conversation-edit-reminder-modal-form input[name="conversation_item[notify_by_sms]"]').prop('checked', true); }
   });
 
   $(document).on('click', "a.edit_meeting", function(e){
@@ -608,28 +629,11 @@
 		  }
 		});
 
-		$('#reminderDatePicker').datepicker('option', 'dateFormat', 'mm/dd/yy');
-		$('#reminderTimePicker').timepicker({minuteStep: 5});
-    $('#reminderDatePickerEdit').datepicker('option', 'dateFormat', 'mm/dd/yy');
-    $('#reminderTimePickerEdit').timepicker({minuteStep: 5});
-
-		// by default hide reminder settings for notes
-		$("#note-reminder-settings").hide();
-    $("#note-reminder-settings-edit").hide();
-
-		// hide show note reminder settings
-
-		$('#note-reminder, #note-reminder-edit').change(function () {
-		  if ($(this).is(':checked')) {
-        $("#note-reminder-settings").show(500);
-        $("#note-reminder-settings-edit").show(500);
-      }
-      else {
-				$("#note-reminder-settings").hide(500);
-        $("#note-reminder-settings-edit").hide(500);
-			}
-		});
-
+		$('#reminderDatePicker, #reminderDatePickerEdit').datepicker({
+      dateFormat: 'mm/dd/yy',
+      minDate: 0
+      });
+		$('#reminderTimePicker, #reminderTimePickerEdit').timepicker({minuteStep: 5});
 
 		$('#scheduledDatePicker').datepicker();
 		$('#scheduledTimePicker').timepicker({minuteStep: 5});

@@ -1,12 +1,6 @@
-<% if (citem.scheduled_at.present?) %>
-    <div class="cd-timeline-img cd-reminder">
-        <img src="/assets/vertical-timeline/img/cd-icon-bell.svg" alt="Reminder">
-    </div>
-<% else %>
-     <div class="cd-timeline-img cd-note">
-        <img src="/assets/vertical-timeline/img/cd-icon-comments.svg" alt="Note">
-    </div>
-<% end %>
+ <div class="cd-timeline-img cd-note">
+    <img src="/assets/vertical-timeline/img/cd-icon-comments.svg" alt="Note">
+</div>
 <div class="cd-timeline-content">
     <span class="cd-date">
         <%= citem.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>
@@ -23,8 +17,6 @@
                  data-target=".conversation-edit-note-modal-form"
                  data-id="<%= citem.id %>"
                  data-title="<%=citem.title%>"
-                 data-date="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.scheduled_at.present?%>"
-                 data-time="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.scheduled_at.present? %>"
                  data-description="<%= citem.body %>">Edit</a>
             </li>
             <li>
