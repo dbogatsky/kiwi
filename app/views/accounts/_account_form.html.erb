@@ -14,6 +14,7 @@
     <div class="tab-content">
 
       <div class="tab-pane" id="vtab1">
+          <p class="mb20" align="center">Get started by adding an account by providing some basic details below</p>
           <%= f.input :name, wrapper: :wizard_horizontal_form, label: "Account Name", required: true, placeholder: "" %>
 
           <div class="form-group">
@@ -45,6 +46,7 @@
           </div>
       </div>
       <div class="tab-pane" id="vtab2">
+        <p class="mb20" align="center">Search or provide an address for the account</p>
         <%= f.fields_for :addresses_attributes do |add| %>
           <%= add.input :street_address, wrapper: :wizard_horizontal_form, required: true, label: "Street Address", :input_html => { :name => "account[addresses_attributes][][street_address]", id: 'street_number'} %>
           <%= add.input :city, wrapper: :wizard_horizontal_form, required: true, label: "City", :input_html => { :name => "account[addresses_attributes][][city]", id: "locality", :readonly => true} %>
@@ -62,6 +64,7 @@
       </div>
 
       <div class="tab-pane" id="vtab3">
+        <p class="mb20" align="center">Below you can add contacts for the account.  For any additional contacts click the "add contact" button below.<br />
         <div class="contact-form-wrap">
         <div class="contact-element" style="padding-bottom: 10px;">
         <%= f.simple_fields_for :contacts_attributes do |c| %>
@@ -70,7 +73,7 @@
             <label class="col-sm-2 control-label">Name<span class="asterisk">*</span></label>
             <div class="col-sm-2">
               <%#= c.input :name, required: true, label: 'Contact', :input_html => { :name => "account[contacts_attributes][][name]" } %>
-              <%= c.input_field :name, { required: true, placeholder: 'contact name', label: 'Contact', name: "account[contacts_attributes][#{t}][name]", class: "form-control", id: "account_contacts_attributes_name_1" } %>
+              <%= c.input_field :name, { required: true, placeholder: 'contact name', label: 'Contact', name: "account[contacts_attributes][#{t}][name]", class: "form-control tooltips", id: "account_contacts_attributes_name_1", 'data-toggle'=>'tooltip', 'data-trigger'=>'hover', 'data-original-title'=>'Enter the Name of the contact eg. "Office" or "New York'} %>
             </div>
 
             <label class="col-sm-1 control-label">Type<span class="asterisk">*</span></label>
@@ -81,7 +84,7 @@
             <label class="col-sm-1 control-label">Value<span class="asterisk">*</span></label>
             <div class="col-sm-2">
               <%#= c.input :value, required: true, :input_html => { :name => "account[contacts_attributes][][value]"} %>
-              <%= c.input_field :value, { required: true, placeholder: 'contact value', label: 'Value', name: "account[contacts_attributes][#{t}][value]", class: "form-control", id: "account_contacts_attributes_value_1" } %>
+              <%= c.input_field :value, { required: true, placeholder: 'contact value', label: 'Value', name: "account[contacts_attributes][#{t}][value]", class: "form-control tooltips", id: "account_contacts_attributes_value_1", 'data-toggle'=>'tooltip', 'data-trigger'=>'hover', 'data-original-title'=>'Enter the Value such as the Phone number or Website Address' } %>
             </div>
           </div>
         <% end %>
