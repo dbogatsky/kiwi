@@ -1,30 +1,56 @@
 <% content_for :pageheader do %>
   <h2><i class="fa fa-bell"></i> Notifications</h2>
 <% end %>
-
-<div class="panel panel-default">
-	<div class="panel-heading">
-		<p>Create and see all your notifications here.</p>
-	</div><!-- panel-head -->
-
-	<div class="panel-body">
-   <ul>
-    <%if @items.present?%>
-	    <%@items.each do |i|%>
-	      <%if i.present?%>
-			   	<li>
-			   		<span class="left_content"><a class="close_btn">x</a>
-			   		<span class="left_notification"><%=i.title%></span></span>
-			   		<span class="right_notification"><%=Chronic.parse(i.scheduled_at).in_time_zone(current_user.time_zone).strftime("%b %d")%></span>
-			   	</li>
-		    <%end%>
-	    <%end%>
-	  <%else%>
-      <p>You have 0 Notifications</p>
-	  <%end%>
-   </ul>
-	</div><!-- panel-body -->
-
-	<div class="panel-footer">
-	</div><!-- panel-footer -->
+<div class="contentpanel">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-btns">
+        <a href="" class="minimize">−</a>
+      </div>
+      <h4 class="panel-title">Unread Notifications</h4>
+    </div>
+    <div class="panel-body">
+      <ul>
+		    <%if @unread_items.present?%>
+			    <%@unread_items.each do |k,v|%>
+				   	<li>
+				   		<span class="left_content"><a class="close_btn">x</a>
+					   		<span class="left_notification">
+                  <a href="/accounts/<%=v.account_id%>"><%=v.title%></a>
+					   		</span>
+				   		</span>
+				   		<span class="right_notification"><%=Chronic.parse(v.scheduled_at).in_time_zone(current_user.time_zone).strftime("%b %d")%></span>
+				   	</li>
+			    <%end%>
+			  <%else%>
+		      <p>You have 0 unread Notifications</p>
+			  <%end%>
+	    </ul>
+    </div>
+  </div>
+</div>
+<div class="contentpanel">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-btns">
+        <a href="" class="minimize">−</a>
+      </div>
+      <h4 class="panel-title">Read Notifications</h4>
+    </div>
+    <div class="panel-body">
+      <ul>
+		    <%if @read_items.present?%>
+			    <%@read_items.each do |k,v|%>
+				   	<li>
+				   		<span class="left_content"><a class="close_btn">x</a>
+				   		<span class="left_notification"><%=v.title%></span></span>
+				   		<span class="right_notification"><%=Chronic.parse(v.scheduled_at).in_time_zone(current_user.time_zone).strftime("%b %d")%></span>
+				   	</li>
+			    <%end%>
+			  <%else%>
+		      <p>You have 0 read Notifications</p>
+			  <%end%>
+	    </ul>
+    </div>
+  </div>
 </div>

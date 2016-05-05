@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   before_filter :get_tenant_by_subdomain #need to do before auth to get tenant
   before_filter :set_cache_headers
   before_filter :authentication
+  before_filter :notification_info
 #   before_filter :check_request
   around_filter :set_time_zone
 
@@ -231,6 +232,32 @@ class ApplicationController < ActionController::Base
       render :file => "#{Rails.root}/public/404.html",  :status => 404
     else
       redirect_to redirect_path
+    end
+  end
+
+  def notification_info
+    @notifications = Notification.find(:all)
+    user_ids = Array.new
+    user_ids.push(current_user.id)
+    @read_items = {}
+    @unread_items = {}
+    if @notifications.present?
+      @notifications.each do |n|
+        search = {}
+        r = n.value.reminder_id.present? rescue false
+        m = n.value.meeting_id.present? rescue false
+        if r
+          search[:id_eq] = n.value.reminder_id
+        elsif m
+          search[:id_eq] = n.value.meeting_id
+        end
+        ci= ConversationItemSearch.all(params: { user_ids: user_ids, search: search })
+        if ci.last.present?
+          @read_items[n.id] = ci.last if n.read_at.present?
+          @unread_items[n.id] = ci.last unless n.read_at.present?
+        end
+        search[:id_eq] = nil
+      end
     end
   end
 
