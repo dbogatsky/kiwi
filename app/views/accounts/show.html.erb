@@ -307,35 +307,30 @@
   });
 
   var new_editor, edit_editor;
-
   $(function() {
     new_editor = $('#new_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
     edit_editor = $('#edit_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
   });
 
   var new_quote, edit_quote;
-
   $(function() {
     new_quote = $('#new_quote').wysihtml5({'font-styles': false, 'image': false, 'link':false});
     edit_quote = $('#quote_edit').wysihtml5({'font-styles': false, 'image': false, 'link':false});
   });
 
   var email_new_editor, email_edit_editor;
-
   $(function() {
     email_new_editor = $('#email_new_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
     email_edit_editor = $('#email_edit_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
   });
 
   var meeting_new_editor, meeting_edit_editor;
-
   $(function() {
     meeting_new_editor = $('#meeting_new_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
     meeting_edit_editor = $('#meeting_edit_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
   });
 
   var complete_meeting_editor;
-
   $(function() {
     complete_meeting_editor = $('#complete_meeting_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
   });
@@ -343,6 +338,7 @@
   var complete_quote_editor;
   $(function() {
     complete_quote_editor = $('#complete_quote_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
+  });
 
   var new_reminder, edit_reminder;
   $(function() {
@@ -356,16 +352,16 @@
     $('.conversation-edit-email-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
     $('.conversation-edit-email-modal-form input[name="scheduled_time"]').val($(this).attr('data-time'));
     $('.conversation-edit-email-modal-form input[name="scheduled_date"]').val($(this).attr('data-date'));
-    // $('.conversation-edit-email-modal-form textarea[name="conversation_item[body]"]').val($(this).attr('data-body'));
     email_edit_editor.data("wysihtml5").editor.setValue($(this).attr('data-body'));
     $('.conversation-edit-email-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
 
     if ($('.conversation-edit-email-modal-form input[name="scheduled_time"]').val()!="" || $('.conversation-edit-email-modal-form input[name="scheduled_date"]').val()!="") {
       $("#send_later_edit").attr('checked', true);
-      $("#email-sendlater-settings").show(500);
+      $("#email-sendlater-settings-edit").show(500);
     }
     else {
       $("#email-sendlater-settings").hide(500);
+      $("#send_later_edit").attr('checked', false);
     }
   });
 
@@ -473,8 +469,6 @@
     }
   });
 
-
-
     // hide show quote reminder settings
     $("#quote-reminder-settings").hide();
     $("#quote-reminder-settings-edit").hide();
@@ -529,10 +523,10 @@
       $("#quote-reminder-edit").attr('checked', true);
       $(".clear_date").attr('required', true);
       $(".clear_time").attr('required', true);
-      $("#quote-reminder-settings-edit").show();
+      $(".quote-reminder-settings").show();
     }else{
       $("#quote-reminder-edit").attr('checked', false);
-      $("#quote-reminder-settings-edit").hide();
+      $(".quote-reminder-settings").hide();
       $(".clear_date").attr('required', false);
       $(".clear_time").attr('required', false);
     }
@@ -629,28 +623,52 @@
 		  }
 		});
 
-		$('#reminderDatePicker, #reminderDatePickerEdit').datepicker({
+  if(mobile == 'false'){
+    $('#reminderDatePicker, #reminderDatePickerEdit').datepicker({
       dateFormat: 'mm/dd/yy',
       minDate: 0
-      });
-		$('#reminderTimePicker, #reminderTimePickerEdit').timepicker({minuteStep: 5});
+    });
+  }
+	$('#reminderTimePicker, #reminderTimePickerEdit').timepicker({minuteStep: 5});
 
-		$('#scheduledDatePicker').datepicker();
-		$('#scheduledTimePicker').timepicker({minuteStep: 5});
+		// by default hide reminder settings for notes
+		$("#note-reminder-settings").hide();
+    $("#note-reminder-settings-edit").hide();
 
-    $('#emailDatePickerEdit').datepicker();
+		// hide show note reminder settings
+		$('#note-reminder, #note-reminder-edit').change(function () {
+		  if ($(this).is(':checked')) {
+        $("#note-reminder-settings").show(500);
+        $("#note-reminder-settings-edit").show(500);
+      }
+      else {
+				$("#note-reminder-settings").hide(500);
+        $("#note-reminder-settings-edit").hide(500);
+			}
+		});
+
+    if(mobile == 'false'){
+		  $('#scheduledDatePicker').datepicker();
+      $('#emailDatePickerEdit').datepicker();
+    }
+    $('#scheduledTimePicker').timepicker({minuteStep: 5});
+
+
     $('#emailTimePickerEdit').timepicker({minuteStep: 5});
 
 		// by default hide reminder settings for emails
 		$("#email-sendlater-settings").hide();
+    $("#email-sendlater-settings-edit").hide();
 
 		// hide show email reminder settings
-		$('#send-later').change(function () {
-		    if ($("#send-later").is(':checked')) {
-			    $("#email-sendlater-settings").show(500);
+		$('#send-later, #send_later_edit').change(function () {
+		    if ($(this).is(':checked')) {
+			    $("#email-sendlater-settings, #email-sendlater-settings-edit").show(500);
 			}
 			else {
-				$("#email-sendlater-settings").hide(500);
+				$("#email-sendlater-settings, #email-sendlater-settings-edit").hide(500);
+        $("#scheduledDatePicker").val(null);
+        $("#emailDatePickerEdit").val(null);
 			}
 		});
 

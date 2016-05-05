@@ -44,7 +44,11 @@
 	                <div class="col-lg-4">
 	                  <div class="input-group">
 	                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-	                    <input name="scheduled_date" type="text" class="form-control datepicker" placeholder="dd/mm/yyyy" id="scheduledDatePicker"/>
+                      <%if mobile?%>
+                        <input id="scheduledDatePicker" type="date" name="scheduled_date"/>
+                      <%else%>
+	                      <input name="scheduled_date" type="text" class="form-control datepicker" placeholder="dd/mm/yyyy" id="scheduledDatePicker"/>
+                      <%end%>
 	                   </div>
 	                </div>
 

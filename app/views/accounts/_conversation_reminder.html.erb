@@ -22,10 +22,14 @@
                 </div>
 
                 <div class="row row-pad-5">
-                  <div class="col-lg-4">
+                  <div class="col-lg-5">
                     <div class="input-group">
                       <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                      <input type="text" class="form-control" placeholder="mm/dd/yyyy" id="reminderDatePicker" name="scheduled_date" required="required" />
+                      <%if mobile?%>
+                        <input id="reminderDatePicker" type="date" name="scheduled_date"/>
+                      <%else%>
+                        <input type="text" class="form-control" placeholder="mm/dd/yyyy" id="reminderDatePicker" name="scheduled_date" required="required" />
+                      <%end%>
                      </div>
                   </div>
 

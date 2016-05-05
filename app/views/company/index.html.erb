@@ -76,8 +76,10 @@
     </div><!-- col-sm-9 -->
     <div class="mb20"></div>
   </div><!-- row -->
+
+  <% if can? :manage, :all %>
   <div class="col-md-12 mb20">
- <!--    <h5 class="subtitle mb5">Dark Nav Tabs</h5>
+  <!--    <h5 class="subtitle mb5">Dark Nav Tabs</h5>
     <p>You can use darker tab bar for a nicer look and feel.</p>
     <br> -->
     <!-- Nav tabs -->
@@ -219,7 +221,8 @@
       <div class="tab-pane" id="general">
       </div>
     </div>
-</div><!-- profile-header -->
+  </div><!-- profile-header -->
+  <%end%>
 </div>
 </div><!-- mainpanel -->
 </section>

@@ -61,7 +61,12 @@
     </ul>
 
     <% if ( can? :read, Company ) || ( can? :read, CompanyEntity ) %>
+      <% if can? :manage, :all %>
       <h5 class="sidebartitle">Admin</h5>
+      <% else %>
+      <h5 class="sidebartitle">About</h5>
+      <% end %>
+
       <ul class="nav nav-pills nav-stacked nav-bracket">
 
       <% if ( can? :read, Company ) || ( can? :read, CompanyEntity ) %>
