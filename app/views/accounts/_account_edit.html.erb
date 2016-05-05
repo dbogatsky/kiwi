@@ -44,7 +44,7 @@
 
           <div class="form-group">
             <label class="col-sm-offset-2 col-sm-2 control-label">Country<span class="asterisk">*</span></label>
-            <div class="col-sm-4">
+            <div class="col-sm-4 country_select">
             <%= add.input_field :country, { required: true, priority: [ "Canada", "United States", "United Kingdom" ],  class: "select2Country", name: "account[addresses_attributes][][country]",id: "country", selected: @addresses.first.country } %>
             </div>
           </div>
