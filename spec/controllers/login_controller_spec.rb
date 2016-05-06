@@ -6,7 +6,7 @@ RSpec.describe LoginController, type: :controller do
       expect(post: '/login').to route_to(controller: 'login', action: 'login')
     end
 
-    context 'With a valid credientials' do
+    context 'With a valid credientials' do      
       it 'should login the user' do
         VCR.use_cassette('login-success', record: :once) do
           post :login, email: 'test@example.com', password: '12341234'
@@ -24,7 +24,7 @@ RSpec.describe LoginController, type: :controller do
     end
 
     context 'With invalid credentials' do
-      it 'shoudl not login' do
+      it 'should not login' do
         VCR.use_cassette('login-failure', record: :once) do
           post :login, email: 'test@example.com', password: '1'
           expect(response.status).to eq(302)
@@ -47,7 +47,7 @@ RSpec.describe LoginController, type: :controller do
     end
 
     before(:each) do
-      sign_in('test@example.com', '1')
+      sign_in('test@example.com', '12341234')
     end
 
     it 'should logout user and destroy token' do
