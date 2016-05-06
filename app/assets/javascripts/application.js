@@ -77,7 +77,7 @@ function savePosition(position, type, result, cid) {
     url = '/accounts/check_out';
   }
 
-  $.getJSON("http://jsonip.com/", function(data){
+  $.getJSON("https://api.ipify.org?format=json", function(data){
     var ip_address = data.ip;
     $.ajax({
       url : url,
