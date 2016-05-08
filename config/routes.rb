@@ -107,6 +107,6 @@ Rails.application.routes.draw do
   get :meeting_report_result, to: 'reports#meeting_report_result'
   # get '/reports/check_in_check_out/:id', to: 'reports#check_in_check_out', as: :reports_check_in_check_out
 
-  match '*any', to: 'errors#routing', via: [:get, :post]
+  match '(*any)', to: 'errors#routing', via: [:get, :post]
 
 end
