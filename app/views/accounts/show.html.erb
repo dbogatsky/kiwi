@@ -489,20 +489,6 @@
       }
     });
 
-    // $("#follow-reminder, #follow-reminder-edit").click(function(){
-    //   if ($(this).is(':checked')){
-    //     $(".follow_time_div").show();
-    //     $(".clear_date").attr('required', true);
-    //     $(".clear_time").attr('required', true);
-    //   }else{
-    //     $(".clear_date").val(null);
-    //     $(".follow_time_div").hide();
-    //     $(".clear_date").attr('required', false);
-    //     $(".clear_time").attr('required', false);
-    //   }
-    // });
-
-
   $(document).on('click', "a.edit_quote", function(e){
     id = $(this).attr('data-id')
     status = $(this).attr('data-status')
@@ -629,7 +615,115 @@
       minDate: 0
     });
   }
-	$('#reminderTimePicker, #reminderTimePickerEdit').timepicker({minuteStep: 5});
+	// $('#reminderTimePicker, #reminderTimePickerEdit').timepicker({minuteStep: 5});
+
+    $('#reminderDatePicker, #reminderDatePickerEdit').change(function(){
+      if(mobile == 'false'){
+        var select_date = $(this).val()
+      }else{
+        var select_date = today_date(new Date($(this).val()))
+      }
+      if(select_date == today_date(new Date)){
+        var next_time = new Date();
+        next_time.setMinutes(next_time.getMinutes() + 30);
+        var c_time = set_time(next_time)
+        $("#reminderTimePicker").timepicker("setTime", c_time)
+        $("#reminderTimePickerEdit").timepicker("setTime", c_time)
+      }
+    });
+
+    $('#reminderTimePicker').timepicker({
+        showMeridian: true,
+        minuteStep: 15,
+        showInputs: false,
+    }).on('changeTime.timepicker', function(e) {
+       if (mobile == 'false'){
+          var  date_val = $('#reminderDatePicker').val()
+       }else{
+          var date_val = today_date(new Date($('#reminderDatePicker').val()))
+       }
+        if((date_val != '') && (date_val == today_date(new Date))){
+          set_reminder_time(e)
+        }
+    });
+
+    $('#reminderTimePickerEdit').timepicker({
+      showMeridian: true,
+      minuteStep: 15,
+      showInputs: false,
+    }).on('changeTime.timepicker', function(e) {
+       if (mobile == 'false'){
+          var  date_val = $('#reminderDatePickerEdit').val()
+        }else{
+          var date_val = today_date(new Date($('#reminderDatePickerEdit').val()))
+        }
+
+        if((date_val != '') && (date_val == today_date(new Date))){
+          set_reminder_time(e)
+        }
+    });
+
+    function today_date(date){
+      var current_date = date
+      var date = current_date.getDate();
+      var month = current_date.getMonth()+1;
+      var year = current_date.getFullYear();
+      if(date<10) {
+          date='0'+date
+      }
+      if(month<10) {
+          month='0'+month
+      }
+      current_date = month+'/'+date+'/'+year;
+      return current_date;
+    }
+
+    function set_reminder_time(a){
+      ConvertTimeformat('24', a.time.value);
+      total_minutes = parseInt(sHours)*60 + parseInt(sMinutes);
+      var d = new Date();
+      var current_t = set_time(d)
+      ConvertTimeformat('24', current_t);
+      total_current_minutes = parseInt(sHours)*60 + parseInt(sMinutes);
+
+      if((total_minutes) < total_current_minutes+30){
+        var display_time = new Date();
+        display_time.setMinutes(display_time.getMinutes() + 30);
+        var c_time = set_time(display_time)
+        $("#reminderTimePicker").timepicker("setTime", c_time);
+        $("#reminderTimePickerEdit").timepicker("setTime", c_time);
+      }
+    }
+
+    function set_time(t){
+      var hh = t.getHours();
+      var m = t.getMinutes();
+      var dd = 'AM';
+      var h = hh;
+      if (h >= 12) {
+          h = hh-12;
+          dd = "PM";
+      }
+      if (h == 0) {
+          h = 12;
+      }
+      m = m<10?"0"+m:m;
+      var current_time = h+":"+m+" "+dd;
+      return current_time
+    }
+
+    function ConvertTimeformat(format, str) {
+      var time = str
+      var hours = Number(time.match(/^(\d+)/)[1]);
+      var minutes = Number(time.match(/:(\d+)/)[1]);
+      var AMPM = time.match(/\s(.*)$/)[1];
+      if (AMPM == "PM" && hours < 12) hours = hours + 12;
+      if (AMPM == "AM" && hours == 12) hours = hours - 12;
+        sHours = hours.toString();
+        sMinutes = minutes.toString();
+      if (hours < 10) sHours = "0" + sHours;
+      if (minutes < 10) sMinutes = "0" + sMinutes;
+    }
 
 		// by default hide reminder settings for notes
 		$("#note-reminder-settings").hide();

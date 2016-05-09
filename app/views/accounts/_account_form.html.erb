@@ -54,7 +54,7 @@
           <%= add.input :postcode, wrapper: :wizard_horizontal_form, required: true, label: "Post/Zipcode", :input_html => { :name => "account[addresses_attributes][][postcode]", :readonly => true, id: "postal_code"} %>
           <div class="form-group">
             <label class="col-sm-offset-2 col-sm-2 control-label">Country<span class="asterisk">*</span></label>
-            <div class="col-sm-4">
+            <div class="col-sm-4 country_select">
             <%= add.input_field :country, { required: true, priority: [ "Canada", "United States", "United Kingdom" ],  class: "select2Country",:readonly => true, id: "country", name: "account[addresses_attributes][][country]" } %>
             </div>
           </div>
