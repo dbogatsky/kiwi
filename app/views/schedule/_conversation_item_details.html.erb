@@ -37,7 +37,7 @@
         <%=link_to 'Delete',"javascript:void(0)", id: "del_item_#{citem.id}"%>
       </li>
       <li class="divider"></li>
-      <li><%= link_to "Open Account", account_path(citem.account_id) %></li>
+      <li><%= link_to "Go To Account", account_path(citem.account_id) %></li>
     </ul>
   </div>
   <h3><%=citem.title%></h3>

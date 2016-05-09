@@ -1,4 +1,5 @@
 require 'net/http/post/multipart'
+include ApplicationHelper
 class AccountsController < ApplicationController
   skip_before_filter :verify_authenticity_token, only: [:delete_future_meeting]
   before_action :get_token
@@ -15,7 +16,7 @@ class AccountsController < ApplicationController
     @shared_user = []
     @account.user_account_sharings.each { |u| @shared_user << u.user }
     @users = User.all(uid: session[:user_id])
-    @notifiable_users = notifiable_users_json
+    @notifiable_users = notifiable_users_json(params[:id])
   end
 
   def new
@@ -284,7 +285,11 @@ class AccountsController < ApplicationController
     else
       flash[:danger] = 'Quote not updated!'
     end
-    redirect_to account_path(params[:id])
+    if params[:info].present?
+      redirect_to schedule_path
+    else
+      redirect_to account_path(params[:id])
+    end
   end
 
   def delete_quote
@@ -294,7 +299,11 @@ class AccountsController < ApplicationController
     else
       flash[:danger] = 'Oops! Unable to delete the quote'
     end
-    redirect_to account_path(params[:id])
+    if params[:info].present?
+      redirect_to schedule_path
+    else
+      redirect_to account_path(params[:id])
+    end
   end
 
 
@@ -358,8 +367,11 @@ class AccountsController < ApplicationController
     else
       flash[:danger] = 'Reminder not updated!'
     end
-
-    redirect_to account_path(params[:id])
+    if params[:info].present?
+      redirect_to schedule_path
+    else
+      redirect_to account_path(params[:id])
+    end
   end
 
   def delete_reminder
@@ -461,15 +473,6 @@ class AccountsController < ApplicationController
   end
 
   private
-
-  def notifiable_users_json
-    users_list = []
-    notifiable_users = NotifiableUsers.all(params: { account_id: params[:id] })
-    notifiable_users.each do |user|
-      users_list << { id: user.id, text: user.first_name + ' ' + user.last_name }
-    end
-    users_list.to_json
-  end
 
   def get_token
     # set gloal var for token to be used in model, hack for now
