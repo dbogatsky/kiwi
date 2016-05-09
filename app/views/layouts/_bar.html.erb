@@ -16,7 +16,7 @@
                 <ul class="dropdown-list gen-list">
                   <%@unread_items.first(5).each do |k,v| %>
                     <li class="new">
-                      <a href="/accounts/<%=v.account_id%>">
+                      <a href="/accounts/<%=v.account_id%>?notification_id=<%=k%>">
                       <span class="thumb">
                         <%if v.type.eql? 'reminder'%>
                           <img src="/assets/vertical-timeline/img/cd-icon-bell.svg" alt="Reminder">

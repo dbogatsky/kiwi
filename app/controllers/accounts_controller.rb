@@ -16,6 +16,10 @@ class AccountsController < ApplicationController
     @account.user_account_sharings.each { |u| @shared_user << u.user }
     @users = User.all(uid: session[:user_id])
     @notifiable_users = notifiable_users_json
+    if params[:notification_id].present?
+      @notification = Notification.find(params[:notification_id])
+      @notification.update_attributes(read_at: Time.now)
+    end
   end
 
   def new

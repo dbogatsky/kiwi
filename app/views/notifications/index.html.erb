@@ -14,12 +14,12 @@
 		    <%if @unread_items.present?%>
 			    <%@unread_items.each do |k,v|%>
 				   	<li>
-				   		<span class="left_content"><a class="close_btn">x</a>
-					   		<span class="left_notification">
-                  <a href="/accounts/<%=v.account_id%>"><%=v.title%></a>
+				   		<span class="pull-left"><a class="close_btn">x</a>
+					   		<span class="pull-left">
+                  <a href="/accounts/<%=v.account_id%>" style="color: #636e7b"><%=v.title%></a>
 					   		</span>
 				   		</span>
-				   		<span class="right_notification"><%=Chronic.parse(v.scheduled_at).in_time_zone(current_user.time_zone).strftime("%b %d")%></span>
+				   		<span class="pull-right"><%=Chronic.parse(v.scheduled_at).in_time_zone(current_user.time_zone).strftime("%b %d")%></span>
 				   	</li>
 			    <%end%>
 			  <%else%>
@@ -42,9 +42,13 @@
 		    <%if @read_items.present?%>
 			    <%@read_items.each do |k,v|%>
 				   	<li>
-				   		<span class="left_content"><a class="close_btn">x</a>
-				   		<span class="left_notification"><%=v.title%></span></span>
-				   		<span class="right_notification"><%=Chronic.parse(v.scheduled_at).in_time_zone(current_user.time_zone).strftime("%b %d")%></span>
+				   		<span class="pull-left"><a class="close_btn">x</a>
+					   		<span class="pull-left">
+	                  <a href="/accounts/<%=v.account_id%>" style="color: #636e7b"><%=v.title%></a>
+						   	</span>
+						  </span>
+				   		<span class="pull-right"><%=Chronic.parse(v.scheduled_at).in_time_zone(current_user.time_zone).strftime("%b %d")%>
+				   		</span>
 				   	</li>
 			    <%end%>
 			  <%else%>
