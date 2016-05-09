@@ -239,7 +239,8 @@ class ApplicationController < ActionController::Base
     @read_items = {}
     @unread_items = {}
     if current_user.present?
-      @notifications = Notification.find(:all)
+      search_notification = {user_id_eq: current_user.id}
+      @notifications = Notification.all(params: {search: search_notification})
       user_ids = Array.new
       user_ids.push(current_user.id)
       if @notifications.present?
