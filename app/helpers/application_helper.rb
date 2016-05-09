@@ -85,4 +85,13 @@ module ApplicationHelper
   def mobile?
     request_device?(:iphone) || request_device?(:android) || request_device?(:ipad)
   end
+
+  def notifiable_users_json(account)
+    users_list = []
+    notifiable_users = NotifiableUsers.all(params: { account_id: account})
+    notifiable_users.each do |user|
+      users_list << { id: user.id, text: user.first_name + ' ' + user.last_name }
+    end
+    users_list.to_json
+  end
 end

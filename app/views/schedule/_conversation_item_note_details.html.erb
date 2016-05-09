@@ -21,6 +21,9 @@
           <li>
               <%=link_to 'Delete', delete_note_account_path(account, item_id: citem.id, info: true), method: :delete,data: {confirm: 'Are you sure to delete this note?'}%>
           </li>
+          <li>
+            <%= link_to "Go To Account", account_path(citem.account_id) %>
+          </li>
         </ul>
       </div>
   </div>

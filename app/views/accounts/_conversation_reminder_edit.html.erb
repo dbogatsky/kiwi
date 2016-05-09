@@ -91,31 +91,3 @@
     </div><!-- modal content -->
   </div><!-- modal dialog -->
 </div><!-- modal -->
-
-<script type="text/javascript">
-
-  $(".conversation-edit-reminder-modal-form").on("shown.bs.modal", function(){
-    var input = document.getElementById("keyword");
-    var autocomplete = new google.maps.places.Autocomplete(input);
-
-    google.maps.event.addListener(autocomplete, 'place_changed', function() {
-      var place = autocomplete.getPlace();
-      var lat = place.geometry.location.lat();
-      var lng = place.geometry.location.lng();
-      $(".conversation-edit-reminder-modal-form[name='conversation_item[latitude]']").val(lat);
-      $(".conversation-edit-reminder-modal-form[name='conversation_item[longitude]']").val(lng);
-    });
-  });
-
-  var data = <%= raw(@notifiable_users) %>;
-
-  $("#notifiable_users_edit").select2({
-    data: data
-  });
-  $(".conversation-edit-reminder-modal-form .select2").css('width', '100%');
-
-  $(".conversation-edit-reminder-modal-form").on("hidden.bs.modal", function(){
-    $('#reminder-email-edit').attr('checked', false);
-    $('#reminder-sms-edit').attr('checked', false);
-  });
-</script>

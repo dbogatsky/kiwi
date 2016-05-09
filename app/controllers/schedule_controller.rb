@@ -59,15 +59,22 @@ class ScheduleController < ApplicationController
 
     events = Array.new
     @meetings.each do |i|
-      if i.type == "meeting" || (i.type == 'note' && i.scheduled_at.present?)
+      if i.type == "meeting" || (i.type == 'note' && i.scheduled_at.present?) || i.type == 'reminder' || i.type == 'quote'
         if i.type == "meeting"
           s_date = Chronic.parse(i.starts_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S")
           e_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S")
           color = "#3a87ad"
-        elsif i.type == 'note'
+          all_day = false
+        elsif i.type == 'note' || i.type == 'reminder'
           s_date = Chronic.parse(i.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S")
           e_date = Chronic.parse(i.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S")
-          color = "#77003c"
+          color = "#f0ca45"
+          all_day = false
+        elsif i.type == 'quote'
+          s_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S")
+          e_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S")
+          color = "#e91e63"
+          all_day = true
         end
         event_data = {
           account_id: i.account_id,
@@ -76,7 +83,7 @@ class ScheduleController < ApplicationController
           start: s_date,
           end: e_date,
           color: color,
-          allDay: false
+          allDay: all_day
         }
         events.push(event_data)
       end
@@ -107,7 +114,7 @@ class ScheduleController < ApplicationController
       if events['conversation_items/meetings'].present?
         events['conversation_items/meetings'].each_with_index do |citem, index|
           c_item = OpenStruct.new(citem)
-          @meetings << c_item if c_item.type ==  'meeting' || (c_item.type == 'note' && c_item.scheduled_at.present?)
+          @meetings << c_item if c_item.type ==  'meeting' || (c_item.type == 'note' && c_item.scheduled_at.present?) || c_item.type == 'reminder' || c_item.type == 'quote'
         end
       end
       @meetings

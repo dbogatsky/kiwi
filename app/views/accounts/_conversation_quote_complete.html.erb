@@ -7,7 +7,7 @@
       </div>
       <div class="modal-body">
         <p>Update the status and any notes to complete the quote</p>
-        <%= form_tag(update_quote_account_path(@account), method: :patch) do %>
+        <%= form_tag(update_quote_account_path(account), method: :patch) do %>
           <div class="panel panel-default">
               <div class="panel-body">
                 <div class="row row-pad-5">
@@ -26,6 +26,7 @@
                   </div>
                 </div>
                  <input type="hidden" name="conversation_item[id]">
+                 <input type="hidden" name="info">
               </div><!-- panel-body -->
               <div class="panel-footer">
                 <button type="submit" class="btn btn-primary">Save</button>

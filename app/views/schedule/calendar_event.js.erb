@@ -1,12 +1,19 @@
+
 $('#calendar').fullCalendar('removeEvents');
 <%if @meetings.present?%>
   <%@meetings.each do |i|%>
     <%if i.type.eql? 'meeting'%>
       <%s_date = Chronic.parse(i.starts_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S")%>
       <%e_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S") %>
-    <%else%>
+      <%all_day = false%>
+    <%elsif (i.type.eql? 'note') || (i.type.eql? 'reminder') %>
       <%s_date = Chronic.parse(i.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S")%>
       <%e_date = Chronic.parse(i.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S") %>
+      <%all_day = false%>
+    <%elsif i.type.eql? 'quote'%>
+      <%s_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S")%>
+      <%e_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S") %>
+      <%all_day = true%>
     <%end%>
     <%created_by = OpenStruct.new(i.created_by).id%>
     event_data = {
@@ -16,7 +23,7 @@ $('#calendar').fullCalendar('removeEvents');
       start: '<%=s_date%>',
       end: '<%=e_date%>',
       color: '<%=@user_color[created_by]%>',
-      allDay: false
+      allDay: '<%=all_day%>'
     }
     $('#calendar').fullCalendar('renderEvent', event_data , true);
   <%end%>
