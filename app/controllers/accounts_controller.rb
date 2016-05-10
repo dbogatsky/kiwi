@@ -448,11 +448,13 @@ class AccountsController < ApplicationController
   end
 
   def share
-    params[:account][:user_account_sharings_attributes] = params[:account][:user_account_sharings_attributes].values
-    if @account.update_attributes(request: :update, account: shared_account_params)
-      flash[:success] = 'Shared users updated successfully!'
-    else
-      flash[:danger] = 'Oops! Unable updated the shared users.'
+    if params[:account].present? && params[:account][:user_account_sharings_attributes].present?
+      params[:account][:user_account_sharings_attributes] = params[:account][:user_account_sharings_attributes].values
+      if @account.update_attributes(request: :update, account: shared_account_params)
+        flash[:success] = 'Shared users updated successfully!'
+      else
+        flash[:danger] = 'Oops! Unable updated the shared users.'
+      end
     end
     redirect_to account_path(params[:id])
   end
