@@ -14,7 +14,19 @@
                     <input type="text" name="conversation_item[subject]" placeholder="Title" class="form-control" required="required" />
                   </div>
                 </div>
-
+                <%unless account.present?%>
+                  <div class="row row-pad-5">
+                    <div class="col-lg-12">
+                      <select class="form-control select2 select_account" name="id" placeholder="-Select account-" required="required">
+                      <option value="">-Select account-</option>
+                       <%Account.all.each do |a|%>
+                          <option value="<%=a.id%>"><%=a.name%></option>
+                       <%end%>
+                      </select>
+                    </div>
+                  </div><!-- row -->
+                  <input type="hidden" name="add_from_schedule" value= "true">
+                <%end%>
                 <div class="row row-pad-5">
                   <div class="col-lg-12">
                     <textarea class="form-control wysihtml5" id="new_reminder" rows="5" placeholder="Message" name="conversation_item[body]"></textarea>
@@ -49,7 +61,13 @@
 
                 <div class="row row-pad-5">
                   <div class="col-lg-12">
-                    <select class="select2" id="notifiable_users" multiple="multiple" name="conversation_item[users_to_notify_ids][]" required="required"></select>
+                    <select class="form-control select2" id="notifiable_users" multiple="multiple" name="conversation_item[users_to_notify_ids][]" required="required">
+                    <%unless account.present?%>
+                      <%User.all.each do |a|%>
+                          <option value="<%=a.id%>"><%=a.first_name%> <%=a.last_name%></option>
+                      <%end%>
+                    <%end%>
+                    </select>
                   </div>
                 </div><!-- row -->
 
@@ -76,8 +94,9 @@
                     </div>
                   </div>
                 </div><!-- row -->
-
-                <input type="hidden" name="conversation_item[account_id]" value=<%= @account.id %> >
+                <%if account.present?%>
+                 <input type="hidden" name="id" value="<%=account.id%>">
+                <%end%>
                 <input type="hidden" name="conversation_item[type]" value="reminder" >
               </div><!-- panel-body -->
               <div class="panel-footer">
@@ -105,11 +124,4 @@
       $(".conversation-reminder-modal-form input[name='conversation_item[longitude]']").val(lng);
     });
   });
-
-  var data = <%= raw(@notifiable_users) %>;
-  $("#notifiable_users").select2({
-    data: data
-  });
-  $(".conversation-reminder-modal-form .select2").css('width', '100%');
-
 </script>

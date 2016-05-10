@@ -82,19 +82,10 @@
   $(function() {
     edit_quote = $('#quote_edit').wysihtml5({'font-styles': false, 'image': false, 'link':false});
   });
-
-  var final_date
-  function getdate(e) {
-    var current_date = new Date();
-    current_date.setDate(current_date.getDate() + parseInt(e));
-    final_date = ('0' + (current_date.getMonth()+1)).slice(-2) + '/' + ('0' + current_date.getDate()).slice(-2) + '/' + current_date.getFullYear();
-  }
-
-  $(".get_date").change(function(){
-    var d = $(this).val()
-    getdate(d)
-    $(".display_date").val(final_date)
-  })
+  var complete_quote_editor;
+  $(function() {
+    complete_quote_editor = $('#complete_quote_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
+  });
 
   $(document).on('click', "a.edit_quote", function(e){
     id = $(this).attr('data-id')
@@ -128,76 +119,6 @@
       $(".display_date").val(final_date)
       $(".set_date").attr('disabled', true)
       $(".get_date").attr('disabled', false)
-  });
-
-  $("#quote-reminder-settings").hide();
-  $("#quote-reminder-settings-edit").hide();
-
-  $('#quote-reminder, #quote-reminder-edit').change(function () {
-    if ($(this).is(':checked')) {
-      $("#quote-reminder-settings").show(500);
-      $("#quote-reminder-settings-edit").show(500);
-      $(".clear_date").attr('required', true);
-      $(".clear_time").attr('required', true);
-    }
-    else {
-      $("#quote-reminder-settings").hide(500);
-      $("#quote-reminder-settings-edit").hide(500);
-      $(".clear_date").attr('required', false);
-      $(".clear_time").attr('required', false);
-      $(".clear_date").val(null)
-    }
-  });
-
-  $(".exp_in").click(function(){
-    if($(this).is(':checked')){
-      $(".get_date").attr('disabled', false)
-      $(".get_date").attr('required', true)
-      $(".set_date").attr('disabled', true)
-      $(".set_date").attr('required', false)
-    }
-  })
-
-  $(".exp_after").click(function(){
-    if($(this).is(':checked')){
-      $(".set_date").attr('disabled', false)
-      $(".set_date").attr('required', true)
-      $(".get_date").attr('disabled', true)
-      $(".get_date").attr('required', false)
-    }
-  })
-
-  $(".amount_val").keypress(function(event) {
-    if ((event.which != 46 || $(this).val().indexOf('.') != -1) &&
-      ((event.which < 48 || event.which > 57) &&
-        (event.which != 0 && event.which != 8))) {
-      event.preventDefault();
-    }
-    var text = $(this).val();
-    if ((text.indexOf('.') != -1) &&
-      (text.substring(text.indexOf('.')).length > 2) &&
-      (event.which != 0 && event.which != 8) &&
-      ($(this)[0].selectionStart >= text.length - 2)) {
-      event.preventDefault();
-    }
-  });
-
-  $(".amount_val").focusout(function(){
-     var re = /^-?[0-9]+$/;
-     var num = $(this).val();
-     if (re.test(num)){
-        num = num + '.00';
-        $(this).val(num);
-     }else if(!re.test(num) && num != '' ){
-       var length = parseFloat(num).toFixed(2).replace(/^-?\d*\.?|0+$/g, '').length
-       if(length == 1){
-        num = num + '0';
-        $(this).val(num);
-      }else if (length < 1){
-        num = parseFloat(num) + '.00';
-        $(this).val(num);
-      }
-    }
   });
 
   $(document).on('click', "a.complete_quote", function(e){

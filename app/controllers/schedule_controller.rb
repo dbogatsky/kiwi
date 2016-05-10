@@ -1,6 +1,6 @@
 class ScheduleController < ApplicationController
+  include ApplicationHelper
   before_action :get_api_values,only: [:index, :calendar_event]
-
 
   def index
     @users = User.all(uid: session[:user_id])
@@ -40,6 +40,17 @@ class ScheduleController < ApplicationController
     @account = Account.find(params[:account_id])
     c_id = @account.conversation.id
     @meeting = ConversationItem.find(params[:citem_id],params: {conversation_id: c_id})
+  end
+
+  def get_notifiable_users
+    if params[:account_id].present?
+      begin
+        @notifiable_users = notifiable_users_json(params[:account_id])
+        @result = true
+      rescue
+        @result = false
+      end
+    end
   end
 
   def get_events

@@ -52,6 +52,8 @@
           </button>
           <ul class="dropdown-menu">
               <li><a href="#" data-toggle="modal" data-target=".account-action-meeting">Schedule Meeting</a></li>
+              <li><a href="#" data-toggle="modal" data-target=".conversation-reminder-modal-form">Add Reminder</a></li>
+              <li><a href="#" data-toggle="modal" data-target=".conversation-quote-modal-form">Add Quote</a></li>
           </ul>
         </div>
       </div>
@@ -64,8 +66,32 @@
   </div>
 </div>
 <%= render "accounts/conversation_meeting", account: nil %>
+<%= render "accounts/conversation_quote", account: nil %>
+<%= render "accounts/conversation_reminder", account: nil %>
 
 <script>
+  $('.select2').select2()
+
+  var new_reminder;
+  $(function() {
+    new_reminder = $('#new_reminder').wysihtml5({'font-styles': false, 'image': false, 'link':false});
+  });
+
+  $(".select_account").change(function(){
+    account_id = $(this).val();
+    if (account_id != ''){
+      $('#preloader').css('opacity', 0.8);
+      $('#preloader').show();
+      $.ajax({
+        type: "GET",
+        url: '/schedule/get_notifiable_users?account_id='+account_id,
+        success: function (data) {
+        }
+      });
+    }
+  });
+  $(".conversation-reminder-modal-form .select2").css('width', '100%');
+
   $(document).on('click', "a.complete_meeting", function(e){
     id = $(this).attr('data-id')
     $('.conversation-complete-meeting-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
@@ -162,6 +188,193 @@
         events: '/schedule/get_events'
     });
 	});
+
+  $("#quote-reminder-settings").hide();
+  $("#quote-reminder-settings-edit").hide();
+
+  $(document).on("change","#quote-reminder, #quote-reminder-edit",function() {
+    if ($(this).is(':checked')) {
+      $("#quote-reminder-settings").show(500);
+      $("#quote-reminder-settings-edit").show(500);
+      $(".clear_date").attr('required', true);
+      $(".clear_time").attr('required', true);
+    }
+    else {
+      $("#quote-reminder-settings").hide(500);
+      $("#quote-reminder-settings-edit").hide(500);
+      $(".clear_date").attr('required', false);
+      $(".clear_time").attr('required', false);
+      $(".clear_date").val(null)
+    }
+  });
+
+  $(document).on("click",".exp_in",function() {
+    if($(this).is(':checked')){
+      $(".get_date").attr('disabled', false)
+      $(".get_date").attr('required', true)
+      $(".set_date").attr('disabled', true)
+      $(".set_date").attr('required', false)
+    }
+  })
+
+  $(document).on("click",".exp_after",function() {
+    if($(this).is(':checked')){
+      $(".set_date").attr('disabled', false)
+      $(".set_date").attr('required', true)
+      $(".get_date").attr('disabled', true)
+      $(".get_date").attr('required', false)
+    }
+  });
+
+  $(document).on("keypress",".amount_val",function(event) {
+      if ((event.which != 46 || $(this).val().indexOf('.') != -1) &&
+        ((event.which < 48 || event.which > 57) &&
+          (event.which != 0 && event.which != 8))) {
+        event.preventDefault();
+      }
+      var text = $(this).val();
+      if ((text.indexOf('.') != -1) &&
+        (text.substring(text.indexOf('.')).length > 2) &&
+        (event.which != 0 && event.which != 8) &&
+        ($(this)[0].selectionStart >= text.length - 2)) {
+        event.preventDefault();
+      }
+  });
+
+  $(document).on("focusout",".amount_val",function() {
+     var re = /^-?[0-9]+$/;
+     var num = $(this).val();
+     if (re.test(num)){
+        num = num + '.00';
+        $(this).val(num);
+     }else if(!re.test(num) && num != '' ){
+       var length = parseFloat(num).toFixed(2).replace(/^-?\d*\.?|0+$/g, '').length
+       if(length == 1){
+        num = num + '0';
+        $(this).val(num);
+      }else if (length < 1){
+        num = parseFloat(num) + '.00';
+        $(this).val(num);
+      }
+    }
+  });
+
+  var new_quote
+  $(function() {
+    new_quote = $('#new_quote').wysihtml5({'font-styles': false, 'image': false, 'link':false});
+  });
+
+  var final_date
+  function getdate(e) {
+    var current_date = new Date();
+    current_date.setDate(current_date.getDate() + parseInt(e));
+    final_date = ('0' + (current_date.getMonth()+1)).slice(-2) + '/' + ('0' + current_date.getDate()).slice(-2) + '/' + current_date.getFullYear();
+  }
+
+  $(document).on("change",".get_date",function() {
+    var d = $(this).val()
+    getdate(d)
+    $(".display_date").val(final_date)
+  })
+
+  if(mobile == 'false'){
+    $('#reminderDatePicker').datepicker({
+      dateFormat: 'mm/dd/yy',
+      minDate: 0
+    });
+  }
+
+   $(document).on("change","#reminderDatePicker, #reminderDatePickerEdit",function() {
+    if(mobile == 'false'){
+      var select_date = $(this).val()
+    }else{
+      var select_date = today_date(new Date($(this).val()))
+    }
+    if(select_date == today_date(new Date)){
+      var next_time = new Date();
+      next_time.setMinutes(next_time.getMinutes() + 30);
+      var c_time = set_time(next_time)
+      $("#reminderTimePicker").timepicker("setTime", c_time)
+      $("#reminderTimePickerEdit").timepicker("setTime", c_time)
+    }
+  });
+
+  $('#reminderTimePicker').timepicker({
+      showMeridian: true,
+      minuteStep: 15,
+      showInputs: false,
+  }).on('changeTime.timepicker', function(e) {
+     if (mobile == 'false'){
+        var  date_val = $('#reminderDatePicker').val()
+     }else{
+        var date_val = today_date(new Date($('#reminderDatePicker').val()))
+     }
+      if((date_val != '') && (date_val == today_date(new Date))){
+        set_reminder_time(e)
+      }
+  });
+
+  function today_date(date){
+    var current_date = date
+    var date = current_date.getDate();
+    var month = current_date.getMonth()+1;
+    var year = current_date.getFullYear();
+    if(date<10) {
+        date='0'+date
+    }
+    if(month<10) {
+        month='0'+month
+    }
+    current_date = month+'/'+date+'/'+year;
+    return current_date;
+  }
+
+  function set_reminder_time(a){
+    ConvertTimeformat('24', a.time.value);
+    total_minutes = parseInt(sHours)*60 + parseInt(sMinutes);
+    var d = new Date();
+    var current_t = set_time(d)
+    ConvertTimeformat('24', current_t);
+    total_current_minutes = parseInt(sHours)*60 + parseInt(sMinutes);
+
+    if((total_minutes) < total_current_minutes+30){
+      var display_time = new Date();
+      display_time.setMinutes(display_time.getMinutes() + 30);
+      var c_time = set_time(display_time)
+      $("#reminderTimePicker").timepicker("setTime", c_time);
+      $("#reminderTimePickerEdit").timepicker("setTime", c_time);
+    }
+  }
+
+  function set_time(t){
+    var hh = t.getHours();
+    var m = t.getMinutes();
+    var dd = 'AM';
+    var h = hh;
+    if (h >= 12) {
+        h = hh-12;
+        dd = "PM";
+    }
+    if (h == 0) {
+        h = 12;
+    }
+    m = m<10?"0"+m:m;
+    var current_time = h+":"+m+" "+dd;
+    return current_time
+  }
+
+  function ConvertTimeformat(format, str) {
+    var time = str
+    var hours = Number(time.match(/^(\d+)/)[1]);
+    var minutes = Number(time.match(/:(\d+)/)[1]);
+    var AMPM = time.match(/\s(.*)$/)[1];
+    if (AMPM == "PM" && hours < 12) hours = hours + 12;
+    if (AMPM == "AM" && hours == 12) hours = hours - 12;
+      sHours = hours.toString();
+      sMinutes = minutes.toString();
+    if (hours < 10) sHours = "0" + sHours;
+    if (minutes < 10) sMinutes = "0" + sMinutes;
+  }
 </script>
 
 <style>

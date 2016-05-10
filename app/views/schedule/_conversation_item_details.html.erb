@@ -10,6 +10,7 @@
            data-toggle="modal"
            data-target=".conversation-complete-meeting-modal-form"
            data-id="<%=citem.id%>"
+           data-notes ="<%=citem.notes%>"
            data-account-id="<%=citem.account_id%>">Complete
         </a>
       </li>
@@ -105,10 +106,20 @@
    }
   })
 
+  var complete_meeting_editor;
+
+  $(function() {
+    complete_meeting_editor = $('#complete_meeting_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
+  });
+
   $(document).on('click', "a.complete_meeting", function(e){
     id = $(this).attr('data-id')
     $('.conversation-complete-meeting-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
     $('.conversation-complete-meeting-modal-form input[name="info"]').val(true);
+    var note = $(this).attr('data-notes')
+    if (note != ''){
+     complete_meeting_editor.data("wysihtml5").editor.setValue(note);
+    }
   });
 
   var meeting_edit_editor;
@@ -117,8 +128,9 @@
     meeting_edit_editor = $('#meeting_edit_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
   });
 
-  // $(document).on('click', "a.edit_meeting", function(e){
-  $('.edit_meeting').click(function(){
+
+  $(document).on('click', "a.edit_meeting", function(){
+  // $('.edit_meeting').click(function(){
     id = $(this).attr('data-id')
     invitees = $(this).attr('data-invitees')
     invitees_array = invitees.split(',')

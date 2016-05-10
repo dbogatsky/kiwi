@@ -3,7 +3,7 @@ include ApplicationHelper
 class AccountsController < ApplicationController
   skip_before_filter :verify_authenticity_token, only: [:delete_future_meeting]
   before_action :get_token
-  before_action :find_account, only: [:conversation, :search, :jump_in, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting, :update_quote, :delete_quote, :add_reminder, :update_reminder, :delete_reminder]
+  before_action :find_account, only: [:conversation, :search, :jump_in, :add_quote, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting, :update_quote, :delete_quote, :add_reminder, :update_reminder, :delete_reminder]
   before_action :get_api_values, only: [:search]
   def index
     # Get all accounts
@@ -248,7 +248,7 @@ class AccountsController < ApplicationController
   end
 
   def add_quote
-    c_id = Account.find(conversation_item_params[:account_id]).conversation.id
+    c_id = @account.conversation.id
     if params[:expires_in].present?
       new_date = Date.today + params[:expires_in].to_i.day
       params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone,new_date)
@@ -264,8 +264,11 @@ class AccountsController < ApplicationController
     else
       flash[:danger] = 'Oops! Unable to add quote'
     end
-
-    redirect_to account_path(conversation_item_params[:account_id])
+    if params[:add_from_schedule].present?
+      redirect_to schedule_path
+    else
+      redirect_to account_path(params[:id])
+    end
   end
 
   def update_quote
@@ -349,8 +352,11 @@ class AccountsController < ApplicationController
     else
       flash[:danger] = 'Oops! Unable to add reminder.'
     end
-
-    redirect_to account_path(conversation_item_params[:account_id])
+    if params[:add_from_schedule].present?
+      redirect_to schedule_path
+    else
+      redirect_to account_path(params[:id])
+    end
   end
 
   def update_reminder

@@ -54,12 +54,13 @@ Rails.application.routes.draw do
   post '/accounts/check_in', to: 'accounts#check_in', as: :account_check_in
   post '/accounts/check_out', to: 'accounts#check_out', as: :account_check_out
   post '/accounts/:id/add_note', to: 'accounts#add_note', as: :account_add_note
-  post '/accounts/:id/add_quote', to:'accounts#add_quote', as: :account_add_quote
-  post '/accounts/:id/add_reminder', to: 'accounts#add_reminder', as: :account_add_reminder
+  post '/accounts/add_quote', to:'accounts#add_quote', as: :account_add_quote
+  post '/accounts/add_reminder', to: 'accounts#add_reminder', as: :account_add_reminder
   post '/accounts/:id/send_email', to: 'accounts#send_email', as: :account_send_email
   post '/accounts/:id/share', to: 'accounts#share', as: :account_share
 
   match '/schedule', to: 'schedule#index', as: :schedule, via: [:get]
+  get   '/schedule/get_notifiable_users', to: 'schedule#get_notifiable_users', as: :schedule_get_notifiable_users
   get   '/schedule/calendar_event', to: 'schedule#calendar_event', as: :schedule_calendar_event
   get   '/schedule/get_meeting', to: 'schedule#get_meeting', as: :schedule_get_meeting
   get   '/schedule/get_events', to: 'schedule#get_events', as: :schedule_get_events

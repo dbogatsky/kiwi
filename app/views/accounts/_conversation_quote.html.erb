@@ -23,8 +23,19 @@
                     </div>
                   </div>
                 </div>
-
-
+                <%unless account.present?%>
+                  <div class="row row-pad-5">
+                    <div class="col-lg-12">
+                      <select class="form-control select2" name="id" placeholder="-Select account-" required="required">
+                      <option value="">-Select account-</option>
+                       <%Account.all.each do |a|%>
+                          <option value="<%=a.id%>"><%=a.name%></option>
+                       <%end%>
+                      </select>
+                    </div>
+                  </div><!-- row -->
+                  <input type="hidden" name="add_from_schedule" value= "true">
+                <%end%>
                 <div class="row row-pad-5">
                   <div class="col-lg-4">
                     <label class="radio-inline">
@@ -100,8 +111,9 @@
                     </div>
                   </div>
                 </div>
-
-                <input type="hidden" name="conversation_item[account_id]" value=<%= @account.id %> >
+                <%if account.present?%>
+                 <input type="hidden" name="id" value="<%=account.id%>">
+                <%end%>
                 <input type="hidden" name="conversation_item[type]" value="quote" >
               </div><!-- panel-body -->
               <div class="panel-footer">
