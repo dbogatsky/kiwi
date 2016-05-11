@@ -1,0 +1,9 @@
+<%if @result%>
+	$("#nav_unread_count, #bar_unread_count").html('<%=@unread_items.count%>')
+	$("#bar_notification_list").html("<%=j render 'notifications/bar_notification_list', unread_items: @unread_items %>")
+	$("#unread_items").html("<%=j render 'notifications_details', notifications: @unread_items, read: false%>")
+	$("#read_items").html("<%=j render 'notifications_details', notifications: @read_items, read: true%>")
+  $('#preloader').hide();
+<%else%>
+  window.location.reload();
+<%end%>

@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
 #   before_filter :check_request
   around_filter :set_time_zone
 
-  helper_method :current_user, :logged_in?, :superadmin_logged_in?
+  helper_method :current_user, :logged_in?, :superadmin_logged_in?, :notification_info
   helper_method :has_permission, :has_permissions, :has_page_permission, :has_page_permissions
 
   rescue_from CanCan::AccessDenied do |exception|

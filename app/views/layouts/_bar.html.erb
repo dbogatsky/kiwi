@@ -9,30 +9,10 @@
             <div class="btn-group">
               <button class="btn btn-default dropdown-toggle tp-icon" data-toggle="dropdown">
                 <i class="glyphicon glyphicon-bell"></i>
-                <span class="badge"><%=@unread_items.count%></span>
+                <span class="badge" id="bar_unread_count"><%=@unread_items.count%></span>
               </button>
-              <div class="dropdown-menu dropdown-menu-head pull-right">
-                <h5 class="title">You Have <%=@unread_items.count%> New Notifications</h5>
-                <ul class="dropdown-list gen-list">
-                  <%@unread_items.first(5).each do |k,v| %>
-                    <li class="new">
-                      <a href="/accounts/<%=v.account_id%>?notification_id=<%=k%>">
-                      <span class="thumb">
-                        <%if v.type.eql? 'reminder'%>
-                          <img src="/assets/vertical-timeline/img/cd-icon-bell.svg" alt="Reminder">
-                        <%elsif v.type.eql? 'meeting'%>
-                          <img src="/assets/vertical-timeline/img/cd-icon-calendar.svg" alt="Meeting">
-                        <%end%>
-                      </span>
-                      <span class="desc">
-                        <span class="name"><%=v.title%><span class="badge badge-success">new</span></span>
-                        <span class="msg"><%=Chronic.parse(v.scheduled_at).in_time_zone(current_user.time_zone).strftime("%b %d")%></span>
-                      </span>
-                      </a>
-                    </li>
-                  <%end%>
-                  <li class="new"><a href="<%=notifications_path%>">Read All Notifications</a></li>
-                </ul>
+              <div class="dropdown-menu dropdown-menu-head pull-right" id='bar_notification_list'>
+                <%=render 'notifications/bar_notification_list',unread_items: @unread_items%>
               </div>
             </div>
           </li>

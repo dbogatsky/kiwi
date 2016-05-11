@@ -9,23 +9,8 @@
       </div>
       <h4 class="panel-title">Unread Notifications</h4>
     </div>
-    <div class="panel-body">
-      <ul class="notification_ui">
-		    <%if @unread_items.present?%>
-			    <%@unread_items.each do |k,v|%>
-				   	<li class="notification_li">
-				   		<span class="pull-left"><a class="close_btn">x</a>
-					   		<span class="pull-left">
-                  <a href="/accounts/<%=v.account_id%>" style="color: #636e7b"><%=v.title%></a>
-					   		</span>
-				   		</span>
-				   		<span class="pull-right"><%=Chronic.parse(v.scheduled_at).in_time_zone(current_user.time_zone).strftime("%b %d")%></span>
-				   	</li>
-			    <%end%>
-			  <%else%>
-		      <p>You have 0 unread Notifications</p>
-			  <%end%>
-	    </ul>
+    <div class="panel-body", id="unread_items">
+       <%=render 'notifications_details', notifications: @unread_items, read: false%>
     </div>
   </div>
 </div>
@@ -37,24 +22,16 @@
       </div>
       <h4 class="panel-title">Read Notifications</h4>
     </div>
-    <div class="panel-body">
-      <ul class="notification_ui">
-		    <%if @read_items.present?%>
-			    <%@read_items.each do |k,v|%>
-				   	<li class="notification_li">
-				   		<span class="pull-left"><a class="close_btn">x</a>
-					   		<span class="pull-left">
-	                  <a href="/accounts/<%=v.account_id%>" style="color: #636e7b"><%=v.title%></a>
-						   	</span>
-						  </span>
-				   		<span class="pull-right"><%=Chronic.parse(v.scheduled_at).in_time_zone(current_user.time_zone).strftime("%b %d")%>
-				   		</span>
-				   	</li>
-			    <%end%>
-			  <%else%>
-		      <p>You have 0 read Notifications</p>
-			  <%end%>
-	    </ul>
+    <div class="panel-body" id="read_items">
+      <%=render 'notifications_details', notifications: @read_items, read: true%>
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+
+  $(document).on('click', ".mark_read", function(){
+  	$('#preloader').css('opacity', 0.8);
+    $('#preloader').show();
+  })
+</script>

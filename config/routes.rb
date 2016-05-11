@@ -45,6 +45,7 @@ Rails.application.routes.draw do
   end
   resources :company_entities
   resources :users
+  resources :notifications, only: [:index, :update]
 
 
 
@@ -78,7 +79,6 @@ Rails.application.routes.draw do
   get '/media/download_file/:url/:name', to: 'media#download_file', as: :download_file, :constraints => { :url => /.*/ }, via: [:get]
   post '/media/rename_media_file', to: 'media#rename_media_file', as: :rename_media_file
 
-  match '/notifications', to: 'notifications#index', as: :notifications, via: [:get]
   match '/messages', to: 'messages#index', as: :messages, via: [:get]
 
   match '/company', to: 'company#index', as: :company, via: [:get]

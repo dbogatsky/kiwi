@@ -52,7 +52,7 @@
       <% if can? :read, Account %>
         <li>
           <a href="<%= notifications_path %>">
-            <span class="pull-right badge badge-success"><%=@unread_items.count%></span>
+            <span class="pull-right badge badge-success" id="nav_unread_count"><%=@unread_items.count%></span>
               <i class="fa fa-bell-o"></i>
             <span>Notifications</span>
           </a>
