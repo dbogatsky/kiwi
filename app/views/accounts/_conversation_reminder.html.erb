@@ -16,7 +16,7 @@
                 </div>
                 <%unless account.present?%>
                   <div class="row row-pad-5">
-                    <div class="col-lg-12">
+                    <div class="col-lg-12 country_select">
                       <select class="form-control select2 select_account" name="id" placeholder="-Select account-" required="required">
                       <option value="">-Select account-</option>
                        <%Account.all.each do |a|%>

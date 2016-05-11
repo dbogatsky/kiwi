@@ -25,7 +25,7 @@
                 </div>
                 <%unless account.present?%>
                   <div class="row row-pad-5">
-                    <div class="col-lg-12">
+                    <div class="col-lg-12 country_select">
                       <select class="form-control select2" name="id" placeholder="-Select account-" required="required">
                       <option value="">-Select account-</option>
                        <%Account.all.each do |a|%>
@@ -149,6 +149,9 @@
     $(".display_date").val(final_date)
   })
 
-  getdate(30);
-  $(".display_date").val(final_date)
+  $(".conversation-quote-modal-form").on("shown.bs.modal", function(){
+    getdate(30);
+    $(".get_date").val(30);
+    $(".display_date").val(final_date);
+  });
 </script>
