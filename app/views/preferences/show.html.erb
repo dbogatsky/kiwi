@@ -11,23 +11,12 @@
 
       	<div class="panel-body">
           <div class="form-group">
-            <label class="col-sm-3 control-label">Email</label>
+            <label class="col-sm-3 control-label">Preference Option 1</label>
             <div class="col-sm-6">
-              <%= current_user.email %>
+               Options 1 Here
             </div>
           </div>
-          <%= f.input :first_name, required: true %>
-          <%= f.input :last_name, required: true %>
-
-          <div class="form-group">
-            <label class="col-sm-3 control-label">Locale</label>
-            <div class="col-sm-6">
-              <%#=f.select(:locale, options_for_select([['English', 1],['French', 2]], selected: current_user.locale), {prompt: "select"}, {:class => 'form-control input-sm'})%>
-              <%=(current_user.locale == "en") ? "English" : ""%>
-            </div>
-          </div>
-          <%= f.input :title, required: true %>
-
+        </div> <!-- panel-body -->
 
       	<div class="panel-footer">
       		<div class="row">
@@ -37,9 +26,6 @@
       			</div>
       		</div>
       	</div><!-- panel-footer -->
-
-      </div>
-
     <% end %>
 
     </div><!-- contentpanel -->
