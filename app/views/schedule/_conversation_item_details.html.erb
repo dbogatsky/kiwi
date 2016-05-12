@@ -1,5 +1,8 @@
 <div class="ibox-content ibox-heading">
-  <%= get_styled_meetingstatus(citem, false) %>
+  <div class="cd-timeline-img cd-meeting schedule_meeting">
+    <img src="/assets/vertical-timeline/img/cd-icon-calendar.svg" alt="Meeting">
+    <span class="schedule"><%= get_styled_meetingstatus(citem, false) %></span>
+  </div>
   <div class="btn-group mr5 pull-right">
     <button data-toggle="dropdown" class="btn btn-sm btn-white dropdown-toggle" type="button" style="border-radius: 2px">
       <i class="fa fa-cog mr5"></i><span class="caret"></span>
@@ -15,24 +18,24 @@
         </a>
       </li>
       <li>
-          <a class="edit_meeting" href="#"
-             data-toggle="modal"
-             data-target=".conversation-edit-meeting-modal-form"
-             data-id="<%= citem.id %>"
-             data-invitees="<%=citem.invitees%>"
-             data-title="<%=citem.title %>"
-             data-date="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.scheduled_at.present?%>"
-             data-time="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.scheduled_at.present? %>"
-             data-starts-date="<%=Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.starts_at.present? %>"
-             data-starts-time="<%=Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.starts_at.present? %>"
-             data-ends-date="<%=Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.ends_at.present? %>"
-             data-ends-time="<%=Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.ends_at.present? %>"
-             data-repetition-rule ="<%=(citem.repetition_rule.present? || citem.related_to.present?) ? 'true' : 'false'%>"
-             data-latitude="<%=citem.latitude%>"
-             data-longitude="<%=citem.longitude%>"
-             data-location="<%= citem.location%>"
-             data-body="<%= citem.body %>">Edit
-          </a>
+        <a class="edit_meeting" href="#"
+           data-toggle="modal"
+           data-target=".conversation-edit-meeting-modal-form"
+           data-id="<%= citem.id %>"
+           data-invitees="<%=citem.invitees%>"
+           data-title="<%=citem.title %>"
+           data-date="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.scheduled_at.present?%>"
+           data-time="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.scheduled_at.present? %>"
+           data-starts-date="<%=Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.starts_at.present? %>"
+           data-starts-time="<%=Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.starts_at.present? %>"
+           data-ends-date="<%=Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.ends_at.present? %>"
+           data-ends-time="<%=Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.ends_at.present? %>"
+           data-repetition-rule ="<%=(citem.repetition_rule.present? || citem.related_to.present?) ? 'true' : 'false'%>"
+           data-latitude="<%=citem.latitude%>"
+           data-longitude="<%=citem.longitude%>"
+           data-location="<%= citem.location%>"
+           data-body="<%= citem.body %>">Edit
+        </a>
       </li>
       <li>
         <%=link_to 'Delete',"javascript:void(0)", id: "del_item_#{citem.id}"%>
@@ -41,7 +44,7 @@
       <li><%= link_to "Go To Account", account_path(citem.account_id) %></li>
     </ul>
   </div>
-  <h3><%=citem.title%></h3>
+  <h3 class="repeat_heading"><%=citem.title%></h3>
   <small><i class="fa fa-map-marker" style="margin-right:10px"></i>&nbsp;&nbsp;<%=citem.location%></small><br />
   <small><i class="fa fa-calendar" style="margin-right:10px"></i><%=Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.starts_at.present? %></small><br />
   <small><i class="fa fa-clock-o" style="margin-right:10px"></i><%=Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p") if citem.starts_at.present? %>  to  <%=Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p") if citem.ends_at.present? %></small><br />
