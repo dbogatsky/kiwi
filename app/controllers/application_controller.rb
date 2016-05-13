@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   include Mobylette::RespondToMobileRequests
   force_ssl if Rails.env.production?
+  # rescue_from Rack::Utils::ParameterTypeError, with: :render_bad_request
 
   protect_from_forgery with: :exception
   before_filter :get_tenant_by_subdomain #need to do before auth to get tenant
@@ -18,6 +19,15 @@ class ApplicationController < ActionController::Base
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, alert: exception.message
   end
+
+  def raise_bad_request
+    redirect_to root_url, notice: 'page not found!'
+    return
+  end
+
+  # def render_bad_request
+  #   redirect_to root_url, notice: 'page not found!'
+  # end
 
   private
 
