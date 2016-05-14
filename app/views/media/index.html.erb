@@ -1,6 +1,6 @@
 <%= content_for :head_assets do %>
-  <link rel="stylesheet" type="text/css" href="assets/bootstrap/css/prettyPhoto.css">
-  <script src="assets/bootstrap/js/jquery.prettyPhoto.js"></script>
+  <link rel="stylesheet" type="text/css" href="/assets/bootstrap/css/prettyPhoto.css">
+  <script src="/assets/bootstrap/js/jquery.prettyPhoto.js"></script>
 <% end %>
 
 <%= content_for :pageheader do %>
@@ -267,7 +267,7 @@
         error: function (err, req) {
           $("#name").val('');
           $('input[type="submit"]').prop('disabled', false);
-          alert("Your browser broke!");
+          alert("Sorry. Unable to perform operation.");
         }
       });
     });
@@ -379,7 +379,7 @@
         },
         error: function (err, req) {
           $('form#save-file-frm input[type="submit"]').prop('disabled', false);
-          alert("Your browser broke!");
+          alert("Sorry. Unable to perform operation.");
         }
       });
       return false;
@@ -411,7 +411,7 @@
         error: function (err, req) {
         $("#name").val('');
           $('input[type="submit"]').prop('disabled', false);
-          alert("Your browser broke!");
+          alert("Sorry. Unable to perform operation.");
         }
       });
       return false;
@@ -484,7 +484,7 @@
             }
           },
           error: function (err, req) {
-            alert("Your browser broke!");
+            alert("Sorry. Unable to perform operation.");
           }
        });
       }
@@ -510,7 +510,7 @@
               }
             },
             error: function (err, req) {
-              alert("Your browser broke!");
+              alert("Sorry. Unable to perform operation.");
             }
          });
         }
@@ -535,7 +535,7 @@
             }
           },
           error: function (err, req) {
-            alert("Your browser broke!");
+            alert("Sorry. Unable to perform operation.");
           }
        });
       }
@@ -603,7 +603,7 @@
         $("a[data-rel^='prettyPhoto']").prettyPhoto();
       },
       error: function (err, req) {
-        alert("Your browser broke!");
+        alert("Sorry. Unable to perform operation.");
         $('#preloader').hide();
       }
     });

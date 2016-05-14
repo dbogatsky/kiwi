@@ -145,7 +145,7 @@ class MediaController < ApplicationController
     name = params[:media][:payload].original_filename
     filename = params[:filename]
     folderId = params[:folder_id]
-    directory = "public/assets/images"
+    directory = "/tmp/"
     path = File.join(directory, name)
     File.open(path, "wb") { |f| f.write(params[:media][:payload].read) }
     serverPath = '@' + path;

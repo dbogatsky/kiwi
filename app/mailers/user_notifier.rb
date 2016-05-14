@@ -1,10 +1,11 @@
 class UserNotifier < ActionMailer::Base
-  default :from => 'noreply@example.com'
+  default :from => 'noreply@code10.ca'
 
   # send a signup email to the user, pass in the user object that   contains the user's email address
-  def send_media_email(to,subject,message, mediaArray)
+  def send_media_email(to, subject, message, mediaArray)
+
     require 'open-uri'
-    path = 'app/assets/images/'
+    path = '/tmp/'
     mediaArray.each do |media|
       uri = URI.parse(media)
       filename =  File.basename(uri.path)
@@ -18,4 +19,3 @@ class UserNotifier < ActionMailer::Base
     :subject => subject )
   end
 end
-
