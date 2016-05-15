@@ -10,7 +10,7 @@ class LoginController < ApplicationController
         redirect_to dashboard_path
       end
     else
-      redirect_to user_login_path
+      render layout: false
     end
   end
 
