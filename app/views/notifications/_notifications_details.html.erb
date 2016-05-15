@@ -19,7 +19,7 @@
 	        </td>
 	        <td><a href="/accounts/<%=v.account_id%>" style="color: #636e7b"><%=v.title%></a></td>
 	        <td><%=v.type.capitalize%></td>
-	        <td><%=Chronic.parse(v.scheduled_at).in_time_zone(current_user.time_zone).strftime("%b %d at %l:%M %p")%></td>
+	        <td><%=Chronic.parse(v.created_at).in_time_zone(current_user.time_zone).strftime("%b %d at %l:%M %p")%></td>
 	      </tr>
 	    <%end%>
 	  </tbody>

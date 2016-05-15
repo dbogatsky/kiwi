@@ -249,24 +249,21 @@ class ApplicationController < ActionController::Base
     @read_items = {}
     @unread_items = {}
     if current_user.present?
-      search_notification = {user_id_eq: current_user.id}
-      @notifications = Notification.all(params: {search: search_notification})
-      user_ids = Array.new
+      @notifications = Notification.all
+      user_ids = Array[]
       user_ids.push(current_user.id)
       if @notifications.present?
-        @notifications.each do |n|
+        @notifications.each do |notification|
           search = {}
-          r = n.value.reminder_id.present? rescue false
-          m = n.value.meeting_id.present? rescue false
-          if r
-            search[:id_eq] = n.value.reminder_id
-          elsif m
-            search[:id_eq] = n.value.meeting_id
+          if (notification.type == 'reminder')
+            search[:id_eq] = notification.value.reminder_id
+          elsif (notification.type == 'meeting_reminder')
+            search[:id_eq] = notification.value.meeting_id
           end
-          ci= ConversationItemSearch.all(params: { user_ids: user_ids, search: search })
+          ci = ConversationItemSearch.all(params: { user_ids: user_ids, search: search })
           if ci.last.present?
-            @read_items[n.id] = ci.last if n.read_at.present?
-            @unread_items[n.id] = ci.last unless n.read_at.present?
+            @read_items[notification.id] = ci.last if notification.read_at.present?
+            @unread_items[notification.id] = ci.last unless notification.read_at.present?
           end
           search[:id_eq] = nil
         end
