@@ -13,13 +13,18 @@
 	      <%notification = Notification.find(k)%>
 		    <tr>
 	        <td>
-	          <%unless read%>
-	          	<%=link_to notification_path(k), remote: :true, method: :patch, class: 'btn btn-xs btn-default mr5 mark_read' do%><i class="fa fa-sign-in mr5"></i><span>Marked as read</span><%end%>
+	          <%if notification.read_at.blank?%>
+	          	<%=link_to notification_path(k), remote: :true, method: :patch, class: 'btn btn-xs btn-default mr5 mark_read' do%><i class="fa fa-circle-o"></i><%end%>
+	          <%else%>
+	            <%=link_to "javascript:void(0)", class: 'btn btn-xs btn-default mr5' do%><i class="fa fa-check-circle-o"></i><%end%>
 	          <%end%>
 	        </td>
-	        <td><a href="/accounts/<%=v.account_id%>" style="color: #636e7b"><%=v.title%></a></td>
-	        <td><%=v.type.capitalize%></td>
-	        <td><%=Chronic.parse(v.created_at).in_time_zone(current_user.time_zone).strftime("%b %d at %l:%M %p")%></td>
+	        <td style="<%=notification.read_at.blank? ? 'font-weight:bold' : ''%>"><a href="/accounts/<%=v.account_id%>" style="color: #636e7b"><%=v.title%></a></td>
+	        <td style="<%=notification.read_at.blank? ? 'font-weight:bold' : ''%>"><%=v.type.capitalize%></td>
+	        <td style="<%=notification.read_at.blank? ? 'font-weight:bold' : ''%>"><%=Chronic.parse(v.created_at).in_time_zone(current_user.time_zone).strftime("%b %d at %l:%M %p")%></td>
+	    <!--     <td colspan="2">
+           jhhhhhhhhhh
+	        </td> -->
 	      </tr>
 	    <%end%>
 	  </tbody>

@@ -248,6 +248,7 @@ class ApplicationController < ActionController::Base
   def notification_info
     @read_items = {}
     @unread_items = {}
+    @all_items = {}
     if current_user.present?
       @notifications = Notification.all
       user_ids = Array[]
@@ -264,6 +265,7 @@ class ApplicationController < ActionController::Base
           if ci.last.present?
             @read_items[notification.id] = ci.last if notification.read_at.present?
             @unread_items[notification.id] = ci.last unless notification.read_at.present?
+            @all_items[notification.id] = ci.last
           end
           search[:id_eq] = nil
         end
