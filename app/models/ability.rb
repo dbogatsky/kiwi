@@ -30,7 +30,7 @@ class Ability
               # abilities_debug.push("can :" + permission.action + ", :" + permission.subject_class)
             else
               # defining ability with subject class as just the class name
-              if permission.action == 'manage' && current_user_role.name != 'Entity Admin'
+              if permission.action == 'manage' && current_user_role.name != 'Entity Admin' && false
                 can :manage_permission, permission.subject_class.constantize
                 abilities_debug.push('can :manage_permission, ' + permission.subject_class)
               else
