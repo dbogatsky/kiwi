@@ -122,7 +122,7 @@
   </div><!-- col-sm-9 -->
   <div class="col-sm-3">
     <div class="fm-sidebar">
-      <% if can? :create, Medium %>
+      <% if can? :media_upload, User %>
         <button class="btn btn-primary btn-block" id="upload-file">Upload File</button>
       <% end %>
 
