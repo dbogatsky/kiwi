@@ -5,6 +5,7 @@ class AccountsController < ApplicationController
   before_action :get_token
   before_action :find_account, only: [:conversation, :search, :jump_in, :add_quote, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting, :update_quote, :delete_quote, :add_reminder, :update_reminder, :delete_reminder]
   before_action :get_api_values, only: [:search]
+  @@account_with_previous_value = nil
   def index
     # Get all accounts
     @accounts = Account.all(params: { search: params[:search] })
@@ -35,6 +36,7 @@ class AccountsController < ApplicationController
     @addresses = @account.addresses
     @contacts = @account.contacts
     @users = User.all(uid: session[:user_id])
+    @@account_with_previous_value = @account
   end
 
   def create
@@ -59,6 +61,10 @@ class AccountsController < ApplicationController
       params[:account][:contacts_attributes] = params[:account][:contacts_attributes].values
       if @account.update_attributes(name: @account.name, account: account_params)
         save_avatar
+        note_body = account_update_info(@@account_with_previous_value, @account)
+        c_id = @account.conversation.id
+        note_title ="Account info changed on " + "#{Time.now.in_time_zone(current_user.time_zone).strftime('%a %b %d %Y at %l:%M %p')}"
+        ConversationItem.create(conversation_item: { title: note_title, body: note_body, created_by_id: current_user.id }, conversation_id: c_id, type: 'note')
         flash[:success] = 'Account has been edited successfully'
       else
         flash[:danger] = 'Oops! Unable to edit the account'
@@ -530,6 +536,88 @@ class AccountsController < ApplicationController
         http.request(req)
       end
     end
+  end
+
+  def  account_update_info(account_with_previous_value, account_with_update_value)
+    changed_value = {}
+    if account_with_previous_value.present? && account_with_update_value.present?
+      if account_with_previous_value.name != account_with_update_value.name
+        changed_value[:prev_name] = account_with_previous_value.name
+        changed_value[:upated_name] = account_with_update_value.name
+      end
+      if account_with_previous_value.status.name != account_with_update_value.status.name
+        changed_value[:prev_status] = account_with_previous_value.status.name
+        changed_value[:updated_status] = account_with_update_value.status.name
+      end
+      if account_with_previous_value.contact_name != account_with_update_value.contact_name
+        changed_value[:prev_contact_name] = account_with_previous_value.contact_name
+        changed_value[:updated_contact_name] = account_with_update_value.contact_name
+      end
+      if account_with_previous_value.contact_title != account_with_update_value.contact_title
+        changed_value[:prev_contact_title] = account_with_previous_value.contact_title
+        changed_value[:updated_contact_title] = account_with_update_value.contact_title
+      end
+      if account_with_previous_value.id != account_with_update_value.id
+        changed_value[:prev_assigned_to] = account_with_previous_value.assigned_to.first_name + ' ' + account_with_previous_value.assigned_to.last_name
+        changed_value[:updated_assigned_to] = account_with_update_value.assigned_to.first_name + ' ' + account_with_update_value.assigned_to.last_name
+      end
+      if account_with_previous_value.id != account_with_update_value.id
+        changed_value[:prev_assigned_to] = account_with_previous_value.assigned_to.first_name + ' ' + account_with_previous_value.assigned_to.last_name
+        changed_value[:updated_assigned_to] = account_with_update_value.assigned_to.first_name + ' ' + account_with_update_value.assigned_to.last_name
+      end
+
+      prev_address = account_with_previous_value.addresses.last
+      updated_address = account_with_update_value.addresses.last
+      if prev_address.name != updated_address.name
+         changed_value[:prev_address_name] = prev_address.name
+         changed_value[:updated_address_name] = updated_address.name
+      end
+      if prev_address.street_address != updated_address.street_address
+         changed_value[:prev_address_street_address] = prev_address.street_address
+         changed_value[:updated_address_street_address] = updated_address.street_address
+      end
+      if prev_address.city != updated_address.city
+         changed_value[:prev_address_city] = prev_address.city
+         changed_value[:updated_address_city] = updated_address.city
+      end
+      if prev_address.postcode != updated_address.postcode
+         changed_value[:prev_address_postcode] = prev_address.postcode
+         changed_value[:updated_address_postcode] = updated_address.postcode
+      end
+      if prev_address.region != updated_address.region
+         changed_value[:prev_address_region] = prev_address.region
+         changed_value[:updated_address_region] = updated_address.region
+      end
+      if prev_address.country != updated_address.country
+         changed_value[:prev_address_country] = prev_address.country
+         changed_value[:updated_address_country] = updated_address.country
+      end
+      if account_with_previous_value.about != account_with_update_value.about
+        changed_value[:prev_about] = account_with_previous_value.about
+        changed_value[:updated_about] = account_with_update_value.about
+      end
+      if account_with_previous_value.quick_facts != account_with_update_value.quick_facts
+        changed_value[:prev_quick_facts] = account_with_previous_value.quick_facts
+        changed_value[:updated_quick_facts] = account_with_update_value.quick_facts
+      end
+      # prev_contacts = account_with_previous_value.contacts.sort_by do |pc|
+      #   pc.id
+      # end
+      # updated_contacts = account_with_update_value.contacts.sort_by do |uc|
+      #   uc.id
+      # end
+      # if prev_contacts.map(&:id).sort == updated_contacts.map(&:id).sort
+      #   # changed_value[:contacts] = {}
+      #   prev_contacts.each do |prev_c|
+      #     updated_contacts.each do |updated_c|
+      #       if prev_c.name != updated_c.name
+      #         changed_value[:contacts][:contact_name]
+      #     end
+      #   end
+      # end
+    end
+    @note_body = "<p><b>Previous Value => Updated Value</b></p><ul>#{changed_value[:prev_name].present? ? "<li> <b>Account Name:</b> #{changed_value[:prev_name]} => #{changed_value[:upated_name]} </li>" : ''}#{changed_value[:prev_status].present? ? "<li> <b>Account Status:</b> #{changed_value[:prev_status]} => #{changed_value[:updated_status]} </li>" : ''}#{changed_value[:prev_contact_name].present? ? "<li> <b>Contact Name:</b> #{changed_value[:prev_contact_name]} => #{changed_value[:updated_contact_name]} </li>" : ''}#{changed_value[:prev_contact_title].present? ? "<li> <b>Contact Title:</b> #{changed_value[:prev_contact_title]} => #{changed_value[:updated_contact_title]} </li>" : ''}#{changed_value[:prev_assigned_to].present? ? "<li> <b>Assign To:</b> #{changed_value[:prev_assigned_to]} => #{changed_value[:updated_assigned_to]} </li>" : ''}#{changed_value[:prev_address_name].present? ? "<li> <b>Address Name:</b> #{changed_value[:prev_address_name]} => #{changed_value[:updated_address_name]} </li>" : ''}#{changed_value[:prev_address_street_address].present? ? "<li> <b>Street Address:</b> #{changed_value[:prev_address_street_address]} => #{changed_value[:updated_address_street_address]} </li>" : ''}#{changed_value[:prev_address_city].present? ? "<li> <b>City:</b> #{changed_value[:prev_address_city]} => #{changed_value[:updated_address_city]} </li>" : ''}#{changed_value[:prev_address_postcode].present? ? "<li> <b>Post/Zipcode:</b> #{changed_value[:prev_address_postcode]} => #{changed_value[:updated_address_postcode]} </li>" : ''}#{changed_value[:prev_address_region].present? ? "<li> <b>Province/State:</b> #{changed_value[:prev_address_region]} => #{changed_value[:updated_address_region]} </li>" : ''}#{changed_value[:prev_address_country].present? ? "<li> <b>Country:</b> #{changed_value[:prev_address_country]} => #{changed_value[:updated_address_country]} </li>" : ''}#{changed_value[:prev_about].present? ? "<li> <b>About:</b> #{changed_value[:prev_about]} => #{changed_value[:updated_about]} </li>" : ''}#{changed_value[:prev_quick_facts].present? ? "<li> <b>Quick Facts:</b> #{changed_value[:prev_quick_facts]} => #{changed_value[:updated_quick_facts]} </li>" : ''}</ul><p><b>Updated by:</b> #{current_user.first_name} #{current_user.last_name} </p>".html_safe
+     return @note_body
   end
 end
 
