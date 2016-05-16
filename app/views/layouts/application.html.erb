@@ -88,6 +88,8 @@
       var c_zone = "<%=current_user.time_zone%>"
       if (t_zone != c_zone && not_now != 'true' && t_zone != ''){
          $(".change-timezone-modal-form").modal('show');
+      }else{
+         $(".change-timezone-modal-form").modal('hide');
       }
     });
 
