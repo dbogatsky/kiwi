@@ -1,4 +1,4 @@
-class ScheduleController < ApplicationController
+ class ScheduleController < ApplicationController
   include ApplicationHelper
   before_action :get_api_values,only: [:index, :calendar_event]
 
@@ -54,37 +54,37 @@ class ScheduleController < ApplicationController
   end
 
   def get_events
-    user_ids = Array.new
-    user_ids.push(current_user.id) #push any additional user_id'
+    user_ids = Array[]
+    user_ids.push(current_user.id) # push any additional user_id'
 
-    #get the current date
+    # get the current date
     start_date = params['start']
     end_date = params['end']
 
-    # search = Hash.new
-    # search[:type_eq]="ConversationItems::Meeting"
-    # search[:starts_at_gteq]="#{start_date} 00:00:00"
-    # search[:starts_at_lteq]="#{end_date} 23:59:59"
+    search = Hash.new
+    search[:type_eq] = 'ConversationItems::Meeting'
+    search[:starts_at_gteq] = "#{start_date} 00:00:00"
+    search[:starts_at_lteq] = "#{end_date} 23:59:59"
 
-    @meetings = ConversationItemSearch.all(params: {user_ids: user_ids})
+    @meetings = ConversationItemSearch.all(params: {search: search, user_ids: user_ids})
 
     events = Array.new
     @meetings.each do |i|
-      if i.type == "meeting" || (i.type == 'note' && i.scheduled_at.present?) || i.type == 'reminder' || i.type == 'quote'
-        if i.type == "meeting"
-          s_date = Chronic.parse(i.starts_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S")
-          e_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S")
-          color = "#3a87ad"
+      if i.type == 'meeting' || (i.type == 'note' && i.scheduled_at.present?) || i.type == 'reminder' || i.type == 'quote'
+        if i.type == 'meeting'
+          s_date = Chronic.parse(i.starts_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
+          e_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
+          color = '#3a87ad'
           all_day = false
         elsif i.type == 'note' || i.type == 'reminder'
-          s_date = Chronic.parse(i.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S")
-          e_date = Chronic.parse(i.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S")
-          color = "#f0ca45"
+          s_date = Chronic.parse(i.scheduled_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
+          e_date = Chronic.parse(i.scheduled_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
+          color = '#f0ca45'
           all_day = false
         elsif i.type == 'quote'
-          s_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S")
-          e_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S")
-          color = "#e91e63"
+          s_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
+          e_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
+          color = '#e91e63'
           all_day = true
         end
         event_data = {
@@ -103,6 +103,7 @@ class ScheduleController < ApplicationController
   end
 
   private
+
     def get_meetings(user_ids)
       @colors = ['#e0301e', '#000', '#c5e323', '#9e466b', '#0000ff']
       @meetings = []
@@ -111,7 +112,7 @@ class ScheduleController < ApplicationController
         if u.to_i != current_user.id
            @user_color[u.to_i] = @colors[index]
         else
-           @user_color[u.to_i] = "#3a87ad"
+           @user_color[u.to_i] = '#3a87ad'
         end
       end
       apiURL = RequestStore.store[:api_url] + '/conversation_items/search?'

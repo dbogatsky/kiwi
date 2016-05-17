@@ -183,13 +183,13 @@ body.modal-open {
   min-width: 68px !important;
 }
 .country_select .select2-container{width: 100% !important;}
-
-.cd-timeline-img.schedule_meeting{    top: 28%;    left: 8%;}
-.cd-timeline-img.bell_icon{    top: 32%;    left: 8%;}
-
-.schedule{    position: absolute;
-left: 102px;}
-
+.cd-timeline-img.schedule_meeting{ top: 28%;    left: 8%;}
+.cd-timeline-img.quote_top{ top: 27%;    left: 8%;}
+.cd-timeline-img.bell_icon{ top: 30%;    left: 8%;}
+.schedule{position: absolute; left: 102px;}
 .repeat_heading{ margin: 45px 0 12px;}
-.margin_top40{margin-top:40px;}
+.margin_top40{margin-top:45px;}
 .displ_inlineblock{display:inline-block;}
+
+.shadow_non{box-shadow: none !important;max-width: 395px;}
+.i_pointer{cursor: pointer;}

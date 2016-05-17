@@ -16,14 +16,19 @@
   <%unread_items.first(5).each do |k,v| %>
     <li class="new">
       <a href="/notifications/<%=k%>">
+      <!-- <a href="/accounts/<%#=v.account_id%>?notification_id=<%#=k%>"> -->
         <%if v.type.eql? 'reminder'%>
-        <span class="thumb notification-icon" style="background: #f0ca45;">
-          <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-bell.svg" alt="Reminder">
-        </span>
+          <span class="thumb notification-icon" style="background: #f0ca45;">
+            <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-bell.svg" alt="Reminder">
+          </span>
         <%elsif v.type.eql? 'meeting'%>
-        <span class="thumb notification-icon" style="background:#1cc7c2;">        
-          <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-calendar.svg" alt="Meeting">
-        </span>
+          <span class="thumb notification-icon" style="background:#1cc7c2;">
+            <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-calendar.svg" alt="Meeting">
+          </span>
+        <%elsif v.type.eql? 'quote'%>
+          <span class="thumb notification-icon" style="background:#e91e63;">
+             <img  class="thumb-img"  src="/assets/vertical-timeline/img/cd-icon-calculator.svg" alt="Quote">
+          </span>
         <%end%>
       <span class="desc">
         <span class="name"><small><%=v.title%></small><span class="badge badge-success">new</span></span>

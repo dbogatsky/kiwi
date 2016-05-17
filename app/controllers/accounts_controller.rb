@@ -21,6 +21,7 @@ class AccountsController < ApplicationController
     if params[:notification_id].present?
       @notification = Notification.find(params[:notification_id])
       @notification.update_attributes(read_at: Time.now)
+      # notification_info
     end
   end
 

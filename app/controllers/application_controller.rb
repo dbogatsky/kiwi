@@ -251,8 +251,9 @@ class ApplicationController < ActionController::Base
     @all_items = {}
     if current_user.present?
       @notifications = Notification.all
-      user_ids = Array[]
+      user_ids = []
       user_ids.push(current_user.id)
+
       if @notifications.present?
         @notifications.each do |notification|
           search = {}
