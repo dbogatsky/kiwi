@@ -1,49 +1,57 @@
-<div class="ibox-content ibox-heading">
-  <div class="cd-timeline-img cd-quote quote_top">
-      <img src="/assets/vertical-timeline/img/cd-icon-calculator.svg" alt="Quote">
-  <span class="schedule"><%=get_styled_quotestatus(citem, false)%></span>
-  </div>
-  <div class="btn-group pull-right">
-    <div class="btn-group mr5 pull-right">
-      <button data-toggle="dropdown" class="btn btn-sm btn-white dropdown-toggle" type="button" style="border-radius: 2px">
-        <i class="fa fa-cog mr5"></i><span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu">
-        <li>
-            <a class="edit_quote" href="#"
-             data-toggle="modal"
-             data-target=".conversation-edit-quote-modal-form"
-             data-id="<%= citem.id %>"
-             data-title="<%=citem.title%>"
-             data-date="<%=mobile? ? Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") : Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y")  if citem.scheduled_at.present?%>"
-             data-time="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.scheduled_at.present? %>"
-             data-ends-day="<%=(Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).to_date - Date.today.in_time_zone(current_user.time_zone).to_date).to_i if citem.ends_at.present? %>"
-             data-ends-date="<%=mobile? ? Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") : Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.ends_at.present?%>"
-             data-amount = '<%=citem.amount%>'
-             data-description="<%= citem.body %>">Edit</a>
-        </li>
-        <li>
-          <a class="complete_quote" href="#"
-            data-toggle="modal"
-            data-target=".conversation-complete-quote-modal-form"
-            data-status="<%= citem.status%>"
-            data-notes ="<%=citem.notes%>"
-            data-id="<%=citem.id%>">Complete
-          </a>
-        </li>
-        <li>
-          <%=link_to 'Delete', delete_quote_account_path(citem.account_id, item_id: citem.id, info: true), method: :delete,data: {confirm: 'Are you sure to delete this quote?'}%>
-        </li>
-        <li>
-          <%=link_to 'Go To Account', account_path(citem.account_id)%>
-        </li>
-      </ul>
+<div class="ibox-content ibox-heading pull-left" style="width: 100%;">
+  <div class=' row col-md-12 padd_left0 padd_right0'>
+    <div class="col-md-4 padd_left0 pull-left">
+      <span class="thumb meeting-icon" style="background:#e91e63;">
+        <img  class="meeting-img"  src="/assets/vertical-timeline/img/cd-icon-calculator.svg" alt="Quote">
+      </span>
+    </div>
+    <div class="col-md-4 pull-left">
+      <span class="schedule"><%=get_styled_quotestatus(citem, false)%></span>
+    </div>
+    <div class="col-md-4 pull-left padd_right0">
+      <div class="btn-group pull-right">
+        <div class="btn-group mr5 pull-right">
+          <button data-toggle="dropdown" class="btn btn-sm btn-white dropdown-toggle" type="button" style="border-radius: 2px">
+            <i class="fa fa-cog mr5"></i><span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li>
+                <a class="edit_quote" href="#"
+                 data-toggle="modal"
+                 data-target=".conversation-edit-quote-modal-form"
+                 data-id="<%= citem.id %>"
+                 data-title="<%=citem.title%>"
+                 data-date="<%=mobile? ? Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") : Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y")  if citem.scheduled_at.present?%>"
+                 data-time="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.scheduled_at.present? %>"
+                 data-ends-day="<%=(Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).to_date - Date.today.in_time_zone(current_user.time_zone).to_date).to_i if citem.ends_at.present? %>"
+                 data-ends-date="<%=mobile? ? Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") : Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.ends_at.present?%>"
+                 data-amount = '<%=citem.amount%>'
+                 data-description="<%= citem.body %>">Edit</a>
+            </li>
+            <li>
+              <a class="complete_quote" href="#"
+                data-toggle="modal"
+                data-target=".conversation-complete-quote-modal-form"
+                data-status="<%= citem.status%>"
+                data-notes ="<%=citem.notes%>"
+                data-id="<%=citem.id%>">Complete
+              </a>
+            </li>
+            <li>
+              <%=link_to 'Delete', delete_quote_account_path(citem.account_id, item_id: citem.id, info: true), method: :delete,data: {confirm: 'Are you sure to delete this quote?'}%>
+            </li>
+            <li>
+              <%=link_to 'Go To Account', account_path(citem.account_id)%>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
-  <span class="cd-date margin_top40 displ_inlineblock">
-      <%= citem.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>
-  </span>
-  <h3 class="ci_header"><%= citem.title %></h3>
+  <div class="row col-md-12 padd_left0 cd-date">
+    <%= citem.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>
+    <h3 class="ci_header"><%= citem.title %></h3>
+  </div>
 </div>
 <div class="panel-body">
   <div class="ci_note_body">
