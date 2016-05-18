@@ -23,6 +23,7 @@ class AccountsController < ApplicationController
       @notification.update_attributes(read_at: Time.now)
       # notification_info
     end
+    # account_timeline_conversation_items
   end
 
   def new
@@ -492,6 +493,38 @@ class AccountsController < ApplicationController
   end
 
   private
+
+  def account_timeline_conversation_items
+      user_preference_details
+      preference_limit = @user_preference['preview_conversation_timeline']
+      user_ids = Array.new
+      search = Hash.new
+      user_ids.push(current_user.id)
+      current_date = Date.current.in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
+      search[:created_at_lteq] = convert_datetime_to_utc(current_user.time_zone, current_date, "23:59:59")
+      search[:account_id_eq] = @account.id
+      if preference_limit.present?
+        if preference_limit == 'one_day'
+          search[:created_at_gteq] = convert_datetime_to_utc(current_user.time_zone, current_date, "00:00:00")
+        elsif preference_limit == 'two_days'
+          end_date = (Date.current - 1.day).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
+          search[:created_at_gteq] = convert_datetime_to_utc(current_user.time_zone, end_date, "00:00:00")
+        elsif preference_limit == 'one_week'
+          end_date = (Date.current - 7.day).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
+          search[:created_at_gteq] = convert_datetime_to_utc(current_user.time_zone, end_date, "00:00:00")
+        elsif preference_limit == 'two_weeks'
+          end_date = (Date.current - 14.day).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
+          search[:created_at_gteq] = convert_datetime_to_utc(current_user.time_zone, end_date, "00:00:00")
+        elsif preference_limit == 'one_month'
+          end_date = (Date.current - 30.day).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
+          search[:created_at_gteq] = convert_datetime_to_utc(current_user.time_zone, end_date, "00:00:00")
+        end
+      binding.pry
+        @timeline_items = ConversationItemSearch.all(params: {user_ids: user_ids, search: search})
+      else
+        @timeline_items = @account.conversation.conversation_items
+      end
+  end
 
   def get_token
     # set gloal var for token to be used in model, hack for now
