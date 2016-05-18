@@ -2,11 +2,7 @@ class PreferencesController < ApplicationController
   before_action :get_api_values
 
   def show
-    curlRes = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -H "Cache-Control: no-cache" "#{@apiFullUrl}"`
-    # news_data = JSON.parse(curlRes)
-    # news_data = news_data['company']['settings']['preferences']
-    # news_data.shift
-    # @news_data = news_data.delete_if { |key, value| value.blank? }
+    user_preference_details
   end
 
   def update

@@ -64,6 +64,11 @@
       </div>
     </div><!-- row -->
   </div>
+  <%if @user_preference['default_calendar_view'].present? %>
+     <%@calendar_view = @user_preference['default_calendar_view']%>
+  <%else%>
+     <%@calendar_view = 'month'%>
+  <%end%>
 </div>
 <%= render "accounts/conversation_meeting", account: nil %>
 <%= render "accounts/conversation_quote", account: nil %>
@@ -71,7 +76,6 @@
 
 <script>
   $('.select2').select2()
-
   var new_reminder;
   $(function() {
     new_reminder = $('#new_reminder').wysihtml5({'font-styles': false, 'image': false, 'link':false});
@@ -169,8 +173,9 @@
         header: {
           left: 'prev,next today',
           center: 'title',
-          right: 'month,agendaWeek,agendaDay'
+          right: 'month,agendaWeek,agendaDay',
         },
+        defaultView: '<%=@calendar_view%>',
         eventClick: function (calEvent, jsEvent, view) {
           $('#preloader').css('opacity', 0.3);
           $('#preloader').show();

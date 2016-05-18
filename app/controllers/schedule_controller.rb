@@ -3,6 +3,7 @@
   before_action :get_api_values,only: [:index, :calendar_event]
 
   def index
+    user_preference_details
     @users = User.all(uid: session[:user_id])
     get_meetings([current_user.id])
     @sort_meeting = []

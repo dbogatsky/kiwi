@@ -1,91 +1,54 @@
 <% content_for :pageheader do %>
   <h2><i class="fa fa-user"></i> Preference</h2>
 <% end %>
+<%= simple_form_for current_user, url: preference_path, method: :patch do |f| %>
+  <div class="panel panel-default">
+  	<div class="panel-heading">
+  		<p>Edit your preference below and click save</p>
+  	</div>
 
-    <%= simple_form_for current_user, url: preference_path, method: :patch do |f| %>
-      <div class="panel panel-default">
+  	<div class="panel-body">
+      <div class="form-group">
+        <label class="col-sm-3 control-label">Default view of your calendar</label>
+        <div class="col-sm-6">
+          <%=select_tag('preference[default_calendar_view]', options_for_select([['Daily', 'agendaDay'],['Weekly', 'agendaWeek'],['Monthly', 'month']], selected: @user_preference['default_calendar_view']), {prompt: "-Select your default view of your calendar-", :class => 'form-control', required: true})%>
+        </div>
+      </div>
+    </div> <!-- panel-body -->
 
-      	<div class="panel-heading">
-      		<p>Edit your preference below and click save</p>
-      	</div>
+    <div class="panel-body">
+      <div class="form-group">
+        <label class="col-sm-3 control-label">Preview conversation timeline</label>
+        <div class="col-sm-6">
+          <%=select_tag('preference[preview_conversation_timeline]', options_for_select([['1 day', 'one_day'],['2 days', 'two_days'],['1 week', 'one_week'],['2 weeks', 'two_weeks'],['1 month', 'one_month']], selected: @user_preference['preview_conversation_timeline']), {prompt: "-Select your conversation timeline preview limit-", :class => 'form-control', required: true})%>
+        </div>
+      </div>
+    </div> <!-- panel-body -->
 
-      	<div class="panel-body">
-          <div class="form-group">
-            <label class="col-sm-3 control-label">Default view of your calendar</label>
-            <div class="col-sm-6">
-              <select class="form-control select2" name="preference[default_calendar_view]" placeholder="-Select your default view of your calendar." required="required">
-                <option value="daily">Daily</option>
-                <option value="weekly">Weekly</option>
-                <option value="monthly">Monthly</option>
-              </select>
-            </div>
-          </div>
-        </div> <!-- panel-body -->
+    <div class="panel-body">
+      <div class="form-group">
+        <label class="col-sm-3 control-label">Receive Notifications by</label>
+        <div class="col-sm-6">
+          <%=select_tag('preference[received_notification_by]', options_for_select([['Both', 'both'],['Email only', 'email'],['SMS only', 'sms'],['None', 'none']], selected: @user_preference['received_notification_by']), {prompt: "-Select your notification reminder preference. Email or SMS or both-", :class => 'form-control', required: true})%>
+        </div>
+      </div>
+    </div> <!-- panel-body -->
 
-        <div class="panel-body">
-          <div class="form-group">
-            <label class="col-sm-3 control-label">Preview conversation timeline</label>
-            <div class="col-sm-6">
-              <select class="form-control select2" name="preference[preview_conversation_timeline]" placeholder="-Select your conversation timeline preview limit." required="required">
-                <option value="one_day">1 day</option>
-                <option value="two_days">2 days</option>s
-                <option value="one_week">1 week</option>
-                <option value="two_weeks">2 weeks</option>
-                <option value="one_month">1 month</option>
-              </select>
-            </div>
-          </div>
-        </div> <!-- panel-body -->
+    <div class="panel-body">
+      <div class="form-group">
+        <label class="col-sm-3 control-label">Notification display limit</label>
+        <div class="col-sm-6">
+          <%=select_tag('preference[notification_display_limit]', options_for_select([['1 day', 'one_day'],['2 days', 'two_days'],['1 week', 'one_week'],['2 weeks', 'two_weeks'],['3 weeks', 'three_weeks'],['1 month', 'one_month']], selected: @user_preference['notification_display_limit']), {prompt: "-Select your notification display limit-", :class => 'form-control', required: true})%>
+        </div>
+      </div>
+    </div> <!-- panel-body -->
 
-        <div class="panel-body">
-          <div class="form-group">
-            <label class="col-sm-3 control-label">Receive Notifications by</label>
-            <div class="col-sm-6">
-               <select class="form-control select2" name="preference[received_notification_by]" placeholder="-Select your notification reminder preference. Email or SMS or both." required="required">
-                <option value="both">Both</option>
-                <option value="email">Email only</option>
-                <option value="sms">SMS only</option>
-                <option value="none">None</option>
-              </select>
-            </div>
-          </div>
-        </div> <!-- panel-body -->
-
-        <div class="panel-body">
-          <div class="form-group">
-            <label class="col-sm-3 control-label">Notification display limit</label>
-            <div class="col-sm-6">
-              <select class="form-control select2" name="preference[notification_display_limit]" placeholder="-Select your notification display limit." required="required">
-                <option value="one_day">1 day</option>
-                <option value="two_days">2 days</option>
-                <option value="one_week">1 week</option>
-                <option value="two_weeks">2 weeks</option>
-                <option value="three_weeks">3 weeks</option>
-                <option value="one_month">1 month</option>
-              </select>
-            </div>
-          </div>
-        </div> <!-- panel-body -->
-
-      	<div class="panel-footer">
-      		<div class="row">
-      			<div class="col-sm-6 col-sm-offset-3">
-      				<button type="submit" class="btn btn-primary" name="save" id="save">Save</button>&nbsp;
-      				<a class="btn btn-default" href="/users">Cancel</a>
-      			</div>
-      		</div>
-      	</div><!-- panel-footer -->
-    <% end %>
-
-    </div><!-- contentpanel -->
-
-  </div><!-- mainpanel -->
-
-</section>
-
-<style>
-</style>
-
-
-<script>
-</script>
+  	<div class="panel-footer">
+  		<div class="row">
+  			<div class="col-sm-6 col-sm-offset-3">
+  				<button type="submit" class="btn btn-primary" name="save" id="save">Save</button>&nbsp;
+  				<a class="btn btn-default" href="/users">Cancel</a>
+  			</div>
+  		</div>
+  	</div><!-- panel-footer -->
+<% end %>

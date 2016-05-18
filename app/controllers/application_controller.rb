@@ -274,6 +274,18 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def user_preference_details
+    @apiFullUrl = RequestStore.store[:api_url] + "/users/#{current_user.id}/settings/preferences"
+    @email = current_user.email
+    @appKey = APP_CONFIG['api_app_key']
+    @token = session[:token]
+    curlRes = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -H "Cache-Control: no-cache" "#{@apiFullUrl}"`
+    user_preference = JSON.parse(curlRes)
+    user_preference = user_preference['user']['settings']['preferences']
+    user_preference.shift
+    @user_preference = user_preference
+  end
+
 #   def check_request
 #     unless request.format.symbol.present?
 #       render text: 'page loaded'
