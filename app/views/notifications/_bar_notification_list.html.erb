@@ -14,9 +14,11 @@
 <h5 class="title">You Have <%=unread_items.count%> New Notifications</h5>
 <ul class="dropdown-list gen-list">
   <%unread_items.first(5).each do |k,v| %>
+    <%notification = Notification.find(k)%>
     <li class="new">
       <a href="/notifications/<%=k%>">
       <!-- <a href="/accounts/<%#=v.account_id%>?notification_id=<%#=k%>"> -->
+      <%if notification.type == 'reminder' || notification.type == 'meeting_reminder'%>
         <%if v.type.eql? 'reminder'%>
           <span class="thumb notification-icon" style="background: #f0ca45;">
             <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-bell.svg" alt="Reminder">
@@ -30,9 +32,14 @@
              <img  class="thumb-img"  src="/assets/vertical-timeline/img/cd-icon-calculator.svg" alt="Quote">
           </span>
         <%end%>
+      <%else%>
+        <span class="thumb notification-icon" style="background: #333;">
+          <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-briefcase.svg" alt="Reminder">
+        </span>
+      <%end%>
       <span class="desc">
-        <span class="name"><small><%=v.title%></small><span class="badge badge-success">new</span></span>
-        <span class="msg"><%=Chronic.parse(v.created_at).in_time_zone(current_user.time_zone).strftime("%b %d")%></span>
+        <span class="name"><small><%=notification.type == 'account_status_change' ? v.name : v.title%></small><span class="badge badge-success">new</span></span>
+        <span class="msg"><%=Chronic.parse(notification.created_at).in_time_zone(current_user.time_zone).strftime("%b %d")%></span>
       </span>
       </a>
     </li>
