@@ -63,7 +63,8 @@ class LoginController < ApplicationController
   end
 
   def forgot
-    render layout: false
+    redirect_to root_path
+    #render layout: false
   end
 
   def change_password
