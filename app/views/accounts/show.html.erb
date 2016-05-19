@@ -359,10 +359,14 @@
       if ($('.conversation-edit-email-modal-form input[name="scheduled_time"]').val()!="" || $('.conversation-edit-email-modal-form input[name="scheduled_date"]').val()!="") {
         $("#send_later_edit").attr('checked', true);
         $("#email-sendlater-settings-edit").show(500);
+        $("#emailDatePickerEdit").attr('required', true);
+        $("#emailTimePickerEdit").attr('required', true);
       }
       else {
         $("#email-sendlater-settings").hide(500);
         $("#send_later_edit").attr('checked', false);
+        $("#emailDatePickerEdit").attr('required', false);
+        $("#emailTimePickerEdit").attr('required', false);
       }
     });
 
@@ -758,11 +762,19 @@
   		$('#send-later, #send_later_edit').change(function () {
   		    if ($(this).is(':checked')) {
   			    $("#email-sendlater-settings, #email-sendlater-settings-edit").show(500);
+            $("#scheduledDatePicker").attr('required', true);
+            $("#emailDatePickerEdit").attr('required', true);
+            $("#scheduledTimePicker").attr('required', true);
+            $("#emailTimePickerEdit").attr('required', true);
   			}
   			else {
   				$("#email-sendlater-settings, #email-sendlater-settings-edit").hide(500);
           $("#scheduledDatePicker").val(null);
           $("#emailDatePickerEdit").val(null);
+          $("#scheduledDatePicker").attr('required', false);
+          $("#emailDatePickerEdit").attr('required', false);
+          $("#scheduledTimePicker").attr('required', false);
+          $("#emailTimePickerEdit").attr('required', false);
   			}
   		});
 

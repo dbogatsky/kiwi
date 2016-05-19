@@ -27,7 +27,7 @@
                     <div class="input-group">
                       <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                       <%if mobile?%>
-                        <input id="reminderDatePickerEdit" type="date" name="scheduled_date"/>
+                        <input id="reminderDatePickerEdit" type="date" name="scheduled_date" required="required"/>
                       <%else%>
                         <input type="text" class="form-control" placeholder="mm/dd/yyyy" id="reminderDatePickerEdit" name="scheduled_date" required="required" />
                       <%end%>
