@@ -250,10 +250,39 @@ class ApplicationController < ActionController::Base
     @unread_items = {}
     @all_items = {}
     if current_user.present?
-      @notifications = Notification.all
+      user_preference_details
+      preference_limit = @user_preference['notification_display_limit']
+      search = Hash.new
+      current_date = Date.current.in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
+      search[:created_at_lteq] = convert_datetime_to_utc(current_user.time_zone, current_date, "23:59:59")
+      if preference_limit.present?
+        if preference_limit == 'one_day'
+          search[:created_at_gteq] = convert_datetime_to_utc(current_user.time_zone, current_date, "00:00:00")
+        elsif preference_limit == 'two_days'
+          end_date = (Date.current - 1.day).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
+          search[:created_at_gteq] = convert_datetime_to_utc(current_user.time_zone, end_date, "00:00:00")
+        elsif preference_limit == 'three_days'
+          end_date = (Date.current - 2.day).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
+          search[:created_at_gteq] = convert_datetime_to_utc(current_user.time_zone, end_date, "00:00:00")
+        elsif preference_limit == 'one_week'
+          end_date = (Date.current - 1.week).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
+          search[:created_at_gteq] = convert_datetime_to_utc(current_user.time_zone, end_date, "00:00:00")
+        elsif preference_limit == 'two_weeks'
+          end_date = (Date.current - 2.week).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
+          search[:created_at_gteq] = convert_datetime_to_utc(current_user.time_zone, end_date, "00:00:00")
+        elsif preference_limit == 'three_weeks'
+          end_date = (Date.current - 3.week).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
+          search[:created_at_gteq] = convert_datetime_to_utc(current_user.time_zone, end_date, "00:00:00")
+        elsif preference_limit == 'one_month'
+          end_date = (Date.current - 1.month).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
+          search[:created_at_gteq] = convert_datetime_to_utc(current_user.time_zone, end_date, "00:00:00")
+        end
+        @notifications = Notification.all(params: {search: search})
+      else
+        @notifications = Notification.all
+      end
       user_ids = []
       user_ids.push(current_user.id)
-
       if @notifications.present?
         @notifications.each do |notification|
           search = {}
