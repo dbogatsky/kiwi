@@ -82,8 +82,8 @@ class AccountsController < ApplicationController
       params[:conversation_item][:scheduled_at] = nil
       params[:conversation_item][:reminder] = nil
     end
-    params[:conversation_item][:starts_at] = convert_datetime_to_utc(current_user.time_zone, params[:starts_date], params[:starts_time])
-    params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone, params[:ends_date], params[:ends_time])
+    params[:conversation_item][:starts_at] = convert_datetime_to_utc(current_user.time_zone, params[:starts_date], params[:starts_time]) if params[:starts_date].present?
+    params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone, params[:ends_date], params[:ends_time]) if params[:ends_date].present? && params[:ends_time].present? && (params[:conversation_item][:item_type] == 'general')
 
     if params[:conversation_item][:repetition_rule][:frequency_type] == 'monthly'
       params[:conversation_item][:repetition_rule][:day_of_month] = params[:conversation_item][:starts_at].to_datetime.day if params[:month_week] == 'dayofmonth'
@@ -109,6 +109,7 @@ class AccountsController < ApplicationController
         reminder:           params[:conversation_item][:reminder],
         starts_at:          params[:conversation_item][:starts_at],
         ends_at:            params[:conversation_item][:ends_at],
+        item_type:          params[:conversation_item][:item_type],
         repetition_rules: {
           frequency_type:     params[:conversation_item][:repetition_rule][:frequency_type],
           frequency:          params[:conversation_item][:repetition_rule][:frequency],
@@ -167,9 +168,9 @@ class AccountsController < ApplicationController
         params[:conversation_item][:reminder] = nil
       end
     end
-    params[:conversation_item][:starts_at] = convert_datetime_to_utc(current_user.time_zone, params[:starts_date], params[:starts_time]) if params[:starts_date] && params[:starts_time]
-    params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone, params[:ends_date], params[:ends_time]) if params[:ends_date] && params[:ends_time]
     @conversation = ConversationItem.find(params[:conversation_item][:id], params:{conversation_id: @account.conversation.id})
+    params[:conversation_item][:starts_at] = convert_datetime_to_utc(current_user.time_zone, params[:starts_date], params[:starts_time]) if params[:starts_date].present?
+    params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone, params[:ends_date], params[:ends_time]) if params[:ends_date] && params[:ends_time] && (@conversation.item_type == 'general')
     if @conversation.update_attributes(conversation_item: params[:conversation_item], conversation_id: conversation_id, reload: true)
       flash[:success] = 'Meeting successfully updated!'
     else
