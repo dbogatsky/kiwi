@@ -1,4 +1,4 @@
- class ScheduleController < ApplicationController
+class ScheduleController < ApplicationController
   include ApplicationHelper
   before_action :get_api_values,only: [:index, :calendar_event]
 
@@ -62,80 +62,116 @@
     start_date = params['start']
     end_date = params['end']
 
-    search = Hash.new
+    # get all meetings between the date range
+    search = Hash[]
     search[:type_eq] = 'ConversationItems::Meeting'
     search[:starts_at_gteq] = "#{start_date} 00:00:00"
     search[:starts_at_lteq] = "#{end_date} 23:59:59"
 
-    @meetings = ConversationItemSearch.all(params: {search: search, user_ids: user_ids})
+    @meetings = ConversationItemSearch.all(params: { search: search, user_ids: user_ids })
 
-    events = Array.new
+    # get reminders where the date is within the date range
+    search = Hash[]
+    search[:type_eq] = 'ConversationItems::Reminder'
+    search[:scheduled_at_gteq] = "#{start_date} 00:00:00"
+    search[:scheduled_at_lteq] = "#{end_date} 23:59:59"
+
+    @reminders = ConversationItemSearch.all(params: { search: search, user_ids: user_ids })
+
+    # get reminders where the date is within the date range
+    search = Hash[]
+    search[:type_eq] = 'ConversationItems::Quote'
+    search[:ends_at_gteq] = "#{start_date} 00:00:00"
+    search[:ends_at_lteq] = "#{end_date} 23:59:59"
+
+    @quotes = ConversationItemSearch.all(params: { search: search, user_ids: user_ids })
+
+    events = Array[]
+
     @meetings.each do |i|
-      if i.type == 'meeting' || (i.type == 'note' && i.scheduled_at.present?) || i.type == 'reminder' || i.type == 'quote'
-        if i.type == 'meeting'
-          s_date = Chronic.parse(i.starts_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
-          e_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
-          color = '#3a87ad'
-          all_day = false
-        elsif i.type == 'note' || i.type == 'reminder'
-          s_date = Chronic.parse(i.scheduled_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
-          e_date = Chronic.parse(i.scheduled_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
-          color = '#f0ca45'
-          all_day = false
-        elsif i.type == 'quote'
-          s_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
-          e_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
-          color = '#e91e63'
-          all_day = true
-        end
-        event_data = {
-          account_id: i.account_id,
-          id: i.id,
-          title: i.title,
-          start: s_date,
-          end: e_date,
-          color: color,
-          allDay: all_day
-        }
-        events.push(event_data)
-      end
+      s_date = Chronic.parse(i.starts_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
+      e_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
+      color = '#3a87ad'
+      event_data = {
+        account_id: i.account_id,
+        id: i.id,
+        title: i.title,
+        start: s_date,
+        end: e_date,
+        color: color,
+        allDay: false,
+      }
+      events.push(event_data)
     end
+
+    @reminders.each do |i|
+      s_date = Chronic.parse(i.scheduled_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
+      e_date = Chronic.parse(i.scheduled_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
+      color = '#f0ca45'
+      event_data = {
+        account_id: i.account_id,
+        id: i.id,
+        title: i.title,
+        start: s_date,
+        end: e_date,
+        color: color,
+        allDay: false,
+      }
+      events.push(event_data)
+    end
+
+    @quotes.each do |i|
+      s_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
+      e_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
+      color = '#e91e63'
+      event_data = {
+        account_id: i.account_id,
+        id: i.id,
+        title: i.title,
+        start: s_date,
+        end: e_date,
+        color: color,
+        allDay: true,
+      }
+      events.push(event_data)
+    end
+
     render json: events
   end
 
   private
 
-    def get_meetings(user_ids)
-      @colors = ['#e0301e', '#000', '#c5e323', '#9e466b', '#0000ff']
-      @meetings = []
-      @user_color = {}
-      user_ids.each_with_index do |u, index|
-        if u.to_i != current_user.id
-           @user_color[u.to_i] = @colors[index]
-        else
-           @user_color[u.to_i] = '#3a87ad'
-        end
+  def get_meetings(user_ids)
+    @colors = ['#e0301e', '#000', '#c5e323', '#9e466b', '#0000ff']
+    @meetings = []
+    @user_color = {}
+    user_ids.each_with_index do |u, index|
+      if u.to_i != current_user.id
+        @user_color[u.to_i] = @colors[index]
+      else
+        @user_color[u.to_i] = '#3a87ad'
       end
-      apiURL = RequestStore.store[:api_url] + '/conversation_items/search?'
-      user_ids.each do |user_id|
-        apiURL += "user_ids[]=#{user_id}&"
-      end
-      headers = {}
-      headers["Authorization"] = "Token token=\"#{@token}\",email=\"#{@email}\", app_key=\"#{@appKey}\""
-      events = HTTParty.get(apiURL,headers: headers)
-
-      if events['conversation_items/meetings'].present?
-        events['conversation_items/meetings'].each_with_index do |citem, index|
-          c_item = OpenStruct.new(citem)
-          @meetings << c_item if c_item.type ==  'meeting' || (c_item.type == 'note' && c_item.scheduled_at.present?) || c_item.type == 'reminder' || c_item.type == 'quote'
-        end
-      end
-      @meetings
     end
-
-    def get_api_values
-      @email = current_user.email
-      @appKey = APP_CONFIG['api_app_key']
-      @token = session[:token]
+    apiURL = RequestStore.store[:api_url] + '/conversation_items/search?'
+    user_ids.each do |user_id|
+      apiURL += "user_ids[]=#{user_id}&"
     end
+    headers = {}
+    headers["Authorization"] = "Token token=\"#{@token}\",email=\"#{@email}\", app_key=\"#{@appKey}\""
+    events = HTTParty.get(apiURL,headers: headers)
+
+    if events['conversation_items/meetings'].present?
+      events['conversation_items/meetings'].each_with_index do |citem, index|
+        c_item = OpenStruct.new(citem)
+        @meetings << c_item if c_item.type ==  'meeting' || (c_item.type == 'note' && c_item.scheduled_at.present?) || c_item.type == 'reminder' || c_item.type == 'quote'
+      end
+    end
+    @meetings
+  end
+
+  def get_api_values
+    @email = current_user.email
+    @appKey = APP_CONFIG['api_app_key']
+    @token = session[:token]
+  end
 end
