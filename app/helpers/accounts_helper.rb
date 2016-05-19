@@ -21,7 +21,7 @@ module AccountsHelper
       end
     end
 
-    notifiable_users = NotifiableUsers.all(params: { account_id: conversation_item.account_id })
+    notifiable_users = NotifiableUsers.all(uid: session[:user_id], params: { account_id: conversation_item.account_id })
     notifiable_users.each do |notifiable_user|
       html += "<option value=\"#{notifiable_user.id}\"#{' selected="selected"' if notify_users_list.include?(notifiable_user.id)}>"
       html += "#{notifiable_user.first_name} #{notifiable_user.last_name}</option>\n"
@@ -34,7 +34,7 @@ module AccountsHelper
     html = ''
     notifiable_users_list = {}
 
-    notifiable_users = NotifiableUsers.all(params: { account_id: conversation_item.account_id })
+    notifiable_users = NotifiableUsers.all(uid: session[:user_id], params: { account_id: conversation_item.account_id })
     notifiable_users.each do |notifiable_user|
       notifiable_users_list[notifiable_user.id] = "#{notifiable_user.first_name} #{notifiable_user.last_name}"
     end
