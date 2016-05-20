@@ -4,35 +4,40 @@
 	    <tr>
 	      <th></th>
 	      <th>Description</th>
-	      <th>Type</th>
 	      <th>Date/Time</th>
 	    </tr>
 	  </thead>
 	  <tbody>
 	    <%notifications.each do |k,v|%>
 	      <%notification = Notification.find(k)%>
-		    <tr>
-	        <td class="show_details">
-	          <%if notification.read_at.blank?%>
-	          	<i class="fa fa-circle-o i_pointer"></i>
-	          <%else%>
-	            <i class="fa fa-check-circle-o i_pointer"></i>
-	          <%end%>
-	        </td>
-	        <td style="<%=notification.read_at.blank? ? 'font-weight:bold' : ''%>">
-		        <%if notification.type == 'account_status_change'%>
-			        <a href="/accounts/<%=v.id%>" style="color: #636e7b"><%=v.name%>
-			        </a>
-			      <%else%>
-			        <a href="/accounts/<%=v.account_id%>" style="color: #636e7b"><%=v.title%>
-			        </a>
-			      <%end%>
-	        </td>
-	        <td style="<%=notification.read_at.blank? ? 'font-weight:bold' : ''%>"><%=notification.type == 'account_status_change' ? 'Account' : v.type.capitalize%></td>
-	        <td style="<%=notification.read_at.blank? ? 'font-weight:bold' : ''%>"><%=Chronic.parse(notification.created_at).in_time_zone(current_user.time_zone).strftime("%b %d at %l:%M %p")%></td>
+		    <tr class="show_details i_pointer">
+		       <%mark_class = notification.read_at.blank? ? 'mark_read' : ''%>
+		        <td>
+	            <%=link_to notification.read_at.blank? ? notification_path(k) : "javascript:void(0)", remote: :true, method: :patch, class: "#{mark_class} noti_link_#{k} ", data: {id: "#{k}"} do%>
+			          <%if notification.type == 'reminder'%>
+			            <span class="thumb notification_calender" style="background: #f0ca45;">
+			              <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-bell.svg" alt="Reminder">
+			            </span>
+			          <%elsif notification.type == 'meeting_reminder'%>
+				          <span class="thumb notification_calender" style="background:#1cc7c2;">
+				            <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-calendar.svg" alt="Meeting">
+				          </span>
+				        <%elsif notification.type == 'account_status_change'%>
+					        <span class="thumb notification_calender" style="background: #333;">
+					          <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-briefcase.svg" alt="Reminder">
+					        </span>
+					      <%end%>
+		          <%end%>
+		        </td>
+			        <td class="remove_bold_<%=k%>" style="<%=notification.read_at.blank? ? 'font-weight:bold' : ''%>">
+		            <%=link_to notification.read_at.blank? ? notification_path(k) : "javascript:void(0)", remote: :true, method: :patch, class: "#{mark_class} title-color noti_link_#{k}", data: {id: "#{k}"} do%>
+					        <%= notification.type == 'account_status_change' ? v.name : v.title%>
+			          <%end%>
+			        </td>
+	        <td class="remove_bold_<%=k%>" style="<%=notification.read_at.blank? ? 'font-weight:bold' : ''%>"><%=Chronic.parse(notification.created_at).in_time_zone(current_user.time_zone).strftime("%b %d at %l:%M %p")%></td>
 	      </tr>
 	      <tr class="item_details_<%=v.id%>" style="display: none;">
-	        <td colspan="1">
+	        <td colspan="3">
 		        <%if notification.type == 'reminder' || notification.type == 'meeting_reminder'%>
 			        <%if v.type == 'meeting'%>
 								<div class="cd-timeline-content shadow_non">
@@ -43,11 +48,7 @@
 								    <% end %>
 								    <%= get_styled_meetingstatus(v, false) %>
 								    <span class="pull-right">
-									    <%if notification.read_at.blank?%>
-			          	       <%=link_to notification_path(k), remote: :true, method: :patch, class: 'btn btn-xs btn-default mr5 mark_read mark_read' do%>X<%end%>
-						          <%else%>
-						            <%=link_to "javascript:void(0)", class: 'btn btn-xs btn-default mr5 close_div' do%>X<%end%>
-						          <%end%>
+						          <%=link_to "javascript:void(0)", class: 'btn btn-xs btn-default mr5 close_div' do%>X<%end%>
 								    </span>
 									  <h2 class="ci_header"><%= v.title %></h2>
 									  <p><span class="subheading">Agenda:<br/></span><%= sanitize v.body %></p>
@@ -61,8 +62,9 @@
 						            <% end %>
 						            <i class="fa fa-user tooltips mr10" data-toggle="tooltip" data-original-title="Created by"></i><%=v.created_by.first_name%> <%=v.created_by.last_name%><br />
 						            <% if v.invitees.present? %>
-						                <i class="fa fa-users tooltips mr10" data-toggle="tooltip" data-original-title="Invitees"></i><%= v.invitees %>
+						                <i class="fa fa-users tooltips mr10" data-toggle="tooltip" data-original-title="Invitees"></i><%= v.invitees %><br/>
 						            <% end %>
+						            <span><%=link_to 'Go to account', account_path(v.account_id)%></span>
 							        </div>
 								    </div>
 								</div>
@@ -72,11 +74,7 @@
 							       <%=v.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>
 							    </span>
 							    	<span class="pull-right">
-									    <%if notification.read_at.blank?%>
-			          	       <%=link_to notification_path(k), remote: :true, method: :patch, class: 'btn btn-xs btn-default mr5 mark_read mark_read' do%>X<%end%>
-						          <%else%>
-						            <%=link_to "javascript:void(0)", class: 'btn btn-xs btn-default mr5 close_div' do%>X<%end%>
-						          <%end%>
+						          <%=link_to "javascript:void(0)", class: 'btn btn-xs btn-default mr5 close_div' do%>X<%end%>
 								    </span>
 							    <h2 class="ci_header"><%= v.title %></h2>
 							    <div class="ci_reminder_body"><%= sanitize v.body %></div>
@@ -89,11 +87,12 @@
 					            <% end %>
 					            <% if v.notify_by_sms.present? %>
 					            <i class="fa fa-comment tooltips mr10" data-toggle="tooltip" data-original-title="SMS"></i>
-					            <% end %>
+					            <% end %><br/>
 					             <%# if v.conversation_item_user_to_notify.present? %>
 					                <!-- <br /> -->
 					                <%#=notified_users(v)%>
 					            <%# end %>
+						          <span><%=link_to 'Go to account', account_path(v.account_id)%></span>
 						        </div>
 							    <% end %>
 								</div>
@@ -104,11 +103,7 @@
 								  </span>
 								  <%=get_styled_quotestatus(v, false)%>
 								  <span class="pull-right">
-									  <%if notification.read_at.blank?%>
-			          	       <%=link_to notification_path(k), remote: :true, method: :patch, class: 'btn btn-xs btn-default mr5 mark_read mark_read' do%>X<%end%>
-						          <%else%>
-						            <%=link_to "javascript:void(0)", class: 'btn btn-xs btn-default mr5 close_div' do%>X<%end%>
-						          <%end%>
+						          <%=link_to "javascript:void(0)", class: 'btn btn-xs btn-default mr5 close_div' do%>X<%end%>
 								  </span>
 								  <h2 class="ci_header"><%= v.title %></h2>
 								  <div class="ci_note_body">
@@ -136,9 +131,10 @@
 								            )<br />
 								        <% end %>
 								        <% if (v.scheduled_at.present?) %>
-								            <i class="fa fa-bell tooltips mr10" data-toggle="tooltip" data-original-title="Reminder"></i><%= v.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %>
+								            <i class="fa fa-bell tooltips mr10" data-toggle="tooltip" data-original-title="Reminder"></i><%= v.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %><br/>
 								        <%end%>
 								      </div>
+								      <span><%=link_to 'Go to account', account_path(v.account_id)%></span>
 								    </div>
 								</div>
 							<%elsif v.type == 'note'%>
@@ -147,17 +143,14 @@
 							        <%=v.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>
 							    </span>
 							    <span class="pull-right">
-									  <%if notification.read_at.blank?%>
-			          	      <%=link_to notification_path(k), remote: :true, method: :patch, class: 'btn btn-xs btn-default mr5 mark_read mark_read' do%>X</i><%end%>
-						        <%else%>
-						            <%=link_to "javascript:void(0)", class: 'btn btn-xs btn-default mr5 close_div' do%>X<%end%>
-						        <%end%>
+						          <%=link_to "javascript:void(0)", class: 'btn btn-xs btn-default mr5 close_div' do%>X<%end%>
 								  </span>
 							    <h2 class="ci_header"><%= v.title %></h2>
 							    <div class="ci_note_body"><%= sanitize v.body %></div>
 							    <% if (v.scheduled_at.present?) %>
 						        <div class="ci_footer">
-						          +<i class="fa fa-bell"></i><%= v.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %>
+						          +<i class="fa fa-bell"></i><%= v.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %><br/>
+						          <span><%=link_to 'Go to account', account_path(v.account_id)%></span>
 						        </div>
 							    <% end %>
 								</div>
@@ -167,11 +160,7 @@
 							        <%=v.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>
 							    </span>
 							    <span class="pull-right">
-									  <%if notification.read_at.blank?%>
-			          	    <%=link_to notification_path(k), remote: :true, method: :patch, class: 'btn btn-xs btn-default mr5 mark_read mark_read' do%>X</i><%end%>
-						        <%else%>
-						          <%=link_to "javascript:void(0)", class: 'btn btn-xs btn-default mr5 close_div' do%>X<%end%>
-						        <%end%>
+						        <%=link_to "javascript:void(0)", class: 'btn btn-xs btn-default mr5 close_div' do%>X<%end%>
 								  </span>
 							    <h2 class="ci_header"><%= v.title %></h2>
 							    <div class="ci_note_body"><%= sanitize v.body %></div>
@@ -180,19 +169,16 @@
 						            <i class="fa fa-paper-plane-o"></i><%= v.invitees %><br />
 						        <% end %>
 						        <% if (v.scheduled_at.present?) %>
-						            <i class="fa fa-calendar"></i><%= v.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %>
+						            <i class="fa fa-calendar"></i><%= v.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %><br/>
 						        <% end %>
+						        <span><%=link_to 'Go to account', account_path(v.account_id)%></span>
 							    </div>
 								</div>
 			        <%end%>
 			      <%else%>
 			        <div class="cd-timeline-content shadow_non">
 						    <span class="pull-right">
-							    <%if notification.read_at.blank?%>
-	          	       <%=link_to notification_path(k), remote: :true, method: :patch, class: 'btn btn-xs btn-default mr5 mark_read mark_read' do%>X<%end%>
-				          <%else%>
-				            <%=link_to "javascript:void(0)", class: 'btn btn-xs btn-default mr5 close_div' do%>X<%end%>
-				          <%end%>
+				          <%=link_to "javascript:void(0)", class: 'btn btn-xs btn-default mr5 close_div' do%>X<%end%>
 						    </span>
 							  <h2 class="ci_header"><%= v.name %></h2>
 							  <%= get_styled_status(v, false) %>
@@ -202,6 +188,7 @@
 					          <i class="fa fa-calendar tooltips mr10" data-toggle="tooltip" data-original-title="Created at"></i><%= v.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %><br/>
 				            <i class="fa fa-calendar tooltips mr10" data-toggle="tooltip" data-original-title="Updated at"></i><%= v.updated_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %><br />
 				            <i class="fa fa-user tooltips mr10" data-toggle="tooltip" data-original-title="Updated by"></i><%= v.updated_by.nil? ? "" : v.updated_by.first_name + " " + v.updated_by.last_name %><br />
+				            <span><%=link_to 'Go to account', account_path(v.id)%></span>
 					        </div>
 						    </div>
 							</div>
@@ -216,17 +203,23 @@
 <%end%>
 
 <script type="text/javascript">
+
 	$(document).on('click', '.show_details', function(){
-		$(this).closest('tr').next().show(400);
+	  $(this).next().toggle(500)
   })
 
   $(document).on('click', '.close_div', function(){
 		$(this).closest('tr').hide(400);
   })
 
-
-   $(document).on('click', ".mark_read", function(){
-  	$('#preloader').css('opacity', 0.8);
-    $('#preloader').show();
+  $(document).on('click', ".mark_read", function(){
+  	id = $(this).data('id')
+  	$(".noti_link_"+id).attr('href', 'javascript:void(0)');
+  	$(".noti_link_"+id).attr('data-method', '')
+  	$(".noti_link_"+id).attr('data-remote', 'false')
+    $(".noti_link_"+id).removeClass('mark_read');
+    $(".remove_bold_"+id).css('font-weight', 'normal')
+  	// $('#preloader').css('opacity', 0.8);
+   //  $('#preloader').show();
   })
 </script>
