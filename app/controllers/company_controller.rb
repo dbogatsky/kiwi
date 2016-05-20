@@ -1,5 +1,5 @@
 class CompanyController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource except: [:get_users]
   before_action :get_api_values, only: [:company_news, :index, :delete_news]
 
   def index
@@ -97,6 +97,7 @@ class CompanyController < ApplicationController
   end
 
   def get_users
+    authorize! :read, Company
     email_json = []
     User.all(uid: session[:user_id]).each do |user|
       if user.email.include?(params[:term])
