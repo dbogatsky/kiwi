@@ -25,7 +25,7 @@ RSpec.describe AccountsController, type: :controller do
   #     let(:params) do 
   #     {
   #       contacts_attributes: {"1462048790": {"type": "phone", "name": "Office", "value": "4168938737"}}, 
-  #       name: "Blue Bird Plumbing Inc.", 
+  #       name: "Automated Testing Rspec Inc.", 
   #       status_id: "1",
   #       assign_to: "1", 
   #       about: "",
@@ -39,7 +39,7 @@ RSpec.describe AccountsController, type: :controller do
   #     it 'should create an account' do
   #       sign_in('test@example.com', '12341234')
   #       # VCR.use_cassette('add-account', record: :once) do
-  #         get :index
+  #         post '/accounts', contact_attribute: params
   #       # response.should redirect_to accounts
   #       # end
   #     end
