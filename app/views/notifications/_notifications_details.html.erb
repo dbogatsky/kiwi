@@ -64,7 +64,7 @@
 						            <% if v.invitees.present? %>
 						                <i class="fa fa-users tooltips mr10" data-toggle="tooltip" data-original-title="Invitees"></i><%= v.invitees %><br/>
 						            <% end %>
-						            <span><%=link_to 'Go to account', account_path(v.account_id)%></span>
+						            <%=link_to account_path(v.account_id), class: 'btn btn-xs btn-default mr5 pull-right' do%>Go To Account<%end%>
 							        </div>
 								    </div>
 								</div>
@@ -92,7 +92,7 @@
 					                <!-- <br /> -->
 					                <%#=notified_users(v)%>
 					            <%# end %>
-						          <span><%=link_to 'Go to account', account_path(v.account_id)%></span>
+						          <%=link_to account_path(v.account_id), class: 'btn btn-xs btn-default mr5 pull-right' do%>Go To Account<%end%>
 						        </div>
 							    <% end %>
 								</div>
@@ -134,7 +134,7 @@
 								            <i class="fa fa-bell tooltips mr10" data-toggle="tooltip" data-original-title="Reminder"></i><%= v.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %><br/>
 								        <%end%>
 								      </div>
-								      <span><%=link_to 'Go to account', account_path(v.account_id)%></span>
+								      <%=link_to account_path(v.account_id), class: 'btn btn-xs btn-default mr5 pull-right' do%>Go To Account<%end%>
 								    </div>
 								</div>
 							<%elsif v.type == 'note'%>
@@ -150,7 +150,7 @@
 							    <% if (v.scheduled_at.present?) %>
 						        <div class="ci_footer">
 						          +<i class="fa fa-bell"></i><%= v.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %><br/>
-						          <span><%=link_to 'Go to account', account_path(v.account_id)%></span>
+						          <%=link_to account_path(v.account_id), class: 'btn btn-xs btn-default mr5 pull-right' do%>Go To Account<%end%>
 						        </div>
 							    <% end %>
 								</div>
@@ -188,7 +188,7 @@
 					          <i class="fa fa-calendar tooltips mr10" data-toggle="tooltip" data-original-title="Created at"></i><%= v.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %><br/>
 				            <i class="fa fa-calendar tooltips mr10" data-toggle="tooltip" data-original-title="Updated at"></i><%= v.updated_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %><br />
 				            <i class="fa fa-user tooltips mr10" data-toggle="tooltip" data-original-title="Updated by"></i><%= v.updated_by.nil? ? "" : v.updated_by.first_name + " " + v.updated_by.last_name %><br />
-				            <span><%=link_to 'Go to account', account_path(v.id)%></span>
+				            <%=link_to account_path(v.account_id), class: 'btn btn-xs btn-default mr5 pull-right' do%>Go To Account<%end%>
 					        </div>
 						    </div>
 							</div>
