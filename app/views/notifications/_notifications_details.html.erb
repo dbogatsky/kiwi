@@ -188,7 +188,7 @@
 					          <i class="fa fa-calendar tooltips mr10" data-toggle="tooltip" data-original-title="Created at"></i><%= v.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %><br/>
 				            <i class="fa fa-calendar tooltips mr10" data-toggle="tooltip" data-original-title="Updated at"></i><%= v.updated_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %><br />
 				            <i class="fa fa-user tooltips mr10" data-toggle="tooltip" data-original-title="Updated by"></i><%= v.updated_by.nil? ? "" : v.updated_by.first_name + " " + v.updated_by.last_name %><br />
-				            <%=link_to account_path(v.account_id), class: 'btn btn-xs btn-default mr5 pull-right' do%>Go To Account<%end%>
+				            <%=link_to account_path(v.id), class: 'btn btn-xs btn-default mr5 pull-right' do%>Go To Account<%end%>
 					        </div>
 						    </div>
 							</div>
