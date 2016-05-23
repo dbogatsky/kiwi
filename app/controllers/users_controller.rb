@@ -1,24 +1,32 @@
 require 'net/http/post/multipart'
 class UsersController < ApplicationController
-  load_and_authorize_resource except: [:not_update_time_zone]
+  load_and_authorize_resource except: [:index, :new, :edit, :create, :update, :destroy, :not_update_time_zone]
   before_action :get_token
   before_action :find_user, only: [:edit, :update, :destroy, :update_time_zone]
 
   def index
+    authorize! :user_management, User
+
     # Get all users
     @all_users = User.find(:all, reload: true)
   end
 
   def new
+    authorize! :user_management, User
+
     @user = User.new
   end
 
   def edit
+    authorize! :user_management, User
+
     @address = @user.addresses
     @contact = @user.contacts
   end
 
   def create
+    authorize! :user_management, User
+
     # Create new user
     @user = User.new(request: :create, user: params[:user])
     if @user.save
@@ -31,6 +39,8 @@ class UsersController < ApplicationController
   end
 
   def update
+    authorize! :user_management, User
+
     if @user.update_attributes(request: :update, user: params[:user], reload: true)
       save_avatar
       # in the event we are updating the logged in user refresh the detail
@@ -60,6 +70,8 @@ class UsersController < ApplicationController
   end
 
   def destroy
+    authorize! :user_management, User
+
     if @user.destroy
       flash[:success] = 'User successfully deleted.'
     else

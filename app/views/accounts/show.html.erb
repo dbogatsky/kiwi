@@ -126,7 +126,7 @@
             <% end %>
           </div>
           <div class="col-sm-6">
-            <% if ( can? :manage, Conversation ) || ( can? :manage, Account ) %>
+            <% if ( can? :manage_permission, Conversation ) || ( can? :manage_permission, Account ) %>
               <div class="btn-group mr5 pull-right">
                 <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
                     <i class="fa fa-plus-circle mr5"></i> Action
@@ -134,7 +134,7 @@
                 </button>
                 <ul class="dropdown-menu">
 
-                  <% if can? :manage, ConversationItem %>
+                  <% if can? :manage_permission, ConversationItem %>
                     <li><a href="#" data-toggle="modal" data-target=".account-action-meeting">Schedule Meeting</a></li>
                     <li><a href="#" data-toggle="modal" data-target=".conversation-note-modal-form">Add Note</a></li>
                     <li><a href="#" data-toggle="modal" data-target=".conversation-reminder-modal-form">Add Reminder</a></li>
@@ -144,7 +144,7 @@
 
                   <% if can? :manage_shared_accounts, @account %>
 
-                    <% if can? :manage, ConversationItem %><li class="divider"></li><% end %>
+                    <% if can? :manage_permission, ConversationItem %><li class="divider"></li><% end %>
 
                     <li><a href="<%= edit_account_path(@account) %>">Edit Account</a></li>
                   <% end %>
