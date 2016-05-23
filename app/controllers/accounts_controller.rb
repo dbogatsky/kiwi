@@ -9,6 +9,15 @@ class AccountsController < ApplicationController
   def index
     # Get all accounts
     @accounts = Account.all(params: { search: params[:search] })
+    if params[:search1].present? && params[:search2].present?
+      if params[:search1][:search] == 'name'
+        @accounts = @accounts.sort_by { |a| [a.name] }
+      # elsif params[:search1][:search] == 'city'
+      # end
+      # elsif params[:search1][:search] == 'country'
+      end
+      @accounts = @accounts.reverse if params[:search2][:search] == 'descending'
+    end
   end
 
   def show

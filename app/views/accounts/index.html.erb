@@ -18,6 +18,9 @@
       <% end %>
     <% end %>
   </div>
+  <div class="col-md-2">
+    <%=render 'sort_by'%>
+  </div>
   <div class="col-md-2 col-md-offset-5">
     <% if can? :read, Account %>
       <%= link_to new_account_path, class: "btn btn-primary btn-block" do %><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Account<% end %>
