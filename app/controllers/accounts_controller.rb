@@ -76,12 +76,19 @@ class AccountsController < ApplicationController
 
   def schedule_meeting
     c_id = @account.conversation.id
+    if params[:conversation_item][:item_type] == 'regular'
+      params[:conversation_item][:all_day_appointment] = true
+    else
+      params[:conversation_item][:all_day_appointment] = false
+    end
+
     if params[:scheduled_date].present? && params[:scheduled_time].present?
       params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:scheduled_date], params[:scheduled_time])
     else
       params[:conversation_item][:scheduled_at] = nil
       params[:conversation_item][:reminder] = nil
     end
+
     params[:conversation_item][:starts_at] = convert_datetime_to_utc(current_user.time_zone, params[:starts_date], params[:starts_time]) if params[:starts_date].present?
     params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone, params[:ends_date], params[:ends_time]) if params[:ends_date].present? && params[:ends_time].present? && (params[:conversation_item][:item_type] == 'general')
 
@@ -110,6 +117,7 @@ class AccountsController < ApplicationController
         starts_at:          params[:conversation_item][:starts_at],
         ends_at:            params[:conversation_item][:ends_at],
         item_type:          params[:conversation_item][:item_type],
+        all_day_appointment: params[:conversation_item][:all_day_appointment],
         repetition_rules: {
           frequency_type:     params[:conversation_item][:repetition_rule][:frequency_type],
           frequency:          params[:conversation_item][:repetition_rule][:frequency],
