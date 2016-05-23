@@ -266,16 +266,17 @@ class ApplicationController < ActionController::Base
           if ci.last.present?
             @read_items[notification.id] = ci.last if notification.read_at.present?
             @unread_items[notification.id] = ci.last unless notification.read_at.present?
-            @all_items[notification.id] = ci.last
+            # @all_items[notification.id] = ci.last
           end
           search[:id_eq] = nil
           if notification.type == 'account_status_change'
             account = Account.find(notification.value.account_id)
             @read_items[notification.id] = account if notification.read_at.present?
             @unread_items[notification.id] = account  unless notification.read_at.present?
-            @all_items[notification.id] = account
+            # @all_items[notification.id] = account
           end
         end
+        @all_items = @unread_items.merge(@read_items)
       end
     end
   end

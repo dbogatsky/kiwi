@@ -189,7 +189,7 @@ body.modal-open {
     display: inline-block;}
 .repeat_heading{ margin: 45px 0 12px;}
 
-.shadow_non{box-shadow: none !important;max-width: 395px;}
+.shadow_non{box-shadow: none !important;}
 .i_pointer{cursor: pointer;}
 
 .meeting-icon{float: left !important; border-radius: 10%;
@@ -204,3 +204,14 @@ body.modal-open {
 }
 .padd_left0{padding-left:0;}
 .padd_right0{padding-right: 0;}
+
+.notification_calender{ background: #1cc7c2;
+    width: 100%;
+    padding: 6px 10px 13px;
+    border-radius: 4px;}
+.notification_calender .thumb-img {
+    height: auto;
+    margin-top: 5px;
+    width: 20px;
+}
+.title-color{color: #636e7b !important;}

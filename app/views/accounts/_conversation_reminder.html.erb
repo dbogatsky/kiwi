@@ -1,4 +1,4 @@
-<div class="modal fade conversation-reminder-modal-form" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" aria-hidden="true">
+<div class="modal fade conversation-reminder-modal-form" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -111,7 +111,6 @@
 </div><!-- modal -->
 
 <script type="text/javascript">
-
   $(".conversation-reminder-modal-form").on("shown.bs.modal", function(){
     var input = document.getElementById("keyword");
     var autocomplete = new google.maps.places.Autocomplete(input);

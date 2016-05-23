@@ -16,7 +16,7 @@
   <%unread_items.first(5).each do |k,v| %>
     <%notification = Notification.find(k)%>
     <li class="new">
-      <a href="/notifications/<%=k%>">
+      <a href="/notifications/<%=k%>" data-remote="true" rel="nofollow" data-method="patch">
       <!-- <a href="/accounts/<%#=v.account_id%>?notification_id=<%#=k%>"> -->
       <%if notification.type == 'reminder' || notification.type == 'meeting_reminder'%>
         <%if v.type.eql? 'reminder'%>

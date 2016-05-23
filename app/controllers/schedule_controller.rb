@@ -1,6 +1,6 @@
 class ScheduleController < ApplicationController
   include ApplicationHelper
-  before_action :get_api_values,only: [:index, :calendar_event]
+  before_action :get_api_values, only: [:index, :calendar_event]
 
   def index
     @users = User.all(uid: session[:user_id])
@@ -13,14 +13,13 @@ class ScheduleController < ApplicationController
         @meeting_with_date << m if m.starts_at.present?
       end
       if @meeting_with_date.present?
-        @sort_meeting =  @meeting_with_date.sort_by do |meeting|
-            meeting[:starts_at].to_datetime.in_time_zone(current_user.time_zone)
+        @sort_meeting = @meeting_with_date.sort_by do |meeting|
+          meeting[:starts_at].to_datetime.in_time_zone(current_user.time_zone)
         end
         @sort_meeting.each do |meeting|
-           meeting_end_time = meeting.ends_at.to_datetime.in_time_zone(current_user.time_zone)
-           # meeting_start_time = meeting.ends_at.to_datetime.in_time_zone(current_user.time_zone)
-           current_time = Time.now.in_time_zone(current_user.time_zone)
-           @next_meeting << meeting if meeting_end_time > current_time
+          meeting_end_time = meeting.ends_at.to_datetime.in_time_zone(current_user.time_zone)
+          current_time = Time.now.in_time_zone(current_user.time_zone)
+          @next_meeting << meeting if meeting_end_time > current_time
         end
       end
     end
