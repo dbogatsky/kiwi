@@ -5,15 +5,16 @@
 	      <th></th>
 	      <th>Description</th>
 	      <th>Date/Time</th>
+	      <th>Unread</th>
 	    </tr>
 	  </thead>
 	  <tbody>
 	    <%notifications.each do |k,v|%>
-	      <%notification = Notification.find(k)%>
-		    <tr class="show_details i_pointer" id="<%=v.id%>">
+        <%notification = Notification.find(k)%>
+		    <tr class="show_details i_pointer" id="<%=v.id%>" data-conversation-id="<%=notification.type != 'account_status_change' ? v.conversation_id : ''%>" data-notification-type="<%=notification.type%>" data-read-notification="<%=notification.read_at.present?%>" data-notification-id="<%=k%>">
 		      <%mark_class = notification.read_at.blank? ? 'mark_read' : ''%>
 		        <td>
-	            <%=link_to notification.read_at.blank? ? notification_path(k) : "javascript:void(0)", remote: :true, method: :patch, class: "#{mark_class} noti_link_#{k} ", data: {id: "#{k}"} do%>
+	            <%#=link_to notification.read_at.blank? ? notification_path(k) : "javascript:void(0)", remote: :true, method: :patch, class: "#{mark_class} noti_link_#{k} ", data: {id: "#{k}"} do%>
 			          <%if notification.type == 'reminder'%>
 			            <span class="thumb notification_calender" style="background: #f0ca45;">
 			              <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-bell.svg" alt="Reminder">
@@ -27,14 +28,21 @@
 					          <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-briefcase.svg" alt="Reminder">
 					        </span>
 					      <%end%>
-		          <%end%>
+		          <%#end%>
 		        </td>
 			        <td class="remove_bold_<%=k%>" style="<%=notification.read_at.blank? ? 'font-weight:bold' : ''%>">
-		            <%=link_to notification.read_at.blank? ? notification_path(k) : "javascript:void(0)", remote: :true, method: :patch, class: "#{mark_class} title-color noti_link_#{k}", data: {id: "#{k}"} do%>
+		            <%#=link_to notification.read_at.blank? ? notification_path(k) : "javascript:void(0)", remote: :true, method: :patch, class: "#{mark_class} title-color noti_link_#{k}", data: {id: "#{k}"} do%>
 					        <%= notification.type == 'account_status_change' ? v.name : v.title%>
-			          <%end%>
+			          <%#end%>
 			        </td>
-	        <td class="remove_bold_<%=k%>" style="<%=notification.read_at.blank? ? 'font-weight:bold' : ''%>"><%=Chronic.parse(notification.created_at).in_time_zone(current_user.time_zone).strftime("%b %d at %l:%M %p")%></td>
+		        <td class="remove_bold_<%=k%>" style="<%=notification.read_at.blank? ? 'font-weight:bold' : ''%>">
+		          <%=Chronic.parse(notification.created_at).in_time_zone(current_user.time_zone).strftime("%b %d at %l:%M %p")%>
+		        </td>
+		        <td class="remove_bold_<%=k%>">
+			        <%if notification.read_at.blank?%>
+			          <i class="fa fa-exclamation-circle tooltips mr10" data-toggle="tooltip" data-original-title="Unread" ></i>
+			        <%end%>
+		        </td>
 	      </tr>
 	    <%end%>
 	  </tbody>
@@ -46,28 +54,40 @@
 <script type="text/javascript">
 
 	$(document).on('click', '.show_details', function(){
-	  $(this).next().toggle(500)
+    id = $(this).attr('id')
+    conversation_id = $(this).data('conversation-id')
+    notification_type = $(this).data('notification-type')
+    notification_read = $(this).data('read-notification')
+    notification_id = $(this).data('notification-id')
+
+    if($(this).next().attr('id') == 'details_tr_'+id){
+	    $(this).next().toggle(500)
+    }else{
+    	$('#preloader').css('opacity', 0.8);
+      $('#preloader').show();
+		  $.ajax({
+		    type: "GET",
+		    url: '/notifications/conversation_detail?item_id='+id+'&conversation_id='+conversation_id+'&notification_type='+notification_type+'&notification_read='+notification_read+'&notification_id='+notification_id,
+		    dataType: 'script',
+		    success: function (data) {
+		    }
+		  });
+	  }
   })
 
   $(document).on('click', '.close_div', function(){
-		$(this).closest('tr').hide(400);
+		$(this).closest('tr').hide(500);
   })
 
-  $(document).on('click', ".mark_read", function(){
-  	id = $(this).data('id')
-  	$(".noti_link_"+id).attr('href', 'javascript:void(0)');
-  	$(".noti_link_"+id).attr('data-method', '')
-  	$(".noti_link_"+id).attr('data-remote', 'false')
-    $(".noti_link_"+id).removeClass('mark_read');
-    $(".remove_bold_"+id).css('font-weight', 'normal')
-  	// $('#preloader').css('opacity', 0.8);
-   //  $('#preloader').show();
-  })
+  // $(document).on('click', ".mark_read", function(){
+  // 	id = $(this).data('id')
+  // 	$(".noti_link_"+id).attr('href', 'javascript:void(0)');
+  // 	$(".noti_link_"+id).attr('data-method', '')
+  // 	$(".noti_link_"+id).attr('data-remote', 'false')
+  //   $(".noti_link_"+id).removeClass('mark_read');
+  //   $(".remove_bold_"+id).css('font-weight', 'normal')
+  // 	// $('#preloader').css('opacity', 0.8);
+  //  //  $('#preloader').show();
+  // })
 
-  // $.ajax({
-  //       type: "GET",
-  //       url: '/notifications/conversation_detail/item_id=<%=citem.id%>',
-  //       success: function (data) {
-  //       }
-  //     });
 </script>
