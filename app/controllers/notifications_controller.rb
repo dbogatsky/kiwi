@@ -13,4 +13,8 @@ class NotificationsController < ApplicationController
 	  	@result = false
 	  end
 	end
+
+	def conversation_detail
+		binding.pry
+	end
 end

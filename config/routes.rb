@@ -47,8 +47,7 @@ Rails.application.routes.draw do
   resources :users
   resources :notifications, only: [:index, :update]
 
-
-
+  get '/notifications/conversation_detail', to: 'notifications#conversation_detail', as: :notifications_conversation_detail
   match '/users/:id/update_time_zone', to: 'users#update_time_zone', as: :users_update_time_zone, via: [:patch]
   get  '/users/:id/not_update_time_zone', to: 'users#not_update_time_zone', as: :users_not_update_time_zone
   post '/accounts/schedule_meeting', to: 'accounts#schedule_meeting', as: :account_schedule_meeting
