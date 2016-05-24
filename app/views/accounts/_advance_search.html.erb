@@ -1,0 +1,50 @@
+<%= form_tag accounts_path, method: :get do |f| %>
+  <div class="col-md-10">
+    <div class="input-group" id="adv-search">
+      <div class="input-group-btn">
+        <div class="btn-group" role="group">
+          <div class="dropdown dropdown-lg">
+          <button type="button" class="btn btn-default dropdown-toggle button-as-link" data-toggle="dropdown" aria-expanded="false"><a>Advanced</a></button>
+            <div class="dropdown-menu advanced-search" role="menu" style="width: 450%;">
+              <br />
+              <div class="form-group mb20">
+                <label><h4>Advanced Search</h4></label>
+                <hr class="search-hr"></hr>
+                <p>Build your advanced search query by adding filters below</p>
+              </div>
+              <div class="form-group mb20">
+                  <div class="col-sm-2">Match</div>
+                  <div class="col-sm-4 search-select">
+                    <%=select_tag('search[match]', options_for_select([['All', 'all']], selected: ''), {:class => 'form-control input-sm', required: false})%>
+                  </div>
+                  <div class="col-sm-3">of the following rules</div>
+              </div>
+              <div class="form-group mb20">
+                  <div>Rules</div>
+                  <div class="col-sm-4">
+                    <%=select_tag('search[name]', options_for_select([['Name', 'name'], ['City', 'city'], ['Status', 'status']], selected: ''), {:class => 'form-control input-sm', required: false})%>
+                  </div>
+                  <div class="col-sm-4">
+                    <%=select_tag('search[match]', options_for_select([['Contains', 'contains'],['IS', 'is']], selected: ''), {:class => 'form-control input-sm', required: false})%>
+                  </div>
+                  <div class="col-sm-4">
+                    <%=text_field_tag "search[text]",nil,class: "form-control input-sm search-text", required: false%>
+                  </div>
+              </div>
+              <div class="pull-right">
+                <button type="submit" class="btn btn-primary"></span>Apply</button>
+                &nbsp;&nbsp;&nbsp; <button type="reset" class="btn btn-primary submit_search">Clear</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<%end%>
+
+<script type="text/javascript">
+  $(".advanced-search").click(function(e){
+    e.stopPropagation()
+  })
+</script>
