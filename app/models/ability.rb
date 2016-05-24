@@ -30,7 +30,7 @@ class Ability
               # abilities_debug.push("can :" + permission.action + ", :" + permission.subject_class)
             else
               # defining ability with subject class as just the class name
-              if permission.action == 'manage' && current_user_role.name != 'Entity Admin' && false
+              if permission.action == 'manage' && current_user_role.name != 'Entity Admin'
                 can :manage_permission, permission.subject_class.constantize
                 abilities_debug.push('can :manage_permission, ' + permission.subject_class)
               else
@@ -44,16 +44,20 @@ class Ability
           end
 
           unless admin_user
-            # Permission for showing the schedule filter textbox (for Entity Admin)
-            if current_user_role.name == 'Entity Admin'
-              can :schedule_filter, User
-              abilities_debug.push('can :schedule_filter, User')
-            end
 
-            # Permission for Uploading and creating folders in the media page
+            # Special Permissions for Enity Admin
             if current_user_role.name == 'Entity Admin'
-              can :media_upload, User
-              abilities_debug.push('can :media_upload, User')
+              # Permission for showing the schedule filter textbox (for Entity Admin)
+              can :schedule_filter, Account
+              abilities_debug.push('can :schedule_filter, Account')
+
+              # Permission for Uploading and creating folders in the media page
+              can :media_management, Medium
+              abilities_debug.push('can :media_upload, Medium')
+
+              # Permission for Uploading and creating folders in the media page
+              can :user_management, User
+              abilities_debug.push('can :user_management, User')
             end
 
             # Permission to definite managed shared accounts
