@@ -9,6 +9,10 @@ class AccountsController < ApplicationController
   def index
     # Get all accounts
     @accounts = Account.all(params: { search: params[:search] })
+    if params[:advanced_search].present?
+       advanced_search
+      @accounts = Account.all(params: { search: @search})
+    end
   end
 
   def show
@@ -492,6 +496,75 @@ class AccountsController < ApplicationController
   end
 
   private
+
+  def advanced_search
+    @search = {}
+    if params[:rule1].present?
+      if params[:rule1][:option] == "name"
+        if params[:rule1][:is_contain] == 'contains'
+           @search[:name_cont] =  params[:rule1][:text]
+        else
+          @search[:name_eq] =  params[:rule1][:text]
+        end
+      elsif params[:rule1][:option] == "city"
+        if params[:rule1][:is_contain] == 'contains'
+           @search[:address_city_cont] =  params[:rule1][:text]
+        else
+          @search[:address_city_eq] =  params[:rule1][:text]
+        end
+      elsif params[:rule1][:option] == "status"
+        if params[:rule1][:is_contain] == 'contains'
+           @search[:status_id_cont] =  params[:rule1][:status]
+        else
+          @search[:status_id_eq] =  params[:rule1][:status]
+        end
+      end
+    end
+
+    if params[:rule2].present?
+      if params[:rule2][:option] == "name"
+        if params[:rule2][:is_contain] == 'contains'
+           @search[:name_cont] =  params[:rule2][:text]
+        else
+          @search[:name_eq] =  params[:rule2][:text]
+        end
+      elsif params[:rule2][:option] == "city"
+        if params[:rule2][:is_contain] == 'contains'
+           @search[:address_city_cont] =  params[:rule2][:text]
+        else
+          @search[:address_city_eq] =  params[:rule2][:text]
+        end
+      elsif params[:rule2][:option] == "status"
+        if params[:rule2][:is_contain] == 'contains'
+           @search[:status_id_cont] =  params[:rule2][:status]
+        else
+          @search[:status_id_eq] =  params[:rule2][:status]
+        end
+      end
+    end
+
+    if params[:rule3].present?
+      if params[:rule3][:option] == "name"
+        if params[:rule3][:is_contain] == 'contains'
+           @search[:name_cont] =  params[:rule3][:text]
+        else
+          @search[:name_eq] =  params[:rule3][:text]
+        end
+      elsif params[:rule3][:option] == "city"
+        if params[:rule3][:is_contain] == 'contains'
+           @search[:address_city_cont] =  params[:rule3][:text]
+        else
+          @search[:address_city_eq] =  params[:rule3][:text]
+        end
+      elsif params[:rule3][:option] == "status"
+        if params[:rule3][:is_contain] == 'contains'
+           @search[:status_id_cont] =  params[:rule3][:status]
+        else
+          @search[:status_id_eq] =  params[:rule3][:status]
+        end
+      end
+    end
+  end
 
   def get_token
     # set gloal var for token to be used in model, hack for now
