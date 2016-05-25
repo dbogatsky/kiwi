@@ -3,6 +3,14 @@ body,
     background: none;    
 }
 
+select.input-reg {
+    line-height: 30px;
+    font-size: 13px;
+    padding: 7px 10px;
+    height: 40px;
+}
+
+
 .subheading {
     font-size: 12px;
     text-transform: uppercase;

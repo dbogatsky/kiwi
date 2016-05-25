@@ -258,14 +258,14 @@ class AccountsController < ApplicationController
     c_id = @account.conversation.id
     if params[:expires_in].present?
       new_date = Date.today + params[:expires_in].to_i.day
-      params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone,new_date)
+      params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone, new_date)
     elsif params[:expires_after].present?
-      params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone,params[:expires_after])
+      params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone, params[:expires_after])
     end
     if params[:follow_date].present? && params[:follow_time].present?
-       params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:follow_date], params[:follow_time])
+      params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:follow_date], params[:follow_time])
     end
-    ci = ConversationItem.create(conversation_item: {title: conversation_item_params[:title], ends_at: conversation_item_params[:ends_at], body: conversation_item_params[:body], reminder: conversation_item_params[:reminder], scheduled_at: params[:conversation_item][:scheduled_at], status: conversation_item_params[:status],amount: conversation_item_params[:amount], created_by_id: current_user.id}, conversation_id: c_id, type: conversation_item_params[:type])
+    ci = ConversationItem.create(conversation_item: { title: conversation_item_params[:title], ends_at: conversation_item_params[:ends_at], body: conversation_item_params[:body], reminder: conversation_item_params[:reminder], scheduled_at: params[:conversation_item][:scheduled_at], status: conversation_item_params[:status], amount: conversation_item_params[:amount], item_type: conversation_item_params[:item_type], created_by_id: current_user.id}, conversation_id: c_id, type: conversation_item_params[:type])
     if ci
       flash[:success] = 'Your quote has been added to the conversation'
     else
@@ -283,9 +283,9 @@ class AccountsController < ApplicationController
     unless params[:conversation_item][:status].present?
       if params[:expires_in].present?
         new_date = Date.today + params[:expires_in].to_i.day
-        params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone,new_date)
+        params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone, new_date)
       elsif params[:expires_after].present?
-        params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone,params[:expires_after])
+        params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone, params[:expires_after])
       end
       if params[:follow_date].present? && params[:follow_time].present?
         params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:follow_date], params[:follow_time])
@@ -293,7 +293,7 @@ class AccountsController < ApplicationController
         params[:conversation_item][:scheduled_at] = nil
       end
     end
-    @conversation = ConversationItem.find(params[:conversation_item][:id], params:{conversation_id: @account.conversation.id})
+    @conversation = ConversationItem.find(params[:conversation_item][:id], params: { conversation_id: @account.conversation.id })
     if @conversation.update_attributes(conversation_item: params[:conversation_item], conversation_id: conversation_id)
       flash[:success] = 'Quote successfully updated!'
     else
@@ -307,7 +307,7 @@ class AccountsController < ApplicationController
   end
 
   def delete_quote
-    @conversation = ConversationItem.find(params[:item_id], params:{conversation_id: @account.conversation.id})
+    @conversation = ConversationItem.find(params[:item_id], params: { conversation_id: @account.conversation.id })
     if @conversation.destroy
       flash[:success] = 'Quote successfully deleted'
     else
@@ -499,7 +499,7 @@ class AccountsController < ApplicationController
   end
 
   def conversation_item_params
-    params.require(:conversation_item).permit(:account_id, :type, :reminder, :scheduled_at, :subject, :body, :email, :send_later, :title, :status, :amount, :ends_at)
+    params.require(:conversation_item).permit(:account_id, :type, :reminder, :scheduled_at, :subject, :body, :email, :send_later, :title, :status, :amount, :item_type, :ends_at)
   end
 
   def account_params
@@ -601,21 +601,7 @@ class AccountsController < ApplicationController
         changed_value[:prev_quick_facts] = account_with_previous_value.quick_facts
         changed_value[:updated_quick_facts] = account_with_update_value.quick_facts
       end
-      # prev_contacts = account_with_previous_value.contacts.sort_by do |pc|
-      #   pc.id
-      # end
-      # updated_contacts = account_with_update_value.contacts.sort_by do |uc|
-      #   uc.id
-      # end
-      # if prev_contacts.map(&:id).sort == updated_contacts.map(&:id).sort
-      #   # changed_value[:contacts] = {}
-      #   prev_contacts.each do |prev_c|
-      #     updated_contacts.each do |updated_c|
-      #       if prev_c.name != updated_c.name
-      #         changed_value[:contacts][:contact_name]
-      #     end
-      #   end
-      # end
+
     end
     @note_body = "<p><b>Previous Value => Updated Value</b></p><ul>#{changed_value[:prev_name].present? ? "<li> <b>Account Name:</b> #{changed_value[:prev_name]} => #{changed_value[:upated_name]} </li>" : ''}#{changed_value[:prev_status].present? ? "<li> <b>Account Status:</b> #{changed_value[:prev_status]} => #{changed_value[:updated_status]} </li>" : ''}#{changed_value[:prev_contact_name].present? ? "<li> <b>Contact Name:</b> #{changed_value[:prev_contact_name]} => #{changed_value[:updated_contact_name]} </li>" : ''}#{changed_value[:prev_contact_title].present? ? "<li> <b>Contact Title:</b> #{changed_value[:prev_contact_title]} => #{changed_value[:updated_contact_title]} </li>" : ''}#{changed_value[:prev_assigned_to].present? ? "<li> <b>Assign To:</b> #{changed_value[:prev_assigned_to]} => #{changed_value[:updated_assigned_to]} </li>" : ''}#{changed_value[:prev_address_name].present? ? "<li> <b>Address Name:</b> #{changed_value[:prev_address_name]} => #{changed_value[:updated_address_name]} </li>" : ''}#{changed_value[:prev_address_street_address].present? ? "<li> <b>Street Address:</b> #{changed_value[:prev_address_street_address]} => #{changed_value[:updated_address_street_address]} </li>" : ''}#{changed_value[:prev_address_city].present? ? "<li> <b>City:</b> #{changed_value[:prev_address_city]} => #{changed_value[:updated_address_city]} </li>" : ''}#{changed_value[:prev_address_postcode].present? ? "<li> <b>Post/Zipcode:</b> #{changed_value[:prev_address_postcode]} => #{changed_value[:updated_address_postcode]} </li>" : ''}#{changed_value[:prev_address_region].present? ? "<li> <b>Province/State:</b> #{changed_value[:prev_address_region]} => #{changed_value[:updated_address_region]} </li>" : ''}#{changed_value[:prev_address_country].present? ? "<li> <b>Country:</b> #{changed_value[:prev_address_country]} => #{changed_value[:updated_address_country]} </li>" : ''}#{changed_value[:prev_about].present? ? "<li> <b>About:</b> #{changed_value[:prev_about]} => #{changed_value[:updated_about]} </li>" : ''}#{changed_value[:prev_quick_facts].present? ? "<li> <b>Quick Facts:</b> #{changed_value[:prev_quick_facts]} => #{changed_value[:updated_quick_facts]} </li>" : ''}</ul><p><b>Updated by:</b> #{current_user.first_name} #{current_user.last_name} </p>".html_safe
      return @note_body
