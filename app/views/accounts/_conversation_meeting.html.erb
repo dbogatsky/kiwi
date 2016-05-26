@@ -12,9 +12,19 @@
             <div class="panel-body">
               <div class="row row-pad-5">
                 <div class="col-lg-12">
+                  <select class="form-control meeting_type input-sm" name="conversation_item[item_type]" placeholder="Meeting Type" required="required">
+                    <option value="general">General</option>
+                    <option value="regular">Regular Visit</option>
+                  </select>
+                </div>
+              </div><!-- row -->
+
+              <div class="row row-pad-5">
+                <div class="col-lg-12">
                   <input type="text" name="conversation_item[title]" placeholder="Event" class="form-control" required="required" />
                 </div>
               </div><!-- row -->
+
               <%unless account.present?%>
                 <div class="row row-pad-5">
                   <div class="col-lg-12 country_select">
@@ -68,21 +78,26 @@
                   </div>
                 </div>
 
-                <div class="col-lg-4">
-                  <div class="input-group ">
+                <div class="col-lg-4 start-time">
+                  <div class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                     <div class="bootstrap-timepicker"><input id="schedule-from-timepicker" name="starts_time" type="text" class="form-control" required="required" /></div>
                   </div>
                 </div>
+                <div class="col-lg-4 all-day" style="display:none; margin-top: 10px;">
+                  <div class="input-group">
+                    <label>All Day Appointment</label>
+                  </div>
+                </div>
               </div><!-- row -->
 
-              <div class="row">
+              <div class="row end-date-time">
 	              <div class="col-lg-4">
 	              <h5>Ends</h5>
 	              </div>
               </div>
 
-              <div class="row row-pad-5">
+              <div class="row row-pad-5 end-date-time">
                 <div class="col-lg-5">
                   <div class="input-group ">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
@@ -109,7 +124,7 @@
                     <label for="meeting-reminder">Set a Custom Reminder</label>
                   </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-6 repeat_div">
                   <div class="ckbox ckbox-primary">
                     <input type="checkbox" id="meeting-repeat" name="meeting-repeat">
                     <label for="meeting-repeat">Repeat</label>
@@ -423,62 +438,80 @@
   });
 
   $(".account-action-meeting").on("shown.bs.modal", function(){
-
+    $(".meeting_type").val('general');
+    $('.end-date-time').show(500);
+    $('.all-day').hide(500)
+    $('.start-time').show(500)
+    $('#schedule-from-timepicker').attr('required', true)
+    $('#schedule-to-datepicker').attr('required', true)
+    $('#schedule-to-timepicker').attr('required', true)
+    $(".repeat_div").show(500);
+    $("#meeting-repeat-settings").hide(500);
+    $("#repeat-frequency").val(null);
+    $("#repeat-occurrences").val(null);
+    $('#repeat-every-day').val(null);
+    $('#repeat-every-week').val(null);
+    $('#repeat-every-month').val(null);
+    $('#repeat-every-year').val(null);
+    $('#repeat-every-month-on').val(null);
+    $('#repeat-frequency-weekday-on').val(null);
+    $("#repeat-frequency").attr('required', false);
+    $("#repeat-occurrences").attr('required', false);
+    $("#repeat-every-day").attr('required', false);
     var input = document.getElementById("keyword");
     var autocomplete = new google.maps.places.Autocomplete(input);
 
-    google.maps.event.addListener(autocomplete, 'place_changed', function() {
-      var place = autocomplete.getPlace();
-      var lat = place.geometry.location.lat();
-      var lng = place.geometry.location.lng();
-      $(".account-action-meeting input[name='conversation_item[latitude]']").val(lat);
-      $(".account-action-meeting input[name='conversation_item[longitude]']").val(lng);
-    });
+      google.maps.event.addListener(autocomplete, 'place_changed', function() {
+        var place = autocomplete.getPlace();
+        var lat = place.geometry.location.lat();
+        var lng = place.geometry.location.lng();
+        $(".account-action-meeting input[name='conversation_item[latitude]']").val(lat);
+        $(".account-action-meeting input[name='conversation_item[longitude]']").val(lng);
+      });
 
-    if($('#tags').find('span').length < 2){
-      $('#tag_input').attr('required', false);
-    }
-
-    $("#tags input").on({
-      focusout : function() {
-        // var txt = this.value.replace(/[^a-z0-9\+\-\.\#]/ig,''); // allowed characters
-
-        var txt = this.value.replace(',','').replace(' ', '');
-        var pattern = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
-        if( txt && pattern.test(txt.trim())){
-          $("<span/>", {text:txt.toLowerCase(), insertBefore:this});
-          $('#tag_input').attr('required', false);
-          emails = $('#invitee_emails').val();
-          values = emails ? emails+', '+txt : txt;
-          $('#invitee_emails').val(values);
-        }
-        this.value = "";
-      },
-      keyup : function(ev) {
-        // if: comma|enter (delimit more keyCodes with | pipe)
-        if(/(188|13|32)/.test(ev.which)){
-          $(this).focusout();
-        }
+      if($('#tags').find('span').length < 2){
+        $('#tag_input').attr('required', false);
       }
-    });
-    $('#tags').on('click', 'span', function() {
-    // $('#tags span').click(function(){
-      if(confirm("Remove "+ $(this).text() +"?")) {
-      	emails_array = $('#invitee_emails').val().split(',')
-      	del_obj_index = emails_array.indexOf($(this).text());
-      	emails_array.splice(del_obj_index,1)
-      	$('#invitee_emails').val(emails_array.join(','));
-      	$(this).remove();
-        if($('#tags').find('span').length < 2){
-          $('#tag_input').attr('required', false);
-        }
-      }
-    });
-    $( "#tag_input" ).autocomplete({
 
-      source: "/get_users",
-      minLength: 2,
-      select: function( event, ui ){}
+      $("#tags input").on({
+        focusout : function() {
+          // var txt = this.value.replace(/[^a-z0-9\+\-\.\#]/ig,''); // allowed characters
+
+          var txt = this.value.replace(',','').replace(' ', '');
+          var pattern = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
+          if( txt && pattern.test(txt.trim())){
+            $("<span/>", {text:txt.toLowerCase(), insertBefore:this});
+            $('#tag_input').attr('required', false);
+            emails = $('#invitee_emails').val();
+            values = emails ? emails+', '+txt : txt;
+            $('#invitee_emails').val(values);
+          }
+          this.value = "";
+        },
+        keyup : function(ev) {
+          // if: comma|enter (delimit more keyCodes with | pipe)
+          if(/(188|13|32)/.test(ev.which)){
+            $(this).focusout();
+          }
+        }
+      });
+      $('#tags').on('click', 'span', function() {
+      // $('#tags span').click(function(){
+        if(confirm("Remove "+ $(this).text() +"?")) {
+        	emails_array = $('#invitee_emails').val().split(',')
+        	del_obj_index = emails_array.indexOf($(this).text());
+        	emails_array.splice(del_obj_index,1)
+        	$('#invitee_emails').val(emails_array.join(','));
+        	$(this).remove();
+          if($('#tags').find('span').length < 2){
+            $('#tag_input').attr('required', false);
+          }
+        }
+      });
+      $( "#tag_input" ).autocomplete({
+        source: "/get_users",
+        minLength: 2,
+        select: function( event, ui ){}
+      });
     });
-  });
 </script>
