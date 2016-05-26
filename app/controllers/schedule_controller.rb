@@ -91,7 +91,7 @@ class ScheduleController < ApplicationController
       e_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
       if i.item_type == 'regular'
         all_day = true
-        color = '#9900ff'
+        color = '#660066'
       else
         all_day = false
         color = '#3a87ad'
