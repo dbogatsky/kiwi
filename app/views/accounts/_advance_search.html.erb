@@ -24,16 +24,16 @@
                     <% t = Time.now.to_i %>
                     <div class="col-md-12 col-xs-12" style="margin-bottom: 0">Rules</div>
                     <div class="col-md-3 col-xs-12 opt_val_div">
-                      <%=select_tag("rule1[option]", options_for_select([['Name', 'name'], ['City', 'city'], ['Status', 'status']], selected: ''), {:class => 'form-control input-sm opt_val', required: false})%>
+                      <%=select_tag("rule[#{t}][option]", options_for_select([['Name', 'name'], ['City', 'city'], ['Status', 'status']], selected: ''), {:class => 'form-control input-sm opt_val', required: false})%>
                     </div>
                     <div class="col-md-4 col-xs-12">
-                      <%=select_tag("rule1[is_contain]", options_for_select([['Contains', 'contains'],['IS', 'is']], selected: ''), {:class => 'form-control input-sm', required: false})%>
+                      <%=select_tag("rule[#{t}][is_contain]", options_for_select([['Contains', 'contains'],['IS', 'is']], selected: ''), {:class => 'form-control input-sm', required: false})%>
                     </div>
                     <div class="col-md-4 col-xs-12 text_box">
-                      <%=text_field_tag "rule1[text]",nil,class: "form-control input-sm search-text", required: false%>
+                      <%=text_field_tag "rule[#{t}][text]",nil,class: "form-control input-sm search-text", required: false%>
                     </div>
                     <div class="col-md-4 col-xs-12 hidden status_opt">
-                      <%=select_tag("rule1[status]", options_for_select(AccountStatus.all.map{|s|[s.name, s.id]}, selected: ''), {:class => 'form-control input-sm', required: false})%>
+                      <%=select_tag("rule[#{t}][status]", options_for_select(AccountStatus.all.map{|s|[s.name, s.name]}, selected: ''), {:class => 'form-control input-sm', required: false})%>
                     </div>
                 </div>
                 <%=hidden_field_tag "advanced_search", true%>
@@ -83,7 +83,7 @@
 
   <%
     @status = ""
-    AccountStatus.all.each { |x| @status << "<option value=#{x.id}>#{x.name}</option>" }
+    AccountStatus.all.each { |x| @status << "<option value=#{x.name}>#{x.name}</option>" }
   %>
 
   var x = 1;
@@ -95,16 +95,16 @@
         str_html = '\
         <div class="search-element">\
           <div class="col-md-3 col-xs-12 opt_val_div">\
-            <select class="form-control input-sm opt_val" name="rule'+x+'[option]" id="search_'+t+'_option"><option value="name">Name</option><option value="city">City</option><option value="status">Status</option></select>\
+            <select class="form-control input-sm opt_val" name="rule['+t+'][option]" id="search_'+t+'_option"><option value="name">Name</option><option value="city">City</option><option value="status">Status</option></select>\
           </div>\
           <div class="col-md-4 col-xs-12">\
-            <select class="form-control input-sm" name="rule'+x+'[is_contain]"><option value="contains">Contains</option><option value="is">IS</option></select>\
+            <select class="form-control input-sm" name="rule['+t+'][is_contain]"><option value="contains">Contains</option><option value="is">IS</option></select>\
           </div>\
           <div class="col-md-4 col-xs-12 text_box">\
-            <input name="rule'+x+'[text]" class="form-control input-sm search-text" type="text">\
+            <input name="rule['+t+'][text]" class="form-control input-sm search-text" type="text">\
           </div>\
           <div class="col-md-4 col-xs-12 hidden status_opt">\
-           <select class="form-control input-sm" name="rule'+x+'[status]"><%= raw(@status) %></select>\
+           <select class="form-control input-sm" name="rule['+t+'][status]"><%= raw(@status) %></select>\
           </div>\
           <div class="col-md-1 col-xs-12" style="margin-top: 4px"><button class="remove-search-button btn btn-danger btn-xs" >-</button></div>\
         </div>';
