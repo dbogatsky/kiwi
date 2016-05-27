@@ -328,8 +328,10 @@
     }else{
       var select_date = today_date(new Date($(this).val()))
     }
-    var c_time = set_time_when_date_change(select_date)
-    $("#reminderTimePicker").timepicker("setTime", c_time)
+    if(select_date == today_date(new Date)){
+      var c_time = set_time_when_date_change()
+      $("#reminderTimePicker").timepicker("setTime", c_time)
+    }
   });
 
 
@@ -339,31 +341,31 @@
     }else{
       var select_date = today_date(new Date($(this).val()))
     }
-    var c_time = set_time_when_date_change(select_date)
-    $("#reminderTimePickerEdit").timepicker("setTime", c_time)
+    if(select_date == today_date(new Date)){
+      var c_time = set_time_when_date_change()
+      $("#reminderTimePickerEdit").timepicker("setTime", c_time)
+    }
   });
 
-  function set_time_when_date_change(e){
-    if(e == today_date(new Date)){
-      var next_time = new Date();
-      var n = next_time.getMinutes()
-      var closest
-      if (n<=7){
-        closest = 0;
-      }else if(n>7 && n<=22){
-        closest = 15;
-      }
-      else if (n>22 && n<= 37){
-        closest = 30;
-      }else if(n>37 && n<=52){
-       closest = 45;
-      }else if(n>52 && n<=60){
-        closest = 60;
-      }
-      var time_val = closest + 30
-      next_time.setMinutes(time_val);
-      var c_time = set_time(next_time)
+  function set_time_when_date_change(){
+    var next_time = new Date();
+    var n = next_time.getMinutes()
+    var closest
+    if (n<=7){
+      closest = 0;
+    }else if(n>7 && n<=22){
+      closest = 15;
     }
+    else if (n>22 && n<= 37){
+      closest = 30;
+    }else if(n>37 && n<=52){
+     closest = 45;
+    }else if(n>52 && n<=60){
+      closest = 60;
+    }
+    var time_val = closest + 30
+    next_time.setMinutes(time_val);
+    var c_time = set_time(next_time)
     return c_time
   }
 
