@@ -89,7 +89,14 @@ class ScheduleController < ApplicationController
     @meetings.each do |i|
       s_date = Chronic.parse(i.starts_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
       e_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
-      color = '#3a87ad'
+      if i.item_type == 'regular'
+        all_day = true
+        color = '#660066'
+      else
+        all_day = false
+        color = '#3a87ad'
+      end
+
       event_data = {
         account_id: i.account_id,
         id: i.id,
@@ -97,7 +104,7 @@ class ScheduleController < ApplicationController
         start: s_date,
         end: e_date,
         color: color,
-        allDay: false,
+        allDay: all_day,
       }
       events.push(event_data)
     end
