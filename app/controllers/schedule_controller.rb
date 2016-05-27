@@ -66,7 +66,7 @@ class ScheduleController < ApplicationController
     search[:starts_at_gteq] = "#{start_date} 00:00:00"
     search[:starts_at_lteq] = "#{end_date} 23:59:59"
 
-    @meetings = ConversationItemSearch.all(params: { search: search, user_ids: user_ids })
+    @meetings = ConversationItemSearch.all(params: { search: search, user_ids: user_ids, per_page: 500 })
 
     # get reminders where the date is within the date range
     search = Hash[]
@@ -74,7 +74,7 @@ class ScheduleController < ApplicationController
     search[:scheduled_at_gteq] = "#{start_date} 00:00:00"
     search[:scheduled_at_lteq] = "#{end_date} 23:59:59"
 
-    @reminders = ConversationItemSearch.all(params: { search: search, user_ids: user_ids })
+    @reminders = ConversationItemSearch.all(params: { search: search, user_ids: user_ids, per_page: 100 })
 
     # get reminders where the date is within the date range
     search = Hash[]
@@ -82,7 +82,7 @@ class ScheduleController < ApplicationController
     search[:ends_at_gteq] = "#{start_date} 00:00:00"
     search[:ends_at_lteq] = "#{end_date} 23:59:59"
 
-    @quotes = ConversationItemSearch.all(params: { search: search, user_ids: user_ids })
+    @quotes = ConversationItemSearch.all(params: { search: search, user_ids: user_ids, per_page: 100 })
 
     events = Array[]
 
