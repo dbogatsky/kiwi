@@ -95,13 +95,21 @@
 
   $("#account_name").focusout(function(){
     var name = $(this).val()
-    var new_name = capitalize(name)
+    var new_name = titleize(name)
     $(this).val(new_name)
   });
 
-  function capitalize(s){
-    return s.toLowerCase().replace( /\b./g, function(a){ return a.toUpperCase(); } );
-  };
+  function titleize(sentence) {
+    if(!sentence.split) return sentence;
+    var _titleizeWord = function(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+        },
+        result = [];
+    sentence.split(" ").forEach(function(w) {
+        result.push(_titleizeWord(w));
+    });
+    return result.join(" ");
+  }
   </script>
 </body>
 </html>

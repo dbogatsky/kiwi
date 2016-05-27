@@ -562,7 +562,6 @@
       body = $(this).attr('data-description')
       $('.conversation-edit-quote-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
       $('.conversation-edit-quote-modal-form select[name="conversation_item[status]"]').val(status);
-      console.log($(this).attr('data-amount'))
       $('.conversation-edit-quote-modal-form input[name="conversation_item[amount]"]').val($(this).attr('data-amount'));
       if (body != ''){
         edit_quote.data("wysihtml5").editor.setValue(body);
@@ -683,7 +682,7 @@
       });
     }
 
-    $('#reminderDatePicker, #reminderDatePickerEdit').change(function(){
+    $('#reminderDatePicker').change(function(){
       if(mobile == 'false'){
         var select_date = $(this).val()
       }else{
@@ -691,9 +690,52 @@
       }
       if(select_date == today_date(new Date)){
         var next_time = new Date();
-        next_time.setMinutes(next_time.getMinutes() + 30);
+        var n = next_time.getMinutes()
+        var closest
+        if (n<=7){
+          closest = 0;
+        }else if(n>7 && n<=22){
+          closest = 15;
+        }
+        else if (n>22 && n<= 37){
+          closest = 30;
+        }else if(n>37 && n<=52){
+         closest = 45;
+        }else if(n>52 && n<=60){
+          closest = 60;
+        }
+        var time_val = closest + 30
+        next_time.setMinutes(time_val);
         var c_time = set_time(next_time)
         $("#reminderTimePicker").timepicker("setTime", c_time)
+      }
+    });
+
+    $('#reminderDatePickerEdit').change(function(){
+      if(mobile == 'false'){
+        var select_date = $(this).val()
+      }else{
+        var select_date = today_date(new Date($(this).val()))
+      }
+      if(select_date == today_date(new Date)){
+        var next_time = new Date();
+        var n = next_time.getMinutes()
+        var closest
+        if (n<=7){
+          closest = 0;
+        }else if(n>7 && n<=22){
+          closest = 15;
+        }
+        else if (n>22 && n<= 37){
+          closest = 30;
+        }else if(n>37 && n<=52){
+         closest = 45;
+        }else if(n>52 && n<=60){
+          closest = 60;
+        }
+        var time_val = closest + 30
+        next_time.setMinutes(time_val);
+        var c_time = set_time(next_time)
         $("#reminderTimePickerEdit").timepicker("setTime", c_time)
       }
     });
@@ -754,7 +796,22 @@
 
       if((total_minutes) < total_current_minutes+30){
         var display_time = new Date();
-        display_time.setMinutes(display_time.getMinutes() + 30);
+        var n =  display_time.getMinutes();
+        var closest
+        if (n<=7){
+          closest = 0;
+        }else if(n>7 && n<=22){
+          closest = 15;
+        }
+        else if (n>22 && n<= 37){
+          closest = 30;
+        }else if(n>37 && n<=52){
+         closest = 45;
+        }else if(n>52 && n<=60){
+          closest = 60;
+        }
+        var time_val = closest + 30
+        display_time.setMinutes(time_val);
         var c_time = set_time(display_time)
         $("#reminderTimePicker").timepicker("setTime", c_time);
         $("#reminderTimePickerEdit").timepicker("setTime", c_time);

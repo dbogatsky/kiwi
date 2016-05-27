@@ -69,7 +69,8 @@
       function fillInAddress() {
         var place = autocomplete.getPlace();
         if (e.id == 'account_name'){
-          $("#account_name").val(place.name)
+
+          $("#account_name").val(titleize(place.name))
         }
         var lat = place.geometry.location.lat();
         var lng = place.geometry.location.lng();

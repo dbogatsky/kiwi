@@ -56,7 +56,9 @@
   <h3 class="repeat_heading"><%=citem.title%></h3>
   <small><i class="fa fa-map-marker" style="margin-right:10px"></i>&nbsp;&nbsp;<%=citem.location%></small><br />
   <small><i class="fa fa-calendar" style="margin-right:10px"></i><%=Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.starts_at.present? %></small><br />
-  <small><i class="fa fa-clock-o" style="margin-right:10px"></i><%=Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p") if citem.starts_at.present? %>  to  <%=Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p") if citem.ends_at.present? %></small><br />
+  <% if citem.item_type == "general" %>
+    <small><i class="fa fa-clock-o" style="margin-right:10px"></i><%=Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p") if citem.starts_at.present? %>  to  <%=Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p") if citem.ends_at.present? %></small><br />
+  <% end %>
 </div>
 <%time = citem.ends_at.present? ? (DateTime.now.in_time_zone(current_user.time_zone) > citem.ends_at.to_datetime.in_time_zone(current_user.time_zone)+1.hour) : false%>
 <%invitees = citem.invitees.present? ? citem.invitees.split(', ') : []%>

@@ -17,11 +17,19 @@
                 </div><!-- row -->
 
                 <div class="row row-pad-5">
-                  <div class="col-lg-12">
+                  <div class="col-lg-8">
                     <div class="input-group">
                       <span class="input-group-addon">$</span>
                       <input type="text" name="conversation_item[amount]" placeholder="Amount" class="form-control amount_val" required="required"/>
                     </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <select class="form-control input-reg" name="conversation_item[item_type]">
+                      <option value="onetime">One Time</option>
+                      <option value="weekly">per Week</option>
+                      <option value="monthly">per Month</option>
+                      <option value="yearly">per Year</option>
+                    </select>
                   </div>
                 </div>
 
