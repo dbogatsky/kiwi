@@ -58,9 +58,16 @@
         </div>
       </div>
     </div><!-- row -->
-    <div class="row">
+    <div class="row mb15">
       <div class="col-sm-12">
         <div id="calendar"></div>
+      </div>
+    </div><!-- row -->
+    <div class="row">
+      <div class="col-sm-12">
+        <div id="spinner"><div id="status"><i class="fa fa-spinner fa-spin"></i></div></div>
+        <div id="regular_visits">
+        </div>
       </div>
     </div><!-- row -->
   </div>
@@ -69,8 +76,8 @@
 <%= render "accounts/conversation_quote", account: nil %>
 <%= render "accounts/conversation_reminder", account: nil %>
 
-<script>
-  $('.select2').select2()
+<script> 
+  $('.select2').select2();
   $(document).on('change', '.meeting_type', function(){
     if($(this).val() == 'regular'){
       $('.end-date-time').hide(500);
@@ -209,14 +216,22 @@
           center: 'title',
           right: 'month,agendaWeek,agendaDay'
         },
+        dayClick: function(date, jsEvent, view) {
+          update_regular_visits(date);
+        },
         eventClick: function (calEvent, jsEvent, view) {
-          $('#preloader').css('opacity', 0.3);
-          $('#preloader').show();
           var c_id = calEvent.id
           var account_id = calEvent.account_id
           $.ajax({
             type: "GET",
             url: '/schedule/get_meeting?citem_id='+ c_id + "&account_id=" + account_id,
+            beforeSend: function() {
+              $('#preloader').css('opacity', 0.3);
+              $('#preloader').show(); 
+            },
+            complete: function() {
+              $('#preloader').hide(); 
+            },
             success: function (data) {
             }
           });
@@ -459,6 +474,32 @@
     if (hours < 10) sHours = "0" + sHours;
     if (minutes < 10) sMinutes = "0" + sMinutes;
   }
+
+  function update_regular_visits(date) {
+    if (date == null) {
+      url_path = '/schedule/regular_visits';
+    }
+    else {
+      url_path = '/schedule/regular_visits?date='+date.format();
+    }
+    $.ajax({
+      type: "GET",
+      url: url_path,
+      beforeSend: function() {
+        $('#spinner').show();
+        $('#regular_visits').html(''); 
+      },
+      complete: function() {
+        $('#spinner').hide();
+      },
+      success: function (data) {
+        $('#regular_visits').html(data);
+      }
+    }); 
+
+  }
+    
+  update_regular_visits(null);
 </script>
 
 <style>
