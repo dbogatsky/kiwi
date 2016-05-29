@@ -65,8 +65,9 @@ class ScheduleController < ApplicationController
     search[:type_eq] = 'ConversationItems::Meeting'
     search[:starts_at_gteq] = "#{start_date} 00:00:00"
     search[:starts_at_lteq] = "#{end_date} 23:59:59"
+    search[:item_type_eq] = 'general'
 
-    @meetings = ConversationItemSearch.all(params: { search: search, user_ids: user_ids, per_page: 500 })
+    @meetings = ConversationItemSearch.all(params: { search: search, user_ids: user_ids, per_page: 100 })
 
     # get reminders where the date is within the date range
     search = Hash[]
@@ -74,7 +75,7 @@ class ScheduleController < ApplicationController
     search[:scheduled_at_gteq] = "#{start_date} 00:00:00"
     search[:scheduled_at_lteq] = "#{end_date} 23:59:59"
 
-    @reminders = ConversationItemSearch.all(params: { search: search, user_ids: user_ids, per_page: 100 })
+    @reminders = ConversationItemSearch.all(params: { search: search, user_ids: user_ids, per_page: 10 })
 
     # get reminders where the date is within the date range
     search = Hash[]
@@ -82,7 +83,7 @@ class ScheduleController < ApplicationController
     search[:ends_at_gteq] = "#{start_date} 00:00:00"
     search[:ends_at_lteq] = "#{end_date} 23:59:59"
 
-    @quotes = ConversationItemSearch.all(params: { search: search, user_ids: user_ids, per_page: 100 })
+    @quotes = ConversationItemSearch.all(params: { search: search, user_ids: user_ids, per_page: 10 })
 
     events = Array[]
 
@@ -142,6 +143,50 @@ class ScheduleController < ApplicationController
     end
 
     render json: events
+  end
+
+  def regular_visits
+
+    if params[:date].present?
+      @date = params[:date]
+    else
+      @date = Time.now.strftime('%Y-%m-%d')
+    end
+
+    user_ids = Array[]
+    user_ids.push(current_user.id) # push any additional user_id'
+    @created_by = current_user.id
+
+    # get all meetings between the date range
+    search = Hash[]
+    search[:type_eq] = 'ConversationItems::Meeting'
+    search[:starts_at_gteq] = "#{@date} 00:00:00"
+    search[:starts_at_lteq] = "#{@date} 23:59:59"
+    search[:item_type_eq] = 'regular'
+
+    events = Array[]
+
+    @regular_visits = ConversationItemSearch.all(params: { search: search, user_ids: user_ids, per_page: 20 })
+
+    @regular_visits.each do |i|
+      s_date = Chronic.parse(i.starts_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
+      e_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
+      all_day = true
+      color = '#660066'
+
+      event_data = {
+        account_id: i.account_id,
+        id: i.id,
+        title: i.title,
+        start: s_date,
+        end: e_date,
+        color: color,
+        allDay: all_day,
+      }
+      events.push(event_data)
+    end
+
+    render template: 'schedule/_regular_visits', layout: false
   end
 
   private
