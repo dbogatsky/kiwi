@@ -223,8 +223,7 @@ class AccountsController < ApplicationController
       lat = params['lat']
       lng = params['lng']
     end
-    ci = ConversationItemEvent.create(lat: lat, long: lng, ip_address: ip_address, type: 'check_in', conversation_item_id: citem, user_id: current_user.id)
-
+    ci = ConversationItemEvent.create(conversation_item_event: { lat: lat, long: lng, ip_address: ip_address }, type: 'check_in', conversation_item_id: citem)
     render json: ci
   end
 
@@ -242,9 +241,7 @@ class AccountsController < ApplicationController
       lat = params['lat']
       lng = params['lng']
     end
-
-    co = ConversationItemEvent.create(lat: lat, long: lng, ip_address: ip_address, type: 'check_out', conversation_item_id: citem, user_id: current_user.id)
-
+    co = ConversationItemEvent.create(conversation_item_event: { lat: lat, long: lng, ip_address: ip_address }, type: 'check_out', conversation_item_id: citem)
     render json: co
   end
 
