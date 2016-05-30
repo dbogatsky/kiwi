@@ -9,6 +9,16 @@ class AccountsController < ApplicationController
   def index
     # Get all accounts
     @accounts = Account.all(params: { search: params[:search] })
+    if params[:search1].present?
+      if params[:search1][:search] == 'name'
+        @accounts = @accounts.sort_by { |a| [a.name] }
+      elsif params[:search1][:search] == 'city'
+        @accounts = @accounts.sort_by { |a| [a.city_name] }
+      elsif params[:search1][:search] == 'country'
+        @accounts = @accounts.sort_by { |a| [a.country_name] }
+      end
+    end
+    @accounts = @accounts.reverse if params[:search2].present? && params[:search2][:search] == 'descending'
   end
 
   def show
@@ -18,11 +28,11 @@ class AccountsController < ApplicationController
     @account.user_account_sharings.each { |u| @shared_user << u.user }
     @users = User.all(uid: session[:user_id])
     @notifiable_users = notifiable_users_json(params[:id])
-    if params[:notification_id].present?
-      @notification = Notification.find(params[:notification_id])
-      @notification.update_attributes(read_at: Time.now)
-      # notification_info
-    end
+    # if params[:notification_id].present?
+    #   @notification = Notification.find(params[:notification_id])
+    #   @notification.update_attributes(read_at: Time.now)
+    #   # notification_info
+    # end
   end
 
   def new

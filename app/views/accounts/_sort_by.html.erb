@@ -1,0 +1,19 @@
+<%= form_tag accounts_path, method: :get do |f| %>
+  <div class="dropdown" style="margin-top: 10px;"> <a class="dropdown-toggle" style="margin-left: -2px;" data-toggle="dropdown" href="#">Sort By</a>
+    <ul class="dropdown-menu list-unstyled search_list"  role="menu" aria-labelledby="dropdownMenu">
+      <li><%=radio_button("search1", "search", "name", :checked =>true)%> Name</li>
+      <li><%=radio_button("search1", "search", "city")%> City</li>
+      <li><%=radio_button("search1", "search", "country")%> Country</li>
+      <li class="divider"></li>
+      <li><%=radio_button("search2", "search", "ascending", :checked =>true)%> Ascending</li>
+      <li><%=radio_button("search2", "search", "descending")%> Descending</li>
+      <li class="divider"></li>
+      <li><button type="submit" class="btn btn-primary btn-sm submit_search"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Apply</button></li>
+    </ul>
+  </div>
+<%end%>
+<script type="text/javascript">
+  $('.search_list').click(function(e){
+    e.stopPropagation();
+  })
+</script>
