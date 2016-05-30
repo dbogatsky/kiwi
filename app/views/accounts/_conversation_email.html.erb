@@ -67,7 +67,8 @@
               <input type="hidden" name="conversation_item[account_id]" value=<%= @account.id %> >
             </div><!-- panel-body -->
             <div class="panel-footer">
-              <button class="btn btn-primary">Send Email</button>
+              <!-- <button class="btn btn-primary">Send Email</button> -->
+              <%=submit_tag 'Send Email',  data: {disable_with: "Sending..." }, class: "btn btn-primary"%>
               <button type="reset" class="btn btn-default">Reset</button>
             </div>
         </div><!-- panel -->

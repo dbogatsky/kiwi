@@ -266,7 +266,8 @@
               <input type="hidden" name="repetition_rule_val" id="repetition_rule_value">
               </div><!-- panel-body -->
               <div class="panel-footer">
-                <button class="btn btn-primary">Update Meeting</button>
+                <!-- <button class="btn btn-primary">Update Meeting</button> -->
+                <%=submit_tag 'Update Meeting',  data: {disable_with: "Updating..." }, class: "btn btn-primary"%>
               </div>
             </div><!-- panel -->
           <% end %>
