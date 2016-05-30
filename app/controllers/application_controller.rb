@@ -104,7 +104,7 @@ class ApplicationController < ActionController::Base
     #Move into a service
     OrchardApiModel.headers['Authorization'] = "Token token=\"#{RequestStore.store[:user_token]}\", app_key=\"#{APP_CONFIG['api_app_key']}\""
 
-    @current_user = User.find(session[:user_id], reload: true)
+    @current_user ||= User.find(session[:user_id], reload: true)
     @current_user.id = session[:user_id]
   end
 
