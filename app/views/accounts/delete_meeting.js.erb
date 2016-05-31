@@ -4,7 +4,7 @@
 $('#preloader').css('opacity', 0.8);
 <%if @show_alert %>
   $.confirm({
-    text: "Delete only this event or all future meetings as well?",
+    text: "Repeat occurrences of this meeting have been detected.<br />Delete all future meetings as well?",
     confirmButton: "Yes",
     cancelButton: "No",
     confirm: function() {
