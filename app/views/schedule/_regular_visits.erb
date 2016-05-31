@@ -52,6 +52,8 @@
               <li>
                 <%=link_to 'Delete', "javascript:void(0)", id: "del_item_#{citem.id}"%>
               </li>
+              <li class="divider"></li>
+              <li><%= link_to "Go To Account", account_path(citem.account_id) %></li>
             </ul>
           </div>
           <h2 class="ci_header"><%= citem.title %></h2>
@@ -68,6 +70,7 @@
                 <% if citem.invitees.present? %>
                   <i class="fa fa-users tooltips mr10" data-toggle="tooltip" data-original-title="Invitees"></i><%= citem.invitees %>
                 <% end %>
+                <i class="fa fa-briefcase tooltips mr10" data-toggle="tooltip" data-original-title="Account"></i><%=Account.find(citem.account_id).name%>
               </div>
               <%invitees = citem.invitees.present? ? citem.invitees.split(', ') : []%>
               <div class="col-sm-2">
