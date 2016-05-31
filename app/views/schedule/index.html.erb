@@ -76,8 +76,24 @@
 <%= render "accounts/conversation_quote", account: nil %>
 <%= render "accounts/conversation_reminder", account: nil %>
 
-<script> 
+<script>
   $('.select2').select2();
+
+  $(document).on("change",".selected_account",function() {
+    var account_id = $(this).val();
+    if (account_id != ''){
+      $.ajax({
+        type: "GET",
+        dataType: "script",
+        url: '/schedule/get_account_address?account_id='+ account_id,
+        beforeSend: function() {
+         $('#preloader').css('opacity', 0.8);
+         $('#preloader').show();
+        }
+      });
+    }
+  });
+
   $(document).on('change', '.meeting_type', function(){
     if($(this).val() == 'regular'){
       $('.end-date-time').hide(500);
@@ -227,10 +243,10 @@
             url: '/schedule/get_meeting?citem_id='+ c_id + "&account_id=" + account_id,
             beforeSend: function() {
               $('#preloader').css('opacity', 0.3);
-              $('#preloader').show(); 
+              $('#preloader').show();
             },
             complete: function() {
-              $('#preloader').hide(); 
+              $('#preloader').hide();
             },
             success: function (data) {
             }
@@ -487,7 +503,7 @@
       url: url_path,
       beforeSend: function() {
         $('#spinner').show();
-        $('#regular_visits').html(''); 
+        $('#regular_visits').html('');
       },
       complete: function() {
         $('#spinner').hide();
@@ -495,10 +511,10 @@
       success: function (data) {
         $('#regular_visits').html(data);
       }
-    }); 
+    });
 
   }
-    
+
   update_regular_visits(null);
 </script>
 

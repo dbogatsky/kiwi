@@ -52,6 +52,16 @@ class ScheduleController < ApplicationController
     end
   end
 
+  def get_account_address
+    if params[:account_id].present?
+      account =  Account.find(params[:account_id])
+      address =  account.addresses.first
+      @full_address = "#{address.street_address}" +', ' + "#{address.city}" +', ' + "#{address.postcode}" +', ' + "#{address.region}" +', ' + "#{address.country}"
+    else
+      @full_address = nil
+    end
+  end
+
   def get_events
     user_ids = Array[]
     user_ids.push(current_user.id) # push any additional user_id'
