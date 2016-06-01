@@ -247,10 +247,7 @@ class AccountsController < ApplicationController
 
   def jump_in
     c_id = @account.conversation.id
-    items = @account.conversation.conversation_items
-    items.each do |n|
-      @meeting = n if n.id == params[:conversation_item_id].to_i
-    end
+    @meeting = ConversationItem.find(params[:conversation_item_id], params: { conversation_id: c_id })
     params[:conversation_item] = {}
     params[:conversation_item][:id] = params[:conversation_item_id]
     params[:conversation_item][:invitees] = @meeting.invitees + ', ' + "#{current_user.email}"
