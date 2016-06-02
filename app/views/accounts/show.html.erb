@@ -703,6 +703,7 @@
       }
       if(select_date == today_date(new Date)){
         var c_time = set_time_when_date_change()
+
         $("#reminderTimePickerEdit").timepicker("setTime", c_time)
       }
     });
@@ -710,20 +711,20 @@
     function set_time_when_date_change(){
       var next_time = new Date();
       var n = next_time.getMinutes()
-      // var closest
-      // if (n<=7){
-      //   closest = 0;
-      // }else if(n>7 && n<=22){
-      //   closest = 15;
-      // }
-      // else if (n>22 && n<= 37){
-      //   closest = 30;
-      // }else if(n>37 && n<=52){
-      //  closest = 45;
-      // }else if(n>52 && n<=60){
-      //   closest = 60;
-      // }
-      var time_val = n + 30
+      var closest
+      if (n<=7){
+        closest = 0;
+      }else if(n>7 && n<=22){
+        closest = 15;
+      }
+      else if (n>22 && n<= 37){
+        closest = 30;
+      }else if(n>37 && n<=52){
+       closest = 45;
+      }else if(n>52 && n<=60){
+        closest = 60;
+      }
+      var time_val = closest + 30
       next_time.setMinutes(time_val);
       var c_time = set_time(next_time)
       return c_time
@@ -743,7 +744,7 @@
           set_reminder_time(e)
         }
     });
-
+    called = false;
     $('#reminderTimePickerEdit').timepicker({
       showMeridian: true,
       minuteStep: 15,
@@ -776,6 +777,12 @@
     }
 
     function set_reminder_time(a){
+      if (called){
+        console.log(called);
+        called = false;
+        return;
+      }
+      called = true;
       ConvertTimeformat('24', a.time.value);
       total_minutes = parseInt(sHours)*60 + parseInt(sMinutes);
       var d = new Date();
@@ -786,22 +793,22 @@
       if((total_minutes) < total_current_minutes+30){
         var display_time = new Date();
         var n =  display_time.getMinutes();
-        // var closest
-        // if (n<=7){
-        //   closest = 0;
-        // }else if(n>7 && n<=22){
-        //   closest = 15;
-        // }
-        // else if (n>22 && n<= 37){
-        //   closest = 30;
-        // }else if(n>37 && n<=52){
-        //  closest = 45;
-        // }else if(n>52 && n<=60){
-        //   closest = 60;
-        // }
-        var time_val = n + 30
+        var closest;
+        if (n<=7){
+          closest = 0;
+        }else if(n>7 && n<=22){
+          closest = 15;
+        }
+        else if (n>22 && n<= 37){
+          closest = 30;
+        }else if(n>37 && n<=52){
+         closest = 45;
+        }else if(n>52 && n<=60){
+          closest = 60;
+        }
+        var time_val = closest + 30;
         display_time.setMinutes(time_val);
-        var c_time = set_time(display_time)
+        var c_time = set_time(display_time);
         $("#reminderTimePicker").timepicker("setTime", c_time);
         $("#reminderTimePickerEdit").timepicker("setTime", c_time);
       }

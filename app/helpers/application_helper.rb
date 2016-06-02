@@ -15,6 +15,26 @@ module ApplicationHelper
 		html.html_safe
 	end
 
+  def get_styled_regularmeetingstatus(citem, pulled_right=true)
+    pulled_right_class= "pull-right"
+    if pulled_right == false
+      pulled_right_class = ""
+    end
+    statusColor = Hash["scheduled" => "#428BCA", "in progress" => "#ff944d", "completed" => "#4CAF50"]
+    color = statusColor["completed"]
+    status = "completed"
+    if check_in(citem,nil)
+       color = statusColor["scheduled"]
+       status = "scheduled"
+    end
+    if !check_in(citem,nil) && check_out(citem,nil)
+        color = statusColor["in progress"]
+        status = "in progress"
+    end
+    html = "<span class='badge width-68 " + pulled_right_class + "' style='margin-top: -3px; background-color: white; color: #{color}; border: 1px solid #{color};'>#{status}</span>"
+    html.html_safe
+  end
+
   def get_styled_quotestatus(citem, pulled_right=true)
     pulled_right_class= "pull-right"
 

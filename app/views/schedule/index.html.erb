@@ -400,18 +400,20 @@
     return c_time
   }
 
+  called = false;
+
   $('#reminderTimePicker').timepicker({
       showMeridian: true,
       minuteStep: 15,
       showInputs: false,
   }).on('changeTime.timepicker', function(e) {
-     if (mobile == 'false'){
+      if (mobile == 'false'){
         var  date_val = $('#reminderDatePicker').val()
-     }else{
+      }else{
         var date_val = today_date(new Date($('#reminderDatePicker').val()))
-     }
+      }
       if((date_val != '') && (date_val == today_date(new Date))){
-        set_reminder_time(e)
+        set_reminder_time(e);
       }
   });
 
@@ -431,6 +433,12 @@
   }
 
   function set_reminder_time(a){
+    if (called){
+      console.log(called);
+      called = false;
+      return;
+    }
+    called = true;
     ConvertTimeformat('24', a.time.value);
     total_minutes = parseInt(sHours)*60 + parseInt(sMinutes);
     var d = new Date();
@@ -441,7 +449,7 @@
     if((total_minutes) < total_current_minutes+30){
       var display_time = new Date();
       var n = display_time.getMinutes();
-      var closest
+      var closest;
       if (n<=7){
         closest = 0;
       }else if(n>7 && n<=22){
@@ -455,7 +463,7 @@
         closest = 60;
       }
       display_time.setMinutes(closest + 30);
-      var c_time = set_time(display_time)
+      var c_time = set_time(display_time);
       $("#reminderTimePicker").timepicker("setTime", c_time);
       $("#reminderTimePickerEdit").timepicker("setTime", c_time);
     }
