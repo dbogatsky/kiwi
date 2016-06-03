@@ -81,10 +81,11 @@ class LoginController < ApplicationController
   end
 
   def destroy
+
     RequestStore.store[:user_token] = nil
     session[:user_id] = nil
     session[:token] = nil
-    current_user.logout
+    current_user.logout unless current_user.nil?
     redirect_to root_path
   end
 

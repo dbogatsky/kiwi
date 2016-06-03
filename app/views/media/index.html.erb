@@ -25,7 +25,7 @@
   <!--li>
     <a href="" class="itemopt disabled"><i class="fa fa-pencil"></i> Edit</a>
   </li-->
-  <% if can? :manage, Medium %>
+  <% if can? :media_management, Medium %>
     <li>
       <a href="javascript:void(0);" class="itemopt disabled" id="destroy-multiple"><i class="fa fa-trash-o"></i> Delete</a>
     </li>
@@ -79,13 +79,13 @@
                       <ul class="dropdown-menu fm-menu" role="menu">
                         <!-- <li><a href="#"><i class="fa fa-share"></i> Share</a></li> -->
                         <li><a class="email-media-file" href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
-                        <% if can? :manage, Medium %>
+                        <% if can? :media_management, Medium %>
                           <li><a class="rename-media-file" data-id= '<%=media.id%>' data-name='<%=media.name%>' href="#"><i class="fa fa-pencil"></i> Edit</a></li>
                         <% end %>
 
                         <li><a target="_blank" href="<%=download_file_path(cdn_url, media.name)%>"><i class="fa fa-download"></i> Download</a></li>
 
-                        <% if can? :manage, Medium %>
+                        <% if can? :media_management, Medium %>
                           <li><a class="trash-media" data-id='<%=media.id%>' href="javascript:void(0)"><i class="fa fa-trash-o"></i> Delete</a></li>
                         <% end %>
 
@@ -122,7 +122,7 @@
   </div><!-- col-sm-9 -->
   <div class="col-sm-3">
     <div class="fm-sidebar">
-      <% if can? :media_upload, User %>
+      <% if can? :media_management, Medium %>
         <button class="btn btn-primary btn-block" id="upload-file">Upload File</button>
       <% end %>
 
@@ -136,7 +136,7 @@
       <%= render 'rename_media_modal' %>
       <div class="mb30"></div>
       <h5 class="subtitle">Folders
-        <% if can? :manage, Medium %>
+        <% if can? :media_management, Medium %>
           <a class="pull-right" id="add-folder">+ Add New Folder</a>
         <% end %>
       </h5>

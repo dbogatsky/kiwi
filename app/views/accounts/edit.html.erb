@@ -85,6 +85,8 @@ jQuery(document).ready(function(){
   	$(".pager .finish").click(function(e){
   		e.preventDefault();
   		$("#account-edit-form").submit();
+  		$('#preloader').css('opacity', 0.6);
+      $('#preloader').show();
   	})
 });
 </script>

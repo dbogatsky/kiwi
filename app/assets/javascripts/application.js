@@ -32,7 +32,6 @@ function checkin(parent) {
   //immediately show loader
   $('#'+self.id).hide();
   $('#preloader').show();
-
   navigator.geolocation.getCurrentPosition(
     function(position) {
       savePosition(position, "checkin", "success", self.id);
@@ -48,7 +47,6 @@ function checkout(parent) {
   //immediately show loader
   $('#'+self.id).hide();
   $('#preloader').show();
-
   navigator.geolocation.getCurrentPosition(
     function(position) {
       savePosition(position, "checkout", "success", self.id);
@@ -93,6 +91,15 @@ function savePosition(position, type, result, cid) {
           $('#'+cid).parent().find('#position_button').text('Check Out');
           $('#'+cid).parent().find('.fa-sign-in').switchClass("fa-sign-in", "fa-sign-out");
           $('#'+cid).show();
+          $('.check_in_time_'+cid).removeClass('hidden')
+          $('.citem_'+cid).text("in progress");
+          $('.citem_'+cid).css("color", "#ff944d");
+          $('.citem_'+cid).css("border", "1px solid #ff944d");
+        }else if(type == "checkout"){
+          $('.check_out_time_'+cid).removeClass('hidden')
+          $('.citem_'+cid).text("completed");
+          $('.citem_'+cid).css("color", "#4CAF50");
+          $('.citem_'+cid).css("border", "1px solid #4CAF50");
         }
       },
       success: function() {

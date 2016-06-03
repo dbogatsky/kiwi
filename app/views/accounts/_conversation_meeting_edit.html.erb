@@ -11,6 +11,14 @@
               <div class="panel-body">
                 <div class="row row-pad-5">
                   <div class="col-lg-12">
+                    <select class="form-control meeting_type input-sm" name="conversation_item[item_type]" placeholder="Meeting Type" required="required" disabled="disabled">
+                      <option value="general">General</option>
+                      <option value="regular">Regular Visit</option>
+                    </select>
+                  </div>
+                </div><!-- row -->
+                <div class="row row-pad-5">
+                  <div class="col-lg-12">
                     <input type="text" name="conversation_item[title]" placeholder="Event" class="form-control" required="required" />
                   </div>
                 </div><!-- row -->
@@ -51,21 +59,26 @@
                     </div>
                   </div>
 
-                  <div class="col-lg-4">
+                  <div class="col-lg-4 start-time">
                     <div class="input-group ">
                       <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                       <div class="bootstrap-timepicker"><input id="schedule-from-timepicker-edit" name="starts_time" type="text" class="form-control" required="required" /></div>
                     </div>
                   </div>
+                  <div class="col-lg-4 all-day" style="display:none; margin-top: 10px">
+                    <div class="input-group">
+                      <label>All Day Appointment</label>
+                    </div>
+                </div>
                 </div><!-- row -->
 
-                <div class="row">
+                <div class="row end-date-time">
                   <div class="col-lg-4">
                   <h5>Ends</h5>
                   </div>
                 </div>
 
-                <div class="row row-pad-5">
+                <div class="row row-pad-5 end-date-time">
                   <div class="col-lg-5">
                     <div class="input-group ">
                       <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
@@ -92,9 +105,9 @@
                       <label for="meeting-reminder-edit">Set a Custom Reminder</label>
                     </div>
                   </div>
-                  <div class="col-lg-6">
+                  <div class="col-lg-6 repeat_div">
                     <div class="ckbox ckbox-primary">
-                      <input type="checkbox" id="meeting-repeat-edit" name="meeting-repeat">
+                      <input type="checkbox" id="meeting-repeat-edit" name="meeting-repeat" disabled="disabled">
                       <label for="meeting-repeat-edit">Repeat</label>
                     </div>
                   </div>
@@ -253,7 +266,8 @@
               <input type="hidden" name="repetition_rule_val" id="repetition_rule_value">
               </div><!-- panel-body -->
               <div class="panel-footer">
-                <button class="btn btn-primary">Update Meeting</button>
+                <!-- <button class="btn btn-primary">Update Meeting</button> -->
+                <%=submit_tag 'Update Meeting',  data: {disable_with: "Updating..." }, class: "btn btn-primary"%>
               </div>
             </div><!-- panel -->
           <% end %>

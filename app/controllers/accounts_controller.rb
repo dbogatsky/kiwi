@@ -9,6 +9,16 @@ class AccountsController < ApplicationController
   def index
     # Get all accounts
     @accounts = Account.all(params: { search: params[:search] })
+    if params[:search1].present?
+      if params[:search1][:search] == 'name'
+        @accounts = @accounts.sort_by { |a| [a.name] }
+      elsif params[:search1][:search] == 'city'
+        @accounts = @accounts.sort_by { |a| [a.city_name] }
+      elsif params[:search1][:search] == 'country'
+        @accounts = @accounts.sort_by { |a| [a.country_name] }
+      end
+    end
+    @accounts = @accounts.reverse if params[:search2].present? && params[:search2][:search] == 'descending'
   end
 
   def show
@@ -18,11 +28,11 @@ class AccountsController < ApplicationController
     @account.user_account_sharings.each { |u| @shared_user << u.user }
     @users = User.all(uid: session[:user_id])
     @notifiable_users = notifiable_users_json(params[:id])
-    if params[:notification_id].present?
-      @notification = Notification.find(params[:notification_id])
-      @notification.update_attributes(read_at: Time.now)
-      # notification_info
-    end
+    # if params[:notification_id].present?
+    #   @notification = Notification.find(params[:notification_id])
+    #   @notification.update_attributes(read_at: Time.now)
+    #   notification_info
+    # end
     account_timeline_conversation_items
   end
 
@@ -77,14 +87,22 @@ class AccountsController < ApplicationController
 
   def schedule_meeting
     c_id = @account.conversation.id
+    if params[:conversation_item][:item_type] == 'regular' && params[:starts_date].present?
+      params[:conversation_item][:all_day_appointment] = true
+      params[:conversation_item][:starts_at] = convert_datetime_to_utc(current_user.time_zone, params[:starts_date], "00:00:00")
+      params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone, params[:starts_date], "23:59:59")
+    else
+      params[:conversation_item][:starts_at] = convert_datetime_to_utc(current_user.time_zone, params[:starts_date], params[:starts_time]) if params[:starts_date].present?
+      params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone, params[:ends_date], params[:ends_time]) if params[:ends_date].present?
+      params[:conversation_item][:all_day_appointment] = false
+    end
+
     if params[:scheduled_date].present? && params[:scheduled_time].present?
       params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:scheduled_date], params[:scheduled_time])
     else
       params[:conversation_item][:scheduled_at] = nil
       params[:conversation_item][:reminder] = nil
     end
-    params[:conversation_item][:starts_at] = convert_datetime_to_utc(current_user.time_zone, params[:starts_date], params[:starts_time])
-    params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone, params[:ends_date], params[:ends_time])
 
     if params[:conversation_item][:repetition_rule][:frequency_type] == 'monthly'
       params[:conversation_item][:repetition_rule][:day_of_month] = params[:conversation_item][:starts_at].to_datetime.day if params[:month_week] == 'dayofmonth'
@@ -110,6 +128,8 @@ class AccountsController < ApplicationController
         reminder:           params[:conversation_item][:reminder],
         starts_at:          params[:conversation_item][:starts_at],
         ends_at:            params[:conversation_item][:ends_at],
+        item_type:          params[:conversation_item][:item_type],
+        all_day_appointment: params[:conversation_item][:all_day_appointment],
         repetition_rules: {
           frequency_type:     params[:conversation_item][:repetition_rule][:frequency_type],
           frequency:          params[:conversation_item][:repetition_rule][:frequency],
@@ -168,9 +188,16 @@ class AccountsController < ApplicationController
         params[:conversation_item][:reminder] = nil
       end
     end
-    params[:conversation_item][:starts_at] = convert_datetime_to_utc(current_user.time_zone, params[:starts_date], params[:starts_time]) if params[:starts_date] && params[:starts_time]
-    params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone, params[:ends_date], params[:ends_time]) if params[:ends_date] && params[:ends_time]
     @conversation = ConversationItem.find(params[:conversation_item][:id], params:{conversation_id: @account.conversation.id})
+
+    if @conversation.item_type == 'regular' && params[:starts_date].present?
+      params[:conversation_item][:starts_at] = convert_datetime_to_utc(current_user.time_zone, params[:starts_date], "00:00:00")
+      params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone, params[:starts_date], "23:59:59")
+    else
+      params[:conversation_item][:starts_at] = convert_datetime_to_utc(current_user.time_zone, params[:starts_date], params[:starts_time]) if params[:starts_date].present?
+      params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone, params[:ends_date], params[:ends_time]) if params[:ends_date].present?
+    end
+
     if @conversation.update_attributes(conversation_item: params[:conversation_item], conversation_id: conversation_id, reload: true)
       flash[:success] = 'Meeting successfully updated!'
     else
@@ -197,8 +224,7 @@ class AccountsController < ApplicationController
       lat = params['lat']
       lng = params['lng']
     end
-    ci = ConversationItemEvent.create(lat: lat, long: lng, ip_address: ip_address, type: 'check_in', conversation_item_id: citem, user_id: current_user.id)
-
+    ci = ConversationItemEvent.create(conversation_item_event: { lat: lat, long: lng, ip_address: ip_address }, type: 'check_in', conversation_item_id: citem)
     render json: ci
   end
 
@@ -216,18 +242,13 @@ class AccountsController < ApplicationController
       lat = params['lat']
       lng = params['lng']
     end
-
-    co = ConversationItemEvent.create(lat: lat, long: lng, ip_address: ip_address, type: 'check_out', conversation_item_id: citem, user_id: current_user.id)
-
+    co = ConversationItemEvent.create(conversation_item_event: { lat: lat, long: lng, ip_address: ip_address }, type: 'check_out', conversation_item_id: citem)
     render json: co
   end
 
   def jump_in
     c_id = @account.conversation.id
-    items = @account.conversation.conversation_items
-    items.each do |n|
-      @meeting = n if n.id == params[:conversation_item_id].to_i
-    end
+    @meeting = ConversationItem.find(params[:conversation_item_id], params: { conversation_id: c_id })
     params[:conversation_item] = {}
     params[:conversation_item][:id] = params[:conversation_item_id]
     params[:conversation_item][:invitees] = @meeting.invitees + ', ' + "#{current_user.email}"
@@ -259,14 +280,14 @@ class AccountsController < ApplicationController
     c_id = @account.conversation.id
     if params[:expires_in].present?
       new_date = Date.today + params[:expires_in].to_i.day
-      params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone,new_date)
+      params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone, new_date)
     elsif params[:expires_after].present?
-      params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone,params[:expires_after])
+      params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone, params[:expires_after])
     end
     if params[:follow_date].present? && params[:follow_time].present?
-       params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:follow_date], params[:follow_time])
+      params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:follow_date], params[:follow_time])
     end
-    ci = ConversationItem.create(conversation_item: {title: conversation_item_params[:title], ends_at: conversation_item_params[:ends_at], body: conversation_item_params[:body], reminder: conversation_item_params[:reminder], scheduled_at: params[:conversation_item][:scheduled_at], status: conversation_item_params[:status],amount: conversation_item_params[:amount], created_by_id: current_user.id}, conversation_id: c_id, type: conversation_item_params[:type])
+    ci = ConversationItem.create(conversation_item: { title: conversation_item_params[:title], ends_at: conversation_item_params[:ends_at], body: conversation_item_params[:body], reminder: conversation_item_params[:reminder], scheduled_at: params[:conversation_item][:scheduled_at], status: conversation_item_params[:status], amount: conversation_item_params[:amount], item_type: conversation_item_params[:item_type], created_by_id: current_user.id}, conversation_id: c_id, type: conversation_item_params[:type])
     if ci
       flash[:success] = 'Your quote has been added to the conversation'
     else
@@ -284,9 +305,9 @@ class AccountsController < ApplicationController
     unless params[:conversation_item][:status].present?
       if params[:expires_in].present?
         new_date = Date.today + params[:expires_in].to_i.day
-        params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone,new_date)
+        params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone, new_date)
       elsif params[:expires_after].present?
-        params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone,params[:expires_after])
+        params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone, params[:expires_after])
       end
       if params[:follow_date].present? && params[:follow_time].present?
         params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:follow_date], params[:follow_time])
@@ -294,7 +315,7 @@ class AccountsController < ApplicationController
         params[:conversation_item][:scheduled_at] = nil
       end
     end
-    @conversation = ConversationItem.find(params[:conversation_item][:id], params:{conversation_id: @account.conversation.id})
+    @conversation = ConversationItem.find(params[:conversation_item][:id], params: { conversation_id: @account.conversation.id })
     if @conversation.update_attributes(conversation_item: params[:conversation_item], conversation_id: conversation_id)
       flash[:success] = 'Quote successfully updated!'
     else
@@ -308,7 +329,7 @@ class AccountsController < ApplicationController
   end
 
   def delete_quote
-    @conversation = ConversationItem.find(params[:item_id], params:{conversation_id: @account.conversation.id})
+    @conversation = ConversationItem.find(params[:item_id], params: { conversation_id: @account.conversation.id })
     if @conversation.destroy
       flash[:success] = 'Quote successfully deleted'
     else
@@ -353,7 +374,7 @@ class AccountsController < ApplicationController
 
   def add_reminder
     c_id = @account.conversation.id
-    params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:scheduled_date], params[:scheduled_time])
+    params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:scheduled_date], params[:scheduled_time]) if params[:scheduled_date].present? && params[:scheduled_time].present?
     ci = ConversationItem.create(conversation_item: { title: conversation_item_params[:subject], body: conversation_item_params[:body], scheduled_at: params[:conversation_item][:scheduled_at], created_by_id: current_user.id, notify_by_sms: params[:conversation_item][:notify_by_sms], notify_by_email: params[:conversation_item][:notify_by_email], users_to_notify_ids: params[:conversation_item][:users_to_notify_ids] }, conversation_id: c_id, type: conversation_item_params[:type])
     if ci
       flash[:success] = 'Your reminder has been added to the conversation!'
@@ -531,7 +552,7 @@ class AccountsController < ApplicationController
   end
 
   def conversation_item_params
-    params.require(:conversation_item).permit(:account_id, :type, :reminder, :scheduled_at, :subject, :body, :email, :send_later, :title, :status, :amount, :ends_at)
+    params.require(:conversation_item).permit(:account_id, :type, :reminder, :scheduled_at, :subject, :body, :email, :send_later, :title, :status, :amount, :item_type, :ends_at)
   end
 
   def account_params
@@ -633,21 +654,7 @@ class AccountsController < ApplicationController
         changed_value[:prev_quick_facts] = account_with_previous_value.quick_facts
         changed_value[:updated_quick_facts] = account_with_update_value.quick_facts
       end
-      # prev_contacts = account_with_previous_value.contacts.sort_by do |pc|
-      #   pc.id
-      # end
-      # updated_contacts = account_with_update_value.contacts.sort_by do |uc|
-      #   uc.id
-      # end
-      # if prev_contacts.map(&:id).sort == updated_contacts.map(&:id).sort
-      #   # changed_value[:contacts] = {}
-      #   prev_contacts.each do |prev_c|
-      #     updated_contacts.each do |updated_c|
-      #       if prev_c.name != updated_c.name
-      #         changed_value[:contacts][:contact_name]
-      #     end
-      #   end
-      # end
+
     end
     @note_body = "<p><b>Previous Value => Updated Value</b></p><ul>#{changed_value[:prev_name].present? ? "<li> <b>Account Name:</b> #{changed_value[:prev_name]} => #{changed_value[:upated_name]} </li>" : ''}#{changed_value[:prev_status].present? ? "<li> <b>Account Status:</b> #{changed_value[:prev_status]} => #{changed_value[:updated_status]} </li>" : ''}#{changed_value[:prev_contact_name].present? ? "<li> <b>Contact Name:</b> #{changed_value[:prev_contact_name]} => #{changed_value[:updated_contact_name]} </li>" : ''}#{changed_value[:prev_contact_title].present? ? "<li> <b>Contact Title:</b> #{changed_value[:prev_contact_title]} => #{changed_value[:updated_contact_title]} </li>" : ''}#{changed_value[:prev_assigned_to].present? ? "<li> <b>Assign To:</b> #{changed_value[:prev_assigned_to]} => #{changed_value[:updated_assigned_to]} </li>" : ''}#{changed_value[:prev_address_name].present? ? "<li> <b>Address Name:</b> #{changed_value[:prev_address_name]} => #{changed_value[:updated_address_name]} </li>" : ''}#{changed_value[:prev_address_street_address].present? ? "<li> <b>Street Address:</b> #{changed_value[:prev_address_street_address]} => #{changed_value[:updated_address_street_address]} </li>" : ''}#{changed_value[:prev_address_city].present? ? "<li> <b>City:</b> #{changed_value[:prev_address_city]} => #{changed_value[:updated_address_city]} </li>" : ''}#{changed_value[:prev_address_postcode].present? ? "<li> <b>Post/Zipcode:</b> #{changed_value[:prev_address_postcode]} => #{changed_value[:updated_address_postcode]} </li>" : ''}#{changed_value[:prev_address_region].present? ? "<li> <b>Province/State:</b> #{changed_value[:prev_address_region]} => #{changed_value[:updated_address_region]} </li>" : ''}#{changed_value[:prev_address_country].present? ? "<li> <b>Country:</b> #{changed_value[:prev_address_country]} => #{changed_value[:updated_address_country]} </li>" : ''}#{changed_value[:prev_about].present? ? "<li> <b>About:</b> #{changed_value[:prev_about]} => #{changed_value[:updated_about]} </li>" : ''}#{changed_value[:prev_quick_facts].present? ? "<li> <b>Quick Facts:</b> #{changed_value[:prev_quick_facts]} => #{changed_value[:updated_quick_facts]} </li>" : ''}</ul><p><b>Updated by:</b> #{current_user.first_name} #{current_user.last_name} </p>".html_safe
      return @note_body

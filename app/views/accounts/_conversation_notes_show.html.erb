@@ -2,34 +2,36 @@
     <img src="/assets/vertical-timeline/img/cd-icon-comments.svg" alt="Note">
 </div>
 <div class="cd-timeline-content">
-    <span class="cd-date">
-        <%= citem.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>
-    </span>
-    <div class="btn-group pull-right">
-        <div class="btn-group mr5 pull-right">
-          <button data-toggle="dropdown" class="btn btn-sm btn-white dropdown-toggle" type="button" style="border-radius: 2px">
-            <i class="fa fa-cog mr5"></i><span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu">
-            <li>
-                <a class="edit_note" href="#"
-                 data-toggle="modal"
-                 data-target=".conversation-edit-note-modal-form"
-                 data-id="<%= citem.id %>"
-                 data-title="<%=citem.title%>"
-                 data-description="<%= citem.body %>">Edit</a>
-            </li>
-            <li>
-                <%=link_to 'Delete', delete_note_account_path(@account, item_id: citem.id), method: :delete,data: {confirm: 'Are you sure to delete this note?'}%>
-            </li>
-          </ul>
-        </div>
+  <span class="cd-date">
+    <%= citem.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>
+  </span>
+  <div class="btn-group pull-right">
+    <div class="btn-group mr5 pull-right">
+      <button data-toggle="dropdown" class="btn btn-sm btn-white dropdown-toggle" type="button" style="border-radius: 2px">
+        <i class="fa fa-cog mr5"></i><span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li>
+          <a class="edit_note" href="#"
+            data-toggle="modal"
+            data-target=".conversation-edit-note-modal-form"
+            data-id="<%= citem.id %>"
+            data-title="<%=citem.title%>"
+            data-description="<%= citem.body %>">Edit
+          </a>
+        </li>
+        <li>
+          <%=link_to 'Delete', delete_note_account_path(@account, item_id: citem.id), method: :delete,data: {confirm: 'Are you sure to delete this note?'}%>
+        </li>
+      </ul>
     </div>
-    <h2 class="ci_header"><%= citem.title %></h2>
-    <div class="ci_note_body"><%= sanitize citem.body %></div>
+  </div>
+  <h2 class="ci_header"><%= citem.title %></h2>
+  <div class="ci_note_body"><%= sanitize citem.body %></div>
+  <div class="ci_footer">
     <% if (citem.scheduled_at.present?) %>
-        <div class="ci_footer">
-            <i class="fa fa-bell"></i><%= citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %>
-        </div>
+      <i class="fa fa-bell"></i><%= citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %><br/>
     <% end %>
+    <i class="fa fa-user tooltips mr10" data-toggle="tooltip" data-original-title="Created by"></i><%=citem.created_by.first_name%> <%=citem.created_by.last_name%>
+  </div>
 </div>

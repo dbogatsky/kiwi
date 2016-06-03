@@ -18,7 +18,10 @@
       <% end %>
     <% end %>
   </div>
-  <div class="col-md-2 col-md-offset-5">
+  <div class="col-md-2">
+    <%=render 'sort_by'%>
+  </div>
+  <div class="col-md-2 pull-right">
     <% if can? :read, Account %>
       <%= link_to new_account_path, class: "btn btn-primary btn-block" do %><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Account<% end %>
     <% end %>
@@ -35,6 +38,15 @@
 	</div>
 </div><!-- row -->
 <div class="mb30"></div>
+<%
+=begin
+Account Count: <%= @accounts.count :: 
+Open: <%=  @accounts.select.count {|account| account.status.name == 'Open' } :: 
+Lead: <%=  @accounts.select.count {|account| account.status.name == 'Lead' } :: 
+Suspended: <%=  @accounts.select.count {|account| account.status.name == 'Suspended' } :: 
+Closed: <%=  @accounts.select.count {|account| account.status.name == 'Closed' }
+=end 
+%>
 <%= render partial: "accounts/account_list" %>
 
 <!--<div class="people-list">
