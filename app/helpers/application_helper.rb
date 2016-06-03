@@ -31,7 +31,7 @@ module ApplicationHelper
         color = statusColor["in progress"]
         status = "in progress"
     end
-    html = "<span class='badge width-68 " + pulled_right_class + "' style='margin-top: -3px; background-color: white; color: #{color}; border: 1px solid #{color};'>#{status}</span>"
+    html = "<span class='badge width-68 citem_#{citem.id}" + pulled_right_class + "' style='margin-top: -3px; background-color: white; color: #{color}; border: 1px solid #{color};'>#{status}</span>"
     html.html_safe
   end
 

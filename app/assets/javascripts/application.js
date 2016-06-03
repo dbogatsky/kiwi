@@ -32,7 +32,9 @@ function checkin(parent) {
   //immediately show loader
   $('#'+self.id).hide();
   $('#preloader').show();
-
+  $('.citem_'+self.id).text("in progress");
+  $('.citem_'+self.id).css("color", "#ff944d");
+  $('.citem_'+self.id).css("border", "1px solid #ff944d");
   navigator.geolocation.getCurrentPosition(
     function(position) {
       savePosition(position, "checkin", "success", self.id);
@@ -48,7 +50,9 @@ function checkout(parent) {
   //immediately show loader
   $('#'+self.id).hide();
   $('#preloader').show();
-
+  $('.citem_'+self.id).text("completed");
+  $('.citem_'+self.id).css("color", "#4CAF50");
+  $('.citem_'+self.id).css("border", "1px solid #4CAF50");
   navigator.geolocation.getCurrentPosition(
     function(position) {
       savePosition(position, "checkout", "success", self.id);
