@@ -62,6 +62,8 @@
 	  	$(".pager .finish").click(function(e){
 	  		e.preventDefault();
 	  		$("#account-add-form").submit();
+	  		$('#preloader').css('opacity', 0.6);
+        $('#preloader').show();
 	  	})
 
 

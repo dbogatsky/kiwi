@@ -65,7 +65,8 @@
               <input type="hidden" name="conversation_item[id]" value=<%= @account.id %> >
             </div><!-- panel-body -->
             <div class="panel-footer">
-              <button class="btn btn-primary">Update Email</button>
+              <!-- <button class="btn btn-primary">Update Email</button> -->
+              <%=submit_tag 'Update Email',  data: {disable_with: "Updating..." }, class: "btn btn-primary"%>
             </div>
         </div><!-- panel -->
         <% end %>

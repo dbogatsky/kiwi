@@ -64,8 +64,9 @@ Rails.application.routes.draw do
   get   '/schedule/calendar_event', to: 'schedule#calendar_event', as: :schedule_calendar_event
   get   '/schedule/get_meeting', to: 'schedule#get_meeting', as: :schedule_get_meeting
   get   '/schedule/get_events', to: 'schedule#get_events', as: :schedule_get_events
+  get   '/schedule/regular_visits', to: 'schedule#regular_visits', as: :schedule_regular_vists
   match '/media', to: 'media#index', as: :media, via: [:get]
-
+  get   '/schedule/get_account_address', to: 'schedule#get_account_address', as: :schedule_get_account_address
   post '/media/create_folder', to: 'media#create_folder', as: :create_folder
   post '/media/show', to: 'media#show', as: :show
   get  '/media/show_large_image', to: 'media#show_large_image', as: :show_large_image

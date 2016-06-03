@@ -16,6 +16,18 @@ class ApplicationController < ActionController::Base
   helper_method :current_user, :logged_in?, :superadmin_logged_in?, :notification_info
   helper_method :has_permission, :has_permissions, :has_page_permission, :has_page_permissions
 
+  rescue_from ActiveResource::ForbiddenAccess do |exception|
+    render_403
+  end
+
+  rescue_from ActiveResource::ResourceNotFound do |exception|
+    render_404
+  end
+
+  rescue_from ActiveResource::ServerError do |exception|
+    render_500
+  end
+
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, alert: exception.message
   end
@@ -30,6 +42,18 @@ class ApplicationController < ActionController::Base
   # end
 
   private
+
+  def render_403
+    render file: "#{Rails.root}/public/403.html", status: 403
+  end
+
+  def render_404
+    render file: "#{Rails.root}/public/404.html", status: 404
+  end
+
+  def render_500
+    render file: "#{Rails.root}/public/500.html", status: 500
+  end
 
   def set_cache_headers
     response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
@@ -80,7 +104,7 @@ class ApplicationController < ActionController::Base
     #Move into a service
     OrchardApiModel.headers['Authorization'] = "Token token=\"#{RequestStore.store[:user_token]}\", app_key=\"#{APP_CONFIG['api_app_key']}\""
 
-    @current_user = User.find(session[:user_id], reload: true)
+    @current_user ||= User.find(session[:user_id], reload: true)
     @current_user.id = session[:user_id]
   end
 
