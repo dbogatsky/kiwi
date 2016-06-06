@@ -512,10 +512,6 @@ class AccountsController < ApplicationController
     @conversation_items = ConversationItem.all(params: { conversation_id: c_id, search: search })
   end
 
-  def export
-
-  end
-
   private
 
   def get_token
