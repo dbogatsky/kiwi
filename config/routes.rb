@@ -23,6 +23,8 @@ Rails.application.routes.draw do
 
   resource :profile, only: [:show, :update]
   resource :preference, only: [:show, :update]
+  
+  get  '/accounts/export', to:'accounts#export', as: :account_export
   resources :accounts do
     member do
       patch  :update_note
