@@ -23,7 +23,16 @@
   </div>
   <div class="col-md-2 pull-right">
     <% if can? :read, Account %>
-      <%= link_to new_account_path, class: "btn btn-primary btn-block" do %><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Account<% end %>
+      <!-- <%#= link_to new_account_path, class: "btn btn-primary btn-block" do %><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Account<%#end %> -->
+
+      <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
+          <i class="fa fa-plus-circle mr5"></i> Action
+          <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><a href="<%=new_account_path%>">Add Account</a></li>
+        <li><a href="<%=account_export_path%>">Export Results</a></li>
+      </ul>
     <% end %>
   </div>
 </div><!-- row -->
@@ -40,12 +49,12 @@
 <div class="mb30"></div>
 <%
 =begin
-Account Count: <%= @accounts.count :: 
-Open: <%=  @accounts.select.count {|account| account.status.name == 'Open' } :: 
-Lead: <%=  @accounts.select.count {|account| account.status.name == 'Lead' } :: 
-Suspended: <%=  @accounts.select.count {|account| account.status.name == 'Suspended' } :: 
+Account Count: <%= @accounts.count ::
+Open: <%=  @accounts.select.count {|account| account.status.name == 'Open' } ::
+Lead: <%=  @accounts.select.count {|account| account.status.name == 'Lead' } ::
+Suspended: <%=  @accounts.select.count {|account| account.status.name == 'Suspended' } ::
 Closed: <%=  @accounts.select.count {|account| account.status.name == 'Closed' }
-=end 
+=end
 %>
 <%= render partial: "accounts/account_list" %>
 

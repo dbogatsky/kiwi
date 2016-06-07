@@ -8,17 +8,18 @@ class AccountsController < ApplicationController
   @@account_with_previous_value = nil
   def index
     # Get all accounts
+    session[:search1] = nil
+    session[:search2] = nil
     @accounts = Account.all(params: { search: params[:search] })
-    if params[:search1].present?
-      if params[:search1][:search] == 'name'
-        @accounts = @accounts.sort_by { |a| [a.name] }
-      elsif params[:search1][:search] == 'city'
-        @accounts = @accounts.sort_by { |a| [a.city_name] }
-      elsif params[:search1][:search] == 'country'
-        @accounts = @accounts.sort_by { |a| [a.country_name] }
-      end
+    if params[:search1].present? && params[:search2].present?
+      accounts_sort_by(params[:search1][:search], params[:search2][:search])
+      session[:search1] = params[:search1][:search]
+      session[:search2] = params[:search2][:search]
     end
-    @accounts = @accounts.reverse if params[:search2].present? && params[:search2][:search] == 'descending'
+    respond_to do |format|
+      format.html
+      format.csv { send_data generate_csv }
+    end
   end
 
   def show
@@ -516,7 +517,41 @@ class AccountsController < ApplicationController
 
   end
 
+  def generate_csv
+     # headers['Content-Disposition'] = "attachment; filename=\"user-list\""
+    if session[:search1].present? && session[:search2].present?
+      accounts_sort_by(session[:search1], session[:search2])
+    else
+     @accounts = Account.all(params: { search: params[:search] })
+    end
+
+    column_names = ['ID', 'Name', 'Contact Name', 'Contact Title', 'Status', 'Address', 'City', 'Province', 'Postal Code', 'Country', 'About', 'Quick Facts' ]
+    options = {}
+    options[:headers] = true
+    options[:col_sep] = ','
+    CSV.generate() do |csv|
+      csv << column_names
+      if @accounts.present?
+        @accounts.each do |account|
+          address = account.addresses.first
+          csv << [account.id, account.name, account.contact_name, account.contact_title, account.status.try(:name), address.try(:street_address), address.try(:city), address.try(:region), address.try(:postcode), address.try(:country), account.about, account.quick_facts]
+        end
+      end
+    end
+  end
+
   private
+
+  def accounts_sort_by(value1, value2)
+    if value1 == 'name'
+      @accounts = @accounts.sort_by { |a| [a.name] }
+    elsif value1 == 'city'
+      @accounts = @accounts.sort_by { |a| [a.city_name] }
+    elsif value1 == 'country'
+      @accounts = @accounts.sort_by { |a| [a.country_name] }
+    end
+    @accounts = @accounts.reverse if value2 == 'descending'
+  end
 
   def get_token
     # set gloal var for token to be used in model, hack for now
