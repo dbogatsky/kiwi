@@ -8,9 +8,10 @@ class AccountsController < ApplicationController
   @@account_with_previous_value = nil
   def index
     # Get all accounts
+
     @accounts = Account.all(params: { search: params[:search] })
     if params[:advanced_search].present?
-       advanced_search
+      advanced_search
       @accounts = Account.all(params: { search: @search})
     end
     if params[:search1].present?
@@ -542,7 +543,7 @@ class AccountsController < ApplicationController
           end
         end
       end
-      @search[:m] = 'or' if params[:match] = 'any'
+      @search[:m] = 'or' if params[:match] == 'any'
     end
   end
 
