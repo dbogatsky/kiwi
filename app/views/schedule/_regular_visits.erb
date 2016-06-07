@@ -68,8 +68,22 @@
                 <% end %>
                 <i class="fa fa-user tooltips mr10" data-toggle="tooltip" data-original-title="Created by"></i><%=citem.created_by.first_name%> <%=citem.created_by.last_name%><br />
                 <% if citem.invitees.present? %>
-                  <i class="fa fa-users tooltips mr10" data-toggle="tooltip" data-original-title="Invitees"></i><%= citem.invitees %>
+                  <i class="fa fa-users tooltips mr10" data-toggle="tooltip" data-original-title="Invitees"></i><%= citem.invitees %><br/>
                 <% end %>
+                <%check_in_time = check_in_details(citem, nil) %>
+                <%check_out_time = check_out_details(citem, nil) %>
+                <% if check_in_time%>
+                  <i class="fa fa-sign-in mr10" data-toggle="tooltip" data-original-title="Check In"></i><%= check_in_time %><br/>
+                <% end %>
+                <% if check_out_time%>
+                  <i class="fa fa-sign-out mr10" data-toggle="tooltip" data-original-title="Check Out"></i><%= check_out_time %><br/>
+                <% end %>
+                <div class="check_in_time_<%=citem.id%> hidden">
+                  <i class="fa fa-sign-in mr10" data-toggle="tooltip" data-original-title="Check In"></i><%= Time.now.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>
+                </div>
+                <div class="check_out_time_<%=citem.id%> hidden">
+                  <i class="fa fa-sign-out mr10" data-toggle="tooltip" data-original-title="Check Out"></i><%= Time.now.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %>
+                </div>
                 <i class="fa fa-briefcase tooltips mr10" data-toggle="tooltip" data-original-title="Account"></i><%=Account.find(citem.account_id).name%>
               </div>
               <%invitees = citem.invitees.present? ? citem.invitees.split(', ') : []%>
