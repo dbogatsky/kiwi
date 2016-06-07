@@ -8,8 +8,10 @@ class AccountsController < ApplicationController
   @@account_with_previous_value = nil
   def index
     # Get all accounts
-    session[:search1] = nil
-    session[:search2] = nil
+    if request.format.symbol.present? && request.format.symbol != :csv
+      session[:search1] = nil
+      session[:search2] = nil
+    end
     @accounts = Account.all(params: { search: params[:search] })
     if params[:search1].present? && params[:search2].present?
       accounts_sort_by(params[:search1][:search], params[:search2][:search])
@@ -524,16 +526,17 @@ class AccountsController < ApplicationController
     else
      @accounts = Account.all(params: { search: params[:search] })
     end
-
     column_names = ['ID', 'Name', 'Contact Name', 'Contact Title', 'Status', 'Address', 'City', 'Province', 'Postal Code', 'Country', 'About', 'Quick Facts' ]
     options = {}
-    options[:headers] = true
-    options[:col_sep] = ','
-    CSV.generate() do |csv|
-      csv << column_names
+    # options[:headers] = params[:option1][:header] == 'true' ? true : false
+    options[:col_sep] = params[:option2][:delimiter] == 'other' ? params[:other_option] : params[:option2][:delimiter]
+    CSV.generate(options) do |csv|
+      if params[:option1][:header] == 'true'
+         csv << column_names
+      end
       if @accounts.present?
         @accounts.each do |account|
-          address = account.addresses.first
+          address = account.addresses.first rescue nil
           csv << [account.id, account.name, account.contact_name, account.contact_title, account.status.try(:name), address.try(:street_address), address.try(:city), address.try(:region), address.try(:postcode), address.try(:country), account.about, account.quick_facts]
         end
       end

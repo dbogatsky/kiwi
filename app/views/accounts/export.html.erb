@@ -5,25 +5,50 @@
   <div class="col-md-10">
   </div>
   <div class="col-md-2 pull-right">
-  <%= link_to accounts_path, class: "btn btn-white btn-block" do %><i class="fa fa-minus-circle"></i>&nbsp;&nbsp;&nbsp;Cancel<% end %><br />
+  <!-- <%#= link_to accounts_path, class: "btn btn-white btn-block" do %><i class="fa fa-minus-circle"></i>&nbsp;&nbsp;&nbsp;Cancel<%# end %><br /> -->
+   <%= link_to 'Go Back', :back, class: "btn btn-white btn-block" %>
   </div>
 </div>
 
 <div class="panel panel-default">
-	<div class="panel-heading">
-	  <h4 class="panel-title">Please select the options to export your results.</h4>
-	</div>
+  <div class="panel-heading">
+    <h4 class="panel-title">Please select the options to export your results.</h4>
+  </div>
 </div>
-<%= link_to "Export", accounts_path(format: "csv") %>
 
-<% content_for :custom_js do %>
+<div class="panel-body">
+  <%= form_tag accounts_path(format: "csv"), method: :get do |f| %>
+    <ul class="list-unstyled" style="padding-left: 10%;">
+      <li><strong>Include Header</strong></li>
+      <li></li>
+      <li><%=radio_button("option1", "header", "false", :checked =>true)%> No</li>
+      <li><%=radio_button("option1", "header", "true")%> Yes</li>
+      <li></li>
+      <li><strong>Delimiter</strong></li>
+      <li></li>
+      <li><%=radio_button("option2", "delimiter", ",", :checked =>true)%> ,(Comma)</li>
+      <li><%=radio_button("option2", "delimiter", ";")%> ;(Semi-colon)</li>
+      <li><%=radio_button("option2", "delimiter", ":")%> :(Colon)</li>
+      <li><%=radio_button("option2", "delimiter", "|")%> |(Pipe)</li>
+      <li><%=radio_button("option2", "delimiter", "\t")%> \t(Special char: tab)</li>
+      <li><%=radio_button("option2", "delimiter", "other")%>
+        <%=text_field_tag 'other_option', nil, class: "width_delimiter_text", :maxlength => 1, :size => 5, disabled: true%> (Other: Max 1 Charactor)
+      </li>
+      <li></li>
+      <li><button type="submit" class="btn btn-primary btn-sm">Export</button></li>
+    </ul>
+  <%end%>
+</div>
 
-<script>
+<script type="text/javascript">
+  $("#option2_delimiter_other, #option2_delimiter_, #option2_delimiter__").change(function(){
+    if($("#option2_delimiter_other").is(':checked')){
+      $("#other_option").attr('disabled', false)
+      // $("#other_option").attr('required', true)
+    }else{
+      $("#other_option").attr('disabled', true)
+      $("#other_option").val(null)
+      // $("#other_option").attr('required', false)
+    }
+  })
 </script>
-<% end %>
-
-
-<% content_for :custom_css do %>
-<style>
-</style>
-<% end %>
