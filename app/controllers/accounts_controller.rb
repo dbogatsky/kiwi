@@ -3,7 +3,7 @@ include ApplicationHelper
 class AccountsController < ApplicationController
   skip_before_filter :verify_authenticity_token, only: [:delete_future_meeting]
   before_action :get_token
-  before_action :find_account, only: [:conversation, :search, :jump_in, :add_quote, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting, :update_quote, :delete_quote, :add_reminder, :update_reminder, :delete_reminder]
+  before_action :find_account, only: [:show, :edit, :destroy, :conversation, :search, :jump_in, :add_quote, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting, :update_quote, :delete_quote, :add_reminder, :update_reminder, :delete_reminder]
   before_action :get_api_values, only: [:search]
   @@account_with_previous_value = nil
   def index
@@ -23,7 +23,6 @@ class AccountsController < ApplicationController
 
   def show
     # Get the acount info and conversation based on id given
-    @account = Account.find(params[:id])
     @shared_user = []
     @account.user_account_sharings.each { |u| @shared_user << u.user }
     @users = User.all(uid: session[:user_id])
@@ -43,7 +42,6 @@ class AccountsController < ApplicationController
 
   def edit
     # Edit an account
-    @account = Account.find(params[:id])
     @addresses = @account.addresses
     @contacts = @account.contacts
     @users = User.all(uid: session[:user_id])
@@ -82,6 +80,15 @@ class AccountsController < ApplicationController
       end
     end
     redirect_to account_path(params[:id])
+  end
+
+  def destroy
+    if @account.destroy
+      flash[:success] = 'Account has been deleted successfully'
+    else
+      flash[:danger] = 'Oops! Unable to delete the account'
+    end
+    redirect_to accounts_path
   end
 
   def schedule_meeting
