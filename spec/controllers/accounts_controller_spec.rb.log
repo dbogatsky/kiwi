@@ -1,22 +1,34 @@
 [Cassette: 'authentication-utility'] Initialized with options: {:record=>:once, :match_requests_on=>[:method, :uri], :allow_unused_http_interactions=>true, :serialize_with=>:yaml, :persist_with=>:file_system}
-[webmock] Handling request: [post http://acme-api.code10.ca/api/v1/token.json] (disabled: false)
-  [Cassette: 'authentication-utility'] Initialized HTTPInteractionList with request matchers [:method, :uri] and 1 interaction(s): { [post http://acme-api.code10.ca/api/v1/token.json] => [201 "{\"user_id\":1,\"token\":\"secret_4sTtmAtebrqzHY1y2exw\",\"email\":\"test@example.com\",\"u"] }
-  [Cassette: 'authentication-utility'] Checking if [post http://acme-api.code10.ca/api/v1/token.json] matches [post http://acme-api.code10.ca/api/v1/token.json] using [:method, :uri]
-    [Cassette: 'authentication-utility'] method (matched): current request [post http://acme-api.code10.ca/api/v1/token.json] vs [post http://acme-api.code10.ca/api/v1/token.json]
-    [Cassette: 'authentication-utility'] uri (matched): current request [post http://acme-api.code10.ca/api/v1/token.json] vs [post http://acme-api.code10.ca/api/v1/token.json]
-  [Cassette: 'authentication-utility'] Found matching interaction for [post http://acme-api.code10.ca/api/v1/token.json] at index 0: [201 "{\"user_id\":1,\"token\":\"secret_4sTtmAtebrqzHY1y2exw\",\"email\":\"test@example.com\",\"u"]
-[webmock] Identified request type (stubbed_by_vcr) for [post http://acme-api.code10.ca/api/v1/token.json]
+[webmock] Handling request: [post https://acme-api.code10.ca/api/v1/token.json] (disabled: false)
+  [Cassette: 'authentication-utility'] Initialized HTTPInteractionList with request matchers [:method, :uri] and 1 interaction(s): { [post https://acme-api.code10.ca/api/v1/token.json] => [201 "{\"user_id\":1,\"token\":\"secret_4sTtmAtebrqzHY1y2exw\",\"email\":\"test@example.com\",\"u"] }
+  [Cassette: 'authentication-utility'] Checking if [post https://acme-api.code10.ca/api/v1/token.json] matches [post https://acme-api.code10.ca/api/v1/token.json] using [:method, :uri]
+    [Cassette: 'authentication-utility'] method (matched): current request [post https://acme-api.code10.ca/api/v1/token.json] vs [post https://acme-api.code10.ca/api/v1/token.json]
+    [Cassette: 'authentication-utility'] uri (matched): current request [post https://acme-api.code10.ca/api/v1/token.json] vs [post https://acme-api.code10.ca/api/v1/token.json]
+  [Cassette: 'authentication-utility'] Found matching interaction for [post https://acme-api.code10.ca/api/v1/token.json] at index 0: [201 "{\"user_id\":1,\"token\":\"secret_4sTtmAtebrqzHY1y2exw\",\"email\":\"test@example.com\",\"u"]
+[webmock] Identified request type (stubbed_by_vcr) for [post https://acme-api.code10.ca/api/v1/token.json]
 [Cassette: 'add-account-ability'] Initialized with options: {:record=>:once, :match_requests_on=>[:method, :uri], :allow_unused_http_interactions=>true, :serialize_with=>:yaml, :persist_with=>:file_system}
-[webmock] Handling request: [get http://acme-api.code10.ca/api/v1/users/1.json] (disabled: false)
-  [Cassette: 'add-account-ability'] Initialized HTTPInteractionList with request matchers [:method, :uri] and 2 interaction(s): { [get http://acme-api.code10.ca/api/v1/users/1.json] => [200 "{\"user\":{\"id\":1,\"first_name\":\"Christopher\",\"last_name\":\"Smith\",\"email\":\"test@exa"], [get http://acme-api.code10.ca/api/v1/accounts.json?search=] => [200 "{\"accounts\":[{\"id\":76,\"name\":\"Test Lat\",\"contact_name\":\"Test\",\"contact_title\":\"L"] }
-  [Cassette: 'add-account-ability'] Checking if [get http://acme-api.code10.ca/api/v1/users/1.json] matches [get http://acme-api.code10.ca/api/v1/users/1.json] using [:method, :uri]
-    [Cassette: 'add-account-ability'] method (matched): current request [get http://acme-api.code10.ca/api/v1/users/1.json] vs [get http://acme-api.code10.ca/api/v1/users/1.json]
-    [Cassette: 'add-account-ability'] uri (matched): current request [get http://acme-api.code10.ca/api/v1/users/1.json] vs [get http://acme-api.code10.ca/api/v1/users/1.json]
-  [Cassette: 'add-account-ability'] Found matching interaction for [get http://acme-api.code10.ca/api/v1/users/1.json] at index 0: [200 "{\"user\":{\"id\":1,\"first_name\":\"Christopher\",\"last_name\":\"Smith\",\"email\":\"test@exa"]
-[webmock] Identified request type (stubbed_by_vcr) for [get http://acme-api.code10.ca/api/v1/users/1.json]
-[webmock] Handling request: [get http://acme-api.code10.ca/api/v1/accounts.json?search=] (disabled: false)
-  [Cassette: 'add-account-ability'] Checking if [get http://acme-api.code10.ca/api/v1/accounts.json?search=] matches [get http://acme-api.code10.ca/api/v1/accounts.json?search=] using [:method, :uri]
-    [Cassette: 'add-account-ability'] method (matched): current request [get http://acme-api.code10.ca/api/v1/accounts.json?search=] vs [get http://acme-api.code10.ca/api/v1/accounts.json?search=]
-    [Cassette: 'add-account-ability'] uri (matched): current request [get http://acme-api.code10.ca/api/v1/accounts.json?search=] vs [get http://acme-api.code10.ca/api/v1/accounts.json?search=]
-  [Cassette: 'add-account-ability'] Found matching interaction for [get http://acme-api.code10.ca/api/v1/accounts.json?search=] at index 0: [200 "{\"accounts\":[{\"id\":76,\"name\":\"Test Lat\",\"contact_name\":\"Test\",\"contact_title\":\"L"]
-[webmock] Identified request type (stubbed_by_vcr) for [get http://acme-api.code10.ca/api/v1/accounts.json?search=]
+[webmock] Handling request: [get https://acme-api.code10.ca/api/v1/users/1.json] (disabled: false)
+  [Cassette: 'add-account-ability'] Initialized HTTPInteractionList with request matchers [:method, :uri] and 0 interaction(s): {  }
+[webmock] Identified request type (recordable) for [get https://acme-api.code10.ca/api/v1/users/1.json]
+[Cassette: 'add-account-ability'] Recorded HTTP interaction [get https://acme-api.code10.ca/api/v1/users/1.json] => [200 "{\"user\":{\"id\":1,\"first_name\":\"Christopher\",\"last_name\":\"Smith\",\"email\":\"test@exa"]
+[webmock] Handling request: [get https://acme-api.code10.ca/api/v1/notifications.json] (disabled: false)
+[webmock] Identified request type (recordable) for [get https://acme-api.code10.ca/api/v1/notifications.json]
+[Cassette: 'add-account-ability'] Recorded HTTP interaction [get https://acme-api.code10.ca/api/v1/notifications.json] => [200 "{\"notifications\":[{\"id\":113,\"type\":\"reminder\",\"value\":{\"reminder_id\":9363,\"sched"]
+[webmock] Handling request: [get https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=9363&search%5Btype_eq%5D=ConversationItems::Reminder&user_ids%5B%5D=1] (disabled: false)
+[webmock] Identified request type (recordable) for [get https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=9363&search%5Btype_eq%5D=ConversationItems::Reminder&user_ids%5B%5D=1]
+[Cassette: 'add-account-ability'] Recorded HTTP interaction [get https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=9363&search%5Btype_eq%5D=ConversationItems::Reminder&user_ids%5B%5D=1] => [200 "{\"conversation_items/reminders\":[{\"id\":9363,\"title\":\"New add reminder\",\"location"]
+[webmock] Handling request: [get https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=8969&search%5Btype_eq%5D=ConversationItems::Reminder&user_ids%5B%5D=1] (disabled: false)
+[webmock] Identified request type (recordable) for [get https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=8969&search%5Btype_eq%5D=ConversationItems::Reminder&user_ids%5B%5D=1]
+[Cassette: 'add-account-ability'] Recorded HTTP interaction [get https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=8969&search%5Btype_eq%5D=ConversationItems::Reminder&user_ids%5B%5D=1] => [200 "{\"conversation_items/reminders\":[{\"id\":8969,\"title\":\"Management Meeting Pre-Info"]
+[webmock] Handling request: [get https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=8965&search%5Btype_eq%5D=ConversationItems::Reminder&user_ids%5B%5D=1] (disabled: false)
+[webmock] Identified request type (recordable) for [get https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=8965&search%5Btype_eq%5D=ConversationItems::Reminder&user_ids%5B%5D=1]
+[Cassette: 'add-account-ability'] Recorded HTTP interaction [get https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=8965&search%5Btype_eq%5D=ConversationItems::Reminder&user_ids%5B%5D=1] => [200 "{\"conversation_items/reminders\":[{\"id\":8965,\"title\":\"Loading Reminder\",\"location"]
+[webmock] Handling request: [get https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=8905&search%5Btype_eq%5D=ConversationItems::Reminder&user_ids%5B%5D=1] (disabled: false)
+[webmock] Identified request type (recordable) for [get https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=8905&search%5Btype_eq%5D=ConversationItems::Reminder&user_ids%5B%5D=1]
+[Cassette: 'add-account-ability'] Recorded HTTP interaction [get https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=8905&search%5Btype_eq%5D=ConversationItems::Reminder&user_ids%5B%5D=1] => [200 "{\"conversation_items/reminders\":[{\"id\":8905,\"title\":\"New test reminder\",\"locatio"]
+[webmock] Handling request: [get https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=8904&search%5Btype_eq%5D=ConversationItems::Reminder&user_ids%5B%5D=1] (disabled: false)
+[webmock] Identified request type (recordable) for [get https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=8904&search%5Btype_eq%5D=ConversationItems::Reminder&user_ids%5B%5D=1]
+[Cassette: 'add-account-ability'] Recorded HTTP interaction [get https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=8904&search%5Btype_eq%5D=ConversationItems::Reminder&user_ids%5B%5D=1] => [200 "{\"conversation_items/reminders\":[{\"id\":8904,\"title\":\"test reminder\",\"location\":n"]
+[webmock] Handling request: [get https://acme-api.code10.ca/api/v1/accounts.json?search=] (disabled: false)
+[webmock] Identified request type (recordable) for [get https://acme-api.code10.ca/api/v1/accounts.json?search=]
+[Cassette: 'add-account-ability'] Recorded HTTP interaction [get https://acme-api.code10.ca/api/v1/accounts.json?search=] => [200 "{\"accounts\":[{\"id\":485,\"name\":\"Test Account\",\"contact_name\":\"test - \",\"contact_t"]
