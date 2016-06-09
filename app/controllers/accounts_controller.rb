@@ -11,8 +11,10 @@ class AccountsController < ApplicationController
     if request.format.symbol.present? && request.format.symbol != :csv
       session[:search1] = nil
       session[:search2] = nil
+      session[:search] = nil
     end
     @accounts = Account.all(params: { search: params[:search] })
+    session[:search] = params[:search] if params[:search].present?
     if params[:search1].present? && params[:search2].present?
       accounts_sort_by(params[:search1][:search], params[:search2][:search])
       session[:search1] = params[:search1][:search]
@@ -524,11 +526,12 @@ class AccountsController < ApplicationController
     if session[:search1].present? && session[:search2].present?
       accounts_sort_by(session[:search1], session[:search2])
     else
-     @accounts = Account.all(params: { search: params[:search] })
+      @accounts = Account.all(params: { search: session[:search] })
     end
     column_names = ['ID', 'Name', 'Contact Name', 'Contact Title', 'Status', 'Address', 'City', 'Province', 'Postal Code', 'Country', 'About', 'Quick Facts' ]
     options = {}
     # options[:headers] = params[:option1][:header] == 'true' ? true : false
+    options[:force_quotes] = true
     options[:col_sep] = params[:option2][:delimiter] == 'other' ? params[:other_option] : params[:option2][:delimiter]
     CSV.generate(options) do |csv|
       if params[:option1][:header] == 'true'
