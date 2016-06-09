@@ -105,7 +105,7 @@
 
     <ul class="pager wizard">
       <li class="previous"><a href="javascript:void(0)">Previous</a></li>
-      <li><%=link_to 'Delete Account', account_path(@account), method: :delete, data: {confirm: 'You are attempting to delete this account. Please click OK to continue', disable_with: "Deleting..."}, class: "delete-btn"%></li>
+      <li><a href="javascript:void(0)" class="delete-btn del_btn">Delete Account</a></li>
       <li class="next"><a href="javascript:void(0)" class="account_next">Next</a></li>
       <li class="next finish" style="display:none;"><a href="javascript:;">Finish</a></li>
     </ul>
@@ -115,6 +115,25 @@
 </div><!-- panel-body -->
 
 <script>
+  $('#preloader').css('opacity', 0.8);
+  $('.del_btn').click(function(){
+    $.confirm({
+    text: "You are attempting to delete this account. Please click Confirm Delete to continue.",
+    confirmButton: "Confirm Delete",
+    cancelButton: "Cancel",
+    confirm: function() {
+      $('#preloader').show();
+      $.ajax({
+        type: "DELETE",
+        url: '/accounts/<%=@account.id%>',
+        complete: function() {
+          window.location = "/accounts"
+        }
+      });
+    }
+  });
+
+  })
   $(".select2AccountStatus").select2({
     width: '100%',
     minimumResultsForSearch: Infinity

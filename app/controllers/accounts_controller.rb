@@ -1,7 +1,7 @@
 require 'net/http/post/multipart'
 include ApplicationHelper
 class AccountsController < ApplicationController
-  skip_before_filter :verify_authenticity_token, only: [:delete_future_meeting]
+  skip_before_filter :verify_authenticity_token, only: [:delete_future_meeting, :destroy]
   before_action :get_token
   before_action :find_account, only: [:show, :edit, :destroy, :conversation, :search, :jump_in, :add_quote, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting, :update_quote, :delete_quote, :add_reminder, :update_reminder, :delete_reminder]
   before_action :get_api_values, only: [:search]
@@ -88,7 +88,7 @@ class AccountsController < ApplicationController
     else
       flash[:danger] = 'Oops! Unable to delete the account'
     end
-    redirect_to accounts_path
+    render :nothing => true
   end
 
   def schedule_meeting
