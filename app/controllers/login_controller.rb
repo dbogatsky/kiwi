@@ -1,6 +1,7 @@
 class LoginController < ApplicationController
   # exclude the following methods from the authentication filter since the user is not logged in yet
   before_filter :authentication, except: [:index, :login, :forgot, :recover, :superadmin, :superadmin_auth]
+  before_filter :notification_info, except: [:index, :login, :forgot, :recover, :superadmin, :superadmin_auth]
 
   def index
     if !session[:token].nil?
@@ -81,7 +82,6 @@ class LoginController < ApplicationController
   end
 
   def destroy
-
     RequestStore.store[:user_token] = nil
     session[:user_id] = nil
     session[:token] = nil
