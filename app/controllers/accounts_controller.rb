@@ -6,15 +6,22 @@ class AccountsController < ApplicationController
   before_action :find_account, only: [:conversation, :search, :jump_in, :add_quote, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting, :update_quote, :delete_quote, :add_reminder, :update_reminder, :delete_reminder]
   before_action :get_api_values, only: [:search]
   @@account_with_previous_value = nil
+
   def index
     # Get all accounts
+    if request.format.symbol.present? && request.format.symbol != :csv
+      session[:search1] = nil
+      session[:search2] = nil
+      session[:search] = nil
+    end
 
     @accounts = Account.all(params: { search: params[:search] })
-    if params[:advanced_search].present?
-      advanced_search
-      @accounts = Account.all(params: { search: @search})
-    end
-    if params[:search1].present?
+    session[:search] = params[:search] if params[:search].present?
+    if params[:search1].present? && params[:search2].present?
+      accounts_sort_by(params[:search1][:search], params[:search2][:search])
+      session[:search1] = params[:search1][:search]
+      session[:search2] = params[:search2][:search]
+    elsif params[:search1].present?
       if params[:search1][:search] == 'name'
         @accounts = @accounts.sort_by { |a| [a.name] }
       elsif params[:search1][:search] == 'city'
@@ -23,8 +30,53 @@ class AccountsController < ApplicationController
         @accounts = @accounts.sort_by { |a| [a.country_name] }
       end
     end
+    if params[:advanced_search].present?
+      advanced_search
+      @accounts = Account.all(params: { search: @search})
+    end
     @accounts = @accounts.reverse if params[:search2].present? && params[:search2][:search] == 'descending'
+    respond_to do |format|
+      format.html
+      format.csv { send_data generate_csv }
+    end
   end
+
+#   def index
+#     # Get all accounts
+# <<<<<<< HEAD
+#     if request.format.symbol.present? && request.format.symbol != :csv
+#       session[:search1] = nil
+#       session[:search2] = nil
+#       session[:search] = nil
+#     end
+#     @accounts = Account.all(params: { search: params[:search] })
+#     session[:search] = params[:search] if params[:search].present?
+#     if params[:search1].present? && params[:search2].present?
+#       accounts_sort_by(params[:search1][:search], params[:search2][:search])
+#       session[:search1] = params[:search1][:search]
+#       session[:search2] = params[:search2][:search]
+#     end
+#     respond_to do |format|
+#       format.html
+#       format.csv { send_data generate_csv }
+# =======
+
+#     @accounts = Account.all(params: { search: params[:search] })
+#     if params[:advanced_search].present?
+#       advanced_search
+#       @accounts = Account.all(params: { search: @search})
+#     end
+#     if params[:search1].present?
+#       if params[:search1][:search] == 'name'
+#         @accounts = @accounts.sort_by { |a| [a.name] }
+#       elsif params[:search1][:search] == 'city'
+#         @accounts = @accounts.sort_by { |a| [a.city_name] }
+#       elsif params[:search1][:search] == 'country'
+#         @accounts = @accounts.sort_by { |a| [a.country_name] }
+#       end
+# >>>>>>> master
+#     end
+#   end
 
   def show
     # Get the acount info and conversation based on id given
@@ -517,7 +569,47 @@ class AccountsController < ApplicationController
     @conversation_items = ConversationItem.all(params: { conversation_id: c_id, search: search })
   end
 
+  def export
+
+  end
+
+  def generate_csv
+     # headers['Content-Disposition'] = "attachment; filename=\"user-list\""
+    if session[:search1].present? && session[:search2].present?
+      accounts_sort_by(session[:search1], session[:search2])
+    else
+      @accounts = Account.all(params: { search: session[:search] })
+    end
+    column_names = ['ID', 'Name', 'Contact Name', 'Contact Title', 'Status', 'Address', 'City', 'Province', 'Postal Code', 'Country', 'About', 'Quick Facts' ]
+    options = {}
+    # options[:headers] = params[:option1][:header] == 'true' ? true : false
+    options[:force_quotes] = true
+    options[:col_sep] = params[:option2][:delimiter] == 'other' ? params[:other_option] : params[:option2][:delimiter]
+    CSV.generate(options) do |csv|
+      if params[:option1][:header] == 'true'
+         csv << column_names
+      end
+      if @accounts.present?
+        @accounts.each do |account|
+          address = account.addresses.first rescue nil
+          csv << [account.id, account.name, account.contact_name, account.contact_title, account.status.try(:name), address.try(:street_address), address.try(:city), address.try(:region), address.try(:postcode), address.try(:country), account.about, account.quick_facts]
+        end
+      end
+    end
+  end
+
   private
+
+  def accounts_sort_by(value1, value2)
+    if value1 == 'name'
+      @accounts = @accounts.sort_by { |a| [a.name] }
+    elsif value1 == 'city'
+      @accounts = @accounts.sort_by { |a| [a.city_name] }
+    elsif value1 == 'country'
+      @accounts = @accounts.sort_by { |a| [a.country_name] }
+    end
+    @accounts = @accounts.reverse if value2 == 'descending'
+  end
 
   def advanced_search
     @search = {}
