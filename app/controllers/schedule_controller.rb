@@ -156,7 +156,6 @@ class ScheduleController < ApplicationController
   end
 
   def regular_visits
-
     if params[:date].present?
       @date = params[:date]
     else

@@ -84,7 +84,6 @@ class ApplicationController < ActionController::Base
     OrchardApiModel.site = RequestStore.store[:api_url]
   end
 
-
   def authentication
     if session[:user_id].present? && superadmin_logged_in?
       set_superadmin
@@ -98,7 +97,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-
   def set_current_user
     RequestStore.store[:user_token] = session[:token]
     #Move into a service
@@ -108,28 +106,23 @@ class ApplicationController < ActionController::Base
     @current_user.id = session[:user_id]
   end
 
-
   def set_superadmin
     RequestStore.store[:user_token] = session[:token]
     @superadmin_email = APP_CONFIG['superadmin_email']
   end
-
 
   def superadmin_logged_in?
     return true if session[:user_id].eql?('superadmin')
     false
   end
 
-
   def current_user
     @current_user
   end
 
-
   def logged_in?
     current_user != nil
   end
-
 
   def convert_datetime_to_utc(timezone, date, time="00:00:00")
     @parsed_datetime = Chronic.parse("#{date} at #{time}").strftime('%Y-%m-%d %H:%M:%S')
@@ -169,16 +162,14 @@ class ApplicationController < ActionController::Base
               current_user_permissions.push(current_permission)
             end
           end
-
         end
       end
 
-      #check and match against the subject_class, action and action_scope between current_user_permissions
-      #if match found, return true
+      # check and match against the subject_class, action and action_scope between current_user_permissions
+      # if match found, return true
       unless current_user_permissions.empty?
-        current_user_permissions.each do | current_user_permission |
-
-          #check if subject_class matches
+        current_user_permissions.each do |current_user_permission|
+          # check if subject_class matches
           if subject_class == current_user_permission.subject_class
             action_matched = false
             action_scope_matched = false
@@ -190,7 +181,7 @@ class ApplicationController < ActionController::Base
               action_matched = (action == current_user_permission.action)
             end
 
-            #addition check, action_scope if provided.  And if not present, then return true.
+            # addition check, action_scope if provided.  And if not present, then return true.
             unless action_scope.present?
               action_scope_matched = true
             else
@@ -212,7 +203,6 @@ class ApplicationController < ActionController::Base
     false
   end
 
-
   # Check permission by multiple credential criteria
   def has_permissions(allowed_permissions)
     #example usage: has_permissions({ "User"=>{"actions"=>["read","update","manage"], "action_scope"=>["company"]}, "all"=>{"actions"=>["read","update","manage"]} })
@@ -233,7 +223,6 @@ class ApplicationController < ActionController::Base
     false
   end
 
-
   def has_page_permission(subject_class, action, action_scope="", message="", redirect_path="")
     return true if has_permission(subject_class, action, action_scope)
 
@@ -250,7 +239,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-
   def has_page_permissions(allowed_permissions, message="", redirect_path="")
     #example usage: has_page_permissions({ "User"=>{"actions"=>["read","update","manage"], "action_scope"=>["company"]}, "all"=>{"actions"=>["read","update"]} }, "Ok, I'll send you to Company page.", company_path)
 
@@ -261,8 +249,8 @@ class ApplicationController < ActionController::Base
     end
 
     if redirect_path.blank?
-      #redirect_to dashboard_path
-      #render :file => "#{Rails.root}/public/404.html",  :status => 404, :layout => false
+      # redirect_to dashboard_path
+      # render :file => "#{Rails.root}/public/404.html",  :status => 404, :layout => false
       render :file => "#{Rails.root}/public/404.html",  :status => 404
     else
       redirect_to redirect_path
@@ -270,45 +258,29 @@ class ApplicationController < ActionController::Base
   end
 
   def notification_info
-    @read_items = {}
-    @unread_items = {}
-    @all_items = {}
-    if current_user.present?
-      @notifications = Notification.all
-      user_ids = []
-      user_ids.push(current_user.id)
+    @read_items = Array[]
+    @unread_items = Array[]
+    @menu_bar_items = {}
 
+    # check if we have set the current user before getting any notifications
+    if current_user.present?
+
+      # Retrieve notifications and sort read / unread
+      @notifications = Notification.all
       if @notifications.present?
         @notifications.each do |notification|
-          search = {}
-          if (notification.type == 'reminder')
-            search[:id_eq] = notification.value.reminder_id
-          elsif (notification.type == 'meeting_reminder')
-            search[:id_eq] = notification.value.meeting_id
-          end
-          ci = ConversationItemSearch.all(params: { user_ids: user_ids, search: search })
-          if ci.last.present?
-            @read_items[notification.id] = ci.last if notification.read_at.present?
-            @unread_items[notification.id] = ci.last unless notification.read_at.present?
-            # @all_items[notification.id] = ci.last
-          end
-          search[:id_eq] = nil
-          if notification.type == 'account_status_change'
-            account = Account.find(notification.value.account_id)
-            @read_items[notification.id] = account if notification.read_at.present?
-            @unread_items[notification.id] = account  unless notification.read_at.present?
-            # @all_items[notification.id] = account
+          if notification.read_at.present?
+            @read_items.push(notification)
+          else
+            @unread_items.push(notification)
           end
         end
-        @all_items = @unread_items.merge(@read_items)
+      end
+
+      # sort the read items just in case and put the newest at the top
+      if (@unread_items.count > 1)
+        @unread_items = @unread_items.sort_by { |k| k.created_at }.reverse
       end
     end
   end
-
-#   def check_request
-#     unless request.format.symbol.present?
-#       render text: 'page loaded'
-#     end
-#   end
-#
 end

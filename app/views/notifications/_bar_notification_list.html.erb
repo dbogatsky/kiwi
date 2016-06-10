@@ -13,37 +13,37 @@
 
 <h5 class="title">You Have <%=unread_items.count%> New Notifications</h5>
 <ul class="dropdown-list gen-list">
-  <%unread_items.first(5).each do |k,v| %>
-    <%notification = Notification.find(k)%>
+  <% @unread_items.first(5).each do |notification| %>
     <li class="new">
-      <a href="/notifications/<%=k%>" data-remote="true" rel="nofollow" data-method="patch">
-      <!-- <a href="/accounts/<%#=v.account_id%>?notification_id=<%#=k%>"> -->
-      <%if notification.type == 'reminder' || notification.type == 'meeting_reminder'%>
-        <%if v.type.eql? 'reminder'%>
-          <span class="thumb notification-icon" style="background: #f0ca45;">
-            <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-bell.svg" alt="Reminder">
-          </span>
-        <%elsif v.type.eql? 'meeting'%>
-          <span class="thumb notification-icon" style="background:#1cc7c2;">
-            <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-calendar.svg" alt="Meeting">
-          </span>
-        <%elsif v.type.eql? 'quote'%>
-          <span class="thumb notification-icon" style="background:#e91e63;">
-             <img  class="thumb-img"  src="/assets/vertical-timeline/img/cd-icon-calculator.svg" alt="Quote">
-          </span>
-        <%end%>
-      <%else%>
+      <a href="/notifications/<%= notification.id %>" data-remote="true" rel="nofollow" data-method="patch">
+      <% if notification.type == 'reminder' %>
+        <span class="thumb notification-icon" style="background: #f0ca45;">
+          <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-bell.svg" alt="Reminder">
+        </span>
+      <% elsif notification.type 'meeting' %>
+        <span class="thumb notification-icon" style="background:#1cc7c2;">
+          <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-calendar.svg" alt="Meeting">
+        </span>
+      <% elsif notification.type 'quote' %>
+        <span class="thumb notification-icon" style="background:#e91e63;">
+           <img  class="thumb-img"  src="/assets/vertical-timeline/img/cd-icon-calculator.svg" alt="Quote">
+        </span>
+      <% elsif notification.type 'account_status_change'%>
         <span class="thumb notification-icon" style="background: #333;">
-          <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-briefcase.svg" alt="Reminder">
+          <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-briefcase.svg" alt="Account Status Change">
         </span>
       <%end%>
       <span class="desc">
-        <span class="name"><small><%=notification.type == 'account_status_change' ? v.name : v.title%></small><span class="badge badge-success">new</span></span>
-        <span class="msg"><%=Chronic.parse(notification.created_at).in_time_zone(current_user.time_zone).strftime("%b %d")%></span>
+        <span class="name">
+          <small>
+            <%= notification.title == nil ? "Click to see Details" : notification.title %>
+          </small>
+          <span class="badge badge-success">new</span></span>
+        <span class="msg"><%= Chronic.parse(notification.created_at).in_time_zone(current_user.time_zone).strftime("%b %d") %></span>
       </span>
       </a>
     </li>
   <%end%>
-  <li class="new"><a href="<%=notifications_path%>">Read All Notifications</a></li>
+  <li class="new"><a href="<%= notifications_path %>">Read All Notifications</a></li>
 </ul>
 

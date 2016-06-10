@@ -6,6 +6,7 @@ class AccountsController < ApplicationController
   before_action :find_account, only: [:conversation, :search, :jump_in, :add_quote, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting, :update_quote, :delete_quote, :add_reminder, :update_reminder, :delete_reminder]
   before_action :get_api_values, only: [:search]
   @@account_with_previous_value = nil
+
   def index
     # Get all accounts
     if request.format.symbol.present? && request.format.symbol != :csv
@@ -13,18 +14,69 @@ class AccountsController < ApplicationController
       session[:search2] = nil
       session[:search] = nil
     end
+
     @accounts = Account.all(params: { search: params[:search] })
     session[:search] = params[:search] if params[:search].present?
     if params[:search1].present? && params[:search2].present?
       accounts_sort_by(params[:search1][:search], params[:search2][:search])
       session[:search1] = params[:search1][:search]
       session[:search2] = params[:search2][:search]
+    elsif params[:search1].present?
+      if params[:search1][:search] == 'name'
+        @accounts = @accounts.sort_by { |a| [a.name] }
+      elsif params[:search1][:search] == 'city'
+        @accounts = @accounts.sort_by { |a| [a.city_name] }
+      elsif params[:search1][:search] == 'country'
+        @accounts = @accounts.sort_by { |a| [a.country_name] }
+      end
     end
+    if params[:advanced_search].present?
+      advanced_search
+      @accounts = Account.all(params: { search: @search})
+    end
+    @accounts = @accounts.reverse if params[:search2].present? && params[:search2][:search] == 'descending'
     respond_to do |format|
       format.html
       format.csv { send_data generate_csv }
     end
   end
+
+#   def index
+#     # Get all accounts
+# <<<<<<< HEAD
+#     if request.format.symbol.present? && request.format.symbol != :csv
+#       session[:search1] = nil
+#       session[:search2] = nil
+#       session[:search] = nil
+#     end
+#     @accounts = Account.all(params: { search: params[:search] })
+#     session[:search] = params[:search] if params[:search].present?
+#     if params[:search1].present? && params[:search2].present?
+#       accounts_sort_by(params[:search1][:search], params[:search2][:search])
+#       session[:search1] = params[:search1][:search]
+#       session[:search2] = params[:search2][:search]
+#     end
+#     respond_to do |format|
+#       format.html
+#       format.csv { send_data generate_csv }
+# =======
+
+#     @accounts = Account.all(params: { search: params[:search] })
+#     if params[:advanced_search].present?
+#       advanced_search
+#       @accounts = Account.all(params: { search: @search})
+#     end
+#     if params[:search1].present?
+#       if params[:search1][:search] == 'name'
+#         @accounts = @accounts.sort_by { |a| [a.name] }
+#       elsif params[:search1][:search] == 'city'
+#         @accounts = @accounts.sort_by { |a| [a.city_name] }
+#       elsif params[:search1][:search] == 'country'
+#         @accounts = @accounts.sort_by { |a| [a.country_name] }
+#       end
+# >>>>>>> master
+#     end
+#   end
 
   def show
     # Get the acount info and conversation based on id given
@@ -557,6 +609,34 @@ class AccountsController < ApplicationController
       @accounts = @accounts.sort_by { |a| [a.country_name] }
     end
     @accounts = @accounts.reverse if value2 == 'descending'
+  end
+
+  def advanced_search
+    @search = {}
+    if params[:rule].present?
+      params[:rule].values.each do |r|
+        if r['option'] == "name"
+          if r['is_contain'] == 'contains'
+             @search[:name_cont] =  r['text']
+          else
+            @search[:name_eq] =  r['text']
+          end
+        elsif r['option'] == "city"
+          if r['is_contain'] == 'contains'
+             @search[:addresses_city_cont] =  r['text']
+          else
+            @search[:addresses_city_eq] =  r['text']
+          end
+        elsif r['option'] == "status"
+          if r['is_contain'] == 'contains'
+             @search[:status_name_cont] =  r['status']
+          else
+            @search[:status_name_eq] =  r['status']
+          end
+        end
+      end
+      @search[:m] = 'or' if params[:match] == 'any'
+    end
   end
 
   def get_token

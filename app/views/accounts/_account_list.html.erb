@@ -1,16 +1,17 @@
 <div class="people-list">
   <div class="row">
     <% if @accounts.size == 0 %>
-    <div class="col-md-12">
-      <div class="text-center">
-        <% if params[:search].nil? %>
-          <h3>Welcome! Get started by adding your first account</h3>
-        <% else %>
-          <h3>There are no account's matching the search</h3>
-          <%= link_to "View all accounts", accounts_path %>
-        <% end %>
-      </div>
-	</div>
+      <div class="col-md-12">
+        <div class="text-center">
+          <% if params[:search].present? || params[:rule].present?%>
+            <h3>Sorry, Your search criteria did not return any results</h3>
+            <h3>Please try again with a different criteria</h3>
+            <%= link_to "View all accounts", accounts_path %>
+          <% else %>
+            <h3>Welcome! Get started by adding your first account</h3>
+          <% end %>
+        </div>
+  	  </div>
     <% else %>
 	    <% @accounts.each do |account| %>
         <div class="col-md-6">
