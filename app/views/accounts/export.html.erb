@@ -6,39 +6,48 @@
   </div>
   <div class="col-md-2 pull-right">
   <!-- <%#= link_to accounts_path, class: "btn btn-white btn-block" do %><i class="fa fa-minus-circle"></i>&nbsp;&nbsp;&nbsp;Cancel<%# end %><br /> -->
-   <%= link_to 'Go Back', :back, class: "btn btn-white btn-block" %>
+   <%= link_to 'Go Back', :back, class: "btn btn-white btn-block" %><br />
   </div>
 </div>
 
+<%= form_tag accounts_path(format: "csv"), method: :get do |f| %>
 <div class="panel panel-default">
   <div class="panel-heading">
     <h4 class="panel-title">Please select the options to export your results.</h4>
   </div>
-</div>
 
-<div class="panel-body">
-  <%= form_tag accounts_path(format: "csv"), method: :get do |f| %>
-    <ul class="list-unstyled" style="padding-left: 10%;">
-      <li><strong>Include Header</strong></li>
-      <li></li>
-      <li><%=radio_button("option1", "header", "false", :checked =>true)%> No</li>
-      <li><%=radio_button("option1", "header", "true")%> Yes</li>
-      <li></li>
-      <li><strong>Delimiter</strong></li>
-      <li></li>
-      <li><%=radio_button("option2", "delimiter", ",", :checked =>true)%> ,(Comma)</li>
-      <li><%=radio_button("option2", "delimiter", ";")%> ;(Semi-colon)</li>
-      <li><%=radio_button("option2", "delimiter", ":")%> :(Colon)</li>
-      <li><%=radio_button("option2", "delimiter", "|")%> |(Pipe)</li>
-      <li><%=radio_button("option2", "delimiter", "\t")%> \t(Special char: tab)</li>
-      <li><%=radio_button("option2", "delimiter", "other")%>
-        <%=text_field_tag 'other_option', nil, class: "width_delimiter_text", :maxlength => 1, :size => 5, disabled: true%> (Other: Max 1 Charactor)
-      </li>
-      <li></li>
-      <li><button type="submit" class="btn btn-primary btn-sm">Export</button></li>
-    </ul>
-  <%end%>
+  <div class="panel-body">
+    <div class="form-group">
+      <label class="col-sm-3 control-label">Include Header</label>
+      <div class="col-sm-6">
+        <%=radio_button("option1", "header", "false", :checked =>true)%> No<br />
+        <%=radio_button("option1", "header", "true")%> Yes
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-3 control-label">Delimiter</label>
+      <div class="col-sm-6">
+        <%=radio_button("option2", "delimiter", ",", :checked =>true)%> , (Comma)<br />
+        <%=radio_button("option2", "delimiter", ";")%> ; (Semi-colon)<br />
+        <%=radio_button("option2", "delimiter", ":")%> : (Colon)<br />
+        <%=radio_button("option2", "delimiter", "|")%> | (Pipe)<br />
+        <%=radio_button("option2", "delimiter", "\t")%> \t (Special character: tab)<br />
+        <%=radio_button("option2", "delimiter", "other")%>
+        <%=text_field_tag 'other_option', nil, class: "width_delimiter_text", :maxlength => 1, :size => 3, disabled: true%> (Other: Max 1 character)
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-footer">
+    <div class="row">
+      <div class="col-sm-6 col-sm-offset-3">
+        <button type="submit" class="btn btn-primary btn-sm">Export</button>
+      </div>
+    </div>
+  </div>
 </div>
+<%end%>
 
 <script type="text/javascript">
   $("#option2_delimiter_other, #option2_delimiter_, #option2_delimiter__").change(function(){
