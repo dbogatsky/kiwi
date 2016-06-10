@@ -8,7 +8,12 @@ class AccountsController < ApplicationController
   @@account_with_previous_value = nil
   def index
     # Get all accounts
+
     @accounts = Account.all(params: { search: params[:search] })
+    if params[:advanced_search].present?
+      advanced_search
+      @accounts = Account.all(params: { search: @search})
+    end
     if params[:search1].present?
       if params[:search1][:search] == 'name'
         @accounts = @accounts.sort_by { |a| [a.name] }
@@ -513,6 +518,34 @@ class AccountsController < ApplicationController
   end
 
   private
+
+  def advanced_search
+    @search = {}
+    if params[:rule].present?
+      params[:rule].values.each do |r|
+        if r['option'] == "name"
+          if r['is_contain'] == 'contains'
+             @search[:name_cont] =  r['text']
+          else
+            @search[:name_eq] =  r['text']
+          end
+        elsif r['option'] == "city"
+          if r['is_contain'] == 'contains'
+             @search[:addresses_city_cont] =  r['text']
+          else
+            @search[:addresses_city_eq] =  r['text']
+          end
+        elsif r['option'] == "status"
+          if r['is_contain'] == 'contains'
+             @search[:status_name_cont] =  r['status']
+          else
+            @search[:status_name_eq] =  r['status']
+          end
+        end
+      end
+      @search[:m] = 'or' if params[:match] == 'any'
+    end
+  end
 
   def get_token
     # set gloal var for token to be used in model, hack for now

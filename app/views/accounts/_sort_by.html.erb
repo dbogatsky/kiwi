@@ -1,5 +1,5 @@
 <%= form_tag accounts_path, method: :get do |f| %>
-  <div class="dropdown" style="margin-top: 10px;"> <a class="dropdown-toggle" style="margin-left: -2px;" data-toggle="dropdown" href="#">Sort By</a>
+  <div class="dropdown" style="margin-top: 10px;"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Sort By</a>
     <ul class="dropdown-menu list-unstyled search_list"  role="menu" aria-labelledby="dropdownMenu">
       <li><%=radio_button("search1", "search", "name", :checked =>true)%> Name</li>
       <li><%=radio_button("search1", "search", "city")%> City</li>
