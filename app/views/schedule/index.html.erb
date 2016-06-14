@@ -20,7 +20,7 @@
       <div id="conversation_item_details">
         <%if @meetings.present? && @next_meeting.present?%>
           <%account = Account.find(@next_meeting.first.account_id)%>
-          <%created_by = OpenStruct.new(@next_meeting.first.created_by)%>
+          <%created_by = @next_meeting.first.created_by%>
           <%=render 'conversation_item_details', citem: @next_meeting.first, account: account, citem_created_by: created_by%>
         <%end%>
       </div>
@@ -33,7 +33,7 @@
           <% if (@users.count > 1) %>
             <%= form_tag schedule_calendar_event_path, method: :get, remote: :true do |f| %>
             <div class="col-sm-8 mb10">
-              <select class="select2" multiple="multiple" name="users[]" id="schedule_user_list" data-placeholder="Filter schedule by user">
+              <select class="select2" name="users[]" id="schedule_user_list" data-placeholder="Filter schedule by user">
                 <%= options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] if current_user.id != u.id }) %>
               </select>
             </div>

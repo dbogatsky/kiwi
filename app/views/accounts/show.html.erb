@@ -511,13 +511,22 @@
       id = $(this).attr('data-id')
       status = $(this).attr('data-status')
       notes = $(this).attr('data-notes')
+      checked_out = $(this).attr('data-check-out')
       $('.conversation-complete-meeting-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
       if (status != "scheduled"){
         $('.conversation-complete-meeting-modal-form select[name="conversation_item[status]"]').val(status);
+      }else if(checked_out == 'completed'){
+        $('.conversation-complete-meeting-modal-form select[name="conversation_item[status]"]').val('completed');
       }
       if (notes != ''){
         complete_meeting_editor.data("wysihtml5").editor.setValue(notes);
       }
+    });
+
+    $(".conversation-complete-meeting-modal-form").on("hidden.bs.modal", function(){
+      complete_meeting_editor.data("wysihtml5").editor.setValue(null);
+      $('.conversation-complete-meeting-modal-form input[name="conversation_item[id]"]').val(null);
+      $('.conversation-complete-meeting-modal-form select[name="conversation_item[status]"]').val(null);
     });
 
     $(document).on('click', "a.complete_quote", function(e){

@@ -20,6 +20,8 @@
                data-target=".conversation-complete-meeting-modal-form"
                data-id="<%=citem.id%>"
                data-notes ="<%=citem.notes%>"
+               data-check-out = "<%=check_out_details(citem, nil).present? ? 'completed' : ''%>"
+               data-status = "<%=citem.status%>"
                data-account-id="<%=citem.account_id%>">Complete
             </a>
           </li>
@@ -151,6 +153,19 @@
     if (note != ''){
      complete_meeting_editor.data("wysihtml5").editor.setValue(note);
     }
+    status = $(this).attr('data-status')
+    checked_out = $(this).attr('data-check-out')
+    if (status != "scheduled"){
+      $('.conversation-complete-meeting-modal-form select[name="conversation_item[status]"]').val(status);
+    }else if(checked_out == 'completed'){
+      $('.conversation-complete-meeting-modal-form select[name="conversation_item[status]"]').val('completed');
+    }
+  });
+
+  $(".conversation-complete-meeting-modal-form").on("hidden.bs.modal", function(){
+    complete_meeting_editor.data("wysihtml5").editor.setValue(null);
+    $('.conversation-complete-meeting-modal-form input[name="conversation_item[id]"]').val(null);
+    $('.conversation-complete-meeting-modal-form select[name="conversation_item[status]"]').val(null);
   });
 
   var meeting_edit_editor;

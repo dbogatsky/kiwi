@@ -26,6 +26,7 @@
                    data-target=".conversation-complete-meeting-modal-form"
                    data-status="<%= citem.status%>"
                    data-notes ="<%=citem.notes%>"
+                   data-check-out = "<%=check_out_details(citem, nil).present? ? 'completed' : ''%>"
                    data-id="<%=citem.id%>">Complete
                 </a>
               </li>
