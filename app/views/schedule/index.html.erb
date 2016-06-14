@@ -34,6 +34,7 @@
             <%= form_tag schedule_calendar_event_path, method: :get, remote: :true do |f| %>
             <div class="col-sm-8 mb10">
               <select class="select2" name="users[]" id="schedule_user_list" data-placeholder="Filter schedule by user">
+                <option></option>
                 <%= options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] if current_user.id != u.id }) %>
               </select>
             </div>
