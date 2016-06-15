@@ -27,8 +27,7 @@ class ScheduleController < ApplicationController
 
   def calendar_event
     if params[:users].present?
-      user_ids = params[:users]
-      user_ids.push(current_user.id.to_s)
+      user_ids = [params[:users]]
     else
       user_ids = [current_user.id]
     end
@@ -201,16 +200,16 @@ class ScheduleController < ApplicationController
   private
 
   def get_meetings(user_ids)
-    @colors = ['#e0301e', '#000', '#c5e323', '#9e466b', '#0000ff']
+    # @colors = ['#e0301e', '#000', '#c5e323', '#9e466b', '#0000ff']
     @all_items = []
-    @user_color = {}
-    user_ids.each_with_index do |u, index|
-      if u.to_i != current_user.id
-        @user_color[u.to_i] = @colors[index]
-      else
-        @user_color[u.to_i] = '#3a87ad'
-      end
-    end
+    # @user_color = {}
+    # user_ids.each_with_index do |u, index|
+    #   if u.to_i != current_user.id
+    #     @user_color[u.to_i] = @colors[index]
+    #   else
+    #     @user_color[u.to_i] = '#3a87ad'
+    #   end
+    # end
     search = Hash[]
     search[:type_eq] = 'ConversationItems::Meeting'
     search[:item_type_eq] = 'general'

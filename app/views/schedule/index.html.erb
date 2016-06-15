@@ -33,8 +33,9 @@
           <% if (@users.count > 1) %>
             <%= form_tag schedule_calendar_event_path, method: :get, remote: :true do |f| %>
             <div class="col-sm-8 mb10">
-              <select class="select2" name="users[]" id="schedule_user_list" data-placeholder="Filter schedule by user">
+              <select class="select2" name="users" id="schedule_user_list" data-placeholder="Filter schedule by user" required="required">
                 <option></option>
+                <option value="<%=current_user.id%>">My Schedule</option>
                 <%= options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] if current_user.id != u.id }) %>
               </select>
             </div>
@@ -204,12 +205,14 @@
   // Select2
   $("#schedule_user_list").select2({
     width: '100%',
-    maximumSelectionLength: 5,
+    // maximumSelectionLength: 5,
   });
 
   $("#show_calendar_eve").click(function(){
-    $('#preloader').css('opacity', 0.3);
-    $('#preloader').show();
+    if($("#schedule_user_list").val() != ''){
+     $('#preloader').css('opacity', 0.3);
+     $('#preloader').show();
+    }
   })
 
   jQuery(document).ready(function() {
