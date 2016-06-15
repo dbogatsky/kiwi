@@ -236,6 +236,12 @@ class AccountsController < ApplicationController
       lng = params['lng']
     end
     ci = ConversationItemEvent.create(conversation_item_event: { lat: lat, long: lng, ip_address: ip_address }, type: 'check_in', conversation_item_id: citem)
+    if params[:created_by].to_i == current_user.id
+      conversation = ConversationItem.find(params[:cid], params:{conversation_id: params[:conversation_id]})
+      params[:conversation_item] = {}
+      params[:conversation_item][:status] = "in progress"
+      conversation.update_attributes(conversation_item: params[:conversation_item], conversation_id: params[:conversation_id], reload: true)
+    end
     render json: ci
   end
 
@@ -254,6 +260,12 @@ class AccountsController < ApplicationController
       lng = params['lng']
     end
     co = ConversationItemEvent.create(conversation_item_event: { lat: lat, long: lng, ip_address: ip_address }, type: 'check_out', conversation_item_id: citem)
+    if params[:created_by].to_i == current_user.id
+      conversation = ConversationItem.find(params[:cid], params:{conversation_id: params[:conversation_id]})
+      params[:conversation_item] = {}
+      params[:conversation_item][:status] = "completed"
+      conversation.update_attributes(conversation_item: params[:conversation_item], conversation_id: params[:conversation_id], reload: true)
+    end
     render json: co
   end
 

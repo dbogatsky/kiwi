@@ -68,12 +68,12 @@
   <% if citem.status == "scheduled" && !time%>
     <%if current_user.id == citem_created_by.id || invitees.include?(current_user.email)%>
       <%if check_in(citem,false)%>
-        <a class="btn btn-xs btn-default pull-right mr5 checkin" id="<%=citem.id%>">
+        <a class="btn btn-xs btn-default pull-right mr5 checkin" id="<%=citem.id%>" data-created-by="<%=citem.created_by.id%>" data-conversation-id="<%=citem.prefix_options[:conversation_id].present? ? citem.prefix_options[:conversation_id] : citem.conversation_id %>">
           <i class="fa fa-sign-in mr5"></i><span id="position_button">Check In</span>
         </a>
       <%end%>
       <%if !check_in(citem,false) && check_out(citem,false)%>
-        <a class="btn btn-xs btn-default pull-right mr5 checkout" id="<%=citem.id%>">
+        <a class="btn btn-xs btn-default pull-right mr5 checkout" id="<%=citem.id%>" data-created-by="<%=citem.created_by.id%>" data-conversation-id="<%=citem.prefix_options[:conversation_id].present? ? citem.prefix_options[:conversation_id] : citem.conversation_id %>">
           <i class="fa fa-sign-out mr5"></i><span id="position_button">Check Out</span>
         </a>
       <%end%>
