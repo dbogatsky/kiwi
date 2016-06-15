@@ -197,6 +197,7 @@
     $('.conversation-edit-meeting-modal-form input[name="conversation_item[longitude]"]').val($(this).attr('data-longitude'));
     $('.conversation-edit-meeting-modal-form select[name="conversation_item[item_type]"]').val($(this).attr('data-item-type'));
       if($(this).attr('data-item-type') == 'regular'){
+        $(".invitee_emails_div").hide();
         $(".repeat_div").hide();
         $(".end-date-time").hide();
         $(".start-time").hide();
@@ -208,6 +209,7 @@
         $("#schedule-to-timepicker-edit").val(null);
         $("#schedule-from-timepicker-edit").val(null);
       }else{
+        $(".invitee_emails_div").show();
         $(".repeat_div").show();
         $(".end-date-time").show();
         $(".start-time").show();

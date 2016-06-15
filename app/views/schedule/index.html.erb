@@ -98,6 +98,7 @@
 
   $(document).on('change', '.meeting_type', function(){
     if($(this).val() == 'regular'){
+      $(".invitee_emails_div").hide(500);
       $('.end-date-time').hide(500);
       $('.all-day').show(500)
       $('.start-time').hide(500)
@@ -112,7 +113,7 @@
       $("#repeat-every-day").attr('required', true);
 
     }else{
-
+      $(".invitee_emails_div").show(500);
       $('.end-date-time').show(500);
       $('.all-day').hide(500)
       $('.start-time').show(500)
