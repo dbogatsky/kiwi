@@ -33,7 +33,7 @@
                       <%=text_field_tag "rule[#{t}][text]",nil,class: "form-control input-sm search-text", required: false%>
                     </div>
                     <div class="col-md-4 col-xs-12 hidden status_opt">
-                      <%=select_tag("rule[#{t}][status]", options_for_select(AccountStatus.all.map{|s|[s.name, s.name]}, selected: ''), {:class => 'form-control input-sm', required: false})%>
+                      <%=select_tag("rule[#{t}][status]", options_for_select(AccountStatus.all(uid: RequestStore.store[:tenant]).map{|s|[s.name, s.name]}, selected: ''), {:class => 'form-control input-sm', required: false})%>
                     </div>
                 </div>
                 <%=hidden_field_tag "advanced_search", true%>
@@ -83,7 +83,7 @@
 
   <%
     @status = ""
-    AccountStatus.all.each { |x| @status << "<option value=#{x.name}>#{x.name}</option>" }
+    AccountStatus.all(uid: RequestStore.store[:tenant]).each { |x| @status << "<option value=#{x.name}>#{x.name}</option>" }
   %>
 
   var x = 1;
