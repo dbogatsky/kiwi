@@ -82,7 +82,7 @@
     <%invitees = citem.invitees.present? ? citem.invitees.split(', ') : []%>
     <div class="col-sm-2">
       <%time = citem.ends_at.present? ? (DateTime.now.in_time_zone(current_user.time_zone) > citem.ends_at.to_datetime.in_time_zone(current_user.time_zone)+1.hour) : false%>
-        <% if citem.status == "scheduled" && !time%>
+        <% if (citem.status == "scheduled" || citem.status == "in_progress") && !time%>
           <%if current_user.id == created_by.id || invitees.include?(current_user.email)%>
             <%if check_in(citem,info)%>
               <a class="btn btn-xs btn-default pull-right mr5 checkin" id="<%=citem.id%>" data-created-by="<%=citem.created_by.id%>" data-conversation-id = "<%=citem.prefix_options[:conversation_id].present? ? citem.prefix_options[:conversation_id] : citem.conversation_id%>">
