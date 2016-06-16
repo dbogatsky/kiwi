@@ -6,7 +6,7 @@ module ApplicationHelper
 		if pulled_right == false
 			pulled_right_class = ""
 		end
-		if citem.status == "scheduled" or citem.status == "canceled" or citem.status == "completed" or citem.status == 'in progress'
+		if citem.status == "scheduled" or citem.status == "canceled" or citem.status == "completed" or citem.status == 'in_progress'
 			color = get_meetingstatus_color(citem.status)
 			html = "<span class='badge width-68 citem_#{citem.id} " + pulled_right_class + "' style='margin-top: -3px; background-color: white; color: #{color}; border: 1px solid #{color};'>#{citem.status}</span>"
 		else citem.status.nil?
@@ -51,7 +51,7 @@ module ApplicationHelper
   end
 
 	def get_meetingstatus_color(meeting_status)
-		statusColor = Hash["scheduled" => "#428BCA", "canceled" => "#999", "completed" => "#4CAF50", "in progress" => "#FF0000"]
+		statusColor = Hash["scheduled" => "#428BCA", "canceled" => "#999", "completed" => "#4CAF50", "in_progress" => "#FF0000"]
 		statusColor[meeting_status]
 	end
 

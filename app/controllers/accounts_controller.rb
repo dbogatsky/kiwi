@@ -239,7 +239,7 @@ class AccountsController < ApplicationController
     if params[:created_by].to_i == current_user.id
       conversation = ConversationItem.find(params[:cid], params:{conversation_id: params[:conversation_id]})
       params[:conversation_item] = {}
-      params[:conversation_item][:status] = "in progress"
+      params[:conversation_item][:status] = "in_progress"
       conversation.update_attributes(conversation_item: params[:conversation_item], conversation_id: params[:conversation_id], reload: true)
     end
     render json: ci

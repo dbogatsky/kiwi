@@ -65,8 +65,29 @@
                 <%end%>
               <% end %>
           </div>
+          <div class="col-md-10 video_wdt" id="location_map_<%=meeting.id%>">
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+  var lat =  "<%=meeting.latitude == 0.0 || meeting.latitude.nil? ? 43.7000 : meeting.latitude%>"
+  var lng =  "<%=meeting.longitude == 0.0 || meeting.longitude.nil? ? 79.4000 : meeting.longitude%>"
+  var loc = "<%=meeting.location%>"
+  var div_id = "#location_map_<%=meeting.id%>"
+  var map = new GMaps({
+    div: div_id,
+    lat: lat,
+    lng: lng,
+    zoom: 1,
+  });
+
+  var marker = map.addMarker({
+    lat: lat,
+    lng: lng,
+    title: loc,
+  });
+</script>
