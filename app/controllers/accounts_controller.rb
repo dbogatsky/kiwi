@@ -576,6 +576,8 @@ class AccountsController < ApplicationController
       @accounts = @accounts.sort_by { |a| [a.city_name] }
     elsif value1 == 'country'
       @accounts = @accounts.sort_by { |a| [a.country_name] }
+    elsif value1 == 'owner'
+      @accounts = @accounts.sort_by { |a| [a.assigned_to.try(:first_name)] }
     end
     @accounts = @accounts.reverse if value2 == 'descending'
   end
