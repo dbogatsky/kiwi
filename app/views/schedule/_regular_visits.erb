@@ -28,7 +28,8 @@
                    data-status="<%= citem.status%>"
                    data-notes ="<%=citem.notes%>"
                    data-check-out = "<%=check_out_details(citem, nil).present? ? 'completed' : ''%>"
-                   data-id="<%=citem.id%>">Complete
+                   data-id="<%=citem.id%>"
+                   data-account-id="<%=citem.account_id%>">Complete
                 </a>
               </li>
               <li>
@@ -36,6 +37,7 @@
                    data-toggle="modal"
                    data-target=".conversation-edit-meeting-modal-form"
                    data-id="<%= citem.id %>"
+                   data-account-id="<%=citem.account_id%>"
                    data-invitees="<%=citem.invitees%>"
                    data-title="<%=citem.title %>"
                    data-date="<%=(mobile? ? Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") :  Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y")) if citem.scheduled_at.present?%>"

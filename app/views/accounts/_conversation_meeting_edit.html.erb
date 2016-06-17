@@ -6,6 +6,7 @@
             <h4 class="modal-title">Edit Meeting</h4>
         </div>
         <div class="modal-body">
+          <% account = 0 if account.nil? %>
           <%= form_tag update_meeting_account_path(account), method: :patch do %>
             <div class="panel panel-default">
               <div class="panel-body">
