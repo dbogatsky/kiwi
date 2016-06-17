@@ -6,66 +6,72 @@
           <h4 class="modal-title">Meeting Detail</h4>
       </div>
       <div class="modal-body">
-        <%if meeting.starts_at.present? && meeting.ends_at.present? %>
-          <span class="cd-date"><%= meeting.starts_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y - %l:%M %p")%> to <%=meeting.ends_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%l:%M %p")%>&nbsp;&nbsp;</span>
-                <%= get_styled_meetingstatus(meeting, false) %>
-        <% else %>
-          <span class="cd-date"><%= meeting.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%></span>
-        <% end %>
-        <h4 class="ci_header"><%= meeting.title %></h4>
-        <p><span class="subheading">Agenda:<br/></span><%= sanitize meeting.body %></p>
-        <% if (!meeting.notes.nil?) %>
-            <p><span class="subheading">Notes:<br/></span><%= sanitize meeting.notes %></p>
-        <% end %>
-         <p><span class="subheading">Location:<br/></span><%= meeting.location %></p>
-        <div class="row ci_footer">
-          <div class="col-sm-10">
-            <% if (meeting.scheduled_at.present?) %>
-                <i class="fa fa-bell tooltips mr10" data-toggle="tooltip" data-original-title="Reminder"></i><%= meeting.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %><br />
+        <div class="row">
+          <div class="col-md-6">
+            <%if meeting.starts_at.present? && meeting.ends_at.present? %>
+              <span class="cd-date"><%= meeting.starts_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y - %l:%M %p")%> to <%=meeting.ends_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%l:%M %p")%>&nbsp;&nbsp;</span>
+                    <%= get_styled_meetingstatus(meeting, false) %>
+            <% else %>
+              <span class="cd-date"><%= meeting.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%></span>
             <% end %>
-            <i class="fa fa-user tooltips mr10" data-toggle="tooltip" data-original-title="Created by"></i><%=meeting.created_by.first_name%> <%=meeting.created_by.last_name%><br />
+            <h4 class="ci_header"><%= meeting.title %></h4>
+            <p><span class="subheading">Agenda:<br/></span><%= sanitize meeting.body %></p>
+            <% if (!meeting.notes.nil?) %>
+                <p><span class="subheading">Notes:<br/></span><%= sanitize meeting.notes %></p>
+            <% end %>
+             <p><span class="subheading">Location:<br/></span><%= meeting.location %></p>
+            <div class="row ci_footer">
+              <div class="col-sm-10">
+                <% if (meeting.scheduled_at.present?) %>
+                    <i class="fa fa-bell tooltips mr10" data-toggle="tooltip" data-original-title="Reminder"></i><%= meeting.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %><br />
+                <% end %>
+                <i class="fa fa-user tooltips mr10" data-toggle="tooltip" data-original-title="Created by"></i><%=meeting.created_by.first_name%> <%=meeting.created_by.last_name%><br />
 
-            <% if !meeting.invitees.nil? %>
-                <i class="fa fa-users tooltips mr10" data-toggle="tooltip" data-original-title="Invitees"></i><%= meeting.invitees %><br/>
-            <% end %>
-            <%check_in_time = check_in_details(meeting, false) %>
-            <%check_out_time = check_out_details(meeting, false) %>
-            <% if check_in_time%>
-              <i class="fa fa-sign-in mr10" data-toggle="tooltip" data-original-title="Check In"></i><%= check_in_time %><br/>
-            <% end %>
-            <% if check_out_time%>
-              <i class="fa fa-sign-out mr10" data-toggle="tooltip" data-original-title="Check Out"></i><%= check_out_time %><br/>
-            <% end %>
-            <div class="check_in_time_<%=meeting.id%> hidden">
-              <i class="fa fa-sign-in mr10" data-toggle="tooltip" data-original-title="Check In"></i><%= Time.now.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>
+                <% if !meeting.invitees.nil? %>
+                    <i class="fa fa-users tooltips mr10" data-toggle="tooltip" data-original-title="Invitees"></i><%= meeting.invitees %><br/>
+                <% end %>
+                <%check_in_time = check_in_details(meeting, false) %>
+                <%check_out_time = check_out_details(meeting, false) %>
+                <% if check_in_time%>
+                  <i class="fa fa-sign-in mr10" data-toggle="tooltip" data-original-title="Check In"></i><%= check_in_time %><br/>
+                <% end %>
+                <% if check_out_time%>
+                  <i class="fa fa-sign-out mr10" data-toggle="tooltip" data-original-title="Check Out"></i><%= check_out_time %><br/>
+                <% end %>
+                <div class="check_in_time_<%=meeting.id%> hidden">
+                  <i class="fa fa-sign-in mr10" data-toggle="tooltip" data-original-title="Check In"></i><%= Time.now.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>
+                </div>
+                <div class="check_out_time_<%=meeting.id%> hidden">
+                  <i class="fa fa-sign-out mr10" data-toggle="tooltip" data-original-title="Check Out"></i><%= Time.now.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %>
+                </div>
+              </div>
+              <%invitees = meeting.invitees.present? ? meeting.invitees.split(', ') : []%>
+              <div class="col-sm-2">
+                <%time = meeting.ends_at.present? ? (DateTime.now.in_time_zone(current_user.time_zone) > meeting.ends_at.to_datetime.in_time_zone(current_user.time_zone)+1.hour) : false%>
+                  <% if meeting.status == "scheduled" && !time%>
+                    <%if current_user.id == meeting.created_by.id || invitees.include?(current_user.email)%>
+                      <%if check_in(meeting,false)%>
+                        <a class="btn btn-xs btn-default pull-right mr5 checkin" id="<%=meeting.id%>" data-created-by="<%=meeting.created_by.id%>" data-conversation-id = "<%=meeting.prefix_options[:conversation_id].present? ? meeting.prefix_options[:conversation_id] : meeting.conversation_id%>">
+                          <i class="fa fa-sign-in mr5"></i><span id="position_button">Check In</span>
+                        </a>
+                      <%end%>
+                      <%if !check_in(meeting,false) && check_out(meeting,false)%>
+                        <a class="btn btn-xs btn-default pull-right mr5 checkout" id="<%=meeting.id%>" data-created-by="<%=meeting.created_by.id%>" data-conversation-id = "<%=meeting.prefix_options[:conversation_id].present? ? meeting.prefix_options[:conversation_id] : meeting.conversation_id%>">
+                          <i class="fa fa-sign-out mr5"></i><span id="position_button">Check Out</span>
+                        </a>
+                      <%end%>
+                    <%else%>
+                      <%=link_to jump_in_account_path(conversation_item_id: meeting.id),method: :patch, class: 'btn btn-xs btn-default pull-right mr5' do%>
+                        <i class="fa fa-sign-in mr5"></i>Jump In
+                      <%end%>
+                    <%end%>
+                  <% end %>
+              </div>
+              </div>
             </div>
-            <div class="check_out_time_<%=meeting.id%> hidden">
-              <i class="fa fa-sign-out mr10" data-toggle="tooltip" data-original-title="Check Out"></i><%= Time.now.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %>
+            <div class="col-md-6">
+              <div class="col-md-10 video_wdt" id="location_map_<%=meeting.id%>">
             </div>
-          </div>
-          <%invitees = meeting.invitees.present? ? meeting.invitees.split(', ') : []%>
-          <div class="col-sm-2">
-            <%time = meeting.ends_at.present? ? (DateTime.now.in_time_zone(current_user.time_zone) > meeting.ends_at.to_datetime.in_time_zone(current_user.time_zone)+1.hour) : false%>
-              <% if meeting.status == "scheduled" && !time%>
-                <%if current_user.id == meeting.created_by.id || invitees.include?(current_user.email)%>
-                  <%if check_in(meeting,false)%>
-                    <a class="btn btn-xs btn-default pull-right mr5 checkin" id="<%=meeting.id%>" data-created-by="<%=meeting.created_by.id%>" data-conversation-id = "<%=meeting.prefix_options[:conversation_id].present? ? meeting.prefix_options[:conversation_id] : meeting.conversation_id%>">
-                      <i class="fa fa-sign-in mr5"></i><span id="position_button">Check In</span>
-                    </a>
-                  <%end%>
-                  <%if !check_in(meeting,false) && check_out(meeting,false)%>
-                    <a class="btn btn-xs btn-default pull-right mr5 checkout" id="<%=meeting.id%>" data-created-by="<%=meeting.created_by.id%>" data-conversation-id = "<%=meeting.prefix_options[:conversation_id].present? ? meeting.prefix_options[:conversation_id] : meeting.conversation_id%>">
-                      <i class="fa fa-sign-out mr5"></i><span id="position_button">Check Out</span>
-                    </a>
-                  <%end%>
-                <%else%>
-                  <%=link_to jump_in_account_path(conversation_item_id: meeting.id),method: :patch, class: 'btn btn-xs btn-default pull-right mr5' do%>
-                    <i class="fa fa-sign-in mr5"></i>Jump In
-                  <%end%>
-                <%end%>
-              <% end %>
-          </div>
-          <div class="col-md-10 video_wdt" id="location_map_<%=meeting.id%>">
           </div>
         </div>
       </div>
