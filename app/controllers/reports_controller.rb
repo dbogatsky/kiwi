@@ -2,17 +2,19 @@ class ReportsController < ApplicationController
   def meeting_report
   end
 
+  def activity_report
+  end
+
   def meeting_report_result
-    user_ids = Array.new
     user_ids = params[:users]
-    search = Hash.new
-    search[:type_eq]="ConversationItems::Meeting"
+    search = Hash[]
+    search[:type_eq] = 'ConversationItems::Meeting'
     s_date = Chronic.parse(params[:search][:date_gteq]).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
     e_date = Chronic.parse(params[:search][:date_lteq]).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
     @no_of_day = ((e_date.to_date-s_date.to_date).to_i)+1
-    search[:starts_at_gteq]="#{s_date} 00:00:00"
-    search[:starts_at_lteq]="#{e_date} 23:59:59"
-    @meetings = ConversationItemSearch.all(params: {user_ids: user_ids, search: search})
+    search[:starts_at_gteq] = "#{s_date} 00:00:00"
+    search[:starts_at_lteq] = "#{e_date} 23:59:59"
+    @meetings = ConversationItemSearch.all(params: { user_ids: user_ids, search: search })
 
     day_of_Week_bar_chart_data(@meetings)
     # time_of_day_bar_chart_data(@meetings)
@@ -32,16 +34,16 @@ class ReportsController < ApplicationController
     @longest_meeting_time = format("%02d:%02d", 00, 00)
     @shortest_meeting_time = format("%02d:%02d", 00, 00)
     if @meetings.present?
-	    @meetings.each do |meeting|
-	    	@total_check_in = @total_check_in + meeting.check_ins.count
-	    	@total_check_out = @total_check_out + meeting.check_outs.count
-	    	starts_at = Chronic.parse(meeting.starts_at).in_time_zone(current_user.time_zone).to_s
-	    	ends_at =  Chronic.parse(meeting.ends_at).in_time_zone(current_user.time_zone).to_s
-        @meeting_time_in_second =  @meeting_time_in_second + (Time.parse(ends_at) - Time.parse(starts_at))
-	      meeting_duration = (Time.parse(ends_at) - Time.parse(starts_at))
-	      longest_duration   =  meeting_duration if longest_duration < meeting_duration
-	      shortest_duration  =  meeting_duration if shortest_duration > meeting_duration
-	    end
+      @meetings.each do |meeting|
+        @total_check_in += meeting.check_ins.count
+        @total_check_out += meeting.check_outs.count
+        starts_at = Chronic.parse(meeting.starts_at).in_time_zone(current_user.time_zone).to_s
+        ends_at = Chronic.parse(meeting.ends_at).in_time_zone(current_user.time_zone).to_s
+        @meeting_time_in_second += (Time.parse(ends_at) - Time.parse(starts_at))
+        meeting_duration = (Time.parse(ends_at) - Time.parse(starts_at))
+        longest_duration   =  meeting_duration if longest_duration < meeting_duration
+        shortest_duration  =  meeting_duration if shortest_duration > meeting_duration
+      end
       minutes = ((@meeting_time_in_second / @total_meetings) / 60) % 60 rescue 0
       hours = (@meeting_time_in_second / @total_meetings) / (60 * 60)  rescue 0
       @average_time_for_meeting = format("%02dh %02dmins", hours, minutes)
@@ -50,24 +52,49 @@ class ReportsController < ApplicationController
       longest_meeting_time_hours = (longest_duration) / (60 * 60)  rescue 0
       @longest_meeting_time = format("%02dh %02dmins", longest_meeting_time_hours, longest_meeting_time_minutes)
 
-	    shortest_meeting_time_minutes = ((shortest_duration) / 60) % 60  rescue 0
+      shortest_meeting_time_minutes = ((shortest_duration) / 60) % 60  rescue 0
       shortest_meeting_time_hours = (shortest_duration) / (60 * 60)  rescue 0
       @shortest_meeting_time = format("%02dh %02dmins", shortest_meeting_time_hours, shortest_meeting_time_minutes)
-	  end
+    end
   end
 
-  # def check_in_check_out
-  #   @meeting = ConversationItem.find(params[:id], params: {conversation_id: params[:ci_id]})
-  #   @success = true
-  # rescue
-  #   @success = false
-  # end
+  def activity_report_result
+    search = Hash[]
+    user_ids = params[:users]
 
+    s_date = Chronic.parse(params[:search][:date_gteq]).in_time_zone(current_user.time_zone).strftime('%Y-%m-%d')
+    e_date = Chronic.parse(params[:search][:date_lteq]).in_time_zone(current_user.time_zone).strftime('%Y-%m-%d')
 
- private
+    search[:updated_at_gteq] = "#{s_date} 00:00:00"
+    search[:updated_at_lteq] = "#{e_date} 23:59:59"
+
+    # get a list of all accounts updated between selected date range
+    @accounts = Account.all(params: { search: search })
+
+    # we can use the same params since items table also used "updated_at"
+    @citems = ConversationItemSearch.all(params: { user_ids: user_ids, search: search })
+
+    # find the counts for each type of event that has happened
+    @totals = { general_meeting: 0, regular_meeting: 0, quote: 0, reminder: 0, note: 0, email: 0 }
+    @citems.each do |citem|
+      if (citem.type == "meeting")
+        if (citem.item_type == "regular")
+          @totals[:regular_meeting] += 1
+        else
+          @totals[:general_meeting] += 1
+        end
+      else
+        @totals[citem.type.to_sym] += 1
+      end
+    end
+  end
+
+  private
 
   def meeting_by_status_chart_data(meetings)
-    s, c, can = 0, 0, 0
+    s = 0
+    c = 0
+    can = 0
     if meetings.present?
       meetings.each do |m|
         if m.status == 'scheduled'

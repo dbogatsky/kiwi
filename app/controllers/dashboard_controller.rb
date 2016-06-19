@@ -1,7 +1,7 @@
-frequire 'open_weather'
+require 'open_weather'
 class DashboardController < ApplicationController
-  before_action :get_api_values,only: [:index]
-  before_action :get_news,only: [:index]
+  before_action :get_api_values, only: [:index]
+  before_action :get_news, only: [:index]
 
   def index
     #

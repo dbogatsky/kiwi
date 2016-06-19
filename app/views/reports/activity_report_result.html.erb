@@ -1,0 +1,173 @@
+<% content_for :pageheader do %>
+  <h2><i class="fa fa-briefcase"></i>Activty Report</h2>
+<% end %>
+<div class="contentpanel">
+  <div class="row mb20">
+    <div class="col-sm-12">
+      See below for the activity report results from <strong><%= params['search']['date_gteq'] %></strong> to <strong><%= params['search']['date_lteq'] %></strong>
+    </div>
+  </div><!-- row -->
+  <div class="row">
+   
+    <!-- activity list start -->
+    <div class="col-sm-6">
+      <div class="panel panel-alt">
+        <div class="panel-heading">
+          <h3 class="panel-title">Account Acitivty</h3>
+        </div>
+        <div class="panel-body">
+          <small><p>Below is a list of activity by account for the specified date range</p></small>
+          <br />
+          <div class="feed-activity-list">
+            <% if @accounts.count == 0 %>
+              <p>No activity to report</p>
+            <% else %>
+              <% @accounts.each do |a|%>
+                <div class="feed-element">
+                  <a href="profile.html" class="pull-left">
+                    <img alt="image" class="img-circle" src="<%= (a.avatar_url.eql? "/avatars/thumb/missing.png") ? '/assets/images/default_account_avatar.png' : a.avatar_url %>">
+                  </a>
+                  <div class="media-body ">
+                    <small class="pull-right"><%= time_ago_in_words(a.updated_at).gsub('about','') + ' ago' %></small>
+                    <strong><%= a.updated_by.first_name %>&nbsp;<%= a.updated_by.last_name %></strong>&nbsp;updated the <%= link_to a.name, account_path(a.id) %> account<br>
+                    <small class="text-muted"><%= a.updated_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%b %e at %l:%M %p") %></small>
+                  </div>
+                </div>
+              <% end %>
+            <% end %>
+          </div> <!-- feed activity list -->
+        </div><!-- panel-body -->
+      </div>
+    </div>
+    <!-- activity list end -->
+    <div class="col-sm-6">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="panel panel-stat">
+            <div class="panel-heading" style="background-color:#1cc7c2;">
+              <div class="stat">
+                <div class="row">
+                  <div class="col-xs-4">
+                    <span class="thumb activity-icon">
+                      <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-calendar.svg" alt="General Meetings">
+                    </span>
+                  </div>
+                  <div class="col-xs-8 text-center">
+                    <small class="stat-label"><strong>Meetings</strong></small>
+                    <h1><%= @totals[:general_meeting] %></h1>
+                  </div>
+                </div><!-- row -->
+              </div><!-- stat -->
+            </div><!-- panel-heading -->
+          </div>
+        </div><!-- tile meeting -->    
+        <div class="col-sm-6">
+          <div class="panel panel-stat">
+            <div class="panel-heading" style="background-color:#1cc7c2;">
+              <div class="stat">
+                <div class="row">
+                  <div class="col-xs-4">
+                    <span class="thumb activity-icon">
+                      <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-calendar.svg" alt="Regular Meetings">
+                    </span>
+                  </div>
+                  <div class="col-xs-8 text-center">
+                    <small class="stat-label"><strong>Regular Visits</strong></small>
+                    <h1><%= @totals[:regular_meeting] %></h1>
+                  </div>
+                </div><!-- row -->
+              </div><!-- stat -->
+            </div><!-- panel-heading -->
+          </div>
+        </div><!-- tile regular visits --> 
+      </div>
+
+      <div class="row">  
+        <div class="col-sm-6">
+          <div class="panel panel-stat">
+            <div class="panel-heading" style="background-color:#e91e63;">
+              <div class="stat">
+                <div class="row">
+                  <div class="col-xs-4">
+                    <span class="thumb activity-icon">
+                      <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-calculator.svg" alt="Quotes">
+                    </span>
+                  </div>
+                  <div class="col-xs-8 text-center">
+                    <small class="stat-label"><strong>Qutoes</strong></small>
+                    <h1><%= @totals[:quote] %></h1>
+                  </div>
+                </div><!-- row -->
+              </div><!-- stat -->
+            </div><!-- panel-heading -->
+          </div>
+        </div><!-- tile quote --> 
+        <div class="col-sm-6">
+          <div class="panel panel-stat">
+            <div class="panel-heading" style="background-color:#f0ca45;">
+              <div class="stat">
+                <div class="row">
+                  <div class="col-xs-4">
+                    <span class="thumb activity-icon">
+                      <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-bell.svg" alt="Reminders">
+                    </span>
+                  </div>
+                  <div class="col-xs-8 text-center">
+                    <small class="stat-label"><strong>Reminders</strong></small>
+                    <h1><%= @totals[:reminder] %></h1>
+                  </div>
+                </div><!-- row -->
+              </div><!-- stat -->
+            </div><!-- panel-heading -->
+          </div>
+        </div><!-- tile reminders --> 
+      </div>
+
+
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="panel panel-stat">
+            <div class="panel-heading" style="background-color:#1c84c6;">
+              <div class="stat">
+                <div class="row">
+                  <div class="col-xs-4">
+                    <span class="thumb activity-icon">
+                      <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-comments.svg" alt="Notes">
+                    </span>
+                  </div>
+                  <div class="col-xs-8 text-center">
+                    <small class="stat-label"><strong>Notes</strong></small>
+                    <h1><%= @totals[:note] %></h1>
+                  </div>
+                </div><!-- row -->
+              </div><!-- stat -->
+            </div><!-- panel-heading -->
+          </div>
+        </div><!-- tile notes -->  
+
+        <div class="col-sm-6">
+          <div class="panel panel-stat">
+            <div class="panel-heading" style="background-color:#673AB7;">
+              <div class="stat">
+                <div class="row">
+                  <div class="col-xs-4">
+                    <span class="thumb activity-icon">
+                      <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-envelope-o.svg" alt="Emails">
+                    </span>
+                  </div>
+                  <div class="col-xs-8 text-center">
+                    <small class="stat-label"><strong>Emails</strong></small>
+                    <h1><%= @totals[:email] %></h1>
+                  </div>
+                </div><!-- row -->
+              </div><!-- stat -->
+            </div><!-- panel-heading -->
+          </div>
+        </div><!-- tile email -->
+
+
+      </div>
+
+    </div>
+  </div>
+</div><!-- contentpanel -->
