@@ -1,0 +1,30 @@
+<% if @sorted_citems[:meeting].count == 0 %>
+  <p>Looks like there was no meetings scheduled for this date range</p>
+<% else %>  
+  <div class="table-responsive">
+    <table class="table table-hover mb30">
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Title</th>
+          <th>Date</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @sorted_citems[:meeting].each do | meeting | %>
+          <tr>
+            <td><%= meeting.item_type %></td>
+            <td><%= meeting.title %></td>
+            <td><%= meeting.starts_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%b %d") %></td>
+            <td>
+              <div class="table-controls">
+                  <a href="#" class="btn btn-default btn-icon btn-xs tip" title="" data-original-title="Add entry"><i class="fa fa-search-plus"></i></a>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>

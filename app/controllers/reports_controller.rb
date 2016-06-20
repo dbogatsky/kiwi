@@ -67,26 +67,38 @@ class ReportsController < ApplicationController
 
     search[:updated_at_gteq] = "#{s_date} 00:00:00"
     search[:updated_at_lteq] = "#{e_date} 23:59:59"
+    search[:user_id_in] = user_ids
 
     # get a list of all accounts updated between selected date range
     @accounts = Account.all(params: { search: search })
+    @accounts = @accounts.sort_by { |account| account.updated_at }.reverse
+
+    # remove this key from search since we use the same search hash below
+    search.delete(:user_id_in)
 
     # we can use the same params since items table also used "updated_at"
     @citems = ConversationItemSearch.all(params: { user_ids: user_ids, search: search })
 
     # find the counts for each type of event that has happened
-    @totals = { general_meeting: 0, regular_meeting: 0, quote: 0, reminder: 0, note: 0, email: 0 }
+    @totals = { general_meeting: 0, regular_meeting: 0 }
+
+    @sorted_citems = Hash[]
+    @sorted_citems[:meeting] = Array[]
+    @sorted_citems[:quote] = Array[]
+    @sorted_citems[:reminder] = Array[]
+    @sorted_citems[:note] = Array[]
+    @sorted_citems[:email] = Array[]
     @citems.each do |citem|
-      if (citem.type == "meeting")
-        if (citem.item_type == "regular")
+      if (citem.type == 'meeting')
+        if (citem.item_type == 'regular')
           @totals[:regular_meeting] += 1
         else
           @totals[:general_meeting] += 1
         end
-      else
-        @totals[citem.type.to_sym] += 1
       end
+      @sorted_citems[citem.type.to_sym].push(citem)
     end
+    exit
   end
 
   private
@@ -172,96 +184,10 @@ class ReportsController < ApplicationController
     arr = []
     statuses.each do |k, v|
       v = (v.to_f/meetings.size.to_f)*100 rescue 0
-      arr << {label: k.to_s, value: v}
+      arr << { label: k.to_s, value: v }
     end
     @account_data = arr.to_json
   end
-
-  # def time_of_day_bar_chart_data(meetings)
-  #   t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24 = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-  #   if meetings.present?
-  #     meetings.each do |m|
-  #       if m.starts_at.present?
-  #          time = Chronic.parse(m.starts_at).in_time_zone(current_user.time_zone).hour
-  #          if time == 0
-  #           t1=t1+1
-  #          elsif time == 1
-  #           t2=t2+1
-  #          elsif time == 2
-  #           t3=t3+1
-  #          elsif time == 3
-  #           t4=t4+1
-  #          elsif time == 4
-  #           t5=t5+1
-  #          elsif time == 5
-  #           t6=t6+1
-  #          elsif time == 6
-  #           t7=t7+1
-  #          elsif time == 7
-  #           t8=t8+1
-  #          elsif time == 8
-  #           t9=t9+1
-  #          elsif time == 9
-  #           t10=t10+1
-  #          elsif time == 10
-  #           t11=t11+1
-  #          elsif time == 11
-  #           t12=t12+1
-  #          elsif time == 12
-  #           t13=t13+1
-  #          elsif time == 13
-  #           t14=t14+1
-  #          elsif time == 14
-  #           t15=t15+1
-  #          elsif time == 15
-  #           t16=t16+1
-  #          elsif time == 16
-  #           t17=t17+1
-  #          elsif time == 17
-  #           t18=t18+1
-  #          elsif time == 18
-  #           t19=t19+1
-  #          elsif time == 19
-  #           t20=t20+1
-  #          elsif time == 20
-  #           t21=t21+1
-  #          elsif time == 21
-  #           t22=t22+1
-  #          elsif time == 22
-  #           t23=t23+1
-  #          elsif time == 22
-  #           t24=t24+1
-  #          end
-  #       end
-  #     end
-  #   end
-
-  #   @time_data =  { y: '00:00 AM', a: t1 },
-  #                 { y: '01:00 AM', a: t2 },
-  #                 { y: '02:00 AM', a: t3 },
-  #                 { y: '03:00 AM', a: t4 },
-  #                 { y: '04:00 AM', a: t5 },
-  #                 { y: '05:00 AM', a: t6 },
-  #                 { y: '06:00 AM', a: t7 },
-  #                 { y: '07:00 AM', a: t8 },
-  #                 { y: '08:00 AM', a: t9 },
-  #                 { y: '09:00 AM', a: t10 },
-  #                 { y: '10:00 AM', a: t11 },
-  #                 { y: '11:00 AM', a: t12 },
-  #                 { y: '12:00 PM', a: t13 },
-  #                 { y: '01:00 PM', a: t14 },
-  #                 { y: '02:00 PM', a: t15 },
-  #                 { y: '03:00 PM', a: t16 },
-  #                 { y: '04:00 PM', a: t17 },
-  #                 { y: '05:00 PM', a: t18 },
-  #                 { y: '06:00 PM', a: t19 },
-  #                 { y: '07:00 PM', a: t20 },
-  #                 { y: '08:00 PM', a: t21 },
-  #                 { y: '09:00 PM', a: t22 },
-  #                 { y: '10:00 PM', a: t23 },
-  #                 { y: '11:00 PM', a: t24 }
-  #   @time_data = @time_data.to_json
-  # end
 
   def type_of_meetings_bar_chart(meetings)
     date_range = Chronic.parse(params[:search][:date_gteq]).in_time_zone(current_user.time_zone).strftime("%b %d %Y") + " to " + Chronic.parse(params[:search][:date_lteq]).in_time_zone(current_user.time_zone).strftime("%b %d %Y")
@@ -270,9 +196,9 @@ class ReportsController < ApplicationController
     if meetings.present?
       meetings.each do |meeting|
         if meeting.item_type == 'regular'
-          r_meeting +=1
+          r_meeting += 1
         else
-          g_meeting +=1
+          g_meeting += 1
         end
       end
     end

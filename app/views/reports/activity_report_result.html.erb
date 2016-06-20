@@ -10,7 +10,7 @@
   <div class="row">
    
     <!-- activity list start -->
-    <div class="col-sm-6">
+    <div class="col-sm-5">
       <div class="panel panel-alt">
         <div class="panel-heading">
           <h3 class="panel-title">Account Acitivty</h3>
@@ -40,9 +40,9 @@
       </div>
     </div>
     <!-- activity list end -->
-    <div class="col-sm-6">
+    <div class="col-sm-7">
       <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-4">
           <div class="panel panel-stat">
             <div class="panel-heading" style="background-color:#1cc7c2;">
               <div class="stat">
@@ -61,7 +61,7 @@
             </div><!-- panel-heading -->
           </div>
         </div><!-- tile meeting -->    
-        <div class="col-sm-6">
+        <div class="col-sm-4">
           <div class="panel panel-stat">
             <div class="panel-heading" style="background-color:#1cc7c2;">
               <div class="stat">
@@ -72,7 +72,7 @@
                     </span>
                   </div>
                   <div class="col-xs-8 text-center">
-                    <small class="stat-label"><strong>Regular Visits</strong></small>
+                    <small class="stat-label"><strong>Reg Visits</strong></small>
                     <h1><%= @totals[:regular_meeting] %></h1>
                   </div>
                 </div><!-- row -->
@@ -80,10 +80,7 @@
             </div><!-- panel-heading -->
           </div>
         </div><!-- tile regular visits --> 
-      </div>
-
-      <div class="row">  
-        <div class="col-sm-6">
+        <div class="col-sm-4">
           <div class="panel panel-stat">
             <div class="panel-heading" style="background-color:#e91e63;">
               <div class="stat">
@@ -95,14 +92,17 @@
                   </div>
                   <div class="col-xs-8 text-center">
                     <small class="stat-label"><strong>Qutoes</strong></small>
-                    <h1><%= @totals[:quote] %></h1>
+                    <h1><%= @sorted_citems[:quote].count %></h1>
                   </div>
                 </div><!-- row -->
               </div><!-- stat -->
             </div><!-- panel-heading -->
           </div>
-        </div><!-- tile quote --> 
-        <div class="col-sm-6">
+        </div><!-- tile quote -->         
+      </div>
+
+      <div class="row">  
+        <div class="col-sm-4">
           <div class="panel panel-stat">
             <div class="panel-heading" style="background-color:#f0ca45;">
               <div class="stat">
@@ -114,18 +114,14 @@
                   </div>
                   <div class="col-xs-8 text-center">
                     <small class="stat-label"><strong>Reminders</strong></small>
-                    <h1><%= @totals[:reminder] %></h1>
+                    <h1><%= @sorted_citems[:reminder].count %></h1>
                   </div>
                 </div><!-- row -->
               </div><!-- stat -->
             </div><!-- panel-heading -->
           </div>
         </div><!-- tile reminders --> 
-      </div>
-
-
-      <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-4">
           <div class="panel panel-stat">
             <div class="panel-heading" style="background-color:#1c84c6;">
               <div class="stat">
@@ -137,15 +133,14 @@
                   </div>
                   <div class="col-xs-8 text-center">
                     <small class="stat-label"><strong>Notes</strong></small>
-                    <h1><%= @totals[:note] %></h1>
+                    <h1><%=  @sorted_citems[:note].count %></h1>
                   </div>
                 </div><!-- row -->
               </div><!-- stat -->
             </div><!-- panel-heading -->
           </div>
         </div><!-- tile notes -->  
-
-        <div class="col-sm-6">
+        <div class="col-sm-4">
           <div class="panel panel-stat">
             <div class="panel-heading" style="background-color:#673AB7;">
               <div class="stat">
@@ -157,17 +152,41 @@
                   </div>
                   <div class="col-xs-8 text-center">
                     <small class="stat-label"><strong>Emails</strong></small>
-                    <h1><%= @totals[:email] %></h1>
+                    <h1><%=  @sorted_citems[:email].count %></h1>
                   </div>
                 </div><!-- row -->
               </div><!-- stat -->
             </div><!-- panel-heading -->
           </div>
         </div><!-- tile email -->
-
-
       </div>
 
+      <div class="row">
+        <ul class="nav nav-tabs">
+          <li class="active"><a href="#meetings" data-toggle="tab"><strong>Meetings</strong></a></li>
+          <li><a href="#quotes" data-toggle="tab"><strong>Quotes</strong></a></li>
+          <li><a href="#reminders" data-toggle="tab"><strong>Reminders</strong></a></li>
+          <li><a href="#notes" data-toggle="tab"><strong>Notes</strong></a></li>
+          <li><a href="#emails" data-toggle="tab"><strong>Emails</strong></a></li>  
+        </ul>
+        <div class="tab-content mb30">
+          <div class="tab-pane active" id="meetings">
+            <%= render 'reports/activity_report/meetings_table' %>  
+          </div>
+          <div class="tab-pane" id="quotes">
+            <%= render 'reports/activity_report/quotes_table' %>  
+          </div>
+          <div class="tab-pane" id="reminders">
+            <%= render 'reports/activity_report/reminders_table' %>  
+          </div>
+          <div class="tab-pane" id="notes">
+            <%= render 'reports/activity_report/notes_table' %>  
+          </div>
+          <div class="tab-pane" id="emails">
+            <%= render 'reports/activity_report/emails_table' %>  
+          </div>  
+        </div>
+      </div>
     </div>
   </div>
 </div><!-- contentpanel -->
