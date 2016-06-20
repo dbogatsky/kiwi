@@ -39,6 +39,7 @@ class DashboardController < ApplicationController
     search[:updated_at_lteq] = convert_datetime_to_utc(current_user.time_zone, @current_date, @current_time)
     search[:updated_at_gteq] = convert_datetime_to_utc(current_user.time_zone, @yesterday_date, @yesterday_time)
     @accounts = Account.all(params: { search: search })
+    @accounts = @accounts.sort_by { |account| account.updated_at }.reverse
 
     #
     # quick stats widget
