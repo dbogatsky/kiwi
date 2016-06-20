@@ -250,10 +250,21 @@ body.modal-open {
 
 .video_wdt{width:100% !important; height:250px !important}
 
-
-
 .activity-icon .thumb-img {
     height: auto;
     margin-top: 5px;
     width: 100%;
+
+.search_criteria{
+  margin-left: 3px;
+    background-color: #ccc;
+    border: 1px solid #000;
+    border-radius: 3px;
+    padding: 0px 4px;
+    display:inline-block;
+    margin-bottom: 5px;
+    color: black;
+}
+.margin_left4{
+  margin-left: 4px;
 }

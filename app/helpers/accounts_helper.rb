@@ -49,4 +49,18 @@ module AccountsHelper
 
     html.html_safe
   end
+
+  def advance_search_criteria
+    html = ''
+    if params[:rule].present?
+      params[:rule].values.each do |rule|
+        if rule['option'] != "status"
+          html += "<span class='search_criteria'>#{rule['option'].capitalize!}: #{rule['text']}</span>"
+        else
+          html += "<span class='search_criteria'>#{rule['option'].capitalize!}: #{rule['status']}</span>"
+        end
+      end
+    end
+    html.html_safe
+  end
 end

@@ -15,7 +15,7 @@
               <div class="mb20">
                   <div class="col-md-2 col-xs-12">Match</div>
                   <div class="col-md-3 col-xs-12 search-select">
-                    <%=select_tag('match', options_for_select([['All', 'all'], ['Any', 'any']], selected: ''), {:class => 'form-control input-sm', required: false})%>
+                    <%=select_tag('match', options_for_select([['Any', 'any'], ['All', 'all']], selected: ''), {:class => 'form-control input-sm', required: false})%>
                   </div>
                   <div class="col-md-6 col-xs-12">of the following rules</div>
               </div>
@@ -24,10 +24,10 @@
                     <% t = Time.now.to_i %>
                     <div class="col-md-12 col-xs-12" style="margin-bottom: 0">Rules</div>
                     <div class="col-md-3 col-xs-12 opt_val_div">
-                      <%=select_tag("rule[#{t}][option]", options_for_select([['Name', 'name'], ['City', 'city'], ['Status', 'status']], selected: ''), {:class => 'form-control input-sm opt_val', required: false})%>
+                      <%=select_tag("rule[#{t}][option]", options_for_select([['Name', 'name'], ['City', 'city'], ['Status', 'status'], ['Owner', 'owner']], selected: ''), {:class => 'form-control input-sm opt_val', required: false})%>
                     </div>
                     <div class="col-md-4 col-xs-12">
-                      <%=select_tag("rule[#{t}][is_contain]", options_for_select([['Contains', 'contains'],['IS', 'is']], selected: ''), {:class => 'form-control input-sm', required: false})%>
+                      <%=select_tag("rule[#{t}][is_contain]", options_for_select([['Contains', 'contains'],['IS', 'is']], selected: ''), {:class => 'form-control input-sm is_contain', required: false})%>
                     </div>
                     <div class="col-md-4 col-xs-12 text_box">
                       <%=text_field_tag "rule[#{t}][text]",nil,class: "form-control input-sm search-text", required: false%>
@@ -61,13 +61,17 @@
   })
 
   $(document).on('change', ".opt_val", function(){
-    console.log($(this).val())
     if($(this).val() == 'status'){
       $(this).parent().parent().find("div.text_box").addClass('hidden')
       $(this).parent().parent().find("div.status_opt").removeClass('hidden')
+      $(this).parent().parent().find("select.is_contain option[value='contains']").remove()
     }else{
       $(this).parent().parent().find("div.text_box").removeClass('hidden')
       $(this).parent().parent().find("div.status_opt").addClass('hidden')
+      option_size = $(this).parent().parent().find("select.is_contain option").size()
+      if (option_size == 1){
+        $(this).parent().parent().find("select.is_contain").append('<option value="contains">Contains</option>')
+      }
     }
   });
 
@@ -77,7 +81,7 @@
   })
 
 
-  var max_search = 2;
+  var max_search = 4;
   var search_field_wrapper = $(".search-form-wrap");
   var add_search_button = $(".add-search-button");
 
@@ -95,10 +99,10 @@
         str_html = '\
         <div class="search-element">\
           <div class="col-md-3 col-xs-12 opt_val_div">\
-            <select class="form-control input-sm opt_val" name="rule['+t+'][option]" id="search_'+t+'_option"><option value="name">Name</option><option value="city">City</option><option value="status">Status</option></select>\
+            <select class="form-control input-sm opt_val" name="rule['+t+'][option]" id="search_'+t+'_option"><option value="name">Name</option><option value="city">City</option><option value="status">Status</option><option value="owner">Owner</option></select>\
           </div>\
           <div class="col-md-4 col-xs-12">\
-            <select class="form-control input-sm" name="rule['+t+'][is_contain]"><option value="contains">Contains</option><option value="is">IS</option></select>\
+            <select class="form-control input-sm is_contain" name="rule['+t+'][is_contain]"><option value="contains">Contains</option><option value="is">IS</option></select>\
           </div>\
           <div class="col-md-4 col-xs-12 text_box">\
             <input name="rule['+t+'][text]" class="form-control input-sm search-text" type="text">\
