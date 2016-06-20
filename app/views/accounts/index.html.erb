@@ -17,6 +17,9 @@
         </div>
       <% end %>
     <% end %>
+    <div class="margin_left4">
+      <%=advance_search_criteria%>
+    </div>
   </div>
   <div class="col-md-1">
     <%=render 'advance_search'%>
@@ -69,6 +72,16 @@ Closed: <%=  @accounts.select.count {|account| account.status.name == 'Closed' }
     width: 420px;
     padding: 25px;
     margin-top: -1px;
+  }
+
+
+  @media only screen and (max-width: 767px) {
+  #adv-search .dropdown .button-as-link{
+    padding: 0;
+    margin-left: 3px;
+  }
+.mob_marginleft_9{margin-left: 9px;}
+
   }
 
   @media only screen and (max-width: 480px) {

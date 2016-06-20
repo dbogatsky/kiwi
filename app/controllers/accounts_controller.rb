@@ -604,6 +604,12 @@ class AccountsController < ApplicationController
           else
             @search[:status_name_eq] =  r['status']
           end
+        elsif r['option'] == "owner"
+          if r['is_contain'] == 'contains'
+             @search[:assigned_to_first_name_or_assigned_to_last_name_cont] =  r['text']
+          else
+            @search[:assigned_to_first_name_or_assigned_to_last_name_eq] =  r['text']
+          end
         end
       end
       @search[:m] = 'or' if params[:match] == 'any'
