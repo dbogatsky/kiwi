@@ -59,10 +59,12 @@ class ReportsController < ApplicationController
   end
 
   def activity_report_result
-    binding.pry
     search = Hash[]
-    user_ids = params[:users]
-
+    if params[:users].include? 'all'
+      user_ids = User.all(uid: session[:user_id], reload: true).map(&:id)
+    else
+      user_ids = params[:users]
+    end
     s_date = Chronic.parse(params[:search][:date_gteq]).in_time_zone(current_user.time_zone).strftime('%Y-%m-%d')
     e_date = Chronic.parse(params[:search][:date_lteq]).in_time_zone(current_user.time_zone).strftime('%Y-%m-%d')
 
