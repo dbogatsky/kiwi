@@ -99,7 +99,6 @@ class ReportsController < ApplicationController
       end
       @sorted_citems[citem.type.to_sym].push(citem)
     end
-    exit
   end
 
   private
