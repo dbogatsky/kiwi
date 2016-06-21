@@ -241,6 +241,12 @@ body.modal-open {
   border-color: black;
 }
 
+.delete-btn{
+    border-color: #d43f3a !important;
+    background-color: #d9534f !important;
+    font-size: 14px !important;
+}
+
 .width_delimiter_text{
     margin-bottom: 10px;
 }
@@ -257,6 +263,7 @@ body.modal-open {
     margin-bottom: 5px;
     color: black;
 }
+
 .margin_left4{
   margin-left: 4px;
 }

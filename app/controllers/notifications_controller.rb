@@ -38,7 +38,11 @@ class NotificationsController < ApplicationController
 
         @item = ConversationItemSearch.all(params: { user_ids: user_ids, search: search })
       when 'account_status_change'
-        @item = Account.find(params[:conversation_id])
+        begin
+          @item = Account.find(params[:conversation_id])
+        rescue ActiveResource::ResourceNotFound
+          @item = nil
+        end
     end
     @notification = { id: params[:item_id], type: params[:notification_type] }
     render template: 'notifications/_conversation_details', layout: false
