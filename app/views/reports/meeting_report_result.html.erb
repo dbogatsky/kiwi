@@ -146,10 +146,10 @@
     <div class="col-sm-6">
       <div class="panel panel-report panel-alt">
         <div class="panel-heading">
-          <h3 class="panel-title">Meetings by Time of Day</h3>
+          <h3 class="panel-title">Meetings by Type</h3>
         </div>
         <div class="panel-body">
-         <div id="time_of_day_bar_chart" class="chart-height"></div>
+         <div id="type_of_meeting_bar_chart" class="chart-height"></div>
         </div><!-- panel-body -->
       </div>
     </div>
@@ -233,22 +233,36 @@
     hideHover: true
   });
 
-  var time_data = '<%=@time_data%>';
-  time_data = JSON.parse(time_data.replace(/&quot;/g,'"'))
+  // var time_data = '<%=@time_data%>';
+  // time_data = JSON.parse(time_data.replace(/&quot;/g,'"'))
+  // var m5 = new Morris.Bar({
+  //   element: 'time_of_day_bar_chart',
+  //   data: time_data ,
+  //   xkey: 'y',
+  //   ykeys: ['a'],
+  //   xLabelMargin: 1,
+  //   labels: ['Meetings'],
+  //   barColors: ['#428BCA'],
+  //   lineWidth: '1px',
+  //   fillOpacity: 0.8,
+  //   smooth: false,
+  //   stacked: true,
+  //   resize: true,
+  //   hideHover: true
+  // });
+
+  var meeting_comparison_data = "<%=@meeting_comparison_data%>"
+  meeting_comparison_data = JSON.parse(meeting_comparison_data.replace(/&quot;/g,'"'))
   var m5 = new Morris.Bar({
-    element: 'time_of_day_bar_chart',
-    data: time_data ,
+    element: 'type_of_meeting_bar_chart',
+    data: meeting_comparison_data,
     xkey: 'y',
-    ykeys: ['a'],
-    xLabelMargin: 1,
-    labels: ['Meetings'],
-    barColors: ['#428BCA'],
-    lineWidth: '1px',
-    fillOpacity: 0.8,
-    smooth: false,
-    stacked: true,
+    ykeys: ['a', 'b'],
+    labels: ['General meetings', 'Regular meetings'],
+    barColors: ['#428BCA', '#4CAF50'],
     resize: true,
-    hideHover: true
+    hideHover: true,
+    barSizeRatio: .2
   });
 
   var account_data=  '<%=@account_data%>';

@@ -1,6 +1,7 @@
 class LoginController < ApplicationController
   # exclude the following methods from the authentication filter since the user is not logged in yet
   before_filter :authentication, except: [:index, :login, :forgot, :recover, :superadmin, :superadmin_auth]
+  before_filter :notification_info, except: [:index, :login, :forgot, :recover, :superadmin, :superadmin_auth]
 
   def index
     if !session[:token].nil?
@@ -70,8 +71,12 @@ class LoginController < ApplicationController
   def change_password
     @user = User.find(params[:id])
     if request.patch?
-      @user.update_attributes(request: :update, user: params[:user], reload: true)
-      redirect_to users_path, notice: 'Password successfully updated.'
+      if @user.update_attributes(request: :update, user: params[:user], reload: true)
+        flash[:success] = 'Password has been successfully updated.'
+      else
+        flash[:danger] = 'Oops! Unable to update the password'
+      end
+      redirect_to dashboard_path
     end
   end
 
@@ -81,7 +86,6 @@ class LoginController < ApplicationController
   end
 
   def destroy
-
     RequestStore.store[:user_token] = nil
     session[:user_id] = nil
     session[:token] = nil

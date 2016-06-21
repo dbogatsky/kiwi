@@ -54,7 +54,7 @@ class DashboardController < ApplicationController
       greeting = 'Hello '
     end
 
-    @greetin_message = greeting + (current_user.first_name || "")
+    @greeting_message = greeting + (current_user.first_name || "")
 
     @quick_stats = QuickStats.find
 

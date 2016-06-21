@@ -14,7 +14,7 @@ class ScheduleController < ApplicationController
       end
       if @meeting_with_date.present?
         @sort_meeting = @meeting_with_date.sort_by do |meeting|
-          meeting[:starts_at].to_datetime.in_time_zone(current_user.time_zone)
+          meeting.starts_at.to_datetime.in_time_zone(current_user.time_zone)
         end
         @sort_meeting.each do |meeting|
           meeting_end_time = meeting.ends_at.to_datetime.in_time_zone(current_user.time_zone)
@@ -27,8 +27,7 @@ class ScheduleController < ApplicationController
 
   def calendar_event
     if params[:users].present?
-      user_ids = params[:users]
-      user_ids.push(current_user.id.to_s)
+      user_ids = [params[:users]]
     else
       user_ids = [current_user.id]
     end
@@ -156,7 +155,6 @@ class ScheduleController < ApplicationController
   end
 
   def regular_visits
-
     if params[:date].present?
       @date = params[:date]
     else
@@ -202,31 +200,30 @@ class ScheduleController < ApplicationController
   private
 
   def get_meetings(user_ids)
-    @colors = ['#e0301e', '#000', '#c5e323', '#9e466b', '#0000ff']
-    @meetings = []
-    @user_color = {}
-    user_ids.each_with_index do |u, index|
-      if u.to_i != current_user.id
-        @user_color[u.to_i] = @colors[index]
-      else
-        @user_color[u.to_i] = '#3a87ad'
-      end
-    end
-    apiURL = RequestStore.store[:api_url] + '/conversation_items/search?'
-    user_ids.each do |user_id|
-      apiURL += "user_ids[]=#{user_id}&"
-    end
-    headers = {}
-    headers["Authorization"] = "Token token=\"#{@token}\",email=\"#{@email}\", app_key=\"#{@appKey}\""
-    events = HTTParty.get(apiURL,headers: headers)
-
-    if events['conversation_items/meetings'].present?
-      events['conversation_items/meetings'].each_with_index do |citem, index|
-        c_item = OpenStruct.new(citem)
-        @meetings << c_item if c_item.type ==  'meeting' || (c_item.type == 'note' && c_item.scheduled_at.present?) || c_item.type == 'reminder' || c_item.type == 'quote'
-      end
-    end
-    @meetings
+    # @colors = ['#e0301e', '#000', '#c5e323', '#9e466b', '#0000ff']
+    @all_items = []
+    # @user_color = {}
+    # user_ids.each_with_index do |u, index|
+    #   if u.to_i != current_user.id
+    #     @user_color[u.to_i] = @colors[index]
+    #   else
+    #     @user_color[u.to_i] = '#3a87ad'
+    #   end
+    # end
+    search = Hash[]
+    search[:type_eq] = 'ConversationItems::Meeting'
+    search[:item_type_eq] = 'general'
+    @meetings = ConversationItemSearch.all(params: { search: search, user_ids: user_ids})
+    @all_items << @meetings
+    search = Hash[]
+    search[:type_eq] = 'ConversationItems::Reminder'
+    @reminders = ConversationItemSearch.all(params: { search: search, user_ids: user_ids})
+    @all_items << @reminders
+    search = Hash[]
+    search[:type_eq] = 'ConversationItems::Quote'
+    @quotes = ConversationItemSearch.all(params: { search: search, user_ids: user_ids})
+    @all_items << @quotes
+    @all_items = @all_items.flatten
   end
 
   def get_api_values

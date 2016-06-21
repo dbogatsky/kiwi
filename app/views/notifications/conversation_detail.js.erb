@@ -1,8 +1,0 @@
-<%if params[:notification_read] == 'false'%>
-	$("#nav_unread_count, #bar_unread_count").html('<%=@unread_items.count%>')
-	$("#bar_notification_list").html("<%=j render 'notifications/bar_notification_list', unread_items: @unread_items %>")
-<%end%>
-$("#<%=params[:item_id]%>").after("<%=j render 'conversation_details', v: @item, notification_type: @notification_type %>");
-$(".remove_bold_<%=params[:notification_id]%>").css('font-weight', 'normal')
-$(".remove_bold_<%=params[:notification_id]%>").last().html('')
-$('#preloader').hide();
