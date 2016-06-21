@@ -59,6 +59,7 @@ class ReportsController < ApplicationController
   end
 
   def activity_report_result
+    binding.pry
     search = Hash[]
     user_ids = params[:users]
 
