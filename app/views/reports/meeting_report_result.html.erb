@@ -188,12 +188,13 @@
               <td><%= get_styled_meetingstatus(meeting, false) %></td>
               <td>
                 <%=render 'meeting_details', meeting: meeting %>
-                <%=link_to '#', data: { toggle: "modal", target: ".meeting-detail_#{meeting.id}" } do%>
-                <i class="fa fa-eye" title="View Details"></i>
+                <%=link_to '#', data: { toggle: "modal", target: ".meeting-detail_#{meeting.id}" }, class: "icon_color" do%>
+                <i class="fa fa-search-plus" title="View Details"></i>
                 <%end%>
               </td>
               <td>
-                <%=link_to 'go to account',account_path(meeting.account_id)%>
+                <%=link_to account_path(meeting.account_id), class: "icon_color" do%>
+                <i class="fa fa-briefcase" title="Go to account"></i><%end%>
               </td>
             </tr>
           <% end %>
