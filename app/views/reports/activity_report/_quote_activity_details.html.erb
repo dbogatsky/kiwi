@@ -1,0 +1,50 @@
+<div class="modal fade quote-activity-detail_<%=quote.id%>" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+          <button aria-hidden="true" data-dismiss="modal" class="close" type="button">&times;</button>
+          <h4 class="modal-title">Activity Detail</h4>
+      </div>
+      <div class="modal-body">
+          <span class="cd-date"><%= quote.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%></span>
+          <%=get_styled_quotestatus(quote, false)%>
+        <h4 class="ci_header"><%= quote.title %></h4>
+        <p><span class="subheading">Details:<br/></span><%= sanitize quote.body %></p>
+        <% if (!quote.notes.nil?) %>
+            <p><span class="subheading">Notes:<br/></span><%= sanitize quote.notes %></p>
+        <% end %>
+        <div class="ci_amount">
+          <span class="subheading">Amount:<br></span>
+          $<%=number_with_precision(quote.amount, :precision => 2)%>
+          <% if quote.item_type? %>
+            <% if quote.item_type == 'weekly' %>
+              / week
+            <% elsif quote.item_type == 'monthly' %>
+              / month
+            <% elsif quote.item_type == 'yearly' %>
+              / year
+            <% end %>
+          <% end %>
+        </div>
+        <div class="row ci_footer">
+          <div class="col-sm-10">
+            <i class="fa fa-user tooltips mr10" data-toggle="tooltip" data-original-title="Created by"></i><%=quote.created_by.first_name%> <%=quote.created_by.last_name%><br />
+            <% if (quote.scheduled_at.present?) %>
+                <i class="fa fa-bell tooltips mr10" data-toggle="tooltip" data-original-title="Reminder"></i><%= quote.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %><br />
+            <% end %>
+            <% if quote.ends_at.present? %>
+              <i class="fa fa-clock-o tooltips mr10" data-toggle="tooltip" data-original-title="Expires Date"></i><%=quote.ends_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y")%>&nbsp;
+              (
+              <%if quote.ends_at.in_time_zone(current_user.time_zone).to_date > Date.today.in_time_zone(current_user.time_zone).to_date%>
+                <%= time_ago_in_words(quote.ends_at.to_date).gsub('about','')%>
+              <%elsif quote.ends_at.in_time_zone(current_user.time_zone).to_date == Date.today.in_time_zone(current_user.time_zone).to_date%>
+                <span>Today</span>
+              <%end%>
+              )<br />
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

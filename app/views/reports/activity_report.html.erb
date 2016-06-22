@@ -53,7 +53,8 @@
     width: '100%'
   });
   if(mobile == 'false'){
-    $('#activity_from_datepicker, #activity_to_datepicker').datepicker({
+    $("#activity_to_datepicker").datepicker()
+    $('#activity_from_datepicker').datepicker({
       dateFormat: 'mm/dd/yy',
       altField: "#activity_to_datepicker",
       altFormat: "mm/dd/yy",
