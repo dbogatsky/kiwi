@@ -79,9 +79,9 @@ class ReportsController < ApplicationController
         end
       end
     end
-    scheduled = (s.to_f/meetings.size.to_f)*100 rescue 0
-    completed = (c.to_f/meetings.size.to_f)*100 rescue 0
-    cancelled = (can.to_f/meetings.size.to_f)*100 rescue 0
+    scheduled = ((s.to_f/meetings.size.to_f)*100).round(2) rescue 0
+    completed = ((c.to_f/meetings.size.to_f)*100).round(2) rescue 0
+    cancelled = ((can.to_f/meetings.size.to_f)*100).round(2) rescue 0
     @meeting_by_status = [{label: 'Scheduled', value: scheduled},
                          {label: 'Completed', value: completed},
                          {label: 'Canceled', value: cancelled}]
@@ -144,7 +144,7 @@ class ReportsController < ApplicationController
     end
     arr = []
     statuses.each do |k, v|
-      v = (v.to_f/meetings.size.to_f)*100 rescue 0
+      v = ((v.to_f/meetings.size.to_f)*100).round(2) rescue 0
       arr << {label: k.to_s, value: v}
     end
     @account_data = arr.to_json
