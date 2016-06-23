@@ -4,4 +4,8 @@ class SettingsController < ApplicationController
 	def index
 	end
 
+	def company_level_setting
+     redirect_to dashboard_path
+	end
+
 end
