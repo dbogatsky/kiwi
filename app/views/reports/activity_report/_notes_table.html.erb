@@ -19,6 +19,8 @@
               <%=render 'reports/activity_report/note_activity_details', note: note%>
               <div class="table-controls">
                 <a href="#" data-target=".note-activity-detail_<%=note.id%>" data-toggle="modal" class="btn btn-default btn-icon btn-xs tip" title="View" data-original-title="View"><i class="fa fa-search-plus"></i></a>
+                <%=link_to account_path(note.account_id), class: "btn btn-default btn-icon btn-xs tip margin_left10" do%>
+                <i class="fa fa-briefcase" title="Go to account"></i><%end%>
               </div>
             </td>
           </tr>

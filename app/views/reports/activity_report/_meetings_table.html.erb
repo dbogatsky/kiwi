@@ -21,6 +21,8 @@
               <%=render 'reports/activity_report/meeting_activity_details', meeting: meeting%>
               <div class="table-controls">
                 <a href="#" data-target=".meeting-activity-detail_<%=meeting.id%>" data-toggle="modal" class="btn btn-default btn-icon btn-xs tip" title="" data-original-title="Add entry"><i class="fa fa-search-plus"></i></a>
+                <%=link_to account_path(meeting.account_id), class: "btn btn-default btn-icon btn-xs tip margin_left10" do%>
+                <i class="fa fa-briefcase" title="Go to account"></i><%end%>
               </div>
             </td>
           </tr>

@@ -61,7 +61,7 @@
       onSelect: function (selected) {
         var min = new Date(selected);
         var max = new Date(selected);
-        max.setDate(max.getDate()+31);
+        max.setDate(max.getDate()+90);
         $('#activity_to_datepicker').datepicker('option', { minDate: min, maxDate: max});
       }
     });
@@ -70,7 +70,7 @@
       $('#activity_to_datepicker').prop('min', $(this).val());
       var dt = $(this).val()
       var new_date = new Date(dt)
-      new_date.setDate(new_date.getDate()+31)
+      new_date.setDate(new_date.getDate()+90)
       year = new_date.getFullYear()
       month = new_date.getMonth()+1
       date = new_date.getDate()
