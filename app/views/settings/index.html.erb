@@ -1,7 +1,7 @@
 <% content_for :pageheader do %>
   <h2><i class="fa fa-cogs"></i>Settings</h2>
 <% end %>
-<%= form_tag settings_company_level_setting_path, method: :post, class: "form-horizontal" do |f| %>
+<%= form_tag settings_company_level_setting_path, method: :patch, class: "form-horizontal" do |f| %>
   <div class="profile-header">
     <div class="row row-pad-5">
       <div class="col-md-12 mb20">
@@ -19,7 +19,7 @@
                 <div class="form-group">
                   <label class="col-sm-4 control-label">User automatic logout after being idle for</label>
                   <div class="col-sm-4">
-                    <%=select_tag('automatic_logout',options_for_select(automatic_logout_select_options), prompt: '-select-', class: "form-control")%>
+                    <%=select_tag('automatic_logout',options_for_select(automatic_logout_select_options, selected: @session_expire_time), prompt: '-select-', class: "form-control")%>
                   </div>
                 </div>
               </div><!-- row pad 5-->
@@ -54,16 +54,16 @@
           <div class="panel-body">
             <div class="tab-pane" id="preferences">
               <div class="row row-pad-5">
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label class="col-sm-4 control-label">Preview Timeline(<span title="Preview Timeline">?</span>)</label>
                     <div class="col-sm-4">
-                      <%=select_tag('perview_timeline',options_for_select(perview_timeline_select_options), prompt: '-select-', class: "form-control")%>
+                      <%#=select_tag('perview_timeline',options_for_select(perview_timeline_select_options), prompt: '-select-', class: "form-control")%>
                     </div>
-                </div>
+                </div> -->
                 <div class="form-group">
                   <label class="col-sm-4 control-label">Show Accounts per page</label>
                   <div class="col-sm-4">
-                    <%=select_tag('account_per_page',options_for_select(account_per_page_select_options), prompt: '-select-', class: "form-control")%>
+                    <%=select_tag('account_per_page',options_for_select(account_per_page_select_options, selected: @account_per_page), prompt: '-select-', class: "form-control")%>
                   </div>
                 </div>
                 <div class="form-group">
@@ -71,7 +71,7 @@
                   <div class="col-sm-4">
                      <select class="form-control select2" id="accounts_by_status" multiple="multiple" name="accounts_by_status[]" data-placeholder="-select-">
                      <option></option>
-                       <%=options_for_select(account_by_account_status_select_options)%>
+                       <%=options_for_select(account_by_account_status_select_options, selected: @account_by_status)%>
                       </select>
                   </div>
                 </div>

@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
 #   before_filter :check_request
   around_filter :set_time_zone
 
-  helper_method :current_user, :logged_in?, :superadmin_logged_in?, :notification_info
+  helper_method :current_user, :get_api_values, :get_automatic_logout_time, :logged_in?, :superadmin_logged_in?, :notification_info
   helper_method :has_permission, :has_permissions, :has_page_permission, :has_page_permissions
 
   rescue_from ActiveResource::ForbiddenAccess do |exception|
@@ -282,5 +282,28 @@ class ApplicationController < ActionController::Base
         @unread_items = @unread_items.sort_by { |k| k.created_at }.reverse
       end
     end
+  end
+
+  def get_automatic_logout_time
+    get_api_values
+    apiFullUrl = RequestStore.store[:api_url] + "/company/settings/authentication"
+    authentication = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -H "Cache-Control: no-cache" "#{apiFullUrl}"`
+    authentication = JSON.parse(authentication)
+    @session_expire_time = authentication['company']['settings']['authentication']['automatic_logout']
+  end
+
+  def get_account_display_setting
+    get_api_values
+    apiFullUrl = RequestStore.store[:api_url] + '/company/settings/preferences'
+    preferences = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -H "Cache-Control: no-cache" "#{apiFullUrl}"`
+    preferences = JSON.parse(preferences)
+    @account_per_page =  preferences['company']['settings']['preferences']['account_per_page']
+    @account_by_status = preferences['company']['settings']['preferences']['accounts_by_status']
+  end
+
+  def get_api_values
+    @email = current_user.email
+    @appKey = APP_CONFIG['api_app_key']
+    @token = session[:token]
   end
 end

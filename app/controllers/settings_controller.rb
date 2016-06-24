@@ -1,11 +1,20 @@
 class SettingsController < ApplicationController
   load_and_authorize_resource class: "SettingsController"
 
-	def index
-	end
+  def index
+    get_automatic_logout_time
+    get_account_display_setting
+  end
 
-	def company_level_setting
-     redirect_to dashboard_path
-	end
+  def company_level_setting
+    get_api_values
+    @apiFullUrl_authentication = RequestStore.store[:api_url] + "/company/settings/authentication"
+    @apiFullUrl_preferences =  RequestStore.store[:api_url] + '/company/settings/preferences'
 
+    authentication_curlRes = `curl -X PUT -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -d '{"settings":{"automatic_logout": "#{params[:automatic_logout]}"}}' '#{@apiFullUrl_authentication}'`
+
+    preferences_curlRes = `curl -X PUT -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -d '{"settings":{"account_per_page": "#{params[:account_per_page]}", "accounts_by_status": #{params[:accounts_by_status]}}}' '#{@apiFullUrl_preferences}'`
+    flash[:success] = 'Your setting has been successfully updated!'
+    redirect_to settings_path
+  end
 end
