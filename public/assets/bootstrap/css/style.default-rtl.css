@@ -25,7 +25,7 @@
 }
 
 .nav-bracket .children > li > a {
-    padding: 5px 27px 5px 0;    
+    padding: 5px 27px 5px 0;
 }
 
 .infosummary .datainfo {
@@ -66,7 +66,7 @@
 }
 
 .headermenu > li:first-child {
-    border-right: 1px solid #eee;    
+    border-right: 1px solid #eee;
 }
 
 .nav-pills > li {
@@ -494,33 +494,33 @@ ul.wysihtml5-toolbar > li {
 /*** MEDIA QUERIES ***/
 
 @media screen and (max-width: 1024px) {
-    
+
     .mainpanel {
         margin-right: 0;
     }
-    
+
     .leftpanel-show .mainpanel {
         margin-right: 240px;
     }
-    
+
     .chat-relative-view {
         right: auto;
         left: 240px;
     }
-    
+
     .stickyheader .headerbar {
         right: 0;
     }
-    
+
     .stickyheader .header-right {
         margin-left: 0;
     }
-    
+
     .stickyheader.leftpanel-show .headerbar {
         left: auto;
         right: 240px;
     }
-    
+
     .stickyheader.chat-relative-view .headerbar {
         left: 240px;
         right: auto;
@@ -528,7 +528,7 @@ ul.wysihtml5-toolbar > li {
 }
 
 @media screen and (max-width: 480px) {
-    
+
     .headermenu li:first-child .dropdown-menu {
         margin-left: -135px;
         margin-right: 0;

@@ -1,5 +1,5 @@
 <%if notifications.present?%>
-	<table class="table">
+	<table class="table table-responsive">
 	  <thead>
 	    <tr>
 	      <th></th>
@@ -10,8 +10,8 @@
 	  </thead>
 	  <tbody>
 	    <%notifications.each do |notification|%>
-		    <tr class="show_details i_pointer" 
-            id="<%=notification.id%>" 
+		    <tr class="show_details i_pointer"
+            id="<%=notification.id%>"
             data-conversation-id="<%=
               case notification.type
               when 'reminder'
@@ -21,9 +21,9 @@
               when 'account_status_change'
                 notification.value.account_id
               end
-            %>" 
-            data-notification-type="<%=notification.type%>" 
-            data-read-notification="<%=notification.read_at.present?%>" 
+            %>"
+            data-notification-type="<%=notification.type%>"
+            data-read-notification="<%=notification.read_at.present?%>"
             data-notification-id="<%=notification.id%>"
           >
 		      <%mark_class = notification.read_at.blank? ? 'mark_read' : ''%>
@@ -101,3 +101,18 @@
   })
 
 </script>
+
+<% content_for :custom_css do %>
+	<style>
+
+	  @media only screen and (max-width: 767px) {
+	  	.notification_calender{
+	  		display: inline-block;
+	  	}
+	  	#unread_items .table{
+	  		display: inline-block;
+	  		border:0px;
+	  	}
+	  }
+	</style>
+<% end %>
