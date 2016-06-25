@@ -20,6 +20,7 @@ gem 'httparty'
 gem 'request_store'
 gem 'browser-timezone-rails'
 gem 'rollbar'
+gem 'will_paginate'
 
 # This gem is for accessing REST services in an ActiveRecord style.
 gem 'activeresource', require: 'active_resource'
