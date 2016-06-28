@@ -17,18 +17,22 @@ class ApplicationController < ActionController::Base
   helper_method :has_permission, :has_permissions, :has_page_permission, :has_page_permissions
 
   rescue_from ActiveResource::ForbiddenAccess do |exception|
+    Rollbar.error(exception, use_exception_level_filters: true)
     render_403
   end
 
   rescue_from ActiveResource::ResourceNotFound do |exception|
+    Rollbar.error(exception, use_exception_level_filters: true)
     render_404
   end
 
   rescue_from ActiveResource::ServerError do |exception|
+    Rollbar.error(exception, use_exception_level_filters: true)
     render_500
   end
 
   rescue_from CanCan::AccessDenied do |exception|
+    Rollbar.error(exception, use_exception_level_filters: true)
     redirect_to root_url, alert: exception.message
   end
 
