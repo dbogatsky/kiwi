@@ -1,6 +1,5 @@
 class CompanyController < ApplicationController
   load_and_authorize_resource except: [:get_users]
-  before_action :get_api_values, only: [:company_news, :index, :delete_news]
 
   def index
     #comapny details
@@ -73,6 +72,7 @@ class CompanyController < ApplicationController
   end
 
   def company_news
+    get_api_values
     params[:news] = params[:news].squish
     apiFullUrl = RequestStore.store[:api_url] + '/company/settings/preferences'
     if params[:update_params].present?
@@ -90,6 +90,7 @@ class CompanyController < ApplicationController
   end
 
   def delete_news
+    get_api_values
     apiFullUrl = RequestStore.store[:api_url] + '/company/settings/preferences'
     curlRes = `curl -X PUT -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -d '{"settings":{"#{params[:news]}": ""}}' '#{apiFullUrl}'`
     redirect_to company_path
@@ -107,13 +108,8 @@ class CompanyController < ApplicationController
     render json: email_json
   end
 
-  def get_api_values
-    @email = current_user.email
-    @appKey = APP_CONFIG['api_app_key']
-    @token = session[:token]
-  end
-
   def get_news
+    get_api_values
     apiFullUrl = RequestStore.store[:api_url] + '/company/settings/preferences'
     curlRes = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -H "Cache-Control: no-cache" "#{apiFullUrl}"`
     news_data = JSON.parse(curlRes)

@@ -193,7 +193,7 @@
                 <%end%>
               </td>
               <td>
-                <%=link_to account_path(meeting.account_id), class: "btn btn-default btn-icon btn-xs tip" do%>
+                <%=link_to account_path(meeting.account_id), class: "btn btn-default btn-icon btn-xs tip", :target => "_blank" do%>
                 <i class="fa fa-briefcase" title="Go to account"></i><%end%>
               </td>
             </tr>
@@ -204,7 +204,6 @@
     </div><!-- col-sm-7 -->
   </div><!-- row -->
 </div><!-- contentpanel -->
-
 <script type="text/javascript">
   // $('.check_in_out').click(function(){
   //   $('#preloader').css('opacity', 0.8);
@@ -215,6 +214,21 @@
   //       $(this).find('i').removeClass('fa-minus-circle').addClass('fa-plus-circle')
   //     }
   // });
+
+  function showMap(div_id, lat, lng, loc){
+    var map = new GMaps({
+      div: div_id,
+      lat: lat,
+      lng: lng,
+      zoom: 1,
+    });
+
+    var marker = map.addMarker({
+      lat: lat,
+      lng: lng,
+      title: loc,
+    });
+  }
 
   var data = '<%=@data%>';
   data = JSON.parse(data.replace(/&quot;/g,'"'))

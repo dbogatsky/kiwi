@@ -93,23 +93,47 @@
       }
     });
 
-  $("#account_name").focusout(function(){
-    var name = $(this).val()
-    var new_name = titleize(name)
-    $(this).val(new_name)
-  });
-
-  function titleize(sentence) {
-    if(!sentence.split) return sentence;
-    var _titleizeWord = function(string) {
-            return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
-        },
-        result = [];
-    sentence.split(" ").forEach(function(w) {
-        result.push(_titleizeWord(w));
+    $("#account_name").focusout(function(){
+      var name = $(this).val()
+      var new_name = titleize(name)
+      $(this).val(new_name)
     });
-    return result.join(" ");
-  }
+
+    function titleize(sentence) {
+      if(!sentence.split) return sentence;
+      var _titleizeWord = function(string) {
+              return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+          },
+          result = [];
+      sentence.split(" ").forEach(function(w) {
+          result.push(_titleizeWord(w));
+      });
+      return result.join(" ");
+    }
+
+
+    var time_hour = '<%=get_automatic_logout_time%>'
+    if(time_hour != ''){
+      var timeout;
+      time_hour = parseInt(time_hour)
+
+      document.onmousemove = resetTimer;
+      document.onclick = resetTimer;
+      function resetTimer() {
+        clearTimeout(timeout);
+        timeout = setTimeout(function() {
+          logout();
+          }, time_hour * 60 * 60 * 1000);
+      }
+
+      function logout(){
+        $.ajax({
+          type: "GET",
+          url: '/login/destroy'
+        });
+      }
+    }
+
   </script>
 </body>
 </html>

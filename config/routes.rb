@@ -102,7 +102,7 @@ Rails.application.routes.draw do
 
   match '/settings', to: 'settings#index', as: :settings, via: [:get]
   get :get_users, to: 'company#get_users'
-
+  patch '/settings/company_level_setting', to: 'settings#company_level_setting', as: :settings_company_level_setting
   root 'login#index'
 
   get :meeting_report, to: 'reports#meeting_report'

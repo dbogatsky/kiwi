@@ -239,44 +239,46 @@
         url = '/accounts/check_out';
       }
 
-      $.getJSON("https://api.ipify.org?format=json", function(data){
-        var ip_address = data.ip;
-        $.ajax({
-          url : url,
-          method: 'POST',
-          data: { cid: cid, lat: lat, lng: lng, ip_address: ip_address, created_by: created_by, conversation_id: conversation_id },
-          beforeSend: function(xhr) {
-            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
-          },
-          complete: function() {
-            $('#preloader').hide();
-            var current_user = "<%=current_user.id rescue nil%>";
-            if(type == "checkin"){
-              $('#'+cid).switchClass("checkin", "checkout");
-              $('#'+cid).parent().find('#position_button').text('Check Out');
-              $('#'+cid).parent().find('.fa-sign-in').switchClass("fa-sign-in", "fa-sign-out");
-              $('#'+cid).show();
-              $('.check_in_time_'+cid).removeClass('hidden')
-              if(current_user == created_by){
-                $('.citem_'+cid).text("in_progress");
-                $('.citem_'+cid).css("color", "#FF0000");
-                $('.citem_'+cid).css("border", "1px solid #FF0000");
+      <%unless superadmin_logged_in?%>
+        $.getJSON("https://api.ipify.org?format=json", function(data){
+          var ip_address = data.ip;
+          $.ajax({
+            url : url,
+            method: 'POST',
+            data: { cid: cid, lat: lat, lng: lng, ip_address: ip_address, created_by: created_by, conversation_id: conversation_id },
+            beforeSend: function(xhr) {
+              xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+            },
+            complete: function() {
+              $('#preloader').hide();
+              var current_user = "<%=current_user.id rescue nil%>";
+              if(type == "checkin"){
+                $('#'+cid).switchClass("checkin", "checkout");
+                $('#'+cid).parent().find('#position_button').text('Check Out');
+                $('#'+cid).parent().find('.fa-sign-in').switchClass("fa-sign-in", "fa-sign-out");
+                $('#'+cid).show();
+                $('.check_in_time_'+cid).removeClass('hidden')
+                if(current_user == created_by){
+                  $('.citem_'+cid).text("in_progress");
+                  $('.citem_'+cid).css("color", "#FF0000");
+                  $('.citem_'+cid).css("border", "1px solid #FF0000");
+                }
+              }else if(type == "checkout"){
+                $('.check_out_time_'+cid).removeClass('hidden')
+                if(current_user == created_by){
+                  $('.citem_'+cid).text("completed");
+                  $('.citem_'+cid).css("color", "#4CAF50");
+                  $('.citem_'+cid).css("border", "1px solid #4CAF50");
+                }
               }
-            }else if(type == "checkout"){
-              $('.check_out_time_'+cid).removeClass('hidden')
-              if(current_user == created_by){
-                $('.citem_'+cid).text("completed");
-                $('.citem_'+cid).css("color", "#4CAF50");
-                $('.citem_'+cid).css("border", "1px solid #4CAF50");
-              }
+            },
+            success: function() {
+            },
+            error:function() {
             }
-          },
-          success: function() {
-          },
-          error:function() {
-          }
+          });
         });
-      });
+      <%end%>
     }
   });
 

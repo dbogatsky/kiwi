@@ -9,6 +9,12 @@
     position: relative;
     margin-top: 5px;
 }
+@media only screen and (max-width: 767px) {
+.headermenu li:first-child .dropdown-menu{
+  margin-right: -175px;
+}
+}
+
 </style>
 
 <h5 class="title">You Have <%=unread_items.count%> New Notifications</h5>

@@ -107,7 +107,7 @@
                   <% end %>
 
                 </div>
-                <h5 class="fm-title"><a href=""><%=media.name%></a></h5>
+                <h5 class="fm-title"><a target="_blank" href="<%=download_file_path(cdn_url, media.name)%>"><%=media.name%></a></h5>
                 <small class="text-muted">Added: <%= media.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%b %d, %Y")%></small>
                 <p>
                   <small class="text-muted size">size: <%=(media.size/1024.to_f).round(2)%> kb</small>
@@ -574,7 +574,7 @@
 
             if(value.type == 'image'){
               container.find('.thmb-prev').html('<a title="' + value.name + '" data-uid="'+value.uid+'" href="javascript:void(0)" class="show_enlarge"><img alt="" class="img-responsive" src="' + value.cdn_url + '"></a>')
-              container.find('.thmb-prev').after('<h5 class="fm-title"><a href="javascript:void(0)">' + value.name + '</a></h5><small class="text-muted">Added: '+ moment(media_date).format('MMM D, YYYY') + '</small>'  + '</a></h5><p><small class="text-muted">size: '+ file_size +' kb'+'</small></p>' + '</a></h5>' );
+              container.find('.thmb-prev').after('<h5 class="fm-title"><a target="_blank" href="media/download_file/' + encodeURIComponent(value.cdn_url) + '/' + value.name + '">' + value.name + '</a></h5><small class="text-muted">Added: '+ moment(media_date).format('MMM D, YYYY') + '</small>'  + '</a></h5><p><small class="text-muted">size: '+ file_size +' kb'+'</small></p>' + '</a></h5>' );
               html += $(container).prop('outerHTML');
             }else if(value.type == 'document'){
               container.find('.thmb-prev').html('<img alt="" class="img-responsive" src="/assets/bootstrap/images/photos/media-doc.png">');
