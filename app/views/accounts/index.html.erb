@@ -33,10 +33,13 @@
 </div><!-- row -->
 
 <div class="row row-pad-5">
-  <div class="col-md-11">
+  <div class="col-md-10">
     <div class="margin_left4">
       <%=advance_search_criteria%>
     </div>
+  </div>
+  <div class="col-md-1">
+    <%= link_to account_import_path, class: "btn btn-lightblue dropdown-toggle" do %><i class="fa fa-arrow-circle-o-up mr5"></i>Import<% end %>
   </div>
   <div class="col-md-1 pull-right">
     <%= link_to account_export_path, class: "btn btn-success dropdown-toggle" do %><i class="fa fa-arrow-circle-o-down mr5"></i>Export<% end %>
