@@ -26,6 +26,7 @@ Rails.application.routes.draw do
 
   get  '/accounts/import', to:'accounts#import', as: :account_import
   get  '/accounts/export', to:'accounts#export', as: :account_export
+  get  '/accounts/csv_template', to: 'accounts#csv_template', as: :accounts_csv_template
   resources :accounts do
     member do
       patch  :update_note

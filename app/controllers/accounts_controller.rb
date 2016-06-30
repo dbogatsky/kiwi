@@ -576,7 +576,18 @@ class AccountsController < ApplicationController
     end
   end
 
+  def csv_template
+    send_data generate_csv_template
+  end
+
   private
+
+  def generate_csv_template
+    column_names = ['ID', 'Name', 'Contact Name', 'Contact Title', 'Status', 'Address', 'City', 'Province', 'Postal Code', 'Country', 'About', 'Quick Facts' ]
+    CSV.generate() do |csv|
+      csv << column_names
+    end
+  end
 
   def accounts_sort_by(value1, value2)
     if value1 == 'name'
