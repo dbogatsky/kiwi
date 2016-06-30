@@ -544,8 +544,10 @@ class AccountsController < ApplicationController
     @conversation_items = ConversationItem.all(params: { conversation_id: c_id, search: search })
   end
 
-  def export
+  def import
+  end
 
+  def export
   end
 
   def generate_csv

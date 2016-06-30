@@ -1,0 +1,40 @@
+<% content_for :pageheader do %>
+  <h2><i class="fa fa-briefcase"></i>Import Accounts</h2>
+<% end %>
+<div class="row">
+  <div class="col-md-10">
+  </div>
+  <div class="col-md-2 pull-right">
+  <!-- <%#= link_to accounts_path, class: "btn btn-white btn-block" do %><i class="fa fa-minus-circle"></i>&nbsp;&nbsp;&nbsp;Cancel<%# end %><br /> -->
+   <%= link_to 'Go Back', :back, class: "btn btn-white btn-block" %><br />
+  </div>
+</div>
+
+<%= form_tag accounts_path(format: "csv"), method: :get do |f| %>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4 class="panel-title">Please follow the steps below to import your accounts.</h4>
+  </div>
+
+  <div class="panel-body">
+    <div class="form-group">
+      <label class="col-sm-1 control-label">Step 1.</label>
+      <label class="col-sm-3 control-label">Label</label>
+      <div class="col-sm-6">
+      Form Tag Here
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-footer">
+    <div class="row">
+      <div class="col-sm-6 col-sm-offset-3">
+        <button type="submit" class="btn btn-primary btn-sm">Import</button>
+      </div>
+    </div>
+  </div>
+</div>
+<%end%>
+
+<script type="text/javascript">
+</script>
