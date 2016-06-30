@@ -10,31 +10,64 @@
   </div>
 </div>
 
-<%= form_tag accounts_path(format: "csv"), method: :get do |f| %>
 <div class="panel panel-default">
   <div class="panel-heading">
     <h4 class="panel-title">Please follow the steps below to import your accounts.</h4>
   </div>
 
-  <div class="panel-body">
-    <div class="form-group">
-      <label class="col-sm-1 control-label">Step 1.</label>
-      <label class="col-sm-3 control-label">Label</label>
-      <div class="col-sm-6">
-      Form Tag Here
-      </div>
-    </div>
-  </div>
-
-  <div class="panel-footer">
-    <div class="row">
-      <div class="col-sm-6 col-sm-offset-3">
-        <button type="submit" class="btn btn-primary btn-sm">Import</button>
-      </div>
-    </div>
-  </div>
+  <%= render partial: "account_import_form" %>
 </div>
-<%end%>
 
-<script type="text/javascript">
+<% content_for :custom_js do %>
+<script>
+  jQuery(document).ready(function(){
+      "use strict";
+
+    // With Form Validation Wizard
+    var $validator = jQuery("#account-import-form").validate({
+      highlight: function(element) {
+        jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+      },
+      success: function(element) {
+        jQuery(element).closest('.form-group').removeClass('has-error');
+      }
+    });
+
+    jQuery('#validationWizard').bootstrapWizard({
+      tabClass: 'nav nav-pills nav-justified nav-disabled-click',
+      onTabClick: function(tab, navigation, index) {
+        return false;
+      },
+      onNext: function(tab, navigation, index) {
+        var $valid = jQuery('#account-import-form').valid();
+
+        if(!$valid) {
+          $validator.focusInvalid();
+          return false;
+        }
+
+      },
+      onTabShow: function(tab, navigation, index){
+        if(index == 3){
+            $(".pager .next").hide();
+            $('.pager .finish').removeClass('disabled');
+            $(".pager .finish").show();
+          }else{
+            $(".pager .next").show();
+            $(".pager .finish").hide();
+          }
+      }
+
+    });
+
+      $(".pager .finish").click(function(e){
+        e.preventDefault();
+        $("#account-import-form").submit();
+        $('#preloader').css('opacity', 0.6);
+        $('#preloader').show();
+      })
+
+
+  });
 </script>
+<% end %>
