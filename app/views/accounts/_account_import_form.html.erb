@@ -5,9 +5,7 @@
 
     <ul class="nav nav-pills nav-justified">
       <li><a href="#vtab1" data-toggle="tab"><span>Step 1:</span> Download CSV Template</a></li>
-      <li><a href="#vtab2" data-toggle="tab"><span>Step 2:</span> Select Delimiter</a></li>
-      <li><a href="#vtab3" data-toggle="tab"><span>Step 3:</span> Upload CSV File</a></li>
-      <li><a href="#vtab4" data-toggle="tab"><span>Step 4:</span> Validation Check</a></li>
+      <li><a href="#vtab2" data-toggle="tab"><span>Step 2:</span> Upload CSV File</a></li>
     </ul>
     <!--<form class="form-horizontal" id="firstForm">-->
     <%= form_tag accounts_path(id: "account-import-form", format: "csv"), method: :get do |f| %>
@@ -18,34 +16,9 @@
       </div>
 
       <div class="tab-pane" id="vtab2">
-        <p class="mb20" align="center">Select the delimiter you used for this CSV.</p>
-
-        <div class="form-group">
-          <label class="col-sm-3 control-label">Delimiter</label>
-          <div class="col-sm-6">
-            <%=radio_button("option2", "delimiter", ",", :checked =>true)%> , (Comma)<br />
-            <%=radio_button("option2", "delimiter", ";")%> ; (Semi-colon)<br />
-            <%=radio_button("option2", "delimiter", ":")%> : (Colon)<br />
-            <%=radio_button("option2", "delimiter", "|")%> | (Pipe)<br />
-            <%=radio_button("option2", "delimiter", "\t")%> \t (Special character: tab)<br />
-            <%=radio_button("option2", "delimiter", "other")%>
-            <%=text_field_tag 'other_option', nil, class: "width_delimiter_text", :maxlength => 1, :size => 3, disabled: true%> (Other: Max 1 character)
-          </div>
-        </div>
-
-      </div>
-
-      <div class="tab-pane" id="vtab3">
         <p class="mb20" align="center">Upload the CSV file with the account information.<p />
 
       </div>
-
-      <div class="tab-pane" id="vtab4">
-        <p class="mb20" align="center"><p />
-
-
-      </div>
-
 
     </div><!-- tab-content -->
     <% end %>
