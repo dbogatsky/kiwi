@@ -545,6 +545,41 @@ class AccountsController < ApplicationController
   end
 
   def import
+    if request.post?
+      if params[:import_csv].present? && params[:import_csv].content_type == 'text/csv'
+        csv_text = File.read(params[:import_csv].tempfile)
+        csv = CSV.parse(csv_text)
+        csv.shift
+        if csv.present?
+          csv.each do |row|
+            row = row[0].gsub(%r{\"}, '')
+            row = row.split(',')
+            account_params = {}
+            account_params[:name] = row[0]
+            account_params[:contact_name] = row[1]
+            account_params[:contact_title] = row[2]
+            all_status = AccountStatus.find(:all)
+            all_status.each do |status|
+              if status.name ==  row[3].capitalize
+                @status_id = status.id
+                break
+              else
+                @status_id = all_status.first.id
+              end
+            end
+            account_params[:status_id] = @status_id
+            account_params[:addresses_attributes] = [street_address: row[4], city: row[5], region: row[6], postcode: row[7], country: row[8]]
+            account_params[:about] = row[9]
+            account_params[:quick_facts] = row[10]
+            account_params[:assign_to] = current_user.id
+            account = Account.new(request: :create, account: account_params)
+            account.save
+          end
+        end
+      end
+      flash[:success] = "Import Accounts Successful"
+      redirect_to accounts_path
+    end
   end
 
   def export
@@ -583,7 +618,7 @@ class AccountsController < ApplicationController
   private
 
   def generate_csv_template
-    column_names = ['ID', 'Name', 'Contact Name', 'Contact Title', 'Status', 'Address', 'City', 'Province', 'Postal Code', 'Country', 'About', 'Quick Facts' ]
+    column_names = ['Name', 'Contact Name', 'Contact Title', 'Status', 'Address', 'City', 'Province', 'Postal Code', 'Country', 'About', 'Quick Facts' ]
     CSV.generate() do |csv|
       csv << column_names
     end

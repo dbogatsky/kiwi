@@ -24,7 +24,7 @@ Rails.application.routes.draw do
   resource :profile, only: [:show, :update]
 #  resource :preference, only: [:show, :update]
 
-  get  '/accounts/import', to:'accounts#import', as: :account_import
+  match  '/accounts/import', to:'accounts#import', as: :account_import, via: [:get, :post]
   get  '/accounts/export', to:'accounts#export', as: :account_export
   get  '/accounts/csv_template', to: 'accounts#csv_template', as: :accounts_csv_template
   resources :accounts do

@@ -1,38 +1,32 @@
  <div class="panel-body panel-body-nopadding">
-
   <!-- BASIC WIZARD -->
   <div id="validationWizard" class="basic-wizard">
 
     <ul class="nav nav-pills nav-justified">
-      <li><a href="#vtab1" data-toggle="tab"><span>Step 1:</span> Download CSV Template</a></li>
-      <li><a href="#vtab2" data-toggle="tab"><span>Step 2:</span> Upload CSV File</a></li>
+      <li><a href="#tab1" data-toggle="tab"><span>Step 1:</span> Download CSV Template</a></li>
+      <li><a href="#tab2" data-toggle="tab"><span>Step 2:</span> Upload CSV File</a></li>
     </ul>
-    <!--<form class="form-horizontal" id="firstForm">-->
-    <%= form_tag accounts_path(id: "account-import-form", format: "csv"), method: :get do |f| %>
-    <div class="tab-content">
+    <%= form_tag account_import_path, id: "account-import-form", multipart: true, method: :post do |f| %>
+      <div class="tab-content">
+        <div class="tab-pane" id="tab1">
+          <p class="mb20" align="center"><%=link_to 'Download CSV template and fill in the account information.', accounts_csv_template_path(format: "csv")%></p>
+        </div>
 
-      <div class="tab-pane" id="vtab1">
-        <p class="mb20" align="center"><%=link_to 'Download CSV template and fill in the account information.', accounts_csv_template_path(format: "csv")%></p>
-      </div>
-
-      <div class="tab-pane" id="vtab2">
-        <p class="mb20" align="center">Upload the CSV file with the account information.<p />
-
-      </div>
-
-    </div><!-- tab-content -->
+        <div class="tab-pane" id="tab2">
+          <div class="col-md-3"></div>
+          <div class="col-md-4 padd_left0">
+            Upload the CSV file with the account information
+          </div>
+          <div class="col-md-4 padd_left0">
+            <%=file_field_tag "import_csv", accept: 'text/csv' %>
+          </div>
+        </div>
+      </div><!-- tab-content -->
     <% end %>
-    <!--</form>-->
-
     <ul class="pager wizard">
       <li class="previous"><a href="javascript:void(0)">Previous</a></li>
-      <li class="next"><a href="javascript:void(0)" class="account_next">Next</a></li>
+      <li class="next"><a href="javascript:void(0)" class="">Next</a></li>
       <li class="next finish" style="display:none;"><a href="javascript:;">Import</a></li>
     </ul>
-
   </div><!-- #validationWizard -->
-
 </div><!-- panel-body -->
-
-<script type="text/javascript">
-</script>
