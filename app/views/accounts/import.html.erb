@@ -18,6 +18,34 @@
   <%= render partial: "account_import_form" %>
 </div>
 
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4 class="panel-title">CSV Validation Check - Error(s) Found</h4>
+    <p>Please resolve the errors below found in your CSV and try again.</p>
+  </div>
+
+  <div class="panel-body">
+    <div class="form-group">
+      <div class="col-sm-10">
+        <table class="table table-danger mb30">
+          <thead>
+            <tr>
+              <th>Line #</th>
+              <th>Error Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>No headers on the first line.</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </div> <!-- panel-body -->  
+</div>
+
 <% content_for :custom_js do %>
 <script>
   jQuery(document).ready(function(){
@@ -48,7 +76,7 @@
 
       },
       onTabShow: function(tab, navigation, index){
-        if(index == 3){
+        if(index == 1){
             $(".pager .next").hide();
             $('.pager .finish').removeClass('disabled');
             $(".pager .finish").show();
