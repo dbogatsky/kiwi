@@ -147,7 +147,17 @@
       });
     }
 
-    var d = new Date();
+
+    var now = new Date();
+    var mins = now.getMinutes();
+    var quarterHours = Math.round(mins/15);
+    if (quarterHours == 4)
+    {
+        now.setHours(now.getHours()+1);
+    }
+    rounded = (quarterHours*15)%60;
+    now.setMinutes(rounded);
+    var d = now
     var hh = d.getHours();
     var m = d.getMinutes();
     var dd = 'AM';
