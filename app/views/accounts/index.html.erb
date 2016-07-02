@@ -56,16 +56,25 @@
 		</ul>
 	</div>
 </div><!-- row -->
+
+<% unless @accounts.count == 0 %>
+<div class="row row-pad-5">
+  <div class="col-md-12">
+    <span class='badge' style='background-color: #000000; border-color: #000000;'><strong>Total Accounts: <%= @accounts.count %></strong></span><i class="fa fa-caret-right" style="margin: 5px 5px 5px 10px;"></i>
+    <% @accounts_statistic.each do |account_stat_key, account_stat| %>
+      <% unless account_stat_key == 0 %>
+        <span class='badge' style='background-color: <%= account_stat['color'] %>; border-color: <%= account_stat['color'] %>;'><%= account_stat['name'] %>: <%= account_stat['count'] %></span>
+      <% end %>
+    <% end %>
+    <% if @accounts_statistic[0]['count'] > 0 %>
+      <span class='badge' style='background-color: <%= @accounts_statistic[0]['color'] %>; border-color: #000000; color: black'><%= @accounts_statistic[0]['name'] %>: <%= @accounts_statistic[0]['count'] %></span>
+    <% end %>
+  </div>
+</div><!-- row -->
+<% end %>
+
 <div class="mb30"></div>
-<%
-=begin
-Account Count: <%= @accounts.count ::
-Open: <%=  @accounts.select.count {|account| account.status.name == 'Open' } ::
-Lead: <%=  @accounts.select.count {|account| account.status.name == 'Lead' } ::
-Suspended: <%=  @accounts.select.count {|account| account.status.name == 'Suspended' } ::
-Closed: <%=  @accounts.select.count {|account| account.status.name == 'Closed' }
-=end
-%>
+
 <%= render partial: "accounts/account_list" %>
 
 <!--<div class="people-list">

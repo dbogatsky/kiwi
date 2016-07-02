@@ -27,6 +27,9 @@ class AccountsController < ApplicationController
       session[:advanced_search] = @search
       @accounts = Account.all(params: { search: @search})
     end
+
+    accounts_statistics_info
+
     respond_to do |format|
       format.html
       format.csv { send_data generate_csv }
@@ -617,6 +620,30 @@ class AccountsController < ApplicationController
 
   private
 
+  def accounts_statistics_info
+    account_statuses = AccountStatus.all(uid: RequestStore.store[:tenant])
+    @accounts_statistic = {}
+
+    account_statuses.each do |account_status|
+      @accounts_statistic[account_status.id] = {}
+      @accounts_statistic[account_status.id]['name'] = account_status.name
+      @accounts_statistic[account_status.id]['color'] = account_status.color
+      @accounts_statistic[account_status.id]['count'] = 0
+    end
+    @accounts_statistic[0] = {}
+    @accounts_statistic[0]['name'] = 'No Status'
+    @accounts_statistic[0]['color'] = "#ffffff"
+    @accounts_statistic[0]['count'] = 0
+
+    @accounts.each do |account|
+      if @accounts_statistic.key?(account.status.id)
+        @accounts_statistic[account.status.id]['count'] += 1
+      else
+        @accounts_statistic[0]['count'] += 1
+      end
+    end
+  end
+
   def generate_csv_template
     column_names = ['Name', 'Contact Name', 'Contact Title', 'Status', 'Address', 'City', 'Province', 'Postal Code', 'Country', 'About', 'Quick Facts' ]
     CSV.generate() do |csv|
@@ -717,7 +744,7 @@ class AccountsController < ApplicationController
     end
   end
 
-  def  account_update_info(account_with_previous_value, account_with_update_value)
+  def account_update_info(account_with_previous_value, account_with_update_value)
     changed_value = {}
     if account_with_previous_value.present? && account_with_update_value.present?
       if account_with_previous_value.name != account_with_update_value.name
