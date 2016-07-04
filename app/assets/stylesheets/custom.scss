@@ -205,10 +205,13 @@ body.modal-open {
 .padd_left0{padding-left:0;}
 .padd_right0{padding-right: 0;}
 
-.notification_calender{ background: #1cc7c2;
+.notification_calender{
+    background: #1cc7c2;
     width: 100%;
     padding: 6px 10px 13px;
-    border-radius: 4px;}
+    border-radius: 4px;
+}
+
 .notification_calender .thumb-img {
     height: auto;
     margin-top: 5px;
@@ -253,6 +256,12 @@ body.modal-open {
 
 .video_wdt{width:100% !important; height:250px !important}
 
+.activity-icon .thumb-img {
+    height: auto;
+    margin-top: 5px;
+    width: 100%;
+}
+
 .search_criteria{
   margin-left: 3px;
     background-color: #ccc;
@@ -266,6 +275,10 @@ body.modal-open {
 
 .margin_left4{
   margin-left: 4px;
+}
+
+.margin_left10{
+  margin-left: 10px;
 }
 
 .form_bottom{

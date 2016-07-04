@@ -248,6 +248,7 @@
       if(type == "checkout") {
         url = '/accounts/check_out';
       }
+
       <%unless superadmin_logged_in?%>
         $.getJSON("https://api.ipify.org?format=json", function(data){
           var ip_address = data.ip;
@@ -260,7 +261,7 @@
             },
             complete: function() {
               $('#preloader').hide();
-              var current_user = "<%=current_user.id%>";
+              var current_user = "<%=current_user.id rescue nil%>";
               if(type == "checkin"){
                 $('#'+cid).switchClass("checkin", "checkout");
                 $('#'+cid).parent().find('#position_button').text('Check Out');

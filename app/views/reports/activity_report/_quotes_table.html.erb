@@ -1,0 +1,31 @@
+<% if @sorted_citems[:quote].count == 0 %>
+  <p>Looks like there was no emails scheduled for this date range</p>
+<% else %>
+  <div class="table-responsive">
+    <table class="table table-hover mb30">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Date</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @sorted_citems[:quote].each do | quotes | %>
+          <tr>
+            <td><%= quotes.title %></td>
+            <td><%= quotes.updated_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%b %d") %></td>
+            <td>
+              <%=render 'reports/activity_report/quote_activity_details', quote: quotes%>
+              <div class="table-controls">
+                <a href="#" data-target=".quote-activity-detail_<%=quotes.id%>" data-toggle="modal" class="btn btn-default btn-icon btn-xs tip" title="View" data-original-title="View"><i class="fa fa-search-plus"></i></a>
+                <%=link_to account_path(quotes.account_id), class: "btn btn-default btn-icon btn-xs tip margin_left10", :target => "_blank" do%>
+                <i class="fa fa-briefcase" title="Go to account"></i><%end%>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>
