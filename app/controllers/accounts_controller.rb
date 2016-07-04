@@ -563,7 +563,7 @@ class AccountsController < ApplicationController
             account_params[:contact_title] = row[2]
             all_status = AccountStatus.find(:all)
             all_status.each do |status|
-              if status.name ==  row[3].capitalize
+              if row[3].present? && status.name ==  row[3].capitalize
                 @status_id = status.id
                 break
               else
@@ -578,10 +578,13 @@ class AccountsController < ApplicationController
             account = Account.new(request: :create, account: account_params)
             account.save
           end
+          flash[:success] = "Import Accounts Successful"
+          redirect_to accounts_path
+        else
+          flash[:danger] = "Please Upload the CSV file with the account information"
+          redirect_to account_import_path
         end
       end
-      flash[:success] = "Import Accounts Successful"
-      redirect_to accounts_path
     end
   end
 
