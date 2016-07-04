@@ -15,34 +15,37 @@
   </div>
   <%= render partial: "account_import_form" %>
 </div>
+<%if @row_numbers.present?%>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">CSV Validation Check - Error(s) Found</h4>
+      <p>Please resolve the errors below found in your CSV and try again.</p>
+    </div>
 
-<div class="panel panel-default hidden">
-  <div class="panel-heading">
-    <h4 class="panel-title">CSV Validation Check - Error(s) Found</h4>
-    <p>Please resolve the errors below found in your CSV and try again.</p>
-  </div>
-
-  <div class="panel-body">
-    <div class="form-group">
-      <div class="col-sm-10">
-        <table class="table table-danger mb30">
-          <thead>
-            <tr>
-              <th>Line #</th>
-              <th>Error Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>No headers on the first line.</td>
-            </tr>
-          </tbody>
-        </table>
+    <div class="panel-body">
+      <div class="form-group">
+        <div class="col-sm-10">
+          <table class="table table-danger mb30">
+            <thead>
+              <tr>
+                <th>Line #</th>
+                <th>Error Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <%@row_numbers.each do |line_no, error|%>
+                <tr>
+                  <td>Line#<%=line_no%></td>
+                  <td><%=error%></td>
+                </tr>
+              <%end%>
+            </tbody>
+          </table>
+          </div>
         </div>
-      </div>
-    </div> <!-- panel-body -->
-</div>
+      </div> <!-- panel-body -->
+  </div>
+<%end%>
 
 <script type="text/javascript">
   jQuery(document).ready(function(){

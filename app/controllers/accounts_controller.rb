@@ -549,40 +549,48 @@ class AccountsController < ApplicationController
 
   def import
     if request.post?
+      @all_status = AccountStatus.find(:all)
       if params[:import_csv].present? && params[:import_csv].content_type == 'text/csv'
         csv_text = File.read(params[:import_csv].tempfile)
         csv = CSV.parse(csv_text)
+        csv_validates(csv)
         csv.shift
-        if csv.present?
-          csv.each do |row|
-            row = row[0].gsub(%r{\"}, '')
-            row = row.split(',')
-            account_params = {}
-            account_params[:name] = row[0]
-            account_params[:contact_name] = row[1]
-            account_params[:contact_title] = row[2]
-            all_status = AccountStatus.find(:all)
-            all_status.each do |status|
-              if row[3].present? && status.name ==  row[3].capitalize
-                @status_id = status.id
-                break
-              else
-                @status_id = all_status.first.id
+        if @row_numbers.empty?
+          if csv.present?
+            csv.each do |row|
+              row = row[0].gsub(%r{\"}, '')
+              row = row.split(',')
+              account_params = {}
+              account_params[:name] = row[0]
+              account_params[:contact_name] = row[1]
+              account_params[:contact_title] = row[2]
+              @all_status.each do |status|
+                if row[3].present? && status.name ==  row[3].capitalize
+                  @status_id = status.id
+                  break
+                end
               end
+              account_params[:status_id] = @status_id
+              account_params[:addresses_attributes] = [street_address: row[4], city: row[5], region: row[6], postcode: row[7], country: row[8]]
+              contacts_attributes = {}
+              contacts_attributes['phone'] = {name: '', type: 'phone', value: row[9]}
+              contacts_attributes['fax'] = {name: '', type: 'fax', value: row[10]} if row[10].present?
+              contacts_attributes['email'] = {name: '', type: 'email', value: row[11]} if row[11].present?
+              account_params[:contacts_attributes] = contacts_attributes.values
+              account_params[:about] = row[12]
+              account_params[:quick_facts] = row[13]
+              account_params[:assign_to] = current_user.id
+              account = Account.new(request: :create, account: account_params)
+              account.save
             end
-            account_params[:status_id] = @status_id
-            account_params[:addresses_attributes] = [street_address: row[4], city: row[5], region: row[6], postcode: row[7], country: row[8]]
-            account_params[:about] = row[9]
-            account_params[:quick_facts] = row[10]
-            account_params[:assign_to] = current_user.id
-            account = Account.new(request: :create, account: account_params)
-            account.save
+            flash[:success] = "Import Accounts Successful"
+            redirect_to accounts_path
+          else
+            flash[:danger] = "Please Upload the CSV file with the accounts Details"
+            redirect_to account_import_path
           end
-          flash[:success] = "Import Accounts Successful"
-          redirect_to accounts_path
         else
-          flash[:danger] = "Please Upload the CSV file with the account information"
-          redirect_to account_import_path
+          render :import
         end
       end
     end
@@ -648,9 +656,43 @@ class AccountsController < ApplicationController
   end
 
   def generate_csv_template
-    column_names = ['Name', 'Contact Name', 'Contact Title', 'Status', 'Address', 'City', 'Province', 'Postal Code', 'Country', 'About', 'Quick Facts' ]
+    column_names = ['Account Name', 'Contact Name', 'Contact Title', 'Status', 'Address', 'City', 'Province', 'Postal Code', 'Country', 'Phone', 'Fax', 'Email', 'About', 'Quick Facts' ]
     CSV.generate() do |csv|
       csv << column_names
+    end
+  end
+
+  def csv_validates(csv)
+    @line_no = 0
+    @row_numbers = {}
+    status_array = @all_status.map(&:name)
+    column_names = ['Account Name', 'Contact Name', 'Contact Title', 'Status', 'Address', 'City', 'Province', 'Postal Code', 'Country', 'Phone', 'Fax', 'Email', 'About', 'Quick Facts' ]
+    if csv[0].present?
+      csv.each do |row|
+        @line_no +=1
+        if row[0].present?
+          row_data = row[0].gsub(%r{\"}, '')
+          row_data = row_data.split(',')
+        end
+        if @line_no == 1 && (row[0].present? && (row_data !=column_names))
+          @row_numbers["#{@line_no}"] = "Imported CSV file does not contain the correct headers"
+        end
+        if @line_no !=1 && row[0].present?
+          if row_data[0].blank?
+            @row_numbers["#{@line_no}"] = "Required field, Name, can not be empty"
+          end
+          if row_data[3].present?
+            if !(status_array.include?(row_data[3].capitalize))
+              @row_numbers["#{@line_no}"] = "Unknown account status"
+            end
+          else
+            @row_numbers["#{@line_no}"] = "Required field, Status, can not be empty"
+          end
+          if row_data[9].blank?
+             @row_numbers["#{@line_no}"] = "Missing contact phone number"
+          end
+        end
+      end
     end
   end
 
