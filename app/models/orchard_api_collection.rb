@@ -3,7 +3,7 @@ class OrchardApiCollection < ActiveResource::Collection
   attr_accessor :meta, :paginatable
   def initialize(parsed = {})
     @meta = parsed.delete("meta")
-    @elements = parsed.values[0]
+    @elements = parsed.kind_of?(Hash) ? parsed.values[0] : parsed
     setup_pagination
   end
 
