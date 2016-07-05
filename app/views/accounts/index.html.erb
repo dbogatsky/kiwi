@@ -38,12 +38,16 @@
       <%=advance_search_criteria%>
     </div>
   </div>
-  <div class="col-md-1">
-    <%= link_to account_import_path, class: "btn btn-lightblue dropdown-toggle" do %><i class="fa fa-arrow-circle-o-up mr5"></i>Import<% end %>
-  </div>
-  <div class="col-md-1 pull-right">
-    <%= link_to account_export_path, class: "btn btn-success dropdown-toggle" do %><i class="fa fa-arrow-circle-o-down mr5"></i>Export<% end %>
-  </div>
+  <%if (@role == 'Admin' || @enable_import.blank? || @role == @enable_import.capitalize || @enable_import == 'all')%>
+    <div class="col-md-1">
+      <%= link_to account_import_path, class: "btn btn-lightblue dropdown-toggle" do %><i class="fa fa-arrow-circle-o-up mr5"></i>Import<% end %>
+    </div>
+  <%end%>
+  <%if (@role == 'Admin' || @enable_export.blank? || @role == @enable_export.capitalize || @enable_export == 'all')%>
+    <div class="col-md-1 pull-right">
+      <%= link_to account_export_path, class: "btn btn-success dropdown-toggle" do %><i class="fa fa-arrow-circle-o-down mr5"></i>Export<% end %>
+    </div>
+  <%end%>
 </div><!-- row -->
 
 <div class="row row-pad-5">

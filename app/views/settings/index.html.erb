@@ -125,7 +125,17 @@
           <div class="panel-body">
             <div class="tab-pane" id="accounts">
               <div class="row row-pad-5">
-                <div class="col-md-8">
+                <div class="form-group">
+                  <label class="col-sm-4 control-label">Enable Import</label>
+                  <div class="col-sm-4">
+                    <%=select_tag('enable_import',options_for_select(enable_import_export_select_options, selected: @enable_import), prompt: '-select-', class: "form-control")%>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label">Enable Export</label>
+                  <div class="col-sm-4">
+                      <%=select_tag('enable_export',options_for_select(enable_import_export_select_options, selected: @enable_export), prompt: '-select-', class: "form-control")%>
+                  </div>
                 </div>
               </div>
             </div>

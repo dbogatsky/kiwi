@@ -5,6 +5,9 @@ class AccountsController < ApplicationController
   before_action :get_token
   before_action :find_account, only: [:show, :edit, :destroy, :conversation, :search, :jump_in, :add_quote, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting, :update_quote, :delete_quote, :add_reminder, :update_reminder, :delete_reminder]
   before_action :get_api_values, only: [:search]
+  before_action :get_setting, only: [:index, :import, :export]
+  before_action :check_permission_for_import, only: [:import]
+  before_action :check_permission_for_export, only: [:export]
   @@account_with_previous_value = nil
 
   def index
@@ -630,6 +633,23 @@ class AccountsController < ApplicationController
   end
 
   private
+
+  def get_setting
+     get_account_display_setting
+     @role = current_user.roles.last.name
+  end
+
+  def check_permission_for_import
+    unless(@role == 'Admin' || @enable_import.blank? || @role == @enable_import.capitalize || @enable_import == 'all')
+      redirect_to dashboard_path
+    end
+  end
+
+  def check_permission_for_export
+    unless(@role == 'Admin' || @enable_export.blank? || @role == @enable_export.capitalize || @enable_export == 'all')
+      redirect_to dashboard_path
+    end
+  end
 
   def accounts_statistics_info
     account_statuses = AccountStatus.all(uid: RequestStore.store[:tenant])

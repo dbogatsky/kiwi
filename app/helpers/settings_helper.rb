@@ -12,7 +12,10 @@ module SettingsHelper
   end
 
   def account_by_account_status_select_options
-     return AccountStatus.all(uid: RequestStore.store[:tenant]).collect{ |a| ["#{a.name}", a.id] }
+    return AccountStatus.all(uid: RequestStore.store[:tenant]).collect{ |a| ["#{a.name}", a.id] }
   end
 
+  def enable_import_export_select_options
+    return [['None','none'], ['User', 'user'], ['Entity Admin', 'entity_admin'], ['All', 'all']]
+  end
 end
