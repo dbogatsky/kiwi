@@ -1,18 +1,23 @@
 class PreferencesController < ApplicationController
+  before_action :get_api_values
+
   def show
-    # @current_user = User.find(current_user.id, reload: true)
+    user_preference_details
   end
 
   def update
-    # current_user.update_attributes(request: :update, user: user_params, reload: true)
-
+    curlRes = `curl -X PUT -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -d '{"settings":{"default_calendar_view": "#{params[:preference][:default_calendar_view]}", "preview_conversation_timeline": "#{params[:preference][:preview_conversation_timeline]}", "received_notification_by": "#{params[:preference][:received_notification_by]}", "notification_display_limit": "#{params[:preference][:notification_display_limit]}"}}' '#{@apiFullUrl}'`
     flash[:success] = 'Your preference has been successfully updated!'
     redirect_to preference_path
   end
 
+
   private
 
-  def user_params
-    # params.require(:user).permit(:first_name, :last_name, :title, :avatar, :locale, :time_zone, :role_ids, addresses_attributes: [:id, :street_address, :postcode, :city, :latitude, :longitude, :region, :country], contacts_attributes: [:id, :type, :name, :value])
+  def get_api_values
+    @apiFullUrl = RequestStore.store[:api_url] + "/users/#{current_user.id}/settings/preferences"
+    @email = current_user.email
+    @appKey = APP_CONFIG['api_app_key']
+    @token = session[:token]
   end
 end

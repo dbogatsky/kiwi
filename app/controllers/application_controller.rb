@@ -268,9 +268,41 @@ class ApplicationController < ActionController::Base
 
     # check if we have set the current user before getting any notifications
     if current_user.present?
+      user_preference_details
+      preference_limit = @user_preference['notification_display_limit']
+      search = Hash.new
+      current_date = Date.current.in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
+      search[:created_at_lteq] = convert_datetime_to_utc(current_user.time_zone, current_date, "23:59:59")
+      if preference_limit.present?
+        if preference_limit == 'one_day'
+          search[:created_at_gteq] = convert_datetime_to_utc(current_user.time_zone, current_date, "00:00:00")
+        elsif preference_limit == 'two_days'
+          end_date = (Date.current - 1.day).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
+          search[:created_at_gteq] = convert_datetime_to_utc(current_user.time_zone, end_date, "00:00:00")
+        elsif preference_limit == 'three_days'
+          end_date = (Date.current - 2.day).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
+          search[:created_at_gteq] = convert_datetime_to_utc(current_user.time_zone, end_date, "00:00:00")
+        elsif preference_limit == 'one_week'
+          end_date = (Date.current - 1.week).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
+          search[:created_at_gteq] = convert_datetime_to_utc(current_user.time_zone, end_date, "00:00:00")
+        elsif preference_limit == 'two_weeks'
+          end_date = (Date.current - 2.week).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
+          search[:created_at_gteq] = convert_datetime_to_utc(current_user.time_zone, end_date, "00:00:00")
+        elsif preference_limit == 'three_weeks'
+          end_date = (Date.current - 3.week).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
+          search[:created_at_gteq] = convert_datetime_to_utc(current_user.time_zone, end_date, "00:00:00")
+        elsif preference_limit == 'one_month'
+          end_date = (Date.current - 1.month).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
+          search[:created_at_gteq] = convert_datetime_to_utc(current_user.time_zone, end_date, "00:00:00")
+        end
+        @notifications = Notification.all(params: {search: search})
+      else
+        @notifications = Notification.all
+      end
+      user_ids = []
+      user_ids.push(current_user.id)
 
       # Retrieve notifications and sort read / unread
-      @notifications = Notification.all
       if @notifications.present?
         @notifications.each do |notification|
           if notification.read_at.present?
@@ -288,6 +320,24 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def user_preference_details
+    @apiFullUrl = RequestStore.store[:api_url] + "/users/#{current_user.id}/settings/preferences"
+    @email = current_user.email
+    @appKey = APP_CONFIG['api_app_key']
+    @token = session[:token]
+    curlRes = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -H "Cache-Control: no-cache" "#{@apiFullUrl}"`
+    user_preference = JSON.parse(curlRes)
+    user_preference = user_preference['user']['settings']['preferences']
+    user_preference.shift
+    @user_preference = user_preference
+  end
+
+#   def check_request
+#     unless request.format.symbol.present?
+#       render text: 'page loaded'
+#     end
+#   end
+#
   def get_automatic_logout_time
     get_api_values
     apiFullUrl = RequestStore.store[:api_url] + "/company/settings/authentication"
