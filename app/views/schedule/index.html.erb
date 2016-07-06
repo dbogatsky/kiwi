@@ -390,6 +390,14 @@
     });
 	});
 
+  $(document).on("click",".fc-prev-button span, .fc-next-button span",function(){
+    var view = $('#calendar').fullCalendar('getView').name
+    if(view == 'agendaDay'){
+      var date = $('#calendar').fullCalendar('getDate')
+      update_regular_visits(date)
+    }
+  });
+
   $("#quote-reminder-settings").hide();
   $("#quote-reminder-settings-edit").hide();
 

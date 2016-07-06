@@ -157,7 +157,8 @@ class ScheduleController < ApplicationController
 
   def regular_visits
     if params[:date].present?
-      @date = params[:date]
+      @date = Chronic.parse(params[:date]).strftime('%Y-%m-%d')
+      # @date = params[:date]
     else
       @date = Time.now.strftime('%Y-%m-%d')
     end
@@ -174,7 +175,6 @@ class ScheduleController < ApplicationController
     search[:item_type_eq] = 'regular'
 
     events = Array[]
-
     @regular_visits = ConversationItemSearch.all(params: { search: search, user_ids: user_ids, per_page: 20 })
 
     @regular_visits.each do |i|
