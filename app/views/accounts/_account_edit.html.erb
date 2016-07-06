@@ -99,8 +99,6 @@
         <%= f.input :quick_facts,  as: :text, wrapper: :wizard_horizontal_form, :label => 'Quick Facts', :input_html => { :rows => 5, :value => @account.quick_facts }  %>
         <input type="hidden" name="save">
       </div>
-
-
     </div><!-- tab-content -->
     <% end %>
     <!--</form>-->
@@ -116,6 +114,25 @@
 </div><!-- panel-body -->
 
 <script>
+  $('#preloader').css('opacity', 0.8);
+  $('.del_btn').click(function(){
+    $.confirm({
+    text: "You are attempting to delete this account. Please click Confirm Delete to continue.",
+    confirmButton: "Confirm Delete",
+    cancelButton: "Cancel",
+    confirm: function() {
+      $('#preloader').show();
+      $.ajax({
+        type: "DELETE",
+        url: '/accounts/<%=@account.id%>',
+        complete: function() {
+          window.location = "/accounts"
+        }
+      });
+    }
+  });
+
+  })
   $(".select2AccountStatus").select2({
     width: '100%',
     minimumResultsForSearch: Infinity

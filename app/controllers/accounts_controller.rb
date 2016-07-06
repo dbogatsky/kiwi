@@ -1,29 +1,40 @@
 require 'net/http/post/multipart'
 include ApplicationHelper
 class AccountsController < ApplicationController
-  skip_before_filter :verify_authenticity_token, only: [:delete_future_meeting]
+  skip_before_filter :verify_authenticity_token, only: [:delete_future_meeting, :destroy]
   before_action :get_token
-  before_action :find_account, only: [:conversation, :search, :jump_in, :add_quote, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting, :update_quote, :delete_quote, :add_reminder, :update_reminder, :delete_reminder]
+  before_action :find_account, only: [:show, :edit, :destroy, :conversation, :search, :jump_in, :add_quote, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting, :update_quote, :delete_quote, :add_reminder, :update_reminder, :delete_reminder]
   before_action :get_api_values, only: [:search]
   @@account_with_previous_value = nil
+
   def index
     # Get all accounts
-    @accounts = Account.all(params: { search: params[:search] })
-    if params[:search1].present?
-      if params[:search1][:search] == 'name'
-        @accounts = @accounts.sort_by { |a| [a.name] }
-      elsif params[:search1][:search] == 'city'
-        @accounts = @accounts.sort_by { |a| [a.city_name] }
-      elsif params[:search1][:search] == 'country'
-        @accounts = @accounts.sort_by { |a| [a.country_name] }
-      end
+    if request.format.symbol.present? && request.format.symbol != :csv
+      session[:search1] = nil
+      session[:search2] = nil
+      session[:search] = nil
+      session[:advanced_search] = nil
     end
-    @accounts = @accounts.reverse if params[:search2].present? && params[:search2][:search] == 'descending'
+    @accounts = Account.all(params: { search: params[:search] })
+    session[:search] = params[:search] if params[:search].present?
+    if params[:search1].present? && params[:search2].present?
+      accounts_sort_by(params[:search1][:search], params[:search2][:search])
+      session[:search1] = params[:search1][:search]
+      session[:search2] = params[:search2][:search]
+    end
+    if params[:advanced_search].present?
+      advanced_search
+      session[:advanced_search] = @search
+      @accounts = Account.all(params: { search: @search})
+    end
+    respond_to do |format|
+      format.html
+      format.csv { send_data generate_csv }
+    end
   end
 
   def show
     # Get the acount info and conversation based on id given
-    @account = Account.find(params[:id])
     @shared_user = []
     @account.user_account_sharings.each { |u| @shared_user << u.user }
     @users = User.all(uid: session[:user_id])
@@ -44,7 +55,6 @@ class AccountsController < ApplicationController
 
   def edit
     # Edit an account
-    @account = Account.find(params[:id])
     @addresses = @account.addresses
     @contacts = @account.contacts
     @users = User.all(uid: session[:user_id])
@@ -85,12 +95,22 @@ class AccountsController < ApplicationController
     redirect_to account_path(params[:id])
   end
 
+  def destroy
+    if @account.destroy
+      flash[:success] = 'Account has been deleted successfully'
+    else
+      flash[:danger] = 'Oops! Unable to delete the account'
+    end
+    render :nothing => true
+  end
+
   def schedule_meeting
     c_id = @account.conversation.id
     if params[:conversation_item][:item_type] == 'regular' && params[:starts_date].present?
       params[:conversation_item][:all_day_appointment] = true
       params[:conversation_item][:starts_at] = convert_datetime_to_utc(current_user.time_zone, params[:starts_date], "00:00:00")
       params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone, params[:starts_date], "23:59:59")
+      params[:conversation_item][:invitees] = ""
     else
       params[:conversation_item][:starts_at] = convert_datetime_to_utc(current_user.time_zone, params[:starts_date], params[:starts_time]) if params[:starts_date].present?
       params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone, params[:ends_date], params[:ends_time]) if params[:ends_date].present?
@@ -225,6 +245,12 @@ class AccountsController < ApplicationController
       lng = params['lng']
     end
     ci = ConversationItemEvent.create(conversation_item_event: { lat: lat, long: lng, ip_address: ip_address }, type: 'check_in', conversation_item_id: citem)
+    if params[:created_by].to_i == current_user.id
+      conversation = ConversationItem.find(params[:cid], params:{conversation_id: params[:conversation_id]})
+      params[:conversation_item] = {}
+      params[:conversation_item][:status] = "in_progress"
+      conversation.update_attributes(conversation_item: params[:conversation_item], conversation_id: params[:conversation_id], reload: true)
+    end
     render json: ci
   end
 
@@ -243,6 +269,12 @@ class AccountsController < ApplicationController
       lng = params['lng']
     end
     co = ConversationItemEvent.create(conversation_item_event: { lat: lat, long: lng, ip_address: ip_address }, type: 'check_out', conversation_item_id: citem)
+    if params[:created_by].to_i == current_user.id
+      conversation = ConversationItem.find(params[:cid], params:{conversation_id: params[:conversation_id]})
+      params[:conversation_item] = {}
+      params[:conversation_item][:status] = "completed"
+      conversation.update_attributes(conversation_item: params[:conversation_item], conversation_id: params[:conversation_id], reload: true)
+    end
     render json: co
   end
 
@@ -251,7 +283,7 @@ class AccountsController < ApplicationController
     @meeting = ConversationItem.find(params[:conversation_item_id], params: { conversation_id: c_id })
     params[:conversation_item] = {}
     params[:conversation_item][:id] = params[:conversation_item_id]
-    params[:conversation_item][:invitees] = @meeting.invitees + ', ' + "#{current_user.email}"
+    params[:conversation_item][:invitees] = @meeting.invitees.present? ? @meeting.invitees  + ', ' + "#{current_user.email}" : current_user.email
     if @meeting.update_attributes(request: :update, conversation_item: params[:conversation_item], conversation_id: c_id, reload: true)
       flash[:success] = 'successfully jumped!'
     else
@@ -513,37 +545,114 @@ class AccountsController < ApplicationController
     @conversation_items = ConversationItem.all(params: { conversation_id: c_id, search: search })
   end
 
+  def export
+
+  end
+
+  def generate_csv
+     # headers['Content-Disposition'] = "attachment; filename=\"user-list\""
+    if session[:search1].present? && session[:search2].present?
+      accounts_sort_by(session[:search1], session[:search2])
+    elsif session[:advanced_search].present?
+      @accounts = Account.all(params: { search: session[:advanced_search] })
+    else
+      @accounts = Account.all(params: { search: session[:search] })
+    end
+    column_names = ['ID', 'Name', 'Contact Name', 'Contact Title', 'Status', 'Address', 'City', 'Province', 'Postal Code', 'Country', 'About', 'Quick Facts' ]
+    options = {}
+    options[:force_quotes] = true
+    options[:col_sep] = params[:option2][:delimiter] == 'other' ? params[:other_option] : params[:option2][:delimiter]
+    CSV.generate(options) do |csv|
+      if params[:option1][:header] == 'true'
+         csv << column_names
+      end
+      if @accounts.present?
+        @accounts.each do |account|
+          address = account.addresses.first rescue nil
+          csv << [account.id, account.name, account.contact_name, account.contact_title, account.status.try(:name), address.try(:street_address), address.try(:city), address.try(:region), address.try(:postcode), address.try(:country), account.about, account.quick_facts]
+        end
+      end
+    end
+  end
+
   private
 
   def account_timeline_conversation_items
-      user_preference_details
-      preference_limit = @user_preference['preview_conversation_timeline']
-      user_ids = Array.new
-      search = Hash.new
-      user_ids.push(current_user.id)
-      current_date = Date.current.in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
-      search[:created_at_lteq] = convert_datetime_to_utc(current_user.time_zone, current_date, "23:59:59")
-      search[:conversation_id_eq] = @account.conversation.id.to_i
-      if preference_limit.present?
-        if preference_limit == 'one_day'
-          search[:created_at_gteq] = convert_datetime_to_utc(current_user.time_zone, current_date, "00:00:00")
-        elsif preference_limit == 'two_days'
-          end_date = (Date.current - 1.day).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
-          search[:created_at_gteq] = convert_datetime_to_utc(current_user.time_zone, end_date, "00:00:00")
-        elsif preference_limit == 'one_week'
-          end_date = (Date.current - 1.week).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
-          search[:created_at_gteq] = convert_datetime_to_utc(current_user.time_zone, end_date, "00:00:00")
-        elsif preference_limit == 'two_weeks'
-          end_date = (Date.current - 2.week).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
-          search[:created_at_gteq] = convert_datetime_to_utc(current_user.time_zone, end_date, "00:00:00")
-        elsif preference_limit == 'one_month'
-          end_date = (Date.current - 1.month).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
-          search[:created_at_gteq] = convert_datetime_to_utc(current_user.time_zone, end_date, "00:00:00")
-        end
-        @timeline_items = ConversationItemSearch.all(params: {user_ids: user_ids, search: search})
-      else
-        @timeline_items = @account.conversation.conversation_items
+    user_preference_details
+    preference_limit = @user_preference['preview_conversation_timeline']
+    user_ids = Array.new
+    search = Hash.new
+    user_ids.push(current_user.id)
+    current_date = Date.current.in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
+    search[:created_at_lteq] = convert_datetime_to_utc(current_user.time_zone, current_date, "23:59:59")
+    search[:conversation_id_eq] = @account.conversation.id.to_i
+    if preference_limit.present?
+      if preference_limit == 'one_day'
+        search[:created_at_gteq] = convert_datetime_to_utc(current_user.time_zone, current_date, "00:00:00")
+      elsif preference_limit == 'two_days'
+        end_date = (Date.current - 1.day).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
+        search[:created_at_gteq] = convert_datetime_to_utc(current_user.time_zone, end_date, "00:00:00")
+      elsif preference_limit == 'one_week'
+        end_date = (Date.current - 1.week).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
+        search[:created_at_gteq] = convert_datetime_to_utc(current_user.time_zone, end_date, "00:00:00")
+      elsif preference_limit == 'two_weeks'
+        end_date = (Date.current - 2.week).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
+        search[:created_at_gteq] = convert_datetime_to_utc(current_user.time_zone, end_date, "00:00:00")
+      elsif preference_limit == 'one_month'
+        end_date = (Date.current - 1.month).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
+        search[:created_at_gteq] = convert_datetime_to_utc(current_user.time_zone, end_date, "00:00:00")
       end
+      @timeline_items = ConversationItemSearch.all(params: {user_ids: user_ids, search: search})
+    else
+      @timeline_items = @account.conversation.conversation_items
+    end
+  end
+
+  def accounts_sort_by(value1, value2)
+    if value1 == 'name'
+      @accounts = @accounts.sort_by { |a| [a.name] }
+    elsif value1 == 'city'
+      @accounts = @accounts.sort_by { |a| [a.city_name] }
+    elsif value1 == 'country'
+      @accounts = @accounts.sort_by { |a| [a.country_name] }
+    elsif value1 == 'owner'
+      @accounts = @accounts.sort_by { |a| [a.assigned_to.try(:first_name)] }
+    end
+    @accounts = @accounts.reverse if value2 == 'descending'
+  end
+
+  def advanced_search
+    @search = {}
+    if params[:rule].present?
+      params[:rule].values.each do |r|
+        if r['option'] == "name"
+          if r['is_contain'] == 'contains'
+             @search[:name_cont] =  r['text']
+          else
+            @search[:name_eq] =  r['text']
+          end
+        elsif r['option'] == "city"
+          if r['is_contain'] == 'contains'
+             @search[:addresses_city_cont] =  r['text']
+          else
+            @search[:addresses_city_eq] =  r['text']
+          end
+        elsif r['option'] == "status"
+          if r['is_contain'] == 'contains'
+             @search[:status_name_cont] =  r['status']
+          else
+            @search[:status_name_eq] =  r['status']
+          end
+        elsif r['option'] == "owner"
+          if r['is_contain'] == 'contains'
+             @search[:assigned_to_first_name_or_assigned_to_last_name_cont] =  r['text']
+          else
+            @search[:assigned_to_first_name_or_assigned_to_last_name_eq] =  r['text']
+          end
+        end
+      end
+      @search[:m] = 'or' if params[:match] == 'any'
+    end
   end
 
   def get_token

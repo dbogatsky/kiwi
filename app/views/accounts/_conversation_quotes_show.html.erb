@@ -65,14 +65,14 @@
       <div class="col-sm-10">
         <i class="fa fa-user tooltips mr10" data-toggle="tooltip" data-original-title="Created by"></i><%=citem.created_by.first_name%> <%=citem.created_by.last_name%><br />
         <% if citem.ends_at.present? %>
-            <i class="fa fa-clock-o tooltips mr10" data-toggle="tooltip" data-original-title="Expires Date"></i><%=citem.ends_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y")%>&nbsp;
-            (
-            <%if citem.ends_at.in_time_zone(current_user.time_zone).to_date > Date.today.in_time_zone(current_user.time_zone).to_date%>
-              <%= time_ago_in_words(citem.ends_at.to_date).gsub('about','')%>
-            <%elsif citem.ends_at.in_time_zone(current_user.time_zone).to_date == Date.today.in_time_zone(current_user.time_zone).to_date%>
-              <span>Today</span>
-            <%end%>
-            )<br />
+          <i class="fa fa-clock-o tooltips mr10" data-toggle="tooltip" data-original-title="Expires Date"></i><%=citem.ends_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y")%>&nbsp;
+          (
+          <%if citem.ends_at.in_time_zone(current_user.time_zone).to_date > Date.today.in_time_zone(current_user.time_zone).to_date%>
+            <%= time_ago_in_words(citem.ends_at.to_date).gsub('about','')%>
+          <%elsif citem.ends_at.in_time_zone(current_user.time_zone).to_date == Date.today.in_time_zone(current_user.time_zone).to_date%>
+            <span>Today</span>
+          <%end%>
+          )<br />
         <% end %>
         <% if (citem.scheduled_at.present?) %>
             <i class="fa fa-bell tooltips mr10" data-toggle="tooltip" data-original-title="Reminder"></i><%= citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %>

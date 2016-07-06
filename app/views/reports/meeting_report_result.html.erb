@@ -146,10 +146,10 @@
     <div class="col-sm-6">
       <div class="panel panel-report panel-alt">
         <div class="panel-heading">
-          <h3 class="panel-title">Meetings by Time of Day</h3>
+          <h3 class="panel-title">Meetings by Type</h3>
         </div>
         <div class="panel-body">
-         <div id="time_of_day_bar_chart" class="chart-height"></div>
+         <div id="type_of_meeting_bar_chart" class="chart-height"></div>
         </div><!-- panel-body -->
       </div>
     </div>
@@ -188,12 +188,13 @@
               <td><%= get_styled_meetingstatus(meeting, false) %></td>
               <td>
                 <%=render 'meeting_details', meeting: meeting %>
-                <%=link_to '#', data: { toggle: "modal", target: ".meeting-detail_#{meeting.id}" } do%>
-                <i class="fa fa-eye" title="View Details"></i>
+                <%=link_to '#', data: { toggle: "modal", target: ".meeting-detail_#{meeting.id}" }, class: "btn btn-default btn-icon btn-xs tip" do%>
+                <i class="fa fa-search-plus" title="View Details"></i>
                 <%end%>
               </td>
               <td>
-                <%=link_to 'go to account',account_path(meeting.account_id)%>
+                <%=link_to account_path(meeting.account_id), class: "btn btn-default btn-icon btn-xs tip", :target => "_blank" do%>
+                <i class="fa fa-briefcase" title="Go to account"></i><%end%>
               </td>
             </tr>
           <% end %>
@@ -203,7 +204,6 @@
     </div><!-- col-sm-7 -->
   </div><!-- row -->
 </div><!-- contentpanel -->
-
 <script type="text/javascript">
   // $('.check_in_out').click(function(){
   //   $('#preloader').css('opacity', 0.8);
@@ -214,6 +214,21 @@
   //       $(this).find('i').removeClass('fa-minus-circle').addClass('fa-plus-circle')
   //     }
   // });
+
+  function showMap(div_id, lat, lng, loc){
+    var map = new GMaps({
+      div: div_id,
+      lat: lat,
+      lng: lng,
+      zoom: 1,
+    });
+
+    var marker = map.addMarker({
+      lat: lat,
+      lng: lng,
+      title: loc,
+    });
+  }
 
   var data = '<%=@data%>';
   data = JSON.parse(data.replace(/&quot;/g,'"'))
@@ -233,22 +248,36 @@
     hideHover: true
   });
 
-  var time_data = '<%=@time_data%>';
-  time_data = JSON.parse(time_data.replace(/&quot;/g,'"'))
+  // var time_data = '<%=@time_data%>';
+  // time_data = JSON.parse(time_data.replace(/&quot;/g,'"'))
+  // var m5 = new Morris.Bar({
+  //   element: 'time_of_day_bar_chart',
+  //   data: time_data ,
+  //   xkey: 'y',
+  //   ykeys: ['a'],
+  //   xLabelMargin: 1,
+  //   labels: ['Meetings'],
+  //   barColors: ['#428BCA'],
+  //   lineWidth: '1px',
+  //   fillOpacity: 0.8,
+  //   smooth: false,
+  //   stacked: true,
+  //   resize: true,
+  //   hideHover: true
+  // });
+
+  var meeting_comparison_data = "<%=@meeting_comparison_data%>"
+  meeting_comparison_data = JSON.parse(meeting_comparison_data.replace(/&quot;/g,'"'))
   var m5 = new Morris.Bar({
-    element: 'time_of_day_bar_chart',
-    data: time_data ,
+    element: 'type_of_meeting_bar_chart',
+    data: meeting_comparison_data,
     xkey: 'y',
-    ykeys: ['a'],
-    xLabelMargin: 1,
-    labels: ['Meetings'],
-    barColors: ['#428BCA'],
-    lineWidth: '1px',
-    fillOpacity: 0.8,
-    smooth: false,
-    stacked: true,
+    ykeys: ['a', 'b'],
+    labels: ['General meetings', 'Regular meetings'],
+    barColors: ['#428BCA', '#4CAF50'],
     resize: true,
-    hideHover: true
+    hideHover: true,
+    barSizeRatio: .2
   });
 
   var account_data=  '<%=@account_data%>';

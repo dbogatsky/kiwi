@@ -25,9 +25,9 @@ http_interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 19 May 2016 21:16:27 GMT
+      - Fri, 03 Jun 2016 22:00:59 GMT
       Etag:
-      - W/"7d3b09776d300e0f890b3c1df233b13a"
+      - W/"bae8016de2e2af5f1dbb64876c035963"
       Server:
       - nginx/1.4.6 (Ubuntu)
       Vary:
@@ -37,20 +37,21 @@ http_interactions:
       X-Frame-Options:
       - SAMEORIGIN
       X-Request-Id:
-      - 430d5e8b-9dbf-4aaa-aa60-8b4caad77015
+      - c654eab8-dcd0-4641-9b30-fc61f106dcc2
       X-Runtime:
-      - '0.309180'
+      - '0.492764'
       X-Xss-Protection:
       - 1; mode=block
       Content-Length:
-      - '995'
+      - '1000'
       Connection:
       - keep-alive
     body:
       encoding: ASCII-8BIT
-      string: '{"user":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1463695287\u0026Signature=FRyPkL6E3i%2BBmzpbqpuZanP48x4%3D","locale":"en","time_zone":"America/Los_Angeles","title":"Director
-        of Nothing","addresses":[{"id":50,"name":null,"street_address":"UNIT 2050
-        BOX 490","city":"APO","postcode":"96522 - 1215","region":"ARMED FORCES PACIFIC","country":"Canada","latitude":null,"longitude":null},{"id":51,"name":null,"street_address":"UNIT
+      string: '{"user":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993959\u0026Signature=iCflOT70LBV%2BROVA6yS0UCaDyCI%3D","locale":"en","time_zone":"Pacific
+        Time (US \u0026 Canada)","title":"Director of Nothing","addresses":[{"id":50,"name":null,"street_address":"UNIT
+        2050 BOX 490","city":"APO","postcode":"96522 - 1215","region":"ARMED FORCES
+        PACIFIC","country":"Canada","latitude":null,"longitude":null},{"id":51,"name":null,"street_address":"UNIT
         2050 BOX 490","city":"APO","postcode":"96522 - 1215","region":"ARMED FORCES
         PACIFIC","country":"CA","latitude":null,"longitude":null},{"id":52,"name":null,"street_address":"UNIT
         2050 BOX 490","city":"APO","postcode":"96522 - 1215","region":"ARMED FORCES
@@ -107,7 +108,7 @@ http_interactions:
         user"}],"entity":{"id":19,"name":"East Coast","description":"Users and accounts
         held on the east coast."}}}'
     http_version: 
-  recorded_at: Thu, 19 May 2016 21:16:25 GMT
+  recorded_at: Fri, 03 Jun 2016 22:00:52 GMT
 - request:
     method: get
     uri: https://acme-api.code10.ca/api/v1/notifications.json
@@ -133,9 +134,9 @@ http_interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 19 May 2016 21:16:28 GMT
+      - Fri, 03 Jun 2016 22:00:55 GMT
       Etag:
-      - W/"ade776347718cf86d4cca95b4dbc1f48"
+      - W/"b23acb0ecab3cc03eca4c14046842b85"
       Server:
       - nginx/1.4.6 (Ubuntu)
       Vary:
@@ -145,23 +146,23 @@ http_interactions:
       X-Frame-Options:
       - SAMEORIGIN
       X-Request-Id:
-      - a18a1d45-293c-4ab8-8e77-6bf32c99f822
+      - 4f80e247-59d5-417d-9712-ac6c326f0c24
       X-Runtime:
-      - '0.281744'
+      - '0.450520'
       X-Xss-Protection:
       - 1; mode=block
       Content-Length:
-      - '760'
+      - '1059'
       Connection:
       - keep-alive
     body:
       encoding: ASCII-8BIT
-      string: '{"notifications":[{"id":75,"type":"account_status_change","value":{"account_id":318,"from_status":"Open","to_status":"Lead"},"created_at":"2016-05-16T18:21:32Z","read_at":null},{"id":69,"type":"reminder","value":{"reminder_id":731,"scheduled_at":"2016-05-15T19:00:00Z"},"created_at":"2016-05-10T22:11:55Z","read_at":"2016-05-11T07:13:54Z"},{"id":66,"type":"reminder","value":{"reminder_id":723,"scheduled_at":"2016-05-11T00:20:00Z"},"created_at":"2016-05-10T11:22:11Z","read_at":"2016-05-11T07:33:50Z"},{"id":64,"type":"reminder","value":{"reminder_id":723,"scheduled_at":"2016-05-11T00:06:00Z"},"created_at":"2016-05-10T11:07:44Z","read_at":"2016-05-11T08:45:39Z"},{"id":58,"type":"reminder","value":{"reminder_id":706,"scheduled_at":"2016-05-04T23:50:00Z"},"created_at":"2016-05-04T23:44:18Z","read_at":"2016-05-09T06:03:09Z"},{"id":54,"type":"reminder","value":{"reminder_id":696,"scheduled_at":"2016-05-05T23:55:00Z"},"created_at":"2016-05-04T11:13:24Z","read_at":"2016-05-09T06:38:58Z"},{"id":43,"type":"reminder","value":{"reminder_id":685,"scheduled_at":"2016-05-03T22:50:00Z"},"created_at":"2016-05-03T22:48:53Z","read_at":null},{"id":40,"type":"reminder","value":{"reminder_id":685,"scheduled_at":"2016-05-03T23:50:00Z"},"created_at":"2016-05-03T22:48:09Z","read_at":null},{"id":37,"type":"reminder","value":{"reminder_id":685,"scheduled_at":"2016-05-04T01:45:00Z"},"created_at":"2016-05-03T22:37:56Z","read_at":null},{"id":34,"type":"reminder","value":{"reminder_id":685,"scheduled_at":"2016-05-04T03:40:00Z"},"created_at":"2016-05-03T22:37:13Z","read_at":null},{"id":31,"type":"reminder","value":{"reminder_id":685,"scheduled_at":"2016-05-04T03:45:00Z"},"created_at":"2016-05-03T22:36:47Z","read_at":null},{"id":29,"type":"reminder","value":{"reminder_id":685,"scheduled_at":"2016-05-04T02:45:00Z"},"created_at":"2016-05-03T22:36:29Z","read_at":null},{"id":27,"type":"reminder","value":{"reminder_id":685,"scheduled_at":"2016-05-04T02:30:00Z"},"created_at":"2016-05-03T22:21:42Z","read_at":null},{"id":24,"type":"reminder","value":{"reminder_id":672,"scheduled_at":"2016-05-02T17:00:00Z"},"created_at":"2016-05-03T02:25:59Z","read_at":"2016-05-11T08:59:08Z"},{"id":22,"type":"reminder","value":{"reminder_id":671,"scheduled_at":"2016-05-02T16:55:00Z"},"created_at":"2016-05-03T02:25:08Z","read_at":"2016-05-16T12:56:02Z"},{"id":20,"type":"reminder","value":{"reminder_id":653,"scheduled_at":"2016-05-02T04:50:00Z"},"created_at":"2016-05-03T02:15:08Z","read_at":null},{"id":15,"type":"reminder","value":{"reminder_id":652,"scheduled_at":"2016-05-10T07:00:00Z"},"created_at":"2016-05-02T07:06:30Z","read_at":"2016-05-09T13:30:26Z"},{"id":13,"type":"reminder","value":{"reminder_id":651,"scheduled_at":"2016-05-15T06:50:00Z"},"created_at":"2016-05-02T06:53:18Z","read_at":null},{"id":12,"type":"reminder","value":{"reminder_id":647,"scheduled_at":"2016-04-30T18:30:00Z"},"created_at":"2016-05-01T04:05:20Z","read_at":"2016-05-11T10:09:10Z"},{"id":11,"type":"reminder","value":{"reminder_id":644,"scheduled_at":"2016-04-29T20:50:00Z"},"created_at":"2016-04-28T20:52:44Z","read_at":null},{"id":10,"type":"reminder","value":{"reminder_id":642,"scheduled_at":"2016-04-30T13:05:00Z"},"created_at":"2016-04-28T09:43:32Z","read_at":"2016-05-17T10:03:28Z"},{"id":9,"type":"reminder","value":{"reminder_id":642,"scheduled_at":"2016-04-30T22:05:00Z"},"created_at":"2016-04-28T09:42:30Z","read_at":"2016-05-11T22:19:28Z"},{"id":8,"type":"reminder","value":{"reminder_id":641,"scheduled_at":"2016-05-01T04:30:00Z"},"created_at":"2016-04-28T09:27:47Z","read_at":null},{"id":7,"type":"reminder","value":{"reminder_id":641,"scheduled_at":"2016-04-28T19:55:00Z"},"created_at":"2016-04-28T07:32:57Z","read_at":null},{"id":5,"type":"reminder","value":{"reminder_id":633,"scheduled_at":"2016-04-27T05:40:00Z"},"created_at":"2016-04-27T05:32:41Z","read_at":null},{"id":4,"type":"meeting_reminder","value":{"meeting_id":632,"scheduled_at":"2016-04-27T06:50:00Z"},"created_at":"2016-04-27T00:45:55Z","read_at":null},{"id":3,"type":"meeting_reminder","value":{"meeting_id":630,"scheduled_at":"2016-04-27T06:30:00Z"},"created_at":"2016-04-27T00:34:13Z","read_at":null},{"id":2,"type":"meeting_reminder","value":{"meeting_id":629,"scheduled_at":"2016-04-27T06:20:00Z"},"created_at":"2016-04-27T00:25:27Z","read_at":"2016-05-17T11:10:53Z"}]}'
+      string: '{"notifications":[{"id":113,"type":"reminder","value":{"reminder_id":9363,"scheduled_at":"2016-06-03T03:30:00Z"},"created_at":"2016-06-02T13:35:05Z","read_at":null},{"id":111,"type":"reminder","value":{"reminder_id":8969,"scheduled_at":"2016-06-02T03:15:00Z"},"created_at":"2016-05-31T22:19:33Z","read_at":null},{"id":110,"type":"reminder","value":{"reminder_id":8965,"scheduled_at":"2016-06-03T04:15:00Z"},"created_at":"2016-05-31T21:57:31Z","read_at":null},{"id":109,"type":"reminder","value":{"reminder_id":8905,"scheduled_at":"2016-06-01T15:29:00Z"},"created_at":"2016-05-31T05:31:48Z","read_at":null},{"id":108,"type":"reminder","value":{"reminder_id":8904,"scheduled_at":"2016-06-05T19:23:00Z"},"created_at":"2016-05-31T05:26:54Z","read_at":null},{"id":107,"type":"reminder","value":{"reminder_id":7439,"scheduled_at":"2016-05-30T17:00:00Z"},"created_at":"2016-05-30T07:10:31Z","read_at":null},{"id":105,"type":"reminder","value":{"reminder_id":2009,"scheduled_at":"2016-05-27T17:45:00Z"},"created_at":"2016-05-27T07:47:53Z","read_at":null},{"id":104,"type":"reminder","value":{"reminder_id":1994,"scheduled_at":"2016-05-26T20:00:00Z"},"created_at":"2016-05-26T10:02:28Z","read_at":null},{"id":96,"type":"account_status_change","value":{"account_id":485,"from_status":"Open","to_status":"Risk"},"created_at":"2016-05-24T21:09:40Z","read_at":"2016-05-24T21:39:16Z"},{"id":94,"type":"account_status_change","value":{"account_id":318,"from_status":"Lead","to_status":"Open"},"created_at":"2016-05-23T10:02:35Z","read_at":"2016-05-23T10:10:25Z"},{"id":93,"type":"reminder","value":{"reminder_id":1944,"scheduled_at":"2016-05-24T19:15:00Z"},"created_at":"2016-05-23T09:58:29Z","read_at":"2016-05-24T04:47:49Z"},{"id":92,"type":"reminder","value":{"reminder_id":1943,"scheduled_at":"2016-05-23T03:00:00Z"},"created_at":"2016-05-23T02:22:29Z","read_at":"2016-05-23T02:48:56Z"},{"id":75,"type":"account_status_change","value":{"account_id":318,"from_status":"Open","to_status":"Lead"},"created_at":"2016-05-16T18:21:32Z","read_at":"2016-05-20T03:55:33Z"},{"id":69,"type":"reminder","value":{"reminder_id":731,"scheduled_at":"2016-05-15T19:00:00Z"},"created_at":"2016-05-10T22:11:55Z","read_at":"2016-05-11T07:13:54Z"},{"id":66,"type":"reminder","value":{"reminder_id":723,"scheduled_at":"2016-05-11T00:20:00Z"},"created_at":"2016-05-10T11:22:11Z","read_at":"2016-05-11T07:33:50Z"},{"id":64,"type":"reminder","value":{"reminder_id":723,"scheduled_at":"2016-05-11T00:06:00Z"},"created_at":"2016-05-10T11:07:44Z","read_at":"2016-05-11T08:45:39Z"},{"id":58,"type":"reminder","value":{"reminder_id":706,"scheduled_at":"2016-05-04T23:50:00Z"},"created_at":"2016-05-04T23:44:18Z","read_at":"2016-05-09T06:03:09Z"},{"id":54,"type":"reminder","value":{"reminder_id":696,"scheduled_at":"2016-05-05T23:55:00Z"},"created_at":"2016-05-04T11:13:24Z","read_at":"2016-05-09T06:38:58Z"},{"id":43,"type":"reminder","value":{"reminder_id":685,"scheduled_at":"2016-05-03T22:50:00Z"},"created_at":"2016-05-03T22:48:53Z","read_at":null},{"id":40,"type":"reminder","value":{"reminder_id":685,"scheduled_at":"2016-05-03T23:50:00Z"},"created_at":"2016-05-03T22:48:09Z","read_at":null},{"id":37,"type":"reminder","value":{"reminder_id":685,"scheduled_at":"2016-05-04T01:45:00Z"},"created_at":"2016-05-03T22:37:56Z","read_at":null},{"id":34,"type":"reminder","value":{"reminder_id":685,"scheduled_at":"2016-05-04T03:40:00Z"},"created_at":"2016-05-03T22:37:13Z","read_at":null},{"id":31,"type":"reminder","value":{"reminder_id":685,"scheduled_at":"2016-05-04T03:45:00Z"},"created_at":"2016-05-03T22:36:47Z","read_at":null},{"id":29,"type":"reminder","value":{"reminder_id":685,"scheduled_at":"2016-05-04T02:45:00Z"},"created_at":"2016-05-03T22:36:29Z","read_at":null},{"id":27,"type":"reminder","value":{"reminder_id":685,"scheduled_at":"2016-05-04T02:30:00Z"},"created_at":"2016-05-03T22:21:42Z","read_at":null},{"id":24,"type":"reminder","value":{"reminder_id":672,"scheduled_at":"2016-05-02T17:00:00Z"},"created_at":"2016-05-03T02:25:59Z","read_at":"2016-05-11T08:59:08Z"},{"id":22,"type":"reminder","value":{"reminder_id":671,"scheduled_at":"2016-05-02T16:55:00Z"},"created_at":"2016-05-03T02:25:08Z","read_at":"2016-05-16T12:56:02Z"},{"id":20,"type":"reminder","value":{"reminder_id":653,"scheduled_at":"2016-05-02T04:50:00Z"},"created_at":"2016-05-03T02:15:08Z","read_at":"2016-05-20T10:19:03Z"},{"id":15,"type":"reminder","value":{"reminder_id":652,"scheduled_at":"2016-05-10T07:00:00Z"},"created_at":"2016-05-02T07:06:30Z","read_at":"2016-05-09T13:30:26Z"},{"id":13,"type":"reminder","value":{"reminder_id":651,"scheduled_at":"2016-05-15T06:50:00Z"},"created_at":"2016-05-02T06:53:18Z","read_at":null},{"id":12,"type":"reminder","value":{"reminder_id":647,"scheduled_at":"2016-04-30T18:30:00Z"},"created_at":"2016-05-01T04:05:20Z","read_at":"2016-05-11T10:09:10Z"},{"id":11,"type":"reminder","value":{"reminder_id":644,"scheduled_at":"2016-04-29T20:50:00Z"},"created_at":"2016-04-28T20:52:44Z","read_at":"2016-05-20T11:52:55Z"},{"id":10,"type":"reminder","value":{"reminder_id":642,"scheduled_at":"2016-04-30T13:05:00Z"},"created_at":"2016-04-28T09:43:32Z","read_at":"2016-05-17T10:03:28Z"},{"id":9,"type":"reminder","value":{"reminder_id":642,"scheduled_at":"2016-04-30T22:05:00Z"},"created_at":"2016-04-28T09:42:30Z","read_at":"2016-05-11T22:19:28Z"},{"id":8,"type":"reminder","value":{"reminder_id":641,"scheduled_at":"2016-05-01T04:30:00Z"},"created_at":"2016-04-28T09:27:47Z","read_at":null},{"id":7,"type":"reminder","value":{"reminder_id":641,"scheduled_at":"2016-04-28T19:55:00Z"},"created_at":"2016-04-28T07:32:57Z","read_at":null},{"id":5,"type":"reminder","value":{"reminder_id":633,"scheduled_at":"2016-04-27T05:40:00Z"},"created_at":"2016-04-27T05:32:41Z","read_at":null},{"id":4,"type":"meeting_reminder","value":{"meeting_id":632,"scheduled_at":"2016-04-27T06:50:00Z"},"created_at":"2016-04-27T00:45:55Z","read_at":"2016-05-20T23:07:30Z"},{"id":3,"type":"meeting_reminder","value":{"meeting_id":630,"scheduled_at":"2016-04-27T06:30:00Z"},"created_at":"2016-04-27T00:34:13Z","read_at":null},{"id":2,"type":"meeting_reminder","value":{"meeting_id":629,"scheduled_at":"2016-04-27T06:20:00Z"},"created_at":"2016-04-27T00:25:27Z","read_at":"2016-05-17T11:10:53Z"}]}'
     http_version: 
-  recorded_at: Thu, 19 May 2016 21:16:26 GMT
+  recorded_at: Fri, 03 Jun 2016 22:00:53 GMT
 - request:
     method: get
-    uri: https://acme-api.code10.ca/api/v1/conversation_items/search.json?user_ids%5B%5D=1
+    uri: https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=9363&search%5Btype_eq%5D=ConversationItems::Reminder&user_ids%5B%5D=1
     body:
       encoding: US-ASCII
       string: ''
@@ -184,9 +185,9 @@ http_interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 19 May 2016 21:16:29 GMT
+      - Fri, 03 Jun 2016 22:00:56 GMT
       Etag:
-      - W/"ceb291f3b902c177cde7883024cd74cc"
+      - W/"39821e20036d428f9739209a4f491cef"
       Server:
       - nginx/1.4.6 (Ubuntu)
       Vary:
@@ -196,221 +197,9 @@ http_interactions:
       X-Frame-Options:
       - SAMEORIGIN
       X-Request-Id:
-      - 0ec8a28b-fbbc-4a72-9d54-89c55eb07c5a
+      - c2dffe67-909d-4159-9429-f933696f4e2b
       X-Runtime:
-      - '0.649180'
-      X-Xss-Protection:
-      - 1; mode=block
-      Content-Length:
-      - '2948'
-      Connection:
-      - keep-alive
-    body:
-      encoding: ASCII-8BIT
-      string: '{"conversation_items/meetings":[{"id":221,"title":"test yearly schedule11","location":"Sdedstvennoye
-        upravleniye, 19-ya liniya, Saint Petersburg, Russia","body":"test yearly schedule11","type":"meeting","available_events":["complete","cancel","reschedule"],"scheduled_at":"2017-04-12T16:25:00Z","created_at":"2016-04-07T06:57:15Z","updated_at":"2016-04-07T06:58:47Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:28Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":"","starts_at":"2017-04-07T16:25:00Z","ends_at":"2017-04-12T17:25:00Z","status":"scheduled","notes":null,"conversation_id":75,"notify_by_sms":false,"notify_by_email":false,"account_id":75,"created_by_id":1,"latitude":59.9335,"longitude":30.2692,"amount":null,"repetition_rule":null,"item_type":null,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[],"check_ins":[],"check_outs":[],"related_to":{"id":220,"title":"test
-        yearly schedule11","location":"Sdedstvennoye upravleniye, 19-ya liniya, Saint
-        Petersburg, Russia","body":"test yearly schedule11","type":"meeting","available_events":["complete","cancel","reschedule"],"scheduled_at":"2016-04-12T16:25:00Z","created_at":"2016-04-07T06:57:15Z","updated_at":"2016-04-07T06:58:47Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:28Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":"","starts_at":"2016-04-07T16:25:00Z","ends_at":"2016-04-12T17:25:00Z","status":"scheduled","notes":null,"conversation_id":75,"notify_by_sms":false,"notify_by_email":false,"account_id":75,"created_by_id":1,"latitude":59.9335,"longitude":30.2692,"amount":null,"repetition_rule":"FREQ=YEARLY;COUNT=2","item_type":null},"parent":null},{"id":660,"title":"test
-        weekly meeting","location":"23, New Delhi, 110037, Delhi, IN","body":"test","type":"meeting","available_events":["complete","cancel","reschedule"],"scheduled_at":null,"created_at":"2016-05-02T23:12:24Z","updated_at":"2016-05-02T23:12:24Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:28Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":"","starts_at":"2016-05-27T09:30:00Z","ends_at":"2016-05-27T10:30:00Z","status":"scheduled","notes":null,"conversation_id":76,"notify_by_sms":false,"notify_by_email":false,"account_id":76,"created_by_id":1,"latitude":0.0,"longitude":0.0,"amount":null,"repetition_rule":null,"item_type":null,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[],"check_ins":[],"check_outs":[],"related_to":{"id":657,"title":"test
-        weekly meeting","location":"23, New Delhi, 110037, Delhi, IN","body":"test","type":"meeting","available_events":["complete","cancel","reschedule"],"scheduled_at":null,"created_at":"2016-05-02T23:12:24Z","updated_at":"2016-05-02T23:12:24Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:28Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":"","starts_at":"2016-05-09T09:30:00Z","ends_at":"2016-05-09T10:30:00Z","status":"scheduled","notes":null,"conversation_id":76,"notify_by_sms":false,"notify_by_email":false,"account_id":76,"created_by_id":1,"latitude":0.0,"longitude":0.0,"amount":null,"repetition_rule":"FREQ=WEEKLY;COUNT=3;BYDAY=FR","item_type":null},"parent":null},{"id":744,"title":"test","location":"901
-        Coquitlam Avenue, Port Coquitlam, V3B 1H6, British Columbia, CA","body":"testing","type":"meeting","available_events":["complete","cancel","reschedule"],"scheduled_at":null,"created_at":"2016-05-13T03:03:59Z","updated_at":"2016-05-13T03:03:59Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:28Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":"","starts_at":"2016-05-25T03:00:00Z","ends_at":"2016-05-25T04:00:00Z","status":"scheduled","notes":null,"conversation_id":318,"notify_by_sms":false,"notify_by_email":false,"account_id":318,"created_by_id":1,"latitude":0.0,"longitude":0.0,"amount":null,"repetition_rule":null,"item_type":null,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[],"check_ins":[],"check_outs":[],"related_to":null,"parent":null},{"id":745,"title":"testing","location":"Tsar
-        Bomba, Commercial Street, Vancouver, BC, Canada","body":"testing","type":"meeting","available_events":["complete","cancel","reschedule"],"scheduled_at":null,"created_at":"2016-05-13T03:05:34Z","updated_at":"2016-05-13T03:05:34Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:28Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":"","starts_at":"2016-05-24T03:15:00Z","ends_at":"2016-05-24T04:15:00Z","status":"scheduled","notes":null,"conversation_id":318,"notify_by_sms":false,"notify_by_email":false,"account_id":318,"created_by_id":1,"latitude":49.2528,"longitude":-123.068,"amount":null,"repetition_rule":null,"item_type":null,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[],"check_ins":[],"check_outs":[],"related_to":null,"parent":null},{"id":746,"title":"gurpreetabc","location":"901
-        Coquitlam Avenue, Port Coquitlam, V3B 1H6, British Columbia, CA","body":"gurpreetdef","type":"meeting","available_events":["complete","cancel","reschedule"],"scheduled_at":null,"created_at":"2016-05-13T03:07:42Z","updated_at":"2016-05-13T03:07:42Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:28Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":"","starts_at":"2016-05-23T15:15:00Z","ends_at":"2016-05-23T16:15:00Z","status":"scheduled","notes":null,"conversation_id":318,"notify_by_sms":false,"notify_by_email":false,"account_id":318,"created_by_id":1,"latitude":0.0,"longitude":0.0,"amount":null,"repetition_rule":null,"item_type":null,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[],"check_ins":[],"check_outs":[],"related_to":null,"parent":null},{"id":1336,"title":"General
-        meeting","location":"1980 Eglinton Avenue East, Toronto, M1L 2M6, Ontario,
-        CA","body":"genaral meeting","type":"meeting","available_events":["complete","cancel","reschedule"],"scheduled_at":null,"created_at":"2016-05-19T13:08:28Z","updated_at":"2016-05-19T13:08:28Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:28Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":"","starts_at":"2016-05-22T01:19:00Z","ends_at":"2016-05-22T02:19:00Z","status":"scheduled","notes":null,"conversation_id":318,"notify_by_sms":false,"notify_by_email":false,"account_id":318,"created_by_id":1,"latitude":0.0,"longitude":0.0,"amount":null,"repetition_rule":null,"item_type":"general","connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[],"check_ins":[],"check_outs":[],"related_to":null,"parent":null},{"id":1335,"title":"first
-        reguler meeting1","location":"1980 Eglinton Avenue East, Toronto, M1L 2M6,
-        Ontario, CA","body":"hi hello","type":"meeting","available_events":["complete","cancel","reschedule"],"scheduled_at":"2016-05-21T01:25:00Z","created_at":"2016-05-19T11:36:30Z","updated_at":"2016-05-19T12:58:59Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:28Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":"abc@gmail.com","starts_at":"2016-05-20T19:00:00Z","ends_at":"2016-05-20T00:42:00Z","status":"scheduled","notes":null,"conversation_id":318,"notify_by_sms":false,"notify_by_email":false,"account_id":318,"created_by_id":1,"latitude":0.0,"longitude":0.0,"amount":null,"repetition_rule":"FREQ=DAILY;COUNT=1","item_type":"regular","connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[],"check_ins":[],"check_outs":[],"related_to":null,"parent":null},{"id":654,"title":"Test
-        with date change ","location":"23, New Delhi, 110037, Delhi, IN","body":"hiiiiiiiiiiii","type":"meeting","available_events":["complete","cancel","reschedule"],"scheduled_at":null,"created_at":"2016-05-02T12:26:43Z","updated_at":"2016-05-02T12:26:43Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:28Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":"test+dev1@dierbro.com","starts_at":"2016-05-20T12:25:00Z","ends_at":"2016-05-20T13:25:00Z","status":"scheduled","notes":null,"conversation_id":76,"notify_by_sms":false,"notify_by_email":false,"account_id":76,"created_by_id":1,"latitude":0.0,"longitude":0.0,"amount":null,"repetition_rule":null,"item_type":null,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[],"check_ins":[],"check_outs":[],"related_to":null,"parent":null},{"id":659,"title":"test
-        weekly meeting","location":"23, New Delhi, 110037, Delhi, IN","body":"test","type":"meeting","available_events":["complete","cancel","reschedule"],"scheduled_at":null,"created_at":"2016-05-02T23:12:24Z","updated_at":"2016-05-02T23:12:24Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:28Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":"","starts_at":"2016-05-20T09:30:00Z","ends_at":"2016-05-20T10:30:00Z","status":"scheduled","notes":null,"conversation_id":76,"notify_by_sms":false,"notify_by_email":false,"account_id":76,"created_by_id":1,"latitude":0.0,"longitude":0.0,"amount":null,"repetition_rule":null,"item_type":null,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[],"check_ins":[],"check_outs":[],"related_to":{"id":657,"title":"test
-        weekly meeting","location":"23, New Delhi, 110037, Delhi, IN","body":"test","type":"meeting","available_events":["complete","cancel","reschedule"],"scheduled_at":null,"created_at":"2016-05-02T23:12:24Z","updated_at":"2016-05-02T23:12:24Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:28Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":"","starts_at":"2016-05-09T09:30:00Z","ends_at":"2016-05-09T10:30:00Z","status":"scheduled","notes":null,"conversation_id":76,"notify_by_sms":false,"notify_by_email":false,"account_id":76,"created_by_id":1,"latitude":0.0,"longitude":0.0,"amount":null,"repetition_rule":"FREQ=WEEKLY;COUNT=3;BYDAY=FR","item_type":null},"parent":null},{"id":1332,"title":"Today
-        meeting","location":"1980 Eglinton Avenue East, Toronto, M1L 2M6, Ontario,
-        CA","body":"Today meeting..............","type":"meeting","available_events":["complete","cancel","reschedule"],"scheduled_at":null,"created_at":"2016-05-19T06:23:36Z","updated_at":"2016-05-19T06:23:36Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:28Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":"test@abc.com","starts_at":"2016-05-19T18:36:00Z","ends_at":"2016-05-19T19:36:00Z","status":"scheduled","notes":null,"conversation_id":318,"notify_by_sms":false,"notify_by_email":false,"account_id":318,"created_by_id":1,"latitude":0.0,"longitude":0.0,"amount":null,"repetition_rule":null,"item_type":null,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[],"check_ins":[],"check_outs":[],"related_to":null,"parent":null},{"id":1334,"title":"today
-        email","location":null,"body":"today email","type":"email","available_events":null,"scheduled_at":"2016-05-20T21:50:00Z","created_at":"2016-05-19T09:26:34Z","updated_at":"2016-05-19T09:26:34Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:28Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":"abc@example.com","starts_at":null,"ends_at":null,"status":null,"notes":null,"conversation_id":318,"notify_by_sms":false,"notify_by_email":false,"account_id":318,"created_by_id":1,"latitude":null,"longitude":null,"amount":null,"repetition_rule":null,"item_type":null,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[],"check_ins":[],"check_outs":[],"related_to":null,"parent":null},{"id":1333,"title":"today
-        note ","location":null,"body":"today note\u0026nbsp;","type":"note","available_events":null,"scheduled_at":null,"created_at":"2016-05-19T06:40:15Z","updated_at":"2016-05-19T06:40:15Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:28Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":null,"starts_at":null,"ends_at":null,"status":null,"notes":null,"conversation_id":318,"notify_by_sms":false,"notify_by_email":false,"account_id":318,"created_by_id":1,"latitude":null,"longitude":null,"amount":null,"repetition_rule":null,"item_type":null,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[],"check_ins":[],"check_outs":[],"related_to":null,"parent":null},{"id":1321,"title":"Today
-        Quote","location":null,"body":"Today Quote","type":"quote","available_events":null,"scheduled_at":"2016-05-19T23:15:00Z","created_at":"2016-05-18T11:07:36Z","updated_at":"2016-05-18T11:07:36Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:28Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":null,"starts_at":null,"ends_at":"2016-05-20T07:00:00Z","status":"open","notes":null,"conversation_id":318,"notify_by_sms":false,"notify_by_email":false,"account_id":318,"created_by_id":1,"latitude":null,"longitude":null,"amount":"33.0","repetition_rule":null,"item_type":null,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[],"check_ins":[],"check_outs":[],"related_to":null,"parent":null},{"id":1315,"title":"New
-        Quotes from schedule","location":null,"body":"Body of\u0026nbsp;New Quotes
-        from schedule","type":"quote","available_events":null,"scheduled_at":null,"created_at":"2016-05-17T05:27:05Z","updated_at":"2016-05-17T05:27:05Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:28Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":null,"starts_at":null,"ends_at":"2016-06-07T07:00:00Z","status":"open","notes":null,"conversation_id":318,"notify_by_sms":false,"notify_by_email":false,"account_id":318,"created_by_id":1,"latitude":null,"longitude":null,"amount":"33.0","repetition_rule":null,"item_type":null,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[],"check_ins":[],"check_outs":[],"related_to":null,"parent":null},{"id":1264,"title":"Account
-        info changed on Mon May 16 2016 at 11:21 AM","location":null,"body":"\u003cp\u003e\u003cb\u003ePrevious
-        Value =\u003e Updated Value\u003c/b\u003e\u003c/p\u003e\u003cul\u003e\u003cli\u003e
-        \u003cb\u003eAccount Status:\u003c/b\u003e Open =\u003e Lead \u003c/li\u003e\u003cli\u003e
-        \u003cb\u003eContact Name:\u003c/b\u003e Staple Man =\u003e Milton \u003c/li\u003e\u003cli\u003e
-        \u003cb\u003eContact Title:\u003c/b\u003e Boss =\u003e Basement Dweller \u003c/li\u003e\u003cli\u003e
-        \u003cb\u003eStreet Address:\u003c/b\u003e 901 Coquitlam Avenue =\u003e 1980
-        Eglinton Avenue East \u003c/li\u003e\u003cli\u003e \u003cb\u003eCity:\u003c/b\u003e
-        Port Coquitlam =\u003e Toronto \u003c/li\u003e\u003cli\u003e \u003cb\u003ePost/Zipcode:\u003c/b\u003e
-        V3B 1H6 =\u003e M1L 2M6 \u003c/li\u003e\u003cli\u003e \u003cb\u003eProvince/State:\u003c/b\u003e
-        British Columbia =\u003e Ontario \u003c/li\u003e\u003cli\u003e \u003cb\u003eQuick
-        Facts:\u003c/b\u003e They have red staplers... =\u003e They have lots red
-        staplers... \u003c/li\u003e\u003c/ul\u003e\u003cp\u003e\u003cb\u003eUpdated
-        by:\u003c/b\u003e Christopher Smith \u003c/p\u003e","type":"note","available_events":null,"scheduled_at":null,"created_at":"2016-05-16T18:21:33Z","updated_at":"2016-05-16T18:21:33Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:28Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":null,"starts_at":null,"ends_at":null,"status":null,"notes":null,"conversation_id":318,"notify_by_sms":false,"notify_by_email":false,"account_id":318,"created_by_id":1,"latitude":null,"longitude":null,"amount":null,"repetition_rule":null,"item_type":null,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[],"check_ins":[],"check_outs":[],"related_to":null,"parent":null},{"id":1263,"title":"Account
-        info changed on Mon May 16 2016 at  4:39 AM","location":null,"body":"\u003cp
-        style=margin-left: 35px;\u003e\u003cb\u003ePrevious Value =\u003e Updated
-        Value\u003c/b\u003e\u003c/p\u003e\u003cul\u003e\u003cli\u003e \u003cb\u003eContact
-        Name:\u003c/b\u003e name new =\u003e new name \u003c/li\u003e\u003cli\u003e
-        \u003cb\u003eContact Title:\u003c/b\u003e titlen new =\u003e new title \u003c/li\u003e\u003c/ul\u003e\u003cp\u003e\u003cb\u003eUpdated
-        by:\u003c/b\u003e Christopher Smith \u003c/p\u003e","type":"note","available_events":null,"scheduled_at":null,"created_at":"2016-05-16T11:39:25Z","updated_at":"2016-05-16T11:39:25Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:28Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":null,"starts_at":null,"ends_at":null,"status":null,"notes":null,"conversation_id":62,"notify_by_sms":false,"notify_by_email":false,"account_id":62,"created_by_id":1,"latitude":null,"longitude":null,"amount":null,"repetition_rule":null,"item_type":null,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[],"check_ins":[],"check_outs":[],"related_to":null,"parent":null},{"id":1262,"title":"Account
-        info changed on Mon May 16 2016 at  4:35 AM","location":null,"body":"\u003cp
-        style=''margin-left: 35px;''\u003e\u003cb\u003ePrevious Value =\u003e Updated
-        Value\u003c/b\u003e\u003c/p\u003e\u003cul\u003e\u003cli\u003e \u003cb\u003eAccount
-        Name:\u003c/b\u003e Test =\u003e Test New \u003c/li\u003e\u003cli\u003e \u003cb\u003eContact
-        Name:\u003c/b\u003e name =\u003e name new \u003c/li\u003e\u003cli\u003e \u003cb\u003eContact
-        Title:\u003c/b\u003e titlen =\u003e titlen new \u003c/li\u003e\u003c/ul\u003e\u003cp\u003e\u003cb\u003eUpdated
-        by:\u003c/b\u003e Christopher Smith \u003c/p\u003e","type":"note","available_events":null,"scheduled_at":null,"created_at":"2016-05-16T11:35:04Z","updated_at":"2016-05-16T11:35:04Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:28Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":null,"starts_at":null,"ends_at":null,"status":null,"notes":null,"conversation_id":62,"notify_by_sms":false,"notify_by_email":false,"account_id":62,"created_by_id":1,"latitude":null,"longitude":null,"amount":null,"repetition_rule":null,"item_type":null,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[],"check_ins":[],"check_outs":[],"related_to":null,"parent":null},{"id":1261,"title":"Account
-        info changed on Mon May 16 2016 at  4:27 AM","location":null,"body":"\u003cp\u003e\u003cb\u003ePrevious
-        Value =\u003e Updated Value\u003c/b\u003e\u003c/p\u003e\u003cul\u003e\u003cli\u003e
-        \u003cb\u003eAccount Name:\u003c/b\u003e Testnew =\u003e Test \u003c/li\u003e\u003cli\u003e
-        \u003cb\u003eContact Name:\u003c/b\u003e name new =\u003e name \u003c/li\u003e\u003cli\u003e
-        \u003cb\u003eContact Title:\u003c/b\u003e titlenew =\u003e titlen \u003c/li\u003e\u003cli\u003e
-        \u003cb\u003eStreet Address:\u003c/b\u003e last_test  new =\u003e last_test
-        \u003c/li\u003e\u003cli\u003e \u003cb\u003eCity:\u003c/b\u003e last_test  new
-        =\u003e last_test \u003c/li\u003e\u003cli\u003e \u003cb\u003ePost/Zipcode:\u003c/b\u003e
-        231345 =\u003e 2313 \u003c/li\u003e\u003cli\u003e \u003cb\u003eProvince/State:\u003c/b\u003e
-        last_test =\u003e last_test new \u003c/li\u003e\u003cli\u003e \u003cb\u003eCountry:\u003c/b\u003e
-        CA =\u003e US \u003c/li\u003e\u003cli\u003e \u003cb\u003eAbout:\u003c/b\u003e
-        Test1 =\u003e Test111 \u003c/li\u003e\u003cli\u003e \u003cb\u003eQuick Facts:\u003c/b\u003e
-        Test =\u003e 22Test \u003c/li\u003e\u003c/ul\u003e\u003cp\u003e\u003cb\u003eUpdated
-        by:\u003c/b\u003e Christopher Smith \u003c/p\u003e","type":"note","available_events":null,"scheduled_at":null,"created_at":"2016-05-16T11:27:41Z","updated_at":"2016-05-16T11:27:41Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:28Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":null,"starts_at":null,"ends_at":null,"status":null,"notes":null,"conversation_id":62,"notify_by_sms":false,"notify_by_email":false,"account_id":62,"created_by_id":1,"latitude":null,"longitude":null,"amount":null,"repetition_rule":null,"item_type":null,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[],"check_ins":[],"check_outs":[],"related_to":null,"parent":null},{"id":731,"title":"Reminder
-        from schedule test","location":null,"body":"Reminder from schedule test.\u003cbr\u003eCeate
-        new reminder!\u003cbr\u003e","type":"reminder","available_events":null,"scheduled_at":"2016-05-15T19:00:00Z","created_at":"2016-05-10T22:11:55Z","updated_at":"2016-05-10T22:11:55Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:28Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":null,"starts_at":null,"ends_at":null,"status":null,"notes":null,"conversation_id":318,"notify_by_sms":true,"notify_by_email":null,"account_id":318,"created_by_id":1,"latitude":null,"longitude":null,"amount":null,"repetition_rule":null,"item_type":null,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[{"id":40,"conversation_item_id":731,"user_id":1,"created_at":"2016-05-10T22:11:55Z","updated_at":"2016-05-10T22:11:55Z"}],"check_ins":[],"check_outs":[],"related_to":null,"parent":null},{"id":658,"title":"test
-        weekly meeting","location":"23, New Delhi, 110037, Delhi, IN","body":"test","type":"meeting","available_events":["complete","cancel","reschedule"],"scheduled_at":null,"created_at":"2016-05-02T23:12:24Z","updated_at":"2016-05-02T23:12:24Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:28Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":"","starts_at":"2016-05-13T09:30:00Z","ends_at":"2016-05-13T10:30:00Z","status":"scheduled","notes":null,"conversation_id":76,"notify_by_sms":false,"notify_by_email":false,"account_id":76,"created_by_id":1,"latitude":0.0,"longitude":0.0,"amount":null,"repetition_rule":null,"item_type":null,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[],"check_ins":[],"check_outs":[],"related_to":{"id":657,"title":"test
-        weekly meeting","location":"23, New Delhi, 110037, Delhi, IN","body":"test","type":"meeting","available_events":["complete","cancel","reschedule"],"scheduled_at":null,"created_at":"2016-05-02T23:12:24Z","updated_at":"2016-05-02T23:12:24Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:28Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":"","starts_at":"2016-05-09T09:30:00Z","ends_at":"2016-05-09T10:30:00Z","status":"scheduled","notes":null,"conversation_id":76,"notify_by_sms":false,"notify_by_email":false,"account_id":76,"created_by_id":1,"latitude":0.0,"longitude":0.0,"amount":null,"repetition_rule":"FREQ=WEEKLY;COUNT=3;BYDAY=FR","item_type":null},"parent":null},{"id":488,"title":"Test
-        with recurrence ","location":"last_test, last_test, 231345, last_test, CA","body":"Test
-        with recurrence\u0026nbsp;","type":"meeting","available_events":["complete","cancel","reschedule"],"scheduled_at":null,"created_at":"2016-04-20T08:46:11Z","updated_at":"2016-04-20T08:46:11Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:28Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":"test+dev3@dierbro.com","starts_at":"2016-05-12T18:11:00Z","ends_at":"2016-05-12T19:11:00Z","status":"scheduled","notes":null,"conversation_id":62,"notify_by_sms":false,"notify_by_email":false,"account_id":62,"created_by_id":1,"latitude":0.0,"longitude":0.0,"amount":null,"repetition_rule":null,"item_type":null,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[],"check_ins":[],"check_outs":[],"related_to":null,"parent":null},{"id":534,"title":"test
-        repeat meeting","location":"23, New Delhi, 110037, Delhi, IN","body":"test
-        repeat meeting","type":"meeting","available_events":["complete","cancel","reschedule"],"scheduled_at":null,"created_at":"2016-04-21T05:03:12Z","updated_at":"2016-04-21T05:03:12Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:28Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":"test44441@gmail.com","starts_at":"2016-05-12T14:31:00Z","ends_at":"2016-05-12T15:31:00Z","status":"scheduled","notes":null,"conversation_id":76,"notify_by_sms":false,"notify_by_email":false,"account_id":76,"created_by_id":1,"latitude":0.0,"longitude":0.0,"amount":null,"repetition_rule":null,"item_type":null,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[],"check_ins":[],"check_outs":[],"related_to":null,"parent":null},{"id":533,"title":"test
-        repeat meeting","location":"23, New Delhi, 110037, Delhi, IN","body":"test
-        repeat meeting","type":"meeting","available_events":["complete","cancel","reschedule"],"scheduled_at":null,"created_at":"2016-04-21T05:03:12Z","updated_at":"2016-04-21T05:03:12Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:28Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":"test44441@gmail.com","starts_at":"2016-05-11T14:31:00Z","ends_at":"2016-05-11T15:31:00Z","status":"scheduled","notes":null,"conversation_id":76,"notify_by_sms":false,"notify_by_email":false,"account_id":76,"created_by_id":1,"latitude":0.0,"longitude":0.0,"amount":null,"repetition_rule":null,"item_type":null,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[],"check_ins":[],"check_outs":[],"related_to":null,"parent":null},{"id":677,"title":"test
-        new1","location":"l1 delhi, delhi, 110096, delhi, CA","body":"","type":"meeting","available_events":["complete","cancel","reschedule"],"scheduled_at":null,"created_at":"2016-05-03T10:34:51Z","updated_at":"2016-05-03T10:34:51Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:28Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":"","starts_at":"2016-05-11T10:34:00Z","ends_at":"2016-05-11T11:34:00Z","status":"scheduled","notes":null,"conversation_id":73,"notify_by_sms":false,"notify_by_email":false,"account_id":73,"created_by_id":1,"latitude":0.0,"longitude":0.0,"amount":null,"repetition_rule":null,"item_type":null,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[],"check_ins":[],"check_outs":[],"related_to":null,"parent":null},{"id":724,"title":"add
-        reminder for account","location":null,"body":"add reminder for account","type":"reminder","available_events":null,"scheduled_at":"2016-05-11T00:30:00Z","created_at":"2016-05-10T11:32:04Z","updated_at":"2016-05-10T11:32:04Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:28Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":null,"starts_at":null,"ends_at":null,"status":null,"notes":null,"conversation_id":318,"notify_by_sms":true,"notify_by_email":null,"account_id":318,"created_by_id":1,"latitude":null,"longitude":null,"amount":null,"repetition_rule":null,"item_type":null,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[{"id":39,"conversation_item_id":724,"user_id":38,"created_at":"2016-05-10T11:32:04Z","updated_at":"2016-05-10T11:32:04Z"}],"check_ins":[],"check_outs":[],"related_to":null,"parent":null}]}'
-    http_version: 
-  recorded_at: Thu, 19 May 2016 21:16:27 GMT
-- request:
-    method: get
-    uri: https://acme-api.code10.ca/api/v1/accounts/318.json
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      Authorization:
-      - Token token="secret_4sTtmAtebrqzHY1y2exw", app_key="app_LL1zKMy_vLixnHSyyiAB"
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      User-Agent:
-      - Ruby
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Content-Type:
-      - application/json; charset=utf-8
-      Date:
-      - Thu, 19 May 2016 21:16:30 GMT
-      Etag:
-      - W/"ebaafca03cb3993a1f9ee4cc1d33516f"
-      Server:
-      - nginx/1.4.6 (Ubuntu)
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Request-Id:
-      - 0895bd02-634b-459f-ab88-4e4b8eb72d6b
-      X-Runtime:
-      - '0.310058'
-      X-Xss-Protection:
-      - 1; mode=block
-      Content-Length:
-      - '981'
-      Connection:
-      - keep-alive
-    body:
-      encoding: ASCII-8BIT
-      string: '{"account":{"id":318,"name":"Staples","contact_name":"Milton","contact_title":"Basement
-        Dweller","status":{"id":2,"name":"Lead","description":"Indicates the account
-        is a possible leads","color":"#428BCA","company_id":1,"created_at":"2015-10-30T08:20:52Z","updated_at":"2016-03-03T20:37:09Z","deleted_at":null},"about":"Staples
-        in Scarborough","quick_facts":"They have lots red staplers...","created_at":"2016-04-30T20:00:30Z","updated_at":"2016-05-19T13:08:28Z","updated_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:29Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"avatar_url":"https://orchard-api-staging.s3.amazonaws.com/accounts/avatars/000/000/318/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1463695290\u0026Signature=OQ1FGhIz574N7k2HX%2FeTSH7EiAQ%3D","user_account_sharings":[],"addresses":[{"id":455,"name":null,"street_address":"1980
-        Eglinton Avenue East","city":"Toronto","postcode":"M1L 2M6","region":"Ontario","country":"CA","latitude":43.7293,"longitude":-79.2841}],"contacts":[{"id":655,"name":"Head
-        Office","value":"6045555555","type":"phone"}],"assigned_to":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1463695290\u0026Signature=ypS0jQFBQLLuglsTDZV4y60mEhA%3D","locale":"en","time_zone":"America/Los_Angeles","title":"Director
-        of Nothing"},"conversation":{"id":318,"company_id":1,"account_id":318,"created_at":"2016-04-30T20:00:30Z","updated_at":"2016-05-19T13:08:28Z","deleted_at":null}}}'
-    http_version: 
-  recorded_at: Thu, 19 May 2016 21:16:28 GMT
-- request:
-    method: get
-    uri: https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=731&user_ids%5B%5D=1
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      Authorization:
-      - Token token="secret_4sTtmAtebrqzHY1y2exw", app_key="app_LL1zKMy_vLixnHSyyiAB"
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      User-Agent:
-      - Ruby
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Content-Type:
-      - application/json; charset=utf-8
-      Date:
-      - Thu, 19 May 2016 21:16:30 GMT
-      Etag:
-      - W/"8b99105c37b844de309d17ed2b38da73"
-      Server:
-      - nginx/1.4.6 (Ubuntu)
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Request-Id:
-      - c318b49c-08a6-451e-92bc-abfc1fc57ade
-      X-Runtime:
-      - '0.307517'
+      - '0.465244'
       X-Xss-Protection:
       - 1; mode=block
       Content-Length:
@@ -419,15 +208,14 @@ http_interactions:
       - keep-alive
     body:
       encoding: ASCII-8BIT
-      string: '{"conversation_items/reminders":[{"id":731,"title":"Reminder from schedule
-        test","location":null,"body":"Reminder from schedule test.\u003cbr\u003eCeate
-        new reminder!\u003cbr\u003e","type":"reminder","available_events":null,"scheduled_at":"2016-05-15T19:00:00Z","created_at":"2016-05-10T22:11:55Z","updated_at":"2016-05-10T22:11:55Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:30Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":null,"starts_at":null,"ends_at":null,"status":null,"notes":null,"conversation_id":318,"notify_by_sms":true,"notify_by_email":null,"account_id":318,"created_by_id":1,"latitude":null,"longitude":null,"amount":null,"repetition_rule":null,"item_type":null,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[{"id":40,"conversation_item_id":731,"user_id":1,"created_at":"2016-05-10T22:11:55Z","updated_at":"2016-05-10T22:11:55Z"}],"check_ins":[],"check_outs":[],"related_to":null,"parent":null}]}'
+      string: '{"conversation_items/reminders":[{"id":9363,"title":"New add reminder","location":null,"body":"","type":"reminder","available_events":null,"scheduled_at":"2016-06-03T03:30:00Z","created_at":"2016-06-02T13:35:05Z","updated_at":"2016-06-02T13:35:05Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-06-03T22:00:55Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"Pacific
+        Time (US \u0026 Canada)","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
+        of Nothing"},"invitees":null,"starts_at":null,"ends_at":null,"status":null,"notes":null,"conversation_id":318,"notify_by_sms":null,"notify_by_email":true,"account_id":318,"created_by_id":1,"latitude":null,"longitude":null,"amount":null,"repetition_rule":null,"item_type":null,"all_day_appointment":false,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[{"id":73,"conversation_item_id":9363,"user_id":1,"created_at":"2016-06-02T13:35:05Z","updated_at":"2016-06-02T13:35:05Z"}],"check_ins":[],"check_outs":[],"related_to":null,"parent":null}]}'
     http_version: 
-  recorded_at: Thu, 19 May 2016 21:16:28 GMT
+  recorded_at: Fri, 03 Jun 2016 22:00:54 GMT
 - request:
     method: get
-    uri: https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=723&user_ids%5B%5D=1
+    uri: https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=8969&search%5Btype_eq%5D=ConversationItems::Reminder&user_ids%5B%5D=1
     body:
       encoding: US-ASCII
       string: ''
@@ -450,9 +238,9 @@ http_interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 19 May 2016 21:16:31 GMT
+      - Fri, 03 Jun 2016 22:01:02 GMT
       Etag:
-      - W/"1ee1e71cea0728f24b7033c0f2a27c66"
+      - W/"7bb0295d62df51dd2c88f7252509c7d2"
       Server:
       - nginx/1.4.6 (Ubuntu)
       Vary:
@@ -462,26 +250,26 @@ http_interactions:
       X-Frame-Options:
       - SAMEORIGIN
       X-Request-Id:
-      - dd037ad3-642b-4763-8f29-a97bbebf0595
+      - a1ba5560-466b-4da4-9177-ec449bcb723a
       X-Runtime:
-      - '0.322829'
+      - '0.508031'
       X-Xss-Protection:
       - 1; mode=block
       Content-Length:
-      - '660'
+      - '712'
       Connection:
       - keep-alive
     body:
       encoding: ASCII-8BIT
-      string: '{"conversation_items/reminders":[{"id":723,"title":"Reminder from schedule
-        edit from account","location":null,"body":"Reminder from schedule edit from
-        account","type":"reminder","available_events":null,"scheduled_at":"2016-05-11T00:20:00Z","created_at":"2016-05-10T11:07:44Z","updated_at":"2016-05-10T11:29:32Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:31Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":null,"starts_at":null,"ends_at":null,"status":null,"notes":null,"conversation_id":318,"notify_by_sms":true,"notify_by_email":true,"account_id":318,"created_by_id":1,"latitude":null,"longitude":null,"amount":null,"repetition_rule":null,"item_type":null,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[{"id":37,"conversation_item_id":723,"user_id":1,"created_at":"2016-05-10T11:07:44Z","updated_at":"2016-05-10T11:07:44Z"},{"id":38,"conversation_item_id":723,"user_id":40,"created_at":"2016-05-10T11:07:44Z","updated_at":"2016-05-10T11:07:44Z"}],"check_ins":[],"check_outs":[],"related_to":null,"parent":null}]}'
+      string: '{"conversation_items/reminders":[{"id":8969,"title":"Management Meeting
+        Pre-Info","location":null,"body":"Don''t forget to check with Milton\u003cbr\u003e","type":"reminder","available_events":null,"scheduled_at":"2016-06-02T03:15:00Z","created_at":"2016-05-31T22:19:33Z","updated_at":"2016-05-31T22:19:33Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-06-03T22:01:02Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"Pacific
+        Time (US \u0026 Canada)","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
+        of Nothing"},"invitees":null,"starts_at":null,"ends_at":null,"status":null,"notes":null,"conversation_id":318,"notify_by_sms":null,"notify_by_email":true,"account_id":318,"created_by_id":1,"latitude":null,"longitude":null,"amount":null,"repetition_rule":null,"item_type":null,"all_day_appointment":false,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[{"id":71,"conversation_item_id":8969,"user_id":1,"created_at":"2016-05-31T22:19:33Z","updated_at":"2016-05-31T22:19:33Z"}],"check_ins":[],"check_outs":[],"related_to":null,"parent":null}]}'
     http_version: 
-  recorded_at: Thu, 19 May 2016 21:16:29 GMT
+  recorded_at: Fri, 03 Jun 2016 22:00:55 GMT
 - request:
     method: get
-    uri: https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=723&user_ids%5B%5D=1
+    uri: https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=8965&search%5Btype_eq%5D=ConversationItems::Reminder&user_ids%5B%5D=1
     body:
       encoding: US-ASCII
       string: ''
@@ -504,9 +292,9 @@ http_interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 19 May 2016 21:16:32 GMT
+      - Fri, 03 Jun 2016 22:01:04 GMT
       Etag:
-      - W/"43716fd861eadfe13b11b00baa23bb33"
+      - W/"a7e71463eb35d127da869cec0f07bf0a"
       Server:
       - nginx/1.4.6 (Ubuntu)
       Vary:
@@ -516,26 +304,26 @@ http_interactions:
       X-Frame-Options:
       - SAMEORIGIN
       X-Request-Id:
-      - 1a9463fd-0bed-46aa-8f1b-1a7415dab15c
+      - 32945942-b42b-421c-a3e5-5e98bf87af35
       X-Runtime:
-      - '0.319393'
+      - '0.859299'
       X-Xss-Protection:
       - 1; mode=block
       Content-Length:
-      - '660'
+      - '711'
       Connection:
       - keep-alive
     body:
       encoding: ASCII-8BIT
-      string: '{"conversation_items/reminders":[{"id":723,"title":"Reminder from schedule
-        edit from account","location":null,"body":"Reminder from schedule edit from
-        account","type":"reminder","available_events":null,"scheduled_at":"2016-05-11T00:20:00Z","created_at":"2016-05-10T11:07:44Z","updated_at":"2016-05-10T11:29:32Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:31Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":null,"starts_at":null,"ends_at":null,"status":null,"notes":null,"conversation_id":318,"notify_by_sms":true,"notify_by_email":true,"account_id":318,"created_by_id":1,"latitude":null,"longitude":null,"amount":null,"repetition_rule":null,"item_type":null,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[{"id":37,"conversation_item_id":723,"user_id":1,"created_at":"2016-05-10T11:07:44Z","updated_at":"2016-05-10T11:07:44Z"},{"id":38,"conversation_item_id":723,"user_id":40,"created_at":"2016-05-10T11:07:44Z","updated_at":"2016-05-10T11:07:44Z"}],"check_ins":[],"check_outs":[],"related_to":null,"parent":null}]}'
+      string: '{"conversation_items/reminders":[{"id":8965,"title":"Loading Reminder","location":null,"body":"Check
+        the save button not clickable after it is clicked.\u003cbr\u003e","type":"reminder","available_events":null,"scheduled_at":"2016-06-03T04:15:00Z","created_at":"2016-05-31T21:57:31Z","updated_at":"2016-05-31T21:57:31Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-06-03T22:01:03Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"Pacific
+        Time (US \u0026 Canada)","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
+        of Nothing"},"invitees":null,"starts_at":null,"ends_at":null,"status":null,"notes":null,"conversation_id":485,"notify_by_sms":null,"notify_by_email":true,"account_id":485,"created_by_id":1,"latitude":null,"longitude":null,"amount":null,"repetition_rule":null,"item_type":null,"all_day_appointment":false,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[{"id":70,"conversation_item_id":8965,"user_id":1,"created_at":"2016-05-31T21:57:31Z","updated_at":"2016-05-31T21:57:31Z"}],"check_ins":[],"check_outs":[],"related_to":null,"parent":null}]}'
     http_version: 
-  recorded_at: Thu, 19 May 2016 21:16:30 GMT
+  recorded_at: Fri, 03 Jun 2016 22:00:56 GMT
 - request:
     method: get
-    uri: https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=706&user_ids%5B%5D=1
+    uri: https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=8905&search%5Btype_eq%5D=ConversationItems::Reminder&user_ids%5B%5D=1
     body:
       encoding: US-ASCII
       string: ''
@@ -558,9 +346,9 @@ http_interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 19 May 2016 21:16:33 GMT
+      - Fri, 03 Jun 2016 22:01:04 GMT
       Etag:
-      - W/"5e0c961f4b6852235d0b2b1888405225"
+      - W/"d7ae226eca841cf450db0d3278375006"
       Server:
       - nginx/1.4.6 (Ubuntu)
       Vary:
@@ -570,838 +358,9 @@ http_interactions:
       X-Frame-Options:
       - SAMEORIGIN
       X-Request-Id:
-      - 431f78a2-7064-4ca5-8896-be86726c993a
+      - 8569ccee-b918-453e-9aee-02f93de87470
       X-Runtime:
-      - '0.290784'
-      X-Xss-Protection:
-      - 1; mode=block
-      Content-Length:
-      - '51'
-      Connection:
-      - keep-alive
-    body:
-      encoding: ASCII-8BIT
-      string: '{"conversation_items":[]}'
-    http_version: 
-  recorded_at: Thu, 19 May 2016 21:16:31 GMT
-- request:
-    method: get
-    uri: https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=696&user_ids%5B%5D=1
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      Authorization:
-      - Token token="secret_4sTtmAtebrqzHY1y2exw", app_key="app_LL1zKMy_vLixnHSyyiAB"
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      User-Agent:
-      - Ruby
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Content-Type:
-      - application/json; charset=utf-8
-      Date:
-      - Thu, 19 May 2016 21:16:33 GMT
-      Etag:
-      - W/"905429be3cb59b8bf8a5519b04f19d20"
-      Server:
-      - nginx/1.4.6 (Ubuntu)
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Request-Id:
-      - 89ad93d5-1e67-4b8a-8e0b-4a7cefde44d8
-      X-Runtime:
-      - '0.309667'
-      X-Xss-Protection:
-      - 1; mode=block
-      Content-Length:
-      - '672'
-      Connection:
-      - keep-alive
-    body:
-      encoding: ASCII-8BIT
-      string: '{"conversation_items/reminders":[{"id":696,"title":"new reminder test
-        1","location":null,"body":"hiiiiiiiiiiiiiiiiiiiiiiiiiii hello","type":"reminder","available_events":null,"scheduled_at":"2016-05-05T23:55:00Z","created_at":"2016-05-04T11:13:24Z","updated_at":"2016-05-09T11:15:47Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:33Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":null,"starts_at":null,"ends_at":null,"status":null,"notes":null,"conversation_id":73,"notify_by_sms":true,"notify_by_email":true,"account_id":73,"created_by_id":1,"latitude":null,"longitude":null,"amount":null,"repetition_rule":null,"item_type":null,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[{"id":29,"conversation_item_id":696,"user_id":1,"created_at":"2016-05-04T11:13:24Z","updated_at":"2016-05-04T11:13:24Z"},{"id":36,"conversation_item_id":696,"user_id":38,"created_at":"2016-05-09T11:15:47Z","updated_at":"2016-05-09T11:15:47Z"}],"check_ins":[],"check_outs":[],"related_to":null,"parent":null}]}'
-    http_version: 
-  recorded_at: Thu, 19 May 2016 21:16:31 GMT
-- request:
-    method: get
-    uri: https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=685&user_ids%5B%5D=1
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      Authorization:
-      - Token token="secret_4sTtmAtebrqzHY1y2exw", app_key="app_LL1zKMy_vLixnHSyyiAB"
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      User-Agent:
-      - Ruby
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Content-Type:
-      - application/json; charset=utf-8
-      Date:
-      - Thu, 19 May 2016 21:16:34 GMT
-      Etag:
-      - W/"8fd5dd0062bb054dd545b34e1505c496"
-      Server:
-      - nginx/1.4.6 (Ubuntu)
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Request-Id:
-      - ad6a76d3-b8d1-4858-865c-8a3229130721
-      X-Runtime:
-      - '0.287450'
-      X-Xss-Protection:
-      - 1; mode=block
-      Content-Length:
-      - '51'
-      Connection:
-      - keep-alive
-    body:
-      encoding: ASCII-8BIT
-      string: '{"conversation_items":[]}'
-    http_version: 
-  recorded_at: Thu, 19 May 2016 21:16:32 GMT
-- request:
-    method: get
-    uri: https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=685&user_ids%5B%5D=1
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      Authorization:
-      - Token token="secret_4sTtmAtebrqzHY1y2exw", app_key="app_LL1zKMy_vLixnHSyyiAB"
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      User-Agent:
-      - Ruby
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Content-Type:
-      - application/json; charset=utf-8
-      Date:
-      - Thu, 19 May 2016 21:16:35 GMT
-      Etag:
-      - W/"22de1efa249d23c2bd64d908ff5d2793"
-      Server:
-      - nginx/1.4.6 (Ubuntu)
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Request-Id:
-      - 66326a17-84c4-4e6a-a291-d282f4206c24
-      X-Runtime:
-      - '0.283283'
-      X-Xss-Protection:
-      - 1; mode=block
-      Content-Length:
-      - '51'
-      Connection:
-      - keep-alive
-    body:
-      encoding: ASCII-8BIT
-      string: '{"conversation_items":[]}'
-    http_version: 
-  recorded_at: Thu, 19 May 2016 21:16:33 GMT
-- request:
-    method: get
-    uri: https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=685&user_ids%5B%5D=1
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      Authorization:
-      - Token token="secret_4sTtmAtebrqzHY1y2exw", app_key="app_LL1zKMy_vLixnHSyyiAB"
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      User-Agent:
-      - Ruby
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Content-Type:
-      - application/json; charset=utf-8
-      Date:
-      - Thu, 19 May 2016 21:16:36 GMT
-      Etag:
-      - W/"5284b8d61701b29d6d3b2777431052f1"
-      Server:
-      - nginx/1.4.6 (Ubuntu)
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Request-Id:
-      - 7f75113c-6fc9-418a-90ec-7287c5d49b8f
-      X-Runtime:
-      - '0.285571'
-      X-Xss-Protection:
-      - 1; mode=block
-      Content-Length:
-      - '51'
-      Connection:
-      - keep-alive
-    body:
-      encoding: ASCII-8BIT
-      string: '{"conversation_items":[]}'
-    http_version: 
-  recorded_at: Thu, 19 May 2016 21:16:34 GMT
-- request:
-    method: get
-    uri: https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=685&user_ids%5B%5D=1
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      Authorization:
-      - Token token="secret_4sTtmAtebrqzHY1y2exw", app_key="app_LL1zKMy_vLixnHSyyiAB"
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      User-Agent:
-      - Ruby
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Content-Type:
-      - application/json; charset=utf-8
-      Date:
-      - Thu, 19 May 2016 21:16:37 GMT
-      Etag:
-      - W/"38b2f911785d68dfd09fac9e083b440a"
-      Server:
-      - nginx/1.4.6 (Ubuntu)
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Request-Id:
-      - 5d88873a-75e2-4baf-9238-77dc6656427d
-      X-Runtime:
-      - '0.286793'
-      X-Xss-Protection:
-      - 1; mode=block
-      Content-Length:
-      - '51'
-      Connection:
-      - keep-alive
-    body:
-      encoding: ASCII-8BIT
-      string: '{"conversation_items":[]}'
-    http_version: 
-  recorded_at: Thu, 19 May 2016 21:16:35 GMT
-- request:
-    method: get
-    uri: https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=685&user_ids%5B%5D=1
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      Authorization:
-      - Token token="secret_4sTtmAtebrqzHY1y2exw", app_key="app_LL1zKMy_vLixnHSyyiAB"
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      User-Agent:
-      - Ruby
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Content-Type:
-      - application/json; charset=utf-8
-      Date:
-      - Thu, 19 May 2016 21:16:37 GMT
-      Etag:
-      - W/"38b2f911785d68dfd09fac9e083b440a"
-      Server:
-      - nginx/1.4.6 (Ubuntu)
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Request-Id:
-      - d4bf068f-b958-4c67-af95-80c0d9b9f6fc
-      X-Runtime:
-      - '0.291788'
-      X-Xss-Protection:
-      - 1; mode=block
-      Content-Length:
-      - '51'
-      Connection:
-      - keep-alive
-    body:
-      encoding: ASCII-8BIT
-      string: '{"conversation_items":[]}'
-    http_version: 
-  recorded_at: Thu, 19 May 2016 21:16:36 GMT
-- request:
-    method: get
-    uri: https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=685&user_ids%5B%5D=1
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      Authorization:
-      - Token token="secret_4sTtmAtebrqzHY1y2exw", app_key="app_LL1zKMy_vLixnHSyyiAB"
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      User-Agent:
-      - Ruby
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Content-Type:
-      - application/json; charset=utf-8
-      Date:
-      - Thu, 19 May 2016 21:16:38 GMT
-      Etag:
-      - W/"74d1c32d1b67de38a58dbd81c8a22e5a"
-      Server:
-      - nginx/1.4.6 (Ubuntu)
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Request-Id:
-      - 6deba73d-df69-4596-ba8a-c54909be8da0
-      X-Runtime:
-      - '0.291202'
-      X-Xss-Protection:
-      - 1; mode=block
-      Content-Length:
-      - '51'
-      Connection:
-      - keep-alive
-    body:
-      encoding: ASCII-8BIT
-      string: '{"conversation_items":[]}'
-    http_version: 
-  recorded_at: Thu, 19 May 2016 21:16:37 GMT
-- request:
-    method: get
-    uri: https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=685&user_ids%5B%5D=1
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      Authorization:
-      - Token token="secret_4sTtmAtebrqzHY1y2exw", app_key="app_LL1zKMy_vLixnHSyyiAB"
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      User-Agent:
-      - Ruby
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Content-Type:
-      - application/json; charset=utf-8
-      Date:
-      - Thu, 19 May 2016 21:16:39 GMT
-      Etag:
-      - W/"7c544084baaa378ea1f3fd498bd1f307"
-      Server:
-      - nginx/1.4.6 (Ubuntu)
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Request-Id:
-      - 4983936d-8b0c-4229-8100-0c5958262c84
-      X-Runtime:
-      - '0.289590'
-      X-Xss-Protection:
-      - 1; mode=block
-      Content-Length:
-      - '51'
-      Connection:
-      - keep-alive
-    body:
-      encoding: ASCII-8BIT
-      string: '{"conversation_items":[]}'
-    http_version: 
-  recorded_at: Thu, 19 May 2016 21:16:37 GMT
-- request:
-    method: get
-    uri: https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=672&user_ids%5B%5D=1
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      Authorization:
-      - Token token="secret_4sTtmAtebrqzHY1y2exw", app_key="app_LL1zKMy_vLixnHSyyiAB"
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      User-Agent:
-      - Ruby
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Content-Type:
-      - application/json; charset=utf-8
-      Date:
-      - Thu, 19 May 2016 21:16:40 GMT
-      Etag:
-      - W/"1d56ac2a19cee91a47334633e288014c"
-      Server:
-      - nginx/1.4.6 (Ubuntu)
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Request-Id:
-      - e7fa92b4-ac6c-4f55-bc1d-98f5f4c18301
-      X-Runtime:
-      - '0.316630'
-      X-Xss-Protection:
-      - 1; mode=block
-      Content-Length:
-      - '660'
-      Connection:
-      - keep-alive
-    body:
-      encoding: ASCII-8BIT
-      string: '{"conversation_items/reminders":[{"id":672,"title":"Retest Reminder","location":null,"body":"Retest
-        Reminder\u003cbr\u003e\u003cbr\u003e","type":"reminder","available_events":null,"scheduled_at":"2016-05-02T17:00:00Z","created_at":"2016-05-03T02:25:59Z","updated_at":"2016-05-03T02:25:59Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:40Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":null,"starts_at":null,"ends_at":null,"status":null,"notes":null,"conversation_id":76,"notify_by_sms":true,"notify_by_email":true,"account_id":76,"created_by_id":1,"latitude":null,"longitude":null,"amount":null,"repetition_rule":null,"item_type":null,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[{"id":19,"conversation_item_id":672,"user_id":1,"created_at":"2016-05-03T02:25:59Z","updated_at":"2016-05-03T02:25:59Z"},{"id":20,"conversation_item_id":672,"user_id":92,"created_at":"2016-05-03T02:25:59Z","updated_at":"2016-05-03T02:25:59Z"}],"check_ins":[],"check_outs":[],"related_to":null,"parent":null}]}'
-    http_version: 
-  recorded_at: Thu, 19 May 2016 21:16:38 GMT
-- request:
-    method: get
-    uri: https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=671&user_ids%5B%5D=1
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      Authorization:
-      - Token token="secret_4sTtmAtebrqzHY1y2exw", app_key="app_LL1zKMy_vLixnHSyyiAB"
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      User-Agent:
-      - Ruby
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Content-Type:
-      - application/json; charset=utf-8
-      Date:
-      - Thu, 19 May 2016 21:16:41 GMT
-      Etag:
-      - W/"6f9531eade7d9126921fb7427e302f26"
-      Server:
-      - nginx/1.4.6 (Ubuntu)
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Request-Id:
-      - 73b74f99-097c-46d8-99f6-be2a3101a26f
-      X-Runtime:
-      - '0.312702'
-      X-Xss-Protection:
-      - 1; mode=block
-      Content-Length:
-      - '659'
-      Connection:
-      - keep-alive
-    body:
-      encoding: ASCII-8BIT
-      string: '{"conversation_items/reminders":[{"id":671,"title":"Testing Reminder","location":null,"body":"Reminder\u003cbr\u003e","type":"reminder","available_events":null,"scheduled_at":"2016-05-02T16:55:00Z","created_at":"2016-05-03T02:25:08Z","updated_at":"2016-05-03T02:25:08Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:40Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":null,"starts_at":null,"ends_at":null,"status":null,"notes":null,"conversation_id":76,"notify_by_sms":true,"notify_by_email":null,"account_id":76,"created_by_id":1,"latitude":null,"longitude":null,"amount":null,"repetition_rule":null,"item_type":null,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[{"id":17,"conversation_item_id":671,"user_id":1,"created_at":"2016-05-03T02:25:08Z","updated_at":"2016-05-03T02:25:08Z"},{"id":18,"conversation_item_id":671,"user_id":92,"created_at":"2016-05-03T02:25:08Z","updated_at":"2016-05-03T02:25:08Z"}],"check_ins":[],"check_outs":[],"related_to":null,"parent":null}]}'
-    http_version: 
-  recorded_at: Thu, 19 May 2016 21:16:39 GMT
-- request:
-    method: get
-    uri: https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=653&user_ids%5B%5D=1
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      Authorization:
-      - Token token="secret_4sTtmAtebrqzHY1y2exw", app_key="app_LL1zKMy_vLixnHSyyiAB"
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      User-Agent:
-      - Ruby
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Content-Type:
-      - application/json; charset=utf-8
-      Date:
-      - Thu, 19 May 2016 21:16:41 GMT
-      Etag:
-      - W/"a9e5e69244dbb6955c21b8254ecf5c32"
-      Server:
-      - nginx/1.4.6 (Ubuntu)
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Request-Id:
-      - 41ad3c61-2e95-4f12-a855-4cd1b18ed103
-      X-Runtime:
-      - '0.306434'
-      X-Xss-Protection:
-      - 1; mode=block
-      Content-Length:
-      - '675'
-      Connection:
-      - keep-alive
-    body:
-      encoding: ASCII-8BIT
-      string: '{"conversation_items/reminders":[{"id":653,"title":"Testing Reminder","location":null,"body":"Body
-        of reminder","type":"reminder","available_events":null,"scheduled_at":"2016-05-02T04:50:00Z","created_at":"2016-05-02T10:31:26Z","updated_at":"2016-05-03T02:15:08Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:41Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":null,"starts_at":null,"ends_at":null,"status":null,"notes":null,"conversation_id":76,"notify_by_sms":true,"notify_by_email":true,"account_id":76,"created_by_id":1,"latitude":null,"longitude":null,"amount":null,"repetition_rule":null,"item_type":null,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[{"id":13,"conversation_item_id":653,"user_id":1,"created_at":"2016-05-02T19:07:12Z","updated_at":"2016-05-02T19:07:12Z"},{"id":16,"conversation_item_id":653,"user_id":92,"created_at":"2016-05-03T02:15:08Z","updated_at":"2016-05-03T02:15:08Z"}],"check_ins":[],"check_outs":[],"related_to":null,"parent":null}]}'
-    http_version: 
-  recorded_at: Thu, 19 May 2016 21:16:40 GMT
-- request:
-    method: get
-    uri: https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=652&user_ids%5B%5D=1
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      Authorization:
-      - Token token="secret_4sTtmAtebrqzHY1y2exw", app_key="app_LL1zKMy_vLixnHSyyiAB"
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      User-Agent:
-      - Ruby
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Content-Type:
-      - application/json; charset=utf-8
-      Date:
-      - Thu, 19 May 2016 21:16:42 GMT
-      Etag:
-      - W/"b928fc2f21d63e14972a2fe2f78581af"
-      Server:
-      - nginx/1.4.6 (Ubuntu)
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Request-Id:
-      - b1dcdaab-7b67-4f55-9cda-7999d32ed8aa
-      X-Runtime:
-      - '0.305855'
-      X-Xss-Protection:
-      - 1; mode=block
-      Content-Length:
-      - '659'
-      Connection:
-      - keep-alive
-    body:
-      encoding: ASCII-8BIT
-      string: '{"conversation_items/reminders":[{"id":652,"title":"Test Reminder007","location":null,"body":"This
-        is the body of test reminder.","type":"reminder","available_events":null,"scheduled_at":"2016-05-10T07:00:00Z","created_at":"2016-05-02T07:06:30Z","updated_at":"2016-05-09T11:17:30Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:42Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":null,"starts_at":null,"ends_at":null,"status":null,"notes":null,"conversation_id":73,"notify_by_sms":true,"notify_by_email":null,"account_id":73,"created_by_id":1,"latitude":null,"longitude":null,"amount":null,"repetition_rule":null,"item_type":null,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[{"id":9,"conversation_item_id":652,"user_id":1,"created_at":"2016-05-02T07:06:30Z","updated_at":"2016-05-02T07:06:30Z"}],"check_ins":[],"check_outs":[],"related_to":null,"parent":null}]}'
-    http_version: 
-  recorded_at: Thu, 19 May 2016 21:16:40 GMT
-- request:
-    method: get
-    uri: https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=651&user_ids%5B%5D=1
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      Authorization:
-      - Token token="secret_4sTtmAtebrqzHY1y2exw", app_key="app_LL1zKMy_vLixnHSyyiAB"
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      User-Agent:
-      - Ruby
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Content-Type:
-      - application/json; charset=utf-8
-      Date:
-      - Thu, 19 May 2016 21:16:43 GMT
-      Etag:
-      - W/"ae01d3f5b3dca6ba00c86b734435caf2"
-      Server:
-      - nginx/1.4.6 (Ubuntu)
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Request-Id:
-      - 0b0ee3de-2023-4f9c-97cd-209297f4400e
-      X-Runtime:
-      - '0.287904'
-      X-Xss-Protection:
-      - 1; mode=block
-      Content-Length:
-      - '51'
-      Connection:
-      - keep-alive
-    body:
-      encoding: ASCII-8BIT
-      string: '{"conversation_items":[]}'
-    http_version: 
-  recorded_at: Thu, 19 May 2016 21:16:41 GMT
-- request:
-    method: get
-    uri: https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=647&user_ids%5B%5D=1
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      Authorization:
-      - Token token="secret_4sTtmAtebrqzHY1y2exw", app_key="app_LL1zKMy_vLixnHSyyiAB"
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      User-Agent:
-      - Ruby
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Content-Type:
-      - application/json; charset=utf-8
-      Date:
-      - Thu, 19 May 2016 21:16:44 GMT
-      Etag:
-      - W/"1b19c9db6848d118d92e781ac5581dcd"
-      Server:
-      - nginx/1.4.6 (Ubuntu)
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Request-Id:
-      - 217f97ae-1120-4e5f-8084-74e8ebf289e3
-      X-Runtime:
-      - '0.306961'
-      X-Xss-Protection:
-      - 1; mode=block
-      Content-Length:
-      - '668'
-      Connection:
-      - keep-alive
-    body:
-      encoding: ASCII-8BIT
-      string: '{"conversation_items/reminders":[{"id":647,"title":"A Reminder for
-        you","location":null,"body":"This is a test reminder\u003cbr\u003e","type":"reminder","available_events":null,"scheduled_at":"2016-04-30T18:30:00Z","created_at":"2016-05-01T04:05:20Z","updated_at":"2016-05-01T06:26:06Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:43Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":null,"starts_at":null,"ends_at":null,"status":null,"notes":null,"conversation_id":318,"notify_by_sms":null,"notify_by_email":true,"account_id":318,"created_by_id":1,"latitude":null,"longitude":null,"amount":null,"repetition_rule":null,"item_type":null,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[{"id":6,"conversation_item_id":647,"user_id":1,"created_at":"2016-05-01T04:05:20Z","updated_at":"2016-05-01T04:05:20Z"}],"check_ins":[],"check_outs":[],"related_to":null,"parent":null}]}'
-    http_version: 
-  recorded_at: Thu, 19 May 2016 21:16:42 GMT
-- request:
-    method: get
-    uri: https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=644&user_ids%5B%5D=1
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      Authorization:
-      - Token token="secret_4sTtmAtebrqzHY1y2exw", app_key="app_LL1zKMy_vLixnHSyyiAB"
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      User-Agent:
-      - Ruby
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Content-Type:
-      - application/json; charset=utf-8
-      Date:
-      - Thu, 19 May 2016 21:16:44 GMT
-      Etag:
-      - W/"0569db7bd4b9522a666953ce0024fa56"
-      Server:
-      - nginx/1.4.6 (Ubuntu)
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Request-Id:
-      - f8554b27-9a62-496c-9b98-d31bcefda9eb
-      X-Runtime:
-      - '0.317963'
-      X-Xss-Protection:
-      - 1; mode=block
-      Content-Length:
-      - '645'
-      Connection:
-      - keep-alive
-    body:
-      encoding: ASCII-8BIT
-      string: '{"conversation_items/reminders":[{"id":644,"title":"Reminder Test","location":null,"body":"Reminder
-        Test Edit\u003cbr\u003e","type":"reminder","available_events":null,"scheduled_at":"2016-04-29T20:50:00Z","created_at":"2016-04-28T20:52:44Z","updated_at":"2016-04-28T20:52:44Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:44Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":null,"starts_at":null,"ends_at":null,"status":null,"notes":null,"conversation_id":75,"notify_by_sms":true,"notify_by_email":true,"account_id":75,"created_by_id":1,"latitude":null,"longitude":null,"amount":null,"repetition_rule":null,"item_type":null,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[{"id":5,"conversation_item_id":644,"user_id":1,"created_at":"2016-04-28T20:52:44Z","updated_at":"2016-04-28T20:52:44Z"}],"check_ins":[],"check_outs":[],"related_to":null,"parent":null}]}'
-    http_version: 
-  recorded_at: Thu, 19 May 2016 21:16:42 GMT
-- request:
-    method: get
-    uri: https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=642&user_ids%5B%5D=1
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      Authorization:
-      - Token token="secret_4sTtmAtebrqzHY1y2exw", app_key="app_LL1zKMy_vLixnHSyyiAB"
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      User-Agent:
-      - Ruby
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Content-Type:
-      - application/json; charset=utf-8
-      Date:
-      - Thu, 19 May 2016 21:16:45 GMT
-      Etag:
-      - W/"26ecb7754e1792ed5166d31f8cad504f"
-      Server:
-      - nginx/1.4.6 (Ubuntu)
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Request-Id:
-      - ea95c339-33a7-46ad-ac25-594e5c6fbd0e
-      X-Runtime:
-      - '0.316142'
+      - '0.491254'
       X-Xss-Protection:
       - 1; mode=block
       Content-Length:
@@ -1410,14 +369,15 @@ http_interactions:
       - keep-alive
     body:
       encoding: ASCII-8BIT
-      string: '{"conversation_items/reminders":[{"id":642,"title":"1New reminder","location":null,"body":"Body
-        of new reminder.1","type":"reminder","available_events":null,"scheduled_at":"2016-04-30T13:05:00Z","created_at":"2016-04-28T09:42:30Z","updated_at":"2016-05-02T10:29:18Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:45Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":null,"starts_at":null,"ends_at":null,"status":null,"notes":null,"conversation_id":76,"notify_by_sms":false,"notify_by_email":true,"account_id":76,"created_by_id":1,"latitude":null,"longitude":null,"amount":null,"repetition_rule":null,"item_type":null,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[{"id":11,"conversation_item_id":642,"user_id":40,"created_at":"2016-05-02T10:19:43Z","updated_at":"2016-05-02T10:19:43Z"}],"check_ins":[],"check_outs":[],"related_to":null,"parent":null}]}'
+      string: '{"conversation_items/reminders":[{"id":8905,"title":"New test reminder","location":null,"body":"New
+        test reminder","type":"reminder","available_events":null,"scheduled_at":"2016-06-01T15:29:00Z","created_at":"2016-05-31T05:31:48Z","updated_at":"2016-05-31T05:31:48Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-06-03T22:01:04Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"Pacific
+        Time (US \u0026 Canada)","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
+        of Nothing"},"invitees":null,"starts_at":null,"ends_at":null,"status":null,"notes":null,"conversation_id":318,"notify_by_sms":null,"notify_by_email":true,"account_id":318,"created_by_id":1,"latitude":null,"longitude":null,"amount":null,"repetition_rule":null,"item_type":null,"all_day_appointment":false,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[{"id":69,"conversation_item_id":8905,"user_id":1,"created_at":"2016-05-31T05:31:48Z","updated_at":"2016-05-31T05:31:48Z"}],"check_ins":[],"check_outs":[],"related_to":null,"parent":null}]}'
     http_version: 
-  recorded_at: Thu, 19 May 2016 21:16:43 GMT
+  recorded_at: Fri, 03 Jun 2016 22:00:57 GMT
 - request:
     method: get
-    uri: https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=642&user_ids%5B%5D=1
+    uri: https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=8904&search%5Btype_eq%5D=ConversationItems::Reminder&user_ids%5B%5D=1
     body:
       encoding: US-ASCII
       string: ''
@@ -1440,9 +400,9 @@ http_interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 19 May 2016 21:16:46 GMT
+      - Fri, 03 Jun 2016 22:01:05 GMT
       Etag:
-      - W/"566a0a414342daf318398701f5ecddc4"
+      - W/"f71c322f6f9f0664c42f3e5cb792b896"
       Server:
       - nginx/1.4.6 (Ubuntu)
       Vary:
@@ -1452,342 +412,23 @@ http_interactions:
       X-Frame-Options:
       - SAMEORIGIN
       X-Request-Id:
-      - 95f8905b-25ba-4a48-a617-22cd5f1fb217
+      - 806d05d2-225c-46e1-973b-d8dbd3231a17
       X-Runtime:
-      - '0.308598'
+      - '0.494814'
       X-Xss-Protection:
       - 1; mode=block
       Content-Length:
-      - '666'
+      - '662'
       Connection:
       - keep-alive
     body:
       encoding: ASCII-8BIT
-      string: '{"conversation_items/reminders":[{"id":642,"title":"1New reminder","location":null,"body":"Body
-        of new reminder.1","type":"reminder","available_events":null,"scheduled_at":"2016-04-30T13:05:00Z","created_at":"2016-04-28T09:42:30Z","updated_at":"2016-05-02T10:29:18Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:46Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":null,"starts_at":null,"ends_at":null,"status":null,"notes":null,"conversation_id":76,"notify_by_sms":false,"notify_by_email":true,"account_id":76,"created_by_id":1,"latitude":null,"longitude":null,"amount":null,"repetition_rule":null,"item_type":null,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[{"id":11,"conversation_item_id":642,"user_id":40,"created_at":"2016-05-02T10:19:43Z","updated_at":"2016-05-02T10:19:43Z"}],"check_ins":[],"check_outs":[],"related_to":null,"parent":null}]}'
+      string: '{"conversation_items/reminders":[{"id":8904,"title":"test reminder","location":null,"body":"test
+        reminder","type":"reminder","available_events":null,"scheduled_at":"2016-06-05T19:23:00Z","created_at":"2016-05-31T05:26:54Z","updated_at":"2016-05-31T05:26:54Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-06-03T22:01:05Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"Pacific
+        Time (US \u0026 Canada)","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
+        of Nothing"},"invitees":null,"starts_at":null,"ends_at":null,"status":null,"notes":null,"conversation_id":318,"notify_by_sms":null,"notify_by_email":true,"account_id":318,"created_by_id":1,"latitude":null,"longitude":null,"amount":null,"repetition_rule":null,"item_type":null,"all_day_appointment":false,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[{"id":68,"conversation_item_id":8904,"user_id":1,"created_at":"2016-05-31T05:26:54Z","updated_at":"2016-05-31T05:26:54Z"}],"check_ins":[],"check_outs":[],"related_to":null,"parent":null}]}'
     http_version: 
-  recorded_at: Thu, 19 May 2016 21:16:44 GMT
-- request:
-    method: get
-    uri: https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=641&user_ids%5B%5D=1
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      Authorization:
-      - Token token="secret_4sTtmAtebrqzHY1y2exw", app_key="app_LL1zKMy_vLixnHSyyiAB"
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      User-Agent:
-      - Ruby
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Content-Type:
-      - application/json; charset=utf-8
-      Date:
-      - Thu, 19 May 2016 21:16:47 GMT
-      Etag:
-      - W/"b405d15e75ac401608304c770ae4a205"
-      Server:
-      - nginx/1.4.6 (Ubuntu)
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Request-Id:
-      - 4391f31a-fb7f-4e48-abac-d1a44fc23fd5
-      X-Runtime:
-      - '0.294142'
-      X-Xss-Protection:
-      - 1; mode=block
-      Content-Length:
-      - '51'
-      Connection:
-      - keep-alive
-    body:
-      encoding: ASCII-8BIT
-      string: '{"conversation_items":[]}'
-    http_version: 
-  recorded_at: Thu, 19 May 2016 21:16:45 GMT
-- request:
-    method: get
-    uri: https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=641&user_ids%5B%5D=1
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      Authorization:
-      - Token token="secret_4sTtmAtebrqzHY1y2exw", app_key="app_LL1zKMy_vLixnHSyyiAB"
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      User-Agent:
-      - Ruby
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Content-Type:
-      - application/json; charset=utf-8
-      Date:
-      - Thu, 19 May 2016 21:16:48 GMT
-      Etag:
-      - W/"bc00d7a8364f71bf895c539e5eaeda67"
-      Server:
-      - nginx/1.4.6 (Ubuntu)
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Request-Id:
-      - 26725438-8a62-497b-a462-4ddeba989864
-      X-Runtime:
-      - '0.322112'
-      X-Xss-Protection:
-      - 1; mode=block
-      Content-Length:
-      - '51'
-      Connection:
-      - keep-alive
-    body:
-      encoding: ASCII-8BIT
-      string: '{"conversation_items":[]}'
-    http_version: 
-  recorded_at: Thu, 19 May 2016 21:16:46 GMT
-- request:
-    method: get
-    uri: https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=633&user_ids%5B%5D=1
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      Authorization:
-      - Token token="secret_4sTtmAtebrqzHY1y2exw", app_key="app_LL1zKMy_vLixnHSyyiAB"
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      User-Agent:
-      - Ruby
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Content-Type:
-      - application/json; charset=utf-8
-      Date:
-      - Thu, 19 May 2016 21:16:49 GMT
-      Etag:
-      - W/"84f9e9a56c02fa62d01e5d5f7ab6b59a"
-      Server:
-      - nginx/1.4.6 (Ubuntu)
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Request-Id:
-      - 51d4cdfd-ef02-4f07-888b-3b327f57c7c2
-      X-Runtime:
-      - '0.295524'
-      X-Xss-Protection:
-      - 1; mode=block
-      Content-Length:
-      - '51'
-      Connection:
-      - keep-alive
-    body:
-      encoding: ASCII-8BIT
-      string: '{"conversation_items":[]}'
-    http_version: 
-  recorded_at: Thu, 19 May 2016 21:16:47 GMT
-- request:
-    method: get
-    uri: https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=632&user_ids%5B%5D=1
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      Authorization:
-      - Token token="secret_4sTtmAtebrqzHY1y2exw", app_key="app_LL1zKMy_vLixnHSyyiAB"
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      User-Agent:
-      - Ruby
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Content-Type:
-      - application/json; charset=utf-8
-      Date:
-      - Thu, 19 May 2016 21:16:50 GMT
-      Etag:
-      - W/"10cff51da711801a7578de79ace4f596"
-      Server:
-      - nginx/1.4.6 (Ubuntu)
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Request-Id:
-      - 723222c8-c81a-4161-863b-f26173ecd844
-      X-Runtime:
-      - '0.312159'
-      X-Xss-Protection:
-      - 1; mode=block
-      Content-Length:
-      - '1041'
-      Connection:
-      - keep-alive
-    body:
-      encoding: ASCII-8BIT
-      string: '{"conversation_items/meetings":[{"id":632,"title":"Meeting","location":"23,
-        New Delhi, 110037, Delhi, IN","body":"Meeting importante\u003cbr\u003eLorem
-        ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse id justo sed
-        ante aliquam tincidunt a in leo. Praesent semper sit amet purus non tempor.
-        Donec in luctus mi. Fusce id orci orci. Aliquam elementum elit non euismod
-        tincidunt. Vivamus imperdiet ligula aliquam sapien mollis, nec laoreet magna
-        luctus. Curabitur maximus enim aliquam urna ornare, blandit pulvinar ipsum
-        iaculis. Curabitur ac metus fringilla, tincidunt sem nec, euismod nisl. Aliquam
-        volutpat ex at blandit commodo. Donec sagittis diam consectetur dolor malesuada,
-        sit amet auctor enim euismod. Duis justo enim, pellentesque eget ultricies
-        at, interdum ut leo. Ut non ligula ornare, consectetur quam sit amet, tempus
-        nisl.\u003cbr\u003e","type":"meeting","available_events":["complete","cancel","reschedule"],"scheduled_at":"2016-04-27T06:50:00Z","created_at":"2016-04-27T00:45:55Z","updated_at":"2016-04-27T00:45:55Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:49Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":"test@example.com","starts_at":"2016-04-27T06:44:00Z","ends_at":"2016-04-27T07:44:00Z","status":"scheduled","notes":null,"conversation_id":76,"notify_by_sms":false,"notify_by_email":false,"account_id":76,"created_by_id":1,"latitude":0.0,"longitude":0.0,"amount":null,"repetition_rule":null,"item_type":null,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[],"check_ins":[],"check_outs":[],"related_to":null,"parent":null}]}'
-    http_version: 
-  recorded_at: Thu, 19 May 2016 21:16:48 GMT
-- request:
-    method: get
-    uri: https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=630&user_ids%5B%5D=1
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      Authorization:
-      - Token token="secret_4sTtmAtebrqzHY1y2exw", app_key="app_LL1zKMy_vLixnHSyyiAB"
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      User-Agent:
-      - Ruby
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Content-Type:
-      - application/json; charset=utf-8
-      Date:
-      - Thu, 19 May 2016 21:16:51 GMT
-      Etag:
-      - W/"b444acdfc3818ccbfb2e9af51b7fdf9e"
-      Server:
-      - nginx/1.4.6 (Ubuntu)
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Request-Id:
-      - 6188304d-5658-4198-96b0-5583b8391225
-      X-Runtime:
-      - '0.293410'
-      X-Xss-Protection:
-      - 1; mode=block
-      Content-Length:
-      - '51'
-      Connection:
-      - keep-alive
-    body:
-      encoding: ASCII-8BIT
-      string: '{"conversation_items":[]}'
-    http_version: 
-  recorded_at: Thu, 19 May 2016 21:16:49 GMT
-- request:
-    method: get
-    uri: https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=629&user_ids%5B%5D=1
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      Authorization:
-      - Token token="secret_4sTtmAtebrqzHY1y2exw", app_key="app_LL1zKMy_vLixnHSyyiAB"
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      User-Agent:
-      - Ruby
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Content-Type:
-      - application/json; charset=utf-8
-      Date:
-      - Thu, 19 May 2016 21:16:51 GMT
-      Etag:
-      - W/"1d4787a4771ca2bde88253f02add1a9f"
-      Server:
-      - nginx/1.4.6 (Ubuntu)
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Request-Id:
-      - 647a0491-e4d1-49f4-a5ad-c6973aa1fe8d
-      X-Runtime:
-      - '0.314572'
-      X-Xss-Protection:
-      - 1; mode=block
-      Content-Length:
-      - '670'
-      Connection:
-      - keep-alive
-    body:
-      encoding: ASCII-8BIT
-      string: '{"conversation_items/meetings":[{"id":629,"title":"sadasd","location":"23,
-        New Delhi, 110037, Delhi, IN","body":"asdasd","type":"meeting","available_events":["complete","cancel","reschedule"],"scheduled_at":"2016-04-27T06:20:00Z","created_at":"2016-04-27T00:25:27Z","updated_at":"2016-04-27T00:25:27Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:51Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"invitees":"test@example.com","starts_at":"2016-04-27T06:15:00Z","ends_at":"2016-04-27T07:15:00Z","status":"scheduled","notes":null,"conversation_id":76,"notify_by_sms":false,"notify_by_email":false,"account_id":76,"created_by_id":1,"latitude":0.0,"longitude":0.0,"amount":null,"repetition_rule":null,"item_type":null,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[],"check_ins":[],"check_outs":[],"related_to":null,"parent":null}]}'
-    http_version: 
-  recorded_at: Thu, 19 May 2016 21:16:49 GMT
+  recorded_at: Fri, 03 Jun 2016 22:00:58 GMT
 - request:
     method: get
     uri: https://acme-api.code10.ca/api/v1/accounts.json?search=
@@ -1813,9 +454,9 @@ http_interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 19 May 2016 21:16:52 GMT
+      - Fri, 03 Jun 2016 22:01:06 GMT
       Etag:
-      - W/"0e7d750afc662e95b6b5e12e1116b58e"
+      - W/"3f8f6842a7e9a3db77b904fb217ee6cd"
       Server:
       - nginx/1.4.6 (Ubuntu)
       Vary:
@@ -1825,53 +466,68 @@ http_interactions:
       X-Frame-Options:
       - SAMEORIGIN
       X-Request-Id:
-      - e3b766c0-df3c-4d37-b9e9-b1df6d7bb2ae
+      - c28fba14-5cb0-42ea-bb80-1e4e53f7fa7b
       X-Runtime:
-      - '0.432479'
+      - '0.568733'
       X-Xss-Protection:
       - 1; mode=block
       Content-Length:
-      - '3282'
+      - '3488'
       Connection:
       - keep-alive
     body:
       encoding: ASCII-8BIT
-      string: '{"accounts":[{"id":318,"name":"Staples","contact_name":"Milton","contact_title":"Basement
-        Dweller","status":{"id":2,"name":"Lead","description":"Indicates the account
-        is a possible leads","color":"#428BCA","company_id":1,"created_at":"2015-10-30T08:20:52Z","updated_at":"2016-03-03T20:37:09Z","deleted_at":null},"about":"Staples
-        in Scarborough","quick_facts":"They have lots red staplers...","created_at":"2016-04-30T20:00:30Z","updated_at":"2016-05-19T13:08:28Z","updated_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:52Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"avatar_url":"https://orchard-api-staging.s3.amazonaws.com/accounts/avatars/000/000/318/thumb/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1463695312\u0026Signature=lrasxUBcU%2F7IDYjBUnjDPYykXNM%3D","user_account_sharings":[],"addresses":[{"id":455,"name":null,"street_address":"1980
+      string: '{"accounts":[{"id":485,"name":"Test Account","contact_name":"test -
+        ","contact_title":"Owner","status":{"id":29,"name":"Risk","description":"Account
+        at risk of losing.","color":"#ff0000","company_id":1,"created_at":"2016-04-25T01:42:54Z","updated_at":"2016-04-25T01:42:54Z","deleted_at":null},"about":"","quick_facts":"","created_at":"2016-05-19T22:07:54Z","updated_at":"2016-06-03T07:54:28Z","updated_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-06-03T22:01:06Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"Pacific
+        Time (US \u0026 Canada)","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
+        of Nothing"},"avatar_url":"https://orchard-api-staging.s3.amazonaws.com/accounts/avatars/000/000/485/thumb/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=lzJc3ZyNyd999l0TiflOBu6wJ2w%3D","user_account_sharings":[],"city_name":"Burnaby","country_name":"CA","addresses":[{"id":623,"name":null,"street_address":"7788
+        Edmonds Street","city":"Burnaby","postcode":"V3N 1B8","region":"British Columbia","country":"CA","latitude":49.225,"longitude":-122.939}],"contacts":[{"id":837,"name":"new
+        york","value":"111-222-3344","type":"phone"}],"assigned_to":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=D2pVLzfqPBW7CYe32dvvid9oc5I%3D","locale":"en","time_zone":"Pacific
+        Time (US \u0026 Canada)","title":"Director of Nothing"},"conversation":{"id":485,"company_id":1,"account_id":485,"created_at":"2016-05-19T22:07:54Z","updated_at":"2016-06-03T07:54:28Z","deleted_at":null}},{"id":318,"name":"Staples","contact_name":"Milton","contact_title":"Basement
+        Dweller","status":{"id":1,"name":"Open","description":"The account is open
+        and available","color":"#1CAF9A","company_id":1,"created_at":"2015-10-30T08:20:20Z","updated_at":"2016-02-08T05:30:26Z","deleted_at":null},"about":"Staples
+        in Scarborough","quick_facts":"They have lots red staplers...","created_at":"2016-04-30T20:00:30Z","updated_at":"2016-06-03T07:37:57Z","updated_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-06-03T22:01:06Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"Pacific
+        Time (US \u0026 Canada)","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
+        of Nothing"},"avatar_url":"https://orchard-api-staging.s3.amazonaws.com/accounts/avatars/000/000/318/thumb/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=YpAecNyGjIGKw2YlCl4uXzx0jmg%3D","user_account_sharings":[{"id":30,"permission":"read","user":{"id":75,"first_name":"Anthony","last_name":"Martial","email":"sudeepsukumar@yahoo.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/075/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=nEh9Kp1oDCqRSy%2FX7M31oP4aL2A%3D","locale":"en","time_zone":"Eastern
+        Time (US \u0026 Canada)","title":null}}],"city_name":"Toronto","country_name":"CA","addresses":[{"id":455,"name":null,"street_address":"1980
         Eglinton Avenue East","city":"Toronto","postcode":"M1L 2M6","region":"Ontario","country":"CA","latitude":43.7293,"longitude":-79.2841}],"contacts":[{"id":655,"name":"Head
-        Office","value":"6045555555","type":"phone"}],"assigned_to":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1463695312\u0026Signature=y%2B87S82vgcHi3u%2F9NwDRbf5Sp6A%3D","locale":"en","time_zone":"America/Los_Angeles","title":"Director
-        of Nothing"},"conversation":{"id":318,"company_id":1,"account_id":318,"created_at":"2016-04-30T20:00:30Z","updated_at":"2016-05-19T13:08:28Z","deleted_at":null}},{"id":76,"name":"Test
+        Office","value":"6045555555","type":"phone"}],"assigned_to":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=D2pVLzfqPBW7CYe32dvvid9oc5I%3D","locale":"en","time_zone":"Pacific
+        Time (US \u0026 Canada)","title":"Director of Nothing"},"conversation":{"id":318,"company_id":1,"account_id":318,"created_at":"2016-04-30T20:00:30Z","updated_at":"2016-06-03T07:37:57Z","deleted_at":null}},{"id":76,"name":"Test
         Lat Account","contact_name":"Test","contact_title":"Lat","status":{"id":1,"name":"Open","description":"The
-        account is open and available","color":"#1CAF9A","company_id":1,"created_at":"2015-10-30T08:20:20Z","updated_at":"2016-02-08T05:30:26Z","deleted_at":null},"about":"aaa","quick_facts":"vvvv","created_at":"2016-04-01T05:47:07Z","updated_at":"2016-05-03T02:25:59Z","updated_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:52Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"avatar_url":"https://orchard-api-staging.s3.amazonaws.com/accounts/avatars/000/000/076/thumb/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1463695312\u0026Signature=gtBNH8IthYYxFHt119sBEDL8BRA%3D","user_account_sharings":[{"id":9,"permission":"update","user":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1463695312\u0026Signature=y%2B87S82vgcHi3u%2F9NwDRbf5Sp6A%3D","locale":"en","time_zone":"America/Los_Angeles","title":"Director
-        of Nothing"}}],"addresses":[{"id":191,"name":null,"street_address":"23","city":"New
-        Delhi","postcode":"110037","region":"Delhi","country":"IN","latitude":28.5562,"longitude":77.1}],"contacts":[{"id":361,"name":"abc","value":"79239127","type":"phone"}],"assigned_to":{"id":58,"first_name":"Gary","last_name":"Test4","email":"test44441@gmail.com","avatar_url":"/avatars/web/missing.png","locale":"en","time_zone":"Hawaii","title":null},"conversation":{"id":76,"company_id":1,"account_id":76,"created_at":"2016-04-01T05:47:07Z","updated_at":"2016-05-03T02:25:59Z","deleted_at":null}},{"id":73,"name":"Test23","contact_name":"Devid","contact_title":"Test","status":{"id":1,"name":"Open","description":"The
-        account is open and available","color":"#1CAF9A","company_id":1,"created_at":"2015-10-30T08:20:20Z","updated_at":"2016-02-08T05:30:26Z","deleted_at":null},"about":"qqq","quick_facts":"aa","created_at":"2016-03-23T09:02:16Z","updated_at":"2016-05-10T18:24:15Z","updated_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:52Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"avatar_url":"https://orchard-api-staging.s3.amazonaws.com/accounts/avatars/000/000/073/thumb/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1463695312\u0026Signature=co3V%2FgI15%2Bm6U6gMjhuriOkAiyc%3D","user_account_sharings":[],"addresses":[{"id":184,"name":null,"street_address":"l1
-        delhi","city":"delhi","postcode":"110096","region":"delhi","country":"CA","latitude":null,"longitude":null}],"contacts":[{"id":350,"name":"test","value":"23412","type":"phone"}],"assigned_to":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1463695312\u0026Signature=y%2B87S82vgcHi3u%2F9NwDRbf5Sp6A%3D","locale":"en","time_zone":"America/Los_Angeles","title":"Director
-        of Nothing"},"conversation":{"id":73,"company_id":1,"account_id":73,"created_at":"2016-03-23T09:02:16Z","updated_at":"2016-05-10T18:24:15Z","deleted_at":null}},{"id":71,"name":"Test
+        account is open and available","color":"#1CAF9A","company_id":1,"created_at":"2015-10-30T08:20:20Z","updated_at":"2016-02-08T05:30:26Z","deleted_at":null},"about":"aaa","quick_facts":"vvvv","created_at":"2016-04-01T05:47:07Z","updated_at":"2016-06-01T06:38:28Z","updated_by":{"id":102,"email":"admin_entity2@example.com","created_at":"2016-04-13T06:52:12Z","updated_at":"2016-06-01T22:54:31Z","username":null,"company_id":1,"company_entity_id":null,"status":"pending_confirmation","time_zone":"Pacific
+        Time (US \u0026 Canada)","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"admin","last_name":"entity2","avatar_file_name":null,"avatar_content_type":null,"avatar_file_size":null,"avatar_updated_at":null,"title":null},"avatar_url":"https://orchard-api-staging.s3.amazonaws.com/accounts/avatars/000/000/076/thumb/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=4TCSK8HuW5xRInRqtLWR3zVz2EY%3D","user_account_sharings":[{"id":9,"permission":"update","user":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=D2pVLzfqPBW7CYe32dvvid9oc5I%3D","locale":"en","time_zone":"Pacific
+        Time (US \u0026 Canada)","title":"Director of Nothing"}}],"city_name":"New
+        Delhi","country_name":"IN","addresses":[{"id":191,"name":null,"street_address":"23","city":"New
+        Delhi","postcode":"110037","region":"Delhi","country":"IN","latitude":28.5562,"longitude":77.1}],"contacts":[{"id":361,"name":"abc","value":"79239127","type":"phone"}],"assigned_to":{"id":58,"first_name":"Gary","last_name":"Test4","email":"test44441@gmail.com","avatar_url":"/avatars/web/missing.png","locale":"en","time_zone":"Hawaii","title":null},"conversation":{"id":76,"company_id":1,"account_id":76,"created_at":"2016-04-01T05:47:07Z","updated_at":"2016-06-01T06:38:28Z","deleted_at":null}},{"id":73,"name":"Test23","contact_name":"Devid","contact_title":"Test","status":{"id":1,"name":"Open","description":"The
+        account is open and available","color":"#1CAF9A","company_id":1,"created_at":"2015-10-30T08:20:20Z","updated_at":"2016-02-08T05:30:26Z","deleted_at":null},"about":"qqq","quick_facts":"aa","created_at":"2016-03-23T09:02:16Z","updated_at":"2016-06-02T08:09:33Z","updated_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-06-03T22:01:06Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"Pacific
+        Time (US \u0026 Canada)","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
+        of Nothing"},"avatar_url":"https://orchard-api-staging.s3.amazonaws.com/accounts/avatars/000/000/073/thumb/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=BJ92cZqPQRq1HS3YKGqVkU20qwo%3D","user_account_sharings":[],"city_name":"delhi","country_name":"CA","addresses":[{"id":184,"name":null,"street_address":"l1
+        delhi","city":"delhi","postcode":"110096","region":"delhi","country":"CA","latitude":null,"longitude":null}],"contacts":[{"id":350,"name":"test","value":"23412","type":"phone"}],"assigned_to":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=D2pVLzfqPBW7CYe32dvvid9oc5I%3D","locale":"en","time_zone":"Pacific
+        Time (US \u0026 Canada)","title":"Director of Nothing"},"conversation":{"id":73,"company_id":1,"account_id":73,"created_at":"2016-03-23T09:02:16Z","updated_at":"2016-06-02T08:09:33Z","deleted_at":null}},{"id":71,"name":"Test
         contact type","contact_name":"Test","contact_title":"Contact Type","status":{"id":1,"name":"Open","description":"The
-        account is open and available","color":"#1CAF9A","company_id":1,"created_at":"2015-10-30T08:20:20Z","updated_at":"2016-02-08T05:30:26Z","deleted_at":null},"about":"abc","quick_facts":"NCD","created_at":"2016-03-18T05:37:06Z","updated_at":"2016-04-30T06:40:12Z","updated_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:52Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"avatar_url":"https://orchard-api-staging.s3.amazonaws.com/accounts/avatars/000/000/071/thumb/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1463695312\u0026Signature=zd8uwDGZm2mxmEjvwZxN4EhQ23M%3D","user_account_sharings":[],"addresses":[{"id":167,"name":null,"street_address":"l28","city":"delhi","postcode":"
-        11096","region":"delhi","country":"IN","latitude":null,"longitude":null}],"contacts":[{"id":319,"name":"phone","value":"34534564","type":"phone"},{"id":320,"name":"website","value":"www.kiwi.com","type":"website"}],"assigned_to":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1463695312\u0026Signature=y%2B87S82vgcHi3u%2F9NwDRbf5Sp6A%3D","locale":"en","time_zone":"America/Los_Angeles","title":"Director
-        of Nothing"},"conversation":{"id":71,"company_id":1,"account_id":71,"created_at":"2016-03-18T05:37:06Z","updated_at":"2016-04-27T09:48:38Z","deleted_at":null}},{"id":65,"name":"Test
+        account is open and available","color":"#1CAF9A","company_id":1,"created_at":"2015-10-30T08:20:20Z","updated_at":"2016-02-08T05:30:26Z","deleted_at":null},"about":"abc","quick_facts":"NCD","created_at":"2016-03-18T05:37:06Z","updated_at":"2016-04-30T06:40:12Z","updated_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-06-03T22:01:06Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"Pacific
+        Time (US \u0026 Canada)","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
+        of Nothing"},"avatar_url":"https://orchard-api-staging.s3.amazonaws.com/accounts/avatars/000/000/071/thumb/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=mXZieHDiBbeQVgiLLxobol%2BGHbE%3D","user_account_sharings":[],"city_name":"delhi","country_name":"IN","addresses":[{"id":167,"name":null,"street_address":"l28","city":"delhi","postcode":"
+        11096","region":"delhi","country":"IN","latitude":null,"longitude":null}],"contacts":[{"id":319,"name":"phone","value":"34534564","type":"phone"},{"id":320,"name":"website","value":"www.kiwi.com","type":"website"}],"assigned_to":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=D2pVLzfqPBW7CYe32dvvid9oc5I%3D","locale":"en","time_zone":"Pacific
+        Time (US \u0026 Canada)","title":"Director of Nothing"},"conversation":{"id":71,"company_id":1,"account_id":71,"created_at":"2016-03-18T05:37:06Z","updated_at":"2016-04-27T09:48:38Z","deleted_at":null}},{"id":65,"name":"Test
         Image","contact_name":"Test Name","contact_title":"","status":{"id":1,"name":"Open","description":"The
-        account is open and available","color":"#1CAF9A","company_id":1,"created_at":"2015-10-30T08:20:20Z","updated_at":"2016-02-08T05:30:26Z","deleted_at":null},"about":"wed","quick_facts":"ed23e","created_at":"2016-03-09T07:43:53Z","updated_at":"2016-03-21T12:28:17Z","updated_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:52Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"avatar_url":"/avatars/thumb/missing.png","user_account_sharings":[],"addresses":[{"id":152,"name":null,"street_address":"l1","city":"mumbai","postcode":"3493473","region":"mh","country":"IN","latitude":null,"longitude":null}],"contacts":[{"id":292,"name":"343","value":"453","type":"phone"}],"assigned_to":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1463695312\u0026Signature=y%2B87S82vgcHi3u%2F9NwDRbf5Sp6A%3D","locale":"en","time_zone":"America/Los_Angeles","title":"Director
-        of Nothing"},"conversation":{"id":65,"company_id":1,"account_id":65,"created_at":"2016-03-09T07:43:53Z","updated_at":"2016-03-21T12:28:17Z","deleted_at":null}},{"id":64,"name":"Autobots","contact_name":null,"contact_title":null,"status":{"id":1,"name":"Open","description":"The
-        account is open and available","color":"#1CAF9A","company_id":1,"created_at":"2015-10-30T08:20:20Z","updated_at":"2016-02-08T05:30:26Z","deleted_at":null},"about":"","quick_facts":"","created_at":"2016-03-08T21:12:01Z","updated_at":"2016-04-21T06:32:29Z","updated_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:52Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"avatar_url":"/avatars/thumb/missing.png","user_account_sharings":[],"addresses":[{"id":150,"name":null,"street_address":"85-89
+        account is open and available","color":"#1CAF9A","company_id":1,"created_at":"2015-10-30T08:20:20Z","updated_at":"2016-02-08T05:30:26Z","deleted_at":null},"about":"wed","quick_facts":"ed23e","created_at":"2016-03-09T07:43:53Z","updated_at":"2016-03-21T12:28:17Z","updated_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-06-03T22:01:06Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"Pacific
+        Time (US \u0026 Canada)","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
+        of Nothing"},"avatar_url":"/avatars/thumb/missing.png","user_account_sharings":[],"city_name":"mumbai","country_name":"IN","addresses":[{"id":152,"name":null,"street_address":"l1","city":"mumbai","postcode":"3493473","region":"mh","country":"IN","latitude":null,"longitude":null}],"contacts":[{"id":292,"name":"343","value":"453","type":"phone"}],"assigned_to":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=D2pVLzfqPBW7CYe32dvvid9oc5I%3D","locale":"en","time_zone":"Pacific
+        Time (US \u0026 Canada)","title":"Director of Nothing"},"conversation":{"id":65,"company_id":1,"account_id":65,"created_at":"2016-03-09T07:43:53Z","updated_at":"2016-03-21T12:28:17Z","deleted_at":null}},{"id":64,"name":"Autobots","contact_name":null,"contact_title":null,"status":{"id":1,"name":"Open","description":"The
+        account is open and available","color":"#1CAF9A","company_id":1,"created_at":"2015-10-30T08:20:20Z","updated_at":"2016-02-08T05:30:26Z","deleted_at":null},"about":"","quick_facts":"","created_at":"2016-03-08T21:12:01Z","updated_at":"2016-04-21T06:32:29Z","updated_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-06-03T22:01:06Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"Pacific
+        Time (US \u0026 Canada)","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
+        of Nothing"},"avatar_url":"/avatars/thumb/missing.png","user_account_sharings":[],"city_name":"Toronto","country_name":"CA","addresses":[{"id":150,"name":null,"street_address":"85-89
         Yonge St.","city":"Toronto","postcode":"M5C 1S8","region":"Ontario","country":"CA","latitude":null,"longitude":null}],"contacts":[{"id":287,"name":"Head
-        Office","value":"4165551234","type":"phone"}],"assigned_to":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1463695312\u0026Signature=y%2B87S82vgcHi3u%2F9NwDRbf5Sp6A%3D","locale":"en","time_zone":"America/Los_Angeles","title":"Director
-        of Nothing"},"conversation":{"id":64,"company_id":1,"account_id":64,"created_at":"2016-03-08T21:12:01Z","updated_at":"2016-04-21T06:32:29Z","deleted_at":null}},{"id":62,"name":"Test
+        Office","value":"4165551234","type":"phone"}],"assigned_to":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=D2pVLzfqPBW7CYe32dvvid9oc5I%3D","locale":"en","time_zone":"Pacific
+        Time (US \u0026 Canada)","title":"Director of Nothing"},"conversation":{"id":64,"company_id":1,"account_id":64,"created_at":"2016-03-08T21:12:01Z","updated_at":"2016-04-21T06:32:29Z","deleted_at":null}},{"id":62,"name":"Test
         New","contact_name":"new name","contact_title":"new title","status":{"id":1,"name":"Open","description":"The
-        account is open and available","color":"#1CAF9A","company_id":1,"created_at":"2015-10-30T08:20:20Z","updated_at":"2016-02-08T05:30:26Z","deleted_at":null},"about":"Test111","quick_facts":"22Test","created_at":"2016-02-11T10:46:30Z","updated_at":"2016-05-16T11:39:25Z","updated_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:52Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"avatar_url":"https://orchard-api-staging.s3.amazonaws.com/accounts/avatars/000/000/062/thumb/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1463695312\u0026Signature=Wsayxh5yGhjDNfRaB7PIeYAmQFQ%3D","user_account_sharings":[{"id":4,"permission":"read","user":null}],"addresses":[{"id":71,"name":null,"street_address":"last_test","city":"last_test","postcode":"2313","region":"last_test
-        new","country":"US","latitude":null,"longitude":null}],"contacts":[{"id":185,"name":"123456","value":"123456","type":"phone"},{"id":222,"name":"11111111","value":"111111111","type":"mobile"}],"assigned_to":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1463695312\u0026Signature=y%2B87S82vgcHi3u%2F9NwDRbf5Sp6A%3D","locale":"en","time_zone":"America/Los_Angeles","title":"Director
-        of Nothing"},"conversation":{"id":62,"company_id":1,"account_id":62,"created_at":"2016-02-11T10:46:30Z","updated_at":"2016-05-16T11:39:25Z","deleted_at":null}},{"id":61,"name":"Blue-Bird
+        account is open and available","color":"#1CAF9A","company_id":1,"created_at":"2015-10-30T08:20:20Z","updated_at":"2016-02-08T05:30:26Z","deleted_at":null},"about":"Test111","quick_facts":"22Test","created_at":"2016-02-11T10:46:30Z","updated_at":"2016-05-16T11:39:25Z","updated_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-06-03T22:01:06Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"Pacific
+        Time (US \u0026 Canada)","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
+        of Nothing"},"avatar_url":"https://orchard-api-staging.s3.amazonaws.com/accounts/avatars/000/000/062/thumb/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=5U1CkIFX1CR9IgaTof2zB%2BX7IxM%3D","user_account_sharings":[{"id":4,"permission":"read","user":null}],"city_name":"last_test","country_name":"US","addresses":[{"id":71,"name":null,"street_address":"last_test","city":"last_test","postcode":"2313","region":"last_test
+        new","country":"US","latitude":null,"longitude":null}],"contacts":[{"id":185,"name":"123456","value":"123456","type":"phone"},{"id":222,"name":"11111111","value":"111111111","type":"mobile"}],"assigned_to":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=D2pVLzfqPBW7CYe32dvvid9oc5I%3D","locale":"en","time_zone":"Pacific
+        Time (US \u0026 Canada)","title":"Director of Nothing"},"conversation":{"id":62,"company_id":1,"account_id":62,"created_at":"2016-02-11T10:46:30Z","updated_at":"2016-05-16T11:39:25Z","deleted_at":null}},{"id":61,"name":"Blue-Bird
         Plumbing","contact_name":"deep","contact_title":"hello","status":{"id":1,"name":"Open","description":"The
         account is open and available","color":"#1CAF9A","company_id":1,"created_at":"2015-10-30T08:20:20Z","updated_at":"2016-02-08T05:30:26Z","deleted_at":null},"about":"Lorem
         ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula
@@ -1880,27 +536,22 @@ http_interactions:
         consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.
         Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus
         mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.
-        Nulla consequat massa quis enim. ","created_at":"2016-02-04T19:52:27Z","updated_at":"2016-05-02T12:30:33Z","updated_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:52Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"avatar_url":"https://orchard-api-staging.s3.amazonaws.com/accounts/avatars/000/000/061/thumb/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1463695312\u0026Signature=zIlVb93XFZ0VD4IDIL9Flr3pyYY%3D","user_account_sharings":[{"id":1,"permission":"read","user":{"id":42,"first_name":"Ali","last_name":"Shah","email":"test+dev3@dierbro.com","avatar_url":"/avatars/web/missing.png","locale":"en","time_zone":"UTC","title":null}},{"id":2,"permission":"update","user":{"id":58,"first_name":"Gary","last_name":"Test4","email":"test44441@gmail.com","avatar_url":"/avatars/web/missing.png","locale":"en","time_zone":"Hawaii","title":null}},{"id":5,"permission":"read","user":{"id":40,"first_name":"Gurpreet","last_name":"Judge","email":"test+dev1@dierbro.com","avatar_url":"/avatars/web/missing.png","locale":"en","time_zone":"UTC","title":null}}],"addresses":[{"id":43,"name":null,"street_address":"94","city":"Macclesfield","postcode":"SK10
-        1BT","region":"23","country":"GB","latitude":null,"longitude":null}],"contacts":[{"id":154,"name":"phone","value":"416-123-1234","type":"phone"},{"id":155,"name":"tweet","value":"twitter.com/abc12","type":"twitter"},{"id":157,"name":"you","value":"youtube.com/abc1234","type":"youtube"},{"id":256,"name":"phone2","value":"416-111-2233","type":"phone"},{"id":318,"name":"phone3","value":"374-387-0934","type":"phone"}],"assigned_to":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1463695312\u0026Signature=y%2B87S82vgcHi3u%2F9NwDRbf5Sp6A%3D","locale":"en","time_zone":"America/Los_Angeles","title":"Director
-        of Nothing"},"conversation":{"id":61,"company_id":1,"account_id":61,"created_at":"2016-02-04T19:52:27Z","updated_at":"2016-05-02T12:30:33Z","deleted_at":null}},{"id":59,"name":"inini","contact_name":null,"contact_title":null,"status":{"id":1,"name":"Open","description":"The
-        account is open and available","color":"#1CAF9A","company_id":1,"created_at":"2015-10-30T08:20:20Z","updated_at":"2016-02-08T05:30:26Z","deleted_at":null},"about":"xckjcxkj","quick_facts":"vkjfdkjfkd","created_at":"2016-01-19T15:53:02Z","updated_at":"2016-03-08T20:57:52Z","updated_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:52Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"avatar_url":"/avatars/thumb/missing.png","user_account_sharings":[{"id":6,"permission":"read","user":{"id":38,"first_name":"Mary","last_name":"Baker","email":"test+dev@dierbro.com","avatar_url":"/avatars/web/missing.png","locale":"en","time_zone":"UTC","title":null}}],"addresses":[{"id":37,"name":null,"street_address":"ksjdkdsj","city":"fdkjdfkj","postcode":"dkfjdkj","region":"sdkjsdkj","country":"CA","latitude":null,"longitude":null}],"contacts":[{"id":150,"name":"p1","value":"p1@asd.com","type":"email"},{"id":151,"name":"p2","value":"asd@asd.com","type":"email"}],"assigned_to":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1463695312\u0026Signature=y%2B87S82vgcHi3u%2F9NwDRbf5Sp6A%3D","locale":"en","time_zone":"America/Los_Angeles","title":"Director
-        of Nothing"},"conversation":{"id":59,"company_id":1,"account_id":59,"created_at":"2016-01-19T15:53:03Z","updated_at":"2016-01-19T15:53:03Z","deleted_at":null}},{"id":55,"name":"Provacomp","contact_name":null,"contact_title":null,"status":{"id":3,"name":"Suspended","description":"Suspended
-        account","color":"#ff860d","company_id":1,"created_at":"2015-10-30T08:21:13Z","updated_at":"2015-10-30T08:21:13Z","deleted_at":null},"about":"asdasd8888","quick_facts":"asdasdasdasd","created_at":"2016-01-11T14:08:44Z","updated_at":"2016-01-11T15:18:34Z","updated_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:52Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"avatar_url":"/avatars/thumb/missing.png","user_account_sharings":[],"addresses":[{"id":31,"name":null,"street_address":"asdasd","city":"asdasd","postcode":"asdasd","region":"asdasd","country":"US","latitude":null,"longitude":null}],"contacts":[{"id":137,"name":"asdasd","value":"asd@asd.com","type":"email"}],"assigned_to":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1463695312\u0026Signature=y%2B87S82vgcHi3u%2F9NwDRbf5Sp6A%3D","locale":"en","time_zone":"America/Los_Angeles","title":"Director
-        of Nothing"},"conversation":{"id":55,"company_id":1,"account_id":55,"created_at":"2016-01-11T14:08:44Z","updated_at":"2016-01-11T14:08:44Z","deleted_at":null}},{"id":40,"name":"Test
-        23","contact_name":null,"contact_title":null,"status":{"id":1,"name":"Open","description":"The
-        account is open and available","color":"#1CAF9A","company_id":1,"created_at":"2015-10-30T08:20:20Z","updated_at":"2016-02-08T05:30:26Z","deleted_at":null},"about":"Cool","quick_facts":null,"created_at":"2016-01-04T09:13:32Z","updated_at":"2016-01-04T09:13:32Z","updated_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:52Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"avatar_url":"/avatars/thumb/missing.png","user_account_sharings":[],"addresses":[],"contacts":[{"id":122,"name":"test","value":"new@email.com","type":"email"}],"assigned_to":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1463695312\u0026Signature=y%2B87S82vgcHi3u%2F9NwDRbf5Sp6A%3D","locale":"en","time_zone":"America/Los_Angeles","title":"Director
-        of Nothing"},"conversation":{"id":40,"company_id":1,"account_id":40,"created_at":"2016-01-04T09:13:32Z","updated_at":"2016-01-04T09:13:32Z","deleted_at":null}},{"id":5,"name":"Halo
-        5","contact_name":null,"contact_title":null,"status":null,"about":null,"quick_facts":null,"created_at":"2015-11-07T07:22:25Z","updated_at":"2016-02-16T10:23:50Z","updated_by":null,"avatar_url":"/avatars/thumb/missing.png","user_account_sharings":[],"addresses":[],"contacts":[],"assigned_to":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1463695312\u0026Signature=y%2B87S82vgcHi3u%2F9NwDRbf5Sp6A%3D","locale":"en","time_zone":"America/Los_Angeles","title":"Director
-        of Nothing"},"conversation":{"id":5,"company_id":1,"account_id":5,"created_at":"2015-11-07T07:22:25Z","updated_at":"2016-02-16T10:23:50Z","deleted_at":null}},{"id":4,"name":"Canadian
-        Tire","contact_name":null,"contact_title":null,"status":null,"about":null,"quick_facts":null,"created_at":"2015-11-07T07:20:36Z","updated_at":"2015-11-07T07:20:36Z","updated_by":null,"avatar_url":"/avatars/thumb/missing.png","user_account_sharings":[],"addresses":[],"contacts":[],"assigned_to":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1463695312\u0026Signature=y%2B87S82vgcHi3u%2F9NwDRbf5Sp6A%3D","locale":"en","time_zone":"America/Los_Angeles","title":"Director
-        of Nothing"},"conversation":{"id":4,"company_id":1,"account_id":4,"created_at":"2015-11-07T07:20:36Z","updated_at":"2015-11-07T07:20:36Z","deleted_at":null}},{"id":2,"name":"Diego","contact_name":null,"contact_title":null,"status":null,"about":null,"quick_facts":null,"created_at":"2015-11-05T17:40:33Z","updated_at":"2015-11-05T17:40:33Z","updated_by":null,"avatar_url":"/avatars/thumb/missing.png","user_account_sharings":[],"addresses":[],"contacts":[],"assigned_to":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1463695312\u0026Signature=y%2B87S82vgcHi3u%2F9NwDRbf5Sp6A%3D","locale":"en","time_zone":"America/Los_Angeles","title":"Director
-        of Nothing"},"conversation":{"id":2,"company_id":1,"account_id":2,"created_at":"2015-11-05T17:40:33Z","updated_at":"2015-11-05T17:40:33Z","deleted_at":null}},{"id":1,"name":"Diegoa","contact_name":null,"contact_title":null,"status":null,"about":"abount--a-sd","quick_facts":null,"created_at":"2015-11-05T17:25:49Z","updated_at":"2016-03-09T06:16:35Z","updated_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-05-19T21:16:52Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"America/Los_Angeles","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
-        of Nothing"},"avatar_url":"/avatars/thumb/missing.png","user_account_sharings":[],"addresses":[{"id":13,"name":"Address2","street_address":"street","city":"city","postcode":"43536","region":"region","country":"IT","latitude":null,"longitude":null}],"contacts":[{"id":108,"name":"Marvo","value":"asd@asd.com","type":"email"},{"id":109,"name":"Marvo","value":"+393331122345","type":"mobile"},{"id":117,"name":"Telefono","value":"+3908281990000","type":"fax"}],"assigned_to":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1463695312\u0026Signature=y%2B87S82vgcHi3u%2F9NwDRbf5Sp6A%3D","locale":"en","time_zone":"America/Los_Angeles","title":"Director
-        of Nothing"},"conversation":{"id":1,"company_id":1,"account_id":1,"created_at":"2015-11-05T17:25:49Z","updated_at":"2016-03-09T06:16:35Z","deleted_at":null}}]}'
+        Nulla consequat massa quis enim. ","created_at":"2016-02-04T19:52:27Z","updated_at":"2016-05-02T12:30:33Z","updated_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-06-03T22:01:06Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"Pacific
+        Time (US \u0026 Canada)","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
+        of Nothing"},"avatar_url":"https://orchard-api-staging.s3.amazonaws.com/accounts/avatars/000/000/061/thumb/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=sdCd252HnJbwHufZd0Fx4%2FImpF4%3D","user_account_sharings":[{"id":1,"permission":"read","user":{"id":42,"first_name":"Ali","last_name":"Shah","email":"test+dev3@dierbro.com","avatar_url":"/avatars/web/missing.png","locale":"en","time_zone":"UTC","title":null}},{"id":2,"permission":"update","user":{"id":58,"first_name":"Gary","last_name":"Test4","email":"test44441@gmail.com","avatar_url":"/avatars/web/missing.png","locale":"en","time_zone":"Hawaii","title":null}},{"id":5,"permission":"read","user":{"id":40,"first_name":"Gurpreet","last_name":"Judge","email":"test+dev1@dierbro.com","avatar_url":"/avatars/web/missing.png","locale":"en","time_zone":"UTC","title":null}}],"city_name":"Macclesfield","country_name":"GB","addresses":[{"id":43,"name":null,"street_address":"94","city":"Macclesfield","postcode":"SK10
+        1BT","region":"23","country":"GB","latitude":null,"longitude":null}],"contacts":[{"id":154,"name":"phone","value":"416-123-1234","type":"phone"},{"id":155,"name":"tweet","value":"twitter.com/abc12","type":"twitter"},{"id":157,"name":"you","value":"youtube.com/abc1234","type":"youtube"},{"id":256,"name":"phone2","value":"416-111-2233","type":"phone"},{"id":318,"name":"phone3","value":"374-387-0934","type":"phone"}],"assigned_to":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=D2pVLzfqPBW7CYe32dvvid9oc5I%3D","locale":"en","time_zone":"Pacific
+        Time (US \u0026 Canada)","title":"Director of Nothing"},"conversation":{"id":61,"company_id":1,"account_id":61,"created_at":"2016-02-04T19:52:27Z","updated_at":"2016-05-02T12:30:33Z","deleted_at":null}},{"id":59,"name":"inini","contact_name":null,"contact_title":null,"status":{"id":1,"name":"Open","description":"The
+        account is open and available","color":"#1CAF9A","company_id":1,"created_at":"2015-10-30T08:20:20Z","updated_at":"2016-02-08T05:30:26Z","deleted_at":null},"about":"xckjcxkj","quick_facts":"vkjfdkjfkd","created_at":"2016-01-19T15:53:02Z","updated_at":"2016-03-08T20:57:52Z","updated_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-06-03T22:01:06Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"Pacific
+        Time (US \u0026 Canada)","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
+        of Nothing"},"avatar_url":"/avatars/thumb/missing.png","user_account_sharings":[{"id":6,"permission":"read","user":{"id":38,"first_name":"Mary","last_name":"Baker","email":"test+dev@dierbro.com","avatar_url":"/avatars/web/missing.png","locale":"en","time_zone":"UTC","title":null}}],"city_name":"fdkjdfkj","country_name":"CA","addresses":[{"id":37,"name":null,"street_address":"ksjdkdsj","city":"fdkjdfkj","postcode":"dkfjdkj","region":"sdkjsdkj","country":"CA","latitude":null,"longitude":null}],"contacts":[{"id":150,"name":"p1","value":"p1@asd.com","type":"email"},{"id":151,"name":"p2","value":"asd@asd.com","type":"email"}],"assigned_to":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=D2pVLzfqPBW7CYe32dvvid9oc5I%3D","locale":"en","time_zone":"Pacific
+        Time (US \u0026 Canada)","title":"Director of Nothing"},"conversation":{"id":59,"company_id":1,"account_id":59,"created_at":"2016-01-19T15:53:03Z","updated_at":"2016-01-19T15:53:03Z","deleted_at":null}},{"id":55,"name":"Provacomp","contact_name":null,"contact_title":null,"status":{"id":3,"name":"Suspended","description":"Suspended
+        account","color":"#ff860d","company_id":1,"created_at":"2015-10-30T08:21:13Z","updated_at":"2015-10-30T08:21:13Z","deleted_at":null},"about":"asdasd8888","quick_facts":"asdasdasdasd","created_at":"2016-01-11T14:08:44Z","updated_at":"2016-01-11T15:18:34Z","updated_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-06-03T22:01:06Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"Pacific
+        Time (US \u0026 Canada)","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
+        of Nothing"},"avatar_url":"/avatars/thumb/missing.png","user_account_sharings":[],"city_name":"asdasd","country_name":"US","addresses":[{"id":31,"name":null,"street_address":"asdasd","city":"asdasd","postcode":"asdasd","region":"asdasd","country":"US","latitude":null,"longitude":null}],"contacts":[{"id":137,"name":"asdasd","value":"asd@asd.com","type":"email"}],"assigned_to":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=D2pVLzfqPBW7CYe32dvvid9oc5I%3D","locale":"en","time_zone":"Pacific
+        Time (US \u0026 Canada)","title":"Director of Nothing"},"conversation":{"id":55,"company_id":1,"account_id":55,"created_at":"2016-01-11T14:08:44Z","updated_at":"2016-01-11T14:08:44Z","deleted_at":null}},{"id":1,"name":"Diegoa","contact_name":null,"contact_title":null,"status":null,"about":"abount--a-sd","quick_facts":null,"created_at":"2015-11-05T17:25:49Z","updated_at":"2016-03-09T06:16:35Z","updated_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-06-03T22:01:06Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"Pacific
+        Time (US \u0026 Canada)","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
+        of Nothing"},"avatar_url":"/avatars/thumb/missing.png","user_account_sharings":[],"city_name":"city","country_name":"IT","addresses":[{"id":13,"name":"Address2","street_address":"street","city":"city","postcode":"43536","region":"region","country":"IT","latitude":null,"longitude":null}],"contacts":[{"id":108,"name":"Marvo","value":"asd@asd.com","type":"email"},{"id":109,"name":"Marvo","value":"+393331122345","type":"mobile"},{"id":117,"name":"Telefono","value":"+3908281990000","type":"fax"}],"assigned_to":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=D2pVLzfqPBW7CYe32dvvid9oc5I%3D","locale":"en","time_zone":"Pacific
+        Time (US \u0026 Canada)","title":"Director of Nothing"},"conversation":{"id":1,"company_id":1,"account_id":1,"created_at":"2015-11-05T17:25:49Z","updated_at":"2016-03-09T06:16:35Z","deleted_at":null}}]}'
     http_version: 
-  recorded_at: Thu, 19 May 2016 21:16:50 GMT
+  recorded_at: Fri, 03 Jun 2016 22:00:59 GMT
 recorded_with: VCR 3.0.1

@@ -1,0 +1,15 @@
+<div class="panel panel-default widget-weather">
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-xs-6 temp text-center">
+        <h1><%= @weather["temp"] %> <span>゜</span></h1>
+        <h5><i class="fa fa-map-marker"></i> &nbsp; <%= @weather["city"] %></h5>
+      </div>
+      <div class="col-xs-6 weather text-center">
+        <i style="line-height:1" class="<%= @weather["icon"] %> weather-icon"></i>
+        <div class="pull-left"><i class="wi-thermometer"></i> <%= @weather["temp_max"] %>゜</div>
+        <div class="pull-right"><i class="fa fa-flag"></i> <%= @weather["wind"] %>kph</div>
+      </div>
+    </div>
+  </div><!-- panel-body -->
+</div><!-- weather widget -->

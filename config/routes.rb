@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   namespace :admin do
     resources :companies do
       resources :users do
@@ -22,7 +21,9 @@ Rails.application.routes.draw do
   match '/dashboard', to: 'dashboard#index', as: :dashboard, via: [:get]
 
   resource :profile, only: [:show, :update]
-  resource :preference, only: [:show, :update]
+  # resource :preference, only: [:show, :update]
+
+  get '/accounts/export', to: 'accounts#export', as: :account_export
   resources :accounts do
     member do
       patch  :update_note
@@ -38,7 +39,7 @@ Rails.application.routes.draw do
       delete :delete_quote
       patch  :jump_in
       get    :search
-      get    :get_users_list  #get '/accounts/:id/get_users_list', to: 'accounts#get_users_list'
+      get    :get_users_list # get '/accounts/:id/get_users_list', to: 'accounts#get_users_list'
     end
     resources :contacts, only: [:edit, :create, :update, :destroy]
     resources :addresses, only: [:edit, :create, :update, :destroy]
@@ -101,13 +102,14 @@ Rails.application.routes.draw do
 
   match '/settings', to: 'settings#index', as: :settings, via: [:get]
   get :get_users, to: 'company#get_users'
-
+  patch '/settings/company_level_setting', to: 'settings#company_level_setting', as: :settings_company_level_setting
   root 'login#index'
 
   get :meeting_report, to: 'reports#meeting_report'
   get :meeting_report_result, to: 'reports#meeting_report_result'
-  # get '/reports/check_in_check_out/:id', to: 'reports#check_in_check_out', as: :reports_check_in_check_out
+
+  get :activity_report, to: 'reports#activity_report'
+  get :activity_report_result, to: 'reports#activity_report_result'
 
   match '(*any)', to: 'errors#routing', via: [:get, :post]
-
 end

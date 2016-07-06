@@ -19,7 +19,8 @@
       <h5 class="sidebartitle actitle">Account</h5>
       <ul class="nav nav-pills nav-stacked nav-bracket mb30">
         <li><a href="<%= profile_path %>"><i class="fa fa-user"></i> <span>My Profile</span></a></li>
-        <li><a href="<%= preference_path %>"><i class="fa fa-wrench"></i> <span>Preference</span></a></li>
+        <% # <li><a href="<%= preference_path "><i class="fa fa-wrench"></i> <span>Preference</span></a></li> %>
+        <li><a href="<%=login_change_password_path(current_user.id)%>"><i class="fa fa-lock"></i> <span>Change Password</span></a></li>
         <li><a href="<%= user_logout_path %>"><i class="fa fa-sign-out"></i> <span>Log Out</span></a></li>
       </ul>
     </div>
@@ -42,7 +43,12 @@
       <li class="nav-parent"><a href=""><i class="fa fa-edit"></i> <span>Reports</span></a>
         <ul class="children">
           <li>
-            <%=link_to meeting_report_path do %>
+            <%= link_to activity_report_path do %>
+              <i class="fa fa-caret-right"></i> Activity
+            <% end %>
+          </li>        
+          <li>
+            <%= link_to meeting_report_path do %>
               <i class="fa fa-caret-right"></i> Meetings
             <%end%>
           </li>
