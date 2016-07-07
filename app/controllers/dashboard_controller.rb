@@ -10,6 +10,13 @@ class DashboardController < ApplicationController
     user_ids = Array[]
     user_ids.push(current_user.id) # push any additional users
 
+    team_user_ids = user_ids
+    current_user_roles = current_user.roles.collect { |r| r.name }
+    if current_user_roles.include?("Entity Admin") || current_user_roles.include?("Admin")
+      users = User.all(uid: session[:user_id])
+      team_user_ids = users.collect { |u| u.id }
+    end
+
     # get the current date
     @current_date = Time.current.in_time_zone(current_user.time_zone).strftime('%Y-%m-%d')
 
@@ -26,7 +33,7 @@ class DashboardController < ApplicationController
     quote_search = {}
     quote_search[:type_eq] = 'ConversationItems::Quote'
     quote_search[:status_eq] = 'Open'
-    @quotes = ConversationItemSearch.all(params: { user_ids: user_ids, search: quote_search })
+    @quotes = ConversationItemSearch.all(params: { user_ids: team_user_ids, search: quote_search })
 
     #
     # Account feed of last 24 hours
