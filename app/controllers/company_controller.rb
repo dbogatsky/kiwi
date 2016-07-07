@@ -19,7 +19,7 @@ class CompanyController < ApplicationController
     flash[:success] = 'You changes have been successfully saved'
     redirect_to company_path
 
-    #flash[:danger] = 'Warning: Your changes can not be saved.  Please contact the administator for assistance.'  # Unable to save changes
+    # flash[:danger] = 'Warning: Your changes can not be saved.  Please contact the administator for assistance.'  # Unable to save changes
     # Record the API error into the log.  Action with timestamp
   end
 
@@ -108,13 +108,4 @@ class CompanyController < ApplicationController
     render json: email_json
   end
 
-  def get_news
-    get_api_values
-    apiFullUrl = RequestStore.store[:api_url] + '/company/settings/preferences'
-    curlRes = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -H "Cache-Control: no-cache" "#{apiFullUrl}"`
-    news_data = JSON.parse(curlRes)
-    news_data = news_data['company']['settings']['preferences']
-    news_data.shift
-    @news_data = news_data.delete_if { |key, value| value.blank? }
-  end
 end

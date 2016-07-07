@@ -113,13 +113,4 @@ class DashboardController < ApplicationController
     @appKey = APP_CONFIG['api_app_key']
     @token = session[:token]
   end
-
-  def get_news
-    apiFullUrl = RequestStore.store[:api_url] + '/company/settings/preferences'
-    curlRes = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -H "Cache-Control: no-cache" "#{apiFullUrl}"`
-    news_data = JSON.parse(curlRes)
-    news_data = news_data['company']['settings']['preferences']
-    news_data.shift
-    @news_data = news_data.delete_if { |key, value| value.blank? }
-  end
 end

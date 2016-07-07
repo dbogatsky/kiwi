@@ -10,7 +10,6 @@ class ApplicationController < ActionController::Base
   before_filter :set_cache_headers
   before_filter :authentication
   before_filter :notification_info
-#   before_filter :check_request
   around_filter :set_time_zone
 
   helper_method :current_user, :get_api_values, :get_automatic_logout_time, :logged_in?, :superadmin_logged_in?, :notification_info
@@ -39,6 +38,22 @@ class ApplicationController < ActionController::Base
   def raise_bad_request
     redirect_to root_url, notice: 'page not found!'
     return
+  end
+
+  def get_news
+    news_data = Hash[]
+    apiFullUrl = RequestStore.store[:api_url] + '/company/settings/preferences'
+    curlRes = `curl -X GET -H "Authorization: Token token="#{session[:token]}", email="#{current_user.email}", app_key="#{APP_CONFIG['api_app_key']}"" -H "Content-Type: application/json"  -H "Cache-Control: no-cache" "#{apiFullUrl}"`
+    company_settings = JSON.parse(curlRes)
+    company_settings = company_settings['company']['settings']['preferences']
+    company_settings.each { |setting, value|
+    if setting.include? 'news'
+      if (value.present?)
+        news_data[setting.to_sym] = value
+      end
+    end
+    }
+    @news_data = news_data.delete_if { |key, value| value.blank? }
   end
 
   # def render_bad_request
