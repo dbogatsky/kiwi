@@ -5,6 +5,9 @@ class AccountsController < ApplicationController
   before_action :get_token
   before_action :find_account, only: [:show, :edit, :destroy, :conversation, :search, :jump_in, :add_quote, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting, :update_quote, :delete_quote, :add_reminder, :update_reminder, :delete_reminder]
   before_action :get_api_values, only: [:search]
+  before_action :get_setting, only: [:index, :import, :export]
+  before_action :check_permission_for_import, only: [:import]
+  before_action :check_permission_for_export, only: [:export]
   @@account_with_previous_value = nil
 
   def index
@@ -27,6 +30,9 @@ class AccountsController < ApplicationController
       session[:advanced_search] = @search
       @accounts = Account.all(params: { search: @search})
     end
+
+    accounts_statistics_info
+
     respond_to do |format|
       format.html
       format.csv { send_data generate_csv }
@@ -544,8 +550,56 @@ class AccountsController < ApplicationController
     @conversation_items = ConversationItem.all(params: { conversation_id: c_id, search: search })
   end
 
-  def export
+  def import
+    if request.post?
+      @all_status = AccountStatus.find(:all)
+      if params[:import_csv].present? && params[:import_csv].content_type == 'text/csv'
+        csv_text = File.read(params[:import_csv].tempfile)
+        csv = CSV.parse(csv_text)
+        csv_validates(csv)
+        csv.shift
+        if @row_numbers.empty?
+          if csv.present?
+            csv.each do |row|
+              row = row[0].gsub(%r{\"}, '')
+              row = row.split(',')
+              account_params = {}
+              account_params[:name] = row[0]
+              account_params[:contact_name] = row[1]
+              account_params[:contact_title] = row[2]
+              @all_status.each do |status|
+                if row[3].present? && status.name ==  row[3].capitalize
+                  @status_id = status.id
+                  break
+                end
+              end
+              account_params[:status_id] = @status_id
+              account_params[:addresses_attributes] = [street_address: row[4], city: row[5], region: row[6], postcode: row[7], country: row[8]]
+              contacts_attributes = {}
+              contacts_attributes['phone'] = {name: '', type: 'phone', value: row[9]}
+              contacts_attributes['fax'] = {name: '', type: 'fax', value: row[10]} if row[10].present?
+              contacts_attributes['email'] = {name: '', type: 'email', value: row[11]} if row[11].present?
+              account_params[:contacts_attributes] = contacts_attributes.values
+              account_params[:about] = row[12]
+              account_params[:quick_facts] = row[13]
+              account_params[:assign_to] = current_user.id
+              account = Account.new(request: :create, account: account_params)
+              account.save
+            end
+            flash[:success] = "Import Accounts Successful"
+            redirect_to accounts_path
+          else
+            flash[:danger] = "Please Upload the CSV file with the accounts Details"
+            redirect_to account_import_path
+          end
+        else
+          render :import
+        end
+      end
+    end
+  end
 
+  def export
   end
 
   def generate_csv
@@ -574,7 +628,93 @@ class AccountsController < ApplicationController
     end
   end
 
+  def csv_template
+    send_data generate_csv_template
+  end
+
   private
+
+  def get_setting
+     get_account_display_setting
+     @role = current_user.roles.last.name
+  end
+
+  def check_permission_for_import
+    unless(@role == 'Admin' || @enable_import.blank? || @role == @enable_import.tr("_", " ").titleize || @enable_import == 'all')
+      redirect_to dashboard_path
+    end
+  end
+
+  def check_permission_for_export
+    unless(@role == 'Admin' || @enable_export.blank? || @role == @enable_export.tr("_", " ").titleize || @enable_export == 'all')
+      redirect_to dashboard_path
+    end
+  end
+
+  def accounts_statistics_info
+    account_statuses = AccountStatus.all(uid: RequestStore.store[:tenant])
+    @accounts_statistic = {}
+
+    account_statuses.each do |account_status|
+      @accounts_statistic[account_status.id] = {}
+      @accounts_statistic[account_status.id]['name'] = account_status.name
+      @accounts_statistic[account_status.id]['color'] = account_status.color
+      @accounts_statistic[account_status.id]['count'] = 0
+    end
+    @accounts_statistic[0] = {}
+    @accounts_statistic[0]['name'] = 'No Status'
+    @accounts_statistic[0]['color'] = "#ffffff"
+    @accounts_statistic[0]['count'] = 0
+
+    @accounts.each do |account|
+      if @accounts_statistic.key?(account.status.id)
+        @accounts_statistic[account.status.id]['count'] += 1
+      else
+        @accounts_statistic[0]['count'] += 1
+      end
+    end
+  end
+
+  def generate_csv_template
+    column_names = ['Account Name', 'Contact Name', 'Contact Title', 'Status', 'Address', 'City', 'Province', 'Postal Code', 'Country', 'Phone', 'Fax', 'Email', 'About', 'Quick Facts' ]
+    CSV.generate() do |csv|
+      csv << column_names
+    end
+  end
+
+  def csv_validates(csv)
+    @line_no = 0
+    @row_numbers = {}
+    status_array = @all_status.map(&:name)
+    column_names = ['Account Name', 'Contact Name', 'Contact Title', 'Status', 'Address', 'City', 'Province', 'Postal Code', 'Country', 'Phone', 'Fax', 'Email', 'About', 'Quick Facts' ]
+    if csv[0].present?
+      csv.each do |row|
+        @line_no +=1
+        if row[0].present?
+          row_data = row[0].gsub(%r{\"}, '')
+          row_data = row_data.split(',')
+        end
+        if @line_no == 1 && (row[0].present? && (row_data !=column_names))
+          @row_numbers["#{@line_no}"] = "Imported CSV file does not contain the correct headers"
+        end
+        if @line_no !=1 && row[0].present?
+          if row_data[0].blank?
+            @row_numbers["#{@line_no}"] = "Required field, Name, can not be empty"
+          end
+          if row_data[3].present?
+            if !(status_array.include?(row_data[3].capitalize))
+              @row_numbers["#{@line_no}"] = "Unknown account status"
+            end
+          else
+            @row_numbers["#{@line_no}"] = "Required field, Status, can not be empty"
+          end
+          if row_data[9].blank?
+             @row_numbers["#{@line_no}"] = "Missing contact phone number"
+          end
+        end
+      end
+    end
+  end
 
   def accounts_sort_by(value1, value2)
     if value1 == 'name'
@@ -669,7 +809,7 @@ class AccountsController < ApplicationController
     end
   end
 
-  def  account_update_info(account_with_previous_value, account_with_update_value)
+  def account_update_info(account_with_previous_value, account_with_update_value)
     changed_value = {}
     if account_with_previous_value.present? && account_with_update_value.present?
       if account_with_previous_value.name != account_with_update_value.name

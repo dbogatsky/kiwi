@@ -33,14 +33,21 @@
 </div><!-- row -->
 
 <div class="row row-pad-5">
-  <div class="col-md-11">
+  <div class="col-md-10">
     <div class="margin_left4">
       <%=advance_search_criteria%>
     </div>
   </div>
-  <div class="col-md-1 pull-right">
-    <%= link_to account_export_path, class: "btn btn-success dropdown-toggle" do %><i class="fa fa-arrow-circle-o-down mr5"></i>Export<% end %>
-  </div>
+  <%if (@role == 'Admin' || @enable_import.blank? || @role == @enable_import.tr("_", " ").titleize || @enable_import == 'all')%>
+    <div class="col-md-1">
+      <%= link_to account_import_path, class: "btn btn-lightblue dropdown-toggle" do %><i class="fa fa-arrow-circle-o-up mr5"></i>Import<% end %>
+    </div>
+  <%end%>
+  <%if (@role == 'Admin' || @enable_export.blank? || @role == @enable_export.tr("_", " ").titleize || @enable_export == 'all')%>
+    <div class="col-md-1 pull-right">
+      <%= link_to account_export_path, class: "btn btn-success dropdown-toggle" do %><i class="fa fa-arrow-circle-o-down mr5"></i>Export<% end %>
+    </div>
+  <%end%>
 </div><!-- row -->
 
 <div class="row row-pad-5">
@@ -53,16 +60,25 @@
 		</ul>
 	</div>
 </div><!-- row -->
+
+<% unless @accounts.count == 0 %>
+<div class="row row-pad-5">
+  <div class="col-md-12">
+    <span class='badge' style='background-color: #000000; border-color: #000000;'><strong>Total Accounts: <%= @accounts.count %></strong></span><i class="fa fa-caret-right" style="margin: 5px 5px 5px 10px;"></i>
+    <% @accounts_statistic.each do |account_stat_key, account_stat| %>
+      <% unless account_stat_key == 0 %>
+        <span class='badge' style='background-color: <%= account_stat['color'] %>; border-color: <%= account_stat['color'] %>;'><%= account_stat['name'] %>: <%= account_stat['count'] %></span>
+      <% end %>
+    <% end %>
+    <% if @accounts_statistic[0]['count'] > 0 %>
+      <span class='badge' style='background-color: <%= @accounts_statistic[0]['color'] %>; border-color: #000000; color: black'><%= @accounts_statistic[0]['name'] %>: <%= @accounts_statistic[0]['count'] %></span>
+    <% end %>
+  </div>
+</div><!-- row -->
+<% end %>
+
 <div class="mb30"></div>
-<%
-=begin
-Account Count: <%= @accounts.count ::
-Open: <%=  @accounts.select.count {|account| account.status.name == 'Open' } ::
-Lead: <%=  @accounts.select.count {|account| account.status.name == 'Lead' } ::
-Suspended: <%=  @accounts.select.count {|account| account.status.name == 'Suspended' } ::
-Closed: <%=  @accounts.select.count {|account| account.status.name == 'Closed' }
-=end
-%>
+
 <%= render partial: "accounts/account_list" %>
 
 <!--<div class="people-list">

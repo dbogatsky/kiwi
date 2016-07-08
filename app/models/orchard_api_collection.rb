@@ -9,7 +9,7 @@ class OrchardApiCollection < ActiveResource::Collection
 
   def setup_pagination
     return if @meta.nil?
-    @paginatable ||= WillPaginate::Collection.new(@meta["current_page"], @meta["per_page"], @meta["total_entries"]) 
+    @paginatable ||= WillPaginate::Collection.new(@meta["current_page"], @meta["per_page"], @meta["total_entries"])
   end
 
   def method_missing(method, *args, &block)
