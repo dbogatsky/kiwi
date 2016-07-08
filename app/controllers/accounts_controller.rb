@@ -641,13 +641,13 @@ class AccountsController < ApplicationController
   end
 
   def check_permission_for_import
-    unless(@role == 'Admin' || @enable_import.blank? || @role == @enable_import.tr("_", " ").titleize || @enable_import == 'all')
+    unless(@role == 'Admin' || @role == @enable_import.tr("_", " ").titleize || @enable_import == 'all')
       redirect_to dashboard_path
     end
   end
 
   def check_permission_for_export
-    unless(@role == 'Admin' || @enable_export.blank? || @role == @enable_export.tr("_", " ").titleize || @enable_export == 'all')
+    unless(@role == 'Admin' || @role == @enable_export.tr("_", " ").titleize || @enable_export == 'all')
       redirect_to dashboard_path
     end
   end

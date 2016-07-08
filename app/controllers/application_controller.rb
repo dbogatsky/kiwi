@@ -368,8 +368,8 @@ class ApplicationController < ActionController::Base
     preferences = JSON.parse(preferences)
     @account_per_page =  preferences['company']['settings']['preferences']['account_per_page']
     @account_by_status = preferences['company']['settings']['preferences']['accounts_by_status']
-    @enable_import = preferences['company']['settings']['preferences']['enable_import']
-    @enable_export = preferences['company']['settings']['preferences']['enable_export']
+    @enable_import = preferences['company']['settings']['preferences']['enable_import'] || "unknown"
+    @enable_export = preferences['company']['settings']['preferences']['enable_export'] || "unknown"
   end
 
   def get_api_values
