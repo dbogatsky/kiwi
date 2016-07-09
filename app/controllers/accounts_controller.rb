@@ -50,7 +50,8 @@ class AccountsController < ApplicationController
     #   @notification.update_attributes(read_at: Time.now)
     #   notification_info
     # end
-    account_timeline_conversation_items
+
+    ##account_timeline_conversation_items
   end
 
   def new

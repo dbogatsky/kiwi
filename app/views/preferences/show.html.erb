@@ -15,25 +15,26 @@
         </div>
       </div>
     </div> <!-- panel-body -->
+<%
+#    <div class="panel-body">
+#      <div class="form-group">
+#        <label class="col-sm-3 control-label">Preview conversation timeline</label>
+#        <div class="col-sm-6">
+#          <%=select_tag('preference[preview_conversation_timeline]', options_for_select([['1 day', 'one_day'],['2 days', 'two_days'],['1 week', 'one_week'],['2 weeks', 'two_weeks'],['1 month', 'one_month']], selected: @user_preference['preview_conversation_timeline']), {prompt: "-Select your conversation timeline preview limit-", :class => 'form-control', required: true}) % >
+#        </div>
+#      </div>
+#    </div> <!-- panel-body -->
 
-    <div class="panel-body">
-      <div class="form-group">
-        <label class="col-sm-3 control-label">Preview conversation timeline</label>
-        <div class="col-sm-6">
-          <%=select_tag('preference[preview_conversation_timeline]', options_for_select([['1 day', 'one_day'],['2 days', 'two_days'],['1 week', 'one_week'],['2 weeks', 'two_weeks'],['1 month', 'one_month']], selected: @user_preference['preview_conversation_timeline']), {prompt: "-Select your conversation timeline preview limit-", :class => 'form-control', required: true})%>
-        </div>
-      </div>
-    </div> <!-- panel-body -->
+#    <div class="panel-body">
+#      <div class="form-group">
+#        <label class="col-sm-3 control-label">Receive Notifications by</label>
+#        <div class="col-sm-6">
+#          <%=select_tag('preference[received_notification_by]', options_for_select([['Both', 'both'],['Email only', 'email'],['SMS only', 'sms'],['None', 'none']], selected: @user_preference['received_notification_by']), {prompt: "-Select your notification reminder preference. Email or SMS or both-", :class => 'form-control', required: true}) % >
+#        </div>
+#      </div>
+#    </div> <!-- panel-body -->
 
-    <div class="panel-body">
-      <div class="form-group">
-        <label class="col-sm-3 control-label">Receive Notifications by</label>
-        <div class="col-sm-6">
-          <%=select_tag('preference[received_notification_by]', options_for_select([['Both', 'both'],['Email only', 'email'],['SMS only', 'sms'],['None', 'none']], selected: @user_preference['received_notification_by']), {prompt: "-Select your notification reminder preference. Email or SMS or both-", :class => 'form-control', required: true})%>
-        </div>
-      </div>
-    </div> <!-- panel-body -->
-
+%>
     <div class="panel-body">
       <div class="form-group">
         <label class="col-sm-3 control-label">Notification display limit</label>
