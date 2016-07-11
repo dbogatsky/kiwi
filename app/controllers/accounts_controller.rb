@@ -11,6 +11,10 @@ class AccountsController < ApplicationController
   @@account_with_previous_value = nil
 
   def index
+    user_preference_details
+    show_accounts_per_page = @user_preference['show_accounts_per_page']
+    show_accounts_per_page = 25 if !show_accounts_per_page.is_a? Integer
+
     # Get all accounts
     if request.format.symbol.present? && request.format.symbol != :csv
       session[:search1] = nil
@@ -18,7 +22,7 @@ class AccountsController < ApplicationController
       session[:search] = nil
       session[:advanced_search] = nil
     end
-    @accounts = Account.all(params: { search: params[:search] })
+    @accounts = Account.all(params: { search: params[:search], per_page: show_accounts_per_page })
     session[:search] = params[:search] if params[:search].present?
     if params[:search1].present? && params[:search2].present?
       accounts_sort_by(params[:search1][:search], params[:search2][:search])
@@ -28,9 +32,8 @@ class AccountsController < ApplicationController
     if params[:advanced_search].present?
       advanced_search
       session[:advanced_search] = @search
-      @accounts = Account.all(params: { search: @search})
+      @accounts = Account.all(params: { search: @search, per_page: show_accounts_per_page })
     end
-
     accounts_statistics_info
 
     respond_to do |format|
@@ -669,10 +672,14 @@ class AccountsController < ApplicationController
     @accounts_statistic[0]['count'] = 0
 
     @accounts.each do |account|
-      if @accounts_statistic.key?(account.status.id)
-        @accounts_statistic[account.status.id]['count'] += 1
-      else
+      if account.status.nil?
         @accounts_statistic[0]['count'] += 1
+      else
+        if @accounts_statistic.key?(account.status.id)
+          @accounts_statistic[account.status.id]['count'] += 1
+        else
+          @accounts_statistic[0]['count'] += 1
+        end
       end
     end
   end

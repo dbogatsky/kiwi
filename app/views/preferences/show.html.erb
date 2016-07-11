@@ -45,6 +45,16 @@
       </div>
     </div> <!-- panel-body -->
 
+    <div class="panel-body">
+      <div class="form-group">
+        <label class="col-sm-3 control-label">Show accounts per page</label>
+        <div class="col-sm-6">
+          <%=select_tag('preference[show_accounts_per_page]', options_for_select([['10', '10'],['25', '25'],['50', '50'],['100', '100']], selected: @user_preference['show_accounts_per_page']), {prompt: "-- Select --", :class => 'form-control input-sm', required: true})%>
+        </div>
+      </div>
+    </div> <!-- panel-body -->
+
+
   	<div class="panel-footer">
   		<div class="row">
   			<div class="col-sm-6 col-sm-offset-3">
