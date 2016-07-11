@@ -81,7 +81,7 @@
 <script type="text/javascript">
   $(".meeting-detail_<%=meeting.id%>").on('shown.bs.modal', function(){
     var lat =  "<%=meeting.latitude == 0.0 || meeting.latitude.nil? ? 43.7000 : meeting.latitude%>"
-    var lng =  "<%=meeting.longitude == 0.0 || meeting.longitude.nil? ? 79.4000 : meeting.longitude%>"
+    var lng =  "<%=meeting.longitude == 0.0 || meeting.longitude.nil? ? -79.4000 : meeting.longitude%>"
     var loc = "<%=meeting.location%>"
     var div_id = "#location_map_<%=meeting.id%>"
     showMap(div_id, lat, lng, loc)
