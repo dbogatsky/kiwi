@@ -13,8 +13,8 @@ class AccountsController < ApplicationController
   def index
     user_preference_details
     show_accounts_per_page = @user_preference['show_accounts_per_page']
-    show_accounts_per_page = 25 if !show_accounts_per_page.is_a? Integer
-
+    @show_accounts_per_page = show_accounts_per_page.to_i > 0 ? show_accounts_per_page.to_i : 25
+    page = params[:page].present? ? params[:page] : 1
     # Get all accounts
     if request.format.symbol.present? && request.format.symbol != :csv
       session[:search1] = nil
@@ -22,7 +22,8 @@ class AccountsController < ApplicationController
       session[:search] = nil
       session[:advanced_search] = nil
     end
-    @accounts = Account.all(params: { search: params[:search], per_page: show_accounts_per_page })
+    @accounts = Account.all(params: { search: params[:search],page: page, per_page: @show_accounts_per_page })
+    @total_entries = @accounts.total_entries
     session[:search] = params[:search] if params[:search].present?
     if params[:search1].present? && params[:search2].present?
       accounts_sort_by(params[:search1][:search], params[:search2][:search])
@@ -32,10 +33,10 @@ class AccountsController < ApplicationController
     if params[:advanced_search].present?
       advanced_search
       session[:advanced_search] = @search
-      @accounts = Account.all(params: { search: @search, per_page: show_accounts_per_page })
+      @accounts = Account.all(params: { search: @search, page: page, per_page: @show_accounts_per_page })
+      @total_entries = @accounts.total_entries
     end
     accounts_statistics_info
-
     respond_to do |format|
       format.html
       format.csv { send_data generate_csv }
