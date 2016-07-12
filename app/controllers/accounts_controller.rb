@@ -151,8 +151,8 @@ class AccountsController < ApplicationController
       conversation_item: {
         title:              conversation_item_params[:title],
         body:               conversation_item_params[:body],
-        latitude:           params[:conversation_item][:latitude].to_f,
-        longitude:          params[:conversation_item][:longitude].to_f,
+        latitude:           params[:conversation_item][:latitude],
+        longitude:          params[:conversation_item][:longitude],
         invitees:           params[:conversation_item][:invitees],
         scheduled_at:       params[:conversation_item][:scheduled_at],
         location:           params[:conversation_item][:location],
