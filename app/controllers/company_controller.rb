@@ -81,6 +81,7 @@ class CompanyController < ApplicationController
     else
       get_news
       news_data = @news_data.keys
+      news_data = news_data.collect {|x| x.to_s }
       news_array = ['news1', 'news2', 'news3', 'news4', 'news5']
       final_array = (news_array-news_data) | (news_data-news_array)
       curlRes = `curl -X PUT -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -d '{"settings":{"#{final_array.first}": "#{params[:news]}"}}' '#{apiFullUrl}'`
