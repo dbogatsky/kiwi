@@ -15,7 +15,7 @@
 
 <!--<script src="http://maps.google.com/maps/api/js?sensor=true"></script>-->
 <!-- <script src="http://maps.google.com/maps/api/js"></script> -->
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzHruiCgClUoJhMopy5RQ5SUMcw2MkTAM&libraries=places"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCgqcu1Jqqdc0a4hVnfRvw0hyJM832rqXA&libraries=places"></script>
 <script src="/assets/bootstrap/js/gmaps.js"></script>
 <script src="/assets/bootstrap/js/jquery.twbsPagination.min.js"></script>
 
@@ -114,10 +114,13 @@
       });
     }
 
-    if (document.getElementById("account_name") != null){
-        address_auto_fill(document.getElementById("account_name"));
-      }else{
-        address_auto_fill(document.getElementById("street_number"));
+    var path = window.location.pathname
+    if(path.includes('/accounts/') && (path.includes('/edit') || path.includes('/new'))){
+      if (document.getElementById("account_name") != null){
+          address_auto_fill(document.getElementById("account_name"));
+        }else{
+          address_auto_fill(document.getElementById("street_number"));
+      }
     }
 
     $('body').bind('ajax:beforeSend', function(event, xhr, settings) {
