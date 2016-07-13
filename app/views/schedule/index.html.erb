@@ -86,7 +86,7 @@
 <%= render "accounts/conversation_meeting_edit", account: nil, info: true%>
 
 <script>
-
+  $.fn.modal.Constructor.prototype.enforceFocus = function () {};
   $('.select2').select2();
 
   $(document).on("change",".selected_account",function() {
