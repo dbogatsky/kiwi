@@ -390,13 +390,25 @@
     });
 	});
 
-  $(document).on("click",".fc-prev-button span, .fc-next-button span",function(){
+  $(document).on("click",".fc-next-button",function(){
+
+    get_regular_visit_with_day_view()
+
+  });
+
+  $(document).on("click",".fc-prev-button",function(){
+
+    get_regular_visit_with_day_view()
+
+  });
+
+  function get_regular_visit_with_day_view(){
     var view = $('#calendar').fullCalendar('getView').name
     if(view == 'agendaDay'){
       var date = $('#calendar').fullCalendar('getDate')
       update_regular_visits(date)
     }
-  });
+  }
 
   $("#quote-reminder-settings").hide();
   $("#quote-reminder-settings-edit").hide();
