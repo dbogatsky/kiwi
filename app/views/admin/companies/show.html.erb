@@ -93,6 +93,7 @@
                   <th>First Name</th>
                   <th>Last Name</th>
                   <th>Role</th>
+                  <th>Entity</th>
                   <th>Actions</th>
                </tr>
             </thead>
@@ -103,6 +104,7 @@
                   <td><%= user.first_name %></td>
                   <td><%= user.last_name %></td>
                   <td><%=user.roles.present? ? user.roles.last.name : ''%></td>
+                  <td><%=user.entity.present? ? user.entity.name : 'N/A' %></td>
                   <td class="table-action">
                     <%=link_to edit_admin_company_user_path(company_id: @company.id, id: user.id) do %>
                       <i class="fa fa-pencil"></i>
