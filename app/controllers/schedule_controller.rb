@@ -1,6 +1,7 @@
 class ScheduleController < ApplicationController
   include ApplicationHelper
   before_action :get_api_values, only: [:index, :calendar_event]
+  skip_before_filter :verify_authenticity_token, only: [:sort_regular_visits]
 
   def index
     user_preference_details
@@ -50,6 +51,16 @@ class ScheduleController < ApplicationController
         @result = false
       end
     end
+  end
+
+  def sort_regular_visits
+    params[:order].values.each do |order|
+      conversation = ConversationItem.find(order['id'], params: { conversation_id: order['conversation_id']})
+      conversation_item = {}
+      conversation_item[:sort] = order['position']
+      conversation.update_attributes(conversation_item: conversation_item, conversation_id: order['conversation_id'], reload: true)
+    end
+    render :nothing => true
   end
 
   def get_account_address
