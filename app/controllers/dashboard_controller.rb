@@ -79,27 +79,30 @@ class DashboardController < ApplicationController
       wresponse = OpenWeather::Current.city(wcity + ',' + wcountry, wapi_options)
 
       @weather = Hash[]
-      @weather['city'] = wcity
-      @weather['country'] = wcountry
-      @weather['condition'] = wresponse['weather'][0]['main']
-      @weather['temp'] = wresponse['main']['temp'].ceil
-      @weather['temp_max'] = wresponse['main']['temp_max'].ceil
-      @weather['wind'] = wresponse['wind']['speed'].ceil
 
-      if (@weather['condition'] == 'Clouds')
-        @weather['icon'] = 'wi-cloudy'
-      elsif (@weather['condition'] == 'Rain')
-        @weather['icon'] = 'wi-rain'
-      elsif (@weather['condition'] == 'Drizzle')
-        @weather['icon'] = 'wi-sprinkle'
-      elsif (@weather['condition'] == 'Thunderstorm')
-        @weather['icon'] = 'wi-rain'
-      elsif (@weather['condition'] == 'Snow')
-        @weather['icon'] = ' wi-snow'
-      elsif (@weather['condition'] == 'Extreme')
-        @weather['icon'] = 'wi-tornado'
-      else
-        @weather['icon'] = 'wi-day-sunny'
+      if (wresponse["cod"] == 200)
+        @weather['city'] = wcity
+        @weather['country'] = wcountry
+        @weather['condition'] = wresponse['weather'][0]['main']
+        @weather['temp'] = wresponse['main']['temp'].ceil
+        @weather['temp_max'] = wresponse['main']['temp_max'].ceil
+        @weather['wind'] = wresponse['wind']['speed'].ceil
+
+        if (@weather['condition'] == 'Clouds')
+          @weather['icon'] = 'wi-cloudy'
+        elsif (@weather['condition'] == 'Rain')
+          @weather['icon'] = 'wi-rain'
+        elsif (@weather['condition'] == 'Drizzle')
+          @weather['icon'] = 'wi-sprinkle'
+        elsif (@weather['condition'] == 'Thunderstorm')
+          @weather['icon'] = 'wi-rain'
+        elsif (@weather['condition'] == 'Snow')
+          @weather['icon'] = ' wi-snow'
+        elsif (@weather['condition'] == 'Extreme')
+          @weather['icon'] = 'wi-tornado'
+        else
+          @weather['icon'] = 'wi-day-sunny'
+        end
       end
     else
       @weather = Hash[]
