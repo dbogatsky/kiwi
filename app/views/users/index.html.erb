@@ -27,6 +27,7 @@
                       <th>First Name</th>
                       <th>Last Name</th>
                       <th>Role</th>
+                      <th>Entity</th>
                       <th>Actions</th>
                    </tr>
                 </thead>
@@ -44,6 +45,7 @@
                           <% end %>
                           <%= @user_roles_array.join(', ') %>
                         </td>
+                        <td><%=user.entity.present? ? user.entity.name : 'N/A' %></td>
                         <td class="table-action">
                           <%=link_to edit_user_path(user.id) do %>
                             <i class="fa fa-pencil"></i>
