@@ -16,7 +16,7 @@ class AccountsController < ApplicationController
     @show_accounts_per_page = show_accounts_per_page.to_i > 0 ? show_accounts_per_page.to_i : 25
     page = params[:page].present? ? params[:page] : 1
     # Get all accounts
-    if request.format.symbol.present? && request.format.symbol != :csv
+    if request.format.symbol.present? && [:csv,:xls].exclude?(request.format.symbol)
       session[:search1] = nil
       session[:search2] = nil
       session[:search] = nil
@@ -39,7 +39,11 @@ class AccountsController < ApplicationController
     accounts_statistics_info
     respond_to do |format|
       format.html
-      format.csv { send_data generate_csv }
+      if request.format.symbol == :csv
+        format.csv { send_data generate_csv }
+      elsif request.format.symbol == :xls
+        format.xls { send_data generate_csv }
+      end
     end
   end
 
@@ -609,7 +613,6 @@ class AccountsController < ApplicationController
   end
 
   def generate_csv
-     # headers['Content-Disposition'] = "attachment; filename=\"user-list\""
     if session[:search1].present? && session[:search2].present?
       accounts_sort_by(session[:search1], session[:search2])
     elsif session[:advanced_search].present?
@@ -620,11 +623,12 @@ class AccountsController < ApplicationController
     column_names = ['ID', 'Name', 'Contact Name', 'Contact Title', 'Status', 'Address', 'City', 'Province', 'Postal Code', 'Country', 'About', 'Quick Facts' ]
     options = {}
     options[:force_quotes] = true
-    options[:col_sep] = params[:option2][:delimiter] == 'other' ? params[:other_option] : params[:option2][:delimiter]
+    # options[:col_sep] = params[:option2][:delimiter] == 'other' ? params[:other_option] : params[:option2][:delimiter]
+    options[:col_sep] = ','
     CSV.generate(options) do |csv|
-      if params[:option1][:header] == 'true'
-         csv << column_names
-      end
+      # if params[:option1][:header] == 'true'
+      csv << column_names
+      # end
       if @accounts.present?
         @accounts.each do |account|
           address = account.addresses.first rescue nil
