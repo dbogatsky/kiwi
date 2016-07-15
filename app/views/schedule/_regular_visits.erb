@@ -3,7 +3,7 @@
 
 <% if @regular_visits.count > 0 %>
   <section id="cd-timeline" class="cd-container sort_container" >
-    <% @regular_visits.each do |citem| %>
+    <% @regular_visits.sort_by {|r| r.sort}.each do |citem| %>
       <div class="cd-timeline-block citem_div" data-id="<%=citem.id%>" data-conversation-id = "<%=citem.conversation_id%>">
         <div class="cd-timeline-img cd-meeting">
           <img src="/assets/vertical-timeline/img/cd-icon-calendar.svg" alt="Meeting">
