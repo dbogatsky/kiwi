@@ -6,7 +6,7 @@
         <%if shared_user.compact.present? %>
           <%= options_for_select(users.reject{|u| shared_user.map(&:id).include?(u.id)}.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] if account.assigned_to.id != u.id }) %>
         <%else%>
-          <%= options_for_select(users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] if account.assigned_to.id != u.id }) %>
+          <%= options_for_select(users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] if account.assigned_to.try(:id) != u.id }) %>
         <%end%>
       </select>
     </div>
