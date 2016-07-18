@@ -1,0 +1,16 @@
+<div class="cd-timeline-img cd-account">
+    <img src="/assets/vertical-timeline/img/cd-icon-briefcase.svg" alt="Account Change">
+</div>
+<div class="cd-timeline-content">
+  <span class="cd-date">
+    <%= citem.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>
+  </span>
+  <h2 class="ci_header"><%= citem.title %></h2>
+  <div class="ci_note_body"><%= sanitize citem.body %></div>
+  <div class="ci_footer">
+    <% if (citem.scheduled_at.present?) %>
+      <i class="fa fa-bell"></i><%= citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %><br/>
+    <% end %>
+    <i class="fa fa-user tooltips mr10" data-toggle="tooltip" data-original-title="Created by"></i><%=citem.created_by.try(:first_name)%> <%=citem.created_by.try(:last_name)%>
+  </div>
+</div>

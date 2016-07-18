@@ -98,10 +98,10 @@ class AccountsController < ApplicationController
       params[:account][:contacts_attributes] = params[:account][:contacts_attributes].values
       if @account.update_attributes(name: @account.name, account: account_params)
         save_avatar
-        note_body = account_update_info(@@account_with_previous_value, @account)
+        conversation_item_body = account_update_info(@@account_with_previous_value, @account)
         c_id = @account.conversation.id
-        note_title ="Account info changed on " + "#{Time.now.in_time_zone(current_user.time_zone).strftime('%a %b %d %Y at %l:%M %p')}"
-        ConversationItem.create(conversation_item: { title: note_title, body: note_body, created_by_id: current_user.id }, conversation_id: c_id, type: 'note')
+        conversation_item_title ="Account info changed on " + "#{Time.now.in_time_zone(current_user.time_zone).strftime('%a %b %d %Y at %l:%M %p')}"
+        ConversationItem.create(conversation_item: { title: conversation_item_title, body: conversation_item_body, created_by_id: current_user.id }, conversation_id: c_id, type: 'account')
         flash[:success] = 'Account has been edited successfully'
       else
         flash[:danger] = 'Oops! Unable to edit the account'

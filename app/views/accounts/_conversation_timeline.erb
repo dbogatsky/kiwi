@@ -14,6 +14,8 @@
           <%= render "conversation_meeting_show", info: nil, created_by: i.created_by, :citem => i %>
         <% elsif i.type.eql? 'quote' %>
           <%= render "conversation_quotes_show", info: nil, created_by: i.created_by, :citem => i %>
+        <%elsif i.type.eql? 'account'%>
+          <%= render "conversation_account_show", :citem => i %>
         <% end %>
     </div>
   <% end %>
