@@ -104,6 +104,7 @@ class ApplicationController < ActionController::Base
   end
 
   def authentication
+    store_location
     if session[:user_id].present? && superadmin_logged_in?
       set_superadmin
     else
@@ -113,6 +114,19 @@ class ApplicationController < ActionController::Base
       else
         set_current_user
       end
+    end
+  end
+
+  def store_location
+    # store last url - this is needed for post-login redirect to whatever the user last visited.
+    return unless request.get?
+    if (request.path != "/" &&
+        request.path != "/login/destroy" &&
+        request.path != "/login" &&
+        controller_name != "errors" &&
+        action_name != "routing" &&
+        !request.xhr?) # don't store ajax calls
+      session[:previous_url] = request.fullpath
     end
   end
 

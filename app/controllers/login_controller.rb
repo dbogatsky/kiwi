@@ -58,7 +58,7 @@ class LoginController < ApplicationController
         set_current_user
 
         # Log the user in and redirect to the main page: Dashboard first?
-        redirect_to dashboard_path
+        redirect_to session[:previous_url] || dashboard_path
       end
     end
   end

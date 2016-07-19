@@ -13,6 +13,13 @@ class NotificationsController < ApplicationController
     end
   end
 
+  def show
+    flash.clear
+    notification = Notification.find(params[:id]) rescue nil
+    flash[:danger] = "Sorry, we're unable to find your notification" unless notification
+    render :index
+  end
+
   def conversation_detail
     if params[:notification_read] == 'false'
       @notification = Notification.find(params[:notification_id])
