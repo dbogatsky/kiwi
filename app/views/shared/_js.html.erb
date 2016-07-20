@@ -294,6 +294,39 @@
         });
       <%end%>
     }
+
+    $(".amount_val").keypress(function(event) {
+      if ((event.which != 46 || $(this).val().indexOf('.') != -1) &&
+        ((event.which < 48 || event.which > 57) &&
+          (event.which != 0 && event.which != 8))) {
+        event.preventDefault();
+      }
+      var text = $(this).val();
+      if ((text.indexOf('.') != -1) &&
+        (text.substring(text.indexOf('.')).length > 2) &&
+        (event.which != 0 && event.which != 8) &&
+        ($(this)[0].selectionStart >= text.length - 2)) {
+        event.preventDefault();
+      }
+    });
+
+    $(".amount_val").focusout(function(){
+       var re = /^-?[0-9]+$/;
+       var num = $(this).val();
+       if (re.test(num)){
+          num = num + '.00';
+          $(this).val(num);
+       }else if(!re.test(num) && num != '' ){
+         var length = parseFloat(num).toFixed(2).replace(/^-?\d*\.?|0+$/g, '').length
+         if(length == 1){
+          num = num + '0';
+          $(this).val(num);
+        }else if (length < 1){
+          num = parseFloat(num) + '.00';
+          $(this).val(num);
+        }
+      }
+    });
   });
 </script>
 <!-- end of shared javascript -->
