@@ -37,7 +37,13 @@
                   <div class="col-lg-4">
                     <div class="input-group">
                       <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-                      <div class="bootstrap-timepicker"><input id="reminderTimePickerEdit" type="text" class="form-control" name="scheduled_time" required="required"/></div>
+                      <div class="bootstrap-timepicker">
+                        <%if mobile?%>
+                          <input type="time" name="scheduled_time" id="reminderTimePickerEdit" step=900 required="required" />
+                        <%else%>
+                          <input id="reminderTimePickerEdit" type="text" class="form-control" name="scheduled_time" required="required"/>
+                        <%end%>
+                      </div>
                     </div>
                   </div>
                 </div>

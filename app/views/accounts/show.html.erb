@@ -394,7 +394,11 @@
       id = $(this).attr('data-id')
       $('.conversation-edit-email-modal-form input[name="conversation_item[invitees]"]').val($(this).attr('data-invitees'));
       $('.conversation-edit-email-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
-      $('.conversation-edit-email-modal-form input[name="scheduled_time"]').val($(this).attr('data-time'));
+      if(mobile == 'false'){
+        $('.conversation-edit-email-modal-form input[name="scheduled_time"]').val($(this).attr('data-time'));
+      }else{
+        $('.conversation-edit-email-modal-form input[name="scheduled_time"]').val($(this).attr('data-time-24'));
+      }
       $('.conversation-edit-email-modal-form input[name="scheduled_date"]').val($(this).attr('data-date'));
       email_edit_editor.data("wysihtml5").editor.setValue($(this).attr('data-body'));
       $('.conversation-edit-email-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
@@ -425,7 +429,11 @@
     $(document).on('click', "a.edit_reminder", function(e){
       id = $(this).attr('data-id')
       $('.conversation-edit-reminder-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
-      $('.conversation-edit-reminder-modal-form input[name="scheduled_time"]').val($(this).attr('data-time'));
+      if(mobile == 'false'){
+        $('.conversation-edit-reminder-modal-form input[name="scheduled_time"]').val($(this).attr('data-time'));
+      }else{
+        $('.conversation-edit-reminder-modal-form input[name="scheduled_time"]').val($(this).attr('data-time-24'));
+      }
       $('.conversation-edit-reminder-modal-form input[name="scheduled_date"]').val($(this).attr('data-date'));
       edit_reminder.data("wysihtml5").editor.setValue($(this).attr('data-description'));
       var user_ids = $(this).attr('data-users-to-notify-ids')
@@ -580,7 +588,11 @@
       if (body != ''){
         edit_quote.data("wysihtml5").editor.setValue(body);
       }
-      $('.conversation-edit-quote-modal-form input[name="follow_time"]').val($(this).attr('data-time'));
+      if(mobile == 'false'){
+        $('.conversation-edit-quote-modal-form input[name="follow_time"]').val($(this).attr('data-time'));
+      }else{
+        $('.conversation-edit-quote-modal-form input[name="follow_time"]').val($(this).attr('data-time-24'));
+      }
       $('.conversation-edit-quote-modal-form input[name="follow_date"]').val($(this).attr('data-date'));
       $('.conversation-edit-quote-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
       $('.conversation-edit-quote-modal-form input[name="expires_in"]').val($(this).attr('data-ends-day'));
@@ -602,9 +614,11 @@
       $(".get_date").attr('disabled', false)
     });
 
-    $('#follow_time').timepicker({
-      minuteStep: 15
-    });
+    if(mobile == 'false'){
+      $('.follow_time').timepicker({
+        minuteStep: 15
+      });
+    }
 
     $(document).ready(function(){
       $.fn.editable.defaults.ajaxOptions = {type: "PUT"};
@@ -666,7 +680,9 @@
           }
       };
 
-      $('#meeting-reminder-time, #meeting-reminder-time-edit').timepicker({minuteStep: 5});
+      if(mobile == 'false'){
+        $('#meeting-reminder-time, #meeting-reminder-time-edit').timepicker({minuteStep: 5});
+      }
 
       // by default hide reminder settings for meetings
       $("#meeting-reminder-settings").hide();
@@ -694,33 +710,45 @@
         dateFormat: 'mm/dd/yy',
         minDate: 0
       });
+
+      $('#reminderDatePicker').change(function(){
+        var select_date = $(this).val()
+        if(select_date == today_date(new Date)){
+          var c_time = set_time_when_date_change()
+          $("#reminderTimePicker").timepicker("setTime", c_time)
+        }
+      });
+
+      $('#reminderDatePickerEdit').change(function(){
+        var select_date = $(this).val()
+        if(select_date == today_date(new Date)){
+          var c_time = set_time_when_date_change()
+          $("#reminderTimePickerEdit").timepicker("setTime", c_time)
+        }
+      });
+
+    }else{
+      $('#reminderDatePicker').change(function(){
+        var select_date = today_date(new Date($(this).val()))
+        if(select_date == today_date(new Date)){
+          var c_time = set_time_when_date_change()
+          ConvertTimeformat('24', c_time);
+          $("#reminderTimePicker").val(sHours+':'+sMinutes)
+        }
+      });
+
+      $('#reminderDatePickerEdit').change(function(){
+        var select_date = today_date(new Date($(this).val()))
+        if(select_date == today_date(new Date)){
+          var c_time = set_time_when_date_change()
+          ConvertTimeformat('24', c_time);
+          $("#reminderTimePickerEdit").val(sHours+':'+sMinutes)
+        }
+      });
+
+      ConvertTimeformat('24', set_time(new Date()))
+      $("#reminderTimePicker").val(sHours+':'+sMinutes)
     }
-
-    $('#reminderDatePicker').change(function(){
-      if(mobile == 'false'){
-        var select_date = $(this).val()
-      }else{
-        var select_date = today_date(new Date($(this).val()))
-      }
-      if(select_date == today_date(new Date)){
-        var c_time = set_time_when_date_change()
-        $("#reminderTimePicker").timepicker("setTime", c_time)
-      }
-    });
-
-
-    $('#reminderDatePickerEdit').change(function(){
-      if(mobile == 'false'){
-        var select_date = $(this).val()
-      }else{
-        var select_date = today_date(new Date($(this).val()))
-      }
-      if(select_date == today_date(new Date)){
-        var c_time = set_time_when_date_change()
-
-        $("#reminderTimePickerEdit").timepicker("setTime", c_time)
-      }
-    });
 
     function set_time_when_date_change(){
       var next_time = new Date();
@@ -744,36 +772,39 @@
       return c_time
     }
 
-    $('#reminderTimePicker').timepicker({
+    if(mobile == 'false'){
+      $('#reminderTimePicker').timepicker({
+          showMeridian: true,
+          minuteStep: 15,
+          showInputs: false,
+      }).on('changeTime.timepicker', function(e) {
+         if (mobile == 'false'){
+            var  date_val = $('#reminderDatePicker').val()
+         }else{
+            var date_val = today_date(new Date($('#reminderDatePicker').val()))
+         }
+          if((date_val != '') && (date_val == today_date(new Date))){
+            set_reminder_time(e)
+          }
+      });
+
+      called = false;
+      $('#reminderTimePickerEdit').timepicker({
         showMeridian: true,
         minuteStep: 15,
         showInputs: false,
-    }).on('changeTime.timepicker', function(e) {
-       if (mobile == 'false'){
-          var  date_val = $('#reminderDatePicker').val()
-       }else{
-          var date_val = today_date(new Date($('#reminderDatePicker').val()))
-       }
-        if((date_val != '') && (date_val == today_date(new Date))){
-          set_reminder_time(e)
-        }
-    });
-    called = false;
-    $('#reminderTimePickerEdit').timepicker({
-      showMeridian: true,
-      minuteStep: 15,
-      showInputs: false,
-    }).on('changeTime.timepicker', function(e) {
-       if (mobile == 'false'){
-          var  date_val = $('#reminderDatePickerEdit').val()
-        }else{
-          var date_val = today_date(new Date($('#reminderDatePickerEdit').val()))
-        }
+      }).on('changeTime.timepicker', function(e) {
+         if (mobile == 'false'){
+            var  date_val = $('#reminderDatePickerEdit').val()
+          }else{
+            var date_val = today_date(new Date($('#reminderDatePickerEdit').val()))
+          }
 
-        if((date_val != '') && (date_val == today_date(new Date))){
-          set_reminder_time(e)
-        }
-    });
+          if((date_val != '') && (date_val == today_date(new Date))){
+            set_reminder_time(e)
+          }
+      });
+    }
 
     function today_date(date){
       var current_date = date
@@ -877,11 +908,9 @@
       if(mobile == 'false'){
         $('#scheduledDatePicker').datepicker();
         $('#emailDatePickerEdit').datepicker();
+        $('#scheduledTimePicker').timepicker({minuteStep: 5});
+        $('#emailTimePickerEdit').timepicker({minuteStep: 5});
       }
-      $('#scheduledTimePicker').timepicker({minuteStep: 5});
-
-
-      $('#emailTimePickerEdit').timepicker({minuteStep: 5});
 
       // by default hide reminder settings for emails
       $("#email-sendlater-settings").hide();

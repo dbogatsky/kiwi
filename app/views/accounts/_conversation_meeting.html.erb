@@ -81,7 +81,13 @@
                 <div class="col-lg-4 start-time">
                   <div class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-                    <div class="bootstrap-timepicker"><input id="schedule-from-timepicker" name="starts_time" type="text" class="form-control" required="required" /></div>
+                    <div class="bootstrap-timepicker">
+                    <%if mobile?%>
+                      <input id="schedule-from-timepicker" type="time" name="starts_time" required="required"/>
+                    <%else%>
+                      <input id="schedule-from-timepicker" name="starts_time" type="text" class="form-control" required="required" />
+                    <%end%>
+                    </div>
                   </div>
                 </div>
                 <div class="col-lg-4 all-day" style="display:none; margin-top: 10px;">
@@ -112,7 +118,13 @@
                 <div class="col-lg-4">
                   <div class="input-group mb15">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-                    <div class="bootstrap-timepicker"><input name="ends_time"  id="schedule-to-timepicker" type="text" class="form-control" required="required" /></div>
+                    <div class="bootstrap-timepicker">
+                      <%if mobile?%>
+                        <input id="schedule-to-timepicker" type="time" name="ends_time" required="required"/>
+                      <%else%>
+                        <input name="ends_time"  id="schedule-to-timepicker" type="text" class="form-control" required="required" />
+                      <%end%>
+                    </div>
                   </div>
                 </div>
               </div><!-- row -->
@@ -148,7 +160,13 @@
 	                <div class="col-lg-4">
 	                  <div class="input-group">
 	                    <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-	                    <div class="bootstrap-timepicker"><input name="scheduled_time" id="meeting-reminder-time" type="text" class="form-control" /></div>
+	                    <div class="bootstrap-timepicker">
+                        <%if mobile?%>
+                          <input id="meeting-reminder-time" type="time" name="scheduled_time"/>
+                        <%else%>
+                          <input name="scheduled_time" id="meeting-reminder-time" type="text" class="form-control" />
+                        <%end%>
+                      </div>
 	                  </div>
 	                </div>
 	              </div><!-- row -->

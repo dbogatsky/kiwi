@@ -276,8 +276,10 @@
 
   $(document).ready(function(){
 
-    $('#meeting-reminder-time-edit').timepicker({minuteStep: 5});
-
+    if(mobile == 'false'){
+      $('#meeting-reminder-time-edit').timepicker({minuteStep: 5});
+      $('#meeting-reminder-time').timepicker({minuteStep: 5});
+    }
     // by default hide reminder settings for meetings
     $("#meeting-reminder-settings-edit").hide();
 
@@ -310,8 +312,6 @@
         $('#invite-emails').removeTag(emailAddress);
         }
     };
-
-    $('#meeting-reminder-time').timepicker({minuteStep: 5});
 
     // by default hide reminder settings for meetings
     $("#meeting-reminder-settings").hide();
@@ -498,12 +498,6 @@
     $(".display_date").val(final_date)
   })
 
-  if(mobile == 'false'){
-    $('#reminderDatePicker').datepicker({
-      dateFormat: 'mm/dd/yy',
-      minDate: 0
-    });
-  }
 
   $(document).on("change","#reminderDatePicker",function() {
     if(mobile == 'false'){
@@ -554,20 +548,32 @@
 
   called = false;
 
-  $('#reminderTimePicker').timepicker({
-      showMeridian: true,
-      minuteStep: 15,
-      showInputs: false,
-  }).on('changeTime.timepicker', function(e) {
-      if (mobile == 'false'){
-        var  date_val = $('#reminderDatePicker').val()
-      }else{
-        var date_val = today_date(new Date($('#reminderDatePicker').val()))
-      }
-      if((date_val != '') && (date_val == today_date(new Date))){
-        set_reminder_time(e);
-      }
-  });
+  if(mobile == 'false'){
+    $('#reminderDatePicker').datepicker({
+      dateFormat: 'mm/dd/yy',
+      minDate: 0
+    });
+
+    $('.follow_time').timepicker({
+      minuteStep: 15
+    });
+
+
+    $('#reminderTimePicker').timepicker({
+        showMeridian: true,
+        minuteStep: 15,
+        showInputs: false,
+    }).on('changeTime.timepicker', function(e) {
+        if (mobile == 'false'){
+          var  date_val = $('#reminderDatePicker').val()
+        }else{
+          var date_val = today_date(new Date($('#reminderDatePicker').val()))
+        }
+        if((date_val != '') && (date_val == today_date(new Date))){
+          set_reminder_time(e);
+        }
+    });
+  }
 
   function today_date(date){
     var current_date = date

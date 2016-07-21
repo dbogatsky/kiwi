@@ -71,23 +71,25 @@
       dateFormat: 'mm/dd/yy',
       minDate: 0
     });
+
+    $('#reminderTimePickerEdit').timepicker({
+      showMeridian: true,
+      minuteStep: 15,
+      showInputs: false,
+    }).on('changeTime.timepicker', function(e) {
+       if (mobile == 'false'){
+          var  date_val = $('#reminderDatePickerEdit').val()
+        }else{
+          var date_val = today_date(new Date($('#reminderDatePickerEdit').val()))
+        }
+
+        if((date_val != '') && (date_val == today_date(new Date))){
+          set_reminder_time(e)
+        }
+    });
   }
 
-  $('#reminderTimePickerEdit').timepicker({
-    showMeridian: true,
-    minuteStep: 15,
-    showInputs: false,
-  }).on('changeTime.timepicker', function(e) {
-     if (mobile == 'false'){
-        var  date_val = $('#reminderDatePickerEdit').val()
-      }else{
-        var date_val = today_date(new Date($('#reminderDatePickerEdit').val()))
-      }
 
-      if((date_val != '') && (date_val == today_date(new Date))){
-        set_reminder_time(e)
-      }
-  });
   var data = <%=raw(notifiable_users_json(account.id))%>;
   $("#notifiable_users_edit").select2({
     data: data

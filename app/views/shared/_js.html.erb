@@ -133,9 +133,10 @@
       $("#preloader").hide();
     });
 
-    $('.datepicker').datepicker();
 
     if(mobile == 'false'){
+      $('.datepicker').datepicker();
+
       $('#schedule-from-datepicker, #meeting-reminder-date').datepicker({
         dateFormat: 'mm/dd/yy',
         altField: "#schedule-to-datepicker",
@@ -146,6 +147,7 @@
           $("#schedule-to-datepicker").datepicker("option", "minDate", dt);
         }
       });
+
       $('#schedule-to-datepicker').datepicker({
         dateFormat: 'mm/dd/yy'
       });
@@ -176,14 +178,17 @@
     m = m<10?"0"+m:m;
     var current_time = h+":"+m+" "+dd;
 
-    $('#schedule-from-timepicker').timepicker({
-      minuteStep: 15,
-      defaultTime: current_time
-    });
+    if(mobile == 'false'){
+      $('#schedule-from-timepicker').timepicker({
+        minuteStep: 15,
+        defaultTime: current_time
+      });
 
-    $('#schedule-to-timepicker').timepicker({
-      minuteStep: 15
-    });
+      $('#schedule-to-timepicker').timepicker({
+        minuteStep: 15
+      });
+    }
+
     $('#scheduleFromTimePicker').timepicker().on('hide.timepicker', function(e) {
       $('#schedule-to-timepicker').timepicker('setTime', e.time.value);
     });

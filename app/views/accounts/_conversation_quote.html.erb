@@ -114,7 +114,13 @@
                     <div class="col-lg-4">
                       <div class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-                        <div class="bootstrap-timepicker"><input type="text" class="form-control follow_time" name="follow_time"/></div>
+                        <div class="bootstrap-timepicker">
+                          <%if mobile?%>
+                            <input type="time" class="follow_time" name="follow_time" step=900 />
+                          <%else%>
+                            <input type="text" class="form-control follow_time" name="follow_time"/>
+                          <%end%>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -137,9 +143,9 @@
 </div><!-- modal -->
 
 <script type="text/javascript">
-  $('.follow_time').timepicker({
-    minuteStep: 15
-  });
+  // $('.follow_time').timepicker({
+  //   minuteStep: 15
+  // });
 
   var final_date
   function getdate(e) {

@@ -20,6 +20,7 @@
              data-title="<%=citem.title%>"
              data-date="<%=mobile? ? Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") : Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y")  if citem.scheduled_at.present?%>"
              data-time="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.scheduled_at.present? %>"
+             data-time-24="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%H:%M") if citem.scheduled_at.present? %>"
              data-ends-day="<%=(Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).to_date - Date.today.in_time_zone(current_user.time_zone).to_date).to_i if citem.ends_at.present? %>"
              data-ends-date="<%=mobile? ? Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") : Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.ends_at.present?%>"
              data-amount = '<%=citem.amount%>'
