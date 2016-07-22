@@ -125,6 +125,8 @@ class ApplicationController < ActionController::Base
         request.path != "/login" &&
         controller_name != "errors" &&
         action_name != "routing" &&
+        controller_name == "notifications" &&
+        action_name == "show" &&
         !request.xhr?) # don't store ajax calls
       session[:previous_url] = request.fullpath
     end

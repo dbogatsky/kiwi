@@ -14,6 +14,7 @@ class NotificationsController < ApplicationController
   end
 
   def show
+    session[:previous_url] = nil
     flash.clear
     notification = Notification.find(params[:id]) rescue nil
     flash[:danger] = "Sorry, we're unable to find your notification" unless notification
