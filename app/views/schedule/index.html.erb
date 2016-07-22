@@ -579,7 +579,10 @@
       if(select_date == today_date(new Date)){
         var c_time = set_time_when_date_change()
         ConvertTimeformat('24', c_time);
+        $("#reminderTimePicker").prop('min', sHours+':'+sMinutes)
         $("#reminderTimePicker").val(sHours+':'+sMinutes)
+      }else{
+        $("#reminderTimePicker").prop('min',null)
       }
     });
 
@@ -588,12 +591,55 @@
       if(select_date == today_date(new Date)){
         var c_time = set_time_when_date_change()
         ConvertTimeformat('24', c_time);
+        $("#reminderTimePickerEdit").prop('min', sHours+':'+sMinutes)
         $("#reminderTimePickerEdit").val(sHours+':'+sMinutes)
+      }else{
+        $("#reminderTimePickerEdit").prop('min',null)
       }
     });
 
     ConvertTimeformat('24', set_time(new Date()))
     $("#reminderTimePicker").val(sHours+':'+sMinutes)
+
+    $(document).on("change","#reminderTimePicker",function() {
+      var date_val = today_date(new Date($('#reminderDatePicker').val()))
+      if((date_val != '') && (date_val == today_date(new Date))){
+        var c_time = set_time_when_date_change()
+        ConvertTimeformat('24', c_time);
+        var hour1 = sHours
+        var minutes1 = sMinutes
+        $("#reminderTimePicker").prop('min', hour1+':'+minutes1)
+        var current_val = $(this).val()
+        var hour2 = Number(current_val.match(/^(\d+)/)[1]);
+        var minutes2 = Number(current_val.match(/:(\d+)/)[1]);
+        var c_date = new Date()
+        var hour = c_date.getHours()
+        var minutes = c_date.getMinutes()
+        if(Date.parse('01/01/2011'+' '+ hour1+':'+minutes1+':'+'00') > Date.parse('01/01/2011'+' '+ hour2+':'+minutes2+':'+'00')){
+          $("#reminderTimePicker").val(hour1+':'+minutes1)
+        }
+      }
+    });
+
+    $(document).on("change","#reminderTimePickerEdit",function() {
+      var date_val = today_date(new Date($('#reminderDatePickerEdit').val()))
+      if((date_val != '') && (date_val == today_date(new Date))){
+        var c_time = set_time_when_date_change()
+        ConvertTimeformat('24', c_time);
+        var hour1 = sHours
+        var minutes1 = sMinutes
+        $("#reminderTimePickerEdit").prop('min', hour1+':'+minutes1)
+        var current_val = $(this).val()
+        var hour2 = Number(current_val.match(/^(\d+)/)[1]);
+        var minutes2 = Number(current_val.match(/:(\d+)/)[1]);
+        var c_date = new Date()
+        var hour = c_date.getHours()
+        var minutes = c_date.getMinutes()
+        if(Date.parse('01/01/2011'+' '+ hour1+':'+minutes1+':'+'00') > Date.parse('01/01/2011'+' '+ hour2+':'+minutes2+':'+'00')){
+          $("#reminderTimePickerEdit").val(hour1+':'+minutes1)
+        }
+      }
+    });
   }
 
   function today_date(date){

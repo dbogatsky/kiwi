@@ -50,7 +50,7 @@
                       <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                       <div class="bootstrap-timepicker">
                         <%if mobile?%>
-                          <input type="time" name="scheduled_time" id="reminderTimePicker" step=900 required="required" />
+                          <input type="time" name="scheduled_time" id="reminderTimePicker" step=900 max="23:59" required="required" />
                         <%else%>
                           <input id="reminderTimePicker" type="text" class="form-control" name="scheduled_time" required="required"/>
                         <%end%>
