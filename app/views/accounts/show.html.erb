@@ -306,14 +306,14 @@
 
 
     function Comma(num) {
-    var s = num.split('.');
-    if (s[0].length > 14) {
-      // Too many numbers before decimal.
+      var s = num.split('.');
+      if (s[0].length > 14) {
+        // Too many numbers before decimal.
+      }
+      if (s[1].length > 4) {
+        // Too many numbers after decimal.
+      }
     }
-    if (s[1].length > 4) {
-      // Too many numbers after decimal.
-    }
-  }
 
     $(".exp_in").click(function(){
       if($(this).is(':checked')){
@@ -468,12 +468,20 @@
       $('.conversation-edit-meeting-modal-form input[name="conversation_item[invitees]"]').val($(this).attr('data-invitees'));
       $('.conversation-edit-meeting-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
       $('.conversation-edit-meeting-modal-form input[name="conversation_item[location]"]').val($(this).attr('data-location'));
-      $('.conversation-edit-meeting-modal-form input[name="scheduled_time"]').val($(this).attr('data-time'));
+
+      if(mobile == 'false'){
+        $('.conversation-edit-meeting-modal-form input[name="scheduled_time"]').val($(this).attr('data-time'));
+        $('.conversation-edit-meeting-modal-form input[name="starts_time"]').val($(this).attr('data-starts-time'));
+        $('.conversation-edit-meeting-modal-form input[name="ends_time"]').val($(this).attr('data-ends-time'));
+      }else{
+        $('.conversation-edit-meeting-modal-form input[name="scheduled_time"]').val($(this).attr('data-time-24'));
+        $('.conversation-edit-meeting-modal-form input[name="starts_time"]').val($(this).attr('data-starts-time-24'));
+        $('.conversation-edit-meeting-modal-form input[name="ends_time"]').val($(this).attr('data-ends-time-24'));
+      }
+
       $('.conversation-edit-meeting-modal-form input[name="scheduled_date"]').val($(this).attr('data-date'));
       $('.conversation-edit-meeting-modal-form input[name="starts_date"]').val($(this).attr('data-starts-date'));
-      $('.conversation-edit-meeting-modal-form input[name="starts_time"]').val($(this).attr('data-starts-time'));
       $('.conversation-edit-meeting-modal-form input[name="ends_date"]').val($(this).attr('data-ends-date'));
-      $('.conversation-edit-meeting-modal-form input[name="ends_time"]').val($(this).attr('data-ends-time'));
       $('.conversation-edit-meeting-modal-form select[name="conversation_item[item_type]"]').val($(this).attr('data-item-type'));
       if($(this).attr('data-item-type') == 'regular'){
         $(".invitee_emails_div").hide();
@@ -558,25 +566,25 @@
       }
     });
 
-      // hide show quote reminder settings
-      $("#quote-reminder-settings").hide();
-      $("#quote-reminder-settings-edit").hide();
+    // hide show quote reminder settings
+    $("#quote-reminder-settings").hide();
+    $("#quote-reminder-settings-edit").hide();
 
-      $('#quote-reminder, #quote-reminder-edit').change(function () {
-        if ($(this).is(':checked')) {
-          $("#quote-reminder-settings").show(500);
-          $("#quote-reminder-settings-edit").show(500);
-          $(".clear_date").attr('required', true);
-          $(".clear_time").attr('required', true);
-        }
-        else {
-          $("#quote-reminder-settings").hide(500);
-          $("#quote-reminder-settings-edit").hide(500);
-          $(".clear_date").attr('required', false);
-          $(".clear_time").attr('required', false);
-          $(".clear_date").val(null)
-        }
-      });
+    $('#quote-reminder, #quote-reminder-edit').change(function () {
+      if ($(this).is(':checked')) {
+        $("#quote-reminder-settings").show(500);
+        $("#quote-reminder-settings-edit").show(500);
+        $(".clear_date").attr('required', true);
+        $(".clear_time").attr('required', true);
+      }
+      else {
+        $("#quote-reminder-settings").hide(500);
+        $("#quote-reminder-settings-edit").hide(500);
+        $(".clear_date").attr('required', false);
+        $(".clear_time").attr('required', false);
+        $(".clear_date").val(null)
+      }
+    });
 
     $(document).on('click', "a.edit_quote", function(e){
       id = $(this).attr('data-id')
@@ -726,7 +734,6 @@
           $("#reminderTimePickerEdit").timepicker("setTime", c_time)
         }
       });
-
     }else{
       $('#reminderDatePicker').change(function(){
         var select_date = today_date(new Date($(this).val()))
@@ -876,19 +883,6 @@
       return current_time
     }
 
-    function ConvertTimeformat(format, str) {
-      var time = str
-      var hours = Number(time.match(/^(\d+)/)[1]);
-      var minutes = Number(time.match(/:(\d+)/)[1]);
-      var AMPM = time.match(/\s(.*)$/)[1];
-      if (AMPM == "PM" && hours < 12) hours = hours + 12;
-      if (AMPM == "AM" && hours == 12) hours = hours - 12;
-        sHours = hours.toString();
-        sMinutes = minutes.toString();
-      if (hours < 10) sHours = "0" + sHours;
-      if (minutes < 10) sMinutes = "0" + sMinutes;
-    }
-
       // by default hide reminder settings for notes
       $("#note-reminder-settings").hide();
       $("#note-reminder-settings-edit").hide();
@@ -980,6 +974,19 @@
       $('#reminder-email-edit').attr('checked', false);
       $('#reminder-sms-edit').attr('checked', false);
     });
+
+    function ConvertTimeformat(format, str) {
+      var time = str
+      var hours = Number(time.match(/^(\d+)/)[1]);
+      var minutes = Number(time.match(/:(\d+)/)[1]);
+      var AMPM = time.match(/\s(.*)$/)[1];
+      if (AMPM == "PM" && hours < 12) hours = hours + 12;
+      if (AMPM == "AM" && hours == 12) hours = hours - 12;
+        sHours = hours.toString();
+        sMinutes = minutes.toString();
+      if (hours < 10) sHours = "0" + sHours;
+      if (minutes < 10) sMinutes = "0" + sMinutes;
+    }
   </script>
 <% end %>
 

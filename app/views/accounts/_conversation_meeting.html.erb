@@ -83,7 +83,7 @@
                     <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                     <div class="bootstrap-timepicker">
                     <%if mobile?%>
-                      <input id="schedule-from-timepicker" type="time" name="starts_time" required="required"/>
+                      <input id="schedule-from-timepicker" type="time" name="starts_time" step=900 required="required"/>
                     <%else%>
                       <input id="schedule-from-timepicker" name="starts_time" type="text" class="form-control" required="required" />
                     <%end%>
@@ -120,7 +120,7 @@
                     <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                     <div class="bootstrap-timepicker">
                       <%if mobile?%>
-                        <input id="schedule-to-timepicker" type="time" name="ends_time" required="required"/>
+                        <input id="schedule-to-timepicker" type="time" name="ends_time" step=900 required="required"/>
                       <%else%>
                         <input name="ends_time"  id="schedule-to-timepicker" type="text" class="form-control" required="required" />
                       <%end%>
@@ -162,7 +162,7 @@
 	                    <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
 	                    <div class="bootstrap-timepicker">
                         <%if mobile?%>
-                          <input id="meeting-reminder-time" type="time" name="scheduled_time"/>
+                          <input id="meeting-reminder-time" type="time" name="scheduled_time" step=900 />
                         <%else%>
                           <input name="scheduled_time" id="meeting-reminder-time" type="text" class="form-control" />
                         <%end%>
@@ -453,8 +453,36 @@
     }
     m = m<10?"0"+m:m;
     var current_time = h+":"+m+" "+dd;
-    $('#schedule-to-timepicker').val(current_time);
+    if(mobile == 'false'){
+      $('#schedule-to-timepicker').val(current_time);
+    }else{
+      ConvertTimeformat('24', current_time);
+      $('#schedule-to-timepicker').val(sHours+':'+sMinutes);
+    }
   });
+
+  if (mobile != 'false'){
+    function get_current_time(now, mins){
+      var quarterHours = Math.round(mins/15);
+      if (quarterHours >= 4)
+      {
+          now.setHours(now.getHours()+1);
+      }
+      rounded = (quarterHours*15)%60;
+      now.setMinutes(rounded);
+      var d = now
+      hh = d.getHours();
+      m = d.getMinutes();
+    }
+
+    var now = new Date();
+    var mins = now.getMinutes();
+    get_current_time(now, mins)
+    $("#schedule-from-timepicker").val(hh+':'+m)
+    get_current_time(now, mins+60)
+    $("#schedule-to-timepicker").val(hh+':'+m)
+  }
+
 
   $(".account-action-meeting").on("shown.bs.modal", function(){
     $(".meeting_type").val('general');

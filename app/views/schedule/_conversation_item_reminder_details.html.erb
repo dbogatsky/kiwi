@@ -24,6 +24,7 @@
                    data-users-to-notify-ids="<%=citem.conversation_item_user_to_notify.map(&:user_id) if citem.conversation_item_user_to_notify.present? %>"
                    data-date="<%=mobile? ? Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") :  Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.scheduled_at.present?%>"
                    data-time="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.scheduled_at.present? %>"
+                   data-time-24="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%H:%M") if citem.scheduled_at.present? %>"
                    data-description="<%= citem.body %>">Edit</a>
               </li>
               <li>
@@ -105,7 +106,11 @@
   $(document).on('click', "a.edit_reminder", function(e){
     id = $(this).attr('data-id')
     $('.conversation-edit-reminder-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
-    $('.conversation-edit-reminder-modal-form input[name="scheduled_time"]').val($(this).attr('data-time'));
+    if(mobile == 'false'){
+      $('.conversation-edit-reminder-modal-form input[name="scheduled_time"]').val($(this).attr('data-time'));
+    }else{
+      $('.conversation-edit-reminder-modal-form input[name="scheduled_time"]').val($(this).attr('data-time-24'));
+    }
     $('.conversation-edit-reminder-modal-form input[name="scheduled_date"]').val($(this).attr('data-date'));
     $('.conversation-edit-reminder-modal-form input[name="info"]').val(true);
     edit_reminder.data("wysihtml5").editor.setValue($(this).attr('data-description'));

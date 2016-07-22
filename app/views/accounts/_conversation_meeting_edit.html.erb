@@ -64,7 +64,7 @@
                       <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                       <div class="bootstrap-timepicker">
                         <%if mobile?%>
-                          <input id="schedule-from-timepicker-edit" name="starts_time" type="time" class="form-control" required="required" />
+                          <input id="schedule-from-timepicker-edit" name="starts_time" type="time" step=900 required="required" />
                         <%else%>
                           <input id="schedule-from-timepicker-edit" name="starts_time" type="text" class="form-control" required="required" />
                         <%end%>
@@ -101,7 +101,7 @@
                       <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                       <div class="bootstrap-timepicker">
                       <%if mobile?%>
-                        <input name="ends_time"  id="schedule-to-timepicker-edit" type="time" class="form-control" required="required" />
+                        <input name="ends_time"  id="schedule-to-timepicker-edit" type="time" step=900 required="required" />
                       <%else%>
                         <input name="ends_time"  id="schedule-to-timepicker-edit" type="text" class="form-control" required="required" />
                       <%end%>
@@ -143,7 +143,7 @@
                         <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                         <div class="bootstrap-timepicker">
                           <%if mobile?%>
-                            <input name="scheduled_time" id="meeting-reminder-time-edit" type="time" class="form-control" />
+                            <input name="scheduled_time" id="meeting-reminder-time-edit" type="time" step=900 />
                           <%else%>
                             <input name="scheduled_time" id="meeting-reminder-time-edit" type="text" class="form-control" />
                           <%end%>
@@ -449,7 +449,13 @@
     }
     m = m<10?"0"+m:m;
     var current_time = h+":"+m+" "+dd;
-    $('#schedule-to-timepicker-edit').val(current_time);
+
+    if(mobile == 'false'){
+      $('#schedule-to-timepicker-edit').val(current_time);
+    }else{
+      ConvertTimeformat('24', current_time);
+      $('#schedule-to-timepicker-edit').val(sHours+':'+sMinutes);
+    }
   });
 
   $(".conversation-edit-meeting-modal-form").on("shown.bs.modal", function(){
