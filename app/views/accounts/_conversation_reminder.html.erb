@@ -19,8 +19,8 @@
                     <div class="col-lg-12 country_select">
                       <select class="form-control select2 select_account" name="id" placeholder="-Select account-" required="required">
                       <option value="">-Select account-</option>
-                       <%Account.all.sort_by {|a| a.name.downcase}.each do |account|%>
-                          <option value="<%=account.id%>"><%=account.name%></option>
+                       <%accounts_cache["accounts"].sort_by { |id, name| name.downcase }.each do |id, name|%>
+                          <option value="<%=id%>"><%=name%></option>
                        <%end%>
                       </select>
                     </div>
