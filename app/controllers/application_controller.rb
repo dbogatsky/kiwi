@@ -10,10 +10,11 @@ class ApplicationController < ActionController::Base
   before_filter :set_cache_headers
   before_filter :authentication
   before_filter :notification_info
+  before_filter :accounts_cache
   around_filter :set_time_zone
 
   helper_method :current_user, :get_api_values, :get_automatic_logout_time, :logged_in?, :superadmin_logged_in?, :notification_info
-  helper_method :has_permission, :has_permissions, :has_page_permission, :has_page_permissions
+  helper_method :has_permission, :has_permissions, :has_page_permission, :has_page_permissions, :accounts_cache
 
   rescue_from ActiveResource::ForbiddenAccess do |exception|
     Rollbar.error(exception, use_exception_level_filters: true)
@@ -349,6 +350,39 @@ class ApplicationController < ActionController::Base
         @unread_items = @unread_items.sort_by { |k| k.created_at }.reverse
       end
     end
+  end
+
+  def accounts_cache
+    accounts_cache_info = session[:accounts_cache]
+
+    if accounts_cache_info.nil?
+      accounts_cache_info = accounts_cache_refresh
+    else
+      accounts_cache_info = JSON.parse(accounts_cache_info)
+      if (DateTime.parse(accounts_cache_info["last_update"]).to_i + 15.minutes.to_i) < DateTime.now.to_i
+        accounts_cache_info = accounts_cache_refresh
+      end
+    end
+
+    accounts_cache_info
+  end
+
+  def accounts_cache_refresh(id=false)
+    accounts = Account.all
+    # temporary fix to get all the accounts
+    if accounts.meta["total_pages"] > 1
+      accounts = Account.all(params: { per_page: accounts.meta["total_entries"] })
+    end
+
+    #Account.find(params[:id])
+    accounts_cache_info = {}
+    accounts_cache_info["last_update"] = DateTime.now
+
+    accounts_cache_info["accounts"] = {}
+    accounts_cache_info["accounts"] = accounts.collect { |a| [a.id, a.name] }.to_h
+
+    session[:accounts_cache] = accounts_cache_info.to_json
+    accounts_cache_info
   end
 
   def user_preference_details
