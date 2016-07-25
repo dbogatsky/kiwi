@@ -18,7 +18,11 @@
           <div class="people-item">
             <div class="media">
               <div class="media-body">
-                <h4 class="person-name"><a href="<%= account_path(account.id) %>"><%= link_to account.name, account_path(account.id) %></a></h4>
+                <h4 class="person-name"><a href="<%= account_path(account.id) %>"><%= link_to account.name, account_path(account.id) %></a>
+                  <%if (@role == 'Admin' || @role == @enable_expected_sales.tr("_", " ").titleize || @enable_expected_sales == 'all')%>
+                    <span class="estimate_sales pull-right">Estimate Sales<span class="pink_text"><%=number_to_currency(account.expected_sales)%></span></span>
+                  <%end%>
+                </h4>
                 <%= get_styled_status(account) %>
                 <div class="text-muted">
                     <% if !account.addresses.empty? %>

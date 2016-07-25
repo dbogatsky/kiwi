@@ -420,6 +420,7 @@ class ApplicationController < ActionController::Base
     @account_by_status = preferences['company']['settings']['preferences']['accounts_by_status']
     @enable_import = preferences['company']['settings']['preferences']['enable_import'] || "unknown"
     @enable_export = preferences['company']['settings']['preferences']['enable_export'] || "unknown"
+    @enable_expected_sales = preferences['company']['settings']['preferences']['enable_expected_sales_attributes'] || "unknown"
   end
 
   def get_api_values

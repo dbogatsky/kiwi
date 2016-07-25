@@ -5,6 +5,9 @@
       <li><%=radio_button("search1", "search", "city")%> City</li>
       <li><%=radio_button("search1", "search", "country")%> Country</li>
       <li><%=radio_button("search1", "search", "owner")%> Owner</li>
+      <%if (@role == 'Admin' || @role == @enable_expected_sales.tr("_", " ").titleize || @enable_expected_sales == 'all')%>
+        <li><%=radio_button("search1", "search", "estimated_sales")%>Estimated Sales</li>
+      <%end%>
       <li class="divider"></li>
       <li><%=radio_button("search2", "search", "ascending", :checked =>true)%> Ascending</li>
       <li><%=radio_button("search2", "search", "descending")%> Descending</li>
