@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
   before_filter :set_cache_headers
   before_filter :authentication
   before_filter :notification_info
-  before_filter :accounts_cache
+  #before_filter :accounts_cache  # DIS001 disabled for now
   around_filter :set_time_zone
 
   helper_method :current_user, :get_api_values, :get_automatic_logout_time, :logged_in?, :superadmin_logged_in?, :notification_info
