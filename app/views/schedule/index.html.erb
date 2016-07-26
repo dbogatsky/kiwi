@@ -410,6 +410,23 @@
 
   });
 
+  $(document).on('click', '.delete_item', function(){
+    var r =  confirm("Are you sure to delete this meeting?")
+    var item_id = $(this).data('id')
+    var account_id = $(this).data('account-id')
+
+    if (r){
+      $('#preloader').css('opacity', 0.8);
+      $('#preloader').show();
+      $.ajax({
+        type: "GET",
+        url: '/accounts/'+account_id+'/delete_meeting?item_id='+ item_id,
+        success: function (data) {
+        }
+      });
+    }
+  })
+
   function get_regular_visit_with_day_view(){
     var view = $('#calendar').fullCalendar('getView').name
     if(view == 'agendaDay'){
