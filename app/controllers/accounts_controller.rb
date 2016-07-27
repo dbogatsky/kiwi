@@ -3,7 +3,7 @@ include ApplicationHelper
 class AccountsController < ApplicationController
   skip_before_filter :verify_authenticity_token, only: [:delete_future_meeting, :destroy]
   before_action :get_token
-  before_action :find_account, only: [:show, :edit, :destroy, :conversation, :search, :jump_in, :add_quote, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting, :update_quote, :delete_quote, :add_reminder, :update_reminder, :delete_reminder]
+  before_action :find_account, only: [:show, :edit, :destroy, :conversation, :search, :add_quote, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting, :update_quote, :delete_quote, :add_reminder, :update_reminder, :delete_reminder]
   before_action :get_api_values, only: [:search]
   before_action :get_setting, only: [:index, :import, :export, :show, :edit, :new]
   before_action :check_permission_for_import, only: [:import]
@@ -295,21 +295,12 @@ class AccountsController < ApplicationController
   end
 
   def jump_in
-    c_id = @account.conversation.id
-    @meeting = ConversationItem.find(params[:conversation_item_id], params: { conversation_id: c_id })
+    conversation = ConversationItem.find(params[:cid], params:{conversation_id: params[:conversation_id]})
     params[:conversation_item] = {}
     params[:conversation_item][:id] = params[:conversation_item_id]
-    params[:conversation_item][:invitees] = @meeting.invitees.present? ? @meeting.invitees  + ', ' + "#{current_user.email}" : current_user.email
-    if @meeting.update_attributes(request: :update, conversation_item: params[:conversation_item], conversation_id: c_id, reload: true)
-      flash[:success] = 'successfully jumped!'
-    else
-      flash[:danger] = "Couldn't jumped!"
-    end
-    if params[:info].present?
-      redirect_to schedule_path
-    else
-      redirect_to account_path(params[:id])
-    end
+    params[:conversation_item][:invitees] = conversation.invitees.present? ? conversation.invitees  + ', ' + "#{current_user.email}" : current_user.email
+    conversation.update_attributes(request: :update, conversation_item: params[:conversation_item], conversation_id: params[:conversation_id], reload: true)
+    render json: conversation
   end
 
   def add_note

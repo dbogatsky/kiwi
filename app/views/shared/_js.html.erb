@@ -193,6 +193,30 @@
     });
 
 
+    $(document).on('click', '.jumpin', function(){
+      var conversation_id = $(this).data('conversation-id')
+      var cid = $(this).attr('id')
+      $('#'+cid).hide();
+      $('#preloader').show();
+      $.ajax({
+        type: "POST",
+        url : '/accounts/jump_in?conversation_id='+conversation_id+'&cid='+cid,
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+        },
+        complete: function() {
+          $('#preloader').hide();
+          $('#'+cid).switchClass("jumpin", "checkin");
+          $('#'+cid).parent().find('.position_button').text('Check In');
+          $('#'+cid).show();
+        },
+        success: function() {
+        },
+        error:function() {
+        }
+      });
+    });
+
     $(document).on('click', '.checkin', function(){
       checkin(this);
     });
@@ -268,7 +292,7 @@
               var current_user = "<%=current_user.id rescue nil%>";
               if(type == "checkin"){
                 $('#'+cid).switchClass("checkin", "checkout");
-                $('#'+cid).parent().find('#position_button').text('Check Out');
+                $('#'+cid).parent().find('.position_button').text('Check Out');
                 $('#'+cid).parent().find('.fa-sign-in').switchClass("fa-sign-in", "fa-sign-out");
                 $('#'+cid).show();
                 $('.check_in_time_'+cid).removeClass('hidden')
