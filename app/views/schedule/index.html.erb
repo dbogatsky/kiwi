@@ -347,6 +347,7 @@
     if($("#schedule_user_list").val() != ''){
      $('#preloader').css('opacity', 0.3);
      $('#preloader').show();
+     update_regular_visits(null)
     }
   })
 
@@ -677,11 +678,12 @@
   }
 
   function update_regular_visits(date) {
+    var user_id = $("#schedule_user_list").val()
     if (date == null) {
-      url_path = '/schedule/regular_visits';
+      url_path = '/schedule/regular_visits?user_id='+user_id;
     }
     else {
-      url_path = '/schedule/regular_visits?date='+date.format();
+      url_path = '/schedule/regular_visits?date='+date.format()+'&user_id='+user_id;
     }
     $.ajax({
       type: "GET",

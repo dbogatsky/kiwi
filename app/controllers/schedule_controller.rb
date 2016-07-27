@@ -164,7 +164,7 @@ class ScheduleController < ApplicationController
     end
 
     user_ids = Array[]
-    user_ids.push(current_user.id) # push any additional user_id'
+    (['Admin', 'Entity Admin'].include?(current_user.roles.first.name) && params[:user_id].present?) ? user_ids.push(params[:user_id]) : user_ids.push(current_user.id)
     @created_by = current_user.id
 
     # get all meetings between the date range
