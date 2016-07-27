@@ -18,4 +18,8 @@ module SettingsHelper
   def enable_import_export_select_options
     return [['None','none'], ['User', 'user'], ['Entity Admin', 'entity_admin'], ['All', 'all']]
   end
+
+  def expected_sales_select_options
+    return [['Disable', 'disable'],['Enable','enable']]
+  end
 end
