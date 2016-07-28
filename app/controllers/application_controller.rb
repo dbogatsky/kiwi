@@ -401,7 +401,6 @@ class ApplicationController < ActionController::Base
     user_preferences_info = session[:user_preferences]
 
     if user_preferences_info.nil? || refresh == true
-      binding.pry
       apiFullUrl = RequestStore.store[:api_url] + "/users/#{current_user.id}/settings/preferences"
       email = current_user.email
       appKey = APP_CONFIG['api_app_key']
