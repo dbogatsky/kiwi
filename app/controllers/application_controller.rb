@@ -300,7 +300,7 @@ class ApplicationController < ActionController::Base
 
     # check if we have set the current user before getting any notifications
     if current_user.present?
-      user_preference_details
+      @user_preference = user_preferences_load
       preference_limit = @user_preference['notification_display_limit']
       search = Hash.new
       current_date = Date.current.in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
@@ -395,6 +395,28 @@ class ApplicationController < ActionController::Base
     user_preference = user_preference['user']['settings']['preferences']
     user_preference.shift
     @user_preference = user_preference
+  end
+
+  def user_preferences_load(refresh=false)
+    user_preferences_info = session[:user_preferences]
+
+    if user_preferences_info.nil? || refresh == true
+      binding.pry
+      apiFullUrl = RequestStore.store[:api_url] + "/users/#{current_user.id}/settings/preferences"
+      email = current_user.email
+      appKey = APP_CONFIG['api_app_key']
+      token = session[:token]
+      curlRes = `curl -X GET -H "Authorization: Token token="#{token}", email="#{email}", app_key="#{appKey}"" -H "Content-Type: application/json"  -H "Cache-Control: no-cache" "#{apiFullUrl}"`
+
+      user_preferences = JSON.parse(curlRes)
+      user_preferences = user_preferences['user']['settings']['preferences']
+      user_preferences.shift
+      session[:user_preferences] = user_preferences.to_json
+    else
+      user_preferences = JSON.parse(user_preferences_info)
+    end
+
+    user_preferences
   end
 
 #   def check_request
