@@ -91,6 +91,7 @@ class ReportsController < ApplicationController
     @sorted_citems[:reminder] = Array[]
     @sorted_citems[:note] = Array[]
     @sorted_citems[:email] = Array[]
+    @sorted_citems[:account] = Array[]
     @citems.each do |citem|
       if (citem.type == 'meeting')
         if (citem.item_type == 'regular')
