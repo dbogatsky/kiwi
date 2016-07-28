@@ -8,13 +8,18 @@
     </ol>
   </div>
 <% end %>
-
 <div class="profile-header">
   <div class="row">
     <div class="col-sm-3">
       <img src="<%= (@account.avatar_url.eql? "/avatars/web/missing.png") ? '/assets/images/default_account_avatar.png' : @account.avatar_url %>" class="thumbnail img-responsive" alt="">
-      <div class="mb30"></div>
-      <h5 class="subtitle">Contact</h5>
+        <div class="mb30"></div>
+        <%#if (@role == 'Admin' || @role == @enable_expected_sales.tr("_", " ").titleize || @enable_expected_sales == 'all')%>
+        <%#if @enable_expected_sales == 'enable'%>
+          <!-- <h5 class="subtitle">Estimated Sales</h5> -->
+          <!-- <span class="pink_text"><%#=number_to_currency(@account.expected_sales)%></span> -->
+        <%#end%>
+        <div class="mb30"></div>
+        <h5 class="subtitle">Contact</h5>
         <ul class="profile-social-list" id="account-contacts">
           <% if !@account.contact_name.nil? %>
             <li><i class="fa fa-briefcase"></i>  <%= @account.contact_name %>
@@ -34,7 +39,6 @@
           <% end %>
         </ul>
       <div class="mb30"></div>
-
       <h5 class="subtitle">Address&nbsp;<i class="fa fa-map-marker"></i>
         <!--<a href="#" data-toggle="modal" data-target=".address-modal-form" class="pull-right account_icons">+ Add</a>-->
       </h5>
@@ -61,104 +65,119 @@
           </li>
         <% end %>
       </ul>
-
       <h5 class="subtitle">About</h5>
       <p class="mb30"><%= @account.about%></p>
-
       <div class="mb30"></div>
       <h5 class="subtitle">Quick Facts</h5>
       <p class="mb30"><%= @account.quick_facts %></p>
     </div><!-- col-sm-3 -->
-
-              <div class="col-sm-9">
-                <div class="mb20"></div>
-                <div class="row">
-                  <div class="col-sm-11">
-                    <div class="row">
-                        <small>
-                        <div class="col-sm-5">
-                            <div class="row bars">
-                                <div class="col-xs-5" style="text-align:right"><strong>Status</strong></div>
-                                <div class="col-xs-7"><%= get_styled_status(@account, false) %></div>
-                            </div>
-                            <div class="row bars">
-                                <div class="col-xs-5" style="text-align:right"><strong>Assigned To</strong></div>
-                                <div class="col-xs-7"><%= (@account.assigned_to.nil? ? "Unkonwn" : "#{@account.assigned_to.first_name} #{@account.assigned_to.last_name}") %></div>
-                            </div>
-                            <div class="row bars">
-                                <div class="col-xs-5" style="text-align:right"><strong>Shared With</strong></div>
-                                <div class="col-xs-7">
-                                  <a href="#" data-toggle="modal" data-target=".account-shared-users">
-                                    <%= @account.user_account_sharings.count == 0 ? "Nobody" : "#{pluralize(@account.user_account_sharings.count, 'user')}" %>
-                                  </a>
-                                </div>
-                            </div>
-                        </div><!-- col-sm-4 -->
-                        <div class="col-sm-7">
-                            <div class="row bars">
-                                <div class="col-xs-5" style="text-align:right"><strong>Created</strong></div>
-                                <div class="col-xs-7"><%= @account.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%B %e, %Y at %I:%M%p") %></div>
-                            </div>
-                            <div class="row bars">
-                                <div class="col-xs-5" style="text-align:right"><strong>Updated</strong></div>
-                                <div class="col-xs-7"><%= @account.updated_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%B %e, %Y at %I:%M%p") %></div>
-                            </div>
-                            <div class="row bars">
-                                <div class="col-xs-5" style="text-align:right"><strong>Updated By</strong></div>
-                                <div class="col-xs-7"><%= @account.updated_by.nil? ? "" : @account.updated_by.first_name + " " + @account.updated_by.last_name %></div>
-                            </div>
-                        </div><!-- col-sm-4 -->
-                        </small>
-                    </div><!-- row -->
+    <div class="col-sm-9">
+      <div class="mb20"></div>
+      <div class="row">
+        <div class="col-sm-11">
+          <div class="row">
+            <small>
+              <div class="col-sm-5">
+                <div class="row bars">
+                  <div class="col-xs-5" style="text-align:right">
+                    <strong>Status</strong>
+                  </div>
+                    <div class="col-xs-7">
+                      <%= get_styled_status(@account, false) %>
+                    </div>
+                </div>
+                <div class="row bars">
+                  <div class="col-xs-5" style="text-align:right">
+                    <strong>Assigned To</strong>
+                  </div>
+                  <div class="col-xs-7">
+                    <%= (@account.assigned_to.nil? ? "Unkonwn" : "#{@account.assigned_to.first_name} #{@account.assigned_to.last_name}") %>
                   </div>
                 </div>
-
+                <div class="row bars">
+                  <div class="col-xs-5" style="text-align:right">
+                    <strong>Shared With</strong>
+                  </div>
+                  <div class="col-xs-7">
+                    <a href="#" data-toggle="modal" data-target=".account-shared-users">
+                      <%= @account.user_account_sharings.count == 0 ? "Nobody" : "#{pluralize(@account.user_account_sharings.count, 'user')}" %>
+                    </a>
+                  </div>
+                </div>
+                <%if @enable_expected_sales == 'enable'%>
+                  <div class="row bars">
+                    <div class="col-xs-5" style="text-align:right">
+                      <strong>Estimated Sales</strong>
+                    </div>
+                    <div class="col-xs-7">
+                      <span class="pink_text"><%=number_to_currency(@account.expected_sales)%></span>
+                    </div>
+                  </div>
+                <%end%>
+              </div><!-- col-sm-4 -->
+              <div class="col-sm-7">
+                <div class="row bars">
+                  <div class="col-xs-5" style="text-align:right">
+                    <strong>Created</strong>
+                  </div>
+                  <div class="col-xs-7">
+                    <%= @account.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%B %e, %Y at %I:%M%p") %>
+                  </div>
+                </div>
+                <div class="row bars">
+                  <div class="col-xs-5" style="text-align:right"><strong>Updated</strong></div>
+                  <div class="col-xs-7">
+                    <%= @account.updated_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%B %e, %Y at %I:%M%p") %>
+                  </div>
+                </div>
+                <div class="row bars">
+                  <div class="col-xs-5" style="text-align:right">
+                    <strong>Updated By</strong>
+                  </div>
+                  <div class="col-xs-7">
+                    <%= @account.updated_by.nil? ? "" : @account.updated_by.first_name + " " + @account.updated_by.last_name %>
+                  </div>
+                </div>
+              </div><!-- col-sm-4 -->
+            </small>
+          </div><!-- row -->
+        </div>
+      </div>
       <div class="mb40"></div>
-
       <% if can? :read, Conversation %>
         <h5 class="subtitle">Conversation</h5>
       <% end %>
-
-        <div class="row">
-          <div class="col-sm-6">
-            <% if can? :read, ConversationItem %>
-              <%= render "conversation_search" %>
-            <% end %>
-          </div>
-          <div class="col-sm-6">
-            <% if ( can? :manage_permission, Conversation ) || ( can? :manage_permission, Account ) %>
-              <div class="btn-group mr5 pull-right">
-                <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
-                    <i class="fa fa-plus-circle mr5"></i> Action
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-
-                  <% if can? :manage_permission, ConversationItem %>
-                    <li><a href="#" data-toggle="modal" data-target=".account-action-meeting">Schedule Meeting</a></li>
-                    <li><a href="#" data-toggle="modal" data-target=".conversation-note-modal-form">Add Note</a></li>
-                    <li><a href="#" data-toggle="modal" data-target=".conversation-reminder-modal-form">Add Reminder</a></li>
-                    <li><a href="#" data-toggle="modal" data-target=".conversation-quote-modal-form">Add Quote</a></li>
-                    <li><a href="#" data-toggle="modal" data-target=".account-action-email">Send Email</a></li>
-                    <% end %>
-
-                  <% if can? :manage_shared_accounts, @account %>
-
-                    <% if can? :manage_permission, ConversationItem %><li class="divider"></li><% end %>
-
-                    <li><a href="<%= edit_account_path(@account) %>">Edit Account</a></li>
+      <div class="row">
+        <div class="col-sm-6">
+          <% if can? :read, ConversationItem %>
+            <%= render "conversation_search" %>
+          <% end %>
+        </div>
+        <div class="col-sm-6">
+          <% if ( can? :manage_permission, Conversation ) || ( can? :manage_permission, Account ) %>
+            <div class="btn-group mr5 pull-right">
+              <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
+                  <i class="fa fa-plus-circle mr5"></i> Action
+                  <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <% if can? :manage_permission, ConversationItem %>
+                  <li><a href="#" data-toggle="modal" data-target=".account-action-meeting">Schedule Meeting</a></li>
+                  <li><a href="#" data-toggle="modal" data-target=".conversation-note-modal-form">Add Note</a></li>
+                  <li><a href="#" data-toggle="modal" data-target=".conversation-reminder-modal-form">Add Reminder</a></li>
+                  <li><a href="#" data-toggle="modal" data-target=".conversation-quote-modal-form">Add Quote</a></li>
+                  <li><a href="#" data-toggle="modal" data-target=".account-action-email">Send Email</a></li>
                   <% end %>
-                </ul>
-              </div>
-            <% end %>
-
-          </div><!-- col -->
-        </div><!-- row -->
-
-
-
+                <% if can? :manage_shared_accounts, @account %>
+                  <% if can? :manage_permission, ConversationItem %><li class="divider"></li><% end %>
+                  <li><a href="<%= edit_account_path(@account) %>">Edit Account</a></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+        </div><!-- col -->
+      </div><!-- row -->
       <div class="mb20"></div>
-
       <% if can? :read, ConversationItem %>
         <!--- Timeline Start -->
         <div id="timeline_show">
@@ -166,7 +185,6 @@
         </div>
         <!-- Timeline End -->
       <% end %>
-
     </div> <!-- col-sm-9 -->
   </div><!-- row -->
 </div><!-- profile-header -->
@@ -235,6 +253,8 @@
         $('.end-date-time').hide(500);
         $('.all-day').show(500)
         $('.start-time').hide(500)
+        $('.meeting_title').hide(500)
+        $('.meeting_title').attr('required', false)
         $('#schedule-from-timepicker').attr('required', false)
         $('#schedule-from-timepicker').val(null)
         $('#schedule-to-datepicker').attr('required', false)
@@ -250,6 +270,8 @@
         $('.end-date-time').show(500);
         $('.all-day').hide(500)
         $('.start-time').show(500)
+        $('.meeting_title').show(500)
+        $('.meeting_title').attr('required', true)
         $('#schedule-from-timepicker').attr('required', true)
         $('#schedule-to-datepicker').attr('required', true)
         $('#schedule-to-timepicker').attr('required', true)
@@ -266,39 +288,6 @@
         $("#repeat-frequency").attr('required', false);
         $("#repeat-occurrences").attr('required', false);
         $("#repeat-every-day").attr('required', false);
-      }
-    });
-
-    $(".amount_val").keypress(function(event) {
-      if ((event.which != 46 || $(this).val().indexOf('.') != -1) &&
-        ((event.which < 48 || event.which > 57) &&
-          (event.which != 0 && event.which != 8))) {
-        event.preventDefault();
-      }
-      var text = $(this).val();
-      if ((text.indexOf('.') != -1) &&
-        (text.substring(text.indexOf('.')).length > 2) &&
-        (event.which != 0 && event.which != 8) &&
-        ($(this)[0].selectionStart >= text.length - 2)) {
-        event.preventDefault();
-      }
-    });
-
-    $(".amount_val").focusout(function(){
-       var re = /^-?[0-9]+$/;
-       var num = $(this).val();
-       if (re.test(num)){
-          num = num + '.00';
-          $(this).val(num);
-       }else if(!re.test(num) && num != '' ){
-         var length = parseFloat(num).toFixed(2).replace(/^-?\d*\.?|0+$/g, '').length
-         if(length == 1){
-          num = num + '0';
-          $(this).val(num);
-        }else if (length < 1){
-          num = parseFloat(num) + '.00';
-          $(this).val(num);
-        }
       }
     });
 
@@ -466,6 +455,8 @@
       $('.conversation-edit-meeting-modal-form input[name="ends_time"]').val($(this).attr('data-ends-time'));
       $('.conversation-edit-meeting-modal-form select[name="conversation_item[item_type]"]').val($(this).attr('data-item-type'));
       if($(this).attr('data-item-type') == 'regular'){
+        $('.conversation-edit-meeting-modal-form input[name="conversation_item[title]"]').hide()
+        $('.conversation-edit-meeting-modal-form input[name="conversation_item[title]"]').attr('required', false)
         $(".invitee_emails_div").hide();
         $(".repeat_div").hide();
         $(".end-date-time").hide();
@@ -479,6 +470,8 @@
         $("#schedule-from-timepicker-edit").val(null);
       }else{
         $(".invitee_emails_div").show();
+        $('.conversation-edit-meeting-modal-form input[name="conversation_item[title]"]').show()
+        $('.conversation-edit-meeting-modal-form input[name="conversation_item[title]"]').attr('required', true)
         $(".repeat_div").show();
         $(".end-date-time").show();
         $(".start-time").show();
@@ -648,44 +641,44 @@
         }
       });
 
-  		// Tags Input
-  		jQuery('#invite-emails').tagsInput({
-  			width:'100%',
-  			height: 'auto',
-  			onAddTag:isValidEmailAddress,
-  			defaultText:'Invitees'
-  		});
-  		function isValidEmailAddress(emailAddress) {
-  		    var pattern = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
+      // Tags Input
+      jQuery('#invite-emails').tagsInput({
+        width:'100%',
+        height: 'auto',
+        onAddTag:isValidEmailAddress,
+        defaultText:'Invitees'
+      });
+      function isValidEmailAddress(emailAddress) {
+          var pattern = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
 
-  		    if (pattern.test(emailAddress) == false) {
-  				alert("Please add a valid email address");
-  				$('#invite-emails').removeTag(emailAddress);
-  		    }
-  		};
+          if (pattern.test(emailAddress) == false) {
+          alert("Please add a valid email address");
+          $('#invite-emails').removeTag(emailAddress);
+          }
+      };
 
-  		$('#meeting-reminder-time, #meeting-reminder-time-edit').timepicker({minuteStep: 5});
+      $('#meeting-reminder-time, #meeting-reminder-time-edit').timepicker({minuteStep: 5});
 
-  		// by default hide reminder settings for meetings
-  		$("#meeting-reminder-settings").hide();
+      // by default hide reminder settings for meetings
+      $("#meeting-reminder-settings").hide();
 
-  		// hide show note reminder settings for meetings
-  		$('#meeting-reminder, #meeting-reminder-edit').change(function () {
-  	    if ($(this).is(':checked')) {
-  		    $("#meeting-reminder-settings, #meeting-reminder-settings-edit").show(500);
+      // hide show note reminder settings for meetings
+      $('#meeting-reminder, #meeting-reminder-edit').change(function () {
+        if ($(this).is(':checked')) {
+          $("#meeting-reminder-settings, #meeting-reminder-settings-edit").show(500);
           $("#meeting-reminder-date").attr('required', true);
           $("#meeting-reminder-time").attr('required', true)
           $("#meeting-reminder-date-edit").attr('required', true);
           $("#meeting-reminder-time-edit").attr('required', true)
         }else {
-  			$("#meeting-reminder-settings, #meeting-reminder-settings-edit").hide(500);
+        $("#meeting-reminder-settings, #meeting-reminder-settings-edit").hide(500);
         $('.conversation-edit-meeting-modal-form input[name="scheduled_date"]').val(null);
         $("#meeting-reminder-date").attr('required', false);
         $("#meeting-reminder-time").attr('required', false)
         $("#meeting-reminder-date-edit").attr('required', false);
         $("#meeting-reminder-time-edit").attr('required', false)
-  		  }
-  		});
+        }
+      });
 
     if(mobile == 'false'){
       $('#reminderDatePicker, #reminderDatePickerEdit').datepicker({
@@ -856,24 +849,24 @@
       if (minutes < 10) sMinutes = "0" + sMinutes;
     }
 
-  		// by default hide reminder settings for notes
-  		$("#note-reminder-settings").hide();
+      // by default hide reminder settings for notes
+      $("#note-reminder-settings").hide();
       $("#note-reminder-settings-edit").hide();
 
-  		// hide show note reminder settings
-  		$('#note-reminder, #note-reminder-edit').change(function () {
-  		  if ($(this).is(':checked')) {
+      // hide show note reminder settings
+      $('#note-reminder, #note-reminder-edit').change(function () {
+        if ($(this).is(':checked')) {
           $("#note-reminder-settings").show(500);
           $("#note-reminder-settings-edit").show(500);
         }
         else {
-  				$("#note-reminder-settings").hide(500);
+          $("#note-reminder-settings").hide(500);
           $("#note-reminder-settings-edit").hide(500);
-  			}
-  		});
+        }
+      });
 
       if(mobile == 'false'){
-  		  $('#scheduledDatePicker').datepicker();
+        $('#scheduledDatePicker').datepicker();
         $('#emailDatePickerEdit').datepicker();
       }
       $('#scheduledTimePicker').timepicker({minuteStep: 5});
@@ -881,29 +874,29 @@
 
       $('#emailTimePickerEdit').timepicker({minuteStep: 5});
 
-  		// by default hide reminder settings for emails
-  		$("#email-sendlater-settings").hide();
+      // by default hide reminder settings for emails
+      $("#email-sendlater-settings").hide();
       $("#email-sendlater-settings-edit").hide();
 
-  		// hide show email reminder settings
-  		$('#send-later, #send_later_edit').change(function () {
-  		    if ($(this).is(':checked')) {
-  			    $("#email-sendlater-settings, #email-sendlater-settings-edit").show(500);
+      // hide show email reminder settings
+      $('#send-later, #send_later_edit').change(function () {
+          if ($(this).is(':checked')) {
+            $("#email-sendlater-settings, #email-sendlater-settings-edit").show(500);
             $("#scheduledDatePicker").attr('required', true);
             $("#emailDatePickerEdit").attr('required', true);
             $("#scheduledTimePicker").attr('required', true);
             $("#emailTimePickerEdit").attr('required', true);
-  			}
-  			else {
-  				$("#email-sendlater-settings, #email-sendlater-settings-edit").hide(500);
+        }
+        else {
+          $("#email-sendlater-settings, #email-sendlater-settings-edit").hide(500);
           $("#scheduledDatePicker").val(null);
           $("#emailDatePickerEdit").val(null);
           $("#scheduledDatePicker").attr('required', false);
           $("#emailDatePickerEdit").attr('required', false);
           $("#scheduledTimePicker").attr('required', false);
           $("#emailTimePickerEdit").attr('required', false);
-  			}
-  		});
+        }
+      });
 
       $(".conversation-quote-modal-form").on("shown.bs.modal", function(){
         $(".follow_time_div").hide();

@@ -52,18 +52,18 @@
                     <%if current_user.id == meeting.created_by.id || invitees.include?(current_user.email)%>
                       <%if check_in(meeting,false)%>
                         <a class="btn btn-xs btn-default pull-right mr5 checkin" id="<%=meeting.id%>" data-created-by="<%=meeting.created_by.id%>" data-conversation-id = "<%=meeting.prefix_options[:conversation_id].present? ? meeting.prefix_options[:conversation_id] : meeting.conversation_id%>">
-                          <i class="fa fa-sign-in mr5"></i><span id="position_button">Check In</span>
+                          <i class="fa fa-sign-in mr5"></i><span class="position_button">Check In</span>
                         </a>
                       <%end%>
                       <%if !check_in(meeting,false) && check_out(meeting,false)%>
                         <a class="btn btn-xs btn-default pull-right mr5 checkout" id="<%=meeting.id%>" data-created-by="<%=meeting.created_by.id%>" data-conversation-id = "<%=meeting.prefix_options[:conversation_id].present? ? meeting.prefix_options[:conversation_id] : meeting.conversation_id%>">
-                          <i class="fa fa-sign-out mr5"></i><span id="position_button">Check Out</span>
+                          <i class="fa fa-sign-out mr5"></i><span class="position_button">Check Out</span>
                         </a>
                       <%end%>
                     <%else%>
-                      <%=link_to jump_in_account_path(conversation_item_id: meeting.id),method: :patch, class: 'btn btn-xs btn-default pull-right mr5' do%>
-                        <i class="fa fa-sign-in mr5"></i>Jump In
-                      <%end%>
+                      <a class="btn btn-xs btn-default pull-right mr5 jumpin" id="<%=citem.id%>" data-conversation-id = "<%=citem.prefix_options[:conversation_id].present? ? citem.prefix_options[:conversation_id] : citem.conversation_id%>">
+                        <i class="fa fa-sign-in mr5"></i><span class="position_button">Jump In</span>
+                      </a>
                     <%end%>
                   <% end %>
               </div>

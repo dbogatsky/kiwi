@@ -21,7 +21,7 @@
 
               <div class="row row-pad-5">
                 <div class="col-lg-12">
-                  <input type="text" name="conversation_item[title]" placeholder="Event" class="form-control" required="required" />
+                  <input type="text" name="conversation_item[title]" placeholder="Event" class="form-control meeting_title" required="required" />
                 </div>
               </div><!-- row -->
 
@@ -29,10 +29,17 @@
                 <div class="row row-pad-5">
                   <div class="col-lg-12 country_select">
                     <select class="form-control select2 selected_account" name="id" placeholder="-Select account-" required="required">
-                     <option value="">-Select account-</option>
-                     <%Account.all.sort_by {|a| a.name.downcase}.each do |account|%>
+                      <option value="">-Select account-</option>
+                      <%Account.all.sort_by {|a| a.name.downcase}.each do |account|%>
                         <option value="<%=account.id%>"><%=account.name%></option>
-                     <%end%>
+<%
+# DIS001 disabled for now
+=begin
+                     <%accounts_cache["accounts"].sort_by { |id, name| name.downcase }.each do |id, name|% >
+                        <option value="<%=id% >"><%=name% ></option>
+=end
+%>
+                      <%end%>
                     </select>
                   </div>
                 </div><!-- row -->
@@ -444,6 +451,8 @@
     $('.end-date-time').show(500);
     $('.all-day').hide(500)
     $('.start-time').show(500)
+    $('.meeting_title').show(500)
+    $('.meeting_title').attr('required', true)
     $('#schedule-from-timepicker').attr('required', true)
     $('#schedule-to-datepicker').attr('required', true)
     $('#schedule-to-timepicker').attr('required', true)

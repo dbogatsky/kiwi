@@ -10,54 +10,62 @@
   </div>
 </div>
 
-<%= form_tag accounts_path(format: "csv"), method: :get do |f| %>
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h4 class="panel-title">Please select the options to export your results.</h4>
-  </div>
-
-  <div class="panel-body">
-    <div class="form-group">
-      <label class="col-sm-3 control-label">Include Header</label>
-      <div class="col-sm-6">
-        <%=radio_button("option1", "header", "false", :checked =>true)%> No<br />
-        <%=radio_button("option1", "header", "true")%> Yes
-      </div>
+<%#= form_tag accounts_path(format: "csv"), method: :get do |f| %>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">Please select the options to export your results.</h4>
     </div>
 
-    <div class="form-group">
-      <label class="col-sm-3 control-label">Delimiter</label>
-      <div class="col-sm-6">
-        <%=radio_button("option2", "delimiter", ",", :checked =>true)%> , (Comma)<br />
-        <%=radio_button("option2", "delimiter", ";")%> ; (Semi-colon)<br />
-        <%=radio_button("option2", "delimiter", ":")%> : (Colon)<br />
-        <%=radio_button("option2", "delimiter", "|")%> | (Pipe)<br />
-        <%=radio_button("option2", "delimiter", "\t")%> \t (Special character: tab)<br />
-        <%=radio_button("option2", "delimiter", "other")%>
-        <%=text_field_tag 'other_option', nil, class: "width_delimiter_text", :maxlength => 1, :size => 3, disabled: true%> (Other: Max 1 character)
+    <div class="panel-body">
+      <div class="form-group">
+        <label class="col-sm-3 control-label">Export File Type</label>
+        <div class="col-sm-6">
+          <%=radio_button("option1", "format", "csv", :checked =>true)%> CSV<br />
+          <%=radio_button("option1", "format", "xls")%> Excel
+        </div>
       </div>
-    </div>
-  </div>
 
-  <div class="panel-footer">
-    <div class="row">
-      <div class="col-sm-6 col-sm-offset-3">
-        <button type="submit" class="btn btn-primary btn-sm">Export</button>
+      <!-- <div class="form-group">
+        <label class="col-sm-3 control-label">Delimiter</label>
+        <div class="col-sm-6">
+          <%#=radio_button("option2", "delimiter", ",", :checked =>true)%> , (Comma)<br />
+          <%#=radio_button("option2", "delimiter", ";")%> ; (Semi-colon)<br />
+          <%#=radio_button("option2", "delimiter", ":")%> : (Colon)<br />
+          <%#=radio_button("option2", "delimiter", "|")%> | (Pipe)<br />
+          <%#=radio_button("option2", "delimiter", "\t")%> \t (Special character: tab)<br />
+          <%#=radio_button("option2", "delimiter", "other")%>
+          <%#=text_field_tag 'other_option', nil, class: "width_delimiter_text", :maxlength => 1, :size => 3, disabled: true%> (Other: Max 1 character)
+        </div>
+      </div> -->
+    </div>
+
+    <div class="panel-footer">
+      <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+          <!-- <button type="submit" class="btn btn-primary btn-sm">Export</button> -->
+          <%=link_to 'Export', accounts_path(format: "csv"), method: :get, class: "btn btn-primary btn-sm export_link" %>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<%end%>
+<%#end%>
 
 <script type="text/javascript">
-  $("#option2_delimiter_other, #option2_delimiter_, #option2_delimiter__").change(function(){
-    if($("#option2_delimiter_other").is(':checked')){
-      $("#other_option").attr('disabled', false)
-      // $("#other_option").attr('required', true)
-    }else{
-      $("#other_option").attr('disabled', true)
-      $("#other_option").val(null)
-      // $("#other_option").attr('required', false)
+  // $("#option2_delimiter_other, #option2_delimiter_, #option2_delimiter__").change(function(){
+  //   if($("#option2_delimiter_other").is(':checked')){
+  //     $("#other_option").attr('disabled', false)
+  //     // $("#other_option").attr('required', true)
+  //   }else{
+  //     $("#other_option").attr('disabled', true)
+  //     $("#other_option").val(null)
+  //     // $("#other_option").attr('required', false)
+  //   }
+  // })
+
+  $("#option1_format_csv, #option1_format_xls").click(function(){
+    if ($(this).attr("checked") == 'checked'){
+      var format_type = $(this).val()
+      $('.export_link').attr('href',"/accounts."+format_type)
     }
-  })
+  });
 </script>

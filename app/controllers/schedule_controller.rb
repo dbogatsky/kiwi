@@ -4,7 +4,7 @@ class ScheduleController < ApplicationController
   skip_before_filter :verify_authenticity_token, only: [:sort_regular_visits]
 
   def index
-    user_preference_details
+    @user_preference = user_preferences_load
     @users = User.all(uid: session[:user_id])
     get_meetings([current_user.id])
     @sort_meeting = []
@@ -175,7 +175,7 @@ class ScheduleController < ApplicationController
     end
 
     user_ids = Array[]
-    user_ids.push(current_user.id) # push any additional user_id'
+    (['Admin', 'Entity Admin'].include?(current_user.roles.first.name) && params[:user_id].present?) ? user_ids.push(params[:user_id]) : user_ids.push(current_user.id)
     @created_by = current_user.id
 
     # get all meetings between the date range

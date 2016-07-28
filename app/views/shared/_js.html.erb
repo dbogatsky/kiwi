@@ -193,6 +193,30 @@
     });
 
 
+    $(document).on('click', '.jumpin', function(){
+      var conversation_id = $(this).data('conversation-id')
+      var cid = $(this).attr('id')
+      $('#'+cid).hide();
+      $('#preloader').show();
+      $.ajax({
+        type: "POST",
+        url : '/accounts/jump_in?conversation_id='+conversation_id+'&cid='+cid,
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+        },
+        complete: function() {
+          $('#preloader').hide();
+          $('#'+cid).switchClass("jumpin", "checkin");
+          $('#'+cid).parent().find('.position_button').text('Check In');
+          $('#'+cid).show();
+        },
+        success: function() {
+        },
+        error:function() {
+        }
+      });
+    });
+
     $(document).on('click', '.checkin', function(){
       checkin(this);
     });
@@ -268,7 +292,7 @@
               var current_user = "<%=current_user.id rescue nil%>";
               if(type == "checkin"){
                 $('#'+cid).switchClass("checkin", "checkout");
-                $('#'+cid).parent().find('#position_button').text('Check Out');
+                $('#'+cid).parent().find('.position_button').text('Check Out');
                 $('#'+cid).parent().find('.fa-sign-in').switchClass("fa-sign-in", "fa-sign-out");
                 $('#'+cid).show();
                 $('.check_in_time_'+cid).removeClass('hidden')
@@ -294,6 +318,39 @@
         });
       <%end%>
     }
+
+    $(".amount_val").keypress(function(event) {
+      if ((event.which != 46 || $(this).val().indexOf('.') != -1) &&
+        ((event.which < 48 || event.which > 57) &&
+          (event.which != 0 && event.which != 8))) {
+        event.preventDefault();
+      }
+      var text = $(this).val();
+      if ((text.indexOf('.') != -1) &&
+        (text.substring(text.indexOf('.')).length > 2) &&
+        (event.which != 0 && event.which != 8) &&
+        ($(this)[0].selectionStart >= text.length - 2)) {
+        event.preventDefault();
+      }
+    });
+
+    $(".amount_val").focusout(function(){
+       var re = /^-?[0-9]+$/;
+       var num = $(this).val();
+       if (re.test(num)){
+          num = num + '.00';
+          $(this).val(num);
+       }else if(!re.test(num) && num != '' ){
+         var length = parseFloat(num).toFixed(2).replace(/^-?\d*\.?|0+$/g, '').length
+         if(length == 1){
+          num = num + '0';
+          $(this).val(num);
+        }else if (length < 1){
+          num = parseFloat(num) + '.00';
+          $(this).val(num);
+        }
+      }
+    });
   });
 </script>
 <!-- end of shared javascript -->

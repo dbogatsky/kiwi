@@ -38,6 +38,12 @@ select.input-reg {
 .widget-messaging .quote-expiry {
     margin: 5px;
 }
+.widget-messaging .quote-fa-icon {
+    margin: 5px 5px 5px 5px;
+}
+.widget-messaging .quote-fa-account {
+    margin: 5px 5px 5px 0px;
+}
 
 .ci_note_body {
     font-size:14px!important;

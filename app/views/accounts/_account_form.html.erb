@@ -105,6 +105,15 @@
         <%= f.input :about, as: :text,  wrapper: :wizard_horizontal_form, :label => 'About', :input_html => { :rows => 5 }  %>
 
         <%= f.input :quick_facts, as: :text, wrapper: :wizard_horizontal_form, :label => 'Quick Facts', :input_html => { :rows => 5 }  %>
+        <%#if (@role == 'Admin' || @role == @enable_expected_sales.tr("_", " ").titleize || @enable_expected_sales == 'all')%>
+        <%if @enable_expected_sales == 'enable'%>
+          <div class="form-group">
+            <label class="col-sm-offset-2 col-sm-2 control-label">Expected Sales Value</label>
+            <div class="col-sm-4">
+               <%=text_field_tag "account[expected_sales]",nil,class: "form-control amount_val"%>
+            </div>
+          </div>
+        <%end%>
         <input type="hidden" name="save">
       </div>
 

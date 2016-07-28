@@ -10,10 +10,11 @@ class ApplicationController < ActionController::Base
   before_filter :set_cache_headers
   before_filter :authentication
   before_filter :notification_info
+  #before_filter :accounts_cache  # DIS001 disabled for now
   around_filter :set_time_zone
 
   helper_method :current_user, :get_api_values, :get_automatic_logout_time, :logged_in?, :superadmin_logged_in?, :notification_info
-  helper_method :has_permission, :has_permissions, :has_page_permission, :has_page_permissions
+  helper_method :has_permission, :has_permissions, :has_page_permission, :has_page_permissions, :accounts_cache
 
   rescue_from ActiveResource::ForbiddenAccess do |exception|
     Rollbar.error(exception, use_exception_level_filters: true)
@@ -104,6 +105,7 @@ class ApplicationController < ActionController::Base
   end
 
   def authentication
+    store_location
     if session[:user_id].present? && superadmin_logged_in?
       set_superadmin
     else
@@ -113,6 +115,21 @@ class ApplicationController < ActionController::Base
       else
         set_current_user
       end
+    end
+  end
+
+  def store_location
+    # store last url - this is needed for post-login redirect to whatever the user last visited.
+    return unless request.get?
+    if (request.path != "/" &&
+        request.path != "/login/destroy" &&
+        request.path != "/login" &&
+        controller_name != "errors" &&
+        action_name != "routing" &&
+        controller_name == "notifications" &&
+        action_name == "show" &&
+        !request.xhr?) # don't store ajax calls
+      session[:previous_url] = request.fullpath
     end
   end
 
@@ -283,7 +300,7 @@ class ApplicationController < ActionController::Base
 
     # check if we have set the current user before getting any notifications
     if current_user.present?
-      user_preference_details
+      @user_preference = user_preferences_load
       preference_limit = @user_preference['notification_display_limit']
       search = Hash.new
       current_date = Date.current.in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
@@ -335,6 +352,39 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def accounts_cache
+    accounts_cache_info = session[:accounts_cache]
+
+    if accounts_cache_info.nil?
+      accounts_cache_info = accounts_cache_refresh
+    else
+      accounts_cache_info = JSON.parse(accounts_cache_info)
+      if (DateTime.parse(accounts_cache_info["last_update"]).to_i + 15.minutes.to_i) < DateTime.now.to_i
+        accounts_cache_info = accounts_cache_refresh
+      end
+    end
+
+    accounts_cache_info
+  end
+
+  def accounts_cache_refresh(id=false)
+    accounts = Account.all
+    # temporary fix to get all the accounts
+    if accounts.meta["total_pages"] > 1
+      accounts = Account.all(params: { per_page: accounts.meta["total_entries"] })
+    end
+
+    #Account.find(params[:id])
+    accounts_cache_info = {}
+    accounts_cache_info["last_update"] = DateTime.now
+
+    accounts_cache_info["accounts"] = {}
+    accounts_cache_info["accounts"] = accounts.collect { |a| [a.id, a.name] }.to_h
+
+    session[:accounts_cache] = accounts_cache_info.to_json
+    accounts_cache_info
+  end
+
   def user_preference_details
     @apiFullUrl = RequestStore.store[:api_url] + "/users/#{current_user.id}/settings/preferences"
     @email = current_user.email
@@ -345,6 +395,27 @@ class ApplicationController < ActionController::Base
     user_preference = user_preference['user']['settings']['preferences']
     user_preference.shift
     @user_preference = user_preference
+  end
+
+  def user_preferences_load(refresh=false)
+    user_preferences_info = session[:user_preferences]
+
+    if user_preferences_info.nil? || refresh == true
+      apiFullUrl = RequestStore.store[:api_url] + "/users/#{current_user.id}/settings/preferences"
+      email = current_user.email
+      appKey = APP_CONFIG['api_app_key']
+      token = session[:token]
+      curlRes = `curl -X GET -H "Authorization: Token token="#{token}", email="#{email}", app_key="#{appKey}"" -H "Content-Type: application/json"  -H "Cache-Control: no-cache" "#{apiFullUrl}"`
+
+      user_preferences = JSON.parse(curlRes)
+      user_preferences = user_preferences['user']['settings']['preferences']
+      user_preferences.shift
+      session[:user_preferences] = user_preferences.to_json
+    else
+      user_preferences = JSON.parse(user_preferences_info)
+    end
+
+    user_preferences
   end
 
 #   def check_request
@@ -370,6 +441,7 @@ class ApplicationController < ActionController::Base
     @account_by_status = preferences['company']['settings']['preferences']['accounts_by_status']
     @enable_import = preferences['company']['settings']['preferences']['enable_import'] || "unknown"
     @enable_export = preferences['company']['settings']['preferences']['enable_export'] || "unknown"
+    @enable_expected_sales = preferences['company']['settings']['preferences']['enable_expected_sales_attributes'] || "unknown"
   end
 
   def get_api_values

@@ -39,7 +39,6 @@ Rails.application.routes.draw do
       get    :delete_meeting
       delete :delete_future_meeting
       delete :delete_quote
-      patch  :jump_in
       get    :search
       get    :get_users_list # get '/accounts/:id/get_users_list', to: 'accounts#get_users_list'
     end
@@ -51,11 +50,13 @@ Rails.application.routes.draw do
   resources :notifications, only: [:index, :update]
 
   get '/notifications/conversation_detail', to: 'notifications#conversation_detail', as: :notifications_conversation_detail
+  get '/n/:id', to: 'notifications#show'
   match '/users/:id/update_time_zone', to: 'users#update_time_zone', as: :users_update_time_zone, via: [:patch]
   get  '/users/:id/not_update_time_zone', to: 'users#not_update_time_zone', as: :users_not_update_time_zone
   post '/accounts/schedule_meeting', to: 'accounts#schedule_meeting', as: :account_schedule_meeting
   post '/accounts/check_in', to: 'accounts#check_in', as: :account_check_in
   post '/accounts/check_out', to: 'accounts#check_out', as: :account_check_out
+  post '/accounts/jump_in', to: 'accounts#jump_in', as: :account_jump_in
   post '/accounts/:id/add_note', to: 'accounts#add_note', as: :account_add_note
   post '/accounts/add_quote', to:'accounts#add_quote', as: :account_add_quote
   post '/accounts/add_reminder', to: 'accounts#add_reminder', as: :account_add_reminder

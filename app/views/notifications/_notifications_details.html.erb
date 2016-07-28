@@ -1,3 +1,36 @@
+<script type="text/javascript">
+	function show_conversation_details(e){
+  	id = e.attr('id')
+    conversation_id = e.data('conversation-id')
+    notification_type = e.data('notification-type')
+    notification_read = e.data('read-notification')
+    notification_id = e.data('notification-id')
+
+    if(e.next().attr('id') == 'details_tr_'+id) {
+      e.next().toggle(500)
+    } else {
+		  $.ajax({
+		    type: "GET",
+		    url: '/notifications/conversation_detail?item_id='+id+'&conversation_id='+conversation_id+'&notification_type='+notification_type+'&notification_read='+notification_read+'&notification_id='+notification_id,
+		    dataType: 'html',
+		    success: function (data) {
+          console.log(id);
+          $('#' + id).after(data)
+          $(".remove_bold_"+ id).css('font-weight', 'normal')
+          $(".remove_bold_"+ id).last().html('')
+		    },
+        beforeSend: function() {
+          $('#preloader').css('opacity', 0.8);
+          $('#preloader').show();
+        },
+        complete: function() {
+          $('#preloader').hide();
+        }
+		  });
+	  }
+  }
+</script>
+
 <%if notifications.present?%>
 	<table class="table table-responsive">
 	  <thead>
@@ -10,7 +43,12 @@
 	  </thead>
 	  <tbody>
 	    <%notifications.each do |notification|%>
-		    <tr class="show_details i_pointer"
+	      <%if params[:id].present? && notification.id == params[:id].to_i %>
+          <%show_conversation_details = true%>
+	      <%else%>
+          <%show_conversation_details = false%>
+	      <%end%>
+		    <tr class="<%=show_conversation_details ? 'default_show' : 'show_details'%> i_pointer"
             id="<%=notification.id%>"
             data-conversation-id="<%=
               case notification.type
@@ -56,6 +94,9 @@
 			        <%end%>
 		        </td>
 	      </tr>
+	      <%if show_conversation_details%>
+          <script>show_conversation_details($(".default_show"))</script>
+	      <%end%>
 	    <%end%>
 	  </tbody>
 	</table>
@@ -66,34 +107,11 @@
 <script type="text/javascript">
 
   $(document).on('click', '.show_details', function(){
-    id = $(this).attr('id')
-    conversation_id = $(this).data('conversation-id')
-    notification_type = $(this).data('notification-type')
-    notification_read = $(this).data('read-notification')
-    notification_id = $(this).data('notification-id')
+    show_conversation_details($(this))
+  })
 
-    if($(this).next().attr('id') == 'details_tr_'+id) {
-      $(this).next().toggle(500)
-    } else {
-		  $.ajax({
-		    type: "GET",
-		    url: '/notifications/conversation_detail?item_id='+id+'&conversation_id='+conversation_id+'&notification_type='+notification_type+'&notification_read='+notification_read+'&notification_id='+notification_id,
-		    dataType: 'html',
-		    success: function (data) {
-          console.log(id);
-          $('#' + id).after(data)
-          $(".remove_bold_"+ id).css('font-weight', 'normal')
-          $(".remove_bold_"+ id).last().html('')
-		    },
-        beforeSend: function() {
-          $('#preloader').css('opacity', 0.8);
-          $('#preloader').show();
-        },
-        complete: function() {
-          $('#preloader').hide();
-        }
-		  });
-	  }
+  $(document).on('click', '.default_show', function(){
+    show_conversation_details($(this))
   })
 
   $(document).on('click', '.close_div', function(){

@@ -13,7 +13,7 @@
 	<div class="panel-heading">
 	  <h4 class="panel-title">Fill in the details below to add an account</h4>
 	</div>
-  	<%= render partial: "account_form" %>
+  <%= render partial: "account_form" %>
 </div>
 
 <% content_for :custom_js do %>
@@ -59,13 +59,12 @@
 
 		});
 
-	  	$(".pager .finish").click(function(e){
-	  		e.preventDefault();
-	  		$("#account-add-form").submit();
-	  		$('#preloader').css('opacity', 0.6);
-        $('#preloader').show();
-	  	})
-
+  	$(".pager .finish").click(function(e){
+  		e.preventDefault();
+  		$("#account-add-form").submit();
+  		$('#preloader').css('opacity', 0.6);
+      $('#preloader').show();
+  	})
 
 		// Textarea Autogrow
 		jQuery('#account-about').autogrow();

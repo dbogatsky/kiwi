@@ -1,7 +1,7 @@
 
-/* -------------------------------- 
+/* --------------------------------
 
-Main components 
+Main components
 
 -------------------------------- */
 
@@ -99,7 +99,7 @@ Main components
   background: #e91e63;
 }
 .cd-timeline-img.cd-account {
-  background: #c71c38;
+  background: #000000;
 }
 .cd-timeline-img.cd-email {
   background: #673AB7;
@@ -113,7 +113,7 @@ Main components
     height: 60px;
     left: 50%;
     margin-left: -30px;
-    // Force Hardware Acceleration in WebKit 
+    // Force Hardware Acceleration in WebKit
     -webkit-transform: translateZ(0);
     -webkit-backface-visibility: hidden;
   }
