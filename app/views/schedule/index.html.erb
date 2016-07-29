@@ -89,6 +89,36 @@
   $.fn.modal.Constructor.prototype.enforceFocus = function () {};
   $('.select2').select2();
 
+
+  $(document).on("keyup", ".select2-search__field",function(){
+    var str = $(this).val()
+    if (str.length >=3){
+      $.ajax({
+        type: "GET",
+        dataType: "script",
+        url: '/schedule/search_account?str='+ str,
+        beforeSend: function() {
+         // $('#preloader').css('opacity', 0.8);
+         // $('#preloader').show();
+        },
+        complete: function() {
+          // $('#preloader').hide();
+        },
+        success: function (data) {
+          var select = $('.selected_account');
+          select.empty();
+          select.append("<option value=''>-Select account-</option>");
+          data = $.parseJSON(data)
+          $(".selected_account").select2({
+            data: data
+          });
+        }
+      });
+    }
+  });
+
+
+
   $(document).on("change",".selected_account",function() {
     var account_id = $(this).val();
     if (account_id != ''){

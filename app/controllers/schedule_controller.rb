@@ -209,6 +209,18 @@ class ScheduleController < ApplicationController
     render template: 'schedule/_regular_visits', layout: false
   end
 
+  def search_account
+    search = {}
+    search[:name_cont] = params[:str]
+    options  = []
+    accounts = Account.all(params: { search: search})
+    # accounts = Account.find(:all) if accounts.size == 0
+    accounts.each do |account|
+      options << { id: account.id, text: account.name }
+    end
+    render json: options
+  end
+
   private
 
   def get_meetings(user_ids)
