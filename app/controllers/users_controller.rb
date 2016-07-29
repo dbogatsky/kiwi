@@ -1,6 +1,6 @@
 require 'net/http/post/multipart'
 class UsersController < ApplicationController
-  load_and_authorize_resource except: [:index, :new, :edit, :create, :update, :destroy, :not_update_time_zone]
+  load_and_authorize_resource except: [:index, :new, :edit, :create, :update, :destroy, :update_time_zone, :not_update_time_zone]
   before_action :get_token
   before_action :find_user, only: [:edit, :update, :destroy, :update_time_zone]
 
