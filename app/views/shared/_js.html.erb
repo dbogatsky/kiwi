@@ -115,7 +115,7 @@
     }
 
     var path = window.location.pathname
-    if(path.includes('/accounts/') && (path.includes('/edit') || path.includes('/new'))){
+    if((path.includes('/accounts/') || path.includes('/users/')) && (path.includes('/edit') || path.includes('/new'))){
       if (document.getElementById("account_name") != null){
           address_auto_fill(document.getElementById("account_name"));
         }else{
