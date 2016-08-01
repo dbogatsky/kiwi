@@ -7,6 +7,7 @@ class ScheduleController < ApplicationController
     @user_preference = user_preferences_load
     @users = User.all(uid: session[:user_id])
     get_meetings([current_user.id])
+    @all_accounts = Account.all.sort_by {|a| a.name.downcase}
     @sort_meeting = []
     @next_meeting = []
     if @meetings.present?
