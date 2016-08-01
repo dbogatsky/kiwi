@@ -22,8 +22,10 @@ class AccountsController < ApplicationController
       session[:search] = nil
       session[:advanced_search] = nil
     end
-    @accounts = Account.all(params: { search: params[:search],page: page, per_page: @show_accounts_per_page })
-    @total_entries = @accounts.total_entries
+    unless params[:advanced_search].present?
+      @accounts = Account.all(params: { search: params[:search],page: page, per_page: @show_accounts_per_page })
+      @total_entries = @accounts.total_entries
+    end
     session[:search] = params[:search] if params[:search].present?
     if params[:search1].present? && params[:search2].present?
       accounts_sort_by(params[:search1][:search], params[:search2][:search])
