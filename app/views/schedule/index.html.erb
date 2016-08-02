@@ -89,6 +89,14 @@
   $.fn.modal.Constructor.prototype.enforceFocus = function () {};
   $('.select2').select2();
 
+  $(".account-action-meeting, .conversation-quote-modal-form, .conversation-reminder-modal-form").on("shown.bs.modal", function(){
+    var select = $('.selected_account');
+    select.empty();
+    select.append("<option value=''>-Select account-</option>");
+    <%@all_accounts.each do |account|%>
+      $('<option>').val('<%=account.id%>').text('<%=account.name%>').appendTo('.selected_account');
+    <%end%>
+  })
 
   $(document).on("keyup", ".select2-search__field",function(){
     var str = $(this).val()
@@ -119,7 +127,7 @@
 
 
 
-  $(document).on("change",".selected_account",function() {
+  $(document).on("change",".get_address",function() {
     var account_id = $(this).val();
     if (account_id != ''){
       $.ajax({
@@ -183,7 +191,7 @@
     new_reminder = $('#new_reminder').wysihtml5({'font-styles': false, 'image': false, 'link':false});
   });
 
-  $(".select_account").change(function(){
+  $(".get_notifiable_users").change(function(){
     account_id = $(this).val();
     if (account_id != ''){
       $('#preloader').css('opacity', 0.8);

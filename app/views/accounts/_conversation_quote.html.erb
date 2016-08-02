@@ -34,10 +34,10 @@
                 <%unless account.present?%>
                   <div class="row row-pad-5">
                     <div class="col-lg-12 country_select">
-                      <select class="form-control select2" name="id" placeholder="-Select account-" required="required">
+                      <select class="form-control select2 selected_account" name="id" placeholder="-Select account-" required="required">
                         <option value="">-Select account-</option>
-                        <%@all_account.each do |account|%>
-                          <option value="<%=account.id%>"><%=account.name%></option>
+                        <%#Account.all.sort_by {|a| a.name.downcase}.each do |account|%>
+                          <!-- <option value="<%#=account.id%>"><%#=account.name%></option> -->
 <%
 # DIS001 disabled for now
 =begin
@@ -45,7 +45,7 @@
                           <option value="<%=id% >"><%=name% ></option>
 =end
 %>
-                       <%end%>
+                       <%#end%>
                       </select>
                     </div>
                   </div><!-- row -->
