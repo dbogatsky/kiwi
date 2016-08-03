@@ -106,14 +106,16 @@ class ApplicationController < ActionController::Base
 
   def authentication
     store_location
-    if session[:user_id].present? && superadmin_logged_in?
-      set_superadmin
-    else
-      if session[:token].nil?
-        flash[:danger] = 'Your session has expired. Please log in again.'  # Log in error message
-        redirect_to root_path
+    if current_user.blank?
+      if session[:user_id].present? && superadmin_logged_in?
+        set_superadmin
       else
-        set_current_user
+        if session[:token].nil?
+          flash[:danger] = 'Your session has expired. Please log in again.'  # Log in error message
+          redirect_to root_path
+        else
+          set_current_user
+        end
       end
     end
   end
