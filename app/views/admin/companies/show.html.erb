@@ -18,9 +18,15 @@
       </h5>
       <ul class="profile-social-list" id="account-contacts">
         <%if @company.contacts.present?%>
-	        <% @company.contacts.each do |contact| %>
-	          <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.type %>"></i><%= contact.value %></li>
-	        <% end %>
+          <% @company.contacts.each do |contact| %>
+            <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.type %>"></i>
+            <% if contact.type.eql? "phone"  or  contact.type.eql? "mobile"  or  contact.type.eql? "fax" %>
+              <a href="tel:+1<%= contact.value.delete(" ").delete("-") %>"><%= contact.value %></a>
+            <% else %>
+              <%= contact.value %>
+            <% end %>
+            </li>
+          <% end %>
         <% end %>
       </ul>
       <div class="mb30"></div>
