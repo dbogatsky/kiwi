@@ -19,9 +19,9 @@
       </div>
       <div id="conversation_item_details">
         <%if @meetings.present? && @next_meeting.present?%>
-          <%account = Account.find(@next_meeting.first.account_id)%>
+          <%#account = Account.find(@next_meeting.first.account_id)%>
           <%created_by = @next_meeting.first.created_by%>
-          <%=render 'conversation_item_details', citem: @next_meeting.first, account: account, citem_created_by: created_by%>
+          <%=render 'conversation_item_details', citem: @next_meeting.first, citem_created_by: created_by%>
         <%end%>
       </div>
     </div>
