@@ -27,7 +27,7 @@
     <div class="panel-footer">
       <div class="row">
         <div class="col-sm-6 col-sm-offset-3">
-          <%=link_to 'Export', accounts_path(format: "csv"), method: :get, class: "btn btn-primary btn-sm export_link" %>
+          <%=link_to 'Export', accounts_path(page: session[:page].to_i, format: "csv"), method: :get, class: "btn btn-primary btn-sm export_link" %>
         </div>
       </div>
     </div>

@@ -10,6 +10,7 @@ class ApplicationController < ActionController::Base
   before_filter :set_cache_headers
   before_filter :authentication
   before_filter :notification_info
+  before_filter  :clear_session_variable
   #before_filter :accounts_cache  # DIS001 disabled for now
   around_filter :set_time_zone
 
@@ -134,6 +135,16 @@ class ApplicationController < ActionController::Base
       session[:previous_url] = request.fullpath
     end
   end
+
+  def clear_session_variable
+    if controller_name != "accounts"
+      session.delete(:sort_val1_for_page)
+      session.delete(:sort_val2_for_page)
+      session.delete(:advanced_search_for_page)
+      session.delete(:page)
+    end
+  end
+
 
   def set_current_user
     RequestStore.store[:user_token] = session[:token]
