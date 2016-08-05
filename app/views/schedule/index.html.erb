@@ -470,6 +470,12 @@
 
   });
 
+  $(document).live('click', '.fc-left', function(event){
+    if($(event.target).hasClass('fc-today-button')){
+      update_regular_visits(null)
+    }
+  })
+
   $(document).on('click', '.delete_item', function(){
     var r =  confirm("Are you sure to delete this meeting?")
     var item_id = $(this).data('id')
