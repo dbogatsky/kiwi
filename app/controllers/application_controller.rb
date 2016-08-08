@@ -138,9 +138,7 @@ class ApplicationController < ActionController::Base
 
   def clear_session_variable
     if controller_name != "accounts"
-      session.delete(:sort_val1_for_page)
-      session.delete(:sort_val2_for_page)
-      session.delete(:advanced_search_for_page)
+      session.delete(:search)
       session.delete(:page)
     end
   end

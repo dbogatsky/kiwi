@@ -2,12 +2,12 @@
   <div class="dropdown mob_marginleft_9" style="margin-top: 10px;"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Sort By</a>
     <ul class="dropdown-menu list-unstyled search_list"  role="menu" aria-labelledby="dropdownMenu">
       <li><%=radio_button("search1", "search", "name", :checked =>true)%> Name</li>
-      <li><%=radio_button("search1", "search", "city")%> City</li>
-      <li><%=radio_button("search1", "search", "country")%> Country</li>
-      <li><%=radio_button("search1", "search", "owner")%> Owner</li>
+      <li><%=radio_button("search1", "search", "addresses_city")%> City</li>
+      <li><%=radio_button("search1", "search", "addresses_country")%> Country</li>
+      <li><%=radio_button("search1", "search", "assigned_to_first_name")%> Owner</li>
       <li class="divider"></li>
-      <li><%=radio_button("search2", "search", "ascending", :checked =>true)%> Ascending</li>
-      <li><%=radio_button("search2", "search", "descending")%> Descending</li>
+      <li><%=radio_button("search2", "search", "asc", :checked =>true)%> Ascending</li>
+      <li><%=radio_button("search2", "search", "desc")%> Descending</li>
       <li class="divider"></li>
       <li><button type="submit" class="btn btn-primary btn-sm submit_search"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Apply</button></li>
     </ul>

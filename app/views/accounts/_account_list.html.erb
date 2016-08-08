@@ -89,15 +89,12 @@
   </div><!-- row -->
 </div><!-- people-list -->
 <script type="text/javascript">
-  adv_search = '<%=session[:advanced_search_for_page]%>'
-  sort_val1 = '<%=session[:sort_val1_for_page]%>'
-  sort_val2 = '<%=session[:sort_val2_for_page]%>'
   var totalPages = "<%=@total_entries.to_f/@show_accounts_per_page%>"
   totalPages = Math.ceil(totalPages)
   $('#pagination').twbsPagination({
     totalPages: totalPages,
     visiblePages: 5,
-    href: "/accounts?page={{number}}&adv_search=true&sort_val1="+sort_val1+"&sort_val2="+sort_val2
+    href: "/accounts?page={{number}}&adv_search=true"
   });
 </script>
 
