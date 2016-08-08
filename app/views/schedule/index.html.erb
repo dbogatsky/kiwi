@@ -19,9 +19,9 @@
       </div>
       <div id="conversation_item_details">
         <%if @meetings.present? && @next_meeting.present?%>
-          <%account = Account.find(@next_meeting.first.account_id)%>
+          <%#account = Account.find(@next_meeting.first.account_id)%>
           <%created_by = @next_meeting.first.created_by%>
-          <%=render 'conversation_item_details', citem: @next_meeting.first, account: account, citem_created_by: created_by%>
+          <%=render 'conversation_item_details', citem: @next_meeting.first, citem_created_by: created_by%>
         <%end%>
       </div>
     </div>
@@ -80,17 +80,18 @@
   <%end%>
 </div>
 <%= render "accounts/conversation_meeting", account: nil %>
-<%= render "accounts/conversation_quote", account: nil %>
 <%= render "accounts/conversation_reminder", account: nil %>
+<%= render "accounts/conversation_quote", account: nil %>
 <%= render "accounts/conversation_meeting_complete", account: nil, info: true%>
 <%= render "accounts/conversation_meeting_edit", account: nil, info: true%>
 
 <script>
   $.fn.modal.Constructor.prototype.enforceFocus = function () {};
   $('.select2').select2();
-
+  var check_open_modal
   $(".account-action-meeting, .conversation-quote-modal-form, .conversation-reminder-modal-form").on("shown.bs.modal", function(){
     var select = $('.selected_account');
+    check_open_modal = $(this).attr('id')
     select.empty();
     select.append("<option value=''>-Select account-</option>");
     <%@all_accounts.each do |account|%>
@@ -98,32 +99,52 @@
     <%end%>
   })
 
-  $(document).on("keyup", ".select2-search__field",function(){
-    var str = $(this).val()
-    if (str.length >=3){
-      $.ajax({
-        type: "GET",
-        dataType: "script",
-        url: '/schedule/search_account?str='+ str,
-        beforeSend: function() {
-         // $('#preloader').css('opacity', 0.8);
-         // $('#preloader').show();
-        },
-        complete: function() {
-          // $('#preloader').hide();
-        },
-        success: function (data) {
-          var select = $('.selected_account');
-          select.empty();
-          select.append("<option value=''>-Select account-</option>");
-          data = $.parseJSON(data)
-          $(".selected_account").select2({
-            data: data
-          });
-        }
-      });
-    }
-  });
+  // $(document).on("keyup", ".select2-search__field",function(){
+  //   var str = $(this).val()
+  //   if (str.length >=3){
+  //     $.ajax({
+  //       type: "GET",
+  //       dataType: "script",
+  //       url: '/schedule/search_account?str='+ str,
+  //       success: function (data) {
+  //         var select = $('.selected_account');
+  //         select.empty();
+  //         select.append("<option value=''>-Select account-</option>");
+  //         data = $.parseJSON(data)
+  //         $(".selected_account").select2({
+  //           data: data
+  //         });
+
+  //         if(check_open_modal == 'meeting_modal'){
+  //           $(".selected_account:eq(0)").select2('open')
+  //         }else if(check_open_modal == 'reminder_modal'){
+  //           $(".selected_account:eq(1)").select2('open')
+  //         }else if(check_open_modal == 'quote_modal'){
+  //           $(".selected_account:eq(2)").select2('open')
+  //         }
+  //       }
+  //     });
+  //   }
+  // });
+
+
+  // $(".selected_account").select2({
+  //   ajax: {
+  //     url: '/schedule/search_account',
+  //     data: function (params) {
+  //       return {
+  //         str: params.term
+  //       };
+  //     },
+  //     processResults: function (data, params) {
+  //       return {
+  //         results: data,
+  //       };
+  //     },
+  //     cache: true
+  //   },
+  //   minimumInputLength: 3,
+  // });
 
 
 
@@ -405,8 +426,17 @@
     /* initialize the calendar
      -----------------------------------------------------------------*/
     $('#calendar').fullCalendar({
+        customButtons: {
+          todayCustomButton: {
+              text: 'today',
+              click: function() {
+                 $('#calendar').fullCalendar('today');
+                 update_regular_visits(null)
+              }
+          }
+        },
         header: {
-          left: 'prev,next today',
+          left: 'prev,next todayCustomButton',
           center: 'title',
           right: 'month,agendaWeek,agendaDay',
         },
@@ -448,6 +478,12 @@
     get_regular_visit_with_day_view()
 
   });
+
+  // $(document).live('click', '.fc-left', function(event){
+  //   if($(event.target).hasClass('fc-today-button')){
+  //     update_regular_visits(null)
+  //   }
+  // })
 
   $(document).on('click', '.delete_item', function(){
     var r =  confirm("Are you sure to delete this meeting?")

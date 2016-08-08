@@ -73,7 +73,7 @@ Rails.application.routes.draw do
   get   '/schedule/regular_visits', to: 'schedule#regular_visits', as: :schedule_regular_vists
   match '/media', to: 'media#index', as: :media, via: [:get]
   get   '/schedule/get_account_address', to: 'schedule#get_account_address', as: :schedule_get_account_address
-  get   '/schedule/search_account', to: 'schedule#search_account', as: :schedule_search_account
+  # get   '/schedule/search_account', to: 'schedule#search_account', as: :schedule_search_account
   post '/media/create_folder', to: 'media#create_folder', as: :create_folder
   post '/media/show', to: 'media#show', as: :show
   get  '/media/show_large_image', to: 'media#show_large_image', as: :show_large_image

@@ -7,7 +7,9 @@ class ScheduleController < ApplicationController
     @user_preference = user_preferences_load
     @users = User.all(uid: session[:user_id])
     get_meetings([current_user.id])
-    @all_accounts = Account.all.sort_by {|a| a.name.downcase}
+    no_of_account = Account.all.total_entries
+    @all_accounts = Account.all(params: {per_page: no_of_account})
+    @all_accounts = @all_accounts.sort_by {|a| a.name.downcase}
     @sort_meeting = []
     @next_meeting = []
     if @meetings.present?
@@ -210,31 +212,21 @@ class ScheduleController < ApplicationController
     render template: 'schedule/_regular_visits', layout: false
   end
 
-  def search_account
-    search = {}
-    search[:name_cont] = params[:str]
-    options  = []
-    accounts = Account.all(params: { search: search})
-    # accounts = Account.find(:all) if accounts.size == 0
-    accounts.each do |account|
-      options << { id: account.id, text: account.name }
-    end
-    render json: options
-  end
+  # def search_account
+  #   search = {}
+  #   search[:name_cont] = params[:str]
+  #   options  = []
+  #   accounts = Account.all(params: { search: search})
+  #   accounts.each do |account|
+  #     options << { id: account.id, text: account.name }
+  #   end
+  #   render json: options
+  # end
 
   private
 
   def get_meetings(user_ids)
-    # @colors = ['#e0301e', '#000', '#c5e323', '#9e466b', '#0000ff']
     @all_items = []
-    # @user_color = {}
-    # user_ids.each_with_index do |u, index|
-    #   if u.to_i != current_user.id
-    #     @user_color[u.to_i] = @colors[index]
-    #   else
-    #     @user_color[u.to_i] = '#3a87ad'
-    #   end
-    # end
     search = Hash[]
     search[:type_eq] = 'ConversationItems::Meeting'
     search[:item_type_eq] = 'general'

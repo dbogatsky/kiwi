@@ -73,9 +73,9 @@ class ReportsController < ApplicationController
     search[:user_id_in] = user_ids
 
     # get a list of all accounts updated between selected date range
-    @accounts = Account.all(params: { search: search })
+    no_of_account = Account.all.total_entries
+    @accounts = Account.all(params: { search: search, per_page: no_of_account})
     @accounts = @accounts.sort_by { |account| account.updated_at }.reverse
-
     # remove this key from search since we use the same search hash below
     search.delete(:user_id_in)
 

@@ -6,21 +6,25 @@
     <!-- This is only visible to small devices -->
     <div class="visible-xs hidden-sm hidden-md hidden-lg">
       <div class="media userlogged">
-        <% if current_user.avatar_url.eql? "/avatars/web/missing.png" || !(current_user.avatar_url.present?)%>
+        <%if current_user.present?%>
+          <% if current_user.avatar_url.eql? "/avatars/web/missing.png" || !(current_user.avatar_url.present?)%>
+            <img src="/assets/bootstrap/images/user.png" class="media-object" />
+          <% else %>
+            <img alt="" src="<%= current_user.avatar_url %>" class="media-object">
+          <% end %>
+        <%else%>
           <img src="/assets/bootstrap/images/user.png" class="media-object" />
-        <% else %>
-          <img alt="" src="<%= current_user.avatar_url %>" class="media-object">
-        <% end %>
+        <%end%>
         <div class="media-body">
           <h4><%= current_user.first_name rescue nil %> <%= current_user.last_name rescue nil%></h4>
-            <span><%= current_user.title %></span>
+            <span><%= current_user.title rescue nil%></span>
         </div>
       </div>
       <h5 class="sidebartitle actitle">Account</h5>
       <ul class="nav nav-pills nav-stacked nav-bracket mb30">
         <li><a href="<%= profile_path %>"><i class="fa fa-user"></i> <span>My Profile</span></a></li>
         <% # <li><a href="<%= preference_path "><i class="fa fa-wrench"></i> <span>Preference</span></a></li> %>
-        <li><a href="<%=login_change_password_path(current_user.id)%>"><i class="fa fa-lock"></i> <span>Change Password</span></a></li>
+        <li><a href="<%=login_change_password_path(current_user.id) rescue nil%>"><i class="fa fa-lock"></i> <span>Change Password</span></a></li>
         <li><a href="<%= user_logout_path %>"><i class="fa fa-sign-out"></i> <span>Log Out</span></a></li>
       </ul>
     </div>
@@ -51,7 +55,7 @@
             <%= link_to activity_report_path do %>
               <i class="fa fa-caret-right"></i> Activity
             <% end %>
-          </li>        
+          </li>
           <li>
             <%= link_to meeting_report_path do %>
               <i class="fa fa-caret-right"></i> Meetings

@@ -13,11 +13,6 @@
     <div class="col-sm-3">
       <img src="<%= (@account.avatar_url.eql? "/avatars/web/missing.png") ? '/assets/images/default_account_avatar.png' : @account.avatar_url %>" class="thumbnail img-responsive" alt="">
         <div class="mb30"></div>
-        <%#if (@role == 'Admin' || @role == @enable_expected_sales.tr("_", " ").titleize || @enable_expected_sales == 'all')%>
-        <%#if @enable_expected_sales == 'enable'%>
-          <!-- <h5 class="subtitle">Estimated Sales</h5> -->
-          <!-- <span class="pink_text"><%#=number_to_currency(@account.expected_sales)%></span> -->
-        <%#end%>
         <div class="mb30"></div>
         <h5 class="subtitle">Contact</h5>
         <ul class="profile-social-list" id="account-contacts">
@@ -33,6 +28,8 @@
               <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name %>"></i><a href="mailto:<%= contact.value %>"><%= contact.value %></a></li>
             <%elsif  contact.type == "website"%>
              <li id="<%= dom_id(contact) %>"><i class="fa fa-globe"></i><a href="<%= contact.value %>" target="_blank"><%= contact.value %></a></li>
+            <% elsif contact.type.eql? "phone"  or  contact.type.eql? "mobile"  or  contact.type.eql? "fax"%>
+              <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name %>"></i><a href="tel:+1<%= contact.value.delete(" ").delete("-") %>"><%= contact.value %></a></li>
             <% else %>
               <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name %>"></i><%= contact.value %></li>
             <% end %>
@@ -40,7 +37,6 @@
         </ul>
       <div class="mb30"></div>
       <h5 class="subtitle">Address&nbsp;<i class="fa fa-map-marker"></i>
-        <!--<a href="#" data-toggle="modal" data-target=".address-modal-form" class="pull-right account_icons">+ Add</a>-->
       </h5>
       <ul class="profile-social-list" id="account-addresses">
         <% @account.addresses.each_with_index do |address, index| %>
@@ -200,7 +196,6 @@
             <h3 class="panel-title">New Contact</h3>
           </div>
           <div class="panel-body">
-            <%#= render :partial => "contacts/form", review: Contact.new(account_id: @account.id) %>
             <%= render :partial => "contacts/form" %>
           </div><!-- panel -->
         </div>
@@ -911,19 +906,6 @@
         $(".set_date").attr('disabled', true)
       });
     });
-
-    // $(".conversation-edit-reminder-modal-form").on("shown.bs.modal", function(){
-    //   var input = document.getElementById("keyword");
-    //   var autocomplete = new google.maps.places.Autocomplete(input);
-
-    //   google.maps.event.addListener(autocomplete, 'place_changed', function() {
-    //     var place = autocomplete.getPlace();
-    //     var lat = place.geometry.location.lat();
-    //     var lng = place.geometry.location.lng();
-    //     $(".conversation-edit-reminder-modal-form[name='conversation_item[latitude]']").val(lat);
-    //     $(".conversation-edit-reminder-modal-form[name='conversation_item[longitude]']").val(lng);
-    //   });
-    // });
 
   var new_data = <%= raw(@notifiable_users) %>
   $("#notifiable_users").select2({

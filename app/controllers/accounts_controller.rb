@@ -15,27 +15,17 @@ class AccountsController < ApplicationController
     show_accounts_per_page = @user_preference['show_accounts_per_page']
     @show_accounts_per_page = show_accounts_per_page.to_i > 0 ? show_accounts_per_page.to_i : 25
     page = params[:page].present? ? params[:page] : 1
-    # Get all accounts
-    if request.format.symbol.present? && [:csv,:xls].exclude?(request.format.symbol)
-      session[:search1] = nil
-      session[:search2] = nil
-      session[:search] = nil
-      session[:advanced_search] = nil
-    end
-    @accounts = Account.all(params: { search: params[:search],page: page, per_page: @show_accounts_per_page })
-    @total_entries = @accounts.total_entries
-    session[:search] = params[:search] if params[:search].present?
+    session[:page] = page
+    advanced_search  #call advanced search
+    search = @search.present? ? @search : (params[:search].present? ? params[:search] : session[:search])
     if params[:search1].present? && params[:search2].present?
-      accounts_sort_by(params[:search1][:search], params[:search2][:search])
-      session[:search1] = params[:search1][:search]
-      session[:search2] = params[:search2][:search]
+      search ||= {}
+      search[:s] = "#{params[:search1][:search]+' '+params[:search2][:search]}"
     end
-    if params[:advanced_search].present?
-      advanced_search
-      session[:advanced_search] = @search
-      @accounts = Account.all(params: { search: @search, page: page, per_page: @show_accounts_per_page })
-      @total_entries = @accounts.total_entries
-    end
+    search = session[:search] if params[:adv_search] == 'true'
+    @accounts = Account.all(params: { search: search, page: page, per_page: 5})
+    @total_entries = @accounts.meta["total_entries"]
+    session[:search] = search
     accounts_statistics_info
     respond_to do |format|
       format.html
@@ -605,13 +595,8 @@ class AccountsController < ApplicationController
   end
 
   def generate_csv
-    if session[:search1].present? && session[:search2].present?
-      accounts_sort_by(session[:search1], session[:search2])
-    elsif session[:advanced_search].present?
-      @accounts = Account.all(params: { search: session[:advanced_search] })
-    else
-      @accounts = Account.all(params: { search: session[:search] })
-    end
+    page = session[:page].present? ? session[:page].to_i : 1
+    @accounts = Account.all(params: { search: session[:search], page: page, per_page: 5})
     column_names = ['ID', 'Name', 'Contact Name', 'Contact Title', 'Status', 'Address', 'City', 'Province', 'Postal Code', 'Country', 'About', 'Quick Facts' ]
     options = {}
     options[:force_quotes] = true
@@ -753,20 +738,24 @@ class AccountsController < ApplicationController
     end
   end
 
-  def accounts_sort_by(value1, value2)
-    if value1 == 'name'
-      @accounts = @accounts.sort_by { |a| [a.name] }
-    elsif value1 == 'city'
-      @accounts = @accounts.sort_by { |a| [a.city_name] }
-    elsif value1 == 'country'
-      @accounts = @accounts.sort_by { |a| [a.country_name] }
-    elsif value1 == 'owner'
-      @accounts = @accounts.sort_by { |a| [a.assigned_to.try(:first_name)] }
-    elsif value1 == 'estimated_sales'
-      @accounts = @accounts.sort_by { |a| [a.expected_sales.to_f] }
-    end
-    @accounts = @accounts.reverse if value2 == 'descending'
-  end
+  # def accounts_sort_by(value1, value2)
+  #   if value1 == 'name'
+  #     @accounts = @accounts.sort_by { |a| [a.name] }
+  #   elsif value1 == 'city'
+  #     @accounts = @accounts.sort_by { |a| [a.city_name] }
+  #   elsif value1 == 'country'
+  #     @accounts = @accounts.sort_by { |a| [a.country_name] }
+  #   elsif value1 == 'owner'
+  #     @accounts = @accounts.sort_by { |a| [a.assigned_to.try(:first_name)] }
+  #   elsif value1 == 'estimated_sales'
+  #     @accounts = @accounts.sort_by { |a| [a.expected_sales.to_f] }
+  #   end
+  #   @accounts = @accounts.reverse if value2 == 'descending'
+  #   session[:search1] = value1
+  #   session[:search2] = value2
+  #   session[:sort_val1_for_page] = value1
+  #   session[:sort_val2_for_page] = value2
+  # end
 
   def advanced_search
     @search = {}
