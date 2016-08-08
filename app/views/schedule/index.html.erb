@@ -426,8 +426,17 @@
     /* initialize the calendar
      -----------------------------------------------------------------*/
     $('#calendar').fullCalendar({
+        customButtons: {
+          todayCustomButton: {
+              text: 'today',
+              click: function() {
+                 $('#calendar').fullCalendar('today');
+                 update_regular_visits(null)
+              }
+          }
+        },
         header: {
-          left: 'prev,next today',
+          left: 'prev,next todayCustomButton',
           center: 'title',
           right: 'month,agendaWeek,agendaDay',
         },
@@ -470,11 +479,11 @@
 
   });
 
-  $(document).live('click', '.fc-left', function(event){
-    if($(event.target).hasClass('fc-today-button')){
-      update_regular_visits(null)
-    }
-  })
+  // $(document).live('click', '.fc-left', function(event){
+  //   if($(event.target).hasClass('fc-today-button')){
+  //     update_regular_visits(null)
+  //   }
+  // })
 
   $(document).on('click', '.delete_item', function(){
     var r =  confirm("Are you sure to delete this meeting?")
