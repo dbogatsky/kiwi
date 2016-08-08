@@ -48,6 +48,7 @@ Rails.application.routes.draw do
   resources :company_entities
   resources :users
   resources :notifications, only: [:index, :update]
+  resources :leads
 
   get '/notifications/conversation_detail', to: 'notifications#conversation_detail', as: :notifications_conversation_detail
   get '/n/:id', to: 'notifications#show'
@@ -91,7 +92,6 @@ Rails.application.routes.draw do
   get '/company/add', to: 'company#add', as: :company_add
   get '/company/edit/:id', to: 'company#edit', as: :company_edit
 
-  # match '/company/add_entity', to: 'company#add_entity', as: :company_add_entity, via: [:get, :post]
   get '/company/edit_entity/:id', to: 'company#edit_entity', as: :company_edit_entity
   get '/company/:id/display_sub_entites', to: 'company#display_sub_entites', as: :company_display_sub_entites
   post '/company/delete/:id', to: 'company#delete', as: :company_delete
@@ -99,11 +99,7 @@ Rails.application.routes.draw do
   post '/company/account_status', to: 'company#account_status', as: :account_status
   post '/company/:company_id/company_news', to: 'company#company_news', as: :company_news
   delete '/company/:company_id/delete_news', to: 'company#delete_news', as: :delete_news
-  # match '/users', to: 'users#index', as: :users, via: [:get]
-  # get '/users/new', to: 'users#new', as: :users_new
-  # get '/users/edit/:id', to: 'users#edit', as: :users_edit
-  # post '/users/save/', to: 'users#save', as: :users_save
-  # post '/users/delete/:id', to: 'users#delete', as: :users_delete
+
 
   match '/settings', to: 'settings#index', as: :settings, via: [:get]
   get :get_users, to: 'company#get_users'

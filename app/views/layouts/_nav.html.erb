@@ -28,6 +28,11 @@
     <h5 class="sidebartitle">Main</h5>
     <ul class="nav nav-pills nav-stacked nav-bracket">
       <li><a href="<%= dashboard_path %>"><i class="fa fa-home"></i> <span>Dashboard</span></a></li>
+
+      <% if can? :read, Account %>
+        <li><a href="<%= leads_path %>"><i class="fa fa-magnet"></i> <span>Leads</span></a></li>
+      <% end %>
+
       <% if can? :read, Account %>
         <li><a href="<%= schedule_path %>"><i class="fa fa-calendar"></i> <span>Schedule</span></a></li>
       <% end %>
