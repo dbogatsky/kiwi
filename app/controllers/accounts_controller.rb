@@ -17,6 +17,9 @@ class AccountsController < ApplicationController
     page = params[:page].present? ? params[:page] : 1
     session[:page] = page
     advanced_search  #call advanced search
+    if params[:view_all].present?
+       session.delete(:search)
+    end
     search = @search.present? ? @search : (params[:search].present? ? params[:search] : session[:search])
     if params[:search1].present? && params[:search2].present?
       search ||= {}
