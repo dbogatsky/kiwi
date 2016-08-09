@@ -587,6 +587,8 @@ class AccountsController < ApplicationController
         else
           render :import
         end
+      else
+       flash[:danger] = "File you are trying to import does not support csv format"
       end
     end
   end
