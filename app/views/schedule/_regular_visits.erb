@@ -132,23 +132,6 @@
 
 <script type="text/javascript">
 
-  $(document).on('click', '.delete_item', function(){
-    var r =  confirm("Are you sure to delete this meeting?")
-    var item_id = $(this).data('id')
-    var account_id = $(this).data('account-id')
-
-    if (r){
-      $('#preloader').css('opacity', 0.8);
-      $('#preloader').show();
-      $.ajax({
-        type: "GET",
-        url: '/accounts/'+account_id+'/delete_meeting?item_id='+ item_id,
-        success: function (data) {
-        }
-      });
-    }
-  })
-
   var ready, set_positions;
   set_positions = function(){
     // loop through and give each task a data-pos

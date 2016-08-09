@@ -44,7 +44,8 @@
         data-body="<%= citem.body %>">Edit</a>
       </li>
       <li>
-        <%=link_to 'Delete', "javascript:void(0)", id: "del_item_#{citem.id}"%>
+        <%#=link_to 'Delete', "javascript:void(0)", id: "del_item_#{citem.id}"%>
+        <%=link_to 'Delete', "javascript:void(0)", class: "delete_item", data:{id: citem.id, account_id: citem.account_id}%>
       </li>
     </ul>
   </div>
@@ -103,19 +104,3 @@
     </div>
   </div>
 </div>
-
-<script type="text/javascript">
-  $("#del_item_<%=citem.id%>").click(function(e){
-    var r =  confirm("Are you sure to delete this meeting?")
-    if (r){
-      $('#preloader').css('opacity', 0.8);
-      $('#preloader').show();
-      $.ajax({
-        type: "GET",
-        url: '/accounts/<%=@account.id%>/delete_meeting?item_id=<%=citem.id%>',
-        success: function (data) {
-        }
-      });
-    }
-  })
-</script>

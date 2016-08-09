@@ -84,6 +84,8 @@
 <%= render "accounts/conversation_quote", account: nil %>
 <%= render "accounts/conversation_meeting_complete", account: nil, info: true%>
 <%= render "accounts/conversation_meeting_edit", account: nil, info: true%>
+<%= render "delete_meeting_modal"%>
+<%= render "delete_future_meeting_modal"%>
 
 <script>
   $.fn.modal.Constructor.prototype.enforceFocus = function () {};
@@ -98,55 +100,6 @@
       $('<option>').val('<%=account.id%>').text('<%=account.name%>').appendTo('.selected_account');
     <%end%>
   })
-
-  // $(document).on("keyup", ".select2-search__field",function(){
-  //   var str = $(this).val()
-  //   if (str.length >=3){
-  //     $.ajax({
-  //       type: "GET",
-  //       dataType: "script",
-  //       url: '/schedule/search_account?str='+ str,
-  //       success: function (data) {
-  //         var select = $('.selected_account');
-  //         select.empty();
-  //         select.append("<option value=''>-Select account-</option>");
-  //         data = $.parseJSON(data)
-  //         $(".selected_account").select2({
-  //           data: data
-  //         });
-
-  //         if(check_open_modal == 'meeting_modal'){
-  //           $(".selected_account:eq(0)").select2('open')
-  //         }else if(check_open_modal == 'reminder_modal'){
-  //           $(".selected_account:eq(1)").select2('open')
-  //         }else if(check_open_modal == 'quote_modal'){
-  //           $(".selected_account:eq(2)").select2('open')
-  //         }
-  //       }
-  //     });
-  //   }
-  // });
-
-
-  // $(".selected_account").select2({
-  //   ajax: {
-  //     url: '/schedule/search_account',
-  //     data: function (params) {
-  //       return {
-  //         str: params.term
-  //       };
-  //     },
-  //     processResults: function (data, params) {
-  //       return {
-  //         results: data,
-  //       };
-  //     },
-  //     cache: true
-  //   },
-  //   minimumInputLength: 3,
-  // });
-
-
 
   $(document).on("change",".get_address",function() {
     var account_id = $(this).val();
@@ -478,29 +431,6 @@
     get_regular_visit_with_day_view()
 
   });
-
-  // $(document).live('click', '.fc-left', function(event){
-  //   if($(event.target).hasClass('fc-today-button')){
-  //     update_regular_visits(null)
-  //   }
-  // })
-
-  $(document).on('click', '.delete_item', function(){
-    var r =  confirm("Are you sure to delete this meeting?")
-    var item_id = $(this).data('id')
-    var account_id = $(this).data('account-id')
-
-    if (r){
-      $('#preloader').css('opacity', 0.8);
-      $('#preloader').show();
-      $.ajax({
-        type: "GET",
-        url: '/accounts/'+account_id+'/delete_meeting?item_id='+ item_id,
-        success: function (data) {
-        }
-      });
-    }
-  })
 
   function get_regular_visit_with_day_view(){
     var view = $('#calendar').fullCalendar('getView').name
