@@ -36,10 +36,12 @@
         <div class="form-group">
           <label class="control-label">User</label>
           <select class="select" id="select_users" name="users[]" multiple="multiple" required="required" class="form-control" data-placeholder="Filter report by user">
-            <%User.all(uid: session[:user_id], reload: true).each do |u|%>
-              <option value="<%=u.id%>"><%=u.first_name%> <%=u.last_name%></option>
+            <% @users.each do |u|%>
+              <option value="<%=u.id%>" <%= "selected='selected'" if @users.count == 1 %>><%=u.first_name%> <%=u.last_name%></option>
             <%end%>
-            <option value="all">All</option>
+            <% if @users.count > 1 %>
+              <option value="all">All</option>
+            <% end %>
           </select>
         </div>
         <button type="submit" class="btn btn-primary">Get Report</button>
