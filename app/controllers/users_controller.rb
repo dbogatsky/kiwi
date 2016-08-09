@@ -55,19 +55,19 @@ class UsersController < ApplicationController
     end
   end
 
-  def update_time_zone
-    if @user.update_attributes(request: :update, user: { time_zone: browser_timezone }, reload: true)
-      flash[:success] = 'TimeZone successfully updated!'
-    else
-      flash[:danger] = 'TimeZone not updated!'
-    end
-    redirect_to :back
-  end
+  # def update_time_zone
+  #   if @user.update_attributes(request: :update, user: { time_zone: browser_timezone }, reload: true)
+  #     flash[:success] = 'TimeZone successfully updated!'
+  #   else
+  #     flash[:danger] = 'TimeZone not updated!'
+  #   end
+  #   redirect_to :back
+  # end
 
-  def not_update_time_zone
-    session['time_zone_not_now'] = true
-    redirect_to :back
-  end
+  # def not_update_time_zone
+  #   session['time_zone_not_now'] = true
+  #   redirect_to :back
+  # end
 
   def destroy
     authorize! :user_management, User
