@@ -547,7 +547,7 @@ class AccountsController < ApplicationController
 
   def import
     if request.post?
-      @all_status = AccountStatus.find(:all)
+      @all_status = AccountStatus.all(uid: RequestStore.store[:tenant], reload: true)
       if params[:import_csv].present? && params[:import_csv].content_type == 'text/csv'
         csv_text = File.read(params[:import_csv].tempfile)
         csv = CSV.parse(csv_text)
