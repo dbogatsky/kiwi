@@ -556,7 +556,8 @@ class AccountsController < ApplicationController
         if @row_numbers.empty?
           if csv.present?
             csv.each do |row|
-              row = row[0].gsub(%r{\"}, '')
+              row = row.join(',')
+              row = row.gsub(%r{\"}, '')
               row = row.split(',')
               account_params = {}
               account_params[:name] = row[0]
@@ -572,8 +573,8 @@ class AccountsController < ApplicationController
               account_params[:addresses_attributes] = [street_address: row[4], city: row[5], region: row[6], postcode: row[7], country: row[8]]
               contacts_attributes = {}
               contacts_attributes['phone'] = {name: '', type: 'phone', value: row[9]}
-              contacts_attributes['fax'] = {name: '', type: 'fax', value: row[10]} if row[10].present?
-              contacts_attributes['email'] = {name: '', type: 'email', value: row[11]} if row[11].present?
+              contacts_attributes['fax'] = {name: '', type: 'fax', value: row[10]} unless row[10].blank?
+              contacts_attributes['email'] = {name: '', type: 'email', value: row[11]} unless row[11].blank?
               account_params[:contacts_attributes] = contacts_attributes.values
               account_params[:about] = row[12]
               account_params[:quick_facts] = row[13]
@@ -686,26 +687,33 @@ class AccountsController < ApplicationController
     if csv[0].present?
       csv.each do |row|
         @line_no +=1
-        if row[0].present?
-          row_data = row[0].gsub(%r{\"}, '')
-          row_data = row_data.split(',')
+        if row.present?
+          row = row.join(',')
+          row = row.gsub(%r{\"}, '')
+          row = row.split(',')
         end
-        if @line_no == 1 && (row[0].present? && (row_data !=column_names))
+        if @line_no == 1 && (row.present? && (row !=column_names))
           @row_numbers["#{@line_no}"] = "Imported CSV file does not contain the correct headers"
         end
-        if @line_no !=1 && row[0].present?
-          if row_data[0].blank?
+        if @line_no !=1 && row.present?
+          if row[0].blank?
             @row_numbers["#{@line_no}"] = "Required field, Name, can not be empty"
           end
-          if row_data[3].present?
-            if !(status_array.include?(row_data[3].capitalize))
+          if row[3].present?
+            if !(status_array.include?(row[3].capitalize))
               @row_numbers["#{@line_no}"] = "Unknown account status"
             end
           else
             @row_numbers["#{@line_no}"] = "Required field, Status, can not be empty"
           end
-          if row_data[9].blank?
+          if row[9].blank?
              @row_numbers["#{@line_no}"] = "Missing contact phone number"
+          end
+          unless row[11].blank?
+             email_reg_exp = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+             is_valid = row[11] =~ email_reg_exp
+             # is_valid = row_data[11] =~ email_reg_exp
+             @row_numbers["#{@line_no}"] = "Invalid Email" if is_valid.blank?
           end
         end
       end
