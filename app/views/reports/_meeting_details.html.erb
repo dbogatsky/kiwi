@@ -44,7 +44,7 @@
                 <div class="check_out_time_<%=meeting.id%> hidden">
                   <i class="fa fa-sign-out mr10" data-toggle="tooltip" data-original-title="Check Out"></i><%= Time.now.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %>
                 </div>
-                <i class="fa fa-briefcase tooltips mr10" data-toggle="tooltip" data-original-title="Account"></i><%= meeting.account.name %><br/>
+                <i class="fa fa-briefcase tooltips mr10" data-toggle="tooltip" data-original-title="Account"></i><%= meeting.account.try(:name) ? meeting.account.name : "Account Deleted" %><br/>
               </div>
               <%invitees = meeting.invitees.present? ? meeting.invitees.split(', ') : []%>
               <div class="col-sm-2">
