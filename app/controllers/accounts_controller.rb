@@ -17,13 +17,16 @@ class AccountsController < ApplicationController
     page = params[:page].present? ? params[:page] : 1
     session[:page] = page
     advanced_search  #call advanced search
+    if params[:view_all].present?
+       session.delete(:search)
+    end
     search = @search.present? ? @search : (params[:search].present? ? params[:search] : session[:search])
     if params[:search1].present? && params[:search2].present?
       search ||= {}
       search[:s] = "#{params[:search1][:search]+' '+params[:search2][:search]}"
     end
     search = session[:search] if params[:adv_search] == 'true'
-    @accounts = Account.all(params: { search: search, page: page, per_page: 5})
+    @accounts = Account.all(params: { search: search, page: page, per_page: @show_accounts_per_page})
     @total_entries = @accounts.meta["total_entries"]
     session[:search] = search
     accounts_statistics_info
@@ -587,6 +590,8 @@ class AccountsController < ApplicationController
         else
           render :import
         end
+      else
+       flash[:danger] = "File you are trying to import does not support csv format"
       end
     end
   end
@@ -596,7 +601,7 @@ class AccountsController < ApplicationController
 
   def generate_csv
     page = session[:page].present? ? session[:page].to_i : 1
-    @accounts = Account.all(params: { search: session[:search], page: page, per_page: 5})
+    @accounts = Account.all(params: { search: session[:search], page: page, per_page: @show_accounts_per_page})
     column_names = ['ID', 'Name', 'Contact Name', 'Contact Title', 'Status', 'Address', 'City', 'Province', 'Postal Code', 'Country', 'About', 'Quick Facts' ]
     options = {}
     options[:force_quotes] = true

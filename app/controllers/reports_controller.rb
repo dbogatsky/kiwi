@@ -3,6 +3,7 @@ class ReportsController < ApplicationController
   end
 
   def activity_report
+    @users = User.all(uid: session[:user_id], reload: true)
   end
 
   def meeting_report_result

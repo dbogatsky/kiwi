@@ -74,7 +74,7 @@
       <div class="contentpanel">
         <%= render 'layouts/flash_messages'%>
         <%= yield %>
-        <%=render "layouts/change_time_zone"%>
+        <%#=render "layouts/change_time_zone"%>
       </div>
     </div>
   </section>
@@ -82,16 +82,16 @@
   <%#= render "shared/js" %>
   <%= yield :custom_js %>
   <script type="text/javascript">
-    $(document).ready(function(){
-      var t_zone = "<%=cookies['browser.timezone']%>"
-      var not_now = "<%=session['time_zone_not_now']%>";
-      var c_zone = "<%=current_user.time_zone%>"
-      if (t_zone != c_zone && not_now != 'true' && t_zone != ''){
-         $(".change-timezone-modal-form").modal('show');
-      }else{
-         $(".change-timezone-modal-form").modal('hide');
-      }
-    });
+    // $(document).ready(function(){
+    //   var t_zone = "<%#=cookies['browser.timezone']%>"
+    //   var not_now = "<%#=session['time_zone_not_now']%>";
+    //   var c_zone = "<%#=current_user.time_zone%>"
+    //   if (t_zone != c_zone && not_now != 'true' && t_zone != ''){
+    //      $(".change-timezone-modal-form").modal('show');
+    //   }else{
+    //      $(".change-timezone-modal-form").modal('hide');
+    //   }
+    // });
 
     $("#account_name").focusout(function(){
       var name = $(this).val()
