@@ -59,7 +59,7 @@
             <br />
             <%=notified_users(citem)%>
         <% end %>
-        <i class="fa fa-briefcase tooltips mr10" data-toggle="tooltip" data-original-title="Account"></i><%=citem.account.name%>
+        <i class="fa fa-briefcase tooltips mr10" data-toggle="tooltip" data-original-title="Account"></i><%= citem.account.try(:name) ? citem.account.name : "Account Deleted" %>
       </div>
   <% end %>
 </div>
