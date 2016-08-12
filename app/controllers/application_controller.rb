@@ -32,6 +32,36 @@ class ApplicationController < ActionController::Base
     render_500
   end
 
+  rescue_from ActiveResource::MissingPrefixParam do |exception|
+    Rollbar.error(exception, use_exception_level_filters: true)
+    redirect_to root_url, alert: exception.message
+  end
+
+  rescue_from ActiveResource::ClientError do |exception|
+    Rollbar.error(exception, use_exception_level_filters: true)
+    redirect_to root_url, alert: exception.message
+  end
+
+  rescue_from ActiveResource::UnauthorizedAccess do |exception|
+    Rollbar.error(exception, use_exception_level_filters: true)
+    redirect_to root_url, alert: exception.message
+  end
+
+  rescue_from ActiveResource::ResourceInvalid do |exception|
+    Rollbar.error(exception, use_exception_level_filters: true)
+    redirect_to root_url, alert: exception.message
+  end
+
+  rescue_from ActiveResource::ConnectionError do |exception|
+    Rollbar.error(exception, use_exception_level_filters: true)
+    redirect_to root_url, alert: exception.message
+  end
+
+  rescue_from ActiveResource::ResourceGone do |exception|
+    Rollbar.error(exception, use_exception_level_filters: true)
+    redirect_to root_url, alert: exception.message
+  end
+
   rescue_from CanCan::AccessDenied do |exception|
     Rollbar.error(exception, use_exception_level_filters: true)
     redirect_to root_url, alert: exception.message
