@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   before_filter :notification_info
   before_filter  :clear_session_variable
   #before_filter :accounts_cache  # DIS001 disabled for now
-  around_filter :set_time_zone
+  # around_filter :set_time_zone
 
   helper_method :current_user, :get_api_values, :get_automatic_logout_time, :logged_in?, :superadmin_logged_in?, :notification_info
   helper_method :has_permission, :has_permissions, :has_page_permission, :has_page_permissions, :accounts_cache
@@ -81,17 +81,17 @@ class ApplicationController < ActionController::Base
     response.headers["Pragma"] = "no-cache"
   end
 
-  def set_time_zone
-    old_time_zone = Time.zone
-    Time.zone = browser_timezone if browser_timezone.present?
-    yield
-  ensure
-    Time.zone = old_time_zone
-  end
+  # def set_time_zone
+  #   old_time_zone = Time.zone
+  #   Time.zone = browser_timezone if browser_timezone.present?
+  #   yield
+  # ensure
+  #   Time.zone = old_time_zone
+  # end
 
-  def browser_timezone
-    cookies['browser.timezone']
-  end
+  # def browser_timezone
+  #   cookies['browser.timezone']
+  # end
 
   def get_tenant_by_subdomain
     if request.subdomains.any?
@@ -151,6 +151,7 @@ class ApplicationController < ActionController::Base
 
     @current_user ||= User.find(session[:user_id], reload: true)
     @current_user.id = session[:user_id]
+    Time.zone = @current_user.time_zone
   end
 
   def set_superadmin
