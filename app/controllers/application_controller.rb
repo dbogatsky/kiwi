@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
   before_filter :set_cache_headers
   before_filter :authentication
   before_filter :notification_info
-  before_filter  :clear_session_variable
+  before_filter :clear_session_variable
   #before_filter :accounts_cache  # DIS001 disabled for now
   # around_filter :set_time_zone
 
@@ -465,7 +465,41 @@ class ApplicationController < ActionController::Base
 #       render text: 'page loaded'
 #     end
 #   end
-#
+
+
+  # Note: try to replace the bottom methods,  get_automatic_logout_time and get_account_display_setting
+  def company_settings_load(refresh=false)
+
+    company_settings_info = session[:company_settings]
+
+    unless company_settings_info.nil?
+      company_settings_info = JSON.parse(company_settings_info)
+      if (DateTime.parse(company_settings_info["last_update"]).to_i + 15.minutes.to_i) < DateTime.now.to_i
+        refresh = true
+      end
+    end
+
+    if company_settings_info.nil? || refresh == true
+      #apiFullUrl = RequestStore.store[:api_url] + '/company/settings/authentication'
+      apiFullUrl = RequestStore.store[:api_url] + '/company/settings/preferences'
+      email = current_user.email
+      appKey = APP_CONFIG['api_app_key']
+      token = session[:token]
+      curlRes = `curl -X GET -H "Authorization: Token token="#{token}", email="#{email}", app_key="#{appKey}"" -H "Content-Type: application/json"  -H "Cache-Control: no-cache" "#{apiFullUrl}"`
+
+      company_settings = JSON.parse(curlRes)
+      company_settings = company_settings['company']['settings']
+      company_settings['last_update'] = DateTime.now
+      company_settings.shift
+      session[:company_settings] = company_settings.to_json
+    else
+      company_settings = JSON.parse(company_settings_info)
+    end
+
+    company_settings
+  end
+
+
   def get_automatic_logout_time
     get_api_values
     apiFullUrl = RequestStore.store[:api_url] + "/company/settings/authentication"
