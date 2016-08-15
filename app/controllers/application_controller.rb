@@ -128,16 +128,11 @@ class ApplicationController < ActionController::Base
       # RequestStore.store[:tenant] = "acme"
       RequestStore.store[:tenant] = request.subdomain
     else
-      RequestStore.store[:tenant] = "acme" # sandbox
+      RequestStore.store[:tenant] = "acme" #sandbox
     end
     # move into a service
     api_host = "#{RequestStore.store[:tenant]}-api.code10.ca"
     RequestStore.store[:api_url] = "https://#{api_host}/api/v1"
-
-    # try to force reload the class
-    Object.send(:remove_const, :OrchardApiModel)
-    load 'app/models/orchard_api_model.rb'
-
     OrchardApiModel.site = RequestStore.store[:api_url]
     OrchardApiModel.site.host = api_host
   end
