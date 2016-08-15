@@ -1,5 +1,3 @@
-require 'http_logger'
-
 if Rails.env.development? or Rails.env.test? or Rails.env.production?
   active_resource_logger = Logger.new('log/active_resource.log', 'daily'); 
   active_resource_logger.level = Rails.env.dev? ? Logger::DEBUG : Logger::INFO;

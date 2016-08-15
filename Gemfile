@@ -21,6 +21,7 @@ gem 'request_store'
 gem 'browser-timezone-rails'
 gem 'rollbar'
 gem 'will_paginate'
+gem 'http_logger'
 
 # This gem is for accessing REST services in an ActiveRecord style.
 gem 'activeresource', require: 'active_resource'
@@ -43,7 +44,6 @@ group :development, :test do
   gem 'dotenv-rails'
   gem 'factory_girl_rails'
   gem 'faker'
-  gem 'http_logger'
   gem 'jazz_fingers'
   gem 'pry-rails'
   gem 'rspec-rails'
