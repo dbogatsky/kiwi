@@ -107,8 +107,8 @@ class ApplicationController < ActionController::Base
   end
 
   def set_cache_headers
-    response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
-    response.headers["Pragma"] = "no-cache"
+    response.headers['Cache-Control'] = 'no-cache, no-store, max-age=0, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
   end
 
   # def set_time_zone
@@ -130,9 +130,11 @@ class ApplicationController < ActionController::Base
     else
       RequestStore.store[:tenant] = "acme" #sandbox
     end
-    #move into a service
-    RequestStore.store[:api_url] = "https://#{RequestStore.store[:tenant]}-api.code10.ca/api/v1"
+    # move into a service
+    api_host = "#{RequestStore.store[:tenant]}-api.code10.ca"
+    RequestStore.store[:api_url] = "https://#{api_host}/api/v1"
     OrchardApiModel.site = RequestStore.store[:api_url]
+    OrchardApiModel.site.host = api_host
   end
 
   def authentication
