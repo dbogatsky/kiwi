@@ -114,14 +114,20 @@
       });
     }
 
-    var path = window.location.pathname
-    if((path.includes('/accounts/') || path.includes('/users/')) && (path.includes('/edit') || path.includes('/new'))){
-      if (document.getElementById("account_name") != null){
-          address_auto_fill(document.getElementById("account_name"));
-        }else{
-          address_auto_fill(document.getElementById("street_number"));
-      }
+    if ($('#account_name').length > 0 ){
+        address_auto_fill(document.getElementById("account_name"));
     }
+    if ($('#street_number').length > 0){
+        address_auto_fill(document.getElementById("street_number"));
+    }
+    // var path = window.location.pathname
+    // if((path.includes('/accounts/') || path.includes('/users/')) && (path.includes('/edit') || path.includes('/new'))){
+    //   if (document.getElementById("account_name") != null){
+    //       address_auto_fill(document.getElementById("account_name"));
+    //     }else{
+    //       address_auto_fill(document.getElementById("street_number"));
+    //   }
+    // }
 
     $('body').bind('ajax:beforeSend', function(event, xhr, settings) {
       console.log("ajax-beforesend");
