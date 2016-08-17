@@ -882,8 +882,8 @@ class AccountsController < ApplicationController
         changed_value[:updated_assigned_to] = account_with_update_value.assigned_to.first_name + ' ' + account_with_update_value.assigned_to.last_name
       end
 
-      prev_address = account_with_previous_value.addresses.last
-      updated_address = account_with_update_value.addresses.last
+      prev_address = account_with_previous_value.addresses.first
+      updated_address = account_with_update_value.addresses.first
       if prev_address.name != updated_address.name
          changed_value[:prev_address_name] = prev_address.name
          changed_value[:updated_address_name] = updated_address.name
@@ -916,8 +916,100 @@ class AccountsController < ApplicationController
         changed_value[:prev_quick_facts] = account_with_previous_value.quick_facts
         changed_value[:updated_quick_facts] = account_with_update_value.quick_facts
       end
+      prev_phone = []
+      prev_mobile = []
+      prev_email = []
+      prev_facebook = []
+      prev_twitter = []
+      prev_fax = []
+      prev_youtube = []
+      prev_website = []
+      prev_contacts = account_with_previous_value.contacts
+      if prev_contacts.count > 0
+        prev_contacts.each do |contact|
+          if contact.type == "phone"
+            prev_phone << contact.value
+          elsif contact.type == "mobile"
+            prev_mobile << contact.value
+          elsif contact.type == "email"
+            prev_email << contact.value
+          elsif contact.type == "facebook"
+            prev_facebook << contact.value
+          elsif contact.type == "twitter"
+            prev_twitter << contact.value
+          elsif contact.type == "fax"
+            prev_fax << contact.value
+          elsif contact.type == "youtube"
+            prev_youtube << contact.value
+          elsif contact.type == "website"
+            prev_website << contact.value
+          end
+        end
+      end
+      updated_phone = []
+      updated_mobile = []
+      updated_email = []
+      updated_facebook = []
+      updated_twitter = []
+      updated_fax = []
+      updated_youtube = []
+      updated_website = []
+      updated_contacts = account_with_update_value.contacts
+      if updated_contacts.count > 0
+        updated_contacts.each do |contact|
+          if contact.type == "phone"
+            updated_phone << contact.value
+          elsif contact.type == "mobile"
+            updated_mobile << contact.value
+          elsif contact.type == "email"
+            updated_email << contact.value
+          elsif contact.type == "facebook"
+            updated_facebook << contact.value
+          elsif contact.type == "twitter"
+            updated_twitter << contact.value
+          elsif contact.type == "fax"
+            updated_fax << contact.value
+          elsif contact.type == "youtube"
+            updated_youtube << contact.value
+          elsif contact.type == "website"
+            updated_website << contact.value
+          end
+        end
+      end
+      if prev_phone.sort != updated_phone.sort
+        changed_value[:prev_phone] = prev_phone.join(',')
+        changed_value[:updated_phone] = updated_phone.join(',')
+      end
+      if prev_mobile.sort != updated_mobile.sort
+        changed_value[:prev_mobile] = prev_mobile.join(',')
+        changed_value[:updated_mobile] = updated_mobile.join(',')
+      end
+      if prev_email.sort != updated_email.sort
+        changed_value[:prev_email] = prev_email.join(',')
+        changed_value[:updated_email] = updated_email.join(',')
+      end
+      if prev_facebook.sort != updated_facebook.sort
+        changed_value[:prev_facebook] = prev_facebook.join(',')
+        changed_value[:updated_facebook] = updated_facebook.join(',')
+      end
+      if prev_twitter.sort != updated_twitter.sort
+        changed_value[:prev_twitter] = prev_twitter.join(',')
+        changed_value[:updated_twitter] = updated_twitter.join(',')
+      end
+      if prev_fax.sort != updated_fax.sort
+        changed_value[:prev_fax] = prev_fax.join(',')
+        changed_value[:updated_fax] = updated_fax.join(',')
+      end
+      if prev_youtube.sort != updated_youtube.sort
+        changed_value[:prev_youtube] = prev_youtube.join(',')
+        changed_value[:updated_youtube] = updated_youtube.join(',')
+      end
+      if prev_website.sort != updated_website.sort
+        changed_value[:prev_website] = prev_website.join(',')
+        changed_value[:updated_website] = updated_website.join(',')
+      end
     end
-    @note_body = "<p><b>Previous Value => Updated Value</b></p><ul>#{changed_value[:prev_name].present? ? "<li> <b>Account Name:</b> #{changed_value[:prev_name]} => #{changed_value[:updated_name]} </li>" : ''}#{changed_value[:prev_status].present? ? "<li> <b>Account Status:</b> #{changed_value[:prev_status]} => #{changed_value[:updated_status]} </li>" : ''}#{changed_value[:prev_contact_name].present? ? "<li> <b>Contact Name:</b> #{changed_value[:prev_contact_name]} => #{changed_value[:updated_contact_name]} </li>" : ''}#{changed_value[:prev_contact_title].present? ? "<li> <b>Contact Title:</b> #{changed_value[:prev_contact_title]} => #{changed_value[:updated_contact_title]} </li>" : ''}#{changed_value[:prev_expected_sales].present? ? "<li> <b>Expected Sales:</b> #{changed_value[:prev_expected_sales]} => #{changed_value[:updated_expected_sales]} </li>" : ''}#{changed_value[:prev_assigned_to].present? ? "<li> <b>Assign To:</b> #{changed_value[:prev_assigned_to]} => #{changed_value[:updated_assigned_to]} </li>" : ''}#{changed_value[:prev_address_name].present? ? "<li> <b>Address Name:</b> #{changed_value[:prev_address_name]} => #{changed_value[:updated_address_name]} </li>" : ''}#{changed_value[:prev_address_street_address].present? ? "<li> <b>Street Address:</b> #{changed_value[:prev_address_street_address]} => #{changed_value[:updated_address_street_address]} </li>" : ''}#{changed_value[:prev_address_city].present? ? "<li> <b>City:</b> #{changed_value[:prev_address_city]} => #{changed_value[:updated_address_city]} </li>" : ''}#{changed_value[:prev_address_postcode].present? ? "<li> <b>Post/Zipcode:</b> #{changed_value[:prev_address_postcode]} => #{changed_value[:updated_address_postcode]} </li>" : ''}#{changed_value[:prev_address_region].present? ? "<li> <b>Province/State:</b> #{changed_value[:prev_address_region]} => #{changed_value[:updated_address_region]} </li>" : ''}#{changed_value[:prev_address_country].present? ? "<li> <b>Country:</b> #{changed_value[:prev_address_country]} => #{changed_value[:updated_address_country]} </li>" : ''}#{changed_value[:prev_about].present? ? "<li> <b>About:</b> #{changed_value[:prev_about]} => #{changed_value[:updated_about]} </li>" : ''}#{changed_value[:prev_quick_facts].present? ? "<li> <b>Quick Facts:</b> #{changed_value[:prev_quick_facts]} => #{changed_value[:updated_quick_facts]} </li>" : ''}</ul><p><b>Updated by:</b> #{current_user.first_name} #{current_user.last_name} </p>".html_safe
+    @note_body = "<p><b>Previous Value => Updated Value</b></p><ul>#{changed_value[:prev_name].present? ? "<li> <b>Account Name:</b> #{changed_value[:prev_name]} => #{changed_value[:updated_name]} </li>" : ''}#{changed_value[:prev_status].present? ? "<li> <b>Account Status:</b> #{changed_value[:prev_status]} => #{changed_value[:updated_status]} </li>" : ''}#{changed_value[:prev_contact_name].present? ? "<li> <b>Contact Name:</b> #{changed_value[:prev_contact_name]} => #{changed_value[:updated_contact_name]} </li>" : ''}#{changed_value[:prev_contact_title].present? ? "<li> <b>Contact Title:</b> #{changed_value[:prev_contact_title]} => #{changed_value[:updated_contact_title]} </li>" : ''}#{changed_value[:prev_expected_sales].present? ? "<li> <b>Expected Sales:</b> #{changed_value[:prev_expected_sales]} => #{changed_value[:updated_expected_sales]} </li>" : ''}#{changed_value[:prev_assigned_to].present? ? "<li> <b>Assign To:</b> #{changed_value[:prev_assigned_to]} => #{changed_value[:updated_assigned_to]} </li>" : ''}#{changed_value[:prev_address_name].present? ? "<li> <b>Address Name:</b> #{changed_value[:prev_address_name]} => #{changed_value[:updated_address_name]} </li>" : ''}#{changed_value[:prev_address_street_address].present? ? "<li> <b>Street Address:</b> #{changed_value[:prev_address_street_address]} => #{changed_value[:updated_address_street_address]} </li>" : ''}#{changed_value[:prev_address_city].present? ? "<li> <b>City:</b> #{changed_value[:prev_address_city]} => #{changed_value[:updated_address_city]} </li>" : ''}#{changed_value[:prev_address_postcode].present? ? "<li> <b>Post/Zipcode:</b> #{changed_value[:prev_address_postcode]} => #{changed_value[:updated_address_postcode]} </li>" : ''}#{changed_value[:prev_address_region].present? ? "<li> <b>Province/State:</b> #{changed_value[:prev_address_region]} => #{changed_value[:updated_address_region]} </li>" : ''}#{changed_value[:prev_address_country].present? ? "<li> <b>Country:</b> #{changed_value[:prev_address_country]} => #{changed_value[:updated_address_country]} </li>" : ''}#{changed_value[:prev_about].present? ? "<li> <b>About:</b> #{changed_value[:prev_about]} => #{changed_value[:updated_about]} </li>" : ''}#{changed_value[:prev_phone].present? ? "<li> <b>Phone Number:</b> #{changed_value[:prev_phone]} => #{changed_value[:updated_phone]} </li>" : ''}#{changed_value[:prev_mobile].present? ? "<li> <b>Mobile Number:</b> #{changed_value[:prev_mobile]} => #{changed_value[:updated_mobile]} </li>" : ''}#{changed_value[:prev_email].present? ? "<li> <b>Email:</b> #{changed_value[:prev_email]} => #{changed_value[:updated_email]} </li>" : ''}#{changed_value[:prev_facebook].present? ? "<li> <b>Facebook:</b> #{changed_value[:prev_facebook]} => #{changed_value[:updated_facebook]} </li>" : ''}#{changed_value[:prev_twitter].present? ? "<li> <b>Twitter:</b> #{changed_value[:prev_twitter]} => #{changed_value[:updated_twitter]} </li>" : ''}#{changed_value[:prev_youtube].present? ? "<li> <b>Youtube:</b> #{changed_value[:prev_youtube]} => #{changed_value[:updated_youtube]} </li>" : ''}#{changed_value[:prev_website].present? ? "<li> <b>Website:</b> #{changed_value[:prev_website]} => #{changed_value[:updated_website]} </li>" : ''}#{changed_value[:prev_quick_facts].present? ? "<li> <b>Quick Facts:</b> #{changed_value[:prev_quick_facts]} => #{changed_value[:updated_quick_facts]} </li>" : ''}#{changed_value[:prev_quick_facts].present? ? "<li> <b>Quick Facts:</b> #{changed_value[:prev_quick_facts]} => #{changed_value[:updated_quick_facts]} </li>" : ''}</ul><p><b>Updated by:</b> #{current_user.first_name} #{current_user.last_name} </p>".html_safe
      return @note_body
   end
 end

@@ -77,7 +77,7 @@ class ScheduleController < ApplicationController
   end
 
   def get_events
-    user_ids = Array[]
+    user_ids = []
     user_ids.push(current_user.id) # push any additional user_id'
 
     # get the current date
@@ -109,7 +109,7 @@ class ScheduleController < ApplicationController
 
     @quotes = ConversationItemSearch.all(params: { search: search, user_ids: user_ids, per_page: 10 })
 
-    events = Array[]
+    events = []
 
     @meetings.each do |i|
       s_date = Chronic.parse(i.starts_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
@@ -177,7 +177,7 @@ class ScheduleController < ApplicationController
       @date = Time.now.strftime('%Y-%m-%d')
     end
 
-    user_ids = Array[]
+    user_ids = []
     (['Admin', 'Entity Admin'].include?(current_user.roles.first.name) && params[:user_id].present?) ? user_ids.push(params[:user_id]) : user_ids.push(current_user.id)
     @created_by = current_user.id
 
@@ -188,7 +188,7 @@ class ScheduleController < ApplicationController
     search[:starts_at_lteq] = "#{@date} 23:59:59"
     search[:item_type_eq] = 'regular'
     search[:s] = "sort asc"
-    events = Array[]
+    events = []
     @regular_visits = ConversationItemSearch.all(params: { search: search, user_ids: user_ids, per_page: 20 })
     sort_0_visit = []
     sort_visit = []
