@@ -3,9 +3,9 @@ class OrchardApiModel < ActiveResource::Base
   self.static_headers = headers
   self.collection_parser = OrchardApiCollection
 
-  def self.site
-    URI(RequestStore.store[:api_url])
-  end
+  #def self.site
+  #  URI(RequestStore.store[:api_url])
+  #end
 
   def self.headers
     new_headers = static_headers.clone
