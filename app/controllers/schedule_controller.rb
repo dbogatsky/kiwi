@@ -187,11 +187,14 @@ class ScheduleController < ApplicationController
     search[:starts_at_gteq] = "#{@date} 00:00:00"
     search[:starts_at_lteq] = "#{@date} 23:59:59"
     search[:item_type_eq] = 'regular'
-
+    search[:s] = "sort asc"
     events = Array[]
     @regular_visits = ConversationItemSearch.all(params: { search: search, user_ids: user_ids, per_page: 20 })
-
+    sort_0_visit = []
+    sort_visit = []
     @regular_visits.each do |i|
+      sort_0_visit << i if i.sort == 0
+      sort_visit << i if i.sort != 0
       s_date = Chronic.parse(i.starts_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
       e_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
       all_day = true
@@ -208,6 +211,7 @@ class ScheduleController < ApplicationController
       }
       events.push(event_data)
     end
+    @sorted_regular_visits = sort_visit + sort_0_visit
 
     render template: 'schedule/_regular_visits', layout: false
   end

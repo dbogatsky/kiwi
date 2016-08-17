@@ -1,9 +1,8 @@
 <h3 class="subtitle-lined">Regular Visits</h3>
 <%=@date %>
-
-<% if @regular_visits.count > 0 %>
+<% if @sorted_regular_visits.count > 0 %>
   <section id="cd-timeline" class="cd-container sort_container" >
-    <% @regular_visits.sort_by {|r| r.sort}.each do |citem| %>
+    <% @sorted_regular_visits.each do |citem| %>
       <div class="cd-timeline-block citem_div" data-id="<%=citem.id%>" data-conversation-id = "<%=citem.conversation_id%>">
         <div class="cd-timeline-img cd-meeting">
           <img src="/assets/vertical-timeline/img/cd-icon-calendar.svg" alt="Meeting">
