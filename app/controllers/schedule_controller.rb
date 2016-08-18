@@ -172,9 +172,11 @@ class ScheduleController < ApplicationController
   def regular_visits
     if params[:date].present?
       @date = Chronic.parse(params[:date]).strftime('%Y-%m-%d')
+      @formatted_date = Chronic.parse(params[:date]).strftime('%A %B %d, %Y')
       # @date = params[:date]
     else
       @date = Time.now.strftime('%Y-%m-%d')
+      @formatted_date = Time.now.strftime('%A %B %d, %Y')
     end
 
     user_ids = []

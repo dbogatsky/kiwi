@@ -1,5 +1,5 @@
 <h3 class="subtitle-lined">Regular Visits</h3>
-<%=@date %>
+<%=@formatted_date %>
 <% if @sorted_regular_visits.count > 0 %>
   <section id="cd-timeline" class="cd-container sort_container" >
     <% @sorted_regular_visits.each do |citem| %>
