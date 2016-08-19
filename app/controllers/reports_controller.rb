@@ -7,7 +7,7 @@ class ReportsController < ApplicationController
   end
 
   def meeting_report_result
-    user_ids = params[:users]
+    user_ids = params[:users].present? ? params[:users] : [current_user.id]
     search = Hash[]
     search[:type_eq] = 'ConversationItems::Meeting'
     s_date = Chronic.parse(params[:search][:date_gteq]).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
