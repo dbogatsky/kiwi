@@ -20,4 +20,4 @@
 //= require_tree .
 
 $.webshims.setOptions('basePath', '/assets/webshims/shims/')
-$.webshims.polyfill()
+$.webshims.polyfill('forms')
