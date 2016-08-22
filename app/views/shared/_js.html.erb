@@ -96,7 +96,7 @@
                 $("#country").select2().val();
 
               }else if (addressType == 'street_number'){
-                r = place.address_components[1][componentForm['route']]
+                r = place.address_components[2][componentForm['locality']]
                 document.getElementById(addressType).value = val+' '+r
               }else{
                 document.getElementById(addressType).value = val;
