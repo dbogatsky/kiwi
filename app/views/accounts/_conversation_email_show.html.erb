@@ -20,7 +20,7 @@
              data-invitees="<%=citem.invitees %>"
              data-title="<%=citem.title %>"
              data-date="<%=mobile? ? Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") : Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.scheduled_at.present?%>"
-             data-time="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.scheduled_at.present? %>"
+             data-time="<%=(Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).dst? ? (Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone) - 1.hour).strftime("%I:%M %p") : Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p"))if citem.scheduled_at.present? %>"
              data-body="<%= citem.body %>">Edit</a>
           </li>
           <li>
@@ -37,7 +37,10 @@
         <i class="fa fa-paper-plane-o"></i><%= citem.invitees %><br />
       <% end %>
       <% if (citem.scheduled_at.present?) %>
-        <i class="fa fa-calendar"></i><%= citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %>
+        <i class="fa fa-calendar"></i>
+        <%scheduled_at = citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone)%>
+        <%scheduled_at = scheduled_at - 1.hour if scheduled_at.dst?%>
+        <%=scheduled_at.strftime("%a %b %d %Y at %l:%M %p") %>
       <% end %>
     </div>
 </div>

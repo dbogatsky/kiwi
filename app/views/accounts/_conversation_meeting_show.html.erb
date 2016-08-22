@@ -3,9 +3,16 @@
 </div>
 <div class="cd-timeline-content">
   <%if citem.starts_at.present? && citem.ends_at.present? %>
-  <span class="cd-date"><%= citem.starts_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y - %l:%M %p")%> to <%=citem.ends_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%l:%M %p")%>&nbsp;&nbsp;</span>
+    <span class="cd-date">
+      <%starts_at = Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone)%>
+      <%starts_at = starts_at - 1.hour if starts_at.dst?%>
+      <%=starts_at.strftime("%I:%M %p")%>
+      to
+      <%ends_at = Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone)%>
+      <%ends_at = ends_at - 1.hour if ends_at.dst?%>
+      <%=ends_at.strftime("%I:%M %p")%>&nbsp;&nbsp;</span>
   <% else %>
-      <span class="cd-date"><%= citem.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%></span>
+    <span class="cd-date"><%= citem.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%></span>
   <% end %>
   <%= get_styled_meetingstatus(citem, false) %>
   <div class="btn-group mr5 pull-right">
@@ -31,11 +38,11 @@
         data-invitees="<%=citem.invitees%>"
         data-title="<%=citem.title %>"
         data-date="<%=(mobile? ? Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") :  Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y")) if citem.scheduled_at.present?%>"
-        data-time="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.scheduled_at.present? %>"
+        data-time="<%=(Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).dst? ? (Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone) - 1.hour).strftime("%I:%M %p") : Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p"))if citem.scheduled_at.present? %>"
         data-starts-date="<%=(mobile? ? Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") : Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y")) if citem.starts_at.present? %>"
-        data-starts-time="<%=Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.starts_at.present? %>"
+        data-starts-time="<%=(Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).dst? ? (Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone) - 1.hour).strftime("%I:%M %p") : Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p"))if citem.starts_at.present? %>"
         data-ends-date="<%= mobile? ? Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") :  Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.ends_at.present? %>"
-        data-ends-time="<%=Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.ends_at.present? %>"
+        data-ends-time="<%=(Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).dst? ? (Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone) - 1.hour).strftime("%I:%M %p") : Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p")) if citem.ends_at.present? %>"
         data-repetition-rule ="<%=(citem.repetition_rule.present? || citem.related_to.present?) ? 'true' : 'false'%>"
         data-location="<%= citem.location%>"
         data-longitude="<%=citem.longitude%>"
@@ -57,7 +64,11 @@
   <div class="row ci_footer">
     <div class="col-sm-10">
       <% if (citem.scheduled_at.present?) %>
-        <i class="fa fa-bell tooltips mr10" data-toggle="tooltip" data-original-title="Reminder"></i><%= citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %><br />
+        <i class="fa fa-bell tooltips mr10" data-toggle="tooltip" data-original-title="Reminder"></i>
+        <%scheduled_at = citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone)%>
+        <%scheduled_at = scheduled_at - 1.hour if scheduled_at.dst?%>
+        <%=scheduled_at.strftime("%a %b %d %Y at %l:%M %p")%>
+        <br />
       <% end %>
 
       <i class="fa fa-user tooltips mr10" data-toggle="tooltip" data-original-title="Created by"></i><%=created_by.first_name%> <%=created_by.last_name%><br />
