@@ -58,6 +58,7 @@
     function address_auto_fill(e){
       var componentForm = {
         street_number: 'short_name',
+        subpremise: 'long_name',
         route: 'long_name',
         locality: 'long_name',
         administrative_area_level_1: 'long_name',
@@ -85,7 +86,6 @@
             $('#'+component).attr('readonly', false)
           }
         }
-
         for (var i = 0; i < place.address_components.length; i++) {
           var addressType = place.address_components[i].types[0];
           if (componentForm[addressType]) {

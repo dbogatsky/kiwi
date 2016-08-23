@@ -70,7 +70,7 @@ class ScheduleController < ApplicationController
     if params[:account_id].present?
       account =  Account.find(params[:account_id])
       address =  account.addresses.first
-      @full_address = "#{address.street_address}" +', ' + "#{address.city}" +', ' + "#{address.postcode}" +', ' + "#{address.region}" +', ' + "#{address.country}"
+      @full_address = "#{account.addresses.first.suite_number}" +"#{account.addresses.first.suite_number.present? ? '-' : ''}"+"#{address.street_address}" +', ' + "#{address.city}" +', ' + "#{address.postcode}" +', ' + "#{address.region}" +', ' + "#{address.country}"
     else
       @full_address = nil
     end

@@ -32,7 +32,7 @@
                       <br />
                   	  <% if !account.addresses.empty? %>
                         <% account.addresses.each_with_index do |address, i| %>
-                          <small><i class="fa fa-map-marker" style="margin-right:10px;"></i>  <%= address.street_address %>, <%= address.city %><br /><%= address.region %>, <%= address.country %>, <%= address.postcode %></small>
+                          <small><i class="fa fa-map-marker" style="margin-right:10px;"></i>  <%= address.suite_number %><%=address.suite_number.present? ? '-' : ''%><%= address.street_address %>, <%= address.city %><br /><%= address.region %>, <%= address.country %>, <%= address.postcode %></small>
                           <br />
                           <% break end %>
                       <% end %>
