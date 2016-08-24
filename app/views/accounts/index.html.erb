@@ -9,7 +9,7 @@
   <div class="col-md-5">
     <%= simple_form_for :search, method: :get do |f| %>
       <%= f.input :name_cont, wrapper: :vertical_input_group, label: false do %>
-        <%= f.input_field :name_cont, class: "form-control", placeholder: "Search here ...", value: params[:search].try(:[], :name_cont) %>
+        <%= f.input_field :name_cont, class: "form-control", placeholder: "Search here ...", value: params[:search].try(:[], :name_cont)%>
         <div class="input-group-btn">
           <button type="submit" class="btn btn-primary">
             <i class="fa fa-search"></i>

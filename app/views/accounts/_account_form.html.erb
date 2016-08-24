@@ -32,7 +32,7 @@
           </div>
 
           <div class="form-group">
-            <label class="col-sm-offset-2 col-sm-2 control-label">Contact Title<span class="asterisk">*</span></label>
+            <label class="col-sm-offset-2 col-sm-2 control-label">Contact Title</label>
             <div class="col-sm-4">
                <%=text_field_tag "account[contact_title]",nil,class: "form-control"%>
             </div>
@@ -78,7 +78,7 @@
 
             <label class="col-sm-1 control-label">Type<span class="asterisk">*</span></label>
             <div class="col-sm-2">
-              <%= c.select( :type, options_for_select(Contact::CONTACT_TYPES), {}, { :class => "select2ContactTypes", :name => "account[contacts_attributes][#{t}][type]", :id => "account_contacts_attributes_type_1" } ) %>
+              <%= c.select( :type, options_for_select(Contact::CONTACT_TYPES), {}, { :class => "input-sm background_color", :name => "account[contacts_attributes][#{t}][type]", :id => "account_contacts_attributes_type_1" } ) %>
             </div>
 
             <label class="col-sm-1 control-label">Value<span class="asterisk">*</span></label>
@@ -105,6 +105,15 @@
         <%= f.input :about, as: :text,  wrapper: :wizard_horizontal_form, :label => 'About', :input_html => { :rows => 5 }  %>
 
         <%= f.input :quick_facts, as: :text, wrapper: :wizard_horizontal_form, :label => 'Quick Facts', :input_html => { :rows => 5 }  %>
+        <%#if (@role == 'Admin' || @role == @enable_expected_sales.tr("_", " ").titleize || @enable_expected_sales == 'all')%>
+        <%if @enable_expected_sales == 'enable'%>
+          <div class="form-group">
+            <label class="col-sm-offset-2 col-sm-2 control-label">Expected Sales Value</label>
+            <div class="col-sm-4">
+               <%=text_field_tag "account[expected_sales]",nil,class: "form-control amount_val"%>
+            </div>
+          </div>
+        <%end%>
         <input type="hidden" name="save">
       </div>
 
@@ -137,12 +146,12 @@
     width: '100%'
   });
 
-   $(".select2ContactTypes").select2({
-    width: '100%'
-  });
+  //  $(".select2ContactTypes").select2({
+  //   width: '100%'
+  // });
 
 
-    var max_fields      = 5; //maximum input boxes allowed
+    var max_fields      = 20; //maximum input boxes allowed
     var wrapper         = $(".contact-form-wrap"); //Fields wrapper
     var add_button      = $(".add-contact-button"); //Add button ID
 
@@ -170,7 +179,7 @@
                 </div>\
                 <label class="col-sm-1 control-label">Type<span class="asterisk">*</span></label>\
                 <div class="col-sm-2">\
-                  <select class="select2" id="account_contacts_attributes_type_'+x+'" name="account[contacts_attributes]['+t+'][type]"><%= raw(@contact_types) %></select>\
+                  <select class="input-sm background_color" id="account_contacts_attributes_type_'+x+'" name="account[contacts_attributes]['+t+'][type]"><%= raw(@contact_types) %></select>\
                 </div>\
                 <label class="col-sm-1 control-label">Value<span class="asterisk">*</span></label>\
                 <div class="col-sm-2">\
@@ -180,7 +189,7 @@
               </div>\
             </div>';
             $(wrapper).append(str_html);
-            $("#account_contacts_attributes_type_"+x).select2({ width: '100%'});
+            // $("#account_contacts_attributes_type_"+x).select2({ width: '100%'});
             //$('#account_contacts_attributes_value_'+x).rules('add', { required: true });
             /*$('input[id="account_contacts_attributes_value_'+x+'"]').rules("add", {  // <- apply rule to new field
               required: true

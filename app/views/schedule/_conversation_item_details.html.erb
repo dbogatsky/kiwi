@@ -34,14 +34,14 @@
                data-invitees="<%=citem.invitees%>"
                data-title="<%=citem.title %>"
                data-date="<%=(mobile? ? Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") : Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y")) if citem.scheduled_at.present?%>"
-               data-time="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.scheduled_at.present? %>"
-               data-time-24="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%H:%M") if citem.scheduled_at.present? %>"
+               data-time="<%=(Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).dst? ? (Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone) - 1.hour).strftime("%I:%M %p") : Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p"))if citem.scheduled_at.present? %>"
+               data-time-24="<%=(Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).dst? ? (Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone) - 1.hour).strftime("%H:%M") : Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%H:%M"))if citem.scheduled_at.present? %>"
                data-starts-date="<%=(mobile? ? Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") : Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y")) if citem.starts_at.present? %>"
-               data-starts-time="<%=Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.starts_at.present? %>"
-               data-starts-time-24="<%=Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%H:%M") if citem.starts_at.present? %>"
+               data-starts-time="<%=(Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).dst? ? (Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone) - 1.hour).strftime("%I:%M %p") : Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p"))if citem.starts_at.present? %>"
+               data-starts-time-24="<%=(Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).dst? ? (Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone) - 1.hour).strftime("%H:%M") : Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%H:%M"))if citem.starts_at.present? %>"
                data-ends-date="<%=(mobile? ? Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") : Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y")) if citem.ends_at.present? %>"
-               data-ends-time="<%=Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.ends_at.present? %>"
-               data-ends-time-24="<%=Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%H:%M") if citem.ends_at.present? %>"
+               data-ends-time="<%=(Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).dst? ? (Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone) - 1.hour).strftime("%I:%M %p") : Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p")) if citem.ends_at.present? %>"
+               data-ends-time-24="<%=(Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).dst? ? (Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone) - 1.hour).strftime("%H:%M") : Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%H:%M")) if citem.ends_at.present? %>"
                data-repetition-rule ="<%=(citem.repetition_rule.present? || citem.related_to.present?) ? 'true' : 'false'%>"
                data-latitude="<%=citem.latitude%>"
                data-longitude="<%=citem.longitude%>"
@@ -51,7 +51,8 @@
             </a>
           </li>
           <li>
-            <%=link_to 'Delete',"javascript:void(0)", id: "del_item_#{citem.id}"%>
+            <%#=link_to 'Delete',"javascript:void(0)", id: "del_item_#{citem.id}"%>
+            <%=link_to 'Delete', "javascript:void(0)", class: "delete_item", data:{id: citem.id, account_id: citem.account_id}%>
           </li>
           <li class="divider"></li>
           <li><%= link_to "Go To Account", account_path(citem.account_id) %></li>
@@ -63,7 +64,19 @@
   <small><i class="fa fa-map-marker" style="margin-right:10px"></i>&nbsp;&nbsp;<%=citem.location%></small><br />
   <small><i class="fa fa-calendar" style="margin-right:10px"></i><%=Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.starts_at.present? %></small><br />
   <% if citem.item_type == "general" %>
-    <small><i class="fa fa-clock-o" style="margin-right:10px"></i><%=Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p") if citem.starts_at.present? %>  to  <%=Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p") if citem.ends_at.present? %></small><br />
+    <small><i class="fa fa-clock-o" style="margin-right:10px"></i>
+      <%if citem.starts_at.present?%>
+        <%starts_at = Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone)%>
+        <%starts_at = starts_at - 1.hour if starts_at.dst?%>
+        <%=starts_at.strftime("%I:%M %p")%>
+      <%end%>
+      to
+      <%if citem.ends_at.present?%>
+        <%ends_at = Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone)%>
+        <%ends_at = ends_at - 1.hour if ends_at.dst?%>
+        <%=ends_at.strftime("%I:%M %p")%>
+      <%end%>
+    </small><br />
   <% end %>
 </div>
 <%time = citem.ends_at.present? ? (DateTime.now.in_time_zone(current_user.time_zone) > citem.ends_at.to_datetime.in_time_zone(current_user.time_zone)+1.hour) : false%>
@@ -73,18 +86,18 @@
     <%if current_user.id == citem_created_by.id || invitees.include?(current_user.email)%>
       <%if check_in(citem,false)%>
         <a class="btn btn-xs btn-default pull-right mr5 checkin" id="<%=citem.id%>" data-created-by="<%=citem.created_by.id%>" data-conversation-id="<%=citem.prefix_options[:conversation_id].present? ? citem.prefix_options[:conversation_id] : citem.conversation_id %>">
-          <i class="fa fa-sign-in mr5"></i><span id="position_button">Check In</span>
+          <i class="fa fa-sign-in mr5"></i><span class="position_button">Check In</span>
         </a>
       <%end%>
       <%if !check_in(citem,false) && check_out(citem,false)%>
         <a class="btn btn-xs btn-default pull-right mr5 checkout" id="<%=citem.id%>" data-created-by="<%=citem.created_by.id%>" data-conversation-id="<%=citem.prefix_options[:conversation_id].present? ? citem.prefix_options[:conversation_id] : citem.conversation_id %>">
-          <i class="fa fa-sign-out mr5"></i><span id="position_button">Check Out</span>
+          <i class="fa fa-sign-out mr5"></i><span class="position_button">Check Out</span>
         </a>
       <%end%>
     <%else%>
-      <%=link_to jump_in_account_path(citem.account_id,conversation_item_id: citem.id, info: true), method: :patch, class: "btn btn-xs btn-default pull-right mr5" do%>
-        <i class="fa fa-sign-in mr5"></i>Jump In
-      <%end%>
+      <a class="btn btn-xs btn-default pull-right mr5 jumpin" id="<%=citem.id%>" data-conversation-id = "<%=citem.prefix_options[:conversation_id].present? ? citem.prefix_options[:conversation_id] : citem.conversation_id%>">
+        <i class="fa fa-sign-in mr5"></i><span class="position_button1">Jump In</span>
+      </a>
     <%end%>
   <% end %>
   <p>
@@ -98,7 +111,11 @@
   <div class="row ci_footer">
       <div class="col-sm-10">
         <%if citem.scheduled_at.present? %>
-          <i class="fa fa-bell tooltips mr10" data-toggle="tooltip" data-original-title="Reminder"></i><%= citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%><br>
+          <i class="fa fa-bell tooltips mr10" data-toggle="tooltip" data-original-title="Reminder"></i>
+          <%scheduled_at = citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone)%>
+          <%scheduled_at = scheduled_at - 1.hour if scheduled_at.dst?%>
+          <%=scheduled_at.strftime("%a %b %d %Y at %l:%M %p")%>
+          <br>
         <%end%>
         <i class="fa fa-user tooltips mr10" data-toggle="tooltip" data-original-title="Created by"></i><%=citem_created_by.first_name%> <%=citem_created_by.last_name%><br>
         <%if citem.invitees.present?%>
@@ -118,26 +135,9 @@
         <div class="check_out_time_<%=citem.id%> hidden">
           <i class="fa fa-sign-out mr10" data-toggle="tooltip" data-original-title="Check Out"></i><%= Time.now.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %>
         </div>
-        <i class="fa fa-briefcase tooltips mr10" data-toggle="tooltip" data-original-title="Account"></i><%=Account.find(citem.account_id).name%>
+        <i class="fa fa-briefcase tooltips mr10" data-toggle="tooltip" data-original-title="Account"></i><%= citem.account.try(:name) ? citem.account.name : "Account Deleted" %>
       </div>
       <div class="col-sm-2">
       </div>
   </div>
 </div>
-
-<script type="text/javascript">
-
-  $("#del_item_<%=citem.id%>").click(function(e){
-   var r =  confirm("Are you sure to delete this meeting?")
-   if (r){
-    $('#preloader').css('opacity', 0.8);
-    $('#preloader').show();
-    $.ajax({
-      type: "GET",
-      url: '/accounts/<%=citem.account_id%>/delete_meeting?item_id=<%=citem.id%>',
-      success: function (data) {
-      }
-    });
-   }
-  })
-</script>

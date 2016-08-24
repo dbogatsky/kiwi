@@ -12,8 +12,9 @@
   <div class="row">
     <div class="col-sm-3">
       <img src="<%= (@account.avatar_url.eql? "/avatars/web/missing.png") ? '/assets/images/default_account_avatar.png' : @account.avatar_url %>" class="thumbnail img-responsive" alt="">
-      <div class="mb30"></div>
-      <h5 class="subtitle">Contact</h5>
+        <div class="mb30"></div>
+        <div class="mb30"></div>
+        <h5 class="subtitle">Contact</h5>
         <ul class="profile-social-list" id="account-contacts">
           <% if !@account.contact_name.nil? %>
             <li><i class="fa fa-briefcase"></i>  <%= @account.contact_name %>
@@ -26,7 +27,9 @@
             <% if contact.type == "email" %>
               <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name %>"></i><a href="mailto:<%= contact.value %>"><%= contact.value %></a></li>
             <%elsif  contact.type == "website"%>
-             <li id="<%= dom_id(contact) %>"><i class="fa fa-globe"></i><a href="<%= contact.value %>" target="_blank"><%= contact.value %></a></li>
+             <li id="<%= dom_id(contact) %>"><i class="fa fa-globe"></i><a href="<%=(contact.value.include?'https') ? contact.value : 'https://'+contact.value %>" target="_blank"><%= contact.value %></a></li>
+            <% elsif contact.type.eql? "phone"  or  contact.type.eql? "mobile"  or  contact.type.eql? "fax"%>
+              <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name %>"></i><a href="tel:+1<%= contact.value.delete(" ").delete("-") %>"><%= contact.value %></a></li>
             <% else %>
               <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name %>"></i><%= contact.value %></li>
             <% end %>
@@ -34,7 +37,6 @@
         </ul>
       <div class="mb30"></div>
       <h5 class="subtitle">Address&nbsp;<i class="fa fa-map-marker"></i>
-        <!--<a href="#" data-toggle="modal" data-target=".address-modal-form" class="pull-right account_icons">+ Add</a>-->
       </h5>
       <ul class="profile-social-list" id="account-addresses">
         <% @account.addresses.each_with_index do |address, index| %>
@@ -98,6 +100,16 @@
                     </a>
                   </div>
                 </div>
+                <%if @enable_expected_sales == 'enable'%>
+                  <div class="row bars">
+                    <div class="col-xs-5" style="text-align:right">
+                      <strong>Estimated Sales</strong>
+                    </div>
+                    <div class="col-xs-7">
+                      <span class="pink_text"><%=number_to_currency(@account.expected_sales)%></span>
+                    </div>
+                  </div>
+                <%end%>
               </div><!-- col-sm-4 -->
               <div class="col-sm-7">
                 <div class="row bars">
@@ -184,7 +196,6 @@
             <h3 class="panel-title">New Contact</h3>
           </div>
           <div class="panel-body">
-            <%#= render :partial => "contacts/form", review: Contact.new(account_id: @account.id) %>
             <%= render :partial => "contacts/form" %>
           </div><!-- panel -->
         </div>
@@ -225,6 +236,8 @@
   <%= render "conversation_reminder", account: @account %>
   <%= render "conversation_reminder_edit", account: @account%>
   <%= render "conversation_sharedusers" %>
+  <%= render "schedule/delete_meeting_modal"%>
+  <%= render "schedule/delete_future_meeting_modal"%>
 <% end %>
 
 
@@ -237,6 +250,8 @@
         $('.end-date-time').hide(500);
         $('.all-day').show(500)
         $('.start-time').hide(500)
+        $('.meeting_title').hide(500)
+        $('.meeting_title').attr('required', false)
         $('#schedule-from-timepicker').attr('required', false)
         $('#schedule-from-timepicker').val(null)
         $('#schedule-to-datepicker').attr('required', false)
@@ -252,6 +267,8 @@
         $('.end-date-time').show(500);
         $('.all-day').hide(500)
         $('.start-time').show(500)
+        $('.meeting_title').show(500)
+        $('.meeting_title').attr('required', true)
         $('#schedule-from-timepicker').attr('required', true)
         $('#schedule-to-datepicker').attr('required', true)
         $('#schedule-to-timepicker').attr('required', true)
@@ -268,39 +285,6 @@
         $("#repeat-frequency").attr('required', false);
         $("#repeat-occurrences").attr('required', false);
         $("#repeat-every-day").attr('required', false);
-      }
-    });
-
-    $(".amount_val").keypress(function(event) {
-      if ((event.which != 46 || $(this).val().indexOf('.') != -1) &&
-        ((event.which < 48 || event.which > 57) &&
-          (event.which != 0 && event.which != 8))) {
-        event.preventDefault();
-      }
-      var text = $(this).val();
-      if ((text.indexOf('.') != -1) &&
-        (text.substring(text.indexOf('.')).length > 2) &&
-        (event.which != 0 && event.which != 8) &&
-        ($(this)[0].selectionStart >= text.length - 2)) {
-        event.preventDefault();
-      }
-    });
-
-    $(".amount_val").focusout(function(){
-       var re = /^-?[0-9]+$/;
-       var num = $(this).val();
-       if (re.test(num)){
-          num = num + '.00';
-          $(this).val(num);
-       }else if(!re.test(num) && num != '' ){
-         var length = parseFloat(num).toFixed(2).replace(/^-?\d*\.?|0+$/g, '').length
-         if(length == 1){
-          num = num + '0';
-          $(this).val(num);
-        }else if (length < 1){
-          num = parseFloat(num) + '.00';
-          $(this).val(num);
-        }
       }
     });
 
@@ -484,6 +468,8 @@
       $('.conversation-edit-meeting-modal-form input[name="ends_date"]').val($(this).attr('data-ends-date'));
       $('.conversation-edit-meeting-modal-form select[name="conversation_item[item_type]"]').val($(this).attr('data-item-type'));
       if($(this).attr('data-item-type') == 'regular'){
+        $('.conversation-edit-meeting-modal-form input[name="conversation_item[title]"]').hide()
+        $('.conversation-edit-meeting-modal-form input[name="conversation_item[title]"]').attr('required', false)
         $(".invitee_emails_div").hide();
         $(".repeat_div").hide();
         $(".end-date-time").hide();
@@ -497,6 +483,8 @@
         $("#schedule-from-timepicker-edit").val(null);
       }else{
         $(".invitee_emails_div").show();
+        $('.conversation-edit-meeting-modal-form input[name="conversation_item[title]"]').show()
+        $('.conversation-edit-meeting-modal-form input[name="conversation_item[title]"]').attr('required', true)
         $(".repeat_div").show();
         $(".end-date-time").show();
         $(".start-time").show();
@@ -979,23 +967,10 @@
       $(".set_date").attr('disabled', true)
     });
 
-    // $(".conversation-edit-reminder-modal-form").on("shown.bs.modal", function(){
-    //   var input = document.getElementById("keyword");
-    //   var autocomplete = new google.maps.places.Autocomplete(input);
-
-    //   google.maps.event.addListener(autocomplete, 'place_changed', function() {
-    //     var place = autocomplete.getPlace();
-    //     var lat = place.geometry.location.lat();
-    //     var lng = place.geometry.location.lng();
-    //     $(".conversation-edit-reminder-modal-form[name='conversation_item[latitude]']").val(lat);
-    //     $(".conversation-edit-reminder-modal-form[name='conversation_item[longitude]']").val(lng);
-    //   });
-    // });
-
-    var new_data = <%= raw(@notifiable_users) %>
-    $("#notifiable_users").select2({
-      data: new_data
-    });
+  var new_data = <%= raw(@notifiable_users) %>
+  $("#notifiable_users").select2({
+    data: new_data
+  });
 
     $(".conversation-reminder-modal-form .select2").css('width', '100%');
 

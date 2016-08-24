@@ -22,8 +22,8 @@
                data-notify-by-email="<%=(citem.notify_by_email.present?) ? 'true' : 'false'%>"
                data-users-to-notify-ids="<%=citem.conversation_item_user_to_notify.map(&:user_id) if citem.conversation_item_user_to_notify.present? %>"
                data-date="<%=mobile? ? Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") :  Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.scheduled_at.present?%>"
-               data-time="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M%p") if citem.scheduled_at.present? %>"
-               data-time-24="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%H:%M") if citem.scheduled_at.present? %>"
+               data-time-24="<%=(Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).dst? ? (Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone) - 1.hour).strftime("%H:%M") : Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%H:%M"))if citem.scheduled_at.present? %>"
+               data-time="<%=(Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).dst? ? (Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone) - 1.hour).strftime("%I:%M %p") : Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p"))if citem.scheduled_at.present? %>"
                data-description="<%= citem.body %>">Edit</a>
             </li>
             <li>
@@ -37,7 +37,10 @@
   <div class="ci_reminder_body"><%= sanitize citem.body %></div>
   <% if (citem.scheduled_at.present?) %>
     <div class="ci_footer">
-      <i class="fa fa-bell"></i><%= citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %>
+      <i class="fa fa-bell"></i>
+      <%scheduled_at = citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone)%>
+      <%scheduled_at = scheduled_at - 1.hour if scheduled_at.dst?%>
+      <%=scheduled_at.strftime("%a %b %d %Y at %l:%M %p") %>
       <i class="mr10"></i>
       <% if citem.notify_by_email.present? %>
       <i class="fa fa-envelope tooltips mr10" data-toggle="tooltip" data-original-title="Email"></i>

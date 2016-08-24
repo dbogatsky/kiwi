@@ -19,9 +19,9 @@
       </div>
       <div id="conversation_item_details">
         <%if @meetings.present? && @next_meeting.present?%>
-          <%account = Account.find(@next_meeting.first.account_id)%>
+          <%#account = Account.find(@next_meeting.first.account_id)%>
           <%created_by = @next_meeting.first.created_by%>
-          <%=render 'conversation_item_details', citem: @next_meeting.first, account: account, citem_created_by: created_by%>
+          <%=render 'conversation_item_details', citem: @next_meeting.first, citem_created_by: created_by%>
         <%end%>
       </div>
     </div>
@@ -80,16 +80,28 @@
   <%end%>
 </div>
 <%= render "accounts/conversation_meeting", account: nil %>
-<%= render "accounts/conversation_quote", account: nil %>
 <%= render "accounts/conversation_reminder", account: nil %>
+<%= render "accounts/conversation_quote", account: nil %>
 <%= render "accounts/conversation_meeting_complete", account: nil, info: true%>
 <%= render "accounts/conversation_meeting_edit", account: nil, info: true%>
+<%= render "delete_meeting_modal"%>
+<%= render "delete_future_meeting_modal"%>
 
 <script>
   $.fn.modal.Constructor.prototype.enforceFocus = function () {};
   $('.select2').select2();
+  var check_open_modal
+  $(".account-action-meeting, .conversation-quote-modal-form, .conversation-reminder-modal-form").on("shown.bs.modal", function(){
+    var select = $('.selected_account');
+    check_open_modal = $(this).attr('id')
+    select.empty();
+    select.append("<option value=''>-Select account-</option>");
+    <%@all_accounts.each do |account|%>
+      $('<option>').val('<%=account.id%>').text('<%=account.name%>').appendTo('.selected_account');
+    <%end%>
+  })
 
-  $(document).on("change",".selected_account",function() {
+  $(document).on("change",".get_address",function() {
     var account_id = $(this).val();
     if (account_id != ''){
       $.ajax({
@@ -110,6 +122,8 @@
       $('.end-date-time').hide(500);
       $('.all-day').show(500)
       $('.start-time').hide(500)
+      $('.meeting_title').hide(500)
+      $('.meeting_title').attr('required', false)
       $('#schedule-from-timepicker').attr('required', false)
       $('#schedule-from-timepicker').val(null)
       $('#schedule-to-datepicker').attr('required', false)
@@ -125,6 +139,8 @@
       $('.end-date-time').show(500);
       $('.all-day').hide(500)
       $('.start-time').show(500)
+      $('.meeting_title').show(500)
+      $('.meeting_title').attr('required', true)
       $('#schedule-from-timepicker').attr('required', true)
       $('#schedule-to-datepicker').attr('required', true)
       $('#schedule-to-timepicker').attr('required', true)
@@ -149,7 +165,7 @@
     new_reminder = $('#new_reminder').wysihtml5({'font-styles': false, 'image': false, 'link':false});
   });
 
-  $(".select_account").change(function(){
+  $(".get_notifiable_users").change(function(){
     account_id = $(this).val();
     if (account_id != ''){
       $('#preloader').css('opacity', 0.8);
@@ -243,6 +259,8 @@
     $('.conversation-edit-meeting-modal-form input[name="conversation_item[longitude]"]').val($(this).attr('data-longitude'));
     $('.conversation-edit-meeting-modal-form select[name="conversation_item[item_type]"]').val($(this).attr('data-item-type'));
       if($(this).attr('data-item-type') == 'regular'){
+        $('.conversation-edit-meeting-modal-form input[name="conversation_item[title]"]').hide()
+        $('.conversation-edit-meeting-modal-form input[name="conversation_item[title]"]').attr('required', false)
         $(".invitee_emails_div").hide();
         $(".repeat_div").hide();
         $(".end-date-time").hide();
@@ -255,6 +273,8 @@
         $("#schedule-to-timepicker-edit").val(null);
         $("#schedule-from-timepicker-edit").val(null);
       }else{
+        $('.conversation-edit-meeting-modal-form input[name="conversation_item[title]"]').show()
+        $('.conversation-edit-meeting-modal-form input[name="conversation_item[title]"]').attr('required', true)
         $(".invitee_emails_div").show();
         $(".repeat_div").show();
         $(".end-date-time").show();
@@ -348,6 +368,7 @@
     if($("#schedule_user_list").val() != ''){
      $('#preloader').css('opacity', 0.3);
      $('#preloader').show();
+     update_regular_visits(null)
     }
   })
 
@@ -367,8 +388,17 @@
     /* initialize the calendar
      -----------------------------------------------------------------*/
     $('#calendar').fullCalendar({
+        customButtons: {
+          todayCustomButton: {
+              text: 'today',
+              click: function() {
+                 $('#calendar').fullCalendar('today');
+                 update_regular_visits(null)
+              }
+          }
+        },
         header: {
-          left: 'prev,next today',
+          left: 'prev,next todayCustomButton',
           center: 'title',
           right: 'month,agendaWeek,agendaDay',
         },
@@ -725,11 +755,12 @@
   }
 
   function update_regular_visits(date) {
+    var user_id = $("#schedule_user_list").val()
     if (date == null) {
-      url_path = '/schedule/regular_visits';
+      url_path = '/schedule/regular_visits?user_id='+user_id;
     }
     else {
-      url_path = '/schedule/regular_visits?date='+date.format();
+      url_path = '/schedule/regular_visits?date='+date.format()+'&user_id='+user_id;
     }
     $.ajax({
       type: "GET",

@@ -3,10 +3,15 @@ class ReportsController < ApplicationController
   end
 
   def activity_report
+    @users = User.all(uid: session[:user_id], reload: true)
   end
 
   def meeting_report_result
-    user_ids = params[:users]
+    if current_user.roles.last.try(:name) == 'User'
+      user_ids = [current_user.id]
+    else
+      user_ids = params[:users].present? ? params[:users] : [current_user.id]
+    end
     search = Hash[]
     search[:type_eq] = 'ConversationItems::Meeting'
     s_date = Chronic.parse(params[:search][:date_gteq]).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
@@ -60,10 +65,18 @@ class ReportsController < ApplicationController
 
   def activity_report_result
     search = Hash[]
-    if params[:users].include? 'all'
-      user_ids = User.all(uid: session[:user_id], reload: true).map(&:id)
+    if current_user.roles.last.try(:name) == 'User'
+      user_ids = [current_user.id]
     else
-      user_ids = params[:users]
+      if params[:users].present?
+        if params[:users].include? 'all'
+          user_ids = User.all(uid: session[:user_id], reload: true).map(&:id)
+        else
+          user_ids = params[:users]
+        end
+      else
+        user_ids = [current_user.id]
+      end
     end
     s_date = Chronic.parse(params[:search][:date_gteq]).in_time_zone(current_user.time_zone).strftime('%Y-%m-%d')
     e_date = Chronic.parse(params[:search][:date_lteq]).in_time_zone(current_user.time_zone).strftime('%Y-%m-%d')
@@ -73,9 +86,9 @@ class ReportsController < ApplicationController
     search[:user_id_in] = user_ids
 
     # get a list of all accounts updated between selected date range
-    @accounts = Account.all(params: { search: search })
+    no_of_account = Account.all.total_entries
+    @accounts = Account.all(params: { search: search, per_page: no_of_account})
     @accounts = @accounts.sort_by { |account| account.updated_at }.reverse
-
     # remove this key from search since we use the same search hash below
     search.delete(:user_id_in)
 
@@ -91,6 +104,7 @@ class ReportsController < ApplicationController
     @sorted_citems[:reminder] = Array[]
     @sorted_citems[:note] = Array[]
     @sorted_citems[:email] = Array[]
+    @sorted_citems[:account] = Array[]
     @citems.each do |citem|
       if (citem.type == 'meeting')
         if (citem.item_type == 'regular')

@@ -1,5 +1,5 @@
 <!--Shared javascript -->
-<script src="/assets/bootstrap/js/jquery-1.11.1.min.js"></script>
+<!-- <script src="/assets/bootstrap/js/jquery-1.11.1.min.js"></script> -->
 <script src="/assets/bootstrap/js/jquery-migrate-1.2.1.min.js"></script>
 <script src="/assets/bootstrap/js/jquery-ui-1.10.3.min.js"></script>
 <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -96,7 +96,7 @@
                 $("#country").select2().val();
 
               }else if (addressType == 'street_number'){
-                r = place.address_components[1][componentForm['route']]
+                r = place.address_components[2][componentForm['locality']]
                 document.getElementById(addressType).value = val+' '+r
               }else{
                 document.getElementById(addressType).value = val;
@@ -114,14 +114,20 @@
       });
     }
 
-    var path = window.location.pathname
-    if(path.includes('/accounts/') && (path.includes('/edit') || path.includes('/new'))){
-      if (document.getElementById("account_name") != null){
-          address_auto_fill(document.getElementById("account_name"));
-        }else{
-          address_auto_fill(document.getElementById("street_number"));
-      }
+    if ($('#account_name').length > 0 ){
+        address_auto_fill(document.getElementById("account_name"));
     }
+    if ($('#street_number').length > 0){
+        address_auto_fill(document.getElementById("street_number"));
+    }
+    // var path = window.location.pathname
+    // if((path.includes('/accounts/') || path.includes('/users/')) && (path.includes('/edit') || path.includes('/new'))){
+    //   if (document.getElementById("account_name") != null){
+    //       address_auto_fill(document.getElementById("account_name"));
+    //     }else{
+    //       address_auto_fill(document.getElementById("street_number"));
+    //   }
+    // }
 
     $('body').bind('ajax:beforeSend', function(event, xhr, settings) {
       console.log("ajax-beforesend");
@@ -196,6 +202,30 @@
        address_auto_fill(document.getElementById("street_number"));
     });
 
+
+    $(document).on('click', '.jumpin', function(){
+      var conversation_id = $(this).data('conversation-id')
+      var cid = $(this).attr('id')
+      $('#'+cid).hide();
+      $('#preloader').show();
+      $.ajax({
+        type: "POST",
+        url : '/accounts/jump_in?conversation_id='+conversation_id+'&cid='+cid,
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+        },
+        complete: function() {
+          $('#preloader').hide();
+          $('#'+cid).switchClass("jumpin", "checkin");
+          $('#'+cid).parent().find('.position_button').text('Check In');
+          $('#'+cid).show();
+        },
+        success: function() {
+        },
+        error:function() {
+        }
+      });
+    });
 
     $(document).on('click', '.checkin', function(){
       checkin(this);
@@ -272,7 +302,7 @@
               var current_user = "<%=current_user.id rescue nil%>";
               if(type == "checkin"){
                 $('#'+cid).switchClass("checkin", "checkout");
-                $('#'+cid).parent().find('#position_button').text('Check Out');
+                $('#'+cid).parent().find('.position_button').text('Check Out');
                 $('#'+cid).parent().find('.fa-sign-in').switchClass("fa-sign-in", "fa-sign-out");
                 $('#'+cid).show();
                 $('.check_in_time_'+cid).removeClass('hidden')
@@ -298,6 +328,81 @@
         });
       <%end%>
     }
+
+    $(".amount_val").keypress(function(event) {
+      if ((event.which != 46 || $(this).val().indexOf('.') != -1) &&
+        ((event.which < 48 || event.which > 57) &&
+          (event.which != 0 && event.which != 8))) {
+        event.preventDefault();
+      }
+      var text = $(this).val();
+      if ((text.indexOf('.') != -1) &&
+        (text.substring(text.indexOf('.')).length > 2) &&
+        (event.which != 0 && event.which != 8) &&
+        ($(this)[0].selectionStart >= text.length - 2)) {
+        event.preventDefault();
+      }
+    });
+
+    $(".amount_val").focusout(function(){
+       var re = /^-?[0-9]+$/;
+       var num = $(this).val();
+       if (re.test(num)){
+          num = num + '.00';
+          $(this).val(num);
+       }else if(!re.test(num) && num != '' ){
+         var length = parseFloat(num).toFixed(2).replace(/^-?\d*\.?|0+$/g, '').length
+         if(length == 1){
+          num = num + '0';
+          $(this).val(num);
+        }else if (length < 1){
+          num = parseFloat(num) + '.00';
+          $(this).val(num);
+        }
+      }
+    });
+
+    $(document).on('click', '.delete_item', function(){
+      $(".delete-meeting-modal-form").modal('show');
+      var item_id = $(this).data('id')
+      var account_id = $(this).data('account-id')
+      $(".delete-meeting-modal-form").data('id', item_id)
+      $(".delete-meeting-modal-form").data('account_id', account_id)
+    })
+
+    $(document).on('click', '#ok_delete_meeting', function(){
+      var item_id =   $(".delete-meeting-modal-form").data('id')
+      var account_id = $(".delete-meeting-modal-form").data('account_id')
+      $(".delete-meeting-modal-form").modal('hide');
+      $('#preloader').css('opacity', 0.8);
+      $('#preloader').show();
+      $.ajax({
+        type: "GET",
+        url: '/accounts/'+account_id+'/delete_meeting?item_id='+ item_id,
+        success: function (data) {
+        }
+      });
+    });
+
+    $(document).on('click', '#yes_delete_future_meeting, #no_delete_future_meeting, #modal_cross_button', function(){
+      var item_id =  $(".delete-future-meeting-modal-form").data('id')
+      var account_id = $(".delete-future-meeting-modal-form").data('account_id')
+      var button_id = $(this).attr('id')
+      if(button_id == 'yes_delete_future_meeting'){
+       var url = '/accounts/'+account_id+'/delete_future_meeting?citem_id='+item_id+'&destroy_future_meetings=' + true
+      }else{
+       var url = '/accounts/'+account_id+'/delete_future_meeting?citem_id='+item_id
+      }
+      $(".delete-future-meeting-modal-form").modal('hide');
+      $('#preloader').css('opacity', 0.8);
+      $('#preloader').show();
+      $.ajax({
+        type: "DELETE",
+        url: url,
+        success: function (data) {
+        }
+      });
+    });
   });
 </script>
 <!-- end of shared javascript -->

@@ -39,7 +39,6 @@ Rails.application.routes.draw do
       get    :delete_meeting
       delete :delete_future_meeting
       delete :delete_quote
-      patch  :jump_in
       get    :search
       get    :get_users_list # get '/accounts/:id/get_users_list', to: 'accounts#get_users_list'
     end
@@ -57,6 +56,7 @@ Rails.application.routes.draw do
   post '/accounts/schedule_meeting', to: 'accounts#schedule_meeting', as: :account_schedule_meeting
   post '/accounts/check_in', to: 'accounts#check_in', as: :account_check_in
   post '/accounts/check_out', to: 'accounts#check_out', as: :account_check_out
+  post '/accounts/jump_in', to: 'accounts#jump_in', as: :account_jump_in
   post '/accounts/:id/add_note', to: 'accounts#add_note', as: :account_add_note
   post '/accounts/add_quote', to:'accounts#add_quote', as: :account_add_quote
   post '/accounts/add_reminder', to: 'accounts#add_reminder', as: :account_add_reminder
@@ -65,12 +65,14 @@ Rails.application.routes.draw do
 
   match '/schedule', to: 'schedule#index', as: :schedule, via: [:get]
   get   '/schedule/get_notifiable_users', to: 'schedule#get_notifiable_users', as: :schedule_get_notifiable_users
+  patch '/schedule/sort_regular_visits', to: 'schedule#sort_regular_visits', as: :schedule_sort_regular_visits
   get   '/schedule/calendar_event', to: 'schedule#calendar_event', as: :schedule_calendar_event
   get   '/schedule/get_meeting', to: 'schedule#get_meeting', as: :schedule_get_meeting
   get   '/schedule/get_events', to: 'schedule#get_events', as: :schedule_get_events
   get   '/schedule/regular_visits', to: 'schedule#regular_visits', as: :schedule_regular_vists
   match '/media', to: 'media#index', as: :media, via: [:get]
   get   '/schedule/get_account_address', to: 'schedule#get_account_address', as: :schedule_get_account_address
+  # get   '/schedule/search_account', to: 'schedule#search_account', as: :schedule_search_account
   post '/media/create_folder', to: 'media#create_folder', as: :create_folder
   post '/media/show', to: 'media#show', as: :show
   get  '/media/show_large_image', to: 'media#show_large_image', as: :show_large_image

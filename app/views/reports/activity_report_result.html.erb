@@ -29,7 +29,7 @@
                   </a>
                   <div class="media-body ">
                     <small class="pull-right"><%= time_ago_in_words(a.updated_at).gsub('about','') + ' ago' %></small>
-                    <strong><%= a.updated_by.first_name %>&nbsp;<%= a.updated_by.last_name %></strong>&nbsp;updated the <%= link_to a.name, account_path(a.id) %> account<br>
+                    <strong><%= a.updated_by.try(:first_name) %>&nbsp;<%= a.updated_by.try(:last_name) %></strong>&nbsp;updated the <%= link_to a.name, account_path(a.id) %> account<br>
                     <small class="text-muted"><%= a.updated_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%b %e at %l:%M %p") %></small>
                   </div>
                 </div>

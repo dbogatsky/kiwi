@@ -23,7 +23,7 @@
             <h4 class="quote-title"><a href="/accounts/<%=q.account_id%>" style="color:#636e7b;"><%=q.title%></a></h4>
             <small class="quote-expiry pull-right"><%= q.ends_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%b %d %Y") if q.ends_at.present? %></small>
             <small class="quote-body"><%=truncate(strip_tags(q.body), length: 40, separator: ' ')%></small>
-            <br /><small class="quote-fa-icon"><i class="fa fa-briefcase"></i></small><small class="quote-account"><a href="/accounts/<%=q.account_id%>" style="color:#636e7b;"><%= @accounts_cache["accounts"][q.account_id.to_s].present? ? @accounts_cache["accounts"][q.account_id.to_s] : "Unknown Account Name" %></a></small>
+            <br /><small class="quote-fa-icon"><i class="fa fa-briefcase"></i></small><small class="quote-account"><a href="/accounts/<%=q.account_id%>" style="color:#636e7b;"><%= q.account.try(:name) ? q.account.name : "Account Deleted" %></a></small>
           </li>
         <% end %>
       </ul>

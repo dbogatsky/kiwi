@@ -16,4 +16,8 @@
 //= require jquery.cookie
 //= require jstz
 //= require browser_timezone_rails/set_time_zone
+//= require webshims/polyfiller
 //= require_tree .
+
+$.webshims.setOptions('basePath', '/assets/webshims/shims/')
+$.webshims.polyfill('forms')

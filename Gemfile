@@ -5,7 +5,7 @@ gem 'sass-rails', '~> 5.0'
 gem 'simple_form', '~> 3.2'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.1.0'
-gem 'jquery-rails'
+gem 'jquery-rails', '3.1.3'
 gem 'country_select', '~> 2.4'
 gem 'social-share-button', '~> 0.1.6'
 gem 'multipart-post'
@@ -21,6 +21,7 @@ gem 'request_store'
 gem 'browser-timezone-rails'
 gem 'rollbar'
 gem 'will_paginate'
+gem 'http_logger'
 
 # This gem is for accessing REST services in an ActiveRecord style.
 gem 'activeresource', require: 'active_resource'
@@ -43,7 +44,6 @@ group :development, :test do
   gem 'dotenv-rails'
   gem 'factory_girl_rails'
   gem 'faker'
-  gem 'http_logger'
   gem 'jazz_fingers'
   gem 'pry-rails'
   gem 'rspec-rails'
@@ -51,3 +51,4 @@ group :development, :test do
   gem 'simplecov', require: false
   gem 'rubocop'
 end
+gem 'webshims-rails'

@@ -42,6 +42,7 @@
               <%end%>
               )<br />
             <% end %>
+            <i class="fa fa-briefcase tooltips mr10" data-toggle="tooltip" data-original-title="Account"></i><%= quote.account.try(:name) ? quote.account.name : "Account Deleted" %><br/>
           </div>
         </div>
       </div>

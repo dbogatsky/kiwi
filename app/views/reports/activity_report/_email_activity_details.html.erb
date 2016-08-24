@@ -15,8 +15,9 @@
               <i class="fa fa-paper-plane-o mr10"></i><%= email.invitees %><br />
             <% end %>
             <% if (email.scheduled_at.present?) %>
-              <i class="fa fa-calendar mr10"></i><%= email.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %>
+              <i class="fa fa-calendar mr10"></i><%= email.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %><br/>
             <% end %>
+            <i class="fa fa-briefcase tooltips mr10" data-toggle="tooltip" data-original-title="Account"></i><%= email.account.try(:name) ? email.account.name : "Account Deleted" %><br/>
           </div>
         </div>
       </div>

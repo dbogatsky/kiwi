@@ -138,6 +138,12 @@
                       <%=select_tag('enable_export',options_for_select(enable_import_export_select_options, selected: @enable_export), prompt: '-select-', class: "form-control")%>
                   </div>
                 </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label">Enable Expected Sales</label>
+                  <div class="col-sm-4">
+                      <%=select_tag('expected_sales_attribute',options_for_select(expected_sales_select_options, selected: @enable_expected_sales), class: "form-control")%>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

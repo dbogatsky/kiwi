@@ -6,12 +6,6 @@
       </a>
       <div class="media-body">
         <h4 class="person-name"><%= link_to account.name, account_path(account.id) %></h4>
-
-        <!--<%# if !@account_statuses[account.status].nil? %>
-          <span class="badge pull-right" style="background-color: #<%#= @account_statuses[account.status]['color']%>; border-color: #<%#= @account_statuses[account.status]['color']%>;"><%#= @account_statuses[account.status]['name']%></span>
-        <%# else %>
-          <span class="badge pull-right" style="background-color: #ffffff; border-color: #ffffff;">&nbsp;</span>
-        <%# end %>-->
         <div class="text-muted">
           <% account.addresses.each do |address| %>
           <div class="text-muted"><i class="fa fa-map-marker"></i> <%= address.street_address %>, <%= address.city %>, <%= address.region %>, <%= address.country %>, <%= address.postcode %></div>

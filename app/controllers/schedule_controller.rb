@@ -1,11 +1,15 @@
 class ScheduleController < ApplicationController
   include ApplicationHelper
   before_action :get_api_values, only: [:index, :calendar_event]
+  skip_before_filter :verify_authenticity_token, only: [:sort_regular_visits]
 
   def index
-    user_preference_details
+    @user_preference = user_preferences_load
     @users = User.all(uid: session[:user_id])
     get_meetings([current_user.id])
+    no_of_account = Account.all.total_entries
+    @all_accounts = Account.all(params: {per_page: no_of_account})
+    @all_accounts = @all_accounts.sort_by {|a| a.name.downcase}
     @sort_meeting = []
     @next_meeting = []
     if @meetings.present?
@@ -52,6 +56,16 @@ class ScheduleController < ApplicationController
     end
   end
 
+  def sort_regular_visits
+    params[:order].values.each do |order|
+      conversation = ConversationItem.find(order['id'], params: { conversation_id: order['conversation_id']})
+      conversation_item = {}
+      conversation_item[:sort] = order['position']
+      conversation.update_attributes(conversation_item: conversation_item, conversation_id: order['conversation_id'], reload: true)
+    end
+    render :nothing => true
+  end
+
   def get_account_address
     if params[:account_id].present?
       account =  Account.find(params[:account_id])
@@ -63,7 +77,7 @@ class ScheduleController < ApplicationController
   end
 
   def get_events
-    user_ids = Array[]
+    user_ids = []
     user_ids.push(current_user.id) # push any additional user_id'
 
     # get the current date
@@ -95,11 +109,15 @@ class ScheduleController < ApplicationController
 
     @quotes = ConversationItemSearch.all(params: { search: search, user_ids: user_ids, per_page: 10 })
 
-    events = Array[]
+    events = []
 
     @meetings.each do |i|
-      s_date = Chronic.parse(i.starts_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
-      e_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
+      s_date = Chronic.parse(i.starts_at).in_time_zone(current_user.time_zone)
+      e_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone)
+      s_date = s_date - 1.hour if s_date.dst?
+      e_date = e_date - 1.hour if e_date.dst?
+      s_date = s_date.strftime('%Y-%m-%dT%H:%M:%S')
+      e_date = e_date.strftime('%Y-%m-%dT%H:%M:%S')
       if i.item_type == 'regular'
         all_day = true
         color = '#660066'
@@ -121,8 +139,12 @@ class ScheduleController < ApplicationController
     end
 
     @reminders.each do |i|
-      s_date = Chronic.parse(i.scheduled_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
-      e_date = Chronic.parse(i.scheduled_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
+      s_date = Chronic.parse(i.scheduled_at).in_time_zone(current_user.time_zone)
+      e_date = Chronic.parse(i.scheduled_at).in_time_zone(current_user.time_zone)
+      s_date = s_date - 1.hour if s_date.dst?
+      e_date = e_date - 1.hour if e_date.dst?
+      s_date = s_date.strftime('%Y-%m-%dT%H:%M:%S')
+      e_date = e_date.strftime('%Y-%m-%dT%H:%M:%S')
       color = '#f0ca45'
       event_data = {
         account_id: i.account_id,
@@ -137,8 +159,12 @@ class ScheduleController < ApplicationController
     end
 
     @quotes.each do |i|
-      s_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
-      e_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
+      s_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone)
+      e_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone)
+      s_date = s_date - 1.hour if s_date.dst?
+      e_date = e_date - 1.hour if e_date.dst?
+      s_date = s_date.strftime('%Y-%m-%dT%H:%M:%S')
+      e_date = e_date.strftime('%Y-%m-%dT%H:%M:%S')
       color = '#e91e63'
       event_data = {
         account_id: i.account_id,
@@ -158,13 +184,15 @@ class ScheduleController < ApplicationController
   def regular_visits
     if params[:date].present?
       @date = Chronic.parse(params[:date]).strftime('%Y-%m-%d')
+      @formatted_date = Chronic.parse(params[:date]).strftime('%A %B %d, %Y')
       # @date = params[:date]
     else
       @date = Time.now.strftime('%Y-%m-%d')
+      @formatted_date = Time.now.strftime('%A %B %d, %Y')
     end
 
-    user_ids = Array[]
-    user_ids.push(current_user.id) # push any additional user_id'
+    user_ids = []
+    (['Admin', 'Entity Admin'].include?(current_user.roles.first.name) && params[:user_id].present?) ? user_ids.push(params[:user_id]) : user_ids.push(current_user.id)
     @created_by = current_user.id
 
     # get all meetings between the date range
@@ -173,11 +201,14 @@ class ScheduleController < ApplicationController
     search[:starts_at_gteq] = "#{@date} 00:00:00"
     search[:starts_at_lteq] = "#{@date} 23:59:59"
     search[:item_type_eq] = 'regular'
-
-    events = Array[]
+    search[:s] = "sort asc"
+    events = []
     @regular_visits = ConversationItemSearch.all(params: { search: search, user_ids: user_ids, per_page: 20 })
-
+    sort_0_visit = []
+    sort_visit = []
     @regular_visits.each do |i|
+      sort_0_visit << i if i.sort == 0
+      sort_visit << i if i.sort != 0
       s_date = Chronic.parse(i.starts_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
       e_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
       all_day = true
@@ -194,23 +225,26 @@ class ScheduleController < ApplicationController
       }
       events.push(event_data)
     end
+    @sorted_regular_visits = sort_visit + sort_0_visit
 
     render template: 'schedule/_regular_visits', layout: false
   end
 
+  # def search_account
+  #   search = {}
+  #   search[:name_cont] = params[:str]
+  #   options  = []
+  #   accounts = Account.all(params: { search: search})
+  #   accounts.each do |account|
+  #     options << { id: account.id, text: account.name }
+  #   end
+  #   render json: options
+  # end
+
   private
 
   def get_meetings(user_ids)
-    # @colors = ['#e0301e', '#000', '#c5e323', '#9e466b', '#0000ff']
     @all_items = []
-    # @user_color = {}
-    # user_ids.each_with_index do |u, index|
-    #   if u.to_i != current_user.id
-    #     @user_color[u.to_i] = @colors[index]
-    #   else
-    #     @user_color[u.to_i] = '#3a87ad'
-    #   end
-    # end
     search = Hash[]
     search[:type_eq] = 'ConversationItems::Meeting'
     search[:item_type_eq] = 'general'

@@ -10,8 +10,9 @@ class ApplicationController < ActionController::Base
   before_filter :set_cache_headers
   before_filter :authentication
   before_filter :notification_info
-  before_filter :accounts_cache
-  around_filter :set_time_zone
+  before_filter :clear_session_variable
+  #before_filter :accounts_cache  # DIS001 disabled for now
+  # around_filter :set_time_zone
 
   helper_method :current_user, :get_api_values, :get_automatic_logout_time, :logged_in?, :superadmin_logged_in?, :notification_info
   helper_method :has_permission, :has_permissions, :has_page_permission, :has_page_permissions, :accounts_cache
@@ -29,6 +30,36 @@ class ApplicationController < ActionController::Base
   rescue_from ActiveResource::ServerError do |exception|
     Rollbar.error(exception, use_exception_level_filters: true)
     render_500
+  end
+
+  rescue_from ActiveResource::MissingPrefixParam do |exception|
+    Rollbar.error(exception, use_exception_level_filters: true)
+    redirect_to root_url, alert: exception.message
+  end
+
+  rescue_from ActiveResource::ClientError do |exception|
+    Rollbar.error(exception, use_exception_level_filters: true)
+    redirect_to root_url, alert: exception.message
+  end
+
+  rescue_from ActiveResource::UnauthorizedAccess do |exception|
+    Rollbar.error(exception, use_exception_level_filters: true)
+    redirect_to root_url, alert: exception.message
+  end
+
+  rescue_from ActiveResource::ResourceInvalid do |exception|
+    Rollbar.error(exception, use_exception_level_filters: true)
+    redirect_to root_url, alert: exception.message
+  end
+
+  rescue_from ActiveResource::ConnectionError do |exception|
+    Rollbar.error(exception, use_exception_level_filters: true)
+    redirect_to root_url, alert: exception.message
+  end
+
+  rescue_from ActiveResource::ResourceGone do |exception|
+    Rollbar.error(exception, use_exception_level_filters: true)
+    redirect_to root_url, alert: exception.message
   end
 
   rescue_from CanCan::AccessDenied do |exception|
@@ -76,21 +107,21 @@ class ApplicationController < ActionController::Base
   end
 
   def set_cache_headers
-    response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
-    response.headers["Pragma"] = "no-cache"
+    response.headers['Cache-Control'] = 'no-cache, no-store, max-age=0, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
   end
 
-  def set_time_zone
-    old_time_zone = Time.zone
-    Time.zone = browser_timezone if browser_timezone.present?
-    yield
-  ensure
-    Time.zone = old_time_zone
-  end
+  # def set_time_zone
+  #   old_time_zone = Time.zone
+  #   Time.zone = browser_timezone if browser_timezone.present?
+  #   yield
+  # ensure
+  #   Time.zone = old_time_zone
+  # end
 
-  def browser_timezone
-    cookies['browser.timezone']
-  end
+  # def browser_timezone
+  #   cookies['browser.timezone']
+  # end
 
   def get_tenant_by_subdomain
     if request.subdomains.any?
@@ -99,21 +130,25 @@ class ApplicationController < ActionController::Base
     else
       RequestStore.store[:tenant] = "acme" #sandbox
     end
-    #move into a service
-    RequestStore.store[:api_url] = "https://#{RequestStore.store[:tenant]}-api.code10.ca/api/v1"
+    # move into a service
+    api_host = "#{RequestStore.store[:tenant]}-api.code10.ca"
+    RequestStore.store[:api_url] = "https://#{api_host}/api/v1"
     OrchardApiModel.site = RequestStore.store[:api_url]
+    # OrchardApiModel.site.host = api_host
   end
 
   def authentication
     store_location
-    if session[:user_id].present? && superadmin_logged_in?
-      set_superadmin
-    else
-      if session[:token].nil?
-        flash[:danger] = 'Your session has expired. Please log in again.'  # Log in error message
-        redirect_to root_path
+    if current_user.blank?
+      if session[:user_id].present? && superadmin_logged_in?
+        set_superadmin
       else
-        set_current_user
+        if session[:token].nil?
+          flash[:danger] = 'Your session has expired. Please log in again.'  # Log in error message
+          redirect_to root_path
+        else
+          set_current_user
+        end
       end
     end
   end
@@ -133,6 +168,14 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def clear_session_variable
+    if controller_name != "accounts"
+      session.delete(:search)
+      session.delete(:page)
+    end
+  end
+
+
   def set_current_user
     RequestStore.store[:user_token] = session[:token]
     #Move into a service
@@ -140,6 +183,7 @@ class ApplicationController < ActionController::Base
 
     @current_user ||= User.find(session[:user_id], reload: true)
     @current_user.id = session[:user_id]
+    Time.zone = @current_user.time_zone
   end
 
   def set_superadmin
@@ -300,7 +344,7 @@ class ApplicationController < ActionController::Base
 
     # check if we have set the current user before getting any notifications
     if current_user.present?
-      user_preference_details
+      @user_preference = user_preferences_load
       preference_limit = @user_preference['notification_display_limit']
       search = Hash.new
       current_date = Date.current.in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
@@ -397,12 +441,67 @@ class ApplicationController < ActionController::Base
     @user_preference = user_preference
   end
 
+  def user_preferences_load(refresh=false)
+    user_preferences_info = session[:user_preferences]
+
+    if user_preferences_info.nil? || refresh == true
+      apiFullUrl = RequestStore.store[:api_url] + "/users/#{current_user.id}/settings/preferences"
+      email = current_user.email
+      appKey = APP_CONFIG['api_app_key']
+      token = session[:token]
+      curlRes = `curl -X GET -H "Authorization: Token token="#{token}", email="#{email}", app_key="#{appKey}"" -H "Content-Type: application/json"  -H "Cache-Control: no-cache" "#{apiFullUrl}"`
+
+      user_preferences = JSON.parse(curlRes)
+      user_preferences = user_preferences['user']['settings']['preferences']
+      user_preferences.shift
+      session[:user_preferences] = user_preferences.to_json
+    else
+      user_preferences = JSON.parse(user_preferences_info)
+    end
+
+    user_preferences
+  end
+
 #   def check_request
 #     unless request.format.symbol.present?
 #       render text: 'page loaded'
 #     end
 #   end
-#
+
+
+  # Note: try to replace the bottom methods,  get_automatic_logout_time and get_account_display_setting
+  def company_settings_load(refresh=false)
+
+    company_settings_info = session[:company_settings]
+
+    unless company_settings_info.nil?
+      company_settings_info = JSON.parse(company_settings_info)
+      if (DateTime.parse(company_settings_info["last_update"]).to_i + 15.minutes.to_i) < DateTime.now.to_i
+        refresh = true
+      end
+    end
+
+    if company_settings_info.nil? || refresh == true
+      #apiFullUrl = RequestStore.store[:api_url] + '/company/settings/authentication'
+      apiFullUrl = RequestStore.store[:api_url] + '/company/settings/preferences'
+      email = current_user.email
+      appKey = APP_CONFIG['api_app_key']
+      token = session[:token]
+      curlRes = `curl -X GET -H "Authorization: Token token="#{token}", email="#{email}", app_key="#{appKey}"" -H "Content-Type: application/json"  -H "Cache-Control: no-cache" "#{apiFullUrl}"`
+
+      company_settings = JSON.parse(curlRes)
+      company_settings = company_settings['company']['settings']
+      company_settings['last_update'] = DateTime.now
+      company_settings.shift
+      session[:company_settings] = company_settings.to_json
+    else
+      company_settings = JSON.parse(company_settings_info)
+    end
+
+    company_settings
+  end
+
+
   def get_automatic_logout_time
     get_api_values
     apiFullUrl = RequestStore.store[:api_url] + "/company/settings/authentication"
@@ -420,6 +519,7 @@ class ApplicationController < ActionController::Base
     @account_by_status = preferences['company']['settings']['preferences']['accounts_by_status']
     @enable_import = preferences['company']['settings']['preferences']['enable_import'] || "unknown"
     @enable_export = preferences['company']['settings']['preferences']['enable_export'] || "unknown"
+    @enable_expected_sales = preferences['company']['settings']['preferences']['enable_expected_sales_attributes'] || "unknown"
   end
 
   def get_api_values

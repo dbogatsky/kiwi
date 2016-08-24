@@ -3,39 +3,32 @@ include ApplicationHelper
 class AccountsController < ApplicationController
   skip_before_filter :verify_authenticity_token, only: [:delete_future_meeting, :destroy]
   before_action :get_token
-  before_action :find_account, only: [:show, :edit, :destroy, :conversation, :search, :jump_in, :add_quote, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting, :update_quote, :delete_quote, :add_reminder, :update_reminder, :delete_reminder]
+  before_action :find_account, only: [:show, :edit, :destroy, :conversation, :search, :add_quote, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting, :update_quote, :delete_quote, :add_reminder, :update_reminder, :delete_reminder]
   before_action :get_api_values, only: [:search]
-  before_action :get_setting, only: [:index, :import, :export]
+  before_action :get_setting, only: [:index, :import, :export, :show, :edit, :new]
   before_action :check_permission_for_import, only: [:import]
   before_action :check_permission_for_export, only: [:export]
   @@account_with_previous_value = nil
 
   def index
-    user_preference_details
+    @user_preference = user_preferences_load
     show_accounts_per_page = @user_preference['show_accounts_per_page']
     @show_accounts_per_page = show_accounts_per_page.to_i > 0 ? show_accounts_per_page.to_i : 25
     page = params[:page].present? ? params[:page] : 1
-    # Get all accounts
-    if request.format.symbol.present? && [:csv,:xls].exclude?(request.format.symbol)
-      session[:search1] = nil
-      session[:search2] = nil
-      session[:search] = nil
-      session[:advanced_search] = nil
+    session[:page] = page
+    advanced_search  #call advanced search
+    if params[:view_all].present?
+       session.delete(:search)
     end
-    @accounts = Account.all(params: { search: params[:search],page: page, per_page: @show_accounts_per_page })
-    @total_entries = @accounts.total_entries
-    session[:search] = params[:search] if params[:search].present?
+    search = @search.present? ? @search : (params[:search].present? ? params[:search] : session[:search])
     if params[:search1].present? && params[:search2].present?
-      accounts_sort_by(params[:search1][:search], params[:search2][:search])
-      session[:search1] = params[:search1][:search]
-      session[:search2] = params[:search2][:search]
+      search ||= {}
+      search[:s] = "#{params[:search1][:search]+' '+params[:search2][:search]}"
     end
-    if params[:advanced_search].present?
-      advanced_search
-      session[:advanced_search] = @search
-      @accounts = Account.all(params: { search: @search, page: page, per_page: @show_accounts_per_page })
-      @total_entries = @accounts.total_entries
-    end
+    search = session[:search] if params[:adv_search] == 'true'
+    @accounts = Account.all(params: { search: search, page: page, per_page: @show_accounts_per_page})
+    @total_entries = @accounts.meta["total_entries"]
+    session[:search] = search
     accounts_statistics_info
     respond_to do |format|
       format.html
@@ -121,6 +114,7 @@ class AccountsController < ApplicationController
 
   def schedule_meeting
     c_id = @account.conversation.id
+    params[:conversation_item][:title] =  @account.name+' '+ params[:conversation_item][:repetition_rule][:frequency_type].capitalize+' '+'Visits' if params[:conversation_item][:item_type] == 'regular'
     if params[:conversation_item][:item_type] == 'regular' && params[:starts_date].present?
       params[:conversation_item][:all_day_appointment] = true
       params[:conversation_item][:starts_at] = convert_datetime_to_utc(current_user.time_zone, params[:starts_date], "00:00:00")
@@ -294,21 +288,12 @@ class AccountsController < ApplicationController
   end
 
   def jump_in
-    c_id = @account.conversation.id
-    @meeting = ConversationItem.find(params[:conversation_item_id], params: { conversation_id: c_id })
+    conversation = ConversationItem.find(params[:cid], params:{conversation_id: params[:conversation_id]})
     params[:conversation_item] = {}
     params[:conversation_item][:id] = params[:conversation_item_id]
-    params[:conversation_item][:invitees] = @meeting.invitees.present? ? @meeting.invitees  + ', ' + "#{current_user.email}" : current_user.email
-    if @meeting.update_attributes(request: :update, conversation_item: params[:conversation_item], conversation_id: c_id, reload: true)
-      flash[:success] = 'successfully jumped!'
-    else
-      flash[:danger] = "Couldn't jumped!"
-    end
-    if params[:info].present?
-      redirect_to schedule_path
-    else
-      redirect_to account_path(params[:id])
-    end
+    params[:conversation_item][:invitees] = conversation.invitees.present? ? conversation.invitees  + ', ' + "#{current_user.email}" : current_user.email
+    conversation.update_attributes(request: :update, conversation_item: params[:conversation_item], conversation_id: params[:conversation_id], reload: true)
+    render json: conversation
   end
 
   def add_note
@@ -562,7 +547,7 @@ class AccountsController < ApplicationController
 
   def import
     if request.post?
-      @all_status = AccountStatus.find(:all)
+      @all_status = AccountStatus.all(uid: RequestStore.store[:tenant], reload: true)
       if params[:import_csv].present? && params[:import_csv].content_type == 'text/csv'
         csv_text = File.read(params[:import_csv].tempfile)
         csv = CSV.parse(csv_text)
@@ -571,7 +556,8 @@ class AccountsController < ApplicationController
         if @row_numbers.empty?
           if csv.present?
             csv.each do |row|
-              row = row[0].gsub(%r{\"}, '')
+              row = row.join(',')
+              row = row.gsub(%r{\"}, '')
               row = row.split(',')
               account_params = {}
               account_params[:name] = row[0]
@@ -587,8 +573,8 @@ class AccountsController < ApplicationController
               account_params[:addresses_attributes] = [street_address: row[4], city: row[5], region: row[6], postcode: row[7], country: row[8]]
               contacts_attributes = {}
               contacts_attributes['phone'] = {name: '', type: 'phone', value: row[9]}
-              contacts_attributes['fax'] = {name: '', type: 'fax', value: row[10]} if row[10].present?
-              contacts_attributes['email'] = {name: '', type: 'email', value: row[11]} if row[11].present?
+              contacts_attributes['fax'] = {name: '', type: 'fax', value: row[10]} unless row[10].blank?
+              contacts_attributes['email'] = {name: '', type: 'email', value: row[11]} unless row[11].blank?
               account_params[:contacts_attributes] = contacts_attributes.values
               account_params[:about] = row[12]
               account_params[:quick_facts] = row[13]
@@ -605,6 +591,8 @@ class AccountsController < ApplicationController
         else
           render :import
         end
+      else
+       flash[:danger] = "File you are trying to import does not support csv format"
       end
     end
   end
@@ -613,13 +601,8 @@ class AccountsController < ApplicationController
   end
 
   def generate_csv
-    if session[:search1].present? && session[:search2].present?
-      accounts_sort_by(session[:search1], session[:search2])
-    elsif session[:advanced_search].present?
-      @accounts = Account.all(params: { search: session[:advanced_search] })
-    else
-      @accounts = Account.all(params: { search: session[:search] })
-    end
+    page = session[:page].present? ? session[:page].to_i : 1
+    @accounts = Account.all(params: { search: session[:search], page: page, per_page: @show_accounts_per_page})
     column_names = ['ID', 'Name', 'Contact Name', 'Contact Title', 'Status', 'Address', 'City', 'Province', 'Postal Code', 'Country', 'About', 'Quick Facts' ]
     options = {}
     options[:force_quotes] = true
@@ -704,26 +687,33 @@ class AccountsController < ApplicationController
     if csv[0].present?
       csv.each do |row|
         @line_no +=1
-        if row[0].present?
-          row_data = row[0].gsub(%r{\"}, '')
-          row_data = row_data.split(',')
+        if row.present?
+          row = row.join(',')
+          row = row.gsub(%r{\"}, '')
+          row = row.split(',')
         end
-        if @line_no == 1 && (row[0].present? && (row_data !=column_names))
+        if @line_no == 1 && (row.present? && (row !=column_names))
           @row_numbers["#{@line_no}"] = "Imported CSV file does not contain the correct headers"
         end
-        if @line_no !=1 && row[0].present?
-          if row_data[0].blank?
+        if @line_no !=1 && row.present?
+          if row[0].blank?
             @row_numbers["#{@line_no}"] = "Required field, Name, can not be empty"
           end
-          if row_data[3].present?
-            if !(status_array.include?(row_data[3].capitalize))
+          if row[3].present?
+            if !(status_array.include?(row[3].capitalize))
               @row_numbers["#{@line_no}"] = "Unknown account status"
             end
           else
             @row_numbers["#{@line_no}"] = "Required field, Status, can not be empty"
           end
-          if row_data[9].blank?
+          if row[9].blank?
              @row_numbers["#{@line_no}"] = "Missing contact phone number"
+          end
+          unless row[11].blank?
+             email_reg_exp = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+             is_valid = row[11] =~ email_reg_exp
+             # is_valid = row_data[11] =~ email_reg_exp
+             @row_numbers["#{@line_no}"] = "Invalid Email" if is_valid.blank?
           end
         end
       end
@@ -731,7 +721,7 @@ class AccountsController < ApplicationController
   end
 
   def account_timeline_conversation_items
-    user_preference_details
+    @user_preference = user_preferences_load
     preference_limit = @user_preference['preview_conversation_timeline']
     user_ids = Array.new
     search = Hash.new
@@ -761,18 +751,24 @@ class AccountsController < ApplicationController
     end
   end
 
-  def accounts_sort_by(value1, value2)
-    if value1 == 'name'
-      @accounts = @accounts.sort_by { |a| [a.name] }
-    elsif value1 == 'city'
-      @accounts = @accounts.sort_by { |a| [a.city_name] }
-    elsif value1 == 'country'
-      @accounts = @accounts.sort_by { |a| [a.country_name] }
-    elsif value1 == 'owner'
-      @accounts = @accounts.sort_by { |a| [a.assigned_to.try(:first_name)] }
-    end
-    @accounts = @accounts.reverse if value2 == 'descending'
-  end
+  # def accounts_sort_by(value1, value2)
+  #   if value1 == 'name'
+  #     @accounts = @accounts.sort_by { |a| [a.name] }
+  #   elsif value1 == 'city'
+  #     @accounts = @accounts.sort_by { |a| [a.city_name] }
+  #   elsif value1 == 'country'
+  #     @accounts = @accounts.sort_by { |a| [a.country_name] }
+  #   elsif value1 == 'owner'
+  #     @accounts = @accounts.sort_by { |a| [a.assigned_to.try(:first_name)] }
+  #   elsif value1 == 'estimated_sales'
+  #     @accounts = @accounts.sort_by { |a| [a.expected_sales.to_f] }
+  #   end
+  #   @accounts = @accounts.reverse if value2 == 'descending'
+  #   session[:search1] = value1
+  #   session[:search2] = value2
+  #   session[:sort_val1_for_page] = value1
+  #   session[:sort_val2_for_page] = value2
+  # end
 
   def advanced_search
     @search = {}
@@ -819,7 +815,7 @@ class AccountsController < ApplicationController
 
   def account_params
     params.require(:account).permit(
-      :name, :status_id, :contact_name, :contact_title, :assign_to, :shared_with, :about, :quick_facts, :avatar,
+      :name, :status_id, :contact_name, :expected_sales, :contact_title, :assign_to, :shared_with, :about, :quick_facts, :avatar,
       addresses_attributes: [:id, :name, :street_address, :postcode, :city, :region, :latitude, :longitude, :country, :_destroy],
       contacts_attributes: [:id, :type, :name, :value, :_destroy]
     )
@@ -859,7 +855,11 @@ class AccountsController < ApplicationController
     if account_with_previous_value.present? && account_with_update_value.present?
       if account_with_previous_value.name != account_with_update_value.name
         changed_value[:prev_name] = account_with_previous_value.name
-        changed_value[:upated_name] = account_with_update_value.name
+        changed_value[:updated_name] = account_with_update_value.name
+      end
+      if account_with_previous_value.expected_sales != account_with_update_value.expected_sales
+        changed_value[:prev_expected_sales] = account_with_previous_value.expected_sales
+        changed_value[:updated_expected_sales] = account_with_update_value.expected_sales
       end
       if account_with_previous_value.status.name != account_with_update_value.status.name
         changed_value[:prev_status] = account_with_previous_value.status.name
@@ -882,8 +882,8 @@ class AccountsController < ApplicationController
         changed_value[:updated_assigned_to] = account_with_update_value.assigned_to.first_name + ' ' + account_with_update_value.assigned_to.last_name
       end
 
-      prev_address = account_with_previous_value.addresses.last
-      updated_address = account_with_update_value.addresses.last
+      prev_address = account_with_previous_value.addresses.first
+      updated_address = account_with_update_value.addresses.first
       if prev_address.name != updated_address.name
          changed_value[:prev_address_name] = prev_address.name
          changed_value[:updated_address_name] = updated_address.name
@@ -916,10 +916,100 @@ class AccountsController < ApplicationController
         changed_value[:prev_quick_facts] = account_with_previous_value.quick_facts
         changed_value[:updated_quick_facts] = account_with_update_value.quick_facts
       end
-
+      prev_phone = []
+      prev_mobile = []
+      prev_email = []
+      prev_facebook = []
+      prev_twitter = []
+      prev_fax = []
+      prev_youtube = []
+      prev_website = []
+      prev_contacts = account_with_previous_value.contacts
+      if prev_contacts.count > 0
+        prev_contacts.each do |contact|
+          if contact.type == "phone"
+            prev_phone << contact.value
+          elsif contact.type == "mobile"
+            prev_mobile << contact.value
+          elsif contact.type == "email"
+            prev_email << contact.value
+          elsif contact.type == "facebook"
+            prev_facebook << contact.value
+          elsif contact.type == "twitter"
+            prev_twitter << contact.value
+          elsif contact.type == "fax"
+            prev_fax << contact.value
+          elsif contact.type == "youtube"
+            prev_youtube << contact.value
+          elsif contact.type == "website"
+            prev_website << contact.value
+          end
+        end
+      end
+      updated_phone = []
+      updated_mobile = []
+      updated_email = []
+      updated_facebook = []
+      updated_twitter = []
+      updated_fax = []
+      updated_youtube = []
+      updated_website = []
+      updated_contacts = account_with_update_value.contacts
+      if updated_contacts.count > 0
+        updated_contacts.each do |contact|
+          if contact.type == "phone"
+            updated_phone << contact.value
+          elsif contact.type == "mobile"
+            updated_mobile << contact.value
+          elsif contact.type == "email"
+            updated_email << contact.value
+          elsif contact.type == "facebook"
+            updated_facebook << contact.value
+          elsif contact.type == "twitter"
+            updated_twitter << contact.value
+          elsif contact.type == "fax"
+            updated_fax << contact.value
+          elsif contact.type == "youtube"
+            updated_youtube << contact.value
+          elsif contact.type == "website"
+            updated_website << contact.value
+          end
+        end
+      end
+      if prev_phone.sort != updated_phone.sort
+        changed_value[:prev_phone] = prev_phone.join(',')
+        changed_value[:updated_phone] = updated_phone.join(',')
+      end
+      if prev_mobile.sort != updated_mobile.sort
+        changed_value[:prev_mobile] = prev_mobile.join(',')
+        changed_value[:updated_mobile] = updated_mobile.join(',')
+      end
+      if prev_email.sort != updated_email.sort
+        changed_value[:prev_email] = prev_email.join(',')
+        changed_value[:updated_email] = updated_email.join(',')
+      end
+      if prev_facebook.sort != updated_facebook.sort
+        changed_value[:prev_facebook] = prev_facebook.join(',')
+        changed_value[:updated_facebook] = updated_facebook.join(',')
+      end
+      if prev_twitter.sort != updated_twitter.sort
+        changed_value[:prev_twitter] = prev_twitter.join(',')
+        changed_value[:updated_twitter] = updated_twitter.join(',')
+      end
+      if prev_fax.sort != updated_fax.sort
+        changed_value[:prev_fax] = prev_fax.join(',')
+        changed_value[:updated_fax] = updated_fax.join(',')
+      end
+      if prev_youtube.sort != updated_youtube.sort
+        changed_value[:prev_youtube] = prev_youtube.join(',')
+        changed_value[:updated_youtube] = updated_youtube.join(',')
+      end
+      if prev_website.sort != updated_website.sort
+        changed_value[:prev_website] = prev_website.join(',')
+        changed_value[:updated_website] = updated_website.join(',')
+      end
     end
-    @note_body = "<p><b>Previous Value => Updated Value</b></p><ul>#{changed_value[:prev_name].present? ? "<li> <b>Account Name:</b> #{changed_value[:prev_name]} => #{changed_value[:upated_name]} </li>" : ''}#{changed_value[:prev_status].present? ? "<li> <b>Account Status:</b> #{changed_value[:prev_status]} => #{changed_value[:updated_status]} </li>" : ''}#{changed_value[:prev_contact_name].present? ? "<li> <b>Contact Name:</b> #{changed_value[:prev_contact_name]} => #{changed_value[:updated_contact_name]} </li>" : ''}#{changed_value[:prev_contact_title].present? ? "<li> <b>Contact Title:</b> #{changed_value[:prev_contact_title]} => #{changed_value[:updated_contact_title]} </li>" : ''}#{changed_value[:prev_assigned_to].present? ? "<li> <b>Assign To:</b> #{changed_value[:prev_assigned_to]} => #{changed_value[:updated_assigned_to]} </li>" : ''}#{changed_value[:prev_address_name].present? ? "<li> <b>Address Name:</b> #{changed_value[:prev_address_name]} => #{changed_value[:updated_address_name]} </li>" : ''}#{changed_value[:prev_address_street_address].present? ? "<li> <b>Street Address:</b> #{changed_value[:prev_address_street_address]} => #{changed_value[:updated_address_street_address]} </li>" : ''}#{changed_value[:prev_address_city].present? ? "<li> <b>City:</b> #{changed_value[:prev_address_city]} => #{changed_value[:updated_address_city]} </li>" : ''}#{changed_value[:prev_address_postcode].present? ? "<li> <b>Post/Zipcode:</b> #{changed_value[:prev_address_postcode]} => #{changed_value[:updated_address_postcode]} </li>" : ''}#{changed_value[:prev_address_region].present? ? "<li> <b>Province/State:</b> #{changed_value[:prev_address_region]} => #{changed_value[:updated_address_region]} </li>" : ''}#{changed_value[:prev_address_country].present? ? "<li> <b>Country:</b> #{changed_value[:prev_address_country]} => #{changed_value[:updated_address_country]} </li>" : ''}#{changed_value[:prev_about].present? ? "<li> <b>About:</b> #{changed_value[:prev_about]} => #{changed_value[:updated_about]} </li>" : ''}#{changed_value[:prev_quick_facts].present? ? "<li> <b>Quick Facts:</b> #{changed_value[:prev_quick_facts]} => #{changed_value[:updated_quick_facts]} </li>" : ''}</ul><p><b>Updated by:</b> #{current_user.first_name} #{current_user.last_name} </p>".html_safe
+    @note_body = "<p><b>Previous Value => Updated Value</b></p><ul>#{changed_value[:prev_name].present? ? "<li> <b>Account Name:</b> #{changed_value[:prev_name]} => #{changed_value[:updated_name]} </li>" : ''}#{changed_value[:prev_status].present? ? "<li> <b>Account Status:</b> #{changed_value[:prev_status]} => #{changed_value[:updated_status]} </li>" : ''}#{changed_value[:prev_contact_name].present? ? "<li> <b>Contact Name:</b> #{changed_value[:prev_contact_name]} => #{changed_value[:updated_contact_name]} </li>" : ''}#{changed_value[:prev_contact_title].present? ? "<li> <b>Contact Title:</b> #{changed_value[:prev_contact_title]} => #{changed_value[:updated_contact_title]} </li>" : ''}#{changed_value[:prev_expected_sales].present? ? "<li> <b>Expected Sales:</b> #{changed_value[:prev_expected_sales]} => #{changed_value[:updated_expected_sales]} </li>" : ''}#{changed_value[:prev_assigned_to].present? ? "<li> <b>Assign To:</b> #{changed_value[:prev_assigned_to]} => #{changed_value[:updated_assigned_to]} </li>" : ''}#{changed_value[:prev_address_name].present? ? "<li> <b>Address Name:</b> #{changed_value[:prev_address_name]} => #{changed_value[:updated_address_name]} </li>" : ''}#{changed_value[:prev_address_street_address].present? ? "<li> <b>Street Address:</b> #{changed_value[:prev_address_street_address]} => #{changed_value[:updated_address_street_address]} </li>" : ''}#{changed_value[:prev_address_city].present? ? "<li> <b>City:</b> #{changed_value[:prev_address_city]} => #{changed_value[:updated_address_city]} </li>" : ''}#{changed_value[:prev_address_postcode].present? ? "<li> <b>Post/Zipcode:</b> #{changed_value[:prev_address_postcode]} => #{changed_value[:updated_address_postcode]} </li>" : ''}#{changed_value[:prev_address_region].present? ? "<li> <b>Province/State:</b> #{changed_value[:prev_address_region]} => #{changed_value[:updated_address_region]} </li>" : ''}#{changed_value[:prev_address_country].present? ? "<li> <b>Country:</b> #{changed_value[:prev_address_country]} => #{changed_value[:updated_address_country]} </li>" : ''}#{changed_value[:prev_about].present? ? "<li> <b>About:</b> #{changed_value[:prev_about]} => #{changed_value[:updated_about]} </li>" : ''}#{changed_value[:prev_phone].present? ? "<li> <b>Phone Number:</b> #{changed_value[:prev_phone]} => #{changed_value[:updated_phone]} </li>" : ''}#{changed_value[:prev_mobile].present? ? "<li> <b>Mobile Number:</b> #{changed_value[:prev_mobile]} => #{changed_value[:updated_mobile]} </li>" : ''}#{changed_value[:prev_email].present? ? "<li> <b>Email:</b> #{changed_value[:prev_email]} => #{changed_value[:updated_email]} </li>" : ''}#{changed_value[:prev_facebook].present? ? "<li> <b>Facebook:</b> #{changed_value[:prev_facebook]} => #{changed_value[:updated_facebook]} </li>" : ''}#{changed_value[:prev_twitter].present? ? "<li> <b>Twitter:</b> #{changed_value[:prev_twitter]} => #{changed_value[:updated_twitter]} </li>" : ''}#{changed_value[:prev_fax].present? ? "<li> <b>Fax:</b> #{changed_value[:prev_fax]} => #{changed_value[:updated_fax]} </li>" : ''}#{changed_value[:prev_youtube].present? ? "<li> <b>Youtube:</b> #{changed_value[:prev_youtube]} => #{changed_value[:updated_youtube]} </li>" : ''}#{changed_value[:prev_website].present? ? "<li> <b>Website:</b> #{changed_value[:prev_website]} => #{changed_value[:updated_website]} </li>" : ''}#{changed_value[:prev_quick_facts].present? ? "<li> <b>Quick Facts:</b> #{changed_value[:prev_quick_facts]} => #{changed_value[:updated_quick_facts]} </li>" : ''}#{(changed_value[:prev_phone].blank? && changed_value[:updated_phone].present?) || (changed_value[:prev_mobile].blank? && changed_value[:updated_mobile].present?) ||(changed_value[:prev_email].blank? && changed_value[:updated_email].present?) ||(changed_value[:prev_facebook].blank? && changed_value[:updated_facebook].present?) ||(changed_value[:prev_twitter].blank? && changed_value[:updated_twitter].present?) ||(changed_value[:prev_youtube].blank? && changed_value[:updated_youtube].present?) ||(changed_value[:prev_website].blank? && changed_value[:updated_website].present?) ||(changed_value[:prev_fax].blank? && changed_value[:updated_fax].present?) ? "<li style=list-style-type: none;><b>New Contact(s) Added</b></li>" : ''}#{(changed_value[:prev_phone].blank? && changed_value[:updated_phone].present?) ? "<li> <b>Phone:</b> #{changed_value[:updated_phone]} </li>" : ''}#{(changed_value[:prev_mobile].blank? && changed_value[:updated_mobile].present?) ? "<li> <b>Mobile:</b> #{changed_value[:updated_mobile]} </li>" : ''}#{(changed_value[:prev_email].blank? && changed_value[:updated_email].present?) ? "<li> <b>Email:</b> #{changed_value[:updated_email]} </li>" : ''}#{(changed_value[:prev_facebook].blank? && changed_value[:updated_facebook].present?) ? "<li> <b>Facebook:</b> #{changed_value[:updated_facebook]} </li>" : ''}#{(changed_value[:prev_twitter].blank? && changed_value[:updated_twitter].present?) ? "<li> <b>Twitter:</b> #{changed_value[:updated_twitter]} </li>" : ''}#{(changed_value[:prev_youtube].blank? && changed_value[:updated_youtube].present?) ? "<li> <b>Youtube:</b> #{changed_value[:updated_youtube]} </li>" : ''}#{(changed_value[:prev_website].blank? && changed_value[:updated_website].present?) ? "<li> <b>Website:</b> #{changed_value[:updated_website]} </li>" : ''}#{(changed_value[:prev_fax].blank? && changed_value[:updated_fax].present?) ? "<li> <b>Fax:</b> #{changed_value[:updated_fax]} </li>" : ''}</ul><p><b>Updated by:</b> #{current_user.first_name} #{current_user.last_name} </p>".html_safe
      return @note_body
   end
 end
-

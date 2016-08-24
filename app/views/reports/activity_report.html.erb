@@ -7,7 +7,7 @@
       <div class="panel-btns">
         <a href="" class="minimize">−</a>
       </div>
-      <h4 class="panel-title">Fill in the detials below to get results</h4>
+      <h4 class="panel-title">Fill in the details below to get results</h4>
     </div>
     <div class="panel-body">
       <%=form_tag activity_report_result_path, method: :get do%>
@@ -33,15 +33,19 @@
             </div>
           </div>
         </div>
-        <div class="form-group">
-          <label class="control-label">User</label>
-          <select class="select" id="select_users" name="users[]" multiple="multiple" required="required" class="form-control" data-placeholder="Filter report by user">
-            <%User.all(uid: session[:user_id], reload: true).each do |u|%>
-              <option value="<%=u.id%>"><%=u.first_name%> <%=u.last_name%></option>
-            <%end%>
-            <option value="all">All</option>
-          </select>
-        </div>
+        <%if current_user.roles.last.try(:name) != 'User'%>
+          <div class="form-group">
+            <label class="control-label">User</label>
+            <select class="select" id="select_users" name="users[]" multiple="multiple" required="required" class="form-control" data-placeholder="Filter report by user">
+              <% @users.each do |u|%>
+                <option value="<%=u.id%>" <%= "selected='selected'" if @users.count == 1 %>><%=u.first_name%> <%=u.last_name%></option>
+              <%end%>
+              <% if @users.count > 1 %>
+                <option value="all">All</option>
+              <% end %>
+            </select>
+          </div>
+        <%end%>
         <button type="submit" class="btn btn-primary">Get Report</button>
         <button type="reset" class="btn btn-default">Reset</button>
       <%end%>

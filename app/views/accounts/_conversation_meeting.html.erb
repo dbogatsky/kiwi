@@ -21,18 +21,15 @@
 
               <div class="row row-pad-5">
                 <div class="col-lg-12">
-                  <input type="text" name="conversation_item[title]" placeholder="Event" class="form-control" required="required" />
+                  <input type="text" name="conversation_item[title]" placeholder="Event" class="form-control meeting_title" required="required" />
                 </div>
               </div><!-- row -->
 
               <%unless account.present?%>
                 <div class="row row-pad-5">
                   <div class="col-lg-12 country_select">
-                    <select class="form-control select2 selected_account" name="id" placeholder="-Select account-" required="required">
-                     <option value="">-Select account-</option>
-                     <%accounts_cache["accounts"].sort_by { |id, name| name.downcase }.each do |id, name|%>
-                        <option value="<%=id%>"><%=name%></option>
-                     <%end%>
+                    <select class="form-control select2 selected_account get_address" name="id" placeholder="-Select account-" required="required">
+                      <option value="">-Select account-</option>
                     </select>
                   </div>
                 </div><!-- row -->
@@ -306,7 +303,6 @@
              <input type="hidden" name="conversation_item[longitude]">
             </div><!-- panel-body -->
             <div class="panel-footer">
-              <!-- <button type="submit" value="submit" class="btn btn-primary">Save</button> -->
               <%=submit_tag 'Save',  data: {disable_with: "Saving..." }, class: "btn btn-primary"%>
             </div>
           </div><!-- panel -->
@@ -316,13 +312,7 @@
   </div><!-- modal dialog -->
 </div><!-- modal -->
 <script type="text/javascript">
-  // $("#repeat-occurrences").change(function(){
-  //   if($(this).val() !=1){
-  //      $("#meeting-reminder").attr('required', true);
-  //   }else{
-  //     $("#meeting-reminder").attr('required', false);
-  //   }
-  // })
+
   $("#meeting-repeat-settings").hide();
   $("#repeat-frequency-week").hide();
   $("#repeat-frequency-month").hide();
@@ -486,9 +476,12 @@
 
   $(".account-action-meeting").on("shown.bs.modal", function(){
     $(".meeting_type").val('general');
+    $(".invitee_emails_div").show(300);
     $('.end-date-time').show(500);
     $('.all-day').hide(500)
     $('.start-time').show(500)
+    $('.meeting_title').show(500)
+    $('.meeting_title').attr('required', true)
     $('#schedule-from-timepicker').attr('required', true)
     $('#schedule-to-datepicker').attr('required', true)
     $('#schedule-to-timepicker').attr('required', true)

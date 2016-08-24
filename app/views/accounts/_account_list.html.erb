@@ -6,7 +6,7 @@
           <% if params[:search].present? || params[:rule].present?%>
             <h3>Sorry, Your search criteria did not return any results</h3>
             <h3>Please try again with a different criteria</h3>
-            <%= link_to "View all accounts", accounts_path %>
+            <%= link_to "View all accounts", accounts_path(view_all: true)  %>
           <% else %>
             <h3>Welcome! Get started by adding your first account</h3>
           <% end %>
@@ -18,13 +18,14 @@
           <div class="people-item">
             <div class="media">
               <div class="media-body">
-                <h4 class="person-name"><a href="<%= account_path(account.id) %>"><%= link_to account.name, account_path(account.id) %></a></h4>
+                <h4 class="person-name"><a href="<%= account_path(account.id) %>"><%= link_to account.name, account_path(account.id) %></a>
+                </h4>
                 <%= get_styled_status(account) %>
                 <div class="text-muted">
                     <% if !account.addresses.empty? %>
                   	<address>
                       <% if !account.contact_name.nil? %>
-                        <small><i class="fa fa-briefcase"></i>  <%= account.contact_name %><% if !account.contact_title.nil? %> - <%= account.contact_title %><% end %></small>
+                        <small><i class="fa fa-briefcase"></i>  <%= account.contact_name %><% if !account.contact_title.nil? && !account.contact_title.blank? %> - <%= account.contact_title %><% end %></small>
                       <% else %>
                         <small>&nbsp;</small>
                       <% end %>
@@ -42,7 +43,7 @@
                       <% counter = 0 %>
                       <% account.contacts.each do |contact, index| %>
                         <% if contact.type.eql? "phone"  or  contact.type.eql? "mobile"  or  contact.type.eql? "fax" %>
-                          <abbr title="<%= contact.name.capitalize %>" style="color:#666;"><i class="fa fa-<%= contact.icon_name %>"></i></abbr>&nbsp;<%= contact.value %><br />
+                          <abbr title="<%= contact.name.capitalize %>" style="color:#666;"><i class="fa fa-<%= contact.icon_name %>"></i></abbr>&nbsp;<a href="tel:+1<%= contact.value.delete(" ").delete("-") %>"><%= contact.value %></a><br />
                           <% counter += 1 %>
                         <% end %>
                         <% if (counter > 2) %>
@@ -88,13 +89,12 @@
   </div><!-- row -->
 </div><!-- people-list -->
 <script type="text/javascript">
-
   var totalPages = "<%=@total_entries.to_f/@show_accounts_per_page%>"
   totalPages = Math.ceil(totalPages)
   $('#pagination').twbsPagination({
     totalPages: totalPages,
     visiblePages: 5,
-    href: '/accounts?page={{number}}'
+    href: "/accounts?page={{number}}&adv_search=true"
   });
 </script>
 

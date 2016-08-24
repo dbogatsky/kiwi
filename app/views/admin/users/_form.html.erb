@@ -105,7 +105,7 @@
         <div class="col-sm-2">
           <%contact_value = @contact.first.value rescue nil%>
           <%=hidden_field_tag "user[contacts_attributes][][type]",'phone'%>
-          <%=text_field_tag "user[contacts_attributes][][value]",contact_value, {class: "form-control"}%>
+          <%=text_field_tag "user[contacts_attributes][][value]",contact_value, {class: "form-control", required: true}%>
           <% contact_id = @contact.first.id rescue nil %>
           <%=hidden_field_tag "user[contacts_attributes][][id]",contact_id%>
         </div>
@@ -113,7 +113,7 @@
         <div class="col-sm-2">
           <%contact_value1 = @contact.last.value rescue nil%>
           <%=hidden_field_tag "user[contacts_attributes][][type]",'mobile'%>
-          <%=text_field_tag "user[contacts_attributes][][value]",contact_value1, {class: "form-control"}%>
+          <%=text_field_tag "user[contacts_attributes][][value]",contact_value1, {class: "form-control", required: true}%>
           <% contact_id1 = @contact.last.id rescue nil %>
           <%=hidden_field_tag "user[contacts_attributes][][id]",contact_id1%>
         </div>
