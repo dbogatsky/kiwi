@@ -27,7 +27,7 @@
             <% if contact.type == "email" %>
               <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name %>"></i><a href="mailto:<%= contact.value %>"><%= contact.value %></a></li>
             <%elsif  contact.type == "website"%>
-             <li id="<%= dom_id(contact) %>"><i class="fa fa-globe"></i><a href="<%= contact.value %>" target="_blank"><%= contact.value %></a></li>
+             <li id="<%= dom_id(contact) %>"><i class="fa fa-globe"></i><a href="<%=(contact.value.include?'https') ? contact.value : 'https://'+contact.value %>" target="_blank"><%= contact.value %></a></li>
             <% elsif contact.type.eql? "phone"  or  contact.type.eql? "mobile"  or  contact.type.eql? "fax"%>
               <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name %>"></i><a href="tel:+1<%= contact.value.delete(" ").delete("-") %>"><%= contact.value %></a></li>
             <% else %>
