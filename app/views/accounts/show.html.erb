@@ -290,14 +290,14 @@
 
 
     function Comma(num) {
-    var s = num.split('.');
-    if (s[0].length > 14) {
-      // Too many numbers before decimal.
+      var s = num.split('.');
+      if (s[0].length > 14) {
+        // Too many numbers before decimal.
+      }
+      if (s[1].length > 4) {
+        // Too many numbers after decimal.
+      }
     }
-    if (s[1].length > 4) {
-      // Too many numbers after decimal.
-    }
-  }
 
     $(".exp_in").click(function(){
       if($(this).is(':checked')){
@@ -364,7 +364,7 @@
     });
 
     var complete_quote_editor;
-    $(function() {
+    $(function(){
       complete_quote_editor = $('#complete_quote_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
     });
 
@@ -378,7 +378,11 @@
       id = $(this).attr('data-id')
       $('.conversation-edit-email-modal-form input[name="conversation_item[invitees]"]').val($(this).attr('data-invitees'));
       $('.conversation-edit-email-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
-      $('.conversation-edit-email-modal-form input[name="scheduled_time"]').val($(this).attr('data-time'));
+      if(mobile == 'false'){
+        $('.conversation-edit-email-modal-form input[name="scheduled_time"]').val($(this).attr('data-time'));
+      }else{
+        $('.conversation-edit-email-modal-form input[name="scheduled_time"]').val($(this).attr('data-time-24'));
+      }
       $('.conversation-edit-email-modal-form input[name="scheduled_date"]').val($(this).attr('data-date'));
       email_edit_editor.data("wysihtml5").editor.setValue($(this).attr('data-body'));
       $('.conversation-edit-email-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
@@ -409,7 +413,11 @@
     $(document).on('click', "a.edit_reminder", function(e){
       id = $(this).attr('data-id')
       $('.conversation-edit-reminder-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
-      $('.conversation-edit-reminder-modal-form input[name="scheduled_time"]').val($(this).attr('data-time'));
+      if(mobile == 'false'){
+        $('.conversation-edit-reminder-modal-form input[name="scheduled_time"]').val($(this).attr('data-time'));
+      }else{
+        $('.conversation-edit-reminder-modal-form input[name="scheduled_time"]').val($(this).attr('data-time-24'));
+      }
       $('.conversation-edit-reminder-modal-form input[name="scheduled_date"]').val($(this).attr('data-date'));
       edit_reminder.data("wysihtml5").editor.setValue($(this).attr('data-description'));
       var user_ids = $(this).attr('data-users-to-notify-ids')
@@ -444,12 +452,20 @@
       $('.conversation-edit-meeting-modal-form input[name="conversation_item[invitees]"]').val($(this).attr('data-invitees'));
       $('.conversation-edit-meeting-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
       $('.conversation-edit-meeting-modal-form input[name="conversation_item[location]"]').val($(this).attr('data-location'));
-      $('.conversation-edit-meeting-modal-form input[name="scheduled_time"]').val($(this).attr('data-time'));
+
+      if(mobile == 'false'){
+        $('.conversation-edit-meeting-modal-form input[name="scheduled_time"]').val($(this).attr('data-time'));
+        $('.conversation-edit-meeting-modal-form input[name="starts_time"]').val($(this).attr('data-starts-time'));
+        $('.conversation-edit-meeting-modal-form input[name="ends_time"]').val($(this).attr('data-ends-time'));
+      }else{
+        $('.conversation-edit-meeting-modal-form input[name="scheduled_time"]').val($(this).attr('data-time-24'));
+        $('.conversation-edit-meeting-modal-form input[name="starts_time"]').val($(this).attr('data-starts-time-24'));
+        $('.conversation-edit-meeting-modal-form input[name="ends_time"]').val($(this).attr('data-ends-time-24'));
+      }
+
       $('.conversation-edit-meeting-modal-form input[name="scheduled_date"]').val($(this).attr('data-date'));
       $('.conversation-edit-meeting-modal-form input[name="starts_date"]').val($(this).attr('data-starts-date'));
-      $('.conversation-edit-meeting-modal-form input[name="starts_time"]').val($(this).attr('data-starts-time'));
       $('.conversation-edit-meeting-modal-form input[name="ends_date"]').val($(this).attr('data-ends-date'));
-      $('.conversation-edit-meeting-modal-form input[name="ends_time"]').val($(this).attr('data-ends-time'));
       $('.conversation-edit-meeting-modal-form select[name="conversation_item[item_type]"]').val($(this).attr('data-item-type'));
       if($(this).attr('data-item-type') == 'regular'){
         $('.conversation-edit-meeting-modal-form input[name="conversation_item[title]"]').hide()
@@ -538,25 +554,25 @@
       }
     });
 
-      // hide show quote reminder settings
-      $("#quote-reminder-settings").hide();
-      $("#quote-reminder-settings-edit").hide();
+    // hide show quote reminder settings
+    $("#quote-reminder-settings").hide();
+    $("#quote-reminder-settings-edit").hide();
 
-      $('#quote-reminder, #quote-reminder-edit').change(function () {
-        if ($(this).is(':checked')) {
-          $("#quote-reminder-settings").show(500);
-          $("#quote-reminder-settings-edit").show(500);
-          $(".clear_date").attr('required', true);
-          $(".clear_time").attr('required', true);
-        }
-        else {
-          $("#quote-reminder-settings").hide(500);
-          $("#quote-reminder-settings-edit").hide(500);
-          $(".clear_date").attr('required', false);
-          $(".clear_time").attr('required', false);
-          $(".clear_date").val(null)
-        }
-      });
+    $('#quote-reminder, #quote-reminder-edit').change(function () {
+      if ($(this).is(':checked')) {
+        $("#quote-reminder-settings").show(500);
+        $("#quote-reminder-settings-edit").show(500);
+        $(".clear_date").attr('required', true);
+        $(".clear_time").attr('required', true);
+      }
+      else {
+        $("#quote-reminder-settings").hide(500);
+        $("#quote-reminder-settings-edit").hide(500);
+        $(".clear_date").attr('required', false);
+        $(".clear_time").attr('required', false);
+        $(".clear_date").val(null)
+      }
+    });
 
     $(document).on('click', "a.edit_quote", function(e){
       id = $(this).attr('data-id')
@@ -568,7 +584,11 @@
       if (body != ''){
         edit_quote.data("wysihtml5").editor.setValue(body);
       }
-      $('.conversation-edit-quote-modal-form input[name="follow_time"]').val($(this).attr('data-time'));
+      if(mobile == 'false'){
+        $('.conversation-edit-quote-modal-form input[name="follow_time"]').val($(this).attr('data-time'));
+      }else{
+        $('.conversation-edit-quote-modal-form input[name="follow_time"]').val($(this).attr('data-time-24'));
+      }
       $('.conversation-edit-quote-modal-form input[name="follow_date"]').val($(this).attr('data-date'));
       $('.conversation-edit-quote-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
       $('.conversation-edit-quote-modal-form input[name="expires_in"]').val($(this).attr('data-ends-day'));
@@ -590,6 +610,11 @@
       $(".get_date").attr('disabled', false)
     });
 
+    if(mobile == 'false'){
+      $('.follow_time').timepicker({
+        minuteStep: 15
+      });
+    }
 
     $(document).ready(function(){
       $.fn.editable.defaults.ajaxOptions = {type: "PUT"};
@@ -642,6 +667,7 @@
         onAddTag:isValidEmailAddress,
         defaultText:'Invitees'
       });
+
       function isValidEmailAddress(emailAddress) {
           var pattern = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
 
@@ -651,7 +677,9 @@
           }
       };
 
-      $('#meeting-reminder-time, #meeting-reminder-time-edit').timepicker({minuteStep: 5});
+      if(mobile == 'false'){
+        $('#meeting-reminder-time, #meeting-reminder-time-edit').timepicker({minuteStep: 5});
+      }
 
       // by default hide reminder settings for meetings
       $("#meeting-reminder-settings").hide();
@@ -673,39 +701,120 @@
         $("#meeting-reminder-time-edit").attr('required', false)
         }
       });
+    });
 
     if(mobile == 'false'){
       $('#reminderDatePicker, #reminderDatePickerEdit').datepicker({
         dateFormat: 'mm/dd/yy',
         minDate: 0
       });
+
+      $('#reminderTimePicker').timepicker({
+          showMeridian: true,
+          minuteStep: 15,
+          showInputs: false,
+      }).on('changeTime.timepicker', function(e) {
+          var  date_val = $('#reminderDatePicker').val()
+          if((date_val != '') && (date_val == today_date(new Date))){
+            set_reminder_time(e)
+          }
+      });
+
+      called = false;
+      $('#reminderTimePickerEdit').timepicker({
+        showMeridian: true,
+        minuteStep: 15,
+        showInputs: false,
+      }).on('changeTime.timepicker', function(e) {
+          var  date_val = $('#reminderDatePickerEdit').val()
+          if((date_val != '') && (date_val == today_date(new Date))){
+            set_reminder_time(e)
+          }
+      });
+
+      $('#reminderDatePicker').change(function(){
+        var select_date = $(this).val()
+        if(select_date == today_date(new Date)){
+          var c_time = set_time_when_date_change()
+          $("#reminderTimePicker").timepicker("setTime", c_time)
+        }
+      });
+
+      $('#reminderDatePickerEdit').change(function(){
+        var select_date = $(this).val()
+        if(select_date == today_date(new Date)){
+          var c_time = set_time_when_date_change()
+          $("#reminderTimePickerEdit").timepicker("setTime", c_time)
+        }
+      });
+    }else{
+      $('#reminderDatePicker').change(function(){
+        var select_date = today_date(new Date($(this).val()))
+        if(select_date == today_date(new Date)){
+          var c_time = set_time_when_date_change()
+          ConvertTimeformat('24', c_time);
+          $("#reminderTimePicker").prop('min', sHours+':'+sMinutes)
+          $("#reminderTimePicker").val(sHours+':'+sMinutes)
+        }else{
+          $("#reminderTimePicker").prop('min',null)
+        }
+      });
+
+      $('#reminderDatePickerEdit').change(function(){
+        var select_date = today_date(new Date($(this).val()))
+        if(select_date == today_date(new Date)){
+          var c_time = set_time_when_date_change()
+          ConvertTimeformat('24', c_time);
+          $("#reminderTimePickerEdit").prop('min', sHours+':'+sMinutes)
+          $("#reminderTimePickerEdit").val(sHours+':'+sMinutes)
+        }else{
+          $("#reminderTimePickerEdit").prop('min',null)
+        }
+      });
+
+      ConvertTimeformat('24', set_time(new Date()))
+      $("#reminderTimePicker").val(sHours+':'+sMinutes)
+
+      $('#reminderTimePicker').change(function(){
+          var date_val = today_date(new Date($('#reminderDatePicker').val()))
+          if((date_val != '') && (date_val == today_date(new Date))){
+            var c_time = set_time_when_date_change()
+            ConvertTimeformat('24', c_time);
+            var hour1 = sHours
+            var minutes1 = sMinutes
+            $("#reminderTimePicker").prop('min', hour1+':'+minutes1)
+            var current_val = $(this).val()
+            var hour2 = Number(current_val.match(/^(\d+)/)[1]);
+            var minutes2 = Number(current_val.match(/:(\d+)/)[1]);
+            var c_date = new Date()
+            var hour = c_date.getHours()
+            var minutes = c_date.getMinutes()
+            if(Date.parse('01/01/2011'+' '+ hour1+':'+minutes1+':'+'00') > Date.parse('01/01/2011'+' '+ hour2+':'+minutes2+':'+'00')){
+              $("#reminderTimePicker").val(hour1+':'+minutes1)
+            }
+          }
+      });
+
+      $('#reminderTimePickerEdit').change(function(){
+        var date_val = today_date(new Date($('#reminderDatePickerEdit').val()))
+        if((date_val != '') && (date_val == today_date(new Date))){
+          var c_time = set_time_when_date_change()
+          ConvertTimeformat('24', c_time);
+          var hour1 = sHours
+          var minutes1 = sMinutes
+          $("#reminderTimePickerEdit").prop('min', hour1+':'+minutes1)
+          var current_val = $(this).val()
+          var hour2 = Number(current_val.match(/^(\d+)/)[1]);
+          var minutes2 = Number(current_val.match(/:(\d+)/)[1]);
+          var c_date = new Date()
+          var hour = c_date.getHours()
+          var minutes = c_date.getMinutes()
+          if(Date.parse('01/01/2011'+' '+ hour1+':'+minutes1+':'+'00') > Date.parse('01/01/2011'+' '+ hour2+':'+minutes2+':'+'00')){
+            $("#reminderTimePickerEdit").val(hour1+':'+minutes1)
+          }
+        }
+      });
     }
-
-    $('#reminderDatePicker').change(function(){
-      if(mobile == 'false'){
-        var select_date = $(this).val()
-      }else{
-        var select_date = today_date(new Date($(this).val()))
-      }
-      if(select_date == today_date(new Date)){
-        var c_time = set_time_when_date_change()
-        $("#reminderTimePicker").timepicker("setTime", c_time)
-      }
-    });
-
-
-    $('#reminderDatePickerEdit').change(function(){
-      if(mobile == 'false'){
-        var select_date = $(this).val()
-      }else{
-        var select_date = today_date(new Date($(this).val()))
-      }
-      if(select_date == today_date(new Date)){
-        var c_time = set_time_when_date_change()
-
-        $("#reminderTimePickerEdit").timepicker("setTime", c_time)
-      }
-    });
 
     function set_time_when_date_change(){
       var next_time = new Date();
@@ -728,37 +837,6 @@
       var c_time = set_time(next_time)
       return c_time
     }
-
-    $('#reminderTimePicker').timepicker({
-        showMeridian: true,
-        minuteStep: 15,
-        showInputs: false,
-    }).on('changeTime.timepicker', function(e) {
-       if (mobile == 'false'){
-          var  date_val = $('#reminderDatePicker').val()
-       }else{
-          var date_val = today_date(new Date($('#reminderDatePicker').val()))
-       }
-        if((date_val != '') && (date_val == today_date(new Date))){
-          set_reminder_time(e)
-        }
-    });
-    called = false;
-    $('#reminderTimePickerEdit').timepicker({
-      showMeridian: true,
-      minuteStep: 15,
-      showInputs: false,
-    }).on('changeTime.timepicker', function(e) {
-       if (mobile == 'false'){
-          var  date_val = $('#reminderDatePickerEdit').val()
-        }else{
-          var date_val = today_date(new Date($('#reminderDatePickerEdit').val()))
-        }
-
-        if((date_val != '') && (date_val == today_date(new Date))){
-          set_reminder_time(e)
-        }
-    });
 
     function today_date(date){
       var current_date = date
@@ -830,6 +908,83 @@
       return current_time
     }
 
+    // by default hide reminder settings for notes
+    $("#note-reminder-settings").hide();
+    $("#note-reminder-settings-edit").hide();
+
+    // hide show note reminder settings
+    $('#note-reminder, #note-reminder-edit').change(function () {
+      if ($(this).is(':checked')) {
+        $("#note-reminder-settings").show(500);
+        $("#note-reminder-settings-edit").show(500);
+      }
+      else {
+        $("#note-reminder-settings").hide(500);
+        $("#note-reminder-settings-edit").hide(500);
+      }
+    });
+
+    if(mobile == 'false'){
+      $('#scheduledDatePicker').datepicker();
+      $('#emailDatePickerEdit').datepicker();
+      $('#scheduledTimePicker').timepicker({minuteStep: 5});
+      $('#emailTimePickerEdit').timepicker({minuteStep: 5});
+    }
+
+    // by default hide reminder settings for emails
+    $("#email-sendlater-settings").hide();
+    $("#email-sendlater-settings-edit").hide();
+
+    // hide show email reminder settings
+    $('#send-later, #send_later_edit').change(function () {
+      if ($(this).is(':checked')) {
+        $("#email-sendlater-settings, #email-sendlater-settings-edit").show(500);
+        $("#scheduledDatePicker").attr('required', true);
+        $("#emailDatePickerEdit").attr('required', true);
+        $("#scheduledTimePicker").attr('required', true);
+        $("#emailTimePickerEdit").attr('required', true);
+      }else {
+        $("#email-sendlater-settings, #email-sendlater-settings-edit").hide(500);
+        $("#scheduledDatePicker").val(null);
+        $("#emailDatePickerEdit").val(null);
+        $("#scheduledDatePicker").attr('required', false);
+        $("#emailDatePickerEdit").attr('required', false);
+        $("#scheduledTimePicker").attr('required', false);
+        $("#emailTimePickerEdit").attr('required', false);
+      }
+    });
+
+    $(".conversation-quote-modal-form").on("shown.bs.modal", function(){
+      $(".follow_time_div").hide();
+      $("#follow-reminder").attr('checked', false)
+      $(".exp_in").attr('checked', true)
+      $(".get_date").attr('disabled', false)
+      $(".set_date").attr('disabled', true)
+    });
+
+    $(".conversation-edit-quote-modal-form").on("shown.bs.modal", function(){
+      $(".exp_in").attr('checked', true)
+      $(".set_date").attr('disabled', true)
+    });
+
+  var new_data = <%= raw(@notifiable_users) %>
+  $("#notifiable_users").select2({
+    data: new_data
+  });
+
+    $(".conversation-reminder-modal-form .select2").css('width', '100%');
+
+    var data = <%=raw(@notifiable_users)%>;
+    $("#notifiable_users_edit").select2({
+      data: data
+    });
+
+    $(".conversation-edit-reminder-modal-form .select2").css('width', '100%');
+    $(".conversation-edit-reminder-modal-form").on("hidden.bs.modal", function(){
+      $('#reminder-email-edit').attr('checked', false);
+      $('#reminder-sms-edit').attr('checked', false);
+    });
+
     function ConvertTimeformat(format, str) {
       var time = str
       var hours = Number(time.match(/^(\d+)/)[1]);
@@ -842,87 +997,6 @@
       if (hours < 10) sHours = "0" + sHours;
       if (minutes < 10) sMinutes = "0" + sMinutes;
     }
-
-      // by default hide reminder settings for notes
-      $("#note-reminder-settings").hide();
-      $("#note-reminder-settings-edit").hide();
-
-      // hide show note reminder settings
-      $('#note-reminder, #note-reminder-edit').change(function () {
-        if ($(this).is(':checked')) {
-          $("#note-reminder-settings").show(500);
-          $("#note-reminder-settings-edit").show(500);
-        }
-        else {
-          $("#note-reminder-settings").hide(500);
-          $("#note-reminder-settings-edit").hide(500);
-        }
-      });
-
-      if(mobile == 'false'){
-        $('#scheduledDatePicker').datepicker();
-        $('#emailDatePickerEdit').datepicker();
-      }
-      $('#scheduledTimePicker').timepicker({minuteStep: 5});
-
-
-      $('#emailTimePickerEdit').timepicker({minuteStep: 5});
-
-      // by default hide reminder settings for emails
-      $("#email-sendlater-settings").hide();
-      $("#email-sendlater-settings-edit").hide();
-
-      // hide show email reminder settings
-      $('#send-later, #send_later_edit').change(function () {
-          if ($(this).is(':checked')) {
-            $("#email-sendlater-settings, #email-sendlater-settings-edit").show(500);
-            $("#scheduledDatePicker").attr('required', true);
-            $("#emailDatePickerEdit").attr('required', true);
-            $("#scheduledTimePicker").attr('required', true);
-            $("#emailTimePickerEdit").attr('required', true);
-        }
-        else {
-          $("#email-sendlater-settings, #email-sendlater-settings-edit").hide(500);
-          $("#scheduledDatePicker").val(null);
-          $("#emailDatePickerEdit").val(null);
-          $("#scheduledDatePicker").attr('required', false);
-          $("#emailDatePickerEdit").attr('required', false);
-          $("#scheduledTimePicker").attr('required', false);
-          $("#emailTimePickerEdit").attr('required', false);
-        }
-      });
-
-      $(".conversation-quote-modal-form").on("shown.bs.modal", function(){
-        $(".follow_time_div").hide();
-        $("#follow-reminder").attr('checked', false)
-        $(".exp_in").attr('checked', true)
-        $(".get_date").attr('disabled', false)
-        $(".set_date").attr('disabled', true)
-      });
-
-      $(".conversation-edit-quote-modal-form").on("shown.bs.modal", function(){
-        $(".exp_in").attr('checked', true)
-        $(".set_date").attr('disabled', true)
-      });
-    });
-
-  var new_data = <%= raw(@notifiable_users) %>
-  $("#notifiable_users").select2({
-    data: new_data
-  });
-
-  $(".conversation-reminder-modal-form .select2").css('width', '100%');
-
-    var data = <%=raw(@notifiable_users)%>;
-    $("#notifiable_users_edit").select2({
-      data: data
-    });
-
-    $(".conversation-edit-reminder-modal-form .select2").css('width', '100%');
-    $(".conversation-edit-reminder-modal-form").on("hidden.bs.modal", function(){
-      $('#reminder-email-edit').attr('checked', false);
-      $('#reminder-sms-edit').attr('checked', false);
-    });
   </script>
 <% end %>
 

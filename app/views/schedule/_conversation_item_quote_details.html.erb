@@ -22,6 +22,7 @@
                  data-id="<%= citem.id %>"
                  data-title="<%=citem.title%>"
                  data-date="<%=mobile? ? Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") : Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y")  if citem.scheduled_at.present?%>"
+                 data-time-24="<%=(Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).dst? ? (Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone) - 1.hour).strftime("%H:%M") : Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%H:%M")) if citem.scheduled_at.present? %>"
                  data-time="<%=(Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).dst? ? (Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone) - 1.hour).strftime("%I:%M %p") : Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p"))if citem.scheduled_at.present? %>"
                  data-ends-day="<%=(Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).to_date - Date.today.in_time_zone(current_user.time_zone).to_date).to_i if citem.ends_at.present? %>"
                  data-ends-date="<%=mobile? ? Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") : Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.ends_at.present?%>"
@@ -101,6 +102,12 @@
     complete_quote_editor = $('#complete_quote_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
   });
 
+  if(mobile == 'false'){
+    $('.datepicker').datepicker();
+    $('.follow_time').timepicker({
+      minuteStep: 15
+    });
+  }
   $(document).on('click', "a.edit_quote", function(e){
     id = $(this).attr('data-id')
     status = $(this).attr('data-status')
@@ -112,7 +119,11 @@
     if (body != ''){
       edit_quote.data("wysihtml5").editor.setValue(body);
     }
-    $('.conversation-edit-quote-modal-form input[name="follow_time"]').val($(this).attr('data-time'));
+    if(mobile == 'false'){
+      $('.conversation-edit-quote-modal-form input[name="follow_time"]').val($(this).attr('data-time'));
+    }else{
+     $('.conversation-edit-quote-modal-form input[name="follow_time"]').val($(this).attr('data-time-24'));
+    }
     $('.conversation-edit-quote-modal-form input[name="follow_date"]').val($(this).attr('data-date'));
     $('.conversation-edit-quote-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
     $('.conversation-edit-quote-modal-form input[name="expires_in"]').val($(this).attr('data-ends-day'));

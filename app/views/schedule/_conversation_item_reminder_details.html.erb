@@ -23,6 +23,7 @@
                    data-notify-by-email="<%=(citem.notify_by_email.present?) ? 'true' : 'false'%>"
                    data-users-to-notify-ids="<%=citem.conversation_item_user_to_notify.map(&:user_id) if citem.conversation_item_user_to_notify.present? %>"
                    data-date="<%=mobile? ? Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") :  Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.scheduled_at.present?%>"
+                   data-time-24="<%=(Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).dst? ? (Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone) - 1.hour).strftime("%H:%M") : Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%H:%M")) if citem.scheduled_at.present? %>"
                    data-time="<%=(Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).dst? ? (Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone) - 1.hour).strftime("%I:%M %p") : Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p"))if citem.scheduled_at.present? %>"
                    data-description="<%= citem.body %>">Edit</a>
               </li>
@@ -74,23 +75,25 @@
       dateFormat: 'mm/dd/yy',
       minDate: 0
     });
+
+    $('#reminderTimePickerEdit').timepicker({
+      showMeridian: true,
+      minuteStep: 15,
+      showInputs: false,
+    }).on('changeTime.timepicker', function(e) {
+       if (mobile == 'false'){
+          var  date_val = $('#reminderDatePickerEdit').val()
+        }else{
+          var date_val = today_date(new Date($('#reminderDatePickerEdit').val()))
+        }
+
+        if((date_val != '') && (date_val == today_date(new Date))){
+          set_reminder_time(e)
+        }
+    });
   }
 
-  $('#reminderTimePickerEdit').timepicker({
-    showMeridian: true,
-    minuteStep: 15,
-    showInputs: false,
-  }).on('changeTime.timepicker', function(e) {
-     if (mobile == 'false'){
-        var  date_val = $('#reminderDatePickerEdit').val()
-      }else{
-        var date_val = today_date(new Date($('#reminderDatePickerEdit').val()))
-      }
 
-      if((date_val != '') && (date_val == today_date(new Date))){
-        set_reminder_time(e)
-      }
-  });
   var data = <%=raw(notifiable_users_json(account.id))%>;
   $("#notifiable_users_edit").select2({
     data: data
@@ -106,7 +109,11 @@
   $(document).on('click', "a.edit_reminder", function(e){
     id = $(this).attr('data-id')
     $('.conversation-edit-reminder-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
-    $('.conversation-edit-reminder-modal-form input[name="scheduled_time"]').val($(this).attr('data-time'));
+    if(mobile == 'false'){
+      $('.conversation-edit-reminder-modal-form input[name="scheduled_time"]').val($(this).attr('data-time'));
+    }else{
+      $('.conversation-edit-reminder-modal-form input[name="scheduled_time"]').val($(this).attr('data-time-24'));
+    }
     $('.conversation-edit-reminder-modal-form input[name="scheduled_date"]').val($(this).attr('data-date'));
     $('.conversation-edit-reminder-modal-form input[name="info"]').val(true);
     edit_reminder.data("wysihtml5").editor.setValue($(this).attr('data-description'));
