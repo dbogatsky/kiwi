@@ -1,6 +1,7 @@
 class ScheduleController < ApplicationController
   include ApplicationHelper
   before_action :get_api_values, only: [:index, :calendar_event]
+  before_action :get_account_display_setting, only: [:index, :get_events, :get_meeting, :regular_visits ]
   skip_before_filter :verify_authenticity_token, only: [:sort_regular_visits]
 
   def index
@@ -110,12 +111,13 @@ class ScheduleController < ApplicationController
     @quotes = ConversationItemSearch.all(params: { search: search, user_ids: user_ids, per_page: 10 })
 
     events = []
-
     @meetings.each do |i|
       s_date = Chronic.parse(i.starts_at).in_time_zone(current_user.time_zone)
       e_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone)
-      s_date = s_date - 1.hour if s_date.dst?
-      e_date = e_date - 1.hour if e_date.dst?
+      if @daylight_setting == 'enable'
+        s_date = s_date - 1.hour if s_date.dst?
+        e_date = e_date - 1.hour if e_date.dst?
+      end
       s_date = s_date.strftime('%Y-%m-%dT%H:%M:%S')
       e_date = e_date.strftime('%Y-%m-%dT%H:%M:%S')
       if i.item_type == 'regular'
@@ -141,8 +143,10 @@ class ScheduleController < ApplicationController
     @reminders.each do |i|
       s_date = Chronic.parse(i.scheduled_at).in_time_zone(current_user.time_zone)
       e_date = Chronic.parse(i.scheduled_at).in_time_zone(current_user.time_zone)
-      s_date = s_date - 1.hour if s_date.dst?
-      e_date = e_date - 1.hour if e_date.dst?
+      if @daylight_setting == 'enable'
+        s_date = s_date - 1.hour if s_date.dst?
+        e_date = e_date - 1.hour if e_date.dst?
+      end
       s_date = s_date.strftime('%Y-%m-%dT%H:%M:%S')
       e_date = e_date.strftime('%Y-%m-%dT%H:%M:%S')
       color = '#f0ca45'
@@ -161,8 +165,10 @@ class ScheduleController < ApplicationController
     @quotes.each do |i|
       s_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone)
       e_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone)
-      s_date = s_date - 1.hour if s_date.dst?
-      e_date = e_date - 1.hour if e_date.dst?
+      if @daylight_setting == 'enable'
+        s_date = s_date - 1.hour if s_date.dst?
+        e_date = e_date - 1.hour if e_date.dst?
+      end  
       s_date = s_date.strftime('%Y-%m-%dT%H:%M:%S')
       e_date = e_date.strftime('%Y-%m-%dT%H:%M:%S')
       color = '#e91e63'

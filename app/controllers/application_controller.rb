@@ -520,6 +520,7 @@ class ApplicationController < ActionController::Base
     @enable_import = preferences['company']['settings']['preferences']['enable_import'] || "unknown"
     @enable_export = preferences['company']['settings']['preferences']['enable_export'] || "unknown"
     @enable_expected_sales = preferences['company']['settings']['preferences']['enable_expected_sales_attributes'] || "unknown"
+    @daylight_setting = preferences['company']['settings']['preferences']['enable_dst']
   end
 
   def get_api_values

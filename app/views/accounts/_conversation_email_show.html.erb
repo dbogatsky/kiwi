@@ -20,8 +20,8 @@
              data-invitees="<%=citem.invitees %>"
              data-title="<%=citem.title %>"
              data-date="<%=mobile? ? Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") : Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.scheduled_at.present?%>"
-             data-time-24="<%=(Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).dst? ? (Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone) - 1.hour).strftime("%H:%M") : Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%H:%M"))if citem.scheduled_at.present? %>"
-             data-time="<%=(Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).dst? ? (Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone) - 1.hour).strftime("%I:%M %p") : Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p"))if citem.scheduled_at.present? %>"
+             data-time-24="<%=((@daylight_setting == 'enable' && Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).dst?) ? (Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone) - 1.hour).strftime("%H:%M") : Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%H:%M"))if citem.scheduled_at.present? %>"
+             data-time="<%=((@daylight_setting == 'enable' && Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).dst?) ? (Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone) - 1.hour).strftime("%I:%M %p") : Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p"))if citem.scheduled_at.present? %>"
              data-body="<%= citem.body %>">Edit</a>
           </li>
           <li>
@@ -40,7 +40,7 @@
       <% if (citem.scheduled_at.present?) %>
         <i class="fa fa-calendar"></i>
         <%scheduled_at = citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone)%>
-        <%scheduled_at = scheduled_at - 1.hour if scheduled_at.dst?%>
+        <%scheduled_at = scheduled_at - 1.hour if @daylight_setting == 'enable' && scheduled_at.dst?%>
         <%=scheduled_at.strftime("%a %b %d %Y at %l:%M %p") %>
       <% end %>
     </div>

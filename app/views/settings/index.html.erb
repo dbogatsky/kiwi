@@ -6,7 +6,6 @@
     <div class="row row-pad-5">
       <div class="col-md-12 mb20">
         <!-- Nav tabs -->
-
         <div class="panel panel-default">
           <div class="panel-heading">
             <div class="panel-btns">
@@ -27,24 +26,6 @@
             </div>
           </div>
         </div>
-<!--
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <div class="panel-btns">
-              <a href="" class="minimize">−</a>
-            </div><!-- panel-btns - ->
-            <h3 class="panel-title">Quota</h3>
-          </div>
-          <div class="panel-body">
-            <div class="tab-pane" id="quota">
-              <div class="row row-pad-5">
-                <div class="col-md-8">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
--->
         <div class="panel panel-default">
           <div class="panel-heading">
             <div class="panel-btns">
@@ -55,12 +36,6 @@
           <div class="panel-body">
             <div class="tab-pane" id="preferences">
               <div class="row row-pad-5">
-                <!-- <div class="form-group">
-                    <label class="col-sm-4 control-label">Preview Timeline(<span title="Preview Timeline">?</span>)</label>
-                    <div class="col-sm-4">
-                      <%#=select_tag('perview_timeline',options_for_select(perview_timeline_select_options), prompt: '-select-', class: "form-control")%>
-                    </div>
-                </div> -->
                 <div class="form-group">
                   <label class="col-sm-4 control-label">Show Accounts per page</label>
                   <div class="col-sm-4">
@@ -76,46 +51,16 @@
                       </select>
                   </div>
                 </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label">Daylight Saving Time Detection</label>
+                  <div class="col-sm-4">
+                    <%=select_tag('enable_dst',options_for_select(expected_sales_select_options, selected: @daylight_setting), prompt: '-select-', class: "form-control")%>
+                  </div>
+                </div>
               </div><!-- row -->
             </div>
           </div>
         </div>
-<!--
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <div class="panel-btns">
-              <a href="" class="minimize">−</a>
-            </div><!-- panel-btns - ->
-            <h3 class="panel-title">Dashboard</h3>
-          </div>
-          <div class="panel-body">
-            <div class="tab-pane" id="dashboard">
-              <div class="row row-pad-5">
-                <div class="col-md-8">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
--->
-<!--
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <div class="panel-btns">
-              <a href="" class="minimize">−</a>
-            </div><!-- panel-btns - ->
-            <h3 class="panel-title">Schedule</h3>
-          </div>
-          <div class="panel-body">
-            <div class="tab-pane" id="schedule">
-              <div class="row row-pad-5">
-                <div class="col-md-8">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
--->
         <div class="panel panel-default">
           <div class="panel-heading">
             <div class="panel-btns">
@@ -135,73 +80,19 @@
                 <div class="form-group">
                   <label class="col-sm-4 control-label">Enable Export</label>
                   <div class="col-sm-4">
-                      <%=select_tag('enable_export',options_for_select(enable_import_export_select_options, selected: @enable_export), prompt: '-select-', class: "form-control")%>
+                    <%=select_tag('enable_export',options_for_select(enable_import_export_select_options, selected: @enable_export), prompt: '-select-', class: "form-control")%>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-4 control-label">Enable Expected Sales</label>
                   <div class="col-sm-4">
-                      <%=select_tag('expected_sales_attribute',options_for_select(expected_sales_select_options, selected: @enable_expected_sales), class: "form-control")%>
+                    <%=select_tag('expected_sales_attribute',options_for_select(expected_sales_select_options, selected: @enable_expected_sales), class: "form-control")%>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-<!--
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <div class="panel-btns">
-              <a href="" class="minimize">−</a>
-            </div><!-- panel-btns - ->
-            <h3 class="panel-title">Media</h3>
-          </div>
-          <div class="panel-body">
-            <div class="tab-pane" id="media">
-              <div class="row row-pad-5">
-                <div class="col-md-8">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
--->
-<!--
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <div class="panel-btns">
-              <a href="" class="minimize">−</a>
-            </div><!-- panel-btns - ->
-            <h3 class="panel-title">Reports</h3>
-          </div>
-          <div class="panel-body">
-            <div class="tab-pane" id="reports">
-              <div class="row row-pad-5">
-                <div class="col-md-8">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
--->
-<!--
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <div class="panel-btns">
-              <a href="" class="minimize">−</a>
-            </div><!-- panel-btns - ->
-            <h3 class="panel-title">Notifications</h3>
-          </div>
-          <div class="panel-body">
-            <div class="tab-pane" id="notifications">
-              <div class="row row-pad-5">
-                <div class="col-md-8">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
--->
         <div class="panel panel-default">
           <div class="panel-footer">
             <div class="row row-pad-5">
@@ -212,7 +103,6 @@
             </div>
           </div>
         </div>
-
       </div> <!-- col- -->
     </div><!-- row -->
   </div><!-- profile-header -->
