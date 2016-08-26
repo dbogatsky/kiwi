@@ -75,5 +75,8 @@ Rails.application.configure do
   config.log_formatter = ::Logger::Formatter.new
 
   # Do not dump schema after migrations.
-#  config.active_record.dump_schema_after_migration = false
+  # config.active_record.dump_schema_after_migration = false
+
+  # Enable GZIP compression on data sent back
+  config.middleware.use Rack::Deflater
 end

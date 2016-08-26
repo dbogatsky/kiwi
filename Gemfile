@@ -27,7 +27,7 @@ gem 'http_logger'
 gem 'activeresource', require: 'active_resource'
 gem 'puma'
 gem 'activesupport-json_encoder'
-
+gem 'rack'
 
 group :development do
   gem 'web-console', '~> 2.0'

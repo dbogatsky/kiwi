@@ -304,6 +304,7 @@ DEPENDENCIES
   open-weather
   pry-rails
   puma
+  rack
   rails (= 4.2.3)
   request_store
   rollbar
