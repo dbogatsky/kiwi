@@ -12,23 +12,64 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require social-share-button
 
+
+// Main
 //= require bootstrap/jquery-migrate-1.2.1.min
 //= require bootstrap/jquery-ui-1.10.3.min
 //= require bootstrap/bootstrap.min
 //= require bootstrap/modernizr.min
 //= require bootstrap/jquery.sparkline.min
 //= require bootstrap/toggles.min
-
 //= require bootstrap/morris.min
 //= require bootstrap/raphael-2.1.0.min
 //= require bootstrap/jquery.datatables.min
+//= require bootstrap/gmaps
+//= require bootstrap/jquery.twbsPagination.min
+//= require bootstrap/holder
 
+// Vertical timeline
+//= require vertical-timeline/main
+
+// Form elements - status and date picker
+//= require bootstrap/bootstrap-timepicker.min
+//= require bootstrap/jquery.maskedinput.min
+//= require bootstrap/jquery.tagsinput.min
+//= require bootstrap/jquery.mousewheel
+//= require bootstrap/select2.min
+//= require bootstrap/jquery.validate.min
+
+// <script src="assets/bootstrap/js/additional-methods.min.js"></script> 
+//= require bootstrap/bootstrap-editable.min
+//= require bootstrap/bootstrap-datetimepicker.min
+//= require bootstrap/moment.min
+//= require bootstrap/jquery.cookies
+//= require bootstrap/jquery.autogrow-textarea
+//= require bootstrap/cropper.min
+//= require bootstrap/jquery.gritter.min
+//= require bootstrap/bootstrap-wizard.min
+
+// wysiwyg editor
+//= require wyshtml5/wyshtml5
+//= require wyshtml5/bootstrap-wysihtml5
+
+// full calendar
+//= require bootstrap/fullcalendar.min
+
+// other
+//= require bootstrap/jquery.ui.touch-punch.min
+//= require bootstrap/jquery.confirm
 //= require jquery.cookie
+
+// timezone
 //= require jstz
 //= require browser_timezone_rails/set_time_zone
+
+// webshim 
 //= require webshims/polyfiller
+
+// custom
+//= require bootstrap/custom
 
 
 $.webshims.setOptions('basePath', '/assets/webshims/shims/')
