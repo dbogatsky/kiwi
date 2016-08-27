@@ -2717,7 +2717,7 @@ wysihtml5.dom.replaceWithChildNodes = function(b) {
                     //     charset: c.characterSet || c.charset || "utf-8",
                     //     stylesheets: this.config.stylesheets
                     // });
-                    k = '<!DOCTYPE html><html><head><meta charset="UTF-8"><link rel="stylesheet" href="/assets/styles/wyshtml5/wyshtml5-color.css"></head><body></body></html>'
+                    k = '<!DOCTYPE html><html><head><meta charset="UTF-8"><link rel="stylesheet" href="/assets/wyshtml5/wyshtml5-color.css" %>"></head><body></body></html>'
                 h.open("text/html", "replace");
                 h.write(k);
                 h.close();

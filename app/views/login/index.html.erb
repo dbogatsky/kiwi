@@ -10,9 +10,11 @@
   <link rel="shortcut icon" href="images/favicon.png" type="image/png">
 
   <title><%= APP_CONFIG['software_title'] %></title>
+  
+  <%= stylesheet_link_tag 'application', media: 'all' %>
 
-  <link rel="stylesheet" href="/assets/bootstrap/css/style.default.css" />
-  <link rel="stylesheet" href="/assets/styles/style.focus.css" />
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCgqcu1Jqqdc0a4hVnfRvw0hyJM832rqXA&libraries=places"></script>
+  <%= javascript_include_tag 'application' %>
 
   <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!--[if lt IE 9]>
@@ -72,20 +74,6 @@
     </div><!-- signin -->
   
 </section>
-
-
-<script src="/assets/bootstrap/js/jquery-1.11.1.min.js"></script>
-<script src="/assets/bootstrap/js/jquery-ui-1.10.3.min.js"></script>
-<script src="/assets/bootstrap/js/jquery-migrate-1.2.1.min.js"></script>
-<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="/assets/bootstrap/js/modernizr.min.js"></script>
-<script src="/assets/bootstrap/js/jquery.sparkline.min.js"></script>
-<script src="/assets/bootstrap/js/jquery.cookies.js"></script>
-
-<script src="/assets/bootstrap/js/toggles.min.js"></script>
-<script src="/assets/bootstrap/js/retina.min.js"></script>
-
-<script src="/assets/bootstrap/js/custom.js"></script>
 
 
 </body>
