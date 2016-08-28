@@ -59,17 +59,17 @@
 /********** 1. FILE IMPORTS **********/
 /*************************************/
 
-@import url('/assets/bootstrap/bootstrap.min.css');
-@import url('/assets/bootstrap/bootstrap-override.css');
-@import url('/assets/bootstrap/weather-icons.min.css');
-@import url('/assets/bootstrap/jquery-ui-1.10.3.css');
-@import url('/assets/bootstrap/font-awesome.min.css');
-@import url('/assets/bootstrap/animate.min.css');
-@import url('/assets/bootstrap/animate.delay.css');
-@import url('/assets/bootstrap/toggles.css');
-@import url('/assets/bootstrap/select2.css');
-@import url('/assets/bootstrap/lato.css');
-@import url('/assets/bootstrap/roboto.css');
+@import url('/assets/bootstrap/bootstrap.min.scss');
+@import url('/assets/bootstrap/bootstrap-override.scss');
+@import url('/assets/bootstrap/weather-icons.min.scss');
+@import url('/assets/bootstrap/jquery-ui-1.10.3.scss');
+@import url('/assets/bootstrap/font-awesome.min.scss');
+@import url('/assets/bootstrap/animate.min.scss');
+@import url('/assets/bootstrap/animate.delay.scss');
+@import url('/assets/bootstrap/toggles.scss');
+@import url('/assets/bootstrap/select2.scss');
+@import url('/assets/bootstrap/lato.scss');
+@import url('/assets/bootstrap/roboto.scss');
 
 
 /********** 2. RESET STYLES **********/
