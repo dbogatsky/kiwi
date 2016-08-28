@@ -68,6 +68,9 @@
 // webshim 
 //= require webshims/polyfiller
 
+// photo
+//= require bootstrap/jquery.prettyPhoto
+
 // custom
 //= require bootstrap/custom
 

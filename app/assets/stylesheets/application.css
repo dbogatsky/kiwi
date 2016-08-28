@@ -42,6 +42,9 @@
  *= require wyshtml5/wyshtml5
  *= require wyshtml5/wyshtml5-color
 
+ * -- photo --
+ *= require bootstrap/prettyPhoto
+
  * -- custom styles
  *= require focus/style.focus
  *= require custom.scss 
