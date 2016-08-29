@@ -11,9 +11,9 @@
  * file per style scope.
  *
  *= require_self
- 
+
  * -- general
- *= require bootstrap/bootstrap.min
+ *= require bootstrap/bootstrap
  *= require bootstrap/bootstrap-override
  *= require bootstrap/weather-icons.min
  *= require bootstrap/jquery-ui-1.10.3
@@ -37,19 +37,19 @@
  *= require bootstrap/jquery.tagsinput
 
  *-- photo cropper style --
- *= require bootstrap/cropper.min 
+ *= require bootstrap/cropper.min
 
  * -- vertical tiemline --
- *= require vertical-timeline/style 
+ *= require vertical-timeline/style
 
  * -- datatable style --
- *= require bootstrap/jquery.datatables 
- 
+ *= require bootstrap/jquery.datatables
+
  *= require bootstrap/bootstrap-editable
  *= require bootstrap/jquery.gritter
 
  * -- morris charts --
- *= require bootstrap/morris 
+ *= require bootstrap/morris
 
  * -- editor
  *= require wyshtml5/wyshtml5
@@ -60,7 +60,7 @@
 
  * -- custom styles
  *= require focus/style.focus
- *= require custom.scss 
+ *= require custom.scss
 
 
  */
