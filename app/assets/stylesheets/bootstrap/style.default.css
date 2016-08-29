@@ -59,6 +59,7 @@
 /********** 1. FILE IMPORTS **********/
 /*************************************/
 
+/* added to manifest instead
 @import url('/assets/bootstrap/bootstrap.min.css');
 @import url('/assets/bootstrap/bootstrap-override.css');
 @import url('/assets/bootstrap/weather-icons.min.css');
@@ -69,7 +70,7 @@
 @import url('/assets/bootstrap/toggles.css');
 @import url('/assets/bootstrap/select2.css');
 @import url('/assets/bootstrap/lato.css');
-@import url('/assets/bootstrap/roboto.css');
+@import url('/assets/bootstrap/roboto.css');*/
 
 
 /********** 2. RESET STYLES **********/

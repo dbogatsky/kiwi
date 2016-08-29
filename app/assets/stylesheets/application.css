@@ -13,7 +13,20 @@
  *= require_self
  
  * -- general
+ *= require bootstrap/bootstrap.min
+ *= require bootstrap/bootstrap-override
+ *= require bootstrap/weather-icons.min
+ *= require bootstrap/jquery-ui-1.10.3
+ *= require bootstrap/font-awesome.min
+ *= require bootstrap/animate.min
+ *= require bootstrap/animate.delay
+ *= require bootstrap/toggles
+ *= require bootstrap/select2
+ *= require bootstrap/lato
+ *= require bootstrap/roboto
  *= require bootstrap/style.default
+
+
  *= require bootstrap/fullcalendar
  *= require bootstrap/colorpicker
 
