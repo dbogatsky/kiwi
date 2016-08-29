@@ -16,7 +16,7 @@ module KiwiWebFe
   class Application < Rails::Application
     config.autoload_paths += Dir["#{Rails.root}/lib"]
     config.middleware.insert_before 'ActionDispatch::ParamsParser', 'HandleErrorsMiddleware'
-    # config.assets.paths << Rails.root.join('app', 'assets', 'images')
+    config.assets.paths << Rails.root.join('app', 'assets', 'fonts')
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
