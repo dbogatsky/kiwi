@@ -4,7 +4,7 @@
 <div class="profile-header">
   <div class="row">
     <div class="col-sm-3">
-    	<img src="<%= (@company.avatar_url.eql? "/avatars/web/missing.png") ? '/assets/bootstrap/images/photos/default_firm_picture.jpg' : @company.avatar_url %>" class="thumbnail img-responsive" alt="">
+    	<%= image_tag("photos/default_firm_picture.jpg", class:"thumbnail img-responsive") %>
       <div class="mb30"></div>
     </div><!-- col-sm-3 -->
     <div class="col-sm-9">
