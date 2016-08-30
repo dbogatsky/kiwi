@@ -49,9 +49,10 @@
         <p class="mb20" align="center">Search or provide an address for the account</p>
         <%= f.fields_for :addresses_attributes do |add| %>
           <%= add.input :street_address, wrapper: :wizard_horizontal_form, required: true, label: "Street Address", :input_html => { :name => "account[addresses_attributes][][street_address]", id: 'street_number'} %>
+          <%= add.input :suite_number, wrapper: :wizard_horizontal_form, required: false,label: "Suite Number", :input_html => { :name => "account[addresses_attributes][][suite_number]", id: "subpremise", :readonly => true} %>
           <%= add.input :city, wrapper: :wizard_horizontal_form, required: true, label: "City", :input_html => { :name => "account[addresses_attributes][][city]", id: "locality", :readonly => true} %>
-          <%= add.input :region, wrapper: :wizard_horizontal_form, required: true, label: "Province/State", :input_html => { :name => "account[addresses_attributes][][region]", :readonly => true, id: "administrative_area_level_1"} %>
-          <%= add.input :postcode, wrapper: :wizard_horizontal_form, required: true, label: "Post/Zipcode", :input_html => { :name => "account[addresses_attributes][][postcode]", :readonly => true, id: "postal_code"} %>
+          <%= add.input :region, wrapper: :wizard_horizontal_form, required: false, label: "Province/State", :input_html => { :name => "account[addresses_attributes][][region]", :readonly => true, id: "administrative_area_level_1"} %>
+          <%= add.input :postcode, wrapper: :wizard_horizontal_form, required: false, label: "Post/Zipcode", :input_html => { :name => "account[addresses_attributes][][postcode]", :readonly => true, id: "postal_code"} %>
           <div class="form-group">
             <label class="col-sm-offset-2 col-sm-2 control-label">Country<span class="asterisk">*</span></label>
             <div class="col-sm-4 country_select">

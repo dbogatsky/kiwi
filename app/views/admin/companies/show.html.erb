@@ -12,7 +12,7 @@
 <div class="profile-header">
   <div class="row">
     <div class="col-sm-3">
-      <%= image_tag "photos/default_firm_picture.jpg" class:"thumbnail img-responsive" %>
+      <%= image_tag("photos/default_firm_picture.jpg", class:"thumbnail img-responsive") %>
       <div class="mb30"></div>
       <h5 class="subtitle">Connect
       </h5>
@@ -40,8 +40,9 @@
 	              <% if address.name.present? %>
 	                <strong><%= address.name %></strong>
 	              <% end %>
-	              <a href="https://maps.google.com?daddr=<%= address.street_address %>+<%= address.city %>+<%= address.region %>+<%= address.country %>+<%= address.postcode %>" target="_blank">
-	              <%= address.street_address %><br>
+	              <a href="https://maps.google.com?daddr=<%= address.suite_number.present? ? address.suite_number + "-" : "" %><%= address.street_address %>+<%= address.city %>+<%= address.region %>+<%= address.country %>+<%= address.postcode %>" target="_blank">
+                <%= address.suite_number.present? ? address.suite_number + "-" : "" %>
+                <%= address.street_address %><br>
 	              <%= address.city %>, <%= address.region %>, <%= address.country %><br />
 	              <%= address.postcode %>
 	              </a>

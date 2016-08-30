@@ -36,7 +36,7 @@
                 <input type="hidden" name="add_from_schedule" value= "true">
               <%end%>
               <%if account.present? && account.addresses.present? %>
-               <%address = "#{account.addresses.last.street_address}" +', ' + "#{account.addresses.last.city}" +', ' + "#{account.addresses.last.postcode}" +', ' + "#{account.addresses.last.region}" +', ' + "#{account.addresses.last.country}"%>
+               <%address = "#{account.addresses.first.suite_number}" +"#{account.addresses.first.suite_number.present? ? '-' : ''}"+"#{account.addresses.first.street_address}" +', ' + "#{account.addresses.first.city}" +', ' + "#{account.addresses.first.postcode}" +', ' + "#{account.addresses.first.region}" +', ' + "#{account.addresses.first.country}"%>
               <%else%>
                <%address = ''%>
               <%end%>

@@ -816,7 +816,7 @@ class AccountsController < ApplicationController
   def account_params
     params.require(:account).permit(
       :name, :status_id, :contact_name, :expected_sales, :contact_title, :assign_to, :shared_with, :about, :quick_facts, :avatar,
-      addresses_attributes: [:id, :name, :street_address, :postcode, :city, :region, :latitude, :longitude, :country, :_destroy],
+      addresses_attributes: [:id, :name, :street_address, :suite_number, :postcode, :city, :region, :latitude, :longitude, :country, :_destroy],
       contacts_attributes: [:id, :type, :name, :value, :_destroy]
     )
   end
