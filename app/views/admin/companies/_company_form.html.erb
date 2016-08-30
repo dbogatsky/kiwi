@@ -45,6 +45,14 @@
                <%= text_field_tag 'company[addresses_attributes][0][street_address]' , @address.try(:street_address), wrapper: :wizard_horizontal_form, class: 'form-control', required: true, id: 'street_number'%>
               </div>
             </div>
+
+            <div class="form-group">
+              <label class="col-sm-offset-2 col-sm-2 control-label">Suite Number</label>
+              <div class="col-sm-4">
+               <%= text_field_tag 'company[addresses_attributes][0][suite_number]' , @address.try(:suite_number), wrapper: :wizard_horizontal_form, class: 'form-control',id: 'subpremise', readonly: true%>
+              </div>
+            </div>
+
             <div class="form-group">
               <label class="col-sm-offset-2 col-sm-2 control-label">City<span class="asterisk">*</span></label>
               <div class="col-sm-4">
