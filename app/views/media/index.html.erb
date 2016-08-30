@@ -94,13 +94,12 @@
                       <img src="<%=cdn_url%>" class="img-responsive" alt="" />
                     <%end%>
                   <% elsif media.document? %>
-                    <img alt="" class="img-responsive" src="/assets/bootstrap/images/photos/media-doc.png">
+                    <%= image_tag("photos/media-doc.png", class:"img-responsive") %>
                   <% elsif media.audio? %>
-                    <img alt="" class="img-responsive" src="/assets/bootstrap/images/photos/media-audio.png">
+                    <%= image_tag("photos/media-audio.png", class:"img-responsive") %>
                   <% elsif media.video? %>
-                    <img alt="" class="img-responsive" src="/assets/bootstrap/images/photos/media-video.png">
+                    <%= image_tag("photos/media-video.png", class:"img-responsive") %>
                   <% end %>
-
                 </div>
                 <h5 class="fm-title"><a target="_blank" href="<%=download_file_path(cdn_url, media.name)%>"><%=media.name%></a></h5>
                 <small class="text-muted">Added: <%= media.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%b %d, %Y")%></small>
