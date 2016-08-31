@@ -20,7 +20,7 @@
             <div class="btn-group">
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                 <% if current_user.avatar_url.eql? "/avatars/web/missing.png" || !(current_user.avatar_url.present?)%>
-                  <img src="/assets/bootstrap/images/user.png" alt="" />
+                  <%= image_tag("user.png") %>
                 <% else %>
                   <img alt="" src="<%= current_user.avatar_url %>">
                 <% end %>
