@@ -46,13 +46,7 @@ class AccountsController < ApplicationController
     @account.user_account_sharings.each { |u| @shared_user << u.user }
     @users = User.all(uid: session[:user_id])
     @notifiable_users = notifiable_users_json(params[:id])
-    # if params[:notification_id].present?
-    #   @notification = Notification.find(params[:notification_id])
-    #   @notification.update_attributes(read_at: Time.now)
-    #   notification_info
-    # end
-
-    ##account_timeline_conversation_items
+    @timeline_conversation_items = @account.conversation.conversation_items
   end
 
   def new
@@ -110,6 +104,14 @@ class AccountsController < ApplicationController
       flash[:danger] = 'Oops! Unable to delete the account'
     end
     render :nothing => true
+  end
+
+
+  def load_more_conversation_item
+    @account = params[:id]
+    @conversation_id = params[:conversation_id]
+    @conversation_items =  ConversationItem.find(:all, params: {conversation_id: @conversation_id, page: params[:page]})
+    @next_page = @conversation_items.next_page
   end
 
   def schedule_meeting

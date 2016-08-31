@@ -1,73 +1,19 @@
-<% if !@account.conversation.conversation_items.nil? && @account.conversation.conversation_items.count > 0 %>
-<section id="cd-timeline" class="cd-container" >
-  <% @account.conversation.conversation_items.each do |i| %>
-    <div class="cd-timeline-block">
-        <% if i.type.eql? 'note' %>
-          <%= render "conversation_notes_show", :citem => i %>
-        <% elsif i.type.eql? 'reminder' %>
-          <%= render "conversation_reminder_show", :citem => i %>
-        <% elsif i.type.eql? 'email' %>
-          <%= render "conversation_email_show", :citem => i %>
-        <% elsif i.type.eql? 'call' %>
-          <%= render "conversation_phone_show", :citem => i %>
-        <% elsif i.type.eql? 'meeting' %>
-          <%= render "conversation_meeting_show", info: nil, created_by: i.created_by, :citem => i %>
-        <% elsif i.type.eql? 'quote' %>
-          <%= render "conversation_quotes_show", info: nil, created_by: i.created_by, :citem => i %>
-        <%elsif i.type.eql? 'account'%>
-          <%= render "conversation_account_show", :citem => i %>
-        <% end %>
-    </div>
-  <% end %>
-</section> <!-- cd-timeline -->
-<% else %>
-<div class="row">
-  <div class="col-sm-12">
-    <div class="row">
-      <div class="col-md-12">
-        <!--<section class="cd-container">-->
-          <h3>No items available</h3>
-        <!--</section>-->
-      </div>
-    </div>
+<% timeline_conversation_items.each do |i| %>
+  <div class="cd-timeline-block">
+    <% if i.type.eql? 'note' %>
+      <%= render "conversation_notes_show", :citem => i %>
+    <% elsif i.type.eql? 'reminder' %>
+      <%= render "conversation_reminder_show", :citem => i %>
+    <% elsif i.type.eql? 'email' %>
+      <%= render "conversation_email_show", :citem => i %>
+    <% elsif i.type.eql? 'call' %>
+      <%= render "conversation_phone_show", :citem => i %>
+    <% elsif i.type.eql? 'meeting' %>
+      <%= render "conversation_meeting_show", info: nil, created_by: i.created_by, :citem => i %>
+    <% elsif i.type.eql? 'quote' %>
+      <%= render "conversation_quotes_show", info: nil, created_by: i.created_by, :citem => i %>
+    <%elsif i.type.eql? 'account'%>
+      <%= render "conversation_account_show", :citem => i %>
+    <% end %>
   </div>
-</div>
 <% end %>
-
-<%
-
-#<% if @timeline_items.present? &&  @timeline_items.size > 0 % >
-#<section id="cd-timeline" class="cd-container" >
-#  <% @timeline_items.each do |i| % >
-#    <div class="cd-timeline-block">
-#        <% if i.type.eql? 'note' % >
-#          <%= render "conversation_notes_show", :citem => i % >
-#        <% elsif i.type.eql? 'reminder' % >
-#          <%= render "conversation_reminder_show", :citem => i % >
-#        <% elsif i.type.eql? 'email' % >
-#          <%= render "conversation_email_show", :citem => i % >
-#        <% elsif i.type.eql? 'call' % >
-#          <%= render "conversation_phone_show", :citem => i % >
-#        <% elsif i.type.eql? 'meeting' % >
-#          <%= render "conversation_meeting_show",info: nil, created_by: i.created_by, :citem => i % >
-#        <% elsif i.type.eql? 'quote' % >
-#          <%= render "conversation_quotes_show",info: nil, created_by: i.created_by, :citem => i % >
-#        <% end % >
-#    </div>
-#  <% end % >
-#</section> <!-- cd-timeline -->
-#<% else % >
-#<div class="row">
-#  <div class="col-sm-12">
-#    <div class="row">
-#      <div class="col-md-12">
-#        <!--<section class="cd-container">-->
-#          <h3>No items available</h3>
-#        <!--</section>-->
-#      </div>
-#    </div>
-#  </div>
-#</div>
-#<% end % >
-
-%>
