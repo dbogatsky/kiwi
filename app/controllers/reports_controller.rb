@@ -20,7 +20,9 @@ class ReportsController < ApplicationController
     search[:starts_at_gteq] = "#{s_date} 00:00:00"
     search[:starts_at_lteq] = "#{e_date} 23:59:59"
     @meetings = ConversationItemSearch.all(params: { user_ids: user_ids, search: search })
-
+    if @meetings.next_page
+      @meetings = ConversationItemSearch.all(params: { user_ids: user_ids, search: search, per_page: @meetings.total_entries})
+    end
     day_of_Week_bar_chart_data(@meetings)
     # time_of_day_bar_chart_data(@meetings)
     meetings_by_account_status_data(@meetings)
@@ -93,8 +95,10 @@ class ReportsController < ApplicationController
     search.delete(:user_id_in)
 
     # we can use the same params since items table also used "updated_at"
-    @citems = ConversationItemSearch.all(params: { user_ids: user_ids, search: search })
-
+    @citems = ConversationItemSearch.all(params: { user_ids: user_ids, search: search})
+    if @citems.next_page
+      @citems = ConversationItemSearch.all(params: { user_ids: user_ids, search: search, per_page: @citems.total_entries})
+    end
     # find the counts for each type of event that has happened
     @totals = { general_meeting: 0, regular_meeting: 0 }
 
