@@ -62,7 +62,7 @@
                         </a>
                       <%end%>
                     <%else%>
-                      <a class="btn btn-xs btn-default pull-right mr5 jumpin" id="<%=citem.id%>" data-conversation-id = "<%=citem.prefix_options[:conversation_id].present? ? citem.prefix_options[:conversation_id] : citem.conversation_id%>">
+                      <a class="btn btn-xs btn-default pull-right mr5 jumpin" id="<%=meeting.id%>" data-conversation-id = "<%=meeting.prefix_options[:conversation_id].present? ? meeting.prefix_options[:conversation_id] : meeting.conversation_id%>">
                         <i class="fa fa-sign-in mr5"></i><span class="position_button">Jump In</span>
                       </a>
                     <%end%>
