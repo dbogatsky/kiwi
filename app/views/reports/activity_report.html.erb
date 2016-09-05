@@ -16,9 +16,9 @@
             <div class="form-group">
               <label class="control-label">Start Date</label>
               <%if mobile?%>
-                <input id="activity_from_datepicker" type="date" name="search[date_gteq]" required="required" placeholder="Start Date"/>
+                <input class="report_from_datepicker" type="date" name="search[date_gteq]" required="required" placeholder="Start Date"/>
               <%else%>
-                <input type="text" name="search[date_gteq]" class="form-control" placeholder="Start Date" id="activity_from_datepicker" required="required">
+                <input type="text" name="search[date_gteq]" class="form-control report_from_datepicker" placeholder="Start Date" required="required">
               <%end%>
             </div>
           </div>
@@ -26,9 +26,9 @@
             <div class="form-group">
               <label class="control-label">End Date</label>
               <%if mobile?%>
-                <input id="activity_to_datepicker" type="date" name="search[date_lteq]" required="required" placeholder="End Date"/>
+                <input  class="report_to_datepicker" type="date" name="search[date_lteq]" required="required" placeholder="End Date"/>
               <%else%>
-                <input type="text" class="form-control" name="search[date_lteq]" placeholder="End Date"id="activity_to_datepicker" required="required">
+                <input type="text" class="form-control report_to_datepicker" name="search[date_lteq]" placeholder="End Date" required="required">
               <%end%>
             </div>
           </div>
@@ -52,41 +52,3 @@
     </div>
   </div>
 </div>
-<script type="text/javascript">
-  $("#select_users").select2({
-    width: '100%'
-  });
-  if(mobile == 'false'){
-    $("#activity_to_datepicker").datepicker()
-    $('#activity_from_datepicker').datepicker({
-      dateFormat: 'mm/dd/yy',
-      altField: "#activity_to_datepicker",
-      altFormat: "mm/dd/yy",
-      onSelect: function (selected) {
-        var min = new Date(selected);
-        var max = new Date(selected);
-        max.setDate(max.getDate()+90);
-        $('#activity_to_datepicker').datepicker('option', { minDate: min, maxDate: max});
-      }
-    });
-  }else{
-    $('#activity_from_datepicker').on('change', function() {
-      $('#activity_to_datepicker').prop('min', $(this).val());
-      var dt = $(this).val()
-      var new_date = new Date(dt)
-      new_date.setDate(new_date.getDate()+90)
-      year = new_date.getFullYear()
-      month = new_date.getMonth()+1
-      date = new_date.getDate()
-      if(month < 10){
-       month = '0'+month
-      }
-      if(date < 10){
-        date = '0'+date
-      }
-      max_date = year+'-'+month+'-'+date
-      $('#activity_to_datepicker').prop('max', max_date);
-      $('#activity_to_datepicker').val($(this).val());
-    });
-  }
-</script>

@@ -350,6 +350,46 @@
         }
       });
     });
+
+
+    if(mobile == 'false'){
+      $(".report_to_datepicker").datepicker()
+      $('.report_from_datepicker').datepicker({
+        dateFormat: 'mm/dd/yy',
+        altField: ".report_to_datepicker",
+        altFormat: "mm/dd/yy",
+        onSelect: function (selected) {
+          var min = new Date(selected);
+          var max = new Date(selected);
+          max.setDate(max.getDate()+31);
+          $('.report_to_datepicker').datepicker('option', { minDate: min, maxDate: max});
+        }
+      });
+    }else{
+
+      $('.report_from_datepicker').on('change', function() {
+        $('.report_to_datepicker').prop('min', $(this).val());
+        var dt = $(this).val()
+        var new_date = new Date(dt)
+        new_date.setDate(new_date.getDate()+31)
+        year = new_date.getFullYear()
+        month = new_date.getMonth()+1
+        date = new_date.getDate()
+        if(month < 10){
+         month = '0'+month
+        }
+        if(date < 10){
+          date = '0'+date
+        }
+        max_date = year+'-'+month+'-'+date
+        $('.report_to_datepicker').prop('max', max_date);
+        $('.report_to_datepicker').val($(this).val());
+      });
+    }
+
+    $("#select_users").select2({
+      width: '100%'
+    });
   });
 </script>
 <!-- end of shared javascript -->
