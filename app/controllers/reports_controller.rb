@@ -20,7 +20,20 @@ class ReportsController < ApplicationController
     search[:starts_at_gteq] = "#{s_date} 00:00:00"
     search[:starts_at_lteq] = "#{e_date} 23:59:59"
     @meetings = ConversationItemSearch.all(params: { user_ids: user_ids, search: search })
-
+    if @meetings.next_page
+      if @meetings.total_entries > 500
+        flash[:danger] = 'Sorry, we are unable to process your request. The max result limit has been reached.
+Please contact your administrator to help generate a report.'
+        redirect_to activity_report_path
+      else
+        total_page = (@meetings.total_entries.to_f/50).ceil
+        @meetings = []
+        (1..total_page).each do |n|
+          @meetings << ConversationItemSearch.all(params: { user_ids: user_ids, search: search, page: n, per_page: 50 })
+          @meetings = @meetings.flatten
+        end
+      end
+    end
     day_of_Week_bar_chart_data(@meetings)
     # time_of_day_bar_chart_data(@meetings)
     meetings_by_account_status_data(@meetings)
@@ -94,6 +107,20 @@ class ReportsController < ApplicationController
 
     # we can use the same params since items table also used "updated_at"
     @citems = ConversationItemSearch.all(params: { user_ids: user_ids, search: search })
+    if @citems.next_page
+      if @citems.total_entries > 500
+        flash[:danger] = 'Sorry, we are unable to process your request. The max result limit has been reached.
+Please contact your administrator to help generate a report.'
+        redirect_to activity_report_path
+      else
+        total_page = (@citems.total_entries.to_f/50).ceil
+        @citems = []
+        (1..total_page).each do |n|
+          @citems << ConversationItemSearch.all(params: { user_ids: user_ids, search: search, page: n, per_page: 50 })
+          @citems = @citems.flatten
+        end
+      end
+    end
 
     # find the counts for each type of event that has happened
     @totals = { general_meeting: 0, regular_meeting: 0 }

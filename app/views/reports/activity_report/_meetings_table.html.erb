@@ -15,7 +15,7 @@
         <% @sorted_citems[:meeting].each do | meeting | %>
           <tr>
             <td><%= meeting.item_type %></td>
-            <td><%= meeting.title %></td>
+            <td class="td_width"><%= meeting.title %></td>
             <td><%= meeting.updated_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%b %d") %></td>
             <td>
               <%=render 'reports/activity_report/meeting_activity_details', meeting: meeting%>

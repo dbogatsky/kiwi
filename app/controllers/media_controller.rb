@@ -164,7 +164,7 @@ class MediaController < ApplicationController
     curlRes = `curl -X POST -F"medium[payload]=#{serverPath};type=#{content_type}" -F"type=#{type}" -F"medium[name]=#{filename}" -F"medium[parent_id]=#{folderId}" -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" "#{apiURL}" -v`;
     #abort(curlRes.inspect)
     message = ''
-    if curlRes == nil
+    if curlRes.nil? || curlRes.blank?
       message = 'File is not uploaded'
     else
       curlRes = JSON.parse(curlRes);
