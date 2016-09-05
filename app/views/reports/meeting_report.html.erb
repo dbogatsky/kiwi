@@ -37,7 +37,10 @@
           <%if current_user.roles.last.try(:name) != 'User'%>
             <label class="control-label">Users</label>
             <select class="select2" id="select_users" name="users[]" multiple="multiple" required="required" class="form-control" data-placeholder="Filter report by user(s)">
-              <%= options_for_select(User.all(uid: session[:user_id], reload: true).collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] }, selected: current_user.id) %>
+              <%= options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] }, selected: current_user.id) %>
+              <% if @users.count > 1 %>
+                <option value="all">All</option>
+              <% end %>
             </select>
           <%end%>
         </div>
