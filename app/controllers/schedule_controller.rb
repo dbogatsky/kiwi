@@ -112,14 +112,8 @@ class ScheduleController < ApplicationController
 
     events = []
     @meetings.each do |i|
-      s_date = Chronic.parse(i.starts_at).in_time_zone(current_user.time_zone)
-      e_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone)
-      if @daylight_setting == 'enable'
-        s_date = s_date - 1.hour if s_date.dst?
-        e_date = e_date - 1.hour if e_date.dst?
-      end
-      s_date = s_date.strftime('%Y-%m-%dT%H:%M:%S')
-      e_date = e_date.strftime('%Y-%m-%dT%H:%M:%S')
+      s_date = Chronic.parse(i.starts_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
+      e_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
       if i.item_type == 'regular'
         all_day = true
         color = '#660066'
@@ -141,14 +135,8 @@ class ScheduleController < ApplicationController
     end
 
     @reminders.each do |i|
-      s_date = Chronic.parse(i.scheduled_at).in_time_zone(current_user.time_zone)
-      e_date = Chronic.parse(i.scheduled_at).in_time_zone(current_user.time_zone)
-      if @daylight_setting == 'enable'
-        s_date = s_date - 1.hour if s_date.dst?
-        e_date = e_date - 1.hour if e_date.dst?
-      end
-      s_date = s_date.strftime('%Y-%m-%dT%H:%M:%S')
-      e_date = e_date.strftime('%Y-%m-%dT%H:%M:%S')
+      s_date = Chronic.parse(i.scheduled_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
+      e_date = Chronic.parse(i.scheduled_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
       color = '#f0ca45'
       event_data = {
         account_id: i.account_id,
@@ -163,14 +151,8 @@ class ScheduleController < ApplicationController
     end
 
     @quotes.each do |i|
-      s_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone)
-      e_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone)
-      if @daylight_setting == 'enable'
-        s_date = s_date - 1.hour if s_date.dst?
-        e_date = e_date - 1.hour if e_date.dst?
-      end  
-      s_date = s_date.strftime('%Y-%m-%dT%H:%M:%S')
-      e_date = e_date.strftime('%Y-%m-%dT%H:%M:%S')
+      s_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
+      e_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone).strftime('%Y-%m-%dT%H:%M:%S')
       color = '#e91e63'
       event_data = {
         account_id: i.account_id,
