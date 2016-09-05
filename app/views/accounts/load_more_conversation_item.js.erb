@@ -1,0 +1,6 @@
+<%if @next_page%>
+  $(".load_more_btn").attr("href","/accounts/<%=@account%>/load_more_conversation_item?conversation_id=<%=@conversation_id%>&page=<%=@next_page%>");
+<%else%>
+  $(".load_more").hide();
+<%end%>
+$("#cd-timeline").append("<%=j render 'conversation_timeline', timeline_conversation_items: @conversation_items %>");

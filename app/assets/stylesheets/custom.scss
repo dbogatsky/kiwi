@@ -302,6 +302,15 @@ body.modal-open {
 .background_color{
   background-color: #fcfcfc;
 }
+
+.load_more{text-align: center; padding-left: 65px;}
+.load_more_btn{
+  background: #f7f7f7 !important;
+  border-color: #A94442 !important;
+  color: #A94442 !important;
+  height: 38px !important;
+  border-width: 2px !important;
+
 .outline_none{
   box-shadow:0 0 0;
   outline:0;
@@ -309,4 +318,5 @@ body.modal-open {
 
 .td_width{
   width: 50%
+
 }
