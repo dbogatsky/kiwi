@@ -1,6 +1,6 @@
 require 'net/http/post/multipart'
 class Admin::CompaniesController < Admin::AdminController
-  before_action :find_company, only: [:edit, :show, :update]
+  before_action :find_company, only: [:edit, :show, :update, :setting]
 
   def new
     @company = BoCompany.new
@@ -46,6 +46,14 @@ class Admin::CompaniesController < Admin::AdminController
       flash[:danger] = 'Company not updated!'
     end
     redirect_to admin_companies_path
+  end
+
+  def setting
+     get_company_setting
+  end
+
+  def set_company_level_setting
+    redirect_to setting_admin_company_path
   end
 
   private

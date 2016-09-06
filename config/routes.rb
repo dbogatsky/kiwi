@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   namespace :admin do
     resources :companies do
+      member do
+        get  :setting
+        patch :set_company_level_setting
+      end
       resources :users do
         match :change_password, via: [:get, :patch]
       end

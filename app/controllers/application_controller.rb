@@ -529,6 +529,10 @@ class ApplicationController < ActionController::Base
     @daylight_setting = preferences['company']['settings']['preferences']['enable_dst']
   end
 
+  def get_company_setting
+    @assets_management = 'enable'
+  end
+
   def get_api_values
     @email = current_user.email
     @appKey = APP_CONFIG['api_app_key']

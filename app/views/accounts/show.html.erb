@@ -163,6 +163,7 @@
                   <li><a href="#" data-toggle="modal" data-target=".conversation-reminder-modal-form">Add Reminder</a></li>
                   <li><a href="#" data-toggle="modal" data-target=".conversation-quote-modal-form">Add Quote</a></li>
                   <li><a href="#" data-toggle="modal" data-target=".account-action-email">Send Email</a></li>
+                  <li><a href="#" data-toggle="modal" data-target="#">Assets</a></li>
                   <% end %>
                 <% if can? :manage_shared_accounts, @account %>
                   <% if can? :manage_permission, ConversationItem %><li class="divider"></li><% end %>
@@ -174,30 +175,43 @@
         </div><!-- col -->
       </div><!-- row -->
       <div class="mb20"></div>
-      <% if can? :read, ConversationItem %>
-        <!--- Timeline Start -->
-        <div id="timeline_show">
-          <% if !@timeline_conversation_items.nil? && @timeline_conversation_items.count > 0 %>
-            <section id="cd-timeline" class="cd-container" >
-              <%= render "conversation_timeline", timeline_conversation_items: @timeline_conversation_items %>
-            </section>
-            <%if @timeline_conversation_items.next_page%>
-              <div class="col-sm-12 load_more"><%=link_to 'Load More', load_more_conversation_item_account_path(@account, conversation_id: @account.conversation.id, page: @timeline_conversation_items.next_page), remote: :true, class: "btn btn-default load_more_btn"%></div>
-            <%end%>
-          <% else %>
-            <div class="row">
-              <div class="col-sm-12">
+      <ul class="nav nav-tabs nav-dark">
+        <li class="active active_color"><a href="#conversation" data-toggle="tab"><strong>CONVERSATION</strong></a></li>
+        <%if @assets_management == ''%>
+          <li class="active_color"><a href="#assets_management" data-toggle="tab"><strong>ASSETS MANAGEMENT</strong></a></li>
+        <%end%>
+      </ul>
+      <div class="tab-content mb30 tab_background">
+        <div class="tab-pane active" id="conversation">
+          <% if can? :read, ConversationItem %>
+            <!--- Timeline Start -->
+            <div id="timeline_show">
+              <% if !@timeline_conversation_items.nil? && @timeline_conversation_items.count > 0 %>
+                <section id="cd-timeline" class="cd-container" >
+                  <%= render "conversation_timeline", timeline_conversation_items: @timeline_conversation_items %>
+                </section>
+                <%if @timeline_conversation_items.next_page%>
+                  <div class="col-sm-12 load_more"><%=link_to 'Load More', load_more_conversation_item_account_path(@account, conversation_id: @account.conversation.id, page: @timeline_conversation_items.next_page), remote: :true, class: "btn btn-default load_more_btn"%></div>
+                <%end%>
+              <% else %>
                 <div class="row">
-                  <div class="col-md-12">
-                      <h3>No items available</h3>
+                  <div class="col-sm-12">
+                    <div class="row">
+                      <div class="col-md-12">
+                          <h3>No items available</h3>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              <% end %>
             </div>
+            <!--- Timeline End -->
           <% end %>
         </div>
-        <!--- Timeline End -->
-      <% end %>
+        <div class="tab-pane" id="assets_management">
+          <span>ASSETS MANAGEMENT</span>
+        </div>
+      </div>
     </div> <!-- col-sm-9 -->
   </div><!-- row -->
 </div><!-- profile-header -->
