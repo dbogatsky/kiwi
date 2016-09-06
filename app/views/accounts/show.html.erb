@@ -182,7 +182,7 @@
               <%= render "conversation_timeline", timeline_conversation_items: @timeline_conversation_items %>
             </section>
             <%if @timeline_conversation_items.next_page%>
-              <div class="col-sm-12 load_more"><%=link_to 'Load More', load_more_conversation_item_account_path(@account, conversation_id: @account.conversation.id, page: @timeline_conversation_items.next_page), remote: :true, class: "btn btn-default load_more_btn"%></div>
+              <div class="col-sm-12 load_more"><%=link_to 'Load More', load_more_conversation_item_account_path(@account, conversation_id: @account.conversation.id, page: @timeline_conversation_items.next_page), remote: :true, class: "btn btn-primary btn-lg btn-block load_more_btn"%></div>
             <%end%>
           <% else %>
             <div class="row">
