@@ -55,7 +55,8 @@
       <% ("a".."z").each do |l| %>
         <li><%= link_to l, accounts_path(search: {name_start: l}) %></li>
       <% end %>
-      <li><a href="/accounts">All</a></li>
+      <li><a href="/accounts?view_all=true">All</a></li>
+      <!-- accounts_path(view_all: true) -->
     </ul>
   </div>
 </div><!-- row -->

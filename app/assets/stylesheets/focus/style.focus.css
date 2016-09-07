@@ -45,6 +45,14 @@ select.input-reg {
     margin: 5px 5px 5px 0px;
 }
 
+.meeting-fa-icon {
+    margin: 5px 5px 5px 0px;
+}
+
+.meeting-fa-account {
+    margin: 5px 5px 5px 0px;
+}
+
 .ci_note_body {
     font-size:14px!important;
 }
