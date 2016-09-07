@@ -313,6 +313,23 @@ body.modal-open {
 
 }
 
-.active_color.active a, .tab_background{
-  background: #e4e7ea !important;
+.tab_background{
+  background: #eeeeee !important;
+}
+.nav-tabs-simple.nav-tabs{
+border-top:0;
+border-left:0;
+border-right:0;
+      border-bottom: 2px solid #ddd;
+    background:none;
+}
+.nav-tabs-simple>li.active a, .nav-tabs-simple>li.active a:hover, .nav-tabs-simple>li.active a:focus {
+  background-color: transparent;
+}
+
+.nav-tabs-simple>li{
+  background:#fff;
+}
+.nav-tabs-simple>li.active,.nav-tabs-simple>li:hover{
+  border-bottom:2px solid #000;
 }

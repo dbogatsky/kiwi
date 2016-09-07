@@ -175,10 +175,10 @@
         </div><!-- col -->
       </div><!-- row -->
       <div class="mb20"></div>
-      <ul class="nav nav-tabs nav-dark">
-        <li class="active active_color"><a href="#conversation" data-toggle="tab"><strong>CONVERSATION</strong></a></li>
-        <%if @assets_management == ''%>
-          <li class="active_color"><a href="#assets_management" data-toggle="tab"><strong>ASSETS MANAGEMENT</strong></a></li>
+      <ul class="nav nav-tabs nav-tabs-simple hidden-xs">
+        <li class="active"><a href="#conversation" data-toggle="tab"><strong>TIMELINE</strong></a></li>
+        <%if @assets_management == 'enable'%>
+          <li class=""><a href="#assets_management" data-toggle="tab"><strong>ASSETS</strong></a></li>
         <%end%>
       </ul>
       <div class="tab-content mb30 tab_background">
