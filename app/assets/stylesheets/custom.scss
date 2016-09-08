@@ -312,3 +312,8 @@ body.modal-open {
   width: 50%
 
 }
+
+.type_validate::-webkit-outer-spin-button,
+.type_validate::-webkit-inner-spin-button {
+    display: none;
+}
