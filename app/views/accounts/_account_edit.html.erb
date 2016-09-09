@@ -61,16 +61,16 @@
           <%= f.simple_fields_for :contacts_attributes do |c| %>
             <%if current_contact.type == 'email'%>
               <%type = 'email'%>
-              <%pattern = ''%>
+              <%cls = ''%>
             <%elsif current_contact.type == 'website' || current_contact.type == 'facebook' || current_contact.type == 'youtube'%>
               <%type = 'url'%>
-              <%pattern = ''%>
+              <%cls = ''%>
             <%elsif current_contact.type == 'phone' || current_contact.type == 'fax' || current_contact.type == 'mobile'%>
               <%type = 'text'%>
-              <%pattern = "[0-9]*"%>
+              <%cls = "phone_validate"%>
             <%else%>
               <%type = 'text'%>
-              <%pattern = ''%>
+              <%cls = ''%>
             <%end%>
             <div class="form-group">
               <input type="hidden" name="account[contacts_attributes][<%= current_contact.id %>][id]" value="<%= current_contact.id %>" >
@@ -87,7 +87,7 @@
               <label class="col-sm-1 control-label">Value<span class="asterisk">*</span></label>
               <div class="col-sm-2">
                 <%#= c.input :value, required: true, :input_html => { :name => "account[contacts_attributes][][value]"} %>
-                <%= c.input_field :value, { required: true, label: 'Value', name: "account[contacts_attributes][#{current_contact.id}][value]", type: type , pattern: pattern, class: "form-control type_validate", :value => current_contact.value, :id => "account_contacts_attributes_value_#{current_contact.id}" } %>
+                <%= c.input_field :value, { required: true, label: 'Value', name: "account[contacts_attributes][#{current_contact.id}][value]", type: type , class: "form-control type_validate #{cls}", :value => current_contact.value, :id => "account_contacts_attributes_value_#{current_contact.id}" } %>
               </div>
               <div class="col-sm-1"><button class="remove-contact-button btn btn-danger btn-xs">Remove</button></div>
             </div>
@@ -203,7 +203,7 @@
               </div>\
               <label class="col-sm-1 control-label">Value<span class="asterisk">*</span></label>\
               <div class="col-sm-2">\
-                <input label="Value" name="account[contacts_attributes]['+t+'][value]" class="form-control type_validate" required id="account_contacts_attributes_value_'+t+'" type="text" pattern="[0-9]*" placeholder="contact value">\
+                <input label="Value" name="account[contacts_attributes]['+t+'][value]" class="form-control type_validate phone_validate" required id="account_contacts_attributes_value_'+t+'" type="text" placeholder="contact value">\
               </div>\
               <div class="col-sm-1"><button class="remove-contact-button btn btn-danger btn-xs">Remove</button></div>\
             </div>\

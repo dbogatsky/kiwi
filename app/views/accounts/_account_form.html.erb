@@ -85,7 +85,7 @@
               <label class="col-sm-1 control-label">Value<span class="asterisk">*</span></label>
               <div class="col-sm-2">
                 <%#= c.input :value, required: true, :input_html => { :name => "account[contacts_attributes][][value]"} %>
-                <%= c.input_field :value, { required: true, placeholder: 'contact value', label: 'Value', type: 'text', pattern: "[0-9]*" name: "account[contacts_attributes][#{t}][value]", class: "form-control tooltips type_validate", id: "account_contacts_attributes_value_1", 'data-toggle'=>'tooltip', 'data-trigger'=>'hover', 'data-original-title'=>'Enter the Value such as the Phone number or Website Address' } %>
+                <%= c.input_field :value, { required: true, placeholder: 'contact value', label: 'Value', type: 'text', name: "account[contacts_attributes][#{t}][value]", class: "form-control tooltips type_validate phone_validate", id: "account_contacts_attributes_value_1", 'data-toggle'=>'tooltip', 'data-trigger'=>'hover', 'data-original-title'=>'Enter the Value such as the Phone number or Website Address' } %>
               </div>
             </div>
           <% end %>
@@ -184,7 +184,7 @@
                 </div>\
                 <label class="col-sm-1 control-label">Value<span class="asterisk">*</span></label>\
                 <div class="col-sm-2">\
-                  <input label="Value" name="account[contacts_attributes]['+t+'][value]" class="form-control type_validate" required id="account_contacts_attributes_value_'+x+'" type="text" pattern="[0-9]*" placeholder="contact value">\
+                  <input label="Value" name="account[contacts_attributes]['+t+'][value]" class="form-control type_validate phone_validate" required id="account_contacts_attributes_value_'+x+'" type="text"  placeholder="contact value">\
                 </div>\
                 <div class="col-sm-1"><button class="remove-contact-button btn btn-danger btn-xs">Remove</button></div>\
               </div>\
