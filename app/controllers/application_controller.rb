@@ -529,8 +529,17 @@ class ApplicationController < ActionController::Base
     @daylight_setting = preferences['company']['settings']['preferences']['enable_dst']
   end
 
-  def get_company_setting
-    @assets_management = 'enable'
+  def get_application_setting
+    get_api_values
+    apiFullUrl = RequestStore.store[:api_url] + '/company/settings/private'
+    application_setting = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -H "Cache-Control: no-cache" "#{apiFullUrl}"`
+    application_setting = JSON.parse(application_setting)
+
+    @account_properties = application_setting["company"]["settings"]["private"]["account_properties"]
+    @account_properties = JSON.parse(@account_properties)
+    @leads = application_setting["company"]["settings"]["private"]["leads_enabled"]
+    @assets_management = application_setting["company"]["settings"]["private"]["asset_management"]
+
   end
 
   def get_api_values

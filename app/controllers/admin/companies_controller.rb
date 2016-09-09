@@ -49,7 +49,7 @@ class Admin::CompaniesController < Admin::AdminController
   end
 
   def setting
-     get_company_setting
+     get_application_setting
   end
 
   def set_company_level_setting
