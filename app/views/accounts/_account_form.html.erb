@@ -115,6 +115,34 @@
             </div>
           </div>
         <%end%>
+        <%if @account_properties.present?%>
+          <%@account_properties.each do |key,value|%>
+            <div class="form-group">
+              <label class="col-sm-offset-2 col-sm-2 control-label"><%=value["label"]%>
+                <%if value['required'].to_s == 'true'%>
+                  <span class="asterisk">*</span>
+                <%end%>
+              </label>
+              <div class="col-sm-4">
+                <%if value["format"] == 'date'%>
+                  <%if mobile?%>
+                    <input type="date" name="account_properties['<%=key%>']" required="<%=value['required']%>"/>
+                  <%else%>
+                    <%=text_field_tag "account_properties[#{key}]",value['value'], placeholder: "mm/dd/yy", class: "form-control datepicker", required: value['required'].to_s == 'false' ? false : true%>
+                  <%end%>
+                <%elsif value["format"] == 'numeric'%>
+                  <%=number_field_tag "account_properties[#{key}]", value['value'], class: 'form-control', required: value['required'].to_s == 'false' ? false : true %>
+                <%elsif value["format"] == 'enum'%>
+                  <%value['values'].each do |k,v|%>
+                    <%=check_box_tag "account_properties[#{key}][#{k}]", v, v.blank? ? false : true , class: 'form-control', required: value['required'].to_s == 'false' ? false : true%><%=v%>
+                  <%end%>
+                <%else%>
+                  <%=text_field_tag "account_properties[#{key}]", value['value'], class: "form-control", required: value['required'].to_s == 'false' ? false : true%>
+                <%end%>
+              </div>
+            </div>
+          <%end%>
+        <%end%>
         <input type="hidden" name="save">
       </div>
 

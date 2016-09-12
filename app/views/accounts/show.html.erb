@@ -101,6 +101,7 @@
                   </div>
                 </div>
                 <%if @enable_expected_sales == 'enable'%>
+                  <%x = 5%>
                   <div class="row bars">
                     <div class="col-xs-5" style="text-align:right">
                       <strong>Estimated Sales</strong>
@@ -135,6 +136,32 @@
                   </div>
                 </div>
               </div><!-- col-sm-4 -->
+              <%if @account_properties.present?%>
+                <%x = x == 5 ? 7 : 5%>
+                <%@account_properties.each do |key,value|%>
+                  <div class="col-sm-<%=x%>">
+                    <div class="row bars">
+                      <div class="col-xs-5" style="text-align:right">
+                        <strong><%=value["label"]%></strong>
+                      </div>
+                      <div class="col-xs-7">
+                        <%if value['format'] == 'date' #&& value['value'].present?%>
+                          <%#=Chronic.parse(value['value']).strftime("%B %e, %Y")%>
+                          <%=Date.today.strftime("%B %e, %Y")%>
+                        <%elsif value['format'] == 'enum' && value['values'].present?%>
+                           <%value['values'].each do |k,v|%>
+                            <%=v%>,
+                           <%end%>
+                        <%else%>
+                           <%#=value['value']%>
+                           <%= '10'%>
+                        <%end%>
+                      </div>
+                    </div>
+                  </div>
+                  <%x = x==5 ? 7 : 5%>
+                <%end%>
+              <%end%>
             </small>
           </div><!-- row -->
         </div>
