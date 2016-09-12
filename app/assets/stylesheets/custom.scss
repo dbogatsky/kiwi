@@ -333,3 +333,7 @@ border-right:0;
 .nav-tabs-simple>li.active,.nav-tabs-simple>li:hover{
   border-bottom:2px solid #000;
 }
+.type_validate::-webkit-outer-spin-button,
+.type_validate::-webkit-inner-spin-button {
+    display: none;
+}
