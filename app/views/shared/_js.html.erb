@@ -396,19 +396,22 @@
       var selected_value = $(this).val()
       if (selected_value == 'email'){
         $(this).closest('div').parent().find('.type_validate').removeClass('phone_validate')
+        $(this).closest('div').parent().find('.type_validate').removeClass('url_validate')
         $(this).closest('div').parent().find('.type_validate').val(null)
         $(this).closest('div').parent().find('.type_validate').attr('type', 'email')
       }else if(selected_value == 'facebook' || selected_value == 'youtube' || selected_value == 'website'){
         $(this).closest('div').parent().find('.type_validate').removeClass('phone_validate')
+        $(this).closest('div').parent().find('.type_validate').addClass('url_validate')
         $(this).closest('div').parent().find('.type_validate').val(null)
-        $(this).closest('div').parent().find('.type_validate').attr('type', 'url')
+        $(this).closest('div').parent().find('.type_validate').attr('type', 'text')
       }else if (selected_value == 'phone' || selected_value == 'mobile' || selected_value == 'fax'){
         $(this).closest('div').parent().find('.type_validate').val(null)
         $(this).closest('div').parent().find('.type_validate').addClass('phone_validate')
-
+        $(this).closest('div').parent().find('.type_validate').removeClass('url_validate')
         $(this).closest('div').parent().find('.type_validate').attr('type', 'text')
       }else{
         $(this).closest('div').parent().find('.type_validate').removeClass('phone_validate')
+        $(this).closest('div').parent().find('.type_validate').removeClass('url_validate')
         $(this).closest('div').parent().find('.type_validate').val(null)
         $(this).closest('div').parent().find('.type_validate').attr('type', 'text')
       }
@@ -423,7 +426,14 @@
       }
     });
 
-
+    $(document).on('keyup', '.url_validate', function(){
+      var status = valid_url($(this))
+      if (status && $(this).next().hasClass('error_lable')){
+        $(this).next().remove()
+      }else if(($(this).val()=='') && ($(this).next().hasClass('error_lable'))){
+        $(this).next().remove()
+      }
+    });
   });
 </script>
 <!-- end of shared javascript -->

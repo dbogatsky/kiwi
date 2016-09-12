@@ -47,9 +47,20 @@
 	          }
 	        });
         }
-		  var phone_status = phonenumber_status()
 
-			  if(!$valid || !phone_status) {
+        if ($("#vtab3").hasClass('active')){
+	        $(".url_validate").each(function() {
+	          var status = valid_url($(this))
+	          if (!status && $(this).val() != ''){
+	            $(this).after('<label class="error error_lable">Please enter valid URL</label>')
+	          }
+	        });
+        }
+
+		    var phone_status = phonenumber_status()
+		    var url_status = url_status()
+
+			  if(!$valid || !phone_status || !url_status) {
 			    $validator.focusInvalid();
 			    return false;
 			  }
