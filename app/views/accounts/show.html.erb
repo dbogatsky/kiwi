@@ -235,9 +235,13 @@
             <!--- Timeline End -->
           <% end %>
         </div>
+      <%if @assets_management == 'on'%>
         <div class="tab-pane" id="assets_management">
-          <span>ASSETS MANAGEMENT</span>
+          <section id="cd-assets_list" class="cd-container" >
+            <%= render "assets_list", assets_list: @assets_list %>
+          </section>
         </div>
+      <%end%>
       </div>
     </div> <!-- col-sm-9 -->
   </div><!-- row -->
