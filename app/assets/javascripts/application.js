@@ -105,7 +105,7 @@ function phonenumber(inputtxt) {
 }
 
 function valid_url(inputtxt) {
-  var url = /^((https?):\/\/)?([w|W]{3}\.)+[a-zA-Z0-9\-\.]{3,}\.[a-zA-Z]{2,}(\.[a-zA-Z]{2,})?$/;
+  var url = /^((https?):\/\/)?(.)+[a-zA-Z0-9\-\.]{3,}\.[a-zA-Z]{2,}(\.[a-zA-Z]{2,})?$/;
   if(inputtxt.val().match(url)){
     return true;
   }
