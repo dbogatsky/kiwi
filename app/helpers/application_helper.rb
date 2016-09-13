@@ -63,8 +63,6 @@ module ApplicationHelper
   def check_in(citem, info)
     if citem.check_ins.present?
       citem.check_ins.each do |ci|
-        # ci = info.present? ? OpenStruct.new(ci) : ci
-        # unless ci.class.name == 'ConversationItem::CheckIn'
         if info.present? || ci.class.name == "Hash"
           ci = OpenStruct.new(ci)
         end
@@ -84,8 +82,6 @@ module ApplicationHelper
 	def check_out(citem, info)
 		if citem.check_outs.present?
       citem.check_outs.each do |co|
-      	# co = info.present? ? OpenStruct.new(co) : co
-        # unless co.class.name == 'ConversationItem::CheckOut'
         if info.present? || co.class.name == "Hash"
           co = OpenStruct.new(co)
         end
