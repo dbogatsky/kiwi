@@ -63,8 +63,8 @@
               <%type = 'email'%>
               <%cls = ''%>
             <%elsif current_contact.type == 'website' || current_contact.type == 'facebook' || current_contact.type == 'youtube'%>
-              <%type = 'url'%>
-              <%cls = ''%>
+              <%type = 'text'%>
+              <%cls = 'url_validate'%>
             <%elsif current_contact.type == 'phone' || current_contact.type == 'fax' || current_contact.type == 'mobile'%>
               <%type = 'text'%>
               <%cls = "phone_validate"%>
