@@ -47,14 +47,14 @@ class AccountsController < ApplicationController
     @users = User.all(uid: session[:user_id])
     @notifiable_users = notifiable_users_json(params[:id])
     @timeline_conversation_items = @account.conversation.conversation_items
-    get_application_setting
+    application_settings
   end
 
   def new
     # Add an account
     @account = Account.new
     @users = User.all(uid: session[:user_id])
-    get_application_setting
+    application_settings
   end
 
   def edit
@@ -63,7 +63,7 @@ class AccountsController < ApplicationController
     @contacts = @account.contacts
     @users = User.all(uid: session[:user_id])
     @@account_with_previous_value = @account
-    get_application_setting
+    application_settings
   end
 
   def create

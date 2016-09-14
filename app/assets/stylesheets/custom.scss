@@ -317,23 +317,31 @@ body.modal-open {
   background: #eeeeee !important;
 }
 .nav-tabs-simple.nav-tabs{
-border-top:0;
-border-left:0;
-border-right:0;
-      border-bottom: 2px solid #ddd;
-    background:none;
+  border-top:0;
+  border-left:0;
+  border-right:0;
+  border-bottom: 1px solid #ddd;
+  background:none;
 }
 .nav-tabs-simple>li.active a, .nav-tabs-simple>li.active a:hover, .nav-tabs-simple>li.active a:focus {
   background-color: transparent;
 }
 
-.nav-tabs-simple>li{
-  background:#fff;
+.nav-tabs-simple>li {
+    background: #f7f7f7;
+    border-radius: 8px 8px 0px 0px;
+    margin-right: 2px;
 }
+
 .nav-tabs-simple>li.active,.nav-tabs-simple>li:hover{
-  border-bottom:2px solid #000;
+  background: #fff;
+  border-bottom:1px solid #666;
 }
 .type_validate::-webkit-outer-spin-button,
 .type_validate::-webkit-inner-spin-button {
     display: none;
+}
+
+.nav-tabs > li > a {
+    padding: 10px 20px;
 }
