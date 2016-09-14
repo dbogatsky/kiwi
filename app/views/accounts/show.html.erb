@@ -178,7 +178,7 @@
                   <li><a href="#" data-toggle="modal" data-target=".conversation-reminder-modal-form">Add Reminder</a></li>
                   <li><a href="#" data-toggle="modal" data-target=".conversation-quote-modal-form">Add Quote</a></li>
                   <li><a href="#" data-toggle="modal" data-target=".account-action-email">Send Email</a></li>
-                  <li><a href="#" data-toggle="modal" data-target="#">Assets</a></li>
+                  <li><a href="#" data-toggle="modal" data-target=".add-asset-modal-form">Asset</a></li>
                   <% end %>
                 <% if can? :manage_shared_accounts, @account %>
                   <% if can? :manage_permission, ConversationItem %><li class="divider"></li><% end %>
@@ -277,6 +277,7 @@
   <%= render "conversation_email" %>
   <%= render "conversation_email_edit" %>
   <%= render "conversation_note" %>
+  <%= render "add_asset" %>
   <%= render "conversation_note_edit", account: @account%>
   <%= render "conversation_meeting_edit", account: @account %>
   <%= render "conversation_quote_edit", account: @account %>

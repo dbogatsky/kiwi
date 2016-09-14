@@ -63,6 +63,7 @@ Rails.application.routes.draw do
   post '/accounts/check_out', to: 'accounts#check_out', as: :account_check_out
   post '/accounts/jump_in', to: 'accounts#jump_in', as: :account_jump_in
   post '/accounts/:id/add_note', to: 'accounts#add_note', as: :account_add_note
+  post '/accounts/:id/add_asset', to: 'accounts#add_asset', as: :account_add_asset
   post '/accounts/add_quote', to:'accounts#add_quote', as: :account_add_quote
   post '/accounts/add_reminder', to: 'accounts#add_reminder', as: :account_add_reminder
   post '/accounts/:id/send_email', to: 'accounts#send_email', as: :account_send_email
