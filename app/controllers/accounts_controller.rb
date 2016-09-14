@@ -53,7 +53,7 @@ class AccountsController < ApplicationController
     # Add an account
     @account = Account.new
     @users = User.all(uid: session[:user_id])
-    get_application_setting
+    application_settings
   end
 
   def edit
@@ -62,7 +62,7 @@ class AccountsController < ApplicationController
     @contacts = @account.contacts
     @users = User.all(uid: session[:user_id])
     @@account_with_previous_value = @account
-    get_application_setting
+    application_settings
   end
 
   def create
