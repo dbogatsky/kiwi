@@ -337,3 +337,17 @@ border-right:0;
 .type_validate::-webkit-inner-spin-button {
     display: none;
 }
+.color_list{
+  list-style:none;
+}
+.color_list li input[type="checkbox"]{
+float:right;
+width:50%;
+}
+.color_list input[type="file"]:focus, input[type="radio"]:focus, input[type="checkbox"]:focus{
+  outline:none;
+}
+.color_list .form-control:focus{
+  box-shadow:0 0 0;
+  border-color:transparent;
+}

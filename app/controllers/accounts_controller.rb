@@ -47,7 +47,6 @@ class AccountsController < ApplicationController
     @users = User.all(uid: session[:user_id])
     @notifiable_users = notifiable_users_json(params[:id])
     @timeline_conversation_items = @account.conversation.conversation_items
-    get_application_setting
   end
 
   def new
@@ -820,7 +819,7 @@ class AccountsController < ApplicationController
 
   def account_params
     params.require(:account).permit(
-      :name, :status_id, :contact_name, :expected_sales, :contact_title, :assign_to, :shared_with, :about, :quick_facts, :avatar,
+      :name, :status_id, :properties, :contact_name, :expected_sales, :contact_title, :assign_to, :shared_with, :about, :quick_facts, :avatar,
       addresses_attributes: [:id, :name, :street_address, :suite_number, :postcode, :city, :region, :latitude, :longitude, :country, :_destroy],
       contacts_attributes: [:id, :type, :name, :value, :_destroy]
     )

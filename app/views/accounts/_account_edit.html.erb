@@ -131,18 +131,24 @@
               <div class="col-sm-4">
                 <%if value["format"] == 'date'%>
                   <%if mobile?%>
-                    <input type="date" name="account_properties['<%=key%>']" required="<%=value['required']%>"/>
+                    <input type="date" name="account[properties]['<%=key%>']" required="<%=value['required']%>" value="<%=(@account.properties.present? && @account.properties.try(:attributes).present?) ? @account.properties.attributes[key] : nil%>"/>
                   <%else%>
-                    <%=text_field_tag "account_properties[#{key}]",value['value'], placeholder: "mm/dd/yy", class: "form-control datepicker", required: value['required'].to_s == 'false' ? false : true%>
+                    <%=text_field_tag "account[properties][#{key}]",(@account.properties.present? && @account.properties.try(:attributes).present?) ? @account.properties.attributes[key] : nil, placeholder: "yyyy/mm/dd", class: "form-control datepicker", required: value['required'].to_s == 'false' ? false : true%>
                   <%end%>
                 <%elsif value["format"] == 'numeric'%>
-                  <%=number_field_tag "account_properties[#{key}]", value['value'], class: 'form-control', required: value['required'].to_s == 'false' ? false : true %>
+                  <%=number_field_tag "account[properties][#{key}]", (@account.properties.present? && @account.properties.try(:attributes).present?) ? @account.properties.attributes[key] : nil, class: 'form-control', required: value['required'].to_s == 'false' ? false : true %>
                 <%elsif value["format"] == 'enum'%>
-                  <%value['values'].each do |k,v|%>
-                    <%=check_box_tag "account_properties[#{key}][#{k}]", v, v.blank? ? false : true , class: 'form-control', required: value['required'].to_s == 'false' ? false : true%><%=v%>
-                  <%end%>
+                  <ul class="color_list">
+                    <%value['values'].each do |k,v|%>
+                      <li>
+                        <span><%=v%></span>
+                        <%=check_box_tag "account[properties][#{key}]", v, (@account.properties.present? && @account.properties.try(:attributes).present? && @account.properties.attributes[key] == k) ? true : false, class: 'form-control'%>
+                      </li>
+                      <!-- required: value['required'].to_s == 'false' ? false : true -->
+                    <%end%>
+                  </ul>
                 <%else%>
-                  <%=text_field_tag "account_properties[#{key}]", value['value'], class: "form-control", required: value['required'].to_s == 'false' ? false : true%>
+                  <%=text_field_tag "account[properties][#{key}]", (@account.properties.present? && @account.properties.try(:attributes).present?) ? @account.properties.attributes[key] : nil, class: "form-control", required: value['required'].to_s == 'false' ? false : true%>
                 <%end%>
               </div>
             </div>

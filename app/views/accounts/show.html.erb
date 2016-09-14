@@ -136,27 +136,15 @@
                   </div>
                 </div>
               </div><!-- col-sm-4 -->
-              <%if @account_properties.present?%>
+              <%if @account.properties.present? && @account.properties.try(:attributes).present?%>
                 <%x = x == 5 ? 7 : 5%>
-                <%@account_properties.each do |key,value|%>
+                <%@account.properties.attributes.each do |key,value|%>
                   <div class="col-sm-<%=x%>">
                     <div class="row bars">
                       <div class="col-xs-5" style="text-align:right">
-                        <strong><%=value["label"]%></strong>
+                        <strong><%=key.split('_').join(' ').titleize%></strong>
                       </div>
-                      <div class="col-xs-7">
-                        <%if value['format'] == 'date' #&& value['value'].present?%>
-                          <%#=Chronic.parse(value['value']).strftime("%B %e, %Y")%>
-                          <%=Date.today.strftime("%B %e, %Y")%>
-                        <%elsif value['format'] == 'enum' && value['values'].present?%>
-                           <%value['values'].each do |k,v|%>
-                            <%=v%>,
-                           <%end%>
-                        <%else%>
-                           <%#=value['value']%>
-                           <%= '10'%>
-                        <%end%>
-                      </div>
+                      <div class="col-xs-7"><%=value%></div>
                     </div>
                   </div>
                   <%x = x==5 ? 7 : 5%>
@@ -202,9 +190,9 @@
         </div><!-- col -->
       </div><!-- row -->
       <div class="mb20"></div>
-      <ul class="nav nav-tabs nav-tabs-simple hidden-xs">
+      <ul class="nav nav-tabs nav-tabs-simple">
         <li class="active"><a href="#conversation" data-toggle="tab"><strong>TIMELINE</strong></a></li>
-        <%if @assets_management == 'on'%>
+        <%if true#@assets_management == 'on'%>
           <li class=""><a href="#assets_management" data-toggle="tab"><strong>ASSETS</strong></a></li>
         <%end%>
       </ul>
