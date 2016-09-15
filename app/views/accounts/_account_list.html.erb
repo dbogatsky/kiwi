@@ -25,7 +25,7 @@
                     <% if !account.addresses.empty? %>
                   	<address>
                       <% if !account.contact_name.nil? %>
-                        <small><i class="fa fa-briefcase"></i>  <%= account.contact_name %><% if !account.contact_title.nil? && !account.contact_title.blank? %> - <%= account.contact_title %><% end %></small>
+                        <small><i class="fa fa-briefcase"></i>  <%=  account.contact_name.nil? ? account.contact_name : "- n/a -" %><% if !account.contact_title.nil? && !account.contact_title.blank? %> - <%= account.contact_title %><% end %></small>
                       <% else %>
                         <small>&nbsp;</small>
                       <% end %>
