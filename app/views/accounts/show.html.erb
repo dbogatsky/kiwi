@@ -17,7 +17,7 @@
         <h5 class="subtitle">Contact</h5>
         <ul class="profile-social-list" id="account-contacts">
           <% if !@account.contact_name.nil? %>
-            <li><i class="fa fa-briefcase"></i>  <%=  @account.contact_name.nil? ? @account.contact_name : "- n/a -" %>
+            <li><i class="fa fa-briefcase"></i>  <%=  account.contact_name.blank? ? "n/a" : account.contact_name %>
               <% if !@account.contact_title.nil? %>
                  <br ><div style="margin-left: 30px;"><small><%= @account.contact_title %></small></div>
               <% end %>
