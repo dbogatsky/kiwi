@@ -74,7 +74,7 @@
               <label class="col-sm-2 control-label">Name<span class="asterisk">*</span></label>
               <div class="col-sm-2">
                 <%#= c.input :name, required: true, label: 'Contact', :input_html => { :name => "account[contacts_attributes][][name]" } %>
-                <%= c.input_field :name, { required: true, placeholder: 'contact name', label: 'Contact', name: "account[contacts_attributes][#{t}][name]", class: "form-control tooltips", id: "account_contacts_attributes_name_1", 'data-toggle'=>'tooltip', 'data-trigger'=>'hover', 'data-original-title'=>'Enter the Name of the contact eg. "Office" or "New York'} %>
+                <%= c.input_field :name, { required: true, placeholder: 'contact name', label: 'Contact', name: "account[contacts_attributes][#{t}][name]", class: "form-control tooltips first_contact", id: "account_contacts_attributes_name_1", 'data-toggle'=>'tooltip', 'data-trigger'=>'hover', 'data-original-title'=>'Enter the Name of the contact eg. "Office" or "New York'} %>
               </div>
 
               <label class="col-sm-1 control-label">Type<span class="asterisk">*</span></label>
@@ -168,6 +168,11 @@
 
 </div><!-- panel-body -->
 <script>
+
+  $('#account_contact_name').focusout(function(){
+    var contact_name = $("#account_contact_name").val()
+    $(".first_contact").val(contact_name)
+  });
 
   $(".select2AccountStatus").select2({
     width: '100%',
