@@ -1,0 +1,105 @@
+<div class="row">
+  <div class="col-md-12">
+    
+    <form class="form-horizontal" id="form1">
+
+      <div id="container">
+        <header>
+          <h3>Header (Place holder)</h3>
+        </header>
+        <section id="accordion">
+          <div>
+            <input type="checkbox" id="check-1" />
+            <label for="check-1">Asset ID 1: Name</label>
+            <article>
+              <p>
+                FORM FIELD 1<br /><br />
+                FORM FIELD 2<br /><br />
+                FORM FIELD 3
+
+              </p>
+            </article>
+          </div>
+          <div>
+            <input type="checkbox" id="check-2" />
+            <label for="check-2">Asset ID 2: Name</label>
+            <article>
+              <p>
+                FORM FIELD 1<br /><br />
+                FORM FIELD 2<br /><br />
+                FORM FIELD 3
+              </p>
+            </article>
+          </div>
+          <div>
+            <input type="checkbox" id="check-3" />
+            <label for="check-3">Asset ID 3: Name</label>
+            <article>
+               <p>
+                FORM FIELD 1<br /><br />
+                FORM FIELD 2<br /><br />
+                FORM FIELD 3
+              </p>
+            </article>
+          </div>
+        </section>
+      </div>
+
+    </form>
+      
+  </div><!-- col-md-12 -->
+</div><!-- row -->
+<br /><br />
+
+<style>
+  #container {
+      margin: 0 auto;
+      width: 100%;
+
+  }
+  #accordion input {
+    display: none;
+  }
+  #accordion label {
+    background: #eee;
+    border-radius: .25em;
+    cursor: pointer;
+    display: block;
+    margin-bottom: .125em;
+    padding: .25em 1em;
+    z-index: 20;
+  }
+
+  #accordion label {
+    background: #ccc;
+  }
+
+  #accordion label:hover {
+    background: #ccc;
+  }
+
+  #accordion input:checked + label {
+    background: #ccc;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    color: white;
+    margin-bottom: 0;
+  }
+  #accordion article {
+    background: #f7f7f7;
+    height:0px;
+    overflow:hidden;
+    z-index:10;
+  }
+  #accordion article p {
+    padding: 1em;
+  }
+  #accordion input:checked article {
+  }
+  #accordion input:checked ~ article {
+    border-bottom-left-radius: .25em;
+    border-bottom-right-radius: .25em;
+    height: auto;
+    margin-bottom: .125em;
+  }
+</style>
