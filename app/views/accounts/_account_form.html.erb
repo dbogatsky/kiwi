@@ -133,11 +133,12 @@
 
 </div><!-- panel-body -->
 <script>
-
-  $('#account_contact_name').focusout(function(){
-    var contact_name = $("#account_contact_name").val()
-    $(".first_contact").val(contact_name)
-  });
+  $(".account_next").click(function(){
+    if ($("#vtab2").hasClass('active') && ($(".first_contact").val() == '')){
+      var contact_name = $("#account_contact_name").val()
+      $(".first_contact").val(contact_name)
+    }
+  })
 
   $(".select2AccountStatus").select2({
     width: '100%',
