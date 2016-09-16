@@ -3,25 +3,26 @@
     <form class="form-horizontal" id="form1">
       <div id="container">
         <header>
-          <h3>Header (Place holder)</h3>
         </header>
         <section id="accordion">
           <div>
             <input type="checkbox" id="check-1" />
-            <label for="check-1">Asset ID 1: Name</label>
+            <label for="check-1"><i class="fa fa-plus-square" style="margin-right:10px;"></i>Richo ABC 123</label>
             <article>
               <%if @account_properties.present?%>
                 <%@account_properties.each do |key,value|%>
                   <div class="row editable-list-item">
-                    <div class="col-sm-3"><%=value["label"]%></div>
-                    <%if value["format"] == 'date'%>
-                      <div class="col-sm-9"><a href="#" id="" data-type="combodate" class="editable editable-click <%= value["required"].to_s == "true" ? "comboDateRequired" : "comboDate"%>"><%=(@account.properties.present? && @account.properties.try(:attributes).present?) ? @account.properties.attributes[key] : nil%></a></div>
-                    <%elsif value["format"] == 'enum'%>
+                    <div class="col-sm-3"><%= value["label"] %></div>
+                    <% if value["format"] == 'date' %>
+                      <div class="col-sm-9"><a href="#" id="" data-type="combodate" class="editable editable-click basicInline <%= value["required"].to_s == "true" ? "comboDateRequired" : "comboDate"%>">
+                        <%=(@account.properties.present? && @account.properties.try(:attributes).present?) ? @account.properties.attributes[key] : nil%></a>
+                      </div>
+                    <% elsif value["format"] == 'enum' %>
                       <script type="text/javascript">
                         a = []
                         <%value['values'].each do |k,v|%>
                           a.push({value: '<%=k%>', text: '<%=v%>'})
-                        <%end%>
+                        <% end %>
                         jQuery(document).ready(function(){
                           <%if value["required"].to_s == "true"%>
                             jQuery(".checkList_<%=value['label']%>").editable({
@@ -38,9 +39,9 @@
                         });
                       </script>
                       <div class="col-sm-9"><a href="#" id="" data-type="checklist" data-title="Select <%=value['label']%>" class="editable editable-click editable-empty checkList_<%=value["label"]%>"></a></div>
-                    <%else%>
-                      <div class="col-sm-9"><a data-type="text" id="" class="editable editable-click <%= value["required"].to_s == "true" ? "required_text" : "basicInline"%>"><%=(@account.properties.present? && @account.properties.try(:attributes).present?) ? @account.properties.attributes[key] : nil%></a></div>
-                    <%end%>
+                    <% else %>
+                      <div class="col-sm-9"><a data-type="text" id="" class="editable editable-click basicInline <%= value["required"].to_s == "true" ? "required_text" : "basicInline"%>"><%=(@account.properties.present? && @account.properties.try(:attributes).present?) ? @account.properties.attributes[key] : nil%></a></div>
+                    <% end %>
                   </div>
                 <%end%>
               <%end%>
@@ -48,7 +49,7 @@
           </div>
           <div>
             <input type="checkbox" id="check-2" />
-            <label for="check-2">Asset ID 2: Name</label>
+            <label for="check-2"><i class="fa fa-plus-square" style="margin-right:10px;"></i>Hewlett Packard MFP123</label>
             <article>
               <p>
                 FORM FIELD 1<br /><br />
@@ -59,7 +60,7 @@
           </div>
           <div>
             <input type="checkbox" id="check-3" />
-            <label for="check-3">Asset ID 3: Name</label>
+            <label for="check-3"><i class="fa fa-plus-square" style="margin-right:10px;"></i>John Bedan 34x</label>
             <article>
                <p>
                 FORM FIELD 1<br /><br />
@@ -96,19 +97,22 @@
   }
 
   #accordion label {
-    background: #ccc;
+    background: #333;
+    padding: 10px;
+    color: #fff;
   }
 
   #accordion label:hover {
-    background: #ccc;
+    background: #000;
   }
 
   #accordion input:checked + label {
-    background: #ccc;
+    background: #333;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
     color: white;
     margin-bottom: 0;
+    padding: 10px;
   }
   #accordion article {
     background: #f7f7f7;
@@ -129,4 +133,13 @@
     margin-bottom: .125em;
   }
   #accordion .editableform input{display: block;}
+
+  #accordion .editable-checklist label {
+    padding:0px;
+    margin-bottom: 5px !important;
+    color: #4a535e;
+    background: #FFF;
+    white-space: nowrap;
+
+  }
 </style>
