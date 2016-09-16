@@ -70,44 +70,44 @@
       <div class="form-group">
         <label class="col-sm-3 control-label">Street Address<span class="asterisk">*</span></label>
 	      <div class="col-sm-6">
-	        <%= text_field_tag 'user[addresses_attributes][0][street_address]' , @address.try(:street_address), class: 'form-control', required: true, id: 'street_number'%>
+	        <%= text_field_tag 'user[addresses_attributes][0][street_address]' , @address.blank? ? @company_address.street_address : @address.street_address, class: 'form-control', required: true, id: 'street_number'%>
 	      </div>
       </div>
 
       <div class="form-group">
         <label class="col-sm-3 control-label">Suite Number</label>
 	      <div class="col-sm-6">
-	        <%= text_field_tag 'user[addresses_attributes][0][suite_number]' , @address.try(:suite_number), class: 'form-control', id: 'subpremise', readonly: true%>
+	        <%= text_field_tag 'user[addresses_attributes][0][suite_number]' , @address.blank? ? @company_address.suite_number : @address.suite_number, class: 'form-control', id: 'subpremise'%>
 	      </div>
       </div>
 
       <div class="form-group">
         <label class="col-sm-3 control-label">City<span class="asterisk">*</span></label>
 	      <div class="col-sm-6">
-	        <%= text_field_tag 'user[addresses_attributes][0][city]', @address.try(:city), class: 'form-control', required: true, id: 'locality', readonly: true%>
+	        <%= text_field_tag 'user[addresses_attributes][0][city]', @address.blank? ? @company_address.city :  @address.city, class: 'form-control', required: true, id: 'locality'%>
 	      </div>
       </div>
       <div class="form-group">
         <label class="col-sm-3 control-label">Province/State<span class="asterisk">*</span></label>
 	      <div class="col-sm-6">
-	        <%= text_field_tag 'user[addresses_attributes][0][region]', @address.try(:region), class: 'form-control', required: true, id: 'administrative_area_level_1', readonly: true%>
+	        <%= text_field_tag 'user[addresses_attributes][0][region]', @address.blank? ? @company_address.region :  @address.region, class: 'form-control', required: true, id: 'administrative_area_level_1'%>
 	      </div>
       </div>
       <div class="form-group">
         <label class="col-sm-3 control-label">Post/Zipcode<span class="asterisk">*</span></label>
 	      <div class="col-sm-6">
-	        <%= text_field_tag 'user[addresses_attributes][0][postcode]' ,@address.try(:postcode), class: 'form-control', required: true, id: 'postal_code', readonly: true%>
+	        <%= text_field_tag 'user[addresses_attributes][0][postcode]' , @address.blank? ? @company_address.postcode :  @address.postcode, class: 'form-control', required: true, id: 'postal_code'%>
 	      </div>
       </div>
       <div class="form-group">
         <label class="col-sm-3 control-label">Country<span class="asterisk">*</span></label>
 	      <div class="col-sm-6">
-	        <%=country_select("user[addresses_attributes][0]", 'country', {priority_countries: ["GB", "FR", "DE"], selected: @address.try(:country) }, {class: 'form-control', prompt: "Select Country", required: true, id: 'country', readonly: true})%>
+	        <%=country_select("user[addresses_attributes][0]", 'country', {priority_countries: ["GB", "FR", "DE"], selected: @address.blank? ? @company_address.country : @address.country}, {class: 'form-control', prompt: "Select Country", required: true, id: 'country'})%>
 	      </div>
       </div>
       <%=hidden_field_tag 'user[addresses_attributes][0][id]',@address.try(:id)%>
-      <%=hidden_field_tag 'user[addresses_attributes][0][latitude]', @address.try(:latitude), id: 'account_lat'%>
-      <%=hidden_field_tag 'user[addresses_attributes][0][longitude]', @address.try(:longitude), id: 'account_lng' %>
+      <%=hidden_field_tag 'user[addresses_attributes][0][latitude]', @address.blank? ? @company_address.latitude : @address.latitude, id: 'account_lat'%>
+      <%=hidden_field_tag 'user[addresses_attributes][0][longitude]', @address.blank? ? @company_address.longitude :  @address.longitude, id: 'account_lng' %>
       <div class="form-group">
         <label class="col-sm-3 control-label">Phone:</label>
         <div class="col-sm-2">

@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
   #before_filter :accounts_cache  # DIS001 disabled for now
   # around_filter :set_time_zone
 
-  helper_method :current_user, :get_api_values, :get_automatic_logout_time, :logged_in?, :superadmin_logged_in?, :notification_info
+  helper_method :current_user,:current_company, :get_api_values, :get_automatic_logout_time, :logged_in?, :superadmin_logged_in?, :notification_info
   helper_method :has_permission, :has_permissions, :has_page_permission, :has_page_permissions, :accounts_cache
 
   rescue_from ActiveResource::ForbiddenAccess do |exception|
@@ -433,6 +433,10 @@ class ApplicationController < ActionController::Base
 
     session[:accounts_cache] = accounts_cache_info.to_json
     accounts_cache_info
+  end
+
+  def current_company
+    @current_company ||= Company.find(uid: RequestStore.store[:tenant])
   end
 
   def user_preference_details
