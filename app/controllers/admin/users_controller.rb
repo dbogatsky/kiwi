@@ -12,6 +12,7 @@ class Admin::UsersController < Admin::AdminController
     @user = BoUser.new
     @address = []
     @contacts = []
+    @company_address = BoCompany.find(params[:company_id]).addresses.first
   end
 
   def edit

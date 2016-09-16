@@ -10,6 +10,7 @@
         <%starts_at = starts_at - 1.hour if starts_at.dst?%>
         <%ends_at = ends_at - 1.hour if ends_at.dst?%>
       <%end%>
+      <%=starts_at.strftime('%A %B %d, %Y')%> at 
       <%=starts_at.strftime("%I:%M %p")%>
       to
       <%=ends_at.strftime("%I:%M %p")%>&nbsp;&nbsp;</span>
