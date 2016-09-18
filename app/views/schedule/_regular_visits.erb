@@ -60,9 +60,9 @@
               <li><%= link_to "Go To Account", account_path(citem.account_id) %></li>
             </ul>
           </div>
-<!--           <div class="regular-visit-draggable btn btn-sm btn-white mr10 pull-right" style="border-radius: 2px" title=" Click and drag up and down to arrange in the order you wish">
+          <div class="regular-visit-draggable btn btn-sm btn-white mr10 pull-right" style="border-radius: 2px" title=" Click and drag up and down to arrange in the order you wish">
               <i class="mr5"></i><i class="fa fa-sort mr5"></i></span>
-          </div> -->
+          </div>
           <h2 class="ci_header"><%= citem.title %></h2>
           <p><span class="subheading">Agenda:<br/></span><%= sanitize citem.body %></p>
           <% if (!citem.notes.nil?) %>
