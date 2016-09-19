@@ -1,6 +1,6 @@
 <tr id="details_tr_<%= @notification[:id] %>">
   <td colspan="3">
-    <% if @item.is_a?(ActiveResource::Collection) && @item[0].present? && @notification[:type] == 'meeting' %>
+    <% if @item.is_a?(ActiveResource::Collection) && @item[0].present? && (@notification[:type] == 'meeting' || @notification[:type] == 'meeting_reminder')%>
       <div class="cd-timeline-content shadow_non">
           <%if @item[0].starts_at.present? && @item[0].ends_at.present? %>
           <span class="cd-date"><%= @item[0].starts_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y - %l:%M %p")%> to <%=@item[0].ends_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%l:%M %p")%>&nbsp;&nbsp;</span>
