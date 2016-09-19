@@ -192,7 +192,7 @@
       <div class="mb20"></div>
       <ul class="nav nav-tabs nav-tabs-simple">
         <li class="active"><a href="#conversation" data-toggle="tab"><i class="glyphicon glyphicon-time" style="margin-right:4px;font-size: 12px;"></i><strong>TIMELINE</strong></a></li>
-        <%if @assets_management == 'enable'%>
+        <%if @assets_management == 'on'%>
           <li class=""><a href="#assets_management" data-toggle="tab"><i class="fa fa-rocket" style="margin-right:4px;font-size: 12px;"></i><strong>ASSETS</strong></a></li>
         <%end%>
       </ul>
@@ -223,7 +223,7 @@
             <!--- Timeline End -->
           <% end %>
         </div>
-      <%if @assets_management == 'enable'%>
+      <%if @assets_management == 'on'%>
         <div class="tab-pane" id="assets_management">
           <section id="cd-assets_list" class="cd-container" >
             <%= render "assets_list", assets_list: @assets_list %>

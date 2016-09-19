@@ -1,5 +1,5 @@
 module Admin::CompaniesHelper
 	def assets_management_select_options
-    return [['Disable', 'disable'],['Enable','enable']]
+    return [['On', 'on'],['Off','off']]
   end
 end
