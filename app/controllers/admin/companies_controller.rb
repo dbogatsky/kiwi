@@ -48,11 +48,11 @@ class Admin::CompaniesController < Admin::AdminController
     redirect_to admin_companies_path
   end
 
-  def setting
-     get_application_setting
+  def settings
+    admin_application_settings
   end
 
-  def set_company_level_setting
+  def save_settings
     redirect_to setting_admin_company_path
   end
 
@@ -73,4 +73,15 @@ class Admin::CompaniesController < Admin::AdminController
       end
     end
   end
+
+  def admin_application_settings  
+    boApiFullUrl = ENV['ORCHARD_BO_API_HOST'] + "/companies/#{@company.id}/settings/private"
+    application_setting = `curl -X GET -H "Authorization: Token token="#{RequestStore.store[:user_token]}", app_key="#{APP_CONFIG['api_app_key']}"" -H "Content-Type: application/json"  -H "Cache-Control: no-cache" "#{boApiFullUrl}"`
+    application_setting = JSON.parse(application_setting)
+    @account_properties = application_setting['company']['settings']['private']['account_properties']
+    @account_properties = JSON.parse(@account_properties) unless @account_properties.nil?
+    @leads = application_setting['company']['settings']['private']['leads_enabled']
+    @assets_management = application_setting['company']['settings']['private']['asset_management']
+  end
+
 end
