@@ -49,10 +49,18 @@ class Admin::CompaniesController < Admin::AdminController
   end
 
   def setting
-     get_application_setting
+    get_api_values
+    apiFullUrl = ENV.fetch("ORCHARD_BO_API_HOST") + "/companies/#{params[:id]}/settings/private"
+    application_setting = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -H "Cache-Control: no-cache" "#{apiFullUrl}"`
+    application_setting = JSON.parse(application_setting)
+    @assets_management = application_setting['company']['settings']['private']['asset_management']
   end
 
   def set_company_level_setting
+    get_api_values
+    @apiFullUrl = ENV.fetch("ORCHARD_BO_API_HOST") + "/companies/#{params[:id]}/settings/private"
+    authentication_curlRes = `curl -X PUT -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -d '{"settings":{"asset_management": "#{params[:asset_management]}"}}' '#{@apiFullUrl}'`
+    flash[:success] = 'Your setting has been successfully updated!'
     redirect_to setting_admin_company_path
   end
 

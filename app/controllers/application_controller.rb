@@ -547,7 +547,7 @@ class ApplicationController < ActionController::Base
   end
 
   def get_api_values
-    @email = current_user.email
+    @email = current_user.blank? ? set_superadmin : current_user.email
     @appKey = APP_CONFIG['api_app_key']
     @token = session[:token]
   end
