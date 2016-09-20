@@ -540,10 +540,8 @@ class ApplicationController < ActionController::Base
     application_setting = JSON.parse(application_setting)
 
     @account_properties = application_setting['company']['settings']['private']['account_properties']
-    @account_properties = JSON.parse(@account_properties) unless @account_properties.nil?
     @leads = application_setting['company']['settings']['private']['leads_enabled']
     @assets_management = application_setting['company']['settings']['private']['asset_management']
-
   end
 
   def get_api_values
