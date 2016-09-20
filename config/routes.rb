@@ -8,7 +8,8 @@ Rails.application.routes.draw do
       resources :settings do
         collection do
           patch :update_settings
-          patch :add_property
+          patch :add_and_update_property
+          delete :delete_property
         end
       end
     end
