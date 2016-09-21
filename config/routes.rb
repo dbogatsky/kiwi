@@ -57,6 +57,7 @@ Rails.application.routes.draw do
   post '/accounts/schedule_meeting', to: 'accounts#schedule_meeting', as: :account_schedule_meeting
   post '/accounts/check_in', to: 'accounts#check_in', as: :account_check_in
   post '/accounts/check_out', to: 'accounts#check_out', as: :account_check_out
+  get  '/meeting_status', to: 'accounts#meeting_status', as: :meeting_status
   post '/accounts/jump_in', to: 'accounts#jump_in', as: :account_jump_in
   post '/accounts/:id/add_note', to: 'accounts#add_note', as: :account_add_note
   post '/accounts/add_quote', to:'accounts#add_quote', as: :account_add_quote

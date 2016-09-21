@@ -294,6 +294,12 @@ class AccountsController < ApplicationController
     render json: co
   end
 
+  def meeting_status
+    conversation = ConversationItem.find(params[:cid], params:{conversation_id: params[:conversation_id]})
+    status = conversation.status
+    render json: status
+  end
+
   def jump_in
     conversation = ConversationItem.find(params[:cid], params:{conversation_id: params[:conversation_id]})
     params[:conversation_item] = {}
