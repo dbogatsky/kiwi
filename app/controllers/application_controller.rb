@@ -543,7 +543,6 @@ class ApplicationController < ActionController::Base
     @account_properties = JSON.parse(@account_properties) unless (@account_properties.nil? || @account_properties.is_a?(Hash))
     @leads = application_setting['company']['settings']['private']['leads_enabled']
     @assets_management = application_setting['company']['settings']['private']['asset_management']
-
   end
 
   def get_api_values
