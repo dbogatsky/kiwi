@@ -42,7 +42,7 @@
                    data-date="<%=(mobile? ? Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") :  Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y")) if citem.scheduled_at.present?%>"
                    data-time="<%=((@daylight_setting == 'enable' && Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).dst?) ? (Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone) - 1.hour).strftime("%I:%M %p") : Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p"))if citem.scheduled_at.present? %>"
                    data-time-24="<%=((@daylight_setting == 'enable' && Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).dst?) ? (Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone) - 1.hour).strftime("%H:%M") : Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%H:%M"))if citem.scheduled_at.present? %>"
-                   data-starts-date="<%=(mobile? ? Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") : Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y")) if citem.starts_at.present? %>"          
+                   data-starts-date="<%=(mobile? ? Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") : Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y")) if citem.starts_at.present? %>"
                    data-starts-time="<%=((@daylight_setting == 'enable' && Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).dst?) ? (Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone) - 1.hour).strftime("%I:%M %p") : Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p"))if citem.starts_at.present? %>"
                    data-ends-date="<%= mobile? ? Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") :  Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.ends_at.present? %>"
                    data-ends-time="<%=((@daylight_setting == 'enable' && Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).dst?) ? (Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone) - 1.hour).strftime("%I:%M %p") : Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p"))if citem.ends_at.present? %>"
@@ -85,7 +85,7 @@
               <% if check_in_time%>
                 <i class="fa fa-sign-in mr10" data-toggle="tooltip" data-original-title="Check In"></i><%= check_in_time %><br/>
               <% end %>
-              <% if check_out_time%>
+              <% if check_out_time && !check_out(citem,false)%>
                 <i class="fa fa-sign-out mr10" data-toggle="tooltip" data-original-title="Check Out"></i><%= check_out_time %><br/>
               <% end %>
               <div class="check_in_time_<%=citem.id%> hidden">
@@ -115,7 +115,7 @@
                   <a class="btn btn-xs btn-default pull-right mr5 jumpin" id="<%=citem.id%>" data-conversation-id = "<%=citem.conversation_id%>"><i class="fa fa-sign-in mr5"></i><span class="position_button">Jump In</span>
                   </a>
                 <%end%>
-              <% elsif !check_in(citem,false) && check_out(citem,false) && citem.status == "in_progress" && time %>
+              <% elsif !check_in(citem,false) && check_out(citem,false) && (citem.status == "in_progress" || citem.status == "completed") && !time %>
                 <a class="btn btn-xs btn-default pull-right mr5 checkout" id="<%=citem.id%>" data-created-by="<%=citem.created_by.id%>" data-conversation-id = "<%=citem.prefix_options[:conversation_id].present? ? citem.prefix_options[:conversation_id] : citem.conversation_id%>">
                   <i class="fa fa-sign-out mr5"></i><span class="position_button">Check Out</span>
                 </a>

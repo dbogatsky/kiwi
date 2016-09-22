@@ -89,6 +89,12 @@
                     <%=select_tag('expected_sales_attribute',options_for_select(expected_sales_select_options, selected: @enable_expected_sales), class: "form-control")%>
                   </div>
                 </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label"> Enable Schedule Meetings/Regular Visits Checkin/Checkout(incl. Schedule Page)</label>
+                  <div class="col-sm-4">
+                    <%=select_tag('enable_checkin_checkout',options_for_select(expected_sales_select_options, selected: @enable_checkin_checkout), class: "form-control")%>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

@@ -87,7 +87,7 @@
       <% if check_in_time%>
         <i class="fa fa-sign-in mr10" data-toggle="tooltip" data-original-title="Check In"></i><%=check_in_time %><br/>
       <% end %>
-      <% if check_out_time%>
+      <% if check_out_time && !check_out(citem,info)%>
         <i class="fa fa-sign-out mr10" data-toggle="tooltip" data-original-title="Check Out"></i><%=check_out_time %>
       <% end %>
       <div class="check_in_time_<%=citem.id%> hidden">
