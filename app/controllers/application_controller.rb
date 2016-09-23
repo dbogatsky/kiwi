@@ -532,6 +532,7 @@ class ApplicationController < ActionController::Base
     @enable_expected_sales = preferences['company']['settings']['preferences']['enable_expected_sales_attributes'] || "unknown"
     @daylight_setting = preferences['company']['settings']['preferences']['enable_dst']
     @enable_checkin_checkout = preferences['company']['settings']['preferences']['enable_checkin_checkout'] || "unknown"
+    @enable_regular_visits_sort = preferences['company']['settings']['preferences']['enable_regular_visits_sort'] || "unknown"
   end
 
   def get_api_values

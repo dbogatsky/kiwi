@@ -22,4 +22,8 @@ module SettingsHelper
   def expected_sales_select_options
     return [['Disable', 'disable'],['Enable','enable']]
   end
+
+  def enable_regular_visits_sort_options
+    return [['Disable', 'disable'],['Enable','enable']]
+  end
 end

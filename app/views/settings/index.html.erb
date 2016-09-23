@@ -100,6 +100,26 @@
           </div>
         </div>
         <div class="panel panel-default">
+          <div class="panel-heading">
+            <div class="panel-btns">
+              <a href="" class="minimize">−</a>
+            </div><!-- panel-btns -->
+            <h3 class="panel-title">Schedule</h3>
+          </div>
+          <div class="panel-body">
+            <div class="tab-pane" id="accounts">
+              <div class="row row-pad-5">
+                <div class="form-group">
+                  <label class="col-sm-4 control-label">Enable Regular Visits Sort</label>
+                  <div class="col-sm-4">
+                    <%=select_tag('enable_regular_visits_sort',options_for_select(enable_regular_visits_sort_options, selected: @enable_regular_visits_sort), class: "form-control")%>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
           <div class="panel-footer">
             <div class="row row-pad-5">
               <div class="col-sm-8 col-sm-offset-5">

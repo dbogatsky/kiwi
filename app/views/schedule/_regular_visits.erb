@@ -144,6 +144,12 @@
 
 <script type="text/javascript">
 
+  var my = "<%=@enable_regular_visits_sort%>"
+  if (my == "disable")
+    $('.regular-visit-draggable').addClass("hidden");
+  else
+    $('.regular-visit-draggable').removeClass("hidden")
+
   var ready, set_positions;
   set_positions = function(){
     // loop through and give each task a data-pos
@@ -187,5 +193,4 @@
 
   $(document).ready(ready);
   $(document).on('page:load', ready);
-
 </script>
