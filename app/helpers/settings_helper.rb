@@ -4,7 +4,7 @@ module SettingsHelper
   end
 
   def automatic_logout_select_options
-    return [['1 hour',1], ['2 hours', 2], ['6 hours', 6], ['12 hours', 12], ['1 day', 24]]
+    return [['1 hour',1], ['2 hours', 2], ['6 hours', 6], ['12 hours', 12], ['1 day', 24], ['3 days', 72], ['5 days', 120]]
   end
 
   def account_per_page_select_options
