@@ -248,13 +248,17 @@
               var data = data.responseJSON
               var citem_status = data[0];
               var check_in_out = data[1]
+              var check_in_out_time = data[2]
+              console.log(check_in_out_time)
               if (check_in_out == 'check_in'){
                 $('#'+cid).switchClass("checkin", "checkout");
                 $('#'+cid).parent().find('.position_button').text('Check Out');
                 $('#'+cid).parent().find('.fa-sign-in').switchClass("fa-sign-in", "fa-sign-out");
+                $('.check_in_time_'+cid).find("span").text(check_in_out_time)
                 $('.check_in_time_'+cid).removeClass('hidden')
               }
               if (check_in_out == 'check_out'){
+                $('.check_out_time_'+cid).find("span").text(check_in_out_time)
                 $('.check_out_time_'+cid).removeClass('hidden')
                 $('#'+cid).hide();
               }

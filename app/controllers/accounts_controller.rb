@@ -267,9 +267,10 @@ class AccountsController < ApplicationController
       params[:conversation_item][:status] = "in_progress"
       conversation.update_attributes(conversation_item: params[:conversation_item], conversation_id: params[:conversation_id], reload: true)
     end
+    check_in_time = ci.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")
     ci = ci.present? ? 'check_in' : nil
     status = conversation.status
-    render json: [status, ci]
+    render json: [status, ci, check_in_time]
   end
 
   def check_out
@@ -293,9 +294,10 @@ class AccountsController < ApplicationController
       params[:conversation_item][:status] = "completed"
       conversation.update_attributes(conversation_item: params[:conversation_item], conversation_id: params[:conversation_id], reload: true)
     end
+    check_out_time = co.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")
     status = conversation.status
     co = co.present? ? 'check_out' : nil
-    render json: [status, co]
+    render json: [status, co, check_out_time]
   end
 
   def jump_in
