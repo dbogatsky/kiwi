@@ -28,6 +28,7 @@ gem 'activeresource', require: 'active_resource'
 gem 'puma'
 gem 'activesupport-json_encoder'
 gem 'rack'
+gem 'newrelic_rpm'
 
 group :development do
   gem 'web-console', '~> 2.0'

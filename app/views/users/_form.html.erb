@@ -49,32 +49,32 @@
 
 	    <%company_address = current_company.addresses.first%>
 	    <%= f.fields_for :addresses_attributes do |add| %>
-	    	<%st_address = @address.present? ? @address.street_address : company_address.street_address%>
+	    	<%st_address = @address.present? ? @address.street_address : company_address.try(:street_address)%>
 	      <%= add.input :street_address, required: true, label: "Street", :input_html => { :name => "user[addresses_attributes][][street_address]",id: 'street_number', :value => st_address}%>
         <div class="form-group">
 	        <label class="col-sm-3 control-label">Suite Number</label>
 		      <div class="col-sm-6">
-		        <%= text_field_tag 'user[addresses_attributes][][suite_number]' , @address.blank? ? company_address.suite_number : @address.suite_number, class: 'form-control', id: 'subpremise'%>
+		        <%= text_field_tag 'user[addresses_attributes][][suite_number]' , @address.blank? ? company_address.try(:suite_number) : @address.suite_number, class: 'form-control', id: 'subpremise'%>
 		      </div>
 	      </div>
-	      <%city = @address.present? ? @address.city : company_address.city%>
+	      <%city = @address.present? ? @address.city : company_address.try(:city)%>
 	      <%= add.input :city, required: true, label: "City", :input_html => { :name => "user[addresses_attributes][][city]", :value => city, id: 'locality'} %>
-        <%address_region = @address.present? ? @address.region : company_address.region%>
+        <%address_region = @address.present? ? @address.region : company_address.try(:region)%>
 	      <%= add.input :region, required: true, label: "Province/State", :input_html => { :name => "user[addresses_attributes][][region]", :value => address_region, id: 'administrative_area_level_1'} %>
-        <%postcode = @address.present? ? @address.postcode : company_address.postcode%>
+        <%postcode = @address.present? ? @address.postcode : company_address.try(:postcode)%>
 	      <%= add.input :postcode, required: true, label: "Postcode/Zipcode", :input_html => { :name => "user[addresses_attributes][][postcode]", :value => postcode, id: 'postal_code'}%>
 
 	      <div class="form-group">
 	        <label class="col-sm-3 control-label">Country<span class="asterisk">*</span></label>
 	        <div class="col-sm-6">
-	  				<%= add.input_field :country, { required: true, priority: [ "Canada", "United States", "United Kingdom" ],  class: "select2 form-control", name: "user[addresses_attributes][][country]",id: 'country', selected: @address.present? ? @address.country : company_address.country } %>
-	  			</div>
+              <%= add.input_field :country, { required: true, priority: [ "Canada", "United States", "United Kingdom" ],  class: "select2 form-control", name: "user[addresses_attributes][][country]",id: 'country', selected: @address.present? ? @address.country : company_address.try(:country) } %>
+			</div>
 	      </div>
 	      <% address_id = @address.id rescue nil %>
 	      <%= add.hidden_field :id, value: address_id, name: "user[addresses_attributes][][id]" %>
 	    <% end %>
-	      <%lat = @address.present? ? @address.latitude : company_address.latitude%>
-	      <%lng = @address.present? ? @address.longitude : company_address.longitude%>
+	      <%lat = @address.present? ? @address.latitude : company_address.try(:latitude) %>
+	      <%lng = @address.present? ? @address.longitude : company_address.try(:longitude) %>
 	      <%=hidden_field_tag 'user[addresses_attributes][][latitude]', lat, id: 'account_lat'%>
         <%=hidden_field_tag 'user[addresses_attributes][][longitude]', lng, id: 'account_lng' %>
 

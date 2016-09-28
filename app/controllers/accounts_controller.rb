@@ -268,13 +268,16 @@ class AccountsController < ApplicationController
       lng = params['lng']
     end
     ci = ConversationItemEvent.create(conversation_item_event: { lat: lat, long: lng, ip_address: ip_address }, type: 'check_in', conversation_item_id: citem)
+    conversation = ConversationItem.find(params[:cid], params:{conversation_id: params[:conversation_id]})
     if params[:created_by].to_i == current_user.id
-      conversation = ConversationItem.find(params[:cid], params:{conversation_id: params[:conversation_id]})
       params[:conversation_item] = {}
       params[:conversation_item][:status] = "in_progress"
       conversation.update_attributes(conversation_item: params[:conversation_item], conversation_id: params[:conversation_id], reload: true)
     end
-    render json: ci
+    check_in_time = ci.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")
+    ci = ci.present? ? 'check_in' : nil
+    status = conversation.status
+    render json: [status, ci, check_in_time]
   end
 
   def check_out
@@ -292,13 +295,16 @@ class AccountsController < ApplicationController
       lng = params['lng']
     end
     co = ConversationItemEvent.create(conversation_item_event: { lat: lat, long: lng, ip_address: ip_address }, type: 'check_out', conversation_item_id: citem)
+    conversation = ConversationItem.find(params[:cid], params:{conversation_id: params[:conversation_id]})
     if params[:created_by].to_i == current_user.id
-      conversation = ConversationItem.find(params[:cid], params:{conversation_id: params[:conversation_id]})
       params[:conversation_item] = {}
       params[:conversation_item][:status] = "completed"
       conversation.update_attributes(conversation_item: params[:conversation_item], conversation_id: params[:conversation_id], reload: true)
     end
-    render json: co
+    check_out_time = co.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")
+    status = conversation.status
+    co = co.present? ? 'check_out' : nil
+    render json: [status, co, check_out_time]
   end
 
   def jump_in
