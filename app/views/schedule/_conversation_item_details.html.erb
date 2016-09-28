@@ -83,9 +83,9 @@
 <%invitees = citem.invitees.present? ? citem.invitees.split(', ') : []%>
 <div class="panel-body">
   <%if @enable_checkin_checkout == 'enable'%>
-    <% if (citem.status == "scheduled" || citem.status == "in_progress") && !time%>
+    <% if (citem.status == "scheduled" || citem.status == "in_progress")%>
       <%if current_user.id == citem_created_by.id || invitees.include?(current_user.email)%>
-        <%if check_in(citem,false)%>
+        <%if check_in(citem,false) && !time%>
           <a class="btn btn-xs btn-default pull-right mr5 checkin" id="<%=citem.id%>" data-created-by="<%=citem.created_by.id%>" data-conversation-id="<%=citem.prefix_options[:conversation_id].present? ? citem.prefix_options[:conversation_id] : citem.conversation_id %>">
             <i class="fa fa-sign-in mr5"></i><span class="position_button">Check In</span>
           </a>
@@ -95,12 +95,12 @@
             <i class="fa fa-sign-out mr5"></i><span class="position_button">Check Out</span>
           </a>
         <%end%>
-      <%else%>
+      <%elsif (!time)%>
         <a class="btn btn-xs btn-default pull-right mr5 jumpin" id="<%=citem.id%>" data-conversation-id = "<%=citem.prefix_options[:conversation_id].present? ? citem.prefix_options[:conversation_id] : citem.conversation_id%>">
           <i class="fa fa-sign-in mr5"></i><span class="position_button1">Jump In</span>
         </a>
       <%end%>
-    <% elsif !check_in(citem,false) && check_out(citem,false) && (citem.status == "in_progress" || citem.status == "completed") && !time %>
+    <% elsif !check_in(citem,false) && check_out(citem,false) && (citem.status == "in_progress" || citem.status == "completed")%>
       <a class="btn btn-xs btn-default pull-right mr5 checkout" id="<%=citem.id%>" data-created-by="<%=citem.created_by.id%>" data-conversation-id = "<%=citem.prefix_options[:conversation_id].present? ? citem.prefix_options[:conversation_id] : citem.conversation_id%>">
         <i class="fa fa-sign-out mr5"></i><span class="position_button">Check Out</span>
       </a>
