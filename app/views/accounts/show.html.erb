@@ -178,7 +178,6 @@
                   <li><a href="#" data-toggle="modal" data-target=".conversation-reminder-modal-form">Add Reminder</a></li>
                   <li><a href="#" data-toggle="modal" data-target=".conversation-quote-modal-form">Add Quote</a></li>
                   <li><a href="#" data-toggle="modal" data-target=".account-action-email">Send Email</a></li>
-                  <li><a href="#" data-toggle="modal" data-target=".add-asset-modal-form">Asset</a></li>
                   <% end %>
                 <% if can? :manage_shared_accounts, @account %>
                   <% if can? :manage_permission, ConversationItem %><li class="divider"></li><% end %>
@@ -225,6 +224,11 @@
         </div>
       <%if @assets_management == 'on'%>
         <div class="tab-pane" id="assets_management">
+          <div class="btn-group mr5 pull-right">
+            <button class="btn btn-primary" data-toggle="modal" data-target=".add-asset-modal-form" type="button">
+                <i class="fa fa-plus-circle mr5"></i> Add Asset
+            </button>
+          </div>
           <section id="cd-assets_list" class="cd-container" >
             <%= render "assets_list", assets_list: @assets_list %>
           </section>
