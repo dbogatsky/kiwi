@@ -367,7 +367,7 @@
       console.log("scrollHeightInit", scrollHeightInit);
       var bodyHeightInit = $body.height();
       console.log("bodyHeightInit", bodyHeightInit);
-      var heightInit = Math.min(scrollHeightInit, bodyHeightInit);
+      var heightInit = Math.min(scrollHeightInit+15, bodyHeightInit);
       $iframe.height(heightInit);
     }
   }});
