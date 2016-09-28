@@ -71,6 +71,7 @@ class AccountsController < ApplicationController
     # Create new account
     if params.key?(:save)
       params[:account][:contacts_attributes] = params[:account][:contacts_attributes].values
+      params[:account][:properties] = params[:account][:properties].to_json
       @account = Account.new(request: :create, account: account_params)
       if @account.save
         save_avatar
@@ -86,6 +87,7 @@ class AccountsController < ApplicationController
     # Update account
     if params.key?(:save)
       params[:account][:contacts_attributes] = params[:account][:contacts_attributes].values
+      params[:account][:properties] = params[:account][:properties].to_json
       if @account.update_attributes(name: @account.name, account: account_params)
         save_avatar
         conversation_item_body = account_update_info(@@account_with_previous_value, @account)
