@@ -29,7 +29,7 @@
             <%elsif  contact.type == "website" || contact.type == "facebook" || contact.type == "youtube"%>
              <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name == 'website' ? 'globe' :  contact.icon_name%>"></i><a href="<%=(contact.value.include?'http') ? contact.value : 'http://'+contact.value %>" target="_blank"><%= contact.value %></a></li>
             <% elsif contact.type.eql? "phone"  or  contact.type.eql? "mobile"  or  contact.type.eql? "fax"%>
-              <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name %>"></i><a href="tel:+1<%= contact.value.delete(" ").delete("-") %>"><%= contact.value %></a></li>
+              <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name %>"></i><a href="tel:+1<%= contact.value.delete(" ").delete("-") %>"><%= (contact.value.include?',') ? contact.value.gsub(',','x') : contact.value%></a></li>
             <% else %>
               <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name %>"></i><%= contact.value %></li>
             <% end %>
@@ -354,7 +354,7 @@
     var new_editor, edit_editor;
     $(function() {
       /*
-      new_editor = $('#new_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false, 
+      new_editor = $('#new_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false,
         "events": {
           "load": function() {
             console.log("Loaded!");

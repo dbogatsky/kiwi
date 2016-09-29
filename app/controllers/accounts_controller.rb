@@ -585,13 +585,28 @@ class AccountsController < ApplicationController
               account_params[:status_id] = @status_id
               account_params[:addresses_attributes] = [street_address: row[4], city: row[5], region: row[6], postcode: row[7], country: row[8]]
               contacts_attributes = {}
-              contacts_attributes['phone'] = {name: '', type: 'phone', value: row[9]}
-              contacts_attributes['fax'] = {name: '', type: 'fax', value: row[10]} unless row[10].blank?
+              contacts_attributes['phone'] = {name: '', type: 'phone', value: convert_number_to_phone(row[9])}
+              contacts_attributes['fax'] = {name: '', type: 'fax', value: convert_number_to_phone(row[10])} unless row[10].blank?
               contacts_attributes['email'] = {name: '', type: 'email', value: row[11]} unless row[11].blank?
               account_params[:contacts_attributes] = contacts_attributes.values
               account_params[:about] = row[12]
               account_params[:quick_facts] = row[13]
-              account_params[:assign_to] = current_user.id
+              if row[14].blank?
+                account_params[:assign_to] = current_user.id
+              else
+                value = row[14].to_i
+                if value != 0
+                  account_params[:assign_to] = value
+                else
+                  all_users = User.find(:all, reload: true)
+                  all_users.each do |user|
+                    if (user.email == row[14].squish) || (("#{user.first_name}"+' '+"#{user.last_name}") == row[14].squish)
+                      account_params[:assign_to] = user.id
+                      break
+                    end
+                  end
+                end
+              end
               account = Account.new(request: :create, account: account_params)
               account.save
             end
@@ -640,6 +655,36 @@ class AccountsController < ApplicationController
 
   private
 
+
+  def convert_number_to_phone(number)
+    number = number.to_s
+    if number.present?
+      if number.include?'ext'
+        split_number = number.split("ext")
+        number = split_number.first
+        ext = split_number.last
+      elsif number.include?'x'
+        split_number = number.split("x")
+        number = split_number.first
+        ext = split_number.last
+      else
+        ext = nil
+      end
+      if number.length > 10 && number[0] == '1'
+        number = number.reverse.chop.reverse
+        number = ActionController::Base.helpers.number_to_phone(number, country_code: 1)
+        number = "#{number},#{ext}" if ext.present?
+      else
+        number = ActionController::Base.helpers.number_to_phone(number)
+        number = "#{number},#{ext}" if ext.present?
+      end
+    else
+      number = ''
+    end
+
+    return number
+  end
+
   def get_setting
      get_account_display_setting
      @role = current_user.roles.last.name
@@ -687,6 +732,7 @@ class AccountsController < ApplicationController
 
   def generate_csv_template
     column_names = ['Account Name', 'Contact Name', 'Contact Title', 'Status', 'Address', 'City', 'Province', 'Postal Code', 'Country', 'Phone', 'Fax', 'Email', 'About', 'Quick Facts' ]
+    column_names << "Owner" if current_user.roles.last.try(:name) == "Admin"
     CSV.generate() do |csv|
       csv << column_names
     end
@@ -697,6 +743,7 @@ class AccountsController < ApplicationController
     @row_numbers = {}
     status_array = @all_status.map(&:name)
     column_names = ['Account Name', 'Contact Name', 'Contact Title', 'Status', 'Address', 'City', 'Province', 'Postal Code', 'Country', 'Phone', 'Fax', 'Email', 'About', 'Quick Facts' ]
+    column_names << "Owner" if current_user.roles.last.try(:name) == "Admin"
     if csv[0].present?
       csv.each do |row|
         @line_no +=1
@@ -727,6 +774,30 @@ class AccountsController < ApplicationController
              is_valid = row[11] =~ email_reg_exp
              # is_valid = row_data[11] =~ email_reg_exp
              @row_numbers["#{@line_no}"] = "Invalid Email" if is_valid.blank?
+          end
+          unless row[14].blank?
+            value = row[14].to_i
+            if value != 0
+              user = User.find(row[14].to_i) rescue nil
+              if user.blank?
+                @row_numbers["#{@line_no}"] = "Owner Field: ID not found"
+              end
+            else
+              email_reg_exp = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+              is_valid = row[14].squish =~ email_reg_exp
+              @all_users = User.find(:all, reload: true)
+              if is_valid.blank?
+                users_name = @all_users.map{|u| "#{u.first_name}"+' '+"#{u.last_name}"}
+                unless users_name.include?row[14].squish
+                  @row_numbers["#{@line_no}"] = "Owner Field: Unknown Name or Email"
+                end
+              else
+                users_email = @all_users.map(&:email)
+                unless users_email.include?row[14].squish
+                  @row_numbers["#{@line_no}"] = "Owner Field: Unknown Name or Email"
+                end
+              end
+            end
           end
         end
       end
