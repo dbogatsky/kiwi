@@ -1,5 +1,5 @@
-<% if @totals[:general_meeting] == 0 %>
-  <p>Looks like there was no general meetings scheduled for this date range</p>
+<% if @totals[:regular_meeting] == 0 %>
+  <p>Looks like there was no regular meetings scheduled for this date range</p>
 <% else %>
   <div class="table-responsive">
     <table class="table table-hover mb30">
@@ -12,7 +12,7 @@
       </thead>
       <tbody>
         <% @sorted_citems[:meeting].each do | meeting | %>
-          <%if meeting.item_type == "general"%>
+          <%if meeting.item_type == "regular"%>
             <tr>
               <td class="td_width"><%= meeting.title %></td>
               <td><%= meeting.updated_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%b %d") %></td>
