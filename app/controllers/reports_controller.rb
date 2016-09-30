@@ -1,6 +1,7 @@
 class ReportsController < ApplicationController
   def meeting_report
     @users = User.all(uid: session[:user_id], reload: true)
+    get_account_display_setting
   end
 
   def activity_report
