@@ -657,7 +657,49 @@ class AccountsController < ApplicationController
   def batch
   end
 
-  def batch_note
+  def batch_notes
+    if request.post?
+      if params[:import_csv].present? && params[:import_csv].content_type == 'text/csv'
+        csv_text = File.read(params[:import_csv].tempfile)
+        csv = CSV.parse(csv_text)
+        note_csv_validates(csv)
+        csv.shift
+        if @row_numbers.empty?
+          if csv.present?
+            csv.each do |row|
+              row = row.join(',')
+              row = row.gsub(%r{\"}, '')
+              row = row.split(',')
+              if row[0].to_i != 0
+                c_id= Account.find(row[0].to_i).conversation.id
+              else
+                accounts = Account.all
+                if accounts.meta["total_pages"] > 1
+                  accounts = Account.all(params: { per_page: accounts.meta["total_entries"] })
+                end
+                accounts.each do |account|
+                  if account.name == row[0]
+                    c_id = Account.find(account.id).conversation.id
+                    break
+                  end
+                end
+              end
+              ci = ConversationItem.create(conversation_item: { title: row[1], body: row[2],created_by_id: current_user.id }, conversation_id: c_id, type: 'note')
+            end
+            flash[:success] = "Notes successfully imported"
+            redirect_to accounts_path
+          else
+            flash[:danger] = "Please Upload the CSV file with the notes Details"
+            redirect_to account_batch_path
+          end
+        else
+          render :batch
+        end
+      else
+       flash[:danger] = "File you are trying to import does not support csv format"
+       redirect_to account_batch_path
+      end
+    end
   end
 
   def notes_csv_template
@@ -743,7 +785,7 @@ class AccountsController < ApplicationController
 
   def generate_csv_template
     column_names = ['Account Name', 'Contact Name', 'Contact Title', 'Status', 'Address', 'City', 'Province', 'Postal Code', 'Country', 'Phone', 'Fax', 'Email', 'About', 'Quick Facts' ]
-    column_names << "Owner" if current_user.roles.last.try(:name) == "Admin"
+    column_names << 'Owner' if current_user.roles.last.try(:name) == "Admin"
     CSV.generate() do |csv|
       csv << column_names
     end
@@ -753,6 +795,52 @@ class AccountsController < ApplicationController
     column_names = ['Account', 'Note Title', 'Note Message' ]
     CSV.generate() do |csv|
       csv << column_names
+    end
+  end
+
+
+  def note_csv_validates(csv)
+    @line_no = 0
+    @row_numbers = {}
+    column_names = ['Account', 'Note Title', 'Note Message' ]
+    if csv[0].present?
+      csv.each do |row|
+        @line_no +=1
+        if row.present?
+          row = row.join(',')
+          row = row.gsub(%r{\"}, '')
+          row = row.split(',')
+        end
+        if @line_no == 1 && (row.present? && (row !=column_names))
+          @row_numbers["#{@line_no}"] = "Imported CSV file does not contain the correct headers"
+        end
+        if @line_no !=1 && row.present?
+          if row[0].blank?
+            @row_numbers["#{@line_no}"] = "Required field, Account, can not be empty"
+          else
+            if row[0].to_i != 0
+              account = Account.find(row[0].to_i) rescue nil
+              if account.blank?
+                @row_numbers["#{@line_no}"] = "Account's name/id does not exist in the system"
+              end
+            else
+              accounts = Account.all
+              if accounts.meta["total_pages"] > 1
+                accounts = Account.all(params: { per_page: accounts.meta["total_entries"] })
+              end
+              unless accounts.map(&:name).include?row[0]
+                @row_numbers["#{@line_no}"] = "Account's name/id does not exist in the system"
+              end
+            end
+          end
+          if row[1].blank?
+            @row_numbers["#{@line_no}"] = "Required field, Note Title, can not be empty"
+          end
+          if row[2].blank?
+            @row_numbers["#{@line_no}"] = "Required field, Note Message, can not be empty"
+          end
+        end
+      end
     end
   end
 
