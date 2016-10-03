@@ -653,6 +653,17 @@ class AccountsController < ApplicationController
     send_data generate_csv_template
   end
 
+
+  def batch
+  end
+
+  def batch_note
+  end
+
+  def notes_csv_template
+    send_data generate_notes_csv_template
+  end
+
   private
 
 
@@ -733,6 +744,13 @@ class AccountsController < ApplicationController
   def generate_csv_template
     column_names = ['Account Name', 'Contact Name', 'Contact Title', 'Status', 'Address', 'City', 'Province', 'Postal Code', 'Country', 'Phone', 'Fax', 'Email', 'About', 'Quick Facts' ]
     column_names << "Owner" if current_user.roles.last.try(:name) == "Admin"
+    CSV.generate() do |csv|
+      csv << column_names
+    end
+  end
+
+  def generate_notes_csv_template
+    column_names = ['Account', 'Note Title', 'Note Message' ]
     CSV.generate() do |csv|
       csv << column_names
     end
