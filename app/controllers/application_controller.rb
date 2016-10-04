@@ -109,7 +109,11 @@ class ApplicationController < ActionController::Base
   end
 
   def render_500
-    render file: "#{Rails.root}/public/500.html", status: 500
+    if session[:user_id].eql?('superadmin')
+      render file: "#{Rails.root}/public/500_super_admin.html", status: 500
+    else
+      render file: "#{Rails.root}/public/500.html", status: 500
+    end
   end
 
   def set_cache_headers
