@@ -661,7 +661,17 @@ class AccountsController < ApplicationController
     if request.post?
       if params[:import_csv].present? && params[:import_csv].content_type == 'text/csv'
         csv_text = File.read(params[:import_csv].tempfile)
-        csv = CSV.parse(csv_text)
+        begin
+          csv = CSV.parse(csv_text)
+        rescue Exception => e
+          @row_numbers = {}
+          e = e.to_s
+          e = e.gsub('.','')
+          e = e.split(' ').last()
+          @row_numbers[e] = "Unable to process this line. Check for missing quotations"
+          render :batch
+          return
+        end
         note_csv_validates(csv)
         csv.shift
         if @row_numbers.empty?
