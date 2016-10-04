@@ -1,7 +1,3 @@
-<%= content_for :head_assets do %>
-  <script src="/assets/bootstrap/js/fullcalendar.min.js"></script>
-  <script src="/assets/bootstrap/js/jquery.ui.touch-punch.min.js"></script>
-<% end %>
 <div class="panel panel-default">
 	<div class="panel-heading">
 		<p>Fill in the details below to add a user</p>
@@ -31,7 +27,7 @@
 	      <div class="form-group">
 	        <label class="col-sm-3 control-label">Password<span class="asterisk">*</span></label>
 		      <div class="col-sm-6">
-		        <%=password_field_tag 'user[password]', nil, class: 'form-control', required: true%>
+		        <%=password_field_tag 'user[password]', nil, class: 'form-control', required: true, minlength: 8%>
 		      </div>
 	      </div>
 	      <div class="form-group">
@@ -39,6 +35,11 @@
 		      <div class="col-sm-6">
 		        <%=password_field_tag 'user[confirm_password]', nil, class: 'form-control', required: true%>
 		      </div>
+		      <div class="confirm_password hidden">
+		        <div class="col-sm-6" style="margin-left: 27%;">
+	            <label class="error confirm_password">Passwords do not match.</label>
+	          </div>
+	        </div>
 	      </div>
       <%end%>
 	    <div class="form-group">
@@ -51,7 +52,7 @@
 		      <label class="col-sm-1 control-label">Entity<span class="asterisk">*</span></label>
 			      <div class="col-sm-2">
 			         <%en = @user.new_record? ? '' : (@user.entity.present? ? @user.entity.id : '') %>
-			         <%=select_tag "user[company_entity_id]", options_for_select(BoCompanyEntity.all.map{|c| [c.name, c.id] }, selected: "#{en}"), {prompt: "-- select --", :class => 'form-control sel_clear', required: true}%>
+			         <%=select_tag "user[company_entity_id]", options_for_select(BoCompanyEntity.all.map{|c| [c.name, c.id] }, selected: "#{en}"), {prompt: "-- select --", :class => 'form-control sel_clear'}%>
 			      </div>
 	      </div>
 	    </div>
@@ -139,7 +140,7 @@
 		<div class="panel-footer">
 			<div class="row">
 				<div class="col-sm-6 col-sm-offset-3">
-				 <%=submit_tag 'Save', class: 'btn btn-primary'%>
+				 <%=submit_tag 'Save', class: 'btn btn-primary submit_user_form'%>
 					&nbsp;
 					<button class="btn btn-default" name="cancel" id="cancel">Cancel</button>
 				</div>
@@ -165,6 +166,7 @@
 	if ( $('.sel_role').val() == 1 || $('.sel_role').val() == '' ) {
 	  $(".show_entity").hide();
 	  $(".sel_clear").val('');
+	  $(".sel_clear").attr('required', 'false');
 	}
 
 	// when an entity is selected
@@ -173,15 +175,18 @@
 	    {
 	      $(".show_entity").hide();
 	    	$(".sel_clear").val('');
+	    	$(".sel_clear").attr('required', 'false');
 	    }else
 	    {
 	     $(".show_entity").show();
+	     $(".sel_clear").attr('required', 'true');
 	    }
 	});
 
 	<% if @user.new_record?%>
 		$(function(){
-			$( "#new_user" ).validate({
+			$( "form#new_bo_user" ).attr('novalidate','false')
+			$( "#new_bo_user" ).validate({
 				debug: true,
 			  rules: {
 			   'user[password]': {
@@ -198,5 +203,30 @@
 	      }
 			});
 		});
+
+		$(".submit_user_form").click(function(){
+			var user_password = $("#user_password").val()
+			var user_confirm_password = $("#user_confirm_password").val()
+      if((user_password != '' && user_confirm_password != '') && (user_password != user_confirm_password)){
+      	$(".confirm_password").removeClass('hidden')
+      	$(".confirm_password").show()
+      	return false;
+      }else{
+      	$(".confirm_password").addClass('hidden')
+      	$(".confirm_password").hide()
+      }
+		});
+
+		$("#user_confirm_password").keyup(function(){
+			var user_password = $("#user_password").val()
+			var user_confirm_password = $("#user_confirm_password").val()
+      if((user_password != '' && user_confirm_password != '') && (user_password != user_confirm_password)){
+        $(".confirm_password").removeClass('hidden')
+      	$(".confirm_password").show()
+      }else{
+      	$(".confirm_password").addClass('hidden')
+      	$(".confirm_password").hide()
+      }
+		})
 	<%end%>
 </script>
