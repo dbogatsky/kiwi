@@ -25,7 +25,7 @@
             <% end %>
             <i class="fa fa-user tooltips mr10" data-toggle="tooltip" data-original-title="Created by"></i><%=meeting.created_by.first_name%> <%=meeting.created_by.last_name%><br />
 
-            <% if !meeting.invitees.nil? %>
+            <% if meeting.invitees.present?%>
                 <i class="fa fa-users tooltips mr10" data-toggle="tooltip" data-original-title="Invitees"></i><%= meeting.invitees %><br/>
             <% end %>
             <%check_in_time = check_in_details(meeting, false) %>

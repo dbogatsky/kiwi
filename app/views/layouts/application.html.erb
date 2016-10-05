@@ -108,7 +108,7 @@
     }
 
 
-    var time_hour = '<%=get_automatic_logout_time%>'
+    var time_hour = '<%=company_settings_load['authentication']['automatic_logout']%>'
     if(time_hour != ''){
       var timeout;
       time_hour = parseInt(time_hour)

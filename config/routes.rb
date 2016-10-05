@@ -34,6 +34,9 @@ Rails.application.routes.draw do
   match  '/accounts/import', to:'accounts#import', as: :account_import, via: [:get, :post]
   get  '/accounts/export', to:'accounts#export', as: :account_export
   get  '/accounts/csv_template', to: 'accounts#csv_template', as: :accounts_csv_template
+  get  '/accounts/batch', to:'accounts#batch', as: :account_batch
+  post '/accounts/batch_notes', to:'accounts#batch_notes', as: :account_batch_notes
+  get  '/accounts/notes_csv_template', to: 'accounts#notes_csv_template', as: :accounts_notes_csv_template
   resources :accounts do
     member do
       patch  :update_note

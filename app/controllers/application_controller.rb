@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
   #before_filter :accounts_cache  # DIS001 disabled for now
   # around_filter :set_time_zone
 
-  helper_method :current_user,:current_company, :get_api_values, :get_automatic_logout_time, :logged_in?, :superadmin_logged_in?, :notification_info
+  helper_method :current_user, :current_company, :get_api_values, :logged_in?, :superadmin_logged_in?, :notification_info, :company_settings_load
   helper_method :has_permission, :has_permissions, :has_page_permission, :has_page_permissions, :accounts_cache
 
   rescue_from ActiveResource::ForbiddenAccess do |exception|
@@ -109,7 +109,11 @@ class ApplicationController < ActionController::Base
   end
 
   def render_500
-    render file: "#{Rails.root}/public/500.html", status: 500
+    if session[:user_id].eql?('superadmin')
+      render file: "#{Rails.root}/public/500_super_admin.html", status: 500
+    else
+      render file: "#{Rails.root}/public/500.html", status: 500
+    end
   end
 
   def set_cache_headers
@@ -481,28 +485,35 @@ class ApplicationController < ActionController::Base
 
   # Note: try to replace the bottom methods,  get_automatic_logout_time and get_account_display_setting
   def company_settings_load(refresh=false)
-
     company_settings_info = session[:company_settings]
 
     unless company_settings_info.nil?
-      company_settings_info = JSON.parse(company_settings_info)
-      if (DateTime.parse(company_settings_info["last_update"]).to_i + 15.minutes.to_i) < DateTime.now.to_i
+      company_settings_current = JSON.parse(company_settings_info)
+      if company_settings_current['last_update'].nil? || (DateTime.parse(company_settings_current['last_update']).to_i + 15.minutes.to_i) < DateTime.now.to_i
         refresh = true
       end
     end
 
     if company_settings_info.nil? || refresh == true
-      #apiFullUrl = RequestStore.store[:api_url] + '/company/settings/authentication'
-      apiFullUrl = RequestStore.store[:api_url] + '/company/settings/preferences'
+      company_settings = {}
       email = current_user.email
       appKey = APP_CONFIG['api_app_key']
       token = session[:token]
-      curlRes = `curl -X GET -H "Authorization: Token token="#{token}", email="#{email}", app_key="#{appKey}"" -H "Content-Type: application/json"  -H "Cache-Control: no-cache" "#{apiFullUrl}"`
 
-      company_settings = JSON.parse(curlRes)
-      company_settings = company_settings['company']['settings']
-      company_settings['last_update'] = DateTime.now
-      company_settings.shift
+      apiFullUrl_authentication = RequestStore.store[:api_url] + '/company/settings/authentication'
+      curlRes_authentication = `curl -X GET -H "Authorization: Token token="#{token}", email="#{email}", app_key="#{appKey}"" -H "Content-Type: application/json"  -H "Cache-Control: no-cache" "#{apiFullUrl_authentication}"`
+      company_authentication = JSON.parse(curlRes_authentication)
+      company_settings['authentication'] = company_authentication['company']['settings']['authentication']
+
+      apiFullUrl_preferences = RequestStore.store[:api_url] + '/company/settings/preferences'
+      curlRes_preferences = `curl -X GET -H "Authorization: Token token="#{token}", email="#{email}", app_key="#{appKey}"" -H "Content-Type: application/json"  -H "Cache-Control: no-cache" "#{apiFullUrl_preferences}"`
+      company_preferences = JSON.parse(curlRes_preferences)
+      company_settings['preferences'] = company_preferences['company']['settings']['preferences']
+
+      unless company_settings.nil?
+        company_settings['last_update'] = DateTime.now
+      end
+
       session[:company_settings] = company_settings.to_json
     else
       company_settings = JSON.parse(company_settings_info)
@@ -512,27 +523,25 @@ class ApplicationController < ActionController::Base
   end
 
 
-  def get_automatic_logout_time
-    get_api_values
-    apiFullUrl = RequestStore.store[:api_url] + "/company/settings/authentication"
-    authentication = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -H "Cache-Control: no-cache" "#{apiFullUrl}"`
-    authentication = JSON.parse(authentication)
-    @session_expire_time = authentication['company']['settings']['authentication']['automatic_logout']
-  end
+  #def get_automatic_logout_time
+  #  get_api_values
+  #  apiFullUrl = RequestStore.store[:api_url] + "/company/settings/authentication"
+  #  authentication = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -H "Cache-Control: no-cache" "#{apiFullUrl}"`
+  #  authentication = JSON.parse(authentication)
+  #  @session_expire_time = authentication['company']['settings']['authentication']['automatic_logout']
+  #end
 
   def get_account_display_setting
-    get_api_values
-    apiFullUrl = RequestStore.store[:api_url] + '/company/settings/preferences'
-    preferences = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -H "Cache-Control: no-cache" "#{apiFullUrl}"`
-    preferences = JSON.parse(preferences)
-    @account_per_page =  preferences['company']['settings']['preferences']['account_per_page']
-    @account_by_status = preferences['company']['settings']['preferences']['accounts_by_status']
-    @enable_import = preferences['company']['settings']['preferences']['enable_import'] || "unknown"
-    @enable_export = preferences['company']['settings']['preferences']['enable_export'] || "unknown"
-    @enable_expected_sales = preferences['company']['settings']['preferences']['enable_expected_sales_attributes'] || "unknown"
-    @daylight_setting = preferences['company']['settings']['preferences']['enable_dst']
-    @enable_checkin_checkout = preferences['company']['settings']['preferences']['enable_checkin_checkout'] || "unknown"
-    @enable_regular_visits_sort = preferences['company']['settings']['preferences']['enable_regular_visits_sort'] || "unknown"
+    preferences = company_settings_load['preferences']
+
+    @account_per_page = preferences['account_per_page']
+    @account_by_status = preferences['accounts_by_status']
+    @enable_import = preferences['enable_import'] || "unknown"
+    @enable_export = preferences['enable_export'] || "unknown"
+    @enable_expected_sales = preferences['enable_expected_sales_attributes'] || "unknown"
+    @daylight_setting = preferences['enable_dst']
+    @enable_checkin_checkout = preferences['enable_checkin_checkout'] || "unknown"
+    @enable_regular_visits_sort = preferences['enable_regular_visits_sort'] || "unknown"
   end
 
   def application_settings
