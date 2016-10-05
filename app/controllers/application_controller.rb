@@ -494,7 +494,7 @@ class ApplicationController < ActionController::Base
       end
     end
 
-    if company_settings_info.nil? || refresh == true
+    if company_settings_info.nil? || refresh
       company_settings = {}
       email = current_user.email
       appKey = APP_CONFIG['api_app_key']

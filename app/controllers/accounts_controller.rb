@@ -721,6 +721,72 @@ class AccountsController < ApplicationController
     end
   end
 
+  def add_account_properties
+    if request.post?
+      if params[:import_csv].present? && params[:import_csv].content_type == 'text/csv'
+        csv_text = File.read(params[:import_csv].tempfile)
+        begin
+          csv = CSV.parse(csv_text)
+        rescue Exception => e
+          @row_numbers = {}
+          e = e.to_s
+          e = e.gsub('.','')
+          e = e.split(' ').last()
+          @row_numbers[e] = "Unable to process this line. Check for missing quotations"
+          render :add_account_properties
+          return
+        end
+        properties_csv_validates(csv)
+        csv.shift
+        if @row_numbers.empty?
+          if csv.present?
+            csv.each do |row|
+              row = row.join(',')
+              row = row.gsub(%r{\"}, '')
+              row = row.split(',')
+              if row[0].to_i != 0
+                @account = Account.find(row[0].to_i)
+              else
+                accounts = Account.all
+                if accounts.meta["total_pages"] > 1
+                  accounts = Account.all(params: { per_page: accounts.meta["total_entries"] })
+                end
+                accounts.each do |a|
+                  if a.name == row[0]
+                    @account  = Account.find(a.id)
+                    break
+                  end
+                end
+              end
+              account = {}
+              account['properties'] = {}
+              @account_properties.keys.each_with_index do |prop,i|
+                account['properties'][prop] = row[i+1]
+              end
+              params[:account] = {}
+              params[:account][:properties] = account.to_json
+              @account.update_attributes(name: @account.name, account: account_params)
+            end
+            flash[:success] = "Account's properties successfully imported"
+            redirect_to accounts_path
+          else
+            flash[:danger] = "Please Upload the CSV file with the account's properties Details"
+            redirect_to account_add_account_properties_path
+          end
+        else
+          render :add_account_properties
+        end
+      else
+       flash[:danger] = "File you are trying to import does not support csv format"
+       redirect_to account_add_account_properties_path
+      end
+    end
+  end
+
+  def properties_csv_template
+    send_data generate_properties_csv_template
+  end
+
   def notes_csv_template
     send_data generate_notes_csv_template
   end
@@ -817,6 +883,58 @@ class AccountsController < ApplicationController
     end
   end
 
+  def generate_properties_csv_template
+    application_settings
+    column_names = ['Account']
+    column_names <<  @account_properties.keys
+    column_names = column_names.flatten
+    CSV.generate() do |csv|
+      csv << column_names
+    end
+  end
+
+  def properties_csv_validates(csv)
+    @line_no = 0
+    @row_numbers = {}
+    application_settings
+    column_names = ['Account']
+    column_names <<  @account_properties.keys
+    column_names = column_names.flatten
+    if csv[0].present?
+      csv.each do |row|
+        @line_no +=1
+        if row.present?
+          row = row.join(',')
+          row = row.gsub(%r{\"}, '')
+          row = row.split(',')
+        end
+        if @line_no == 1 && (row.present? && (row !=column_names))
+          @row_numbers["#{@line_no}"] = "Imported CSV file does not contain the correct headers"
+        end
+        if @line_no !=1 && row.present?
+          if row[0].blank?
+            @row_numbers["#{@line_no}"] = "Required field, Account, can not be empty"
+          else
+            if row[0].to_i != 0
+              account = Account.find(row[0].to_i) rescue nil
+              if account.blank?
+                @row_numbers["#{@line_no}"] = "Account's name/id does not exist in the system"
+              end
+            else
+              accounts = Account.all
+              if accounts.meta["total_pages"] > 1
+                accounts = Account.all(params: { per_page: accounts.meta["total_entries"] })
+              end
+              unless accounts.map(&:name).include?row[0]
+                @row_numbers["#{@line_no}"] = "Account's name/id does not exist in the system"
+              end
+            end
+          end
+        end
+      end
+    end
+
+  end
 
   def note_csv_validates(csv)
     @line_no = 0

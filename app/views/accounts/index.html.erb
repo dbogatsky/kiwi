@@ -39,7 +39,13 @@
   </div>
   <div class="col-md-1">
     <%if (@role == 'Admin')%>
-        <small><%= link_to account_batch_path, class: "btn btn-default btn-block pull-right" do %><i class="fa fa-hdd-o mr5"></i>Batch<% end %></small>
+      <div class="btn-group mr5 pull-right">
+        <button data-toggle="dropdown" class="btn btn-primary btn-block pull-right" type="button"><i class="fa fa-hdd-o mr5"></i>Batch <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <li><a href="/accounts/batch">Notes</a></li>
+          <li><a href="/accounts/add_account_properties">Account Properties</a></li>
+        </ul>
+      </div>
     <%end%>
   </div>
   <div class="col-md-1">

@@ -36,6 +36,8 @@ Rails.application.routes.draw do
   get  '/accounts/csv_template', to: 'accounts#csv_template', as: :accounts_csv_template
   get  '/accounts/batch', to:'accounts#batch', as: :account_batch
   post '/accounts/batch_notes', to:'accounts#batch_notes', as: :account_batch_notes
+  match '/accounts/add_account_properties', to:'accounts#add_account_properties', as: :account_add_account_properties, via: [:get, :post]
+  get  '/accounts/properties_csv_template', to: 'accounts#properties_csv_template', as: :accounts_properties_csv_template
   get  '/accounts/notes_csv_template', to: 'accounts#notes_csv_template', as: :accounts_notes_csv_template
   resources :accounts do
     member do
