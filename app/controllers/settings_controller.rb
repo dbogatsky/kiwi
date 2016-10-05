@@ -2,8 +2,8 @@ class SettingsController < ApplicationController
   load_and_authorize_resource class: "SettingsController"
 
   def index
-    get_automatic_logout_time
     get_account_display_setting
+    @company_settings = company_settings_load(true)
   end
 
   def company_level_setting

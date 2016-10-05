@@ -19,7 +19,7 @@
                 <div class="form-group">
                   <label class="col-sm-4 control-label">User automatic logout after being idle for</label>
                   <div class="col-sm-4">
-                    <%=select_tag('automatic_logout',options_for_select(automatic_logout_select_options, selected: @session_expire_time), prompt: '-select-', class: "form-control")%>
+                    <%=select_tag('automatic_logout',options_for_select(automatic_logout_select_options, selected: @company_settings['authentication']['automatic_logout']), prompt: '-select-', class: "form-control")%>
                   </div>
                 </div>
               </div><!-- row pad 5-->
