@@ -62,11 +62,31 @@ jQuery(document).ready(function(){
 		},
 		onNext: function(tab, navigation, index) {
 		  var $valid = jQuery('#account-edit-form').valid();
+		  if ($("#vtab3").hasClass('active')){
+        $(".phone_validate").each(function() {
+          var status = phonenumber($(this));
+          if (!status && $(this).val() != ''){
+            $(this).after('<label class="error error_lable">Please enter valid number</label>')
+          }
+        });
+      }
 
-		  if(!$valid) {
-		    $validator.focusInvalid();
-		    return false;
-		  }
+      if ($("#vtab3").hasClass('active')){
+        $(".url_validate").each(function() {
+          var status = valid_url($(this));
+          if (!status && $(this).val() != ''){
+            $(this).after('<label class="error error_lable">Please enter valid URL</label>')
+          }
+        });
+      }
+
+		  var phone_status = phonenumber_status();
+		  // var url_status1 = url_status();
+
+		  // if(!$valid || !phone_status || !url_status1) {
+		  //   $validator.focusInvalid();
+		  //   return false;
+		  // }
 
 		},
 		onTabShow: function(tab, navigation, index){

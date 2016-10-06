@@ -180,7 +180,7 @@ class ScheduleController < ApplicationController
     end
 
     user_ids = []
-    (['Admin', 'Entity Admin'].include?(current_user.roles.first.name) && params[:user_id].present?) ? user_ids.push(params[:user_id]) : user_ids.push(current_user.id)
+    (['Admin', 'Entity Admin'].include?(current_user.roles.first.name) && params[:user_id].present?) && params[:user_id] != "undefined" ? user_ids.push(params[:user_id]) : user_ids.push(current_user.id)
     @created_by = current_user.id
 
     # get all meetings between the date range
@@ -214,7 +214,6 @@ class ScheduleController < ApplicationController
       events.push(event_data)
     end
     @sorted_regular_visits = sort_visit + sort_0_visit
-
     render template: 'schedule/_regular_visits', layout: false
   end
 

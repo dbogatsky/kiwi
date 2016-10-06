@@ -164,6 +164,7 @@
       <div class="row">
         <ul class="nav nav-tabs">
           <li class="active"><a href="#meetings" data-toggle="tab"><strong>Meetings</strong></a></li>
+          <li><a href="#regular_meetings" data-toggle="tab"><strong>Reg Visits</strong></a></li>
           <li><a href="#quotes" data-toggle="tab"><strong>Quotes</strong></a></li>
           <li><a href="#reminders" data-toggle="tab"><strong>Reminders</strong></a></li>
           <li><a href="#notes" data-toggle="tab"><strong>Notes</strong></a></li>
@@ -172,6 +173,9 @@
         <div class="tab-content mb30">
           <div class="tab-pane active" id="meetings">
             <%= render 'reports/activity_report/meetings_table' %>
+          </div>
+          <div class="tab-pane" id="regular_meetings">
+            <%= render 'reports/activity_report/regular_meetings_table' %>
           </div>
           <div class="tab-pane" id="quotes">
             <%= render 'reports/activity_report/quotes_table' %>

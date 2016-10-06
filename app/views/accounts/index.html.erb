@@ -32,10 +32,15 @@
 </div><!-- row -->
 
 <div class="row row-pad-5">
-  <div class="col-md-10">
+  <div class="col-md-9">
     <div class="margin_left4">
       <%=advance_search_criteria%>
     </div>
+  </div>
+  <div class="col-md-1">
+    <%if (@role == 'Admin')%>
+        <small><%= link_to account_batch_path, class: "btn btn-default btn-block pull-right" do %><i class="fa fa-hdd-o mr5"></i>Batch<% end %></small>
+    <%end%>
   </div>
   <div class="col-md-1">
     <%if (@role == 'Admin' || @role == @enable_import.tr("_", " ").titleize || @enable_import == 'all')%>
@@ -55,7 +60,8 @@
       <% ("a".."z").each do |l| %>
         <li><%= link_to l, accounts_path(search: {name_start: l}) %></li>
       <% end %>
-      <li><a href="/accounts">All</a></li>
+      <li><a href="/accounts?view_all=true">All</a></li>
+      <!-- accounts_path(view_all: true) -->
     </ul>
   </div>
 </div><!-- row -->

@@ -229,6 +229,12 @@ class AccountsController < ApplicationController
       params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone, params[:ends_date], params[:ends_time]) if params[:ends_date].present?
     end
     check_daylight #call to check daylight
+    if (params[:conversation_item][:status].present?) && (@conversation.check_ins.map(&:user_id).include?current_user.id) && (@conversation.status == 'in_progress')
+      lat = request.location.latitude rescue 0.0
+      lng = request.location.longitude rescue 0.0
+      ip_address = request.location.ip rescue nil
+      ConversationItemEvent.create(conversation_item_event: { lat: lat, long: lng, ip_address: ip_address }, type: 'check_out', conversation_item_id: @conversation.id)
+    end
     if @conversation.update_attributes(conversation_item: params[:conversation_item], conversation_id: conversation_id, reload: true)
       flash[:success] = 'Meeting successfully updated!'
     else
@@ -256,13 +262,16 @@ class AccountsController < ApplicationController
       lng = params['lng']
     end
     ci = ConversationItemEvent.create(conversation_item_event: { lat: lat, long: lng, ip_address: ip_address }, type: 'check_in', conversation_item_id: citem)
+    conversation = ConversationItem.find(params[:cid], params:{conversation_id: params[:conversation_id]})
     if params[:created_by].to_i == current_user.id
-      conversation = ConversationItem.find(params[:cid], params:{conversation_id: params[:conversation_id]})
       params[:conversation_item] = {}
       params[:conversation_item][:status] = "in_progress"
       conversation.update_attributes(conversation_item: params[:conversation_item], conversation_id: params[:conversation_id], reload: true)
     end
-    render json: ci
+    check_in_time = ci.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")
+    ci = ci.present? ? 'check_in' : nil
+    status = conversation.status
+    render json: [status, ci, check_in_time]
   end
 
   def check_out
@@ -280,13 +289,16 @@ class AccountsController < ApplicationController
       lng = params['lng']
     end
     co = ConversationItemEvent.create(conversation_item_event: { lat: lat, long: lng, ip_address: ip_address }, type: 'check_out', conversation_item_id: citem)
+    conversation = ConversationItem.find(params[:cid], params:{conversation_id: params[:conversation_id]})
     if params[:created_by].to_i == current_user.id
-      conversation = ConversationItem.find(params[:cid], params:{conversation_id: params[:conversation_id]})
       params[:conversation_item] = {}
       params[:conversation_item][:status] = "completed"
       conversation.update_attributes(conversation_item: params[:conversation_item], conversation_id: params[:conversation_id], reload: true)
     end
-    render json: co
+    check_out_time = co.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")
+    status = conversation.status
+    co = co.present? ? 'check_out' : nil
+    render json: [status, co, check_out_time]
   end
 
   def jump_in
@@ -578,13 +590,28 @@ class AccountsController < ApplicationController
               account_params[:status_id] = @status_id
               account_params[:addresses_attributes] = [street_address: row[4], city: row[5], region: row[6], postcode: row[7], country: row[8]]
               contacts_attributes = {}
-              contacts_attributes['phone'] = {name: '', type: 'phone', value: row[9]}
-              contacts_attributes['fax'] = {name: '', type: 'fax', value: row[10]} unless row[10].blank?
+              contacts_attributes['phone'] = {name: '', type: 'phone', value: convert_number_to_phone(row[9])}
+              contacts_attributes['fax'] = {name: '', type: 'fax', value: convert_number_to_phone(row[10])} unless row[10].blank?
               contacts_attributes['email'] = {name: '', type: 'email', value: row[11]} unless row[11].blank?
               account_params[:contacts_attributes] = contacts_attributes.values
               account_params[:about] = row[12]
               account_params[:quick_facts] = row[13]
-              account_params[:assign_to] = current_user.id
+              if row[14].blank?
+                account_params[:assign_to] = current_user.id
+              else
+                value = row[14].to_i
+                if value != 0
+                  account_params[:assign_to] = value
+                else
+                  all_users = User.find(:all, reload: true)
+                  all_users.each do |user|
+                    if (user.email == row[14].squish) || (("#{user.first_name}"+' '+"#{user.last_name}") == row[14].squish)
+                      account_params[:assign_to] = user.id
+                      break
+                    end
+                  end
+                end
+              end
               account = Account.new(request: :create, account: account_params)
               account.save
             end
@@ -631,6 +658,69 @@ class AccountsController < ApplicationController
     send_data generate_csv_template
   end
 
+
+  def batch
+  end
+
+  def batch_notes
+    if request.post?
+      if params[:import_csv].present? && params[:import_csv].content_type == 'text/csv'
+        csv_text = File.read(params[:import_csv].tempfile)
+        begin
+          csv = CSV.parse(csv_text)
+        rescue Exception => e
+          @row_numbers = {}
+          e = e.to_s
+          e = e.gsub('.','')
+          e = e.split(' ').last()
+          @row_numbers[e] = "Unable to process this line. Check for missing quotations"
+          render :batch
+          return
+        end
+        note_csv_validates(csv)
+        csv.shift
+        if @row_numbers.empty?
+          if csv.present?
+            csv.each do |row|
+              row = row.join(',')
+              row = row.gsub(%r{\"}, '')
+              row = row.split(',')
+              if row[0].to_i != 0
+                c_id= Account.find(row[0].to_i).conversation.id
+              else
+                accounts = Account.all
+                if accounts.meta["total_pages"] > 1
+                  accounts = Account.all(params: { per_page: accounts.meta["total_entries"] })
+                end
+                accounts.each do |account|
+                  if account.name == row[0]
+                    c_id = Account.find(account.id).conversation.id
+                    break
+                  end
+                end
+              end
+              ci = ConversationItem.create(conversation_item: { title: row[1], body: row[2],created_by_id: current_user.id }, conversation_id: c_id, type: 'note')
+            end
+            flash[:success] = "Notes successfully imported"
+            redirect_to accounts_path
+          else
+            flash[:danger] = "Please Upload the CSV file with the notes Details"
+            redirect_to account_batch_path
+          end
+        else
+          render :batch
+        end
+      else
+       flash[:danger] = "File you are trying to import does not support csv format"
+       redirect_to account_batch_path
+      end
+    end
+  end
+
+  def notes_csv_template
+    send_data generate_notes_csv_template
+  end
+
   private
 
   def check_daylight
@@ -651,6 +741,35 @@ class AccountsController < ApplicationController
         params[:conversation_item][:scheduled_at] = scheduled_at
       end
     end
+  end
+
+  def convert_number_to_phone(number)
+    number = number.to_s
+    if number.present?
+      if number.include?'ext'
+        split_number = number.split("ext")
+        number = split_number.first
+        ext = split_number.last
+      elsif number.include?'x'
+        split_number = number.split("x")
+        number = split_number.first
+        ext = split_number.last
+      else
+        ext = nil
+      end
+      if number.length > 10 && number[0] == '1'
+        number = number.reverse.chop.reverse
+        number = ActionController::Base.helpers.number_to_phone(number, country_code: 1)
+        number = "#{number},#{ext}" if ext.present?
+      else
+        number = ActionController::Base.helpers.number_to_phone(number)
+        number = "#{number},#{ext}" if ext.present?
+      end
+    else
+      number = ''
+    end
+
+    return number
   end
 
   def get_setting
@@ -700,8 +819,62 @@ class AccountsController < ApplicationController
 
   def generate_csv_template
     column_names = ['Account Name', 'Contact Name', 'Contact Title', 'Status', 'Address', 'City', 'Province', 'Postal Code', 'Country', 'Phone', 'Fax', 'Email', 'About', 'Quick Facts' ]
+    column_names << 'Owner' if current_user.roles.last.try(:name) == "Admin"
     CSV.generate() do |csv|
       csv << column_names
+    end
+  end
+
+  def generate_notes_csv_template
+    column_names = ['Account', 'Note Title', 'Note Message' ]
+    CSV.generate() do |csv|
+      csv << column_names
+    end
+  end
+
+
+  def note_csv_validates(csv)
+    @line_no = 0
+    @row_numbers = {}
+    column_names = ['Account', 'Note Title', 'Note Message' ]
+    if csv[0].present?
+      csv.each do |row|
+        @line_no +=1
+        if row.present?
+          row = row.join(',')
+          row = row.gsub(%r{\"}, '')
+          row = row.split(',')
+        end
+        if @line_no == 1 && (row.present? && (row !=column_names))
+          @row_numbers["#{@line_no}"] = "Imported CSV file does not contain the correct headers"
+        end
+        if @line_no !=1 && row.present?
+          if row[0].blank?
+            @row_numbers["#{@line_no}"] = "Required field, Account, can not be empty"
+          else
+            if row[0].to_i != 0
+              account = Account.find(row[0].to_i) rescue nil
+              if account.blank?
+                @row_numbers["#{@line_no}"] = "Account's name/id does not exist in the system"
+              end
+            else
+              accounts = Account.all
+              if accounts.meta["total_pages"] > 1
+                accounts = Account.all(params: { per_page: accounts.meta["total_entries"] })
+              end
+              unless accounts.map(&:name).include?row[0]
+                @row_numbers["#{@line_no}"] = "Account's name/id does not exist in the system"
+              end
+            end
+          end
+          if row[1].blank?
+            @row_numbers["#{@line_no}"] = "Required field, Note Title, can not be empty"
+          end
+          if row[2].blank?
+            @row_numbers["#{@line_no}"] = "Required field, Note Message, can not be empty"
+          end
+        end
+      end
     end
   end
 
@@ -710,6 +883,7 @@ class AccountsController < ApplicationController
     @row_numbers = {}
     status_array = @all_status.map(&:name)
     column_names = ['Account Name', 'Contact Name', 'Contact Title', 'Status', 'Address', 'City', 'Province', 'Postal Code', 'Country', 'Phone', 'Fax', 'Email', 'About', 'Quick Facts' ]
+    column_names << "Owner" if current_user.roles.last.try(:name) == "Admin"
     if csv[0].present?
       csv.each do |row|
         @line_no +=1
@@ -740,6 +914,30 @@ class AccountsController < ApplicationController
              is_valid = row[11] =~ email_reg_exp
              # is_valid = row_data[11] =~ email_reg_exp
              @row_numbers["#{@line_no}"] = "Invalid Email" if is_valid.blank?
+          end
+          unless row[14].blank?
+            value = row[14].to_i
+            if value != 0
+              user = User.find(row[14].to_i) rescue nil
+              if user.blank?
+                @row_numbers["#{@line_no}"] = "Owner Field: ID not found"
+              end
+            else
+              email_reg_exp = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+              is_valid = row[14].squish =~ email_reg_exp
+              @all_users = User.find(:all, reload: true)
+              if is_valid.blank?
+                users_name = @all_users.map{|u| "#{u.first_name}"+' '+"#{u.last_name}"}
+                unless users_name.include?row[14].squish
+                  @row_numbers["#{@line_no}"] = "Owner Field: Unknown Name or Email"
+                end
+              else
+                users_email = @all_users.map(&:email)
+                unless users_email.include?row[14].squish
+                  @row_numbers["#{@line_no}"] = "Owner Field: Unknown Name or Email"
+                end
+              end
+            end
           end
         end
       end

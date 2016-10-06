@@ -63,8 +63,6 @@ module ApplicationHelper
   def check_in(citem, info)
     if citem.check_ins.present?
       citem.check_ins.each do |ci|
-        # ci = info.present? ? OpenStruct.new(ci) : ci
-        # unless ci.class.name == 'ConversationItem::CheckIn'
         if info.present? || ci.class.name == "Hash"
           ci = OpenStruct.new(ci)
         end
@@ -84,8 +82,6 @@ module ApplicationHelper
 	def check_out(citem, info)
 		if citem.check_outs.present?
       citem.check_outs.each do |co|
-      	# co = info.present? ? OpenStruct.new(co) : co
-        # unless co.class.name == 'ConversationItem::CheckOut'
         if info.present? || co.class.name == "Hash"
           co = OpenStruct.new(co)
         end
@@ -120,7 +116,8 @@ module ApplicationHelper
     if citem.check_ins.present?
       citem.check_ins.each do |ci|
         ci = (info.present? || (ci.class.name == "Hash")) ? OpenStruct.new(ci) : ci
-        if ci.user_id.to_i == current_user.id
+        current_user_roles = current_user.roles.collect { |r| r.name }
+        if ci.user_id.to_i == current_user.id || current_user_roles.include?('Entity Admin') || current_user_roles.include?('Admin')
           check_in_time = ci.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")
           break
         end
@@ -134,7 +131,8 @@ module ApplicationHelper
     if citem.check_outs.present?
       citem.check_outs.each do |co|
         co = (info.present? || (co.class.name == "Hash")) ? OpenStruct.new(co) : co
-        if co.user_id.to_i == current_user.id
+        current_user_roles = current_user.roles.collect { |r| r.name }
+        if co.user_id.to_i == current_user.id || current_user_roles.include?('Entity Admin') || current_user_roles.include?('Admin')
           check_out_time = co.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")
           break
         end

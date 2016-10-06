@@ -13,7 +13,7 @@
           <div class="timeline-item">
             <div class="row">
               <div class="col-xs-3 date">
-                <i class="fa fa-briefcase"></i>
+                <i class="fa fa-calendar"></i>
                 <small>
                   <%= m.starts_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%l:%M %p") if m.starts_at.present? %><br />
                   <%= m.ends_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%l:%M %p") if m.ends_at.present? %>
@@ -26,6 +26,7 @@
               >
                 <p><strong><a href="/schedule?mid=<%= m.id %>&acc_id=<%=m.account_id%>" style="color:#636e7b;"><%=m.title%></a></strong></p>
                 <p><small><%= sanitize m.body.gsub(/<br\s*\/?>/, '') %></small></p>
+                <p><small class="meeting-fa-icon"><i class="fa fa-briefcase"></i></small><small class="meeting-fa-account"><a href="/accounts/<%=m.account_id%>" style="color:#636e7b;"><%= m.account.try(:name) ? m.account.name : "Account Deleted" %></a></small></p>
               </div>
             </div>
           </div>

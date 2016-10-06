@@ -1,5 +1,7 @@
 class ReportsController < ApplicationController
   def meeting_report
+    @users = User.all(uid: session[:user_id], reload: true)
+    get_account_display_setting
   end
 
   def activity_report
@@ -10,7 +12,15 @@ class ReportsController < ApplicationController
     if current_user.roles.last.try(:name) == 'User'
       user_ids = [current_user.id]
     else
-      user_ids = params[:users].present? ? params[:users] : [current_user.id]
+      if params[:users].present?
+        if params[:users].include? 'all'
+          user_ids = User.all(uid: session[:user_id], reload: true).map(&:id)
+        else
+          user_ids = params[:users]
+        end
+      else
+        user_ids = [current_user.id]
+      end
     end
     search = Hash[]
     search[:type_eq] = 'ConversationItems::Meeting'
@@ -24,7 +34,7 @@ class ReportsController < ApplicationController
       if @meetings.total_entries > 500
         flash[:danger] = 'Sorry, we are unable to process your request. The max result limit has been reached.
 Please contact your administrator to help generate a report.'
-        redirect_to activity_report_path
+        redirect_to meeting_report_path
       else
         total_page = (@meetings.total_entries.to_f/50).ceil
         @meetings = []

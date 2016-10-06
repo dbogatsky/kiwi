@@ -39,7 +39,7 @@
 //= require bootstrap/select2.min
 //= require bootstrap/jquery.validate.min
 
-// <script src="assets/bootstrap/js/additional-methods.min.js"></script> 
+// <script src="assets/bootstrap/js/additional-methods.min.js"></script>
 //= require bootstrap/bootstrap-editable.min
 //= require bootstrap/bootstrap-datetimepicker.min
 //= require bootstrap/moment.min
@@ -65,7 +65,7 @@
 //= require jstz
 //= require browser_timezone_rails/set_time_zone
 
-// webshim 
+// webshim
 //= require webshims/polyfiller
 
 // photo
@@ -77,3 +77,55 @@
 
 $.webshims.setOptions('basePath', '/assets/webshims/shims/')
 $.webshims.polyfill('forms')
+
+function url_status() {
+  flag = true
+  if ($("#vtab3").hasClass('active')){
+    $(".url_validate").each(function() {
+      var status = valid_url($(this))
+      if (!status){
+        flag = false;
+        return flag;
+      }
+    });
+  }else{
+    return flag
+  }
+  return flag
+}
+
+function phonenumber(inputtxt) {
+  var phoneno = /^\(?([0-9]{3})\)?[-]?([0-9]{3})[-]?([0-9]{4})$/;
+  if(inputtxt.val().match(phoneno)){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
+function valid_url(inputtxt) {
+  var url = /^((https?):\/\/)?(.)+[a-zA-Z0-9\-\.]{3,}\.[a-zA-Z]{2,}(\.[a-zA-Z]{2,})?$/;
+  if(inputtxt.val().match(url)){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
+function phonenumber_status() {
+  flag = true
+  if ($("#vtab3").hasClass('active')){
+    $(".phone_validate").each(function() {
+      var status = phonenumber($(this))
+      if (!status){
+        flag = false;
+        return flag;
+      }
+    });
+  }else{
+    return flag
+  }
+  return flag
+}

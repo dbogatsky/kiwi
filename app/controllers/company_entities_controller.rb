@@ -1,6 +1,7 @@
 class CompanyEntitiesController < ApplicationController
   def new
     @company_entity = CompanyEntity.new
+    @entites = CompanyEntity.all(uid: RequestStore.store[:tenant], reload: true)
   end
 
   def create

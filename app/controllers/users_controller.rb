@@ -20,7 +20,7 @@ class UsersController < ApplicationController
   def edit
     authorize! :user_management, User
 
-    @address = @user.addresses
+    @address = @user.addresses.last rescue nil
     @contact = @user.contacts
   end
 

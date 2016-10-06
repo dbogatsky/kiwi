@@ -74,17 +74,16 @@
 
           <%= f.fields_for :addresses_attributes do |add| %>
             <%st_address = @address.last.street_address rescue nil%>
-            <%= add.input :street_address, required: true, label: "Street", :input_html => { :name => "user[addresses_attributes][][street_address]", :value => current_user.addresses.last.street_address, id: 'street_number'}%>
+            <%= add.input :street_address, required: false, label: "Street", :input_html => { :name => "user[addresses_attributes][][street_address]", :value => current_user.addresses.last.street_address, id: 'street_number'}%>
 
-            <%= add.input :suite_number, label: "Suite Number", :input_html => { :name => "user[addresses_attributes][][suite_number]", :value => current_user.addresses.last.try(:suite_number), id: 'subpremise'}%>
-
+            <%= add.input :suite_number, required: false, label: "Suite Number", :input_html => { :name => "user[addresses_attributes][][suite_number]", :value => current_user.addresses.last.try(:suite_number), id: 'subpremise'}%>
 
             <%city = @address.last.city rescue nil%>
-            <%= add.input :city, required: true, label: "City", :input_html => { :name => "user[addresses_attributes][][city]", :value => current_user.addresses.last.city, id: 'locality'} %>
+            <%= add.input :city, required: false, label: "City", :input_html => { :name => "user[addresses_attributes][][city]", :value => current_user.addresses.last.city, id: 'locality'} %>
             <%postcode = @address.last.postcode rescue nil%>
-            <%= add.input :postcode, required: true, label: "Postcode/Zipcode", :input_html => { :name => "user[addresses_attributes][][postcode]", :value => current_user.addresses.last.postcode, id: 'postal_code'}%>
+            <%= add.input :postcode, required: false, label: "Postcode/Zipcode", :input_html => { :name => "user[addresses_attributes][][postcode]", :value => current_user.addresses.last.postcode, id: 'postal_code'}%>
             <%address_region = @address.last.region rescue nil%>
-            <%= add.input :region, required: true, label: "Province/State", :input_html => { :name => "user[addresses_attributes][][region]", :value => current_user.addresses.last.region, id:'administrative_area_level_1'} %>
+            <%= add.input :region, required: false, label: "Province/State", :input_html => { :name => "user[addresses_attributes][][region]", :value => current_user.addresses.last.region, id:'administrative_area_level_1'} %>
             <div class="form-group">
               <label class="col-sm-3 control-label">Country</label>
               <div class="col-sm-6">

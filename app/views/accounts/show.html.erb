@@ -17,7 +17,7 @@
         <h5 class="subtitle">Contact</h5>
         <ul class="profile-social-list" id="account-contacts">
           <% if !@account.contact_name.nil? %>
-            <li><i class="fa fa-briefcase"></i>  <%= @account.contact_name %>
+            <li><i class="fa fa-briefcase"></i>  <%=  @account.contact_name.blank? ? "- n/a -" : @account.contact_name %>
               <% if !@account.contact_title.nil? %>
                  <br ><div style="margin-left: 30px;"><small><%= @account.contact_title %></small></div>
               <% end %>
@@ -26,10 +26,10 @@
           <% @account.contacts.each do |contact| %>
             <% if contact.type == "email" %>
               <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name %>"></i><a href="mailto:<%= contact.value %>"><%= contact.value %></a></li>
-            <%elsif  contact.type == "website"%>
-             <li id="<%= dom_id(contact) %>"><i class="fa fa-globe"></i><a href="<%=(contact.value.include?'https') ? contact.value : 'https://'+contact.value %>" target="_blank"><%= contact.value %></a></li>
+            <%elsif  contact.type == "website" || contact.type == "facebook" || contact.type == "youtube"%>
+             <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name == 'website' ? 'globe' :  contact.icon_name%>"></i><a href="<%=(contact.value.include?'http') ? contact.value : 'http://'+contact.value %>" target="_blank"><%= contact.value %></a></li>
             <% elsif contact.type.eql? "phone"  or  contact.type.eql? "mobile"  or  contact.type.eql? "fax"%>
-              <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name %>"></i><a href="tel:+1<%= contact.value.delete(" ").delete("-") %>"><%= contact.value %></a></li>
+              <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name %>"></i><a href="tel:+1<%= contact.value.delete(" ").delete("-") %>"><%= (contact.value.include?',') ? contact.value.gsub(',','x') : contact.value%></a></li>
             <% else %>
               <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name %>"></i><%= contact.value %></li>
             <% end %>
@@ -182,7 +182,7 @@
               <%= render "conversation_timeline", timeline_conversation_items: @timeline_conversation_items %>
             </section>
             <%if @timeline_conversation_items.next_page%>
-              <div class="col-sm-12 load_more"><%=link_to 'Load More', load_more_conversation_item_account_path(@account, conversation_id: @account.conversation.id, page: @timeline_conversation_items.next_page), remote: :true, class: "btn btn-default load_more_btn"%></div>
+              <div class="col-sm-12 load_more"><%=link_to 'Load More', load_more_conversation_item_account_path(@account, conversation_id: @account.conversation.id, page: @timeline_conversation_items.next_page), remote: :true, class: "btn btn-primary btn-lg btn-block load_more_btn"%></div>
             <%end%>
           <% else %>
             <div class="row">
@@ -353,6 +353,28 @@
 
     var new_editor, edit_editor;
     $(function() {
+      /*
+      new_editor = $('#new_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false,
+        "events": {
+          "load": function() {
+            console.log("Loaded!");
+            var $iframe = $(this.composer.iframe);
+            var $body = $(this.composer.element);
+            $body.css({
+              'min-height': 0,
+              'line-height': '20px',
+              'overflow': 'hidden',
+            });
+            var scrollHeightInit = $body[0].scrollHeight;
+            console.log("scrollHeightInit", scrollHeightInit);
+            var bodyHeightInit = $body.height();
+            console.log("bodyHeightInit", bodyHeightInit);
+            var heightInit = Math.min(scrollHeightInit, bodyHeightInit);
+            $iframe.height(heightInit);
+          }
+        }
+      });
+      */
       new_editor = $('#new_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
       edit_editor = $('#edit_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
     });

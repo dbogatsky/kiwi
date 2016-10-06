@@ -19,7 +19,7 @@
                 <div class="form-group">
                   <label class="col-sm-4 control-label">User automatic logout after being idle for</label>
                   <div class="col-sm-4">
-                    <%=select_tag('automatic_logout',options_for_select(automatic_logout_select_options, selected: @session_expire_time), prompt: '-select-', class: "form-control")%>
+                    <%=select_tag('automatic_logout',options_for_select(automatic_logout_select_options, selected: @company_settings['authentication']['automatic_logout']), prompt: '-select-', class: "form-control")%>
                   </div>
                 </div>
               </div><!-- row pad 5-->
@@ -78,21 +78,47 @@
             <div class="tab-pane" id="accounts">
               <div class="row row-pad-5">
                 <div class="form-group">
-                  <label class="col-sm-4 control-label">Enable Import</label>
+                  <label class="col-sm-4 control-label">Import Account</label>
                   <div class="col-sm-4">
                     <%=select_tag('enable_import',options_for_select(enable_import_export_select_options, selected: @enable_import), prompt: '-select-', class: "form-control")%>
                   </div>
                 </div>
                 <div class="form-group">
-                  <label class="col-sm-4 control-label">Enable Export</label>
+                  <label class="col-sm-4 control-label">Export Account</label>
                   <div class="col-sm-4">
                     <%=select_tag('enable_export',options_for_select(enable_import_export_select_options, selected: @enable_export), prompt: '-select-', class: "form-control")%>
                   </div>
                 </div>
                 <div class="form-group">
-                  <label class="col-sm-4 control-label">Enable Expected Sales</label>
+                  <label class="col-sm-4 control-label">Expected Sales</label>
                   <div class="col-sm-4">
                     <%=select_tag('expected_sales_attribute',options_for_select(expected_sales_select_options, selected: @enable_expected_sales), class: "form-control")%>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label">Schedule Meetings/Regular Visits Checkin/Checkout(incl. Schedule Page)</label>
+                  <div class="col-sm-4">
+                    <%=select_tag('enable_checkin_checkout',options_for_select(expected_sales_select_options, selected: @enable_checkin_checkout), class: "form-control")%>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <div class="panel-btns">
+              <a href="" class="minimize">−</a>
+            </div><!-- panel-btns -->
+            <h3 class="panel-title">Schedule</h3>
+          </div>
+          <div class="panel-body">
+            <div class="tab-pane" id="accounts">
+              <div class="row row-pad-5">
+                <div class="form-group">
+                  <label class="col-sm-4 control-label">Regular Visits Sort</label>
+                  <div class="col-sm-4">
+                    <%=select_tag('enable_regular_visits_sort',options_for_select(enable_regular_visits_sort_options, selected: @enable_regular_visits_sort), class: "form-control")%>
                   </div>
                 </div>
               </div>

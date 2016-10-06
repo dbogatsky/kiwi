@@ -19,7 +19,7 @@
 			<div class="col-sm-6">
         <select name="company_entity[parent_id]" class="form-control input-sm">
           <option value="">Default</option>
-          <%CompanyEntity.all.each do |entity|%>
+          <%@entites.each do |entity|%>
             <%unless entity.parent.present?%>
               <option value="<%=entity.id%>"><%=entity.name%></option>
               <%if entity.descendants.present?%>

@@ -27,7 +27,7 @@
                 <% end %>
                 <i class="fa fa-user tooltips mr10" data-toggle="tooltip" data-original-title="Created by"></i><%=meeting.created_by.first_name%> <%=meeting.created_by.last_name%><br />
 
-                <% if !meeting.invitees.nil? %>
+                <% if meeting.invitees.present? %>
                     <i class="fa fa-users tooltips mr10" data-toggle="tooltip" data-original-title="Invitees"></i><%= meeting.invitees %><br/>
                 <% end %>
                 <%check_in_time = check_in_details(meeting, false) %>
@@ -39,19 +39,20 @@
                   <i class="fa fa-sign-out mr10" data-toggle="tooltip" data-original-title="Check Out"></i><%= check_out_time %><br/>
                 <% end %>
                 <div class="check_in_time_<%=meeting.id%> hidden">
-                  <i class="fa fa-sign-in mr10" data-toggle="tooltip" data-original-title="Check In"></i><%= Time.now.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>
+                  <i class="fa fa-sign-in mr10" data-toggle="tooltip" data-original-title="Check In"></i><span></span>
                 </div>
                 <div class="check_out_time_<%=meeting.id%> hidden">
-                  <i class="fa fa-sign-out mr10" data-toggle="tooltip" data-original-title="Check Out"></i><%= Time.now.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %>
+                  <i class="fa fa-sign-out mr10" data-toggle="tooltip" data-original-title="Check Out"></i><span></span>
                 </div>
                 <i class="fa fa-briefcase tooltips mr10" data-toggle="tooltip" data-original-title="Account"></i><%= meeting.account.try(:name) ? meeting.account.name : "Account Deleted" %><br/>
               </div>
               <%invitees = meeting.invitees.present? ? meeting.invitees.split(', ') : []%>
               <div class="col-sm-2">
                 <%time = meeting.ends_at.present? ? (DateTime.now.in_time_zone(current_user.time_zone) > meeting.ends_at.to_datetime.in_time_zone(current_user.time_zone)+1.hour) : false%>
-                  <% if meeting.status == "scheduled" && !time%>
+                <%if @enable_checkin_checkout == 'enable'%>
+                  <% if (meeting.status == "scheduled" || meeting.status == "in_progress")%>
                     <%if current_user.id == meeting.created_by.id || invitees.include?(current_user.email)%>
-                      <%if check_in(meeting,false)%>
+                      <%if check_in(meeting,false) && !time%>
                         <a class="btn btn-xs btn-default pull-right mr5 checkin" id="<%=meeting.id%>" data-created-by="<%=meeting.created_by.id%>" data-conversation-id = "<%=meeting.prefix_options[:conversation_id].present? ? meeting.prefix_options[:conversation_id] : meeting.conversation_id%>">
                           <i class="fa fa-sign-in mr5"></i><span class="position_button">Check In</span>
                         </a>
@@ -61,12 +62,16 @@
                           <i class="fa fa-sign-out mr5"></i><span class="position_button">Check Out</span>
                         </a>
                       <%end%>
-                    <%else%>
+                    <%elsif (!time)%>
                       <a class="btn btn-xs btn-default pull-right mr5 jumpin" id="<%=meeting.id%>" data-conversation-id = "<%=meeting.prefix_options[:conversation_id].present? ? meeting.prefix_options[:conversation_id] : meeting.conversation_id%>">
                         <i class="fa fa-sign-in mr5"></i><span class="position_button">Jump In</span>
                       </a>
                     <%end%>
+                  <% elsif !check_in(meeting,false) && check_out(meeting,false) && (meeting.status == "in_progress" || meeting.status == "completed")%>
+                    <a class="btn btn-xs btn-default pull-right mr5 checkout" id="<%=meeting.id%>" data-created-by="<%=meeting.created_by.id%>" data-conversation-id = "<%=meeting.prefix_options[:conversation_id].present? ? meeting.prefix_options[:conversation_id] : meeting.conversation_id%>"><i class="fa fa-sign-out mr5"></i><span class="position_button">Check Out</span>
+                    </a>
                   <% end %>
+                <% end %>
               </div>
               </div>
             </div>
