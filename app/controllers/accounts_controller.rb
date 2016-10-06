@@ -783,12 +783,19 @@ class AccountsController < ApplicationController
     end
   end
 
+  def add_assets
+  end
+
   def properties_csv_template
     send_data generate_properties_csv_template
   end
 
   def notes_csv_template
     send_data generate_notes_csv_template
+  end
+
+  def assets_csv_template
+    send_data generate_assets_csv_template
   end
 
   private
@@ -878,6 +885,16 @@ class AccountsController < ApplicationController
 
   def generate_notes_csv_template
     column_names = ['Account', 'Note Title', 'Note Message' ]
+    CSV.generate() do |csv|
+      csv << column_names
+    end
+  end
+
+  def generate_assets_csv_template
+    application_settings
+    column_names = ['Account']
+    column_names <<  @account_properties.keys
+    column_names = column_names.flatten
     CSV.generate() do |csv|
       csv << column_names
     end
