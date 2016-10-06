@@ -6,7 +6,7 @@
         <h4 class="modal-title property_title">Add Property</h4>
       </div>
       <div class="modal-body">
-        <%= form_tag add_and_update_property_admin_company_settings_path(company_id: @company), method: :patch do %>
+        <%= form_tag add_and_update_property_admin_company_settings_path(company_id: @company), method: :patch, id: 'add_asset_and_property' do %>
           <div class="panel panel-default">
             <div class="panel-body">
               <div class="row row-pad-5">
@@ -14,7 +14,7 @@
                   <label class="col-sm-3 control-label">ID<span class="asterisk">*</span></label>
                 </div>
                 <div class="col-lg-9">
-                  <input type="text" name="property_id" placeholder="" id="property_id" class="form-control" required="required" />
+                  <input type="text" name="property_id" placeholder="" class="form-control property_id" required="required" />
                 </div>
               </div>
 
@@ -23,7 +23,7 @@
                   <label class="col-sm-3 control-label">Label<span class="asterisk">*</span></label>
                 </div>
                 <div class="col-lg-9">
-                  <input type="text" name="label" placeholder="" class="form-control" required="required" id="property_label"/>
+                  <input type="text" name="label" placeholder="" class="form-control property_label" required="required"/>
                 </div>
               </div>
 
@@ -33,10 +33,10 @@
                 </div>
                 <div class="col-lg-9">
                   <div class="radio-inline">
-                    <label><input type="radio" name="required" id="required_false" value="false" checked>No</label>
+                    <label><input type="radio" name="required" value="false" class="required_false" checked>No</label>
                   </div>
                   <div class="radio-inline">
-                    <label><input type="radio" name="required" id="required_true" value="true">Yes</label>
+                    <label><input type="radio" name="required" value="true" class="required_true">Yes</label>
                   </div>
                 </div>
               </div>
@@ -46,7 +46,7 @@
                   <label class="col-sm-3 control-label">Format</label>
                 </div>
                 <div class="col-lg-9">
-                  <select class="form-control input-sm mb15" name="format" id="property_format">
+                  <select class="form-control input-sm mb15 property_format" name="format">
                     <option value=''>-select format-</option>
                     <option value="date">Date</option>
                     <option value="numeric">Numeric</option>
@@ -61,7 +61,7 @@
                   <label class="col-sm-3 control-label">Value</label>
                 </div>
                 <div class="col-lg-9">
-                  <textarea class="form-control" id="property_value" rows="3" placeholder="" name="values"></textarea>
+                  <textarea class="form-control property_value" rows="3" placeholder="" name="values"></textarea>
                 </div>
               </div>
             </div><!-- panel-body -->

@@ -1,0 +1,42 @@
+<div class="form-group">
+  <div class="col-sm-12 mb30">
+    <div class="table-responsive ">
+      <table class="table table-primary mb30">
+        <thead>
+          <th>ID</th>
+          <th>Label</th>
+          <th>Required</th>
+          <th>Format</th>
+          <th>Values</th>
+          <th>Actions</th>
+        </thead>
+        <tbody>
+          <%unless property_or_asset.blank?%>
+            <%property_or_asset.each do |key, value|%>
+              <tr>
+                <td><%=key%></td>
+                <td><%=value['label']%></td>
+                <td><%=value['required']%></td>
+                <td><%=value['format']%></td>
+                <td><%=value['values']%></td>
+                <td class="table-action">
+                  <a href="" data-toggle="modal" data-target=".add-account-property-modal-form" class="<%=cls%>" data-key="<%=key%>"
+                   data-label="<%=value['label']%>"
+                   data-required="<%=value['required']%>"
+                   data-format="<%=value['format']%>"
+                   data-values="<%=value['values']%>">
+                   <i class="fa fa-pencil"></i></a>
+                  <%if cls == "edit_property"%>
+                    <a href="/admin/companies/<%=@company.id%>/settings/delete_property?property_id=<%=key%>" data-method="delete" rel="nofollow" data-confirm="Are you sure you want to delete this property?"><i class="fa fa-trash-o"></i></a>
+                  <%else%>
+                    <a href="/admin/companies/<%=@company.id%>/settings/delete_asset?asset_id=<%=key%>" data-method="delete" rel="nofollow" data-confirm="Are you sure you want to delete this asset?"><i class="fa fa-trash-o"></i></a>
+                  <%end%>
+                </td>
+              </tr>
+            <%end%>
+          <%end%>
+        </tbody>
+      </table>
+    </div><!-- table-responsive -->
+  </div>
+</div>

@@ -9,7 +9,9 @@ Rails.application.routes.draw do
         collection do
           patch :update_settings
           patch :add_and_update_property
+          patch :add_and_update_asset
           delete :delete_property
+          delete :delete_asset
         end
       end
     end

@@ -26,7 +26,6 @@
             </div>
           </div>
         </div>
-
         <div class="panel panel-default">
           <div class="panel-heading">
             <div class="panel-btns">
@@ -44,53 +43,11 @@
                 </div>
               </div>
               <div class="row row-pad-5">
-                <div class="form-group">
-                  <div class="col-sm-12 mb30">
-
-                    <div class="table-responsive ">
-                        <table class="table table-primary mb30">
-                            <thead>
-                              <tr>
-                                <th>ID</th>
-                                <th>Label</th>
-                                <th>Required</th>
-                                <th>Format</th>
-                                <th>Values</th>
-                                <th>Actions</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                            <%unless @account_properties.blank?%>
-                              <%@account_properties.each do |key, value|%>
-                                <tr>
-                                  <td><%=key%></td>
-                                  <td><%=value['label']%></td>
-                                  <td><%=value['required']%></td>
-                                  <td><%=value['format']%></td>
-                                  <td><%=value['values']%></td>
-                                  <td class="table-action">
-                                    <a href="" data-toggle="modal" data-target=".add-account-property-modal-form" class="edit_property" data-key="<%=key%>"
-                                     data-label="<%=value['label']%>"
-                                     data-required="<%=value['required']%>"
-                                     data-format="<%=value['format']%>"
-                                     data-values="<%=value['values']%>">
-                                     <i class="fa fa-pencil"></i></a>
-                                    <a href="/admin/companies/<%=@company.id%>/settings/delete_property?property_id=<%=key%>" data-method="delete" rel="nofollow" data-confirm="Are you sure you want to delete this property?"><i class="fa fa-trash-o"></i></a>
-                                  </td>
-                                </tr>
-                              <%end%>
-                            <%end%>
-                            </tbody>
-                        </table>
-                    </div><!-- table-responsive -->
-                  </div>
-                </div>
+                <%=render 'account_properties_and_assets_table', property_or_asset: @account_properties, cls: 'edit_property'%>
               </div><!-- row pad 5-->
             </div>
           </div>
         </div>
-
-
         <div class="panel panel-default">
           <div class="panel-heading">
             <div class="panel-btns">
@@ -101,13 +58,14 @@
           <div class="panel-body">
             <div class="tab-pane" id="authentication">
               <div class="row row-pad-5">
-                <div class="form-group">
-                  <label class="col-sm-4 control-label">Properties</label>
-                  <div class="col-sm-4">
-
-
-                  </div>
+                <div class="col-sm-10">
                 </div>
+                <div class="col-sm-2">
+                  <a href="#" data-toggle="modal" class="btn btn-primary btn-block add_asset" data-target=".add-account-property-modal-form"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Asset</a>
+                </div>
+              </div>
+              <div class="row row-pad-5">
+                <%=render 'account_properties_and_assets_table', property_or_asset: @assets, cls: 'edit_asset'%>
               </div><!-- row pad 5-->
             </div>
           </div>
@@ -133,43 +91,61 @@
     width: '100%',
   });
 
-  $(".add_property").click(function(){
-    $(".property_title").text('Add Property')
-    $("#property_value").val(null)
-    $("#property_format").val(null)
-    $("#property_label").val(null)
-    $("#property_id").val(null)
-    $("#property_id").prop('readonly', false)
-    $("#required_false").attr('checked',true)
+  $(".add_property, .add_asset").click(function(e){
+    var company = '<%=@company.id%>'
+    if($(this).hasClass('add_property')){
+      $(".property_title").text('Add Property')
+      url = "/admin/companies/"+company+"/settings/add_and_update_property"
+      $("#add_asset_and_property").attr('action',url)
+    }else{
+      url = "/admin/companies/"+company+"/settings/add_and_update_asset"
+      $("#add_asset_and_property").attr('action',url)
+      $(".property_title").text('Add Asset')
+    }
+    $(".property_value").val(null)
+    $(".property_format").val(null)
+    $(".property_label").val(null)
+    $(".property_id").val(null)
+    $(".property_id").prop('readonly', false)
+    $(".required_false").attr('checked',true)
     $(".property_value").hide()
   })
 
-  $("#property_format").change(function(){
+  $(".property_format").change(function(){
     if($(this).val() == 'enum'){
       $(".property_value").show(500)
     }else{
-      $("#property_value").val(null)
+      $(".property_value").val(null)
       $(".property_value").hide(500)
     }
   })
 
-  $(".edit_property").click(function(){
-    $(".property_title").text('Edit Property')
-    $("#property_id").val($(this).data('key'))
-    $("#property_id").prop('readonly', true)
-    $("#property_label").val($(this).data('label'))
-    $("#property_format").val($(this).data('format'))
+  $(".edit_property, .edit_asset").click(function(){
+    var company = '<%=@company.id%>'
+    if($(this).hasClass('edit_property')){
+      $(".property_title").text('Edit Property')
+      url = "/admin/companies/"+company+"/settings/add_and_update_property"
+      $("#add_asset_and_property").attr('action',url)
+    }else{
+      url = "/admin/companies/"+company+"/settings/add_and_update_asset"
+      $("#add_asset_and_property").attr('action',url)
+      $(".property_title").text('Edit Asset')
+    }
+    $(".property_id").val($(this).data('key'))
+    $(".property_id").prop('readonly', true)
+    $(".property_label").val($(this).data('label'))
+    $(".property_format").val($(this).data('format'))
     if($(this).data('format') == 'enum'){
       $(".property_value").show(500)
-      $("#property_value").val($(this).data('values'))
+      $(".property_value").val($(this).data('values'))
     }else{
       $(".property_value").hide(500)
-      $("#property_value").val(null)
+      $(".property_value").val(null)
     }
     if($(this).data('required') == true){
-     $("#required_true").attr('checked',true)
+     $(".required_true").attr('checked',true)
     }else{
-      $("#required_false").attr('checked',true)
+      $(".required_false").attr('checked',true)
     }
   })
 </script>
