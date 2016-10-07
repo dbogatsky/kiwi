@@ -29,15 +29,19 @@ class Ability
               # can permission.action.to_sym, permission.subject_class.to_sym
               # abilities_debug.push("can :" + permission.action + ", :" + permission.subject_class)
             else
-              # defining ability with subject class as just the class name
-              if permission.action == 'manage' && current_user_role.name != 'Entity Admin'
-                can :manage_permission, permission.subject_class.constantize
-                abilities_debug.push('can :manage_permission, ' + permission.subject_class)
-              else
-                can permission.action.to_sym, permission.subject_class.constantize
-                abilities_debug.push('can :' + permission.action + ', ' + permission.subject_class)
-              end
 
+              unless permission.subject_class == "Asset"
+
+                # defining ability with subject class as just the class name
+                if permission.action == 'manage' && current_user_role.name != 'Entity Admin'
+                  can :manage_permission, permission.subject_class.constantize
+                  abilities_debug.push('can :manage_permission, ' + permission.subject_class)
+                else
+                  can permission.action.to_sym, permission.subject_class.constantize
+                  abilities_debug.push('can :' + permission.action + ', ' + permission.subject_class)
+                end
+
+              end
               # defining ability with subject class being constantized (tries to find a declared constant with the name specified in the string)
               # can permission.action.to_sym, permission.subject_class.constantize
             end
