@@ -696,20 +696,8 @@ class AccountsController < ApplicationController
               row = row.join(',')
               row = row.gsub(%r{\"}, '')
               row = row.split(',')
-              if row[0].to_i != 0
-                c_id= Account.find(row[0].to_i).conversation.id
-              else
-                accounts = Account.all
-                if accounts.meta["total_pages"] > 1
-                  accounts = Account.all(params: { per_page: accounts.meta["total_entries"] })
-                end
-                accounts.each do |account|
-                  if account.name == row[0]
-                    c_id = Account.find(account.id).conversation.id
-                    break
-                  end
-                end
-              end
+              find_account_by_name_or_id(row[0])
+              c_id = @account.conversation.id
               ci = ConversationItem.create(conversation_item: { title: row[1], body: row[2],created_by_id: current_user.id }, conversation_id: c_id, type: 'note')
             end
             flash[:success] = "Notes successfully imported"
@@ -751,20 +739,7 @@ class AccountsController < ApplicationController
               row = row.join(',')
               row = row.gsub(%r{\"}, '')
               row = row.split(',')
-              if row[0].to_i != 0
-                @account = Account.find(row[0].to_i)
-              else
-                accounts = Account.all
-                if accounts.meta["total_pages"] > 1
-                  accounts = Account.all(params: { per_page: accounts.meta["total_entries"] })
-                end
-                accounts.each do |a|
-                  if a.name == row[0]
-                    @account  = Account.find(a.id)
-                    break
-                  end
-                end
-              end
+              find_account_by_name_or_id(row[0])
               account = {}
               account['properties'] = {}
               @account_properties.keys.each_with_index do |prop,i|
@@ -791,6 +766,55 @@ class AccountsController < ApplicationController
   end
 
   def import_assets
+    if request.post?
+      if params[:import_csv].present? && params[:import_csv].content_type == 'text/csv'
+        csv_text = File.read(params[:import_csv].tempfile)
+        begin
+          csv = CSV.parse(csv_text)
+        rescue Exception => e
+          @row_numbers = {}
+          e = e.to_s
+          e = e.gsub('.','')
+          e = e.split(' ').last()
+          @row_numbers[e] = "Unable to process this line. Check for missing quotations"
+          render :import_assets
+          return
+        end
+        assets_csv_validates(csv)
+        csv.shift
+        if @row_numbers.empty?
+          if csv.present?
+            csv.each do |row|
+              row = row.join(',')
+              row = row.gsub(%r{\"}, '')
+              row = row.split(',')
+              find_account_by_name_or_id(row[0])
+              asset = {}
+              asset[:properties] = {}
+              @assets.keys.each_with_index do |prop,i|
+                asset[:properties][prop] = row[i+3]
+              end
+              asset[:properties] = asset[:properties].to_json
+              asset[:account_id] = @account.id
+              asset[:name] = row[1]
+              asset[:description] = row[2]
+              @asset = Asset.new(request: :create, asset: asset)
+              @asset.save!
+            end
+            flash[:success] = "Assets successfully imported"
+            redirect_to accounts_path
+          else
+            flash[:danger] = "Please Upload the CSV file with the assets Details"
+            redirect_to account_import_assets_path
+          end
+        else
+          render :import_assets
+        end
+      else
+       flash[:danger] = "File you are trying to import does not support csv format"
+       redirect_to account_import_assets_path
+      end
+    end
   end
 
   def properties_csv_template
@@ -807,6 +831,43 @@ class AccountsController < ApplicationController
 
   private
 
+  def find_account_by_name_or_id(row_value)
+    if row_value.to_i != 0
+      @account = Account.find(row_value.to_i)
+    else
+      accounts = Account.all
+      if accounts.meta["total_pages"] > 1
+        accounts = Account.all(params: { per_page: accounts.meta["total_entries"] })
+      end
+      accounts.each do |a|
+        if a.name == row_value
+          @account  = Account.find(a.id)
+          break
+        end
+      end
+    end
+  end
+
+  def check_account_validation(row)
+    if row[0].blank?
+      @row_numbers["#{@line_no}"] = "Required field, Account, can not be empty"
+    else
+      if row[0].to_i != 0
+        account = Account.find(row[0].to_i) rescue nil
+        if account.blank?
+          @row_numbers["#{@line_no}"] = "Account's name/id does not exist in the system"
+        end
+      else
+        accounts = Account.all
+        if accounts.meta["total_pages"] > 1
+          accounts = Account.all(params: { per_page: accounts.meta["total_entries"] })
+        end
+        unless accounts.map(&:name).include?row[0]
+          @row_numbers["#{@line_no}"] = "Account's name/id does not exist in the system"
+        end
+      end
+    end
+  end
 
   def convert_number_to_phone(number)
     number = number.to_s
@@ -899,8 +960,8 @@ class AccountsController < ApplicationController
 
   def generate_assets_csv_template
     application_settings
-    column_names = ['Account']
-    column_names <<  @account_properties.keys
+    column_names = ['Account', 'Asset name', 'Description']
+    column_names <<  @assets.keys
     column_names = column_names.flatten
     CSV.generate() do |csv|
       csv << column_names
@@ -914,6 +975,34 @@ class AccountsController < ApplicationController
     column_names = column_names.flatten
     CSV.generate() do |csv|
       csv << column_names
+    end
+  end
+
+  def assets_csv_validates(csv)
+    @line_no = 0
+    @row_numbers = {}
+    application_settings
+    column_names = ['Account', 'Asset name', 'Description']
+    column_names <<  @assets.keys
+    column_names = column_names.flatten
+    if csv[0].present?
+      csv.each do |row|
+        @line_no +=1
+        if row.present?
+          row = row.join(',')
+          row = row.gsub(%r{\"}, '')
+          row = row.split(',')
+        end
+        if @line_no == 1 && (row.present? && (row !=column_names))
+          @row_numbers["#{@line_no}"] = "Imported CSV file does not contain the correct headers"
+        end
+        if @line_no !=1 && row.present?
+          check_account_validation(row)
+          if row[1].blank?
+            @row_numbers["#{@line_no}"] = "Required field, Asset Name, can not be empty"
+          end
+        end
+      end
     end
   end
 
@@ -936,28 +1025,10 @@ class AccountsController < ApplicationController
           @row_numbers["#{@line_no}"] = "Imported CSV file does not contain the correct headers"
         end
         if @line_no !=1 && row.present?
-          if row[0].blank?
-            @row_numbers["#{@line_no}"] = "Required field, Account, can not be empty"
-          else
-            if row[0].to_i != 0
-              account = Account.find(row[0].to_i) rescue nil
-              if account.blank?
-                @row_numbers["#{@line_no}"] = "Account's name/id does not exist in the system"
-              end
-            else
-              accounts = Account.all
-              if accounts.meta["total_pages"] > 1
-                accounts = Account.all(params: { per_page: accounts.meta["total_entries"] })
-              end
-              unless accounts.map(&:name).include?row[0]
-                @row_numbers["#{@line_no}"] = "Account's name/id does not exist in the system"
-              end
-            end
-          end
+          check_account_validation(row)
         end
       end
     end
-
   end
 
   def note_csv_validates(csv)
@@ -976,24 +1047,7 @@ class AccountsController < ApplicationController
           @row_numbers["#{@line_no}"] = "Imported CSV file does not contain the correct headers"
         end
         if @line_no !=1 && row.present?
-          if row[0].blank?
-            @row_numbers["#{@line_no}"] = "Required field, Account, can not be empty"
-          else
-            if row[0].to_i != 0
-              account = Account.find(row[0].to_i) rescue nil
-              if account.blank?
-                @row_numbers["#{@line_no}"] = "Account's name/id does not exist in the system"
-              end
-            else
-              accounts = Account.all
-              if accounts.meta["total_pages"] > 1
-                accounts = Account.all(params: { per_page: accounts.meta["total_entries"] })
-              end
-              unless accounts.map(&:name).include?row[0]
-                @row_numbers["#{@line_no}"] = "Account's name/id does not exist in the system"
-              end
-            end
-          end
+          check_account_validation(row)
           if row[1].blank?
             @row_numbers["#{@line_no}"] = "Required field, Note Title, can not be empty"
           end
