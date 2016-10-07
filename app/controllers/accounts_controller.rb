@@ -120,6 +120,13 @@ class AccountsController < ApplicationController
   end
 
   def add_asset
+    params[:asset][:properties] = params[:asset][:properties].to_json
+    @asset = Asset.new(request: :create, asset: asset_params)
+    if @asset.save
+        flash[:success] = 'Asset has been added successfully'
+      else
+        flash[:danger] = 'Oops! Unable to add the asset'
+      end
     redirect_to account_path(params[:id])
   end
 
@@ -783,7 +790,7 @@ class AccountsController < ApplicationController
     end
   end
 
-  def add_assets
+  def import_assets
   end
 
   def properties_csv_template
@@ -1163,6 +1170,10 @@ class AccountsController < ApplicationController
       addresses_attributes: [:id, :name, :street_address, :suite_number, :postcode, :city, :region, :latitude, :longitude, :country, :_destroy],
       contacts_attributes: [:id, :type, :name, :value, :_destroy]
     )
+  end
+
+  def asset_params
+    params.require(:asset).permit([:name, :description, :account_id, :properties])
   end
 
   def shared_account_params

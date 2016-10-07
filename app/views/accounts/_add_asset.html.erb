@@ -9,8 +9,27 @@
         <%= form_tag(account_add_asset_url) do %>
           <div class="panel panel-default">
               <div class="panel-body">
-                <%if @account_properties.present?%>
-                  <%@account_properties.each do |key,value|%>
+                <%if @assets.present?%>
+                  <div class="row row-pad-5">
+                    <div class="col-lg-4">
+                      <label class="col-sm-8 control-label">Name
+                        <span class="asterisk">*</span>
+                      </label>
+                    </div>
+                    <div class="col-lg-8">
+                      <%=text_field_tag "asset[name]",nil, placeholder: "Asset name", class: "form-control", required: true%>
+                    </div>
+                  </div>
+                  <div class="row row-pad-5">
+                    <div class="col-lg-4">
+                      <label class="col-sm-8 control-label">Discription
+                      </label>
+                    </div>
+                    <div class="col-lg-8">
+                      <%=text_field_tag "asset[description]",nil, placeholder: "Description", class: "form-control"%>
+                    </div>
+                  </div>
+                  <%@assets.each do |key,value|%>
                     <div class="row row-pad-5">
                       <div class="col-lg-4">
                         <label class="col-sm-8 control-label"><%=value["label"]%>
@@ -22,31 +41,31 @@
                       <div class="col-lg-8">
                         <%if value["format"] == 'date'%>
                           <%if mobile?%>
-                            <input type="date" name="account[properties]['<%=key%>']" required="<%=value['required']%>"/>
+                            <input type="date" name="asset[properties]['<%=key%>']" required="<%=value['required']%>"/>
                           <%else%>
-                            <%=text_field_tag "account[properties][#{key}]",nil, placeholder: "yyyy/mm/dd", class: "form-control datepicker", required: value['required'].to_s == 'false' ? false : true%>
+                            <%=text_field_tag "asset[properties][#{key}]",nil, placeholder: "yyyy/mm/dd", class: "form-control datepicker", required: value['required'].to_s == 'false' ? false : true%>
                           <%end%>
                         <%elsif value["format"] == 'numeric'%>
-                          <%=number_field_tag "account[properties][#{key}]", nil, class: 'form-control', required: value['required'].to_s == 'false' ? false : true %>
+                          <%=number_field_tag "asset[properties][#{key}]", nil, class: 'form-control', required: value['required'].to_s == 'false' ? false : true %>
                         <%elsif value["format"] == 'enum'%>
                           <ul class="color_list">
                             <%value['values'].each do |k,v|%>
                               <li>
                                 <span><%=v%></span>
-                                <%=check_box_tag "account[properties][#{key}]", v, false, class: 'form-control'%>
+                                <%=check_box_tag "asset[properties][#{key}]", v, false, class: 'form-control'%>
                               </li>
                               <!-- required: value['required'].to_s == 'false' ? false : true -->
                             <%end%>
                           </ul>
                         <%else%>
-                          <%=text_field_tag "account[properties][#{key}]",nil, class: "form-control", required: value['required'].to_s == 'false' ? false : true%>
+                          <%=text_field_tag "asset[properties][#{key}]",nil, class: "form-control", required: value['required'].to_s == 'false' ? false : true%>
                         <%end%>
                       </div>
                     </div>
                   <%end%>
                 <%end%>
-                <!-- <input type="hidden" name="conversation_item[account_id]" value=<%#= @account.id %> >
-                <input type="hidden" name="conversation_item[type]" value="note" > -->
+                <input type="hidden" name="asset[account_id]" value=<%= @account.id %>>
+                <!-- <input type="hidden" name="conversation_item[type]" value="note" > -->
               </div><!-- panel-body -->
               <div class="panel-footer">
                 <%=submit_tag 'Save',  data: {disable_with: "Saving..." }, class: "btn btn-primary"%>

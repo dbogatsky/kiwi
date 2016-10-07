@@ -20,7 +20,7 @@
         <li><a href="#tab1" data-toggle="tab"><span>Step 1:</span> Download CSV Template</a></li>
         <li><a href="#tab2" data-toggle="tab"><span>Step 2:</span> Upload CSV File</a></li>
       </ul>
-      <%= form_tag account_add_assets_path, id: "add-assets-form", multipart: true, method: :post do |f| %>
+      <%= form_tag account_import_assets_path, id: "add-assets-form", multipart: true, method: :post do |f| %>
         <div class="tab-content">
           <div class="tab-pane" id="tab1">
             <p class="mb20" align="center"><%=link_to "Download CSV template and fill in the assets information.", accounts_assets_csv_template_path(format: "csv")%></p>
