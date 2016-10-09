@@ -6,6 +6,7 @@ class AccountsController < ApplicationController
   before_action :find_account, only: [:show, :edit, :destroy, :conversation, :search, :add_quote, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting, :update_quote, :delete_quote, :add_reminder, :update_reminder, :delete_reminder]
   before_action :get_api_values, only: [:search]
   before_action :get_setting, only: [:index, :import, :export, :show, :edit, :new]
+  before_action :application_settings, only: [:index, :show, :new, :edit, :generate_properties_csv_template, :properties_csv_validates, :assets_csv_validates, :generate_assets_csv_template]
   before_action :check_permission_for_import, only: [:import]
   before_action :check_permission_for_export, only: [:export]
   @@account_with_previous_value = nil
@@ -47,14 +48,12 @@ class AccountsController < ApplicationController
     @users = User.all(uid: session[:user_id])
     @notifiable_users = notifiable_users_json(params[:id])
     @timeline_conversation_items = @account.conversation.conversation_items
-    application_settings
   end
 
   def new
     # Add an account
     @account = Account.new
     @users = User.all(uid: session[:user_id])
-    application_settings
   end
 
   def edit
@@ -63,7 +62,6 @@ class AccountsController < ApplicationController
     @contacts = @account.contacts
     @users = User.all(uid: session[:user_id])
     @@account_with_previous_value = @account
-    application_settings
   end
 
   def create
@@ -959,7 +957,6 @@ class AccountsController < ApplicationController
   end
 
   def generate_assets_csv_template
-    application_settings
     column_names = ['Account', 'Asset name', 'Description']
     column_names <<  @assets.keys
     column_names = column_names.flatten
@@ -969,7 +966,6 @@ class AccountsController < ApplicationController
   end
 
   def generate_properties_csv_template
-    application_settings
     column_names = ['Account']
     column_names <<  @account_properties.keys
     column_names = column_names.flatten
@@ -981,7 +977,6 @@ class AccountsController < ApplicationController
   def assets_csv_validates(csv)
     @line_no = 0
     @row_numbers = {}
-    application_settings
     column_names = ['Account', 'Asset name', 'Description']
     column_names <<  @assets.keys
     column_names = column_names.flatten
@@ -1009,7 +1004,6 @@ class AccountsController < ApplicationController
   def properties_csv_validates(csv)
     @line_no = 0
     @row_numbers = {}
-    application_settings
     column_names = ['Account']
     column_names <<  @account_properties.keys
     column_names = column_names.flatten

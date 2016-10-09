@@ -9,7 +9,6 @@ class Ability
     user ||= User.new # guest user (not logged in)
     roles = Role.all # (:reload => true) #(uid: RequestStore.store[:tenant], :reload => true)
     abilities_debug = []
-
     admin_user = false
 
     # match user's roles with the roles list
@@ -30,18 +29,15 @@ class Ability
               # abilities_debug.push("can :" + permission.action + ", :" + permission.subject_class)
             else
 
-              unless permission.subject_class == "Asset"
-
-                # defining ability with subject class as just the class name
-                if permission.action == 'manage' && current_user_role.name != 'Entity Admin'
-                  can :manage_permission, permission.subject_class.constantize
-                  abilities_debug.push('can :manage_permission, ' + permission.subject_class)
-                else
-                  can permission.action.to_sym, permission.subject_class.constantize
-                  abilities_debug.push('can :' + permission.action + ', ' + permission.subject_class)
-                end
-
+              # defining ability with subject class as just the class name
+              if permission.action == 'manage' && current_user_role.name != 'Entity Admin'
+                can :manage_permission, permission.subject_class.constantize
+                abilities_debug.push('can :manage_permission, ' + permission.subject_class)
+              else
+                can permission.action.to_sym, permission.subject_class.constantize
+                abilities_debug.push('can :' + permission.action + ', ' + permission.subject_class)
               end
+
               # defining ability with subject class being constantized (tries to find a declared constant with the name specified in the string)
               # can permission.action.to_sym, permission.subject_class.constantize
             end

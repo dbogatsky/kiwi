@@ -44,7 +44,9 @@
         <ul class="dropdown-menu">
           <li><a href="/accounts/batch">Notes</a></li>
           <li><a href="/accounts/add_account_properties">Account Properties</a></li>
-          <li><a href="/accounts/import_assets">Assets</a></li>
+          <%if @assets_management == 'on'%>
+            <li><a href="/accounts/import_assets">Assets</a></li>
+          <%end%>
         </ul>
       </div>
     <%end%>
