@@ -5,75 +5,55 @@
         <header>
         </header>
         <section id="accordion">
-          <div>
-            <input type="checkbox" id="check-1" />
-            <label for="check-1"><i class="fa fa-plus-square" style="margin-right:10px;"></i>Richo ABC 123</label>
-            <article>
-              <%if @account_properties.present?%>
-                <%@account_properties.each do |key,value|%>
-                  <div class="row editable-list-item">
-                    <div class="col-sm-3"><%= value["label"] %></div>
-                    <% if value["format"] == 'date' %>
-                      <div class="col-sm-9"><a href="#" id="" data-type="combodate" class="editable editable-click basicInline <%= value["required"].to_s == "true" ? "comboDateRequired" : "comboDate"%>">
-                        <%=(@account.properties.present? && @account.properties.try(:attributes).present?) ? @account.properties.attributes[key] : nil%></a>
-                      </div>
-                    <% elsif value["format"] == 'enum' %>
-                      <script type="text/javascript">
-                        a = []
-                        <%value['values'].each do |k,v|%>
-                          a.push({value: '<%=k%>', text: '<%=v%>'})
-                        <% end %>
-                        jQuery(document).ready(function(){
-                          <%if value["required"].to_s == "true"%>
-                            jQuery(".checkList_<%=value['label']%>").editable({
-                             source: a,
-                             validate: function(value) {
-                                      if($.trim(value) == '') return 'This field is required';
-                                      }
-                            });
-                          <%else%>
-                             jQuery(".checkList_<%=value['label']%>").editable({
-                             source: a
-                            });
-                          <%end%>
-                        });
-                      </script>
-                      <div class="col-sm-9"><a href="#" id="" data-type="checklist" data-title="Select <%=value['label']%>" class="editable editable-click editable-empty checkList_<%=value["label"]%>"></a></div>
-                    <% else %>
-                      <div class="col-sm-9"><a data-type="text" id="" class="editable editable-click basicInline <%= value["required"].to_s == "true" ? "required_text" : "basicInline"%>"><%=(@account.properties.present? && @account.properties.try(:attributes).present?) ? @account.properties.attributes[key] : nil%></a></div>
-                    <% end %>
-                  </div>
-                <%end%>
+          <%if @account.assets.present?%>
+              <%@account.assets.each do |asset|%>
+                <div>
+                  <input type="checkbox" id="check-<%=asset.id%>" />
+                  <label for="check-<%=asset.id%>"><i class="fa fa-plus-square" style="margin-right:10px;"></i><%=asset.name%></label>
+                  <article>
+                    <%if @assets.present?%>
+                      <%@assets.each do |key,value|%>
+                        <div class="row editable-list-item">
+                          <div class="col-sm-3"><%= value["label"] %></div>
+                          <% if value["format"] == 'date' %>
+                            <div class="col-sm-9"><a href="#" id="" data-type="combodate" class="editable editable-click <%= value["required"].to_s == "true" ? "comboDateRequired" : "comboDate"%>">
+                              <%=( asset.properties.try(:attributes).present?) ?  asset.properties.attributes[key] : nil%></a>
+                            </div>
+                          <% elsif value["format"] == 'enum' %>
+                            <script type="text/javascript">
+                              a = []
+                              <%value['values'].each do |k,v|%>
+                                a.push({value: '<%=k%>', text: '<%=v%>'})
+                              <% end %>
+                              jQuery(document).ready(function(){
+                                <%if value["required"].to_s == "true"%>
+                                  jQuery(".checkList_<%=value['label']%>").editable({
+                                   source: a,
+                                   validate: function(value) {
+                                            if($.trim(value) == '') return 'This field is required';
+                                            }
+                                  });
+                                <%else%>
+                                   jQuery(".checkList_<%=value['label']%>").editable({
+                                   source: a
+                                  });
+                                <%end%>
+                              });
+                            </script>
+                            <div class="col-sm-9"><a href="#" id="" data-type="checklist" data-title="Select <%=value['label']%>" class="editable editable-click editable-empty checkList_<%=value["label"]%>"></a></div>
+                          <% else %>
+                            <div class="col-sm-9"><a href="#" data-type="text" id="" class="editable editable-click <%= value["required"].to_s == "true" ? "required_text" : "basicInline"%>"><%=( asset.properties.try(:attributes).present?) ?  asset.properties.attributes[key] : nil%></a></div>
+                          <% end %>
+                        </div>
+                      <%end%>
+                    <%end%>
+                  </article>
+                </div>
               <%end%>
-            </article>
-          </div>
-          <div>
-            <input type="checkbox" id="check-2" />
-            <label for="check-2"><i class="fa fa-plus-square" style="margin-right:10px;"></i>Hewlett Packard MFP123</label>
-            <article>
-              <p>
-                FORM FIELD 1<br /><br />
-                FORM FIELD 2<br /><br />
-                FORM FIELD 3
-              </p>
-            </article>
-          </div>
-          <div>
-            <input type="checkbox" id="check-3" />
-            <label for="check-3"><i class="fa fa-plus-square" style="margin-right:10px;"></i>John Bedan 34x</label>
-            <article>
-               <p>
-                FORM FIELD 1<br /><br />
-                FORM FIELD 2<br /><br />
-                FORM FIELD 3
-              </p>
-            </article>
-          </div>
+          <%end%>
         </section>
       </div>
-
     </form>
-
   </div><!-- col-md-12 -->
 </div><!-- row -->
 <br /><br />

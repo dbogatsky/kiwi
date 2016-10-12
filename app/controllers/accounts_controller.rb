@@ -128,6 +128,10 @@ class AccountsController < ApplicationController
     redirect_to account_path(params[:id])
   end
 
+  def update_asset
+    render :nothing => true
+  end
+
   def schedule_meeting
     c_id = @account.conversation.id
     params[:conversation_item][:title] =  @account.name+' '+ params[:conversation_item][:repetition_rule][:frequency_type].capitalize+' '+'Visits' if params[:conversation_item][:item_type] == 'regular'
