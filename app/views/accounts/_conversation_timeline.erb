@@ -16,25 +16,4 @@
       <%= render "conversation_account_show", :citem => i %>
     <% end %>
   </div>
-  <script type="text/javascript">
-    $("#account_link_<%=i.id%>").click(function(){
-      if($(this).find($(".fa")).hasClass('fa-angle-double-down'))
-       {
-        $(this).find($(".fa")).removeClass('fa-angle-double-down').addClass('fa-angle-double-up');
-       }
-       else if($(this).find($(".fa")).hasClass('fa-angle-double-up'))
-        {
-          $(this).find($(".fa")).removeClass('fa-angle-double-up').addClass('fa-angle-double-down');
-        }
-      if($("#account_info_<%=i.id%>").hasClass('show_citem'))
-      {
-        $("#account_info_<%=i.id%>").removeClass('show_citem');
-      }
-      else
-      {
-        $('.note_display').removeClass('show_citem');
-        $("#account_info_<%=i.id%>").addClass('show_citem');
-      }
-    });
-  </script>
 <% end %>

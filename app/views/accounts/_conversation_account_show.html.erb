@@ -5,7 +5,7 @@
   <!-- <a class="btn btn-primary" data-toggle="collapse" href="#account_info_<%= citem.id %>" aria-expanded="false" aria-controls="collapseExample">
     Link
   </a> -->
-  <%= link_to 'javascript:;', id: "account_link_#{citem.id}", class: "xyz" do%>
+  <%= link_to 'javascript:;', id: "account_link_#{citem.id}" do%>
     <i class="fa fa-angle-double-down pull-right"></i>
   <%end%>
   <span class="cd-date">
@@ -22,3 +22,22 @@
     </div>
   </div>
 </div>
+<script type="text/javascript">
+  $("#account_link_<%=citem.id%>").click(function(){
+    var element = $(this).parent().find("div#account_info_<%=citem.id%>")
+    $(".note_display").each(function() {
+     $(this).parent().find('a').find('i').removeClass("fa-angle-double-up").addClass("fa-angle-double-down")
+    });
+    if(element.hasClass('show_citem'))
+      {
+        element.removeClass('show_citem');
+        $(this).parent().find('a').find('i').removeClass("fa-angle-double-up").addClass("fa-angle-double-down")
+      }
+      else
+      {
+        $('.note_display').removeClass('show_citem');
+        element.addClass('show_citem');
+        $(this).parent().find('a').find('i').removeClass("fa-angle-double-down").addClass("fa-angle-double-up")
+      }
+  });
+</script>
