@@ -56,9 +56,9 @@ jQuery(document).ready(function(){
 	});
 
 	jQuery('#validationWizard').bootstrapWizard({
-		tabClass: 'nav nav-pills nav-justified nav-disabled-click',
+		tabClass: 'nav nav-pills nav-justified',
 		onTabClick: function(tab, navigation, index) {
-		  return false;
+		  return true;
 		},
 		onNext: function(tab, navigation, index) {
 		  var $valid = jQuery('#account-edit-form').valid();
