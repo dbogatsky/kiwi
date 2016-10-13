@@ -129,6 +129,11 @@ class AccountsController < ApplicationController
   end
 
   def update_asset
+    @asset = Asset.find(params['pk'])
+    @asset.properties.attributes[params['name']] = params['value']
+    asset = {}
+    asset[:properties] = @asset.properties.attributes.to_json
+    @asset.update_attributes(asset: asset)
     render :nothing => true
   end
 

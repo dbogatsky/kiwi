@@ -13,36 +13,92 @@
                   <article>
                     <%if @assets.present?%>
                       <%@assets.each do |key,value|%>
-                        <div class="row editable-list-item">
-                          <div class="col-sm-3"><%= value["label"] %></div>
-                          <% if value["format"] == 'date' %>
-                            <div class="col-sm-9"><a href="#" id="" data-type="combodate" class="editable editable-click <%= value["required"].to_s == "true" ? "comboDateRequired" : "comboDate"%>">
-                              <%=( asset.properties.try(:attributes).present?) ?  asset.properties.attributes[key] : nil%></a>
-                            </div>
-                          <% elsif value["format"] == 'enum' %>
-                            <script type="text/javascript">
-                              a = []
-                              <%value['values'].each do |k,v|%>
-                                a.push({value: '<%=k%>', text: '<%=v%>'})
-                              <% end %>
-                              jQuery(document).ready(function(){
+                        <script type="text/javascript">
+                          jQuery(document).ready(function(){
+                            <% if value["format"] == 'date' %>
+                              <%if value["required"].to_s == "true"%>
+                                jQuery(".comboDate_<%=asset.id%>_<%=key.gsub(' ','')%>").editable({
+                                  inputclass: 'sel',
+                                  template: 'MM /DD / YYYY',
+                                  viewformat: 'MM / DD / YYYY',
+                                  validate: function(value) {
+                                      if($.trim(value) == '') return 'This field is required';
+                                  },
+                                  name: '<%=key%>',
+                                  url: '/update_asset',
+                                  pk: '<%=asset.id%>',
+                                  ajaxOptions: {
+                                      type: 'put'
+                                  }
+                                });
+                              <%else%>
+                                jQuery(".comboDate_<%=asset.id%>_<%=key.gsub(' ','')%>").editable({
+                                  inputclass: 'sel',
+                                  template: 'MM /DD / YYYY',
+                                  viewformat: 'MM / DD / YYYY',
+                                  name: '<%=key%>',
+                                  url: '/update_asset',
+                                  pk: '<%=asset.id%>',
+                                  ajaxOptions: {
+                                      type: 'put'
+                                  }
+                                });
+                              <%end%>
+                            <% elsif value["format"] == 'enum' %>
+                                a = []
+                                <%value['values'].each do |k,v|%>
+                                  a.push({value: '<%=k%>', text: '<%=v%>'})
+                                <% end %>
                                 <%if value["required"].to_s == "true"%>
                                   jQuery(".checkList_<%=value['label']%>").editable({
                                    source: a,
                                    validate: function(value) {
                                             if($.trim(value) == '') return 'This field is required';
-                                            }
+                                          }
                                   });
                                 <%else%>
                                    jQuery(".checkList_<%=value['label']%>").editable({
                                    source: a
                                   });
                                 <%end%>
-                              });
-                            </script>
+                            <%else%>
+                              <%if value["required"].to_s == "true"%>
+                                jQuery(".edit_text_<%=asset.id%>_<%=key.gsub(' ','')%>").editable({
+                                  validate: function(value) {
+                                    if($.trim(value) == '') return 'This field is required';
+                                  },
+                                  mode: 'inline',
+                                  name: '<%=key%>',
+                                  url: '/update_asset',
+                                  pk: '<%=asset.id%>',
+                                  ajaxOptions: {
+                                      type: 'put'
+                                  }
+                                });
+                              <%else%>
+                                jQuery(".edit_text_<%=asset.id%>_<%=key.gsub(' ','')%>").editable({
+                                  mode: 'inline',
+                                  name: '<%=key%>',
+                                  url: '/update_asset',
+                                  pk: '<%=asset.id%>',
+                                  ajaxOptions: {
+                                      type: 'put'
+                                  }
+                                });
+                              <%end%>
+                            <%end%>
+                          });
+                        </script>
+                        <div class="row editable-list-item">
+                          <div class="col-sm-3"><%= value["label"] %></div>
+                          <% if value["format"] == 'date' %>
+                            <div class="col-sm-9"><a href="#" id="" data-type="combodate" class="editable editable-click comboDate_<%=asset.id%>_<%=key.gsub(' ','')%>">
+                              <%=( asset.properties.try(:attributes).present?) ?  asset.properties.attributes[key] : nil%></a>
+                            </div>
+                          <% elsif value["format"] == 'enum' %>
                             <div class="col-sm-9"><a href="#" id="" data-type="checklist" data-title="Select <%=value['label']%>" class="editable editable-click editable-empty checkList_<%=value["label"]%>"></a></div>
                           <% else %>
-                            <div class="col-sm-9"><a href="#" data-type="text" id="" class="editable editable-click <%= value["required"].to_s == "true" ? "required_text" : "basicInline"%>"><%=( asset.properties.try(:attributes).present?) ?  asset.properties.attributes[key] : nil%></a></div>
+                            <div class="col-sm-9"><a href="#" data-type="text" id="" class="editable editable-click edit_text_<%=asset.id%>_<%=key.gsub(' ','')%>"><%=( asset.properties.try(:attributes).present?) ?  asset.properties.attributes[key] : nil%></a></div>
                           <% end %>
                         </div>
                       <%end%>
