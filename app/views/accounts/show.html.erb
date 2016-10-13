@@ -353,29 +353,30 @@
 
     var new_editor, edit_editor;
     $(function() {
-      /*
+
       new_editor = $('#new_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false,
         "events": {
           "load": function() {
-            console.log("Loaded!");
-            var $iframe = $(this.composer.iframe);
-            var $body = $(this.composer.element);
-            $body.css({
-              'min-height': 0,
-              'line-height': '20px',
-              'overflow': 'hidden',
-            });
-            var scrollHeightInit = $body[0].scrollHeight;
-            console.log("scrollHeightInit", scrollHeightInit);
-            var bodyHeightInit = $body.height();
-            console.log("bodyHeightInit", bodyHeightInit);
-            var heightInit = Math.min(scrollHeightInit, bodyHeightInit);
-            $iframe.height(heightInit);
+            $(this.composer.iframe).wysihtml5_size_matters();
+            // console.log("Loaded!");
+            // var $iframe = $(this.composer.iframe);
+            // var $body = $(this.composer.element);
+            // $body.css({
+            //   'min-height': 0,
+            //   'line-height': '20px',
+            //   'overflow': 'hidden',
+            // });
+            // var scrollHeightInit = $body[0].scrollHeight;
+            // console.log("scrollHeightInit", scrollHeightInit);
+            // var bodyHeightInit = $body.height();
+            // console.log("bodyHeightInit", bodyHeightInit);
+            // var heightInit = Math.min(scrollHeightInit, bodyHeightInit);
+            // $iframe.height(heightInit);
           }
         }
       });
-      */
-      new_editor = $('#new_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
+
+      // new_editor = $('#new_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
       edit_editor = $('#edit_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
     });
 
