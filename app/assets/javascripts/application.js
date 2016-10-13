@@ -52,6 +52,7 @@
 // wysiwyg editor
 //= require wyshtml5/wyshtml5
 //= require wyshtml5/bootstrap-wysihtml5
+//= require wysihtml5_size_matters
 
 // full calendar
 //= require bootstrap/fullcalendar.min
