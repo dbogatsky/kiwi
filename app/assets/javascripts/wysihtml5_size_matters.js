@@ -29,11 +29,12 @@
       };
 
       Wysihtml5SizeMatters.prototype.extraBottomSpacing = function() {
-        return parseInt(this.$body.css('line-height')) || this.estimateLineHeight();
+        //return parseInt(this.$body.css('line-height')) || this.estimateLineHeight();
+        return this.estimateLineHeight();
       };
 
       Wysihtml5SizeMatters.prototype.estimateLineHeight = function() {
-        return parseInt(this.$body.css('font-size')) * 1.14;
+        return parseInt(this.$body.css('font-size')) * 1.60;
       };
 
       Wysihtml5SizeMatters.prototype.findBody = function() {
