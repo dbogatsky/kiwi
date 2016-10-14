@@ -103,7 +103,13 @@
 
   var edit_reminder;
     $(function() {
-      edit_reminder = $('#edit_reminder').wysihtml5({'font-styles': false, 'image': false, 'link':false});
+      edit_reminder = $('#edit_reminder').wysihtml5({'font-styles': false, 'image': false, 'link':false,
+        "events": {
+          "load": function() {
+            $(this.composer.iframe).wysihtml5_size_matters();
+          }
+        }
+      });
     });
 
   $(document).on('click', "a.edit_reminder", function(e){
