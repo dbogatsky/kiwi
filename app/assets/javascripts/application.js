@@ -96,7 +96,12 @@ function url_status() {
 }
 
 function phonenumber(inputtxt) {
-  var phoneno = /^\(?([0-9]{3})\)?[-]?([0-9]{3})[-]?([0-9]{4})$/;
+  if ($("#country").val() == 'CA' || $("#country").val() == 'US'){
+    var phoneno = /^\(?([0-9]{3})\)?[-]?([0-9]{3})[-]?([0-9]{4})$/;
+  }else{
+    var phoneno = /^\+(?:[0-9] ?){6,14}[0-9]$/;
+  }
+
   if(inputtxt.val().match(phoneno)){
     return true;
   }
