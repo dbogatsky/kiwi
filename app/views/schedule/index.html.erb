@@ -162,7 +162,13 @@
 
   var new_reminder;
   $(function() {
-    new_reminder = $('#new_reminder').wysihtml5({'font-styles': false, 'image': false, 'link':false});
+    new_reminder = $('#new_reminder').wysihtml5({'font-styles': false, 'image': false, 'link':false,
+      "events": {
+        "load": function() {
+          $(this.composer.iframe).wysihtml5_size_matters();
+        }
+      }
+    });
   });
 
   $(".get_notifiable_users").change(function(){
@@ -183,14 +189,26 @@
   var meeting_new_editor
 
   $(function() {
-    meeting_new_editor = $('#meeting_new_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
+    meeting_new_editor = $('#meeting_new_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false,
+      "events": {
+        "load": function() {
+          $(this.composer.iframe).wysihtml5_size_matters();
+        }
+      }
+    });
   });
 
 
   var complete_meeting_editor;
 
   $(function() {
-    complete_meeting_editor = $('#complete_meeting_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
+    complete_meeting_editor = $('#complete_meeting_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false,
+       "events": {
+          "load": function() {
+            $(this.composer.iframe).wysihtml5_size_matters();
+          }
+        }
+    });
   });
 
   $(document).on('click', "a.complete_meeting", function(e){
@@ -222,7 +240,13 @@
   var meeting_edit_editor;
 
   $(function() {
-    meeting_edit_editor = $('#meeting_edit_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
+    meeting_edit_editor = $('#meeting_edit_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false,
+       "events": {
+          "load": function() {
+            $(this.composer.iframe).wysihtml5_size_matters();
+          }
+        }
+    });
   });
 
   $(document).on('click', "a.edit_meeting", function(){
@@ -521,7 +545,13 @@
 
   var new_quote
   $(function() {
-    new_quote = $('#new_quote').wysihtml5({'font-styles': false, 'image': false, 'link':false});
+    new_quote = $('#new_quote').wysihtml5({'font-styles': false, 'image': false, 'link':false,
+     "events": {
+        "load": function() {
+          $(this.composer.iframe).wysihtml5_size_matters();
+        }
+      }
+    });
   });
 
   var final_date

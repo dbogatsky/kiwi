@@ -95,11 +95,23 @@
 
   var edit_quote;
   $(function() {
-    edit_quote = $('#quote_edit').wysihtml5({'font-styles': false, 'image': false, 'link':false});
+    edit_quote = $('#quote_edit').wysihtml5({'font-styles': false, 'image': false, 'link':false,
+     "events": {
+        "load": function() {
+          $(this.composer.iframe).wysihtml5_size_matters();
+        }
+      }
+    });
   });
   var complete_quote_editor;
   $(function() {
-    complete_quote_editor = $('#complete_quote_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
+    complete_quote_editor = $('#complete_quote_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false,
+     "events": {
+        "load": function() {
+          $(this.composer.iframe).wysihtml5_size_matters();
+        }
+      }
+    });
   });
 
   if(mobile == 'false'){
