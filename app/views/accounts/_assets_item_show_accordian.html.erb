@@ -8,9 +8,40 @@
           <%if @account.assets.present?%>
               <%@account.assets.each do |asset|%>
                 <div>
+                  <script>
+                    jQuery(document).ready(function(){
+                      jQuery(".edit_asset_name_<%=asset.id%>").editable({
+                        validate: function(value) {
+                          if($.trim(value) == '') return 'This field is required';
+                        },
+                        mode: 'inline',
+                        name: 'name',
+                        url: '/update_asset',
+                        pk: '<%=asset.id%>',
+                        ajaxOptions: {
+                            type: 'put'
+                        }
+                      });
+
+                      jQuery(".edit_asset_description_<%=asset.id%>").editable({
+                        mode: 'inline',
+                        name: 'description',
+                        url: '/update_asset',
+                        pk: '<%=asset.id%>',
+                        ajaxOptions: {
+                            type: 'put'
+                        }
+                      });
+                    });
+                  </script>
                   <input type="checkbox" id="check-<%=asset.id%>" />
-                  <label for="check-<%=asset.id%>"><i class="fa fa-plus-square" style="margin-right:10px;"></i><%=asset.name%></label>
+                  <label for="check-<%=asset.id%>"><i class="fa fa-plus-square" style="margin-right:10px;"></i>
+                  <a href="#" data-type="text" id="" class="editable editable-click edit_asset_name_<%=asset.id%> txt_color"><%=asset.name%></a></label>
                   <article>
+                    <div class="row editable-list-item">
+                      <div class="col-sm-3">Description</div>
+                      <div class="col-sm-9"><a href="#" data-type="text" id="" class="editable editable-click edit_asset_description_<%=asset.id%>"><%=asset.description%></a></div>
+                    </div>
                     <%if @assets.present?%>
                       <%@assets.each do |key,value|%>
                         <script type="text/javascript">
