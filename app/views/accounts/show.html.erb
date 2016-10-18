@@ -76,6 +76,14 @@
               <div class="col-sm-5">
                 <div class="row bars">
                   <div class="col-xs-5" style="text-align:right">
+                    <strong>Account ID</strong>
+                  </div>
+                    <div class="col-xs-7">
+                      <%= @account.id %>
+                    </div>
+                </div>              
+                <div class="row bars">
+                  <div class="col-xs-5" style="text-align:right">
                     <strong>Status</strong>
                   </div>
                     <div class="col-xs-7">
@@ -353,64 +361,120 @@
 
     var new_editor, edit_editor;
     $(function() {
-      /*
+
       new_editor = $('#new_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false,
         "events": {
           "load": function() {
-            console.log("Loaded!");
-            var $iframe = $(this.composer.iframe);
-            var $body = $(this.composer.element);
-            $body.css({
-              'min-height': 0,
-              'line-height': '20px',
-              'overflow': 'hidden',
-            });
-            var scrollHeightInit = $body[0].scrollHeight;
-            console.log("scrollHeightInit", scrollHeightInit);
-            var bodyHeightInit = $body.height();
-            console.log("bodyHeightInit", bodyHeightInit);
-            var heightInit = Math.min(scrollHeightInit, bodyHeightInit);
-            $iframe.height(heightInit);
+            $(this.composer.iframe).wysihtml5_size_matters();
           }
         }
       });
-      */
-      new_editor = $('#new_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
-      edit_editor = $('#edit_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
+
+      edit_editor = $('#edit_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false,
+        "events": {
+          "load": function() {
+            $(this.composer.iframe).wysihtml5_size_matters();
+          }
+        }
+      });
     });
 
     var new_quote, edit_quote;
     $(function() {
-      new_quote = $('#new_quote').wysihtml5({'font-styles': false, 'image': false, 'link':false});
-      edit_quote = $('#quote_edit').wysihtml5({'font-styles': false, 'image': false, 'link':false});
+      new_quote = $('#new_quote').wysihtml5({'font-styles': false, 'image': false, 'link':false,
+        "events": {
+          "load": function() {
+            $(this.composer.iframe).wysihtml5_size_matters();
+          }
+        }
+      });
+
+      edit_quote = $('#quote_edit').wysihtml5({'font-styles': false, 'image': false, 'link':false,
+        "events": {
+          "load": function() {
+            $(this.composer.iframe).wysihtml5_size_matters();
+          }
+        }
+      });
     });
 
     var email_new_editor, email_edit_editor;
     $(function() {
-      email_new_editor = $('#email_new_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
-      email_edit_editor = $('#email_edit_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
+      email_new_editor = $('#email_new_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false,
+        "events": {
+          "load": function() {
+            $(this.composer.iframe).wysihtml5_size_matters();
+          }
+        }
+      });
+
+      email_edit_editor = $('#email_edit_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false,
+        "events": {
+          "load": function() {
+            $(this.composer.iframe).wysihtml5_size_matters();
+          }
+        }
+      });
     });
 
     var meeting_new_editor, meeting_edit_editor;
     $(function() {
-      meeting_new_editor = $('#meeting_new_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
-      meeting_edit_editor = $('#meeting_edit_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
+      meeting_new_editor = $('#meeting_new_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false,
+        "events": {
+          "load": function() {
+            $(this.composer.iframe).wysihtml5_size_matters();
+          }
+        }
+      });
+
+      meeting_edit_editor = $('#meeting_edit_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false,
+        "events": {
+          "load": function() {
+            $(this.composer.iframe).wysihtml5_size_matters();
+          }
+        }
+      });
     });
 
     var complete_meeting_editor;
     $(function() {
-      complete_meeting_editor = $('#complete_meeting_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
+      complete_meeting_editor = $('#complete_meeting_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false,
+       "events": {
+          "load": function() {
+            $(this.composer.iframe).wysihtml5_size_matters();
+          }
+        }
+      });
     });
 
     var complete_quote_editor;
     $(function(){
-      complete_quote_editor = $('#complete_quote_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false});
+      complete_quote_editor = $('#complete_quote_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false,
+        "events": {
+          "load": function() {
+            $(this.composer.iframe).wysihtml5_size_matters();
+          }
+        }
+      });
     });
 
     var new_reminder, edit_reminder;
     $(function() {
-      new_reminder = $('#new_reminder').wysihtml5({'font-styles': false, 'image': false, 'link':false});
-      edit_reminder = $('#edit_reminder').wysihtml5({'font-styles': false, 'image': false, 'link':false});
+      new_reminder = $('#new_reminder').wysihtml5({'font-styles': false, 'image': false, 'link':false,
+       "events": {
+          "load": function() {
+            $(this.composer.iframe).wysihtml5_size_matters();
+          }
+        }
+      });
+
+      edit_reminder = $('#edit_reminder').wysihtml5({'font-styles': false, 'image': false, 'link':false,
+       "events": {
+          "load": function() {
+            $(this.composer.iframe).wysihtml5_size_matters();
+          }
+        }
+      });
     });
 
     $(document).on('click', "a.edit_email", function(e){

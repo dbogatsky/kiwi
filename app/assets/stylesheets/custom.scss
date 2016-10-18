@@ -317,3 +317,13 @@ body.modal-open {
 .type_validate::-webkit-inner-spin-button {
     display: none;
 }
+#validationWizard li.active a{
+  color: #3276B1
+}
+.show_citem{
+  display: block;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
