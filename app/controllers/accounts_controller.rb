@@ -134,7 +134,7 @@ class AccountsController < ApplicationController
       asset = {}
       if params[:name] == 'name'
         asset[:name] = params['value']
-      elsif params[:description] == 'description'
+      elsif params[:name] == 'description'
         asset[:description] = params['value']
       else
         @asset.properties.attributes[params['name']] = params['value']
