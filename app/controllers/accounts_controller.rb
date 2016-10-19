@@ -129,17 +129,19 @@ class AccountsController < ApplicationController
   end
 
   def update_asset
-    @asset = Asset.find(params['pk'])
-    asset = {}
-    if params[:name] == 'name'
-      asset[:name] = params['value']
-    elsif params[:description] == 'description'
-      asset[:description] = params['value']
-    else
-      @asset.properties.attributes[params['name']] = params['value']
-      asset[:properties] = @asset.properties.attributes.to_json
+    @asset = Asset.find(params['pk'],params: {account_id: params[:account_id]}) rescue nil
+    if @asset.present?
+      asset = {}
+      if params[:name] == 'name'
+        asset[:name] = params['value']
+      elsif params[:description] == 'description'
+        asset[:description] = params['value']
+      else
+        @asset.properties.attributes[params['name']] = params['value']
+        asset[:properties] = @asset.properties.attributes.to_json
+      end
+      @asset.update_attributes(asset: asset, account_id: params[:account_id])
     end
-    @asset.update_attributes(asset: asset)
     render :nothing => true
   end
 

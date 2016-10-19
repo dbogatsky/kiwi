@@ -16,7 +16,7 @@
                         },
                         mode: 'inline',
                         name: 'name',
-                        url: '/update_asset',
+                        url: '/update_asset?account_id=<%=@account.id%>',
                         pk: '<%=asset.id%>',
                         ajaxOptions: {
                             type: 'put'
@@ -26,7 +26,7 @@
                       jQuery(".edit_asset_description_<%=asset.id%>").editable({
                         mode: 'inline',
                         name: 'description',
-                        url: '/update_asset',
+                        url: '/update_asset?account_id=<%=@account.id%>',
                         pk: '<%=asset.id%>',
                         ajaxOptions: {
                             type: 'put'
@@ -56,7 +56,7 @@
                                       if($.trim(value) == '') return 'This field is required';
                                   },
                                   name: '<%=key%>',
-                                  url: '/update_asset',
+                                  url: '/update_asset?account_id=<%=@account.id%>',
                                   pk: '<%=asset.id%>',
                                   ajaxOptions: {
                                       type: 'put'
@@ -68,7 +68,7 @@
                                   template: 'MM /DD / YYYY',
                                   viewformat: 'MM / DD / YYYY',
                                   name: '<%=key%>',
-                                  url: '/update_asset',
+                                  url: '/update_asset?account_id=<%=@account.id%>',
                                   pk: '<%=asset.id%>',
                                   ajaxOptions: {
                                       type: 'put'
@@ -100,7 +100,7 @@
                                   },
                                   mode: 'inline',
                                   name: '<%=key%>',
-                                  url: '/update_asset',
+                                  url: '/update_asset?account_id=<%=@account.id%>',
                                   pk: '<%=asset.id%>',
                                   ajaxOptions: {
                                       type: 'put'
@@ -110,7 +110,7 @@
                                 jQuery(".edit_text_<%=asset.id%>_<%=key.gsub(' ','')%>").editable({
                                   mode: 'inline',
                                   name: '<%=key%>',
-                                  url: '/update_asset',
+                                  url: '/update_asset?account_id=<%=@account.id%>',
                                   pk: '<%=asset.id%>',
                                   ajaxOptions: {
                                       type: 'put'
