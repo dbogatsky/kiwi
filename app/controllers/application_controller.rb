@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
   #before_filter :accounts_cache  # DIS001 disabled for now
   around_filter :set_time_zone
 
-  helper_method :current_user, :current_company, :get_api_values, :logged_in?, :superadmin_logged_in?, :notification_info, :company_settings_load
+  helper_method :current_user, :current_company, :get_api_values, :logged_in?, :superadmin_logged_in?, :notification_info, :company_settings_load, :application_settings
   helper_method :has_permission, :has_permissions, :has_page_permission, :has_page_permissions, :accounts_cache
 
   rescue_from ActiveResource::ForbiddenAccess do |exception|
@@ -494,7 +494,7 @@ class ApplicationController < ActionController::Base
       end
     end
 
-    if company_settings_info.nil? || refresh == true
+    if company_settings_info.nil? || refresh
       company_settings = {}
       email = current_user.email
       appKey = APP_CONFIG['api_app_key']
@@ -544,8 +544,22 @@ class ApplicationController < ActionController::Base
     @timezone_setting = preferences['enable_timezone_detect']
   end
 
+  def application_settings
+    get_api_values
+    apiFullUrl = RequestStore.store[:api_url] + '/company/settings/private'
+    application_setting = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -H "Cache-Control: no-cache" "#{apiFullUrl}"`
+    application_setting = JSON.parse(application_setting)
+
+    @account_properties = application_setting['company']['settings']['private']['account_properties']
+    @account_properties = JSON.parse(@account_properties) unless (@account_properties.nil? || @account_properties.is_a?(Hash))
+    @assets =  application_setting['company']['settings']['private']['asset_properties']
+    @assets = JSON.parse(@assets) unless (@assets.nil? || @assets.is_a?(Hash))
+    @leads = application_setting['company']['settings']['private']['leads_enabled']
+    @assets_management = application_setting['company']['settings']['private']['asset_management']
+  end
+
   def get_api_values
-    @email = current_user.email
+    @email = current_user.blank? ? set_superadmin : current_user.email
     @appKey = APP_CONFIG['api_app_key']
     @token = session[:token]
   end

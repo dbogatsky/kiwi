@@ -1,0 +1,78 @@
+<div class="modal fade add-account-property-modal-form" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">&times;</button>
+        <h4 class="modal-title property_title">Add Property</h4>
+      </div>
+      <div class="modal-body">
+        <%= form_tag add_and_update_property_admin_company_settings_path(company_id: @company), method: :patch, id: 'add_asset_and_property' do %>
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div class="row row-pad-5">
+                <div class="col-lg-3">
+                  <label class="col-sm-3 control-label">ID<span class="asterisk">*</span></label>
+                </div>
+                <div class="col-lg-9">
+                  <input type="text" name="property_id" placeholder="" class="form-control property_id" required="required" />
+                </div>
+              </div>
+
+              <div class="row row-pad-5">
+                <div class="col-lg-3">
+                  <label class="col-sm-3 control-label">Label<span class="asterisk">*</span></label>
+                </div>
+                <div class="col-lg-9">
+                  <input type="text" name="label" placeholder="" class="form-control property_label" required="required"/>
+                </div>
+              </div>
+
+              <div class="row row-pad-5 form-group">
+                <div class="col-lg-3">
+                  <label class="col-sm-3 control-label">Required</label>
+                </div>
+                <div class="col-lg-9">
+                  <div class="radio-inline">
+                    <label><input type="radio" name="required" value="false" class="required_false" checked>No</label>
+                  </div>
+                  <div class="radio-inline">
+                    <label><input type="radio" name="required" value="true" class="required_true">Yes</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row row-pad-5">
+                <div class="col-lg-3">
+                  <label class="col-sm-3 control-label">Format</label>
+                </div>
+                <div class="col-lg-9">
+                  <select class="form-control input-sm mb15 property_format" name="format">
+                    <option value=''>-select format-</option>
+                    <option value="date">Date</option>
+                    <option value="numeric">Numeric</option>
+                    <option value="enum">Enum</option>
+                    <option value="text">Text</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row row-pad-5 property_value">
+                <div class="col-lg-3">
+                  <label class="col-sm-3 control-label">Value</label>
+                </div>
+                <div class="col-lg-9">
+                  <textarea class="form-control property_value" rows="3" placeholder="" name="values"></textarea>
+                </div>
+              </div>
+            </div><!-- panel-body -->
+
+            <div class="panel-footer">
+              <%=submit_tag 'Save',  data: {disable_with: "Saving..." }, class: "btn btn-primary"%>
+              <button type="reset" class="btn btn-default">Reset</button>
+            </div>
+          </div><!-- panel -->
+        <% end %>
+      </div><!-- modal body -->
+    </div><!-- modal content -->
+  </div><!-- modal dialog -->
+</div><!-- modal -->

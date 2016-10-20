@@ -1,0 +1,151 @@
+<% content_for :pageheader do %>
+  <h2><i class="fa fa-cogs"></i>Settings</h2>
+<% end %>
+<%= form_tag update_settings_admin_company_settings_path(company_id: @company), method: :patch, class: "form-horizontal" do |f| %>
+  <div class="profile-header">
+    <div class="row row-pad-5">
+      <div class="col-md-12 mb20">
+        <!-- Nav tabs -->
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <div class="panel-btns">
+              <a href="" class="minimize">−</a>
+            </div><!-- panel-btns -->
+            <h3 class="panel-title">Modules</h3>
+          </div>
+          <div class="panel-body">
+            <div class="tab-pane" id="authentication">
+              <div class="row row-pad-5">
+                <div class="form-group">
+                  <label class="col-sm-4 control-label">Assets Management</label>
+                  <div class="col-sm-4">
+                    <%=select_tag('asset_management',options_for_select(assets_management_select_options, selected: @assets_management), prompt: '-select-', class: "form-control")%>
+                  </div>
+                </div>
+              </div><!-- row pad 5-->
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <div class="panel-btns">
+              <a href="" class="minimize">−</a>
+            </div><!-- panel-btns -->
+            <h3 class="panel-title">Account Properties</h3>
+          </div>
+          <div class="panel-body">
+            <div class="tab-pane" id="authentication">
+              <div class="row row-pad-5">
+                <div class="col-sm-10">
+                </div>
+                <div class="col-sm-2">
+                  <a href="#" data-toggle="modal" class="btn btn-primary btn-block add_property" data-target=".add-account-property-modal-form"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Property</a>
+                </div>
+              </div>
+              <div class="row row-pad-5">
+                <%=render 'account_properties_and_assets_table', property_or_asset: @account_properties, cls: 'edit_property'%>
+              </div><!-- row pad 5-->
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <div class="panel-btns">
+              <a href="" class="minimize">−</a>
+            </div><!-- panel-btns -->
+            <h3 class="panel-title">Asset Properties</h3>
+          </div>
+          <div class="panel-body">
+            <div class="tab-pane" id="authentication">
+              <div class="row row-pad-5">
+                <div class="col-sm-10">
+                </div>
+                <div class="col-sm-2">
+                  <a href="#" data-toggle="modal" class="btn btn-primary btn-block add_asset" data-target=".add-account-property-modal-form"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Asset</a>
+                </div>
+              </div>
+              <div class="row row-pad-5">
+                <%=render 'account_properties_and_assets_table', property_or_asset: @assets, cls: 'edit_asset'%>
+              </div><!-- row pad 5-->
+            </div>
+          </div>
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-footer">
+            <div class="row row-pad-5">
+              <div class="col-sm-12 text-center">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="reset" class="btn btn-default">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> <!-- col- -->
+    </div><!-- row -->
+  </div><!-- profile-header -->
+<%end%>
+<%=render 'add_and_update_account_property'%>
+<script type="text/javascript">
+  $("#accounts_by_status").select2({
+    width: '100%',
+  });
+
+  $(".add_property, .add_asset").click(function(e){
+    var company = '<%=@company.id%>'
+    if($(this).hasClass('add_property')){
+      $(".property_title").text('Add Property')
+      url = "/admin/companies/"+company+"/settings/add_and_update_property"
+      $("#add_asset_and_property").attr('action',url)
+    }else{
+      url = "/admin/companies/"+company+"/settings/add_and_update_asset"
+      $("#add_asset_and_property").attr('action',url)
+      $(".property_title").text('Add Asset')
+    }
+    $(".property_value").val(null)
+    $(".property_format").val(null)
+    $(".property_label").val(null)
+    $(".property_id").val(null)
+    $(".property_id").prop('readonly', false)
+    $(".required_false").attr('checked',true)
+    $(".property_value").hide()
+  })
+
+  $(".property_format").change(function(){
+    if($(this).val() == 'enum'){
+      $(".property_value").show(500)
+    }else{
+      $(".property_value").val(null)
+      $(".property_value").hide(500)
+    }
+  })
+
+  $(".edit_property, .edit_asset").click(function(){
+    var company = '<%=@company.id%>'
+    if($(this).hasClass('edit_property')){
+      $(".property_title").text('Edit Property')
+      url = "/admin/companies/"+company+"/settings/add_and_update_property"
+      $("#add_asset_and_property").attr('action',url)
+    }else{
+      url = "/admin/companies/"+company+"/settings/add_and_update_asset"
+      $("#add_asset_and_property").attr('action',url)
+      $(".property_title").text('Edit Asset')
+    }
+    $(".property_id").val($(this).data('key'))
+    $(".property_id").prop('readonly', true)
+    $(".property_label").val($(this).data('label'))
+    $(".property_format").val($(this).data('format'))
+    if($(this).data('format') == 'enum'){
+      $(".property_value").show(500)
+      $(".property_value").val($(this).data('values'))
+    }else{
+      $(".property_value").hide(500)
+      $(".property_value").val(null)
+    }
+    if($(this).data('required') == true){
+     $(".required_true").attr('checked',true)
+    }else{
+      $(".required_false").attr('checked',true)
+    }
+  })
+</script>

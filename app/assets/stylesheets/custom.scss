@@ -1,3 +1,6 @@
+body{
+  width: 100%;
+}
 .folder-list.indent-left-list{
   margin-left: 15px;
 }
@@ -313,9 +316,51 @@ body.modal-open {
 
 }
 
+.tab_background{
+  background: #eeeeee !important;
+}
+.nav-tabs-simple.nav-tabs{
+  border-top:0;
+  border-left:0;
+  border-right:0;
+  border-bottom: 1px solid #ddd;
+  background:none;
+}
+.nav-tabs-simple>li.active a, .nav-tabs-simple>li.active a:hover, .nav-tabs-simple>li.active a:focus {
+  background-color: transparent;
+}
+
+.nav-tabs-simple>li {
+    background: #f7f7f7;
+    border-radius: 8px 8px 0px 0px;
+    margin-right: 2px;
+}
+
+.nav-tabs-simple>li.active,.nav-tabs-simple>li:hover{
+  background: #fff;
+  border-bottom:1px solid #666;
+}
 .type_validate::-webkit-outer-spin-button,
 .type_validate::-webkit-inner-spin-button {
     display: none;
+}
+.color_list{
+  list-style:none;
+}
+.color_list li input[type="checkbox"]{
+float:right;
+width:50%;
+}
+.color_list input[type="file"]:focus, input[type="radio"]:focus, input[type="checkbox"]:focus{
+  outline:none;
+}
+.color_list .form-control:focus{
+  box-shadow:0 0 0;
+  border-color:transparent;
+}
+
+.nav-tabs > li > a {
+    padding: 10px 20px;
 }
 #validationWizard li.active a{
   color: #3276B1
@@ -326,4 +371,9 @@ body.modal-open {
   -moz-transition: all 0.5s ease;
   -o-transition: all 0.5s ease;
   transition: all 0.5s ease;
+}
+
+.txt_color {
+    color: white !important;
+    border-bottom: none !important;
 }

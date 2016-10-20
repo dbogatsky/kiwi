@@ -48,6 +48,7 @@ class Admin::CompaniesController < Admin::AdminController
     redirect_to admin_companies_path
   end
 
+
   private
 
   def find_company

@@ -120,6 +120,40 @@
             </div>
           </div>
         <%end%>
+        <%if @account_properties.present?%>
+          <%@account_properties.each do |key,value|%>
+            <div class="form-group">
+              <label class="col-sm-offset-2 col-sm-2 control-label"><%=value["label"]%>
+                <%if value['required'].to_s == 'true'%>
+                  <span class="asterisk">*</span>
+                <%end%>
+              </label>
+              <div class="col-sm-4">
+                <%if value["format"] == 'date'%>
+                  <%if mobile?%>
+                    <input type="date" name="account[properties]['<%=key%>']" required="<%=value['required']%>" value="<%=(@account.properties.present? && @account.properties.try(:attributes).present?) ? @account.properties.attributes[key] : nil%>"/>
+                  <%else%>
+                    <%=text_field_tag "account[properties][#{key}]",(@account.properties.present? && @account.properties.try(:attributes).present?) ? @account.properties.attributes[key] : nil, placeholder: "yyyy/mm/dd", class: "form-control datepicker", required: value['required'].to_s == 'false' ? false : true%>
+                  <%end%>
+                <%elsif value["format"] == 'numeric'%>
+                  <%=number_field_tag "account[properties][#{key}]", (@account.properties.present? && @account.properties.try(:attributes).present?) ? @account.properties.attributes[key] : nil, class: 'form-control', required: value['required'].to_s == 'false' ? false : true %>
+                <%elsif value["format"] == 'enum'%>
+                  <ul class="color_list">
+                    <%value['values'].each do |k,v|%>
+                      <li>
+                        <span><%=v%></span>
+                        <%=check_box_tag "account[properties][#{key}]", v, (@account.properties.present? && @account.properties.try(:attributes).present? && @account.properties.attributes[key] == k) ? true : false, class: 'form-control'%>
+                      </li>
+                      <!-- required: value['required'].to_s == 'false' ? false : true -->
+                    <%end%>
+                  </ul>
+                <%else%>
+                  <%=text_field_tag "account[properties][#{key}]", (@account.properties.present? && @account.properties.try(:attributes).present?) ? @account.properties.attributes[key] : nil, class: "form-control", required: value['required'].to_s == 'false' ? false : true%>
+                <%end%>
+              </div>
+            </div>
+          <%end%>
+        <%end%>
         <input type="hidden" name="save">
       </div>
     </div><!-- tab-content -->

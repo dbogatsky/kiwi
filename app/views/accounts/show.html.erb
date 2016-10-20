@@ -81,7 +81,7 @@
                     <div class="col-xs-7">
                       <%= @account.id %>
                     </div>
-                </div>              
+                </div>
                 <div class="row bars">
                   <div class="col-xs-5" style="text-align:right">
                     <strong>Status</strong>
@@ -109,6 +109,7 @@
                   </div>
                 </div>
                 <%if @enable_expected_sales == 'enable'%>
+                  <%x = 7%>
                   <div class="row bars">
                     <div class="col-xs-5" style="text-align:right">
                       <strong>Estimated Sales</strong>
@@ -143,6 +144,20 @@
                   </div>
                 </div>
               </div><!-- col-sm-4 -->
+              <%if @account.properties.present? && @account.properties.try(:attributes).present?%>
+                <%x = x == 7 ? 5 : 7%>
+                <%@account.properties.attributes.each do |key,value|%>
+                  <div class="col-sm-<%=x%>">
+                    <div class="row bars">
+                      <div class="col-xs-5" style="text-align:right">
+                        <strong><%=key.split('_').join(' ').titleize%></strong>
+                      </div>
+                      <div class="col-xs-7"><%=value%></div>
+                    </div>
+                  </div>
+                  <%x = x==7 ? 5 : 7%>
+                <%end%>
+              <%end%>
             </small>
           </div><!-- row -->
         </div>
@@ -182,30 +197,52 @@
         </div><!-- col -->
       </div><!-- row -->
       <div class="mb20"></div>
-      <% if can? :read, ConversationItem %>
-        <!--- Timeline Start -->
-        <div id="timeline_show">
-          <% if !@timeline_conversation_items.nil? && @timeline_conversation_items.count > 0 %>
-            <section id="cd-timeline" class="cd-container" >
-              <%= render "conversation_timeline", timeline_conversation_items: @timeline_conversation_items %>
-            </section>
-            <%if @timeline_conversation_items.next_page%>
-              <div class="col-sm-12 load_more"><%=link_to 'Load More', load_more_conversation_item_account_path(@account, conversation_id: @account.conversation.id, page: @timeline_conversation_items.next_page), remote: :true, class: "btn btn-primary btn-lg btn-block load_more_btn"%></div>
-            <%end%>
-          <% else %>
-            <div class="row">
-              <div class="col-sm-12">
+      <ul class="nav nav-tabs nav-tabs-simple">
+        <li class="active"><a href="#conversation" data-toggle="tab"><i class="glyphicon glyphicon-time" style="margin-right:4px;font-size: 12px;"></i><strong>TIMELINE</strong></a></li>
+        <%if @assets_management == 'on'%>
+          <li class=""><a href="#assets_management" data-toggle="tab"><i class="fa fa-rocket" style="margin-right:4px;font-size: 12px;"></i><strong>ASSETS</strong></a></li>
+        <%end%>
+      </ul>
+      <div class="tab-content mb30 tab_background">
+        <div class="tab-pane active" id="conversation">
+          <% if can? :read, ConversationItem %>
+            <!--- Timeline Start -->
+            <div id="timeline_show">
+              <% if !@timeline_conversation_items.nil? && @timeline_conversation_items.count > 0 %>
+                <section id="cd-timeline" class="cd-container" >
+                  <%= render "conversation_timeline", timeline_conversation_items: @timeline_conversation_items %>
+                </section>
+                <%if @timeline_conversation_items.next_page%>
+                  <div class="col-sm-12 load_more"><%=link_to 'Load More', load_more_conversation_item_account_path(@account, conversation_id: @account.conversation.id, page: @timeline_conversation_items.next_page), remote: :true, class: "btn btn-primary btn-lg btn-block load_more_btn"%></div>
+                <%end%>
+              <% else %>
                 <div class="row">
-                  <div class="col-md-12">
-                      <h3>No items available</h3>
+                  <div class="col-sm-12">
+                    <div class="row">
+                      <div class="col-md-12">
+                          <h3>No items available</h3>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              <% end %>
             </div>
+            <!--- Timeline End -->
           <% end %>
         </div>
-        <!--- Timeline End -->
-      <% end %>
+        <%if @assets_management == 'on'%>
+          <div class="tab-pane" id="assets_management">
+            <div class="btn-group pull-right">
+              <button class="btn btn-primary" data-toggle="modal" data-target=".add-asset-modal-form" type="button">
+                  <i class="fa fa-plus-circle mr5"></i> Add Asset
+              </button>
+            </div>
+            <section id="cd-assets_list" class="cd-container" >
+              <%= render "assets_list", assets_list: @account.assets %>
+            </section>
+          </div>
+        <%end%>
+      </div>
     </div> <!-- col-sm-9 -->
   </div><!-- row -->
 </div><!-- profile-header -->
@@ -252,6 +289,7 @@
   <%= render "conversation_email" %>
   <%= render "conversation_email_edit" %>
   <%= render "conversation_note" %>
+  <%= render "add_asset" %>
   <%= render "conversation_note_edit", account: @account%>
   <%= render "conversation_meeting_edit", account: @account %>
   <%= render "conversation_quote_edit", account: @account %>

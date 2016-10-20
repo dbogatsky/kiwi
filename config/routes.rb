@@ -4,6 +4,16 @@ Rails.application.routes.draw do
       resources :users do
         match :change_password, via: [:get, :patch]
       end
+
+      resources :settings do
+        collection do
+          patch :update_settings
+          patch :add_and_update_property
+          patch :add_and_update_asset
+          delete :delete_property
+          delete :delete_asset
+        end
+      end
     end
   end
 
@@ -28,6 +38,10 @@ Rails.application.routes.draw do
   get  '/accounts/csv_template', to: 'accounts#csv_template', as: :accounts_csv_template
   get  '/accounts/batch', to:'accounts#batch', as: :account_batch
   post '/accounts/batch_notes', to:'accounts#batch_notes', as: :account_batch_notes
+  match '/accounts/add_account_properties', to:'accounts#add_account_properties', as: :account_add_account_properties, via: [:get, :post]
+  match '/accounts/import_assets', to:'accounts#import_assets', as: :account_import_assets, via: [:get, :post]
+  get  '/accounts/properties_csv_template', to: 'accounts#properties_csv_template', as: :accounts_properties_csv_template
+  get  '/accounts/assets_csv_template', to: 'accounts#assets_csv_template', as: :accounts_assets_csv_template
   get  '/accounts/notes_csv_template', to: 'accounts#notes_csv_template', as: :accounts_notes_csv_template
   resources :accounts do
     member do
@@ -62,6 +76,8 @@ Rails.application.routes.draw do
   post '/accounts/check_out', to: 'accounts#check_out', as: :account_check_out
   post '/accounts/jump_in', to: 'accounts#jump_in', as: :account_jump_in
   post '/accounts/:id/add_note', to: 'accounts#add_note', as: :account_add_note
+  post '/accounts/:id/add_asset', to: 'accounts#add_asset', as: :account_add_asset
+  put  '/update_asset', to: 'accounts#update_asset', as: :account_update_asset
   post '/accounts/add_quote', to:'accounts#add_quote', as: :account_add_quote
   post '/accounts/add_reminder', to: 'accounts#add_reminder', as: :account_add_reminder
   post '/accounts/:id/send_email', to: 'accounts#send_email', as: :account_send_email
