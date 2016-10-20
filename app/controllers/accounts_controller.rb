@@ -14,7 +14,7 @@ class AccountsController < ApplicationController
   def index
     @user_preference = user_preferences_load
     show_accounts_per_page = @user_preference['show_accounts_per_page']
-    @show_accounts_per_page = show_accounts_per_page.to_i > 0 ? show_accounts_per_page.to_i : 25
+    @show_accounts_per_page = show_accounts_per_page.to_i > 0 ? show_accounts_per_page.to_i : 26
     page = params[:page].present? ? params[:page] : 1
     session[:page] = page
     advanced_search  #call advanced search
