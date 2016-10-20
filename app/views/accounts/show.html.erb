@@ -81,7 +81,7 @@
                     <div class="col-xs-7">
                       <%= @account.id %>
                     </div>
-                </div>              
+                </div>
                 <div class="row bars">
                   <div class="col-xs-5" style="text-align:right">
                     <strong>Status</strong>
@@ -109,7 +109,7 @@
                   </div>
                 </div>
                 <%if @enable_expected_sales == 'enable'%>
-                  <%x = 5%>
+                  <%x = 7%>
                   <div class="row bars">
                     <div class="col-xs-5" style="text-align:right">
                       <strong>Estimated Sales</strong>
@@ -145,7 +145,7 @@
                 </div>
               </div><!-- col-sm-4 -->
               <%if @account.properties.present? && @account.properties.try(:attributes).present?%>
-                <%x = x == 5 ? 7 : 5%>
+                <%x = x == 7 ? 5 : 7%>
                 <%@account.properties.attributes.each do |key,value|%>
                   <div class="col-sm-<%=x%>">
                     <div class="row bars">
@@ -155,7 +155,7 @@
                       <div class="col-xs-7"><%=value%></div>
                     </div>
                   </div>
-                  <%x = x==5 ? 7 : 5%>
+                  <%x = x==7 ? 5 : 7%>
                 <%end%>
               <%end%>
             </small>
