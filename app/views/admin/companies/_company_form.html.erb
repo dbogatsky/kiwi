@@ -28,7 +28,7 @@
             <div class="form-group">
               <label class="col-sm-offset-2 col-sm-2 control-label">Time Zone<span class="asterisk">*</span></label>
               <div class="col-sm-4">
-               <%=select_tag('company[time_zone]', options_for_select(ActiveSupport::TimeZone.all.map(&:name),selected: @company.try(:time_zone)), {prompt: "-- select --", :class => 'form-control', required: true, wrapper: :wizard_horizontal_form})%>
+               <%=select_tag('company[time_zone]', options_for_select(ActiveSupport::TimeZone.all.map{|z| ['(UTC '+"#{z.formatted_offset}"+')  ' +"#{z.name}", z.name]},selected: @company.try(:time_zone)), {prompt: "-- select --", :class => 'form-control', required: true, wrapper: :wizard_horizontal_form})%>
               </div>
             </div>
             <div class="form-group">

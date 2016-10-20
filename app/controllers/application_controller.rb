@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   before_filter :notification_info
   before_filter :clear_session_variable
   #before_filter :accounts_cache  # DIS001 disabled for now
-  # around_filter :set_time_zone
+  around_filter :set_time_zone
 
   helper_method :current_user, :current_company, :get_api_values, :logged_in?, :superadmin_logged_in?, :notification_info, :company_settings_load
   helper_method :has_permission, :has_permissions, :has_page_permission, :has_page_permissions, :accounts_cache
@@ -121,17 +121,17 @@ class ApplicationController < ActionController::Base
     response.headers['Pragma'] = 'no-cache'
   end
 
-  # def set_time_zone
-  #   old_time_zone = Time.zone
-  #   Time.zone = browser_timezone if browser_timezone.present?
-  #   yield
-  # ensure
-  #   Time.zone = old_time_zone
-  # end
+  def set_time_zone
+    old_time_zone = Time.zone
+    Time.zone = browser_timezone if browser_timezone.present?
+    yield
+  ensure
+    Time.zone = old_time_zone
+  end
 
-  # def browser_timezone
-  #   cookies['browser.timezone']
-  # end
+  def browser_timezone
+    cookies['browser.timezone']
+  end
 
   def get_tenant_by_subdomain
     if request.subdomains.any?
@@ -533,7 +533,6 @@ class ApplicationController < ActionController::Base
 
   def get_account_display_setting
     preferences = company_settings_load['preferences']
-
     @account_per_page = preferences['account_per_page']
     @account_by_status = preferences['accounts_by_status']
     @enable_import = preferences['enable_import'] || "unknown"
@@ -542,6 +541,7 @@ class ApplicationController < ActionController::Base
     @daylight_setting = preferences['enable_dst']
     @enable_checkin_checkout = preferences['enable_checkin_checkout'] || "unknown"
     @enable_regular_visits_sort = preferences['enable_regular_visits_sort'] || "unknown"
+    @timezone_setting = preferences['enable_timezone_detect']
   end
 
   def get_api_values
