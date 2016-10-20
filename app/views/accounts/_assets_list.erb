@@ -1,7 +1,5 @@
-<% if assets_list.present? %>
-  <%# assets_list.each do |i| %>
-    <%#= render "assets_item_show.html.erb", :assets_item => i %>
-  <%# end %>
+<%if @account.assets.present?%>
+  <%= render "assets_item_show_accordian" %>
 <% else %>
   <div class="row">
     <div class="col-sm-9">
@@ -14,8 +12,4 @@
   </div>
 <% end %>
 
-<%= render "assets_item_show_accordian" %>
-
-<% #render "assets_item_show.html.erb" %>
-
-<%= render "assets_xeditable_sample" %>
+<%#= render "assets_xeditable_sample" %>
