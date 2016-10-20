@@ -60,15 +60,15 @@
               </div>
             </div>
             <div class="form-group">
-              <label class="col-sm-offset-2 col-sm-2 control-label">Province/State<span class="asterisk">*</span></label>
+              <label class="col-sm-offset-2 col-sm-2 control-label">Province/State</label>
               <div class="col-sm-4">
-               <%= text_field_tag 'company[addresses_attributes][0][region]', @address.try(:region), wrapper: :wizard_horizontal_form, class: 'form-control', required: true, id: 'administrative_area_level_1', readonly: true%>
+               <%= text_field_tag 'company[addresses_attributes][0][region]', @address.try(:region), wrapper: :wizard_horizontal_form, class: 'form-control', id: 'administrative_area_level_1', readonly: true%>
               </div>
             </div>
             <div class="form-group">
-              <label class="col-sm-offset-2 col-sm-2 control-label">Post/Zipcode<span class="asterisk">*</span></label>
+              <label class="col-sm-offset-2 col-sm-2 control-label">Post/Zipcode</label>
               <div class="col-sm-4">
-               <%= text_field_tag 'company[addresses_attributes][0][postcode]' ,@address.try(:postcode), wrapper: :wizard_horizontal_form, class: 'form-control', required: true, id: 'postal_code', readonly: true%>
+               <%= text_field_tag 'company[addresses_attributes][0][postcode]' ,@address.try(:postcode), wrapper: :wizard_horizontal_form, class: 'form-control', id: 'postal_code', readonly: true%>
               </div>
             </div>
             <div class="form-group">
