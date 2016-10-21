@@ -15,7 +15,7 @@
         </div>
       </div>
     </div> <!-- panel-body -->
-    
+
 <%
 #    <div class="panel-body">
 #      <div class="form-group">
@@ -44,6 +44,15 @@
         </div>
       </div>
     </div> <!-- panel-body -->
+    <div class="panel-body">
+      <div class="form-group">
+        <label class="col-sm-3 control-label">Get Notifications by</label>
+        <div class="col-sm-6">
+          <div class="checkbox block"><label><input type="checkbox" class="by_email" name="notifications[email]" > Email</label></div>
+          <div class="checkbox block"><label><input type="checkbox" class="by_sms" name="notifications[sms]"> SMS</label></div>
+        </div>
+      </div>
+    </div>
 
     <div class="panel-body">
       <div class="form-group">
@@ -64,3 +73,18 @@
   		</div>
   	</div><!-- panel-footer -->
 <% end %>
+
+<script type="text/javascript">
+  <%if @user_notification_setting['email'] == 'true'%>
+     $('.by_email').prop('checked','checked')
+  <%end%>
+
+  <%if @user_notification_setting['sms'] == 'true'%>
+     $('.by_sms').prop('checked','checked')
+  <%end%>
+
+  <%if @user_notification_setting['email'] == nil && @user_notification_setting['sms'] == nil%>
+    $('.by_email').prop('checked','checked')
+    $('.by_sms').prop('checked','checked')
+  <%end%>
+</script>
