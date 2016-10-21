@@ -62,9 +62,9 @@
 	      <%city = @address.present? ? @address.city : company_address.try(:city)%>
 	      <%= add.input :city, required: true, label: "City", :input_html => { :name => "user[addresses_attributes][][city]", :value => city, id: 'locality'} %>
         <%address_region = @address.present? ? @address.region : company_address.try(:region)%>
-	      <%= add.input :region, required: true, label: "Province/State", :input_html => { :name => "user[addresses_attributes][][region]", :value => address_region, id: 'administrative_area_level_1'} %>
+	      <%= add.input :region, required: false, label: "Province/State", :input_html => { :name => "user[addresses_attributes][][region]", :value => address_region, id: 'administrative_area_level_1'} %>
         <%postcode = @address.present? ? @address.postcode : company_address.try(:postcode)%>
-	      <%= add.input :postcode, required: true, label: "Postcode/Zipcode", :input_html => { :name => "user[addresses_attributes][][postcode]", :value => postcode, id: 'postal_code'}%>
+	      <%= add.input :postcode, required: false, label: "Postcode/Zipcode", :input_html => { :name => "user[addresses_attributes][][postcode]", :value => postcode, id: 'postal_code'}%>
 
 	      <div class="form-group">
 	        <label class="col-sm-3 control-label">Country<span class="asterisk">*</span></label>
