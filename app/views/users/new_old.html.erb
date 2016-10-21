@@ -49,9 +49,9 @@
 
       <%= add.input :city, required: true, label: "City", :input_html => { :name => "user[addresses_attributes][][city]"} %>
 
-      <%= add.input :postcode, required: true, label: "Postcode/Zipcode", :input_html => { :name => "user[addresses_attributes][][postcode]"} %>
+      <%= add.input :postcode, required: false, label: "Postcode/Zipcode", :input_html => { :name => "user[addresses_attributes][][postcode]"} %>
 
-      <%= add.input :region, required: true, label: "Province/State", :input_html => { :name => "user[addresses_attributes][][region]"} %>
+      <%= add.input :region, required: false, label: "Province/State", :input_html => { :name => "user[addresses_attributes][][region]"} %>
 
       <!-- <div class="form-group">
         <label class="col-sm-offset-2 col-sm-2 control-label">Country<span class="asterisk">*</span></label>

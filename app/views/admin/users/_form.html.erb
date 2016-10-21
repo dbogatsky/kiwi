@@ -89,15 +89,15 @@
 	      </div>
       </div>
       <div class="form-group">
-        <label class="col-sm-3 control-label">Province/State<span class="asterisk">*</span></label>
+        <label class="col-sm-3 control-label">Province/State</label>
 	      <div class="col-sm-6">
-	        <%= text_field_tag 'user[addresses_attributes][0][region]', @address.blank? ? @company_address.region :  @address.region, class: 'form-control', required: true, id: 'administrative_area_level_1'%>
+	        <%= text_field_tag 'user[addresses_attributes][0][region]', @address.blank? ? @company_address.region :  @address.region, class: 'form-control', required: false, id: 'administrative_area_level_1'%>
 	      </div>
       </div>
       <div class="form-group">
-        <label class="col-sm-3 control-label">Post/Zipcode<span class="asterisk">*</span></label>
+        <label class="col-sm-3 control-label">Post/Zipcode</label>
 	      <div class="col-sm-6">
-	        <%= text_field_tag 'user[addresses_attributes][0][postcode]' , @address.blank? ? @company_address.postcode :  @address.postcode, class: 'form-control', required: true, id: 'postal_code'%>
+	        <%= text_field_tag 'user[addresses_attributes][0][postcode]' , @address.blank? ? @company_address.postcode :  @address.postcode, class: 'form-control', required: false, id: 'postal_code'%>
 	      </div>
       </div>
       <div class="form-group">
