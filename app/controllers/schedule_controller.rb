@@ -6,7 +6,6 @@ class ScheduleController < ApplicationController
 
   def index
     @user_preference = user_preferences_load
-    @user_preference =  @user_preference['other_setting']
     @users = User.all(uid: session[:user_id])
     get_meetings([current_user.id])
     no_of_account = Account.all.total_entries

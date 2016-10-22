@@ -2,16 +2,18 @@ class PreferencesController < ApplicationController
   before_action :get_api_values
 
   def show
-    @user_preference = user_preferences_load['other_setting']
-    @user_notification_setting = user_preferences_load['notification_setting']
+    @user_preference = user_preferences_load
+    @user_notification_setting = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -H "Cache-Control: no-cache" "#{@apiUrl_for_notification}"`
+      @user_notification_setting = JSON.parse(@user_notification_setting)
+      @user_notification_setting = @user_notification_setting['user']['settings']['notifications']
   end
 
   def update
     curlRes = `curl -X PUT -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -d '{"settings":{"show_accounts_per_page": "#{params[:preference][:show_accounts_per_page]}", "default_calendar_view": "#{params[:preference][:default_calendar_view]}", "preview_conversation_timeline": "#{params[:preference][:preview_conversation_timeline]}", "received_notification_by": "#{params[:preference][:received_notification_by]}", "notification_display_limit": "#{params[:preference][:notification_display_limit]}"}}' '#{@apiFullUrl}'`
 
     if params[:notifications].present?
-      params[:notifications][:email] = params[:notifications][:email].blank? ? 'false' : 'true'
-      params[:notifications][:sms] = params[:notifications][:sms].blank? ? 'false' : 'true'
+      params[:notifications][:email] = params[:notifications][:email].blank? ? false : true
+      params[:notifications][:sms] = params[:notifications][:sms].blank? ? false : true
       curlResForNotification = `curl -X PUT -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -d '{"settings":{"email": "#{params[:notifications][:email]}", "sms": "#{params[:notifications][:sms]}"}}' '#{@apiUrl_for_notification}'`
     else
      curlResForNotification = `curl -X PUT -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -d '{"settings":{"email": "false", "sms": "false"}}' '#{@apiUrl_for_notification}'`

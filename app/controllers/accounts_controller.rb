@@ -13,7 +13,6 @@ class AccountsController < ApplicationController
 
   def index
     @user_preference = user_preferences_load
-    @user_preference =  @user_preference['other_setting']
     show_accounts_per_page = @user_preference['show_accounts_per_page']
     @show_accounts_per_page = show_accounts_per_page.to_i > 0 ? show_accounts_per_page.to_i : 26
     page = params[:page].present? ? params[:page] : 1
@@ -1171,7 +1170,6 @@ class AccountsController < ApplicationController
 
   def account_timeline_conversation_items
     @user_preference = user_preferences_load
-    @user_preference = @user_preference['other_setting']
     preference_limit = @user_preference['preview_conversation_timeline']
     user_ids = Array.new
     search = Hash.new

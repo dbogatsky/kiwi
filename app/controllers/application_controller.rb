@@ -355,7 +355,6 @@ class ApplicationController < ActionController::Base
     # check if we have set the current user before getting any notifications
     if current_user.present?
       @user_preference = user_preferences_load
-      @user_preference =  @user_preference['other_setting']
       preference_limit = @user_preference['notification_display_limit']
       search = Hash.new
       current_date = Date.current.in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
@@ -460,23 +459,17 @@ class ApplicationController < ActionController::Base
     user_preferences_info = session[:user_preferences]
     if user_preferences_info.nil? || refresh == true
       apiFullUrl = RequestStore.store[:api_url] + "/users/#{current_user.id}/settings/preferences"
-      apiFullUrl_notification = RequestStore.store[:api_url] + "/users/#{current_user.id}/settings/notifications"
       email = current_user.email
       appKey = APP_CONFIG['api_app_key']
       token = session[:token]
-      user_settings = {}
       curlRes = `curl -X GET -H "Authorization: Token token="#{token}", email="#{email}", app_key="#{appKey}"" -H "Content-Type: application/json"  -H "Cache-Control: no-cache" "#{apiFullUrl}"`
       user_preferences = JSON.parse(curlRes)
-      user_settings['other_setting'] = user_preferences['user']['settings']['preferences']
-
-      curlRes_notification = `curl -X GET -H "Authorization: Token token="#{token}", email="#{email}", app_key="#{appKey}"" -H "Content-Type: application/json"  -H "Cache-Control: no-cache" "#{apiFullUrl_notification}"`
-      user_notification = JSON.parse(curlRes_notification)
-      user_settings['notification_setting'] = user_notification['user']['settings']['notifications']
-      session[:user_preferences] = user_settings.to_json
+      user_preferences = user_preferences['user']['settings']['preferences']
+      session[:user_preferences] = user_preferences.to_json
     else
-      user_settings = JSON.parse(user_preferences_info)
+      user_preferences = JSON.parse(user_preferences_info)
     end
-    user_settings
+    user_preferences
   end
 
 #   def check_request
