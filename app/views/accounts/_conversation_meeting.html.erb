@@ -516,6 +516,8 @@
 
   $(".account-action-meeting").on("shown.bs.modal", function(){
     $(".meeting_type").val('general');
+    $(".meeting_title").prop("placeholder","Event")
+    $(".meeting_title").val(null)
     $(".invitee_emails_div").show(300);
     $('.end-date-time').show(500);
     $('.all-day').hide(500)

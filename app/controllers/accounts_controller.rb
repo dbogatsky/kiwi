@@ -148,7 +148,13 @@ class AccountsController < ApplicationController
 
   def schedule_meeting
     c_id = @account.conversation.id
-    params[:conversation_item][:title] =  @account.name+' '+ params[:conversation_item][:repetition_rule][:frequency_type].capitalize+' '+'Visits' if params[:conversation_item][:item_type] == 'regular'
+    if params[:conversation_item][:item_type] == 'regular'
+      if params[:conversation_item][:title].blank?
+        params[:conversation_item][:title] =  @account.name+' '+ params[:conversation_item][:repetition_rule][:frequency_type].capitalize+' '+'Visits'
+      else
+        params[:conversation_item][:title]  = params[:conversation_item][:title].titleize
+      end
+    end
     if params[:conversation_item][:item_type] == 'regular' && params[:starts_date].present?
       params[:conversation_item][:all_day_appointment] = true
       params[:conversation_item][:starts_at] = convert_datetime_to_utc(current_user.time_zone, params[:starts_date], "00:00:00")
@@ -260,6 +266,7 @@ class AccountsController < ApplicationController
       params[:conversation_item][:starts_at] = convert_datetime_to_utc(current_user.time_zone, params[:starts_date], params[:starts_time]) if params[:starts_date].present?
       params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone, params[:ends_date], params[:ends_time]) if params[:ends_date].present?
     end
+    params[:conversation_item][:title]  = params[:conversation_item][:title].titleize if @conversation.item_type == 'regular'
     check_daylight #call to check daylight
     if (params[:conversation_item][:status].present?) && (@conversation.check_ins.map(&:user_id).include?current_user.id) && (@conversation.status == 'in_progress')
       lat = request.location.latitude rescue 0.0

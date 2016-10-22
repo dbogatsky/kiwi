@@ -122,7 +122,7 @@
       $('.end-date-time').hide(500);
       $('.all-day').show(500)
       $('.start-time').hide(500)
-      $('.meeting_title').hide(500)
+      $('.meeting_title').prop("placeholder","Event (Optional)")
       $('.meeting_title').attr('required', false)
       $('#schedule-from-timepicker').attr('required', false)
       $('#schedule-from-timepicker').val(null)
@@ -139,7 +139,7 @@
       $('.end-date-time').show(500);
       $('.all-day').hide(500)
       $('.start-time').show(500)
-      $('.meeting_title').show(500)
+      $('.meeting_title').prop("placeholder","Event")
       $('.meeting_title').attr('required', true)
       $('#schedule-from-timepicker').attr('required', true)
       $('#schedule-to-datepicker').attr('required', true)
@@ -283,8 +283,8 @@
     $('.conversation-edit-meeting-modal-form input[name="conversation_item[longitude]"]').val($(this).attr('data-longitude'));
     $('.conversation-edit-meeting-modal-form select[name="conversation_item[item_type]"]').val($(this).attr('data-item-type'));
       if($(this).attr('data-item-type') == 'regular'){
-        $('.conversation-edit-meeting-modal-form input[name="conversation_item[title]"]').hide()
-        $('.conversation-edit-meeting-modal-form input[name="conversation_item[title]"]').attr('required', false)
+        // $('.conversation-edit-meeting-modal-form input[name="conversation_item[title]"]').hide()
+        // $('.conversation-edit-meeting-modal-form input[name="conversation_item[title]"]').attr('required', false)
         $(".invitee_emails_div").hide();
         $(".repeat_div").hide();
         $(".end-date-time").hide();
@@ -297,8 +297,8 @@
         $("#schedule-to-timepicker-edit").val(null);
         $("#schedule-from-timepicker-edit").val(null);
       }else{
-        $('.conversation-edit-meeting-modal-form input[name="conversation_item[title]"]').show()
-        $('.conversation-edit-meeting-modal-form input[name="conversation_item[title]"]').attr('required', true)
+        // $('.conversation-edit-meeting-modal-form input[name="conversation_item[title]"]').show()
+        // $('.conversation-edit-meeting-modal-form input[name="conversation_item[title]"]').attr('required', true)
         $(".invitee_emails_div").show();
         $(".repeat_div").show();
         $(".end-date-time").show();
