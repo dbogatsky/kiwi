@@ -39,6 +39,8 @@ class AccountsController < ApplicationController
         format.xls { send_data generate_csv }
       end
     end
+
+    #checkd = CheckDuplication.all(uid: session[:user_id], params: {name: "Shoppers Drug Mart", addresses: {street_address: "", city: "", postcode: "", region: "", country: "", suite_number: "" }} )
   end
 
   def show
@@ -620,7 +622,7 @@ class AccountsController < ApplicationController
               account_params[:contact_name] = row[1]
               account_params[:contact_title] = row[2]
               @all_status.each do |status|
-                if row[3].present? && status.name ==  row[3].capitalize
+                if row[3].present? && status.name.capitalize == row[3].capitalize
                   @status_id = status.id
                   break
                 end
