@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
   #before_filter :accounts_cache  # DIS001 disabled for now
   around_filter :set_time_zone
 
-  helper_method :current_user, :current_company, :get_api_values, :logged_in?, :superadmin_logged_in?, :notification_info, :company_settings_load, :application_settings
+  helper_method :current_user, :current_company, :get_api_values, :logged_in?, :superadmin_logged_in?, :notification_info, :company_settings_load, :application_settings, :get_timezone_setting
   helper_method :has_permission, :has_permissions, :has_page_permission, :has_page_permissions, :accounts_cache
 
   rescue_from ActiveResource::ForbiddenAccess do |exception|
@@ -538,6 +538,11 @@ class ApplicationController < ActionController::Base
     @enable_checkin_checkout = preferences['enable_checkin_checkout'] || "unknown"
     @enable_regular_visits_sort = preferences['enable_regular_visits_sort'] || "unknown"
     @timezone_setting = preferences['enable_timezone_detect']
+  end
+
+  def get_timezone_setting
+    get_account_display_setting
+    return @timezone_setting
   end
 
   def application_settings
