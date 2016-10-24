@@ -120,7 +120,7 @@ class AccountsController < ApplicationController
   end
 
   def add_asset
-    params[:asset][:properties] = params[:asset][:properties].to_json
+    params[:asset][:properties] = params[:asset][:properties].to_json if params[:asset][:properties].present?
     @asset = Asset.new(request: :create, asset: asset_params, account_id: params[:id])
     if @asset.save
       flash[:success] = 'Asset has been added successfully'

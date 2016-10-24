@@ -64,7 +64,7 @@ class Admin::SettingsController < Admin::AdminController
     @assets.except!(params[:asset_id])
     query = {}
     query['settings'] = {}
-    query['settings']['asset_properties'] = @assets
+    query['settings']['asset_properties'] = @assets.blank? ? nil : @assets
     HTTParty.put(@boApiFullUrl,:query => query,:headers => @headers)
     flash[:success] = 'Asset has been successfully deleted!'
     redirect_to admin_company_settings_path(params[:company_id])
@@ -83,7 +83,7 @@ class Admin::SettingsController < Admin::AdminController
       @account_properties = application_setting['company']['settings']['private']['account_properties']
       @account_properties = JSON.parse(@account_properties) unless (@account_properties.nil? || @account_properties.is_a?(Hash))
       @assets =  application_setting['company']['settings']['private']['asset_properties']
-      @assets = JSON.parse(@assets) unless (@assets.nil? || @assets.is_a?(Hash))
+      @assets = JSON.parse(@assets) unless (@assets.blank? || @assets.is_a?(Hash))
       @leads = application_setting['company']['settings']['private']['leads_enabled']
       @assets_management = application_setting['company']['settings']['private']['asset_management']
     end
