@@ -267,7 +267,9 @@ class AccountsController < ApplicationController
       params[:conversation_item][:starts_at] = convert_datetime_to_utc(current_user.time_zone, params[:starts_date], params[:starts_time]) if params[:starts_date].present?
       params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone, params[:ends_date], params[:ends_time]) if params[:ends_date].present?
     end
-    params[:conversation_item][:title]  = params[:conversation_item][:title].titleize if @conversation.item_type == 'regular'
+    if @conversation.item_type == 'regular'
+      params[:conversation_item][:title]  = params[:conversation_item][:title].present? ? params[:conversation_item][:title].titleize : @conversation.title
+    end
     check_daylight #call to check daylight
     if (params[:conversation_item][:status].present?) && (@conversation.check_ins.map(&:user_id).include?current_user.id) && (@conversation.status == 'in_progress')
       lat = request.location.latitude rescue 0.0
