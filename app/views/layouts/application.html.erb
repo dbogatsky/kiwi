@@ -84,7 +84,7 @@
       var t_zone = "<%=Time.zone.now.zone%>"
       var not_now = "<%=session['time_zone_not_now']%>";
       var c_zone = "<%=ActiveSupport::TimeZone[current_user.time_zone].now.zone%>"
-      if (t_zone != c_zone && not_now != 'true' && t_zone != '' && (t_zone_setting == "enable" || t_zone_setting == '')){
+      if (t_zone != c_zone && not_now != 'true' && t_zone != '' && t_zone_setting == "enable"){
          $(".change-timezone-modal-form").modal('show');
       }else{
          $(".change-timezone-modal-form").modal('hide');
