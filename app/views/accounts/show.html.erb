@@ -232,10 +232,12 @@
         </div>
         <%if @assets_management == 'on'%>
           <div class="tab-pane" id="assets_management">
-            <div class="btn-group pull-right">
-              <button class="btn btn-primary" data-toggle="modal" data-target=".add-asset-modal-form" type="button">
-                  <i class="fa fa-plus-circle mr5"></i> Add Asset
-              </button>
+            <div class="row">
+              <div class="btn-group pull-right">
+                <button class="btn btn-primary" data-toggle="modal" data-target=".add-asset-modal-form" type="button">
+                    <i class="fa fa-plus-circle mr5"></i> Add Asset
+                </button>
+              </div>
             </div>
             <section id="cd-assets_list" class="cd-container" >
               <%= render "assets_list", assets_list: @account.assets %>

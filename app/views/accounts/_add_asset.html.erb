@@ -11,7 +11,7 @@
               <div class="panel-body">
                 <div class="row row-pad-5">
                   <div class="col-lg-4">
-                    <label class="col-sm-8 control-label">Name
+                    <label class="col-sm-8 control-label right_align">Name
                       <span class="asterisk">*</span>
                     </label>
                   </div>
@@ -21,7 +21,7 @@
                 </div>
                 <div class="row row-pad-5">
                   <div class="col-lg-4">
-                    <label class="col-sm-8 control-label">Description
+                    <label class="col-sm-8 control-label right_align">Description
                     </label>
                   </div>
                   <div class="col-lg-8">
@@ -32,7 +32,7 @@
                   <%@assets.each do |key,value|%>
                     <div class="row row-pad-5">
                       <div class="col-lg-4">
-                        <label class="col-sm-8 control-label"><%=value["label"]%>
+                        <label class="col-sm-8 control-label right_align"><%=value["label"]%>
                           <%if value['required'].to_s == 'true'%>
                             <span class="asterisk">*</span>
                           <%end%>
