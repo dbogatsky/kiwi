@@ -8,9 +8,9 @@ class ScheduleController < ApplicationController
     @user_preference = user_preferences_load
     @users = User.all(uid: session[:user_id])
     get_meetings([current_user.id])
-    no_of_account = Account.all.total_entries
-    @all_accounts = Account.all(params: {per_page: no_of_account})
-    @all_accounts = @all_accounts.sort_by {|a| a.name.downcase}
+    # no_of_account = Account.all.total_entries
+    # @all_accounts = Account.all(params: {per_page: no_of_account})
+    # @all_accounts = @all_accounts.sort_by {|a| a.name.downcase}
     @sort_meeting = []
     @next_meeting = []
     if @meetings.present?
@@ -31,6 +31,15 @@ class ScheduleController < ApplicationController
     end
   end
 
+  def get_account_list_by_scrolling
+    search = {}
+    search[:name_cont] = params[:term]
+    params[:page] = 1 if params[:page].blank?
+    accounts = Account.all(params: {search: search, per_page: 50, page: params[:page]})
+    total_pages = accounts.total_pages
+    render json: [accounts, total_pages]
+  end
+
   def calendar_event
     if params[:users].present?
       user_ids = [params[:users]]
@@ -39,6 +48,8 @@ class ScheduleController < ApplicationController
     end
     get_meetings(user_ids)
   end
+
+
 
   def get_meeting
     @account = Account.find(params[:account_id])
@@ -71,9 +82,9 @@ class ScheduleController < ApplicationController
     if params[:account_id].present?
       account =  Account.find(params[:account_id])
       address =  account.addresses.first
-      @full_address = "#{account.addresses.first.suite_number}" +"#{account.addresses.first.suite_number.present? ? '-' : ''}"+"#{address.street_address}" +', ' + "#{address.city}" +', ' + "#{address.postcode}" +', ' + "#{address.region}" +', ' + "#{address.country}"
-    else
-      @full_address = nil
+      if address.present?
+        @full_address = "#{account.addresses.first.suite_number}" +"#{account.addresses.first.suite_number.present? ? '-' : ''}"+"#{address.street_address}" +', ' + "#{address.city}" +', ' + "#{address.postcode}" +', ' + "#{address.region}" +', ' + "#{address.country}"
+      end
     end
   end
 

@@ -90,6 +90,7 @@ Rails.application.routes.draw do
   get   '/schedule/get_meeting', to: 'schedule#get_meeting', as: :schedule_get_meeting
   get   '/schedule/get_events', to: 'schedule#get_events', as: :schedule_get_events
   get   '/schedule/regular_visits', to: 'schedule#regular_visits', as: :schedule_regular_vists
+  get   '/schedule/get_account_list_by_scrolling', to: 'schedule#get_account_list_by_scrolling', as: :schedule_get_account_list_by_scrolling
   match '/media', to: 'media#index', as: :media, via: [:get]
   get   '/schedule/get_account_address', to: 'schedule#get_account_address', as: :schedule_get_account_address
   # get   '/schedule/search_account', to: 'schedule#search_account', as: :schedule_search_account

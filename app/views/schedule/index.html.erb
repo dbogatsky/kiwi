@@ -89,17 +89,45 @@
 
 <script>
   $.fn.modal.Constructor.prototype.enforceFocus = function () {};
-  $('.select2').select2();
-  var check_open_modal
-  $(".account-action-meeting, .conversation-quote-modal-form, .conversation-reminder-modal-form").on("shown.bs.modal", function(){
-    var select = $('.selected_account');
-    check_open_modal = $(this).attr('id')
-    select.empty();
-    select.append("<option value=''>-Select account-</option>");
-    <%@all_accounts.each do |account|%>
-      $('<option>').val('<%=account.id%>').text('<%=account.name%>').appendTo('.selected_account');
-    <%end%>
-  })
+  // $('.select2').select2();
+  // var check_open_modal
+  // $(".account-action-meeting, .conversation-quote-modal-form, .conversation-reminder-modal-form").on("shown.bs.modal", function(){
+  //   var select = $('.selected_account');
+  //   check_open_modal = $(this).attr('id')
+  //   select.empty();
+  //   select.append("<option value=''>-Select account-</option>");
+  //   <%#@all_accounts.each do |account|%>
+  //     $('<option>').val('<%#=account.id%>').text('<%#=account.name%>').appendTo('.selected_account');
+  //   <%#end%>
+  // })
+
+  $(document).ready(function () {
+    var page = 1;
+    $(".add_remote_option").select2({
+        placeholder: "-search account-",
+        minimumInputLength: 3,
+        width: "15em",
+        ajax: {
+          url: "/schedule/get_account_list_by_scrolling",
+          dataType: "json",
+          data: function (term) {
+              return term;
+          },
+          processResults: function (data) {
+            total_page = data[1]
+            more = page++ < total_page;
+            var result = [];
+            $.each( data[0], function( i, val ) {
+              result.push({id: val.id, text: val.name});
+            });
+            return {
+              results: result,
+              pagination: {more: more}
+            };
+          }
+        }
+    });
+  });
 
   $(document).on("change",".get_address",function() {
     var account_id = $(this).val();
