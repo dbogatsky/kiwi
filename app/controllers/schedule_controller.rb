@@ -34,6 +34,7 @@ class ScheduleController < ApplicationController
   def get_account_list_by_scrolling
     search = {}
     search[:name_cont] = params[:term]
+    search[:s] = "name asc"
     params[:page] = 1 if params[:page].blank?
     accounts = Account.all(params: {search: search, per_page: 50, page: params[:page]})
     total_pages = accounts.total_pages
