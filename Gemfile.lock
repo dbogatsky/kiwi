@@ -291,6 +291,7 @@ DEPENDENCIES
   cancancan (~> 1.10)
   chronic
   coffee-rails (~> 4.1.0)
+  countries
   country_select (~> 2.4)
   dotenv-rails
   factory_girl_rails

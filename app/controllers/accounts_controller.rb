@@ -86,7 +86,7 @@ class AccountsController < ApplicationController
   def update
     # Update account
     if params.key?(:save)
-      params[:account][:contacts_attributes] = params[:account][:contacts_attributes].values
+      params[:account][:contacts_attributes] = params[:account][:contacts_attributes].values if params[:account][:contacts_attributes].present?
       params[:account][:properties] = params[:account][:properties].to_json
       if @account.update_attributes(name: @account.name, account: account_params)
         save_avatar
@@ -630,24 +630,28 @@ class AccountsController < ApplicationController
                 end
               end
               account_params[:status_id] = @status_id
-              account_params[:addresses_attributes] = [street_address: row[4], city: row[5], region: row[6], postcode: row[7], country: row[8]]
+              if row[9].present?
+                country_by_name = ISO3166::Country.find_country_by_name(row[9])
+                row[9] = country_by_name.alpha2 if country_by_name.present?
+              end
+              account_params[:addresses_attributes] = [street_address: row[4], suite_number: row[5], city: row[6], region: row[7], postcode: row[8], country: row[9]]
               contacts_attributes = {}
-              contacts_attributes['phone'] = {name: '', type: 'phone', value: convert_number_to_phone(row[9])}
-              contacts_attributes['fax'] = {name: '', type: 'fax', value: convert_number_to_phone(row[10])} unless row[10].blank?
-              contacts_attributes['email'] = {name: '', type: 'email', value: row[11]} unless row[11].blank?
+              contacts_attributes['phone'] = {name: '', type: 'phone', value: convert_number_to_phone(row[10])} unless row[10].blank?
+              contacts_attributes['fax'] = {name: '', type: 'fax', value: convert_number_to_phone(row[11])} unless row[11].blank?
+              contacts_attributes['email'] = {name: '', type: 'email', value: row[12]} unless row[12].blank?
               account_params[:contacts_attributes] = contacts_attributes.values
-              account_params[:about] = row[12]
-              account_params[:quick_facts] = row[13]
-              if row[14].blank?
+              account_params[:about] = row[13]
+              account_params[:quick_facts] = row[14]
+              if row[15].blank?
                 account_params[:assign_to] = current_user.id
               else
-                value = row[14].to_i
+                value = row[15].to_i
                 if value != 0
                   account_params[:assign_to] = value
                 else
                   all_users = User.find(:all, reload: true)
                   all_users.each do |user|
-                    if (user.email == row[14].squish) || (("#{user.first_name}"+' '+"#{user.last_name}") == row[14].squish)
+                    if (user.email == row[15].squish) || (("#{user.first_name}"+' '+"#{user.last_name}") == row[15].squish)
                       account_params[:assign_to] = user.id
                       break
                     end
@@ -678,7 +682,7 @@ class AccountsController < ApplicationController
   def generate_csv
     page = session[:page].present? ? session[:page].to_i : 1
     @accounts = Account.all(params: { search: session[:search], page: page, per_page: @show_accounts_per_page})
-    column_names = ['ID', 'Name', 'Contact Name', 'Contact Title', 'Status', 'Address', 'City', 'Province', 'Postal Code', 'Country', 'About', 'Quick Facts' ]
+    column_names = ['ID', 'Name', 'Contact Name', 'Contact Title', 'Status', 'Address', 'Suite Number', 'City', 'Province', 'Postal Code', 'Country', 'About', 'Quick Facts' ]
     options = {}
     options[:force_quotes] = true
     # options[:col_sep] = params[:option2][:delimiter] == 'other' ? params[:other_option] : params[:option2][:delimiter]
@@ -690,7 +694,7 @@ class AccountsController < ApplicationController
       if @accounts.present?
         @accounts.each do |account|
           address = account.addresses.first rescue nil
-          csv << [account.id, account.name, account.contact_name, account.contact_title, account.status.try(:name), address.try(:street_address), address.try(:city), address.try(:region), address.try(:postcode), address.try(:country), account.about, account.quick_facts]
+          csv << [account.id, account.name, account.contact_name, account.contact_title, account.status.try(:name), address.try(:street_address), address.try(:suite_number), address.try(:city), address.try(:region), address.try(:postcode), address.try(:country), account.about, account.quick_facts]
         end
       end
     end
@@ -995,7 +999,7 @@ class AccountsController < ApplicationController
   end
 
   def generate_csv_template
-    column_names = ['Account Name', 'Contact Name', 'Contact Title', 'Status', 'Address', 'City', 'Province', 'Postal Code', 'Country', 'Phone', 'Fax', 'Email', 'About', 'Quick Facts' ]
+    column_names = ['Account Name', 'Contact Name', 'Contact Title', 'Status', 'Address', 'Suite Number', 'City', 'Province', 'Postal Code', 'Country', 'Phone', 'Fax', 'Email', 'About', 'Quick Facts' ]
     column_names << 'Owner' if current_user.roles.last.try(:name) == "Admin"
     CSV.generate() do |csv|
       csv << column_names
@@ -1110,7 +1114,7 @@ class AccountsController < ApplicationController
     @line_no = 0
     @row_numbers = {}
     status_array = @all_status.map(&:name)
-    column_names = ['Account Name', 'Contact Name', 'Contact Title', 'Status', 'Address', 'City', 'Province', 'Postal Code', 'Country', 'Phone', 'Fax', 'Email', 'About', 'Quick Facts' ]
+    column_names = ['Account Name', 'Contact Name', 'Contact Title', 'Status', 'Address', 'Suite Number', 'City', 'Province', 'Postal Code', 'Country', 'Phone', 'Fax', 'Email', 'About', 'Quick Facts' ]
     column_names << "Owner" if current_user.roles.last.try(:name) == "Admin"
     if csv[0].present?
       csv.each do |row|
@@ -1134,34 +1138,38 @@ class AccountsController < ApplicationController
           else
             @row_numbers["#{@line_no}"] = "Required field, Status, can not be empty"
           end
-          if row[9].blank?
-             @row_numbers["#{@line_no}"] = "Missing contact phone number"
+          unless row[9].blank?
+             country = ISO3166::Country.find_country_by_name(row[9]) || ISO3166::Country.find_country_by_alpha2(row[9])
+             @row_numbers["#{@line_no}"] = "Country name not found" if country.blank?
           end
-          unless row[11].blank?
+          # if row[10].blank?
+          #    @row_numbers["#{@line_no}"] = "Missing contact phone number"
+          # end
+          unless row[12].blank?
              email_reg_exp = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
-             is_valid = row[11] =~ email_reg_exp
+             is_valid = row[12] =~ email_reg_exp
              # is_valid = row_data[11] =~ email_reg_exp
              @row_numbers["#{@line_no}"] = "Invalid Email" if is_valid.blank?
           end
-          unless row[14].blank?
-            value = row[14].to_i
+          unless row[15].blank?
+            value = row[15].to_i
             if value != 0
-              user = User.find(row[14].to_i) rescue nil
+              user = User.find(row[15].to_i) rescue nil
               if user.blank?
                 @row_numbers["#{@line_no}"] = "Owner Field: ID not found"
               end
             else
               email_reg_exp = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
-              is_valid = row[14].squish =~ email_reg_exp
+              is_valid = row[15].squish =~ email_reg_exp
               @all_users = User.find(:all, reload: true)
               if is_valid.blank?
                 users_name = @all_users.map{|u| "#{u.first_name}"+' '+"#{u.last_name}"}
-                unless users_name.include?row[14].squish
+                unless users_name.include?row[15].squish
                   @row_numbers["#{@line_no}"] = "Owner Field: Unknown Name or Email"
                 end
               else
                 users_email = @all_users.map(&:email)
-                unless users_email.include?row[14].squish
+                unless users_email.include?row[15].squish
                   @row_numbers["#{@line_no}"] = "Owner Field: Unknown Name or Email"
                 end
               end

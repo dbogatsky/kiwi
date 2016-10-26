@@ -22,6 +22,7 @@ gem 'browser-timezone-rails'
 gem 'rollbar'
 gem 'will_paginate'
 gem 'http_logger'
+gem 'countries', :require => 'countries/global'
 
 # This gem is for accessing REST services in an ActiveRecord style.
 gem 'activeresource', require: 'active_resource'
