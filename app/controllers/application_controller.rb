@@ -182,6 +182,7 @@ class ApplicationController < ActionController::Base
     if controller_name != "accounts"
       session.delete(:search)
       session.delete(:page)
+      session.delete(:company_search)
     end
   end
 

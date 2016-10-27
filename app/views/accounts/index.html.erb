@@ -30,11 +30,18 @@
     <% end %>
   </div>
 </div><!-- row -->
-
 <div class="row row-pad-5">
   <div class="col-md-9">
-    <div class="margin_left4">
-      <%=advance_search_criteria%>
+    <div class="col-md-5">
+      <div class="margin_left4">
+        <%=advance_search_criteria%>
+      </div>
+    </div>
+    <div class="col-md-<%=advance_search_criteria.present? ? '4' : '9'%>">
+      <%if (@search_all_accounts == 'enable' && @role != 'Admin')%>
+        <input type="radio" name="company_search" value="false" checked="checked" class="company_search check_false"><label for="false">&nbsp;&nbsp;My Accounts</label>
+        <input type="radio" name="company_search" value="true" class="company_search check_true"><label for="true">&nbsp;&nbsp;All Accounts</label>
+      <%end%>
     </div>
   </div>
   <div class="col-md-1">
@@ -92,6 +99,20 @@
 <% end %>
 <div class="mb30"></div>
 <%= render partial: "accounts/account_list" %>
+
+<script type="text/javascript">
+  $(".company_search").click(function(){
+    search_val = $(this).val()
+    window.location.href = "/accounts?company_search="+search_val
+  })
+
+  <%if session[:company_search]%>
+     $(".check_true").prop('checked','checked')
+  <%else%>
+    $(".check_false").prop('checked','checked')
+  <%end%>
+
+</script>
 
 <% content_for :custom_css do %>
   <style>

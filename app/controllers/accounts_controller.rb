@@ -13,6 +13,13 @@ class AccountsController < ApplicationController
 
   def index
     @user_preference = user_preferences_load
+    if (@search_all_accounts == 'enable' && @role != 'Admin')
+      if params[:company_search].present?
+        session[:company_search] = (params[:company_search] == 'true') ? true : false
+      elsif session[:company_search].blank?
+        session[:company_search] = false
+      end
+    end
     show_accounts_per_page = @user_preference['show_accounts_per_page']
     @show_accounts_per_page = show_accounts_per_page.to_i > 0 ? show_accounts_per_page.to_i : 26
     page = params[:page].present? ? params[:page] : 1
@@ -20,6 +27,9 @@ class AccountsController < ApplicationController
     advanced_search  #call advanced search
     if params[:view_all].present?
        session.delete(:search)
+       if (@search_all_accounts == 'enable' && @role != 'Admin')
+          session[:company_search] = false
+       end
     end
     search = @search.present? ? @search : (params[:search].present? ? params[:search] : session[:search])
     if params[:search1].present? && params[:search2].present?
@@ -27,7 +37,12 @@ class AccountsController < ApplicationController
       search[:s] = "#{params[:search1][:search]+' '+params[:search2][:search]}"
     end
     search = session[:search] if params[:adv_search] == 'true'
-    @accounts = Account.all(params: { search: search, page: page, per_page: @show_accounts_per_page})
+
+    if (@search_all_accounts == 'enable' && @role != 'Admin')
+      @accounts = Account.all(params: { company_search: session[:company_search], search: search, page: page, per_page: @show_accounts_per_page})
+    else
+      @accounts = Account.all(params: { search: search, page: page, per_page: @show_accounts_per_page})
+    end
     @total_entries = @accounts.meta["total_entries"]
     session[:search] = search
     accounts_statistics_info
@@ -681,7 +696,11 @@ class AccountsController < ApplicationController
 
   def generate_csv
     page = session[:page].present? ? session[:page].to_i : 1
-    @accounts = Account.all(params: { search: session[:search], page: page, per_page: @show_accounts_per_page})
+    if (@search_all_accounts == 'enable' && @role != 'Admin')
+      @accounts = Account.all(params: { company_search: session[:company_search], search: session[:search], page: page, per_page: @show_accounts_per_page})
+    else
+      @accounts = Account.all(params: { search: session[:search], page: page, per_page: @show_accounts_per_page})
+    end
     column_names = ['ID', 'Name', 'Contact Name', 'Contact Title', 'Status', 'Address', 'Suite Number', 'City', 'Province', 'Postal Code', 'Country', 'About', 'Quick Facts' ]
     options = {}
     options[:force_quotes] = true
