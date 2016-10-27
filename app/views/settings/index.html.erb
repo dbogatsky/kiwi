@@ -54,13 +54,13 @@
                 <div class="form-group">
                   <label class="col-sm-4 control-label"> Timezone Detection</label>
                   <div class="col-sm-4">
-                    <%=select_tag('enable_timezone_detect',options_for_select(expected_sales_select_options, selected: @timezone_setting), prompt: '-select-', class: "form-control")%>
+                    <%=select_tag('enable_timezone_detect',options_for_select(enable_disable_options, selected: @timezone_setting), prompt: '-select-', class: "form-control")%>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-4 control-label">Daylight Saving Time Detection</label>
                   <div class="col-sm-4">
-                    <%=select_tag('enable_dst',options_for_select(expected_sales_select_options, selected: @daylight_setting), prompt: '-select-', class: "form-control")%>
+                    <%=select_tag('enable_dst',options_for_select(enable_disable_options, selected: @daylight_setting), prompt: '-select-', class: "form-control")%>
                   </div>
                 </div>
               </div><!-- row -->
@@ -78,6 +78,12 @@
             <div class="tab-pane" id="accounts">
               <div class="row row-pad-5">
                 <div class="form-group">
+                  <label class="col-sm-4 control-label">Search All Accounts</label>
+                  <div class="col-sm-4">
+                    <%=select_tag('search_all_accounts',options_for_select(enable_disable_options, selected: @search_all_accounts),class: "form-control")%>
+                  </div>
+                </div>
+                <div class="form-group">
                   <label class="col-sm-4 control-label">Import Account</label>
                   <div class="col-sm-4">
                     <%=select_tag('enable_import',options_for_select(enable_import_export_select_options, selected: @enable_import), prompt: '-select-', class: "form-control")%>
@@ -92,13 +98,13 @@
                 <div class="form-group">
                   <label class="col-sm-4 control-label">Expected Sales</label>
                   <div class="col-sm-4">
-                    <%=select_tag('expected_sales_attribute',options_for_select(expected_sales_select_options, selected: @enable_expected_sales), class: "form-control")%>
+                    <%=select_tag('expected_sales_attribute',options_for_select(enable_disable_options, selected: @enable_expected_sales), class: "form-control")%>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-4 control-label">Schedule Meetings/Regular Visits Checkin/Checkout(incl. Schedule Page)</label>
                   <div class="col-sm-4">
-                    <%=select_tag('enable_checkin_checkout',options_for_select(expected_sales_select_options, selected: @enable_checkin_checkout), class: "form-control")%>
+                    <%=select_tag('enable_checkin_checkout',options_for_select(enable_disable_options, selected: @enable_checkin_checkout), class: "form-control")%>
                   </div>
                 </div>
               </div>
@@ -118,7 +124,7 @@
                 <div class="form-group">
                   <label class="col-sm-4 control-label">Regular Visits Sort</label>
                   <div class="col-sm-4">
-                    <%=select_tag('enable_regular_visits_sort',options_for_select(enable_regular_visits_sort_options, selected: @enable_regular_visits_sort), class: "form-control")%>
+                    <%=select_tag('enable_regular_visits_sort',options_for_select(enable_disable_options, selected: @enable_regular_visits_sort), class: "form-control")%>
                   </div>
                 </div>
               </div>

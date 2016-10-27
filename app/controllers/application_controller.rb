@@ -538,6 +538,7 @@ class ApplicationController < ActionController::Base
     @enable_checkin_checkout = preferences['enable_checkin_checkout'] || "unknown"
     @enable_regular_visits_sort = preferences['enable_regular_visits_sort'] || "unknown"
     @timezone_setting = preferences['enable_timezone_detect']
+    @search_all_accounts = preferences['search_all_accounts']
   end
 
   def get_timezone_setting

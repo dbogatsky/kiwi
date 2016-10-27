@@ -19,11 +19,7 @@ module SettingsHelper
     return [['None','none'], ['User', 'user'], ['Entity Admin', 'entity_admin'], ['All', 'all']]
   end
 
-  def expected_sales_select_options
-    return [['Disable', 'disable'],['Enable','enable']]
-  end
-
-  def enable_regular_visits_sort_options
+  def enable_disable_options
     return [['Disable', 'disable'],['Enable','enable']]
   end
 end
