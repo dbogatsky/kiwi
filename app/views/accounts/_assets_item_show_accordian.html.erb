@@ -85,11 +85,19 @@
                               <%end%>
                             <% elsif value["format"] == 'enum' %>
                                 a = []
+                                checked_value_arr = []
+                                <%checked_value = (asset.properties.try(:attributes).present?) ?  asset.properties.attributes[key] : []%>
+                                  <%unless checked_value.blank?%>
+                                    <%checked_value.each do |cv|%>
+                                      checked_value_arr.push('<%=cv%>')
+                                    <%end%>
+                                  <%end%>
                                 <%value['values'].each do |k,v|%>
                                   a.push({value: '<%=k%>', text: '<%=v%>'})
                                 <% end %>
                                 <%if value["required"].to_s == "true"%>
                                   jQuery(".checkList_<%=value['label']%>").editable({
+                                    value: checked_value_arr,
                                     source: a,
                                     validate: function(value) {
                                       if($.trim(value) == '') return 'This field is required';
@@ -104,6 +112,7 @@
                                   });
                                 <%else%>
                                   jQuery(".checkList_<%=value['label']%>").editable({
+                                    value: checked_value_arr,
                                     source: a,
                                     mode: 'inline',
                                     name: '<%=key%>',
@@ -149,14 +158,8 @@
                               <%=( asset.properties.try(:attributes).present?) ?  asset.properties.attributes[key] : nil%></a>
                             </div>
                           <% elsif value["format"] == 'enum' %>
-                            <%list_value = (asset.properties.try(:attributes).present?) ?  asset.properties.attributes[key] : nil%>
                             <div class="col-sm-9">
                               <a href="#" id="" data-type="checklist" data-title="Select <%=value['label']%>" class="editable editable-click editable-empty checkList_<%=value["label"]%>">
-                                <%if list_value.present?%>
-                                  <%list_value.each do |lv|%>
-                                    <%=value["values"][lv]%><br>
-                                  <%end%>
-                                <%end%>
                               </a>
                             </div>
                           <% else %>
