@@ -96,7 +96,7 @@
                                   a.push({value: '<%=k%>', text: '<%=v%>'})
                                 <% end %>
                                 <%if value["required"].to_s == "true"%>
-                                  jQuery(".checkList_<%=value['label']%>").editable({
+                                  jQuery(".checkList_<%=asset.id%>_<%=value['label']%>").editable({
                                     value: checked_value_arr,
                                     source: a,
                                     validate: function(value) {
@@ -111,7 +111,7 @@
                                     }
                                   });
                                 <%else%>
-                                  jQuery(".checkList_<%=value['label']%>").editable({
+                                  jQuery(".checkList_<%=asset.id%>_<%=value['label']%>").editable({
                                     value: checked_value_arr,
                                     source: a,
                                     mode: 'inline',
@@ -159,7 +159,7 @@
                             </div>
                           <% elsif value["format"] == 'enum' %>
                             <div class="col-sm-9">
-                              <a href="#" id="" data-type="checklist" data-title="Select <%=value['label']%>" class="editable editable-click editable-empty checkList_<%=value["label"]%>">
+                              <a href="#" id="" data-type="checklist" data-title="Select <%=value['label']%>" class="editable editable-click editable-empty checkList_<%=asset.id%>_<%=value["label"]%>">
                               </a>
                             </div>
                           <% else %>
