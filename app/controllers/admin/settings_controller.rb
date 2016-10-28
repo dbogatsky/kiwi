@@ -56,6 +56,7 @@ class Admin::SettingsController < Admin::AdminController
         new_value_arr << n.split('=>') if n.include?'=>'
       end
       new_value_arr.each do |n|
+         n = n.collect(&:squish)
          new_value_hash[n[0]] = n[1]
       end
       params[:values] = new_value_hash

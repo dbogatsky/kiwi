@@ -85,19 +85,42 @@
                               <%end%>
                             <% elsif value["format"] == 'enum' %>
                                 a = []
+                                checked_value_arr = []
+                                <%checked_value = (asset.properties.try(:attributes).present?) ?  asset.properties.attributes[key] : []%>
+                                  <%unless checked_value.blank?%>
+                                    <%checked_value.each do |cv|%>
+                                      checked_value_arr.push('<%=cv%>')
+                                    <%end%>
+                                  <%end%>
                                 <%value['values'].each do |k,v|%>
                                   a.push({value: '<%=k%>', text: '<%=v%>'})
                                 <% end %>
                                 <%if value["required"].to_s == "true"%>
                                   jQuery(".checkList_<%=value['label']%>").editable({
-                                   source: a,
-                                   validate: function(value) {
-                                            if($.trim(value) == '') return 'This field is required';
-                                          }
+                                    value: checked_value_arr,
+                                    source: a,
+                                    validate: function(value) {
+                                      if($.trim(value) == '') return 'This field is required';
+                                    },
+                                    mode: 'inline',
+                                    name: '<%=key%>',
+                                    url: '/update_asset?account_id=<%=@account.id%>',
+                                    pk: '<%=asset.id%>',
+                                    ajaxOptions: {
+                                      type: 'put'
+                                    }
                                   });
                                 <%else%>
-                                   jQuery(".checkList_<%=value['label']%>").editable({
-                                   source: a
+                                  jQuery(".checkList_<%=value['label']%>").editable({
+                                    value: checked_value_arr,
+                                    source: a,
+                                    mode: 'inline',
+                                    name: '<%=key%>',
+                                    url: '/update_asset?account_id=<%=@account.id%>',
+                                    pk: '<%=asset.id%>',
+                                    ajaxOptions: {
+                                      type: 'put'
+                                    }
                                   });
                                 <%end%>
                             <%else%>
@@ -135,7 +158,10 @@
                               <%=( asset.properties.try(:attributes).present?) ?  asset.properties.attributes[key] : nil%></a>
                             </div>
                           <% elsif value["format"] == 'enum' %>
-                            <div class="col-sm-9"><a href="#" id="" data-type="checklist" data-title="Select <%=value['label']%>" class="editable editable-click editable-empty checkList_<%=value["label"]%>"></a></div>
+                            <div class="col-sm-9">
+                              <a href="#" id="" data-type="checklist" data-title="Select <%=value['label']%>" class="editable editable-click editable-empty checkList_<%=value["label"]%>">
+                              </a>
+                            </div>
                           <% else %>
                             <div class="col-sm-9"><a href="#" data-type="text" id="" class="editable editable-click edit_text_<%=asset.id%>_<%=key.gsub(' ','')%>"><%=( asset.properties.try(:attributes).present?) ?  asset.properties.attributes[key] : nil%></a></div>
                           <% end %>
