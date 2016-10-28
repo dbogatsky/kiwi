@@ -44,6 +44,22 @@ class Admin::SettingsController < Admin::AdminController
   end
 
   def add_and_update_asset
+    if params[:format] == 'enum' && params[:values].present?
+      params[:values] =  params[:values].gsub("\"",'')
+      new_value_arr = []
+      new_value_hash = {}
+      params[:values] = params[:values].gsub('{','')
+      params[:values] = params[:values].gsub('}','')
+      params[:values] = params[:values].split(',')
+      params[:values].each do |n|
+        new_value_arr << n.split(':') if n.include?':'
+        new_value_arr << n.split('=>') if n.include?'=>'
+      end
+      new_value_arr.each do |n|
+         new_value_hash[n[0]] = n[1]
+      end
+      params[:values] = new_value_hash
+    end
     new_asset = {}
     new_asset[params[:property_id]] = {}
     new_asset[params[:property_id]] = {'label'=>params[:label], 'required'=>params[:required], 'format'=>params[:format], 'values'=>params[:values]}
