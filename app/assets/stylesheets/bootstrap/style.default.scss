@@ -2817,6 +2817,15 @@ div.error label.error:before {
     border-radius: 3px;
 }
 
+.letter-list-selected {
+    color: #fff;
+    background: #428BCA !important;
+    text-decoration: none;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+}
+
 .people-item {
     background: #fcfcfc;
     padding: 20px;
@@ -2850,6 +2859,11 @@ div.error label.error:before {
 .person-name {
     margin: 0 0 5px 0;
     color: #428BCA;
+}
+
+.person-name-alt {
+    margin: 0 0 5px 0;
+    color: #777777;
 }
 
 .people-item .social-list {

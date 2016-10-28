@@ -9,13 +9,13 @@
   <div class="col-md-5">
     <%= simple_form_for :search, method: :get do |f| %>
       <%= f.input :name_cont, wrapper: :vertical_input_group, label: false do %>
-        <%= f.input_field :name_cont, class: "form-control", placeholder: "Search here ...", value: params[:search].try(:[], :name_cont)%>
+        <%= f.input_field :name_cont, class: "form-control", placeholder: "Search here ...", value: session[:search].try(:[], "name_cont")%>
         <div class="input-group-btn">
           <button type="submit" class="btn btn-primary">
             <i class="fa fa-search"></i>
           </button>
         </div>
-      <% end %>
+      <% end %><%=advance_search_criteria%>
     <% end %>
   </div>
   <div class="col-md-1">
@@ -31,19 +31,17 @@
   </div>
 </div><!-- row -->
 <div class="row row-pad-5">
-  <div class="col-md-9">
-    <div class="col-md-5">
-      <div class="margin_left4">
-        <%=advance_search_criteria%>
-      </div>
-    </div>
-    <div class="col-md-<%=advance_search_criteria.present? ? '4' : '9'%>">
-      <%if (@search_all_accounts == 'enable' && @role != 'Admin')%>
-        <input type="radio" name="company_search" value="false" checked="checked" class="company_search check_false"><label for="false">&nbsp;&nbsp;My Accounts</label>
-        <input type="radio" name="company_search" value="true" class="company_search check_true"><label for="true">&nbsp;&nbsp;All Accounts</label>
-      <%end%>
-    </div>
+<%if (@search_all_accounts == 'enable' && @role != 'Admin')%>
+  <div class="col-md-2">
+      <input type="radio" name="company_search" value="false" checked="checked" class="company_search check_false"><label for="false">&nbsp;&nbsp;My Accounts</label>
   </div>
+  <div class="col-md-2">
+  <input type="radio" name="company_search" value="true" class="company_search check_true"><label for="true">&nbsp;&nbsp;All Accounts</label>
+  </div>
+  <div class="col-md-5"></div>
+<% else %>
+  <div class="col-md-9"></div>
+<%end%>
   <div class="col-md-1">
     <%if (@role == 'Admin')%>
       <div class="btn-group mr5 pull-right">
@@ -74,7 +72,11 @@
   <div class="col-md-12">
     <ul class="letter-list">
       <% ("a".."z").each do |l| %>
-        <li><%= link_to l, accounts_path(search: {name_start: l}) %></li>
+        <% if session[:search].try(:[], "name_start").to_s == l.to_s %>
+          <li><%= link_to l, accounts_path(search: {name_start: l}), class: "letter-list-selected" %></li>
+        <% else %>
+          <li><%= link_to l, accounts_path(search: {name_start: l}) %></li>
+        <% end %>
       <% end %>
       <li><a href="/accounts?view_all=true">All</a></li>
       <!-- accounts_path(view_all: true) -->
