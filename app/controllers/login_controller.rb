@@ -90,6 +90,8 @@ class LoginController < ApplicationController
     RequestStore.store[:user_token] = nil
     session[:user_id] = nil
     session[:token] = nil
+    session[:user_preferences] = nil
+    session[:company_settings] = nil
     current_user.logout unless current_user.nil?
     redirect_to root_path
   end

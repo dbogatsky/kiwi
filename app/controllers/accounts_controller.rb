@@ -37,7 +37,6 @@ class AccountsController < ApplicationController
       search[:s] = "#{params[:search1][:search]+' '+params[:search2][:search]}"
     end
     search = session[:search] if params[:adv_search] == 'true'
-
     if (@search_all_accounts == 'enable' && @role != 'Admin')
       @accounts = Account.all(params: { company_search: session[:company_search], search: search, page: page, per_page: @show_accounts_per_page})
     else
