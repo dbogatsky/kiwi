@@ -13,7 +13,7 @@ class AccountsController < ApplicationController
 
   def index
     @user_preference = user_preferences_load
-    if (@search_all_accounts == 'enable' && @role != 'Admin')
+    if (@search_all_accounts == 'enable' && @is_admin != true)
       if params[:company_search].present?
         session[:company_search] = (params[:company_search] == 'true') ? true : false
       elsif session[:company_search].blank?
@@ -27,7 +27,7 @@ class AccountsController < ApplicationController
     advanced_search  #call advanced search
     if params[:view_all].present?
        session.delete(:search)
-       if (@search_all_accounts == 'enable' && @role != 'Admin')
+       if (@search_all_accounts == 'enable' && @is_admin != true)
           session[:company_search] = false
        end
     end
@@ -37,7 +37,7 @@ class AccountsController < ApplicationController
       search[:s] = "#{params[:search1][:search]+' '+params[:search2][:search]}"
     end
     search = session[:search] if params[:adv_search] == 'true'
-    if (@search_all_accounts == 'enable' && @role != 'Admin')
+    if (@search_all_accounts == 'enable' && @is_admin != true)
       @accounts = Account.all(params: { company_search: session[:company_search], search: search, page: page, per_page: @show_accounts_per_page})
     else
       @accounts = Account.all(params: { search: search, page: page, per_page: @show_accounts_per_page})
@@ -695,7 +695,7 @@ class AccountsController < ApplicationController
 
   def generate_csv
     page = session[:page].present? ? session[:page].to_i : 1
-    if (@search_all_accounts == 'enable' && @role != 'Admin')
+    if (@search_all_accounts == 'enable' && @is_admin != true)
       @accounts = Account.all(params: { company_search: session[:company_search], search: session[:search], page: page, per_page: @show_accounts_per_page})
     else
       @accounts = Account.all(params: { search: session[:search], page: page, per_page: @show_accounts_per_page})
@@ -974,16 +974,17 @@ class AccountsController < ApplicationController
   def get_setting
      get_account_display_setting
      @role = current_user.roles.last.name
+     @is_admin = current_user.roles.map(&:name).compact.include?'Admin'
   end
 
   def check_permission_for_import
-    unless(@role == 'Admin' || @role == @enable_import.tr("_", " ").titleize || @enable_import == 'all')
+    unless(@is_admin == true || @role == @enable_import.tr("_", " ").titleize || @enable_import == 'all')
       redirect_to dashboard_path
     end
   end
 
   def check_permission_for_export
-    unless(@role == 'Admin' || @role == @enable_export.tr("_", " ").titleize || @enable_export == 'all')
+    unless(@is_admin == true || @role == @enable_export.tr("_", " ").titleize || @enable_export == 'all')
       redirect_to dashboard_path
     end
   end

@@ -18,7 +18,7 @@
           <div class="people-item">
             <div class="media">
               <div class="media-body">
-                <%if ((account.assigned_to.try(:id) == current_user.id) || (account.user_account_sharings.present? && (account.user_account_sharings.map(&:user).compact.map(&:id).include?current_user.id)) || (@role == 'Admin'))%>
+                <%if ((account.assigned_to.try(:id) == current_user.id) || (account.user_account_sharings.present? && (account.user_account_sharings.map(&:user).compact.map(&:id).include?current_user.id)) || @is_admin == true)%>
                   <h4 class="person-name"><%= link_to account.name, account_path(account.id) %>
                 <%else%>
                   <h4 class="person-name-alt"><%=account.name%>
