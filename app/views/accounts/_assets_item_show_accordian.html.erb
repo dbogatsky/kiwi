@@ -90,14 +90,28 @@
                                 <% end %>
                                 <%if value["required"].to_s == "true"%>
                                   jQuery(".checkList_<%=value['label']%>").editable({
-                                   source: a,
-                                   validate: function(value) {
-                                            if($.trim(value) == '') return 'This field is required';
-                                          }
+                                    source: a,
+                                    validate: function(value) {
+                                      if($.trim(value) == '') return 'This field is required';
+                                    },
+                                    mode: 'inline',
+                                    name: '<%=key%>',
+                                    url: '/update_asset?account_id=<%=@account.id%>',
+                                    pk: '<%=asset.id%>',
+                                    ajaxOptions: {
+                                      type: 'put'
+                                    }
                                   });
                                 <%else%>
-                                   jQuery(".checkList_<%=value['label']%>").editable({
-                                   source: a
+                                  jQuery(".checkList_<%=value['label']%>").editable({
+                                    source: a,
+                                    mode: 'inline',
+                                    name: '<%=key%>',
+                                    url: '/update_asset?account_id=<%=@account.id%>',
+                                    pk: '<%=asset.id%>',
+                                    ajaxOptions: {
+                                      type: 'put'
+                                    }
                                   });
                                 <%end%>
                             <%else%>
@@ -135,7 +149,16 @@
                               <%=( asset.properties.try(:attributes).present?) ?  asset.properties.attributes[key] : nil%></a>
                             </div>
                           <% elsif value["format"] == 'enum' %>
-                            <div class="col-sm-9"><a href="#" id="" data-type="checklist" data-title="Select <%=value['label']%>" class="editable editable-click editable-empty checkList_<%=value["label"]%>"></a></div>
+                            <%list_value = (asset.properties.try(:attributes).present?) ?  asset.properties.attributes[key] : nil%>
+                            <div class="col-sm-9">
+                              <a href="#" id="" data-type="checklist" data-title="Select <%=value['label']%>" class="editable editable-click editable-empty checkList_<%=value["label"]%>">
+                                <%if list_value.present?%>
+                                  <%list_value.each do |lv|%>
+                                    <%=value["values"][lv]%><br>
+                                  <%end%>
+                                <%end%>
+                              </a>
+                            </div>
                           <% else %>
                             <div class="col-sm-9"><a href="#" data-type="text" id="" class="editable editable-click edit_text_<%=asset.id%>_<%=key.gsub(' ','')%>"><%=( asset.properties.try(:attributes).present?) ?  asset.properties.attributes[key] : nil%></a></div>
                           <% end %>
