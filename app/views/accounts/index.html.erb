@@ -19,8 +19,16 @@
       <%if (@search_all_accounts == 'enable' && @is_admin != true)%>
         <div style="margin-top:-10px;">
           <small>
-            <input type="radio" name="company_search" value="false" class="company_search check_false" style="margin-left:10px;><label for="false">&nbsp;&nbsp;My Accounts</label>
-            <input type="radio" name="company_search" value="true" class="company_search check_true" style="margin-left:10px; ><label for="true">&nbsp;&nbsp;All Accounts</label>
+            <input type="radio" name="company_search" value="false" class="company_search check_false" style="margin-left:10px;"
+              <% if session[:company_search] == false || session[:company_search].blank? %>
+                checked="checked"
+              <% end %>
+            ><label for="false">&nbsp;&nbsp;My Accounts</label>
+            <input type="radio" name="company_search" value="true" class="company_search check_true" style="margin-left:10px;"
+              <% if session[:company_search] == true %>
+                checked="checked"
+              <% end %>
+            ><label for="true">&nbsp;&nbsp;All Accounts</label>
           </small>
         </div>
       <% end %>
