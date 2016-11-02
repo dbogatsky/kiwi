@@ -52,7 +52,7 @@
                             <%value['values'].each do |k,v|%>
                               <li>
                                 <span><%=v%></span>
-                                <%=check_box_tag "asset[properties][#{key}]", v, false, class: 'form-control'%>
+                                <%=check_box_tag "asset[properties][#{key}][]", k, false, class: 'form-control'%>
                               </li>
                               <!-- required: value['required'].to_s == 'false' ? false : true -->
                             <%end%>
