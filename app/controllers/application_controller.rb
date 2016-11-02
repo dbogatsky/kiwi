@@ -14,7 +14,8 @@ class ApplicationController < ActionController::Base
   #before_filter :accounts_cache  # DIS001 disabled for now
   around_filter :set_time_zone
 
-  helper_method :current_user, :current_company, :get_api_values, :logged_in?, :superadmin_logged_in?, :notification_info, :company_settings_load, :application_settings, :get_timezone_setting
+  helper_method :current_user, :current_company, :get_api_values, :logged_in?, :superadmin_logged_in?, :notification_info, :company_settings_load
+  helper_method :application_settings, :integrations_settings, :get_timezone_setting
   helper_method :has_permission, :has_permissions, :has_page_permission, :has_page_permissions, :accounts_cache
 
   rescue_from ActiveResource::ForbiddenAccess do |exception|
@@ -559,6 +560,14 @@ class ApplicationController < ActionController::Base
     @assets = JSON.parse(@assets) unless (@assets.blank? || @assets.is_a?(Hash))
     @leads = application_setting['company']['settings']['private']['leads_enabled']
     @assets_management = application_setting['company']['settings']['private']['asset_management']
+  end
+
+  def integrations_settings
+    get_api_values
+    apiFullUrl = RequestStore.store[:api_url] + '/company/settings/integrations'
+    integrations_settings = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -H "Cache-Control: no-cache" "#{apiFullUrl}"`
+    integrations_settings = JSON.parse(integrations_settings)
+    @office365 = integrations_settings['company']['settings']['integrations']['office365'] == "true" ? true : false
   end
 
   def get_api_values

@@ -4,8 +4,10 @@ class PreferencesController < ApplicationController
   def show
     @user_preference = user_preferences_load
     @user_notification_setting = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -H "Cache-Control: no-cache" "#{@apiUrl_for_notification}"`
-      @user_notification_setting = JSON.parse(@user_notification_setting)
-      @user_notification_setting = @user_notification_setting['user']['settings']['notifications']
+    @user_notification_setting = JSON.parse(@user_notification_setting)
+    @user_notification_setting = @user_notification_setting['user']['settings']['notifications']
+
+    @integrations_settings = integrations_settings
   end
 
   def update

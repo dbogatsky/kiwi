@@ -3,11 +3,12 @@
 <% end %>
 <%= simple_form_for current_user, url: preference_path, method: :patch do |f| %>
   <div class="panel panel-default">
-  	<div class="panel-heading">
-  		<p>Edit your preference below and click save</p>
-  	</div>
+    <div class="panel-heading">
+      <h3 class="panel-title">General</h3>
+      <p>Edit your preference below and click save</p>
+    </div>
 
-  	<div class="panel-body">
+    <div class="panel-body">
       <div class="form-group">
         <label class="col-sm-3 control-label">Default view of my calendar</label>
         <div class="col-sm-6">
@@ -62,16 +63,40 @@
         </div>
       </div>
     </div> <!-- panel-body -->
+  </div>
 
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Integrations</h3>
+    </div>
 
-  	<div class="panel-footer">
-  		<div class="row">
-  			<div class="col-sm-6 col-sm-offset-3">
-  				<button type="submit" class="btn btn-primary" name="save" id="save">Save</button>&nbsp;
-  				<a class="btn btn-default" href="/users">Cancel</a>
-  			</div>
-  		</div>
-  	</div><!-- panel-footer -->
+    <div class="panel-body">
+      <div class="form-group">
+        <label class="col-sm-3 control-label">Office 365</label>
+        <div class="col-sm-6">
+          <%=select_tag('preference[office365]', options_for_select([['Disable', 'disable'],['Enable', 'enable']], selected: @user_preference['office365']), {:class => 'form-control input-sm sel-office365', required: true})%>
+          <div class="btn btn-office365">
+            <% if @current_user.try(&:office365_auth) == true %>
+              <a class="btn-xs btn-success-alt" href="#">Reconnect</a>
+            <% else %>
+              <a class="btn-sm btn-success" href="#">Connect</a>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div> <!-- panel-body -->
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-footer">
+      <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+          <button type="submit" class="btn btn-primary" name="save" id="save">Save</button>&nbsp;
+          <a class="btn btn-default" href="/users">Cancel</a>
+        </div>
+      </div>
+    </div><!-- panel-footer -->
+  </div>
 <% end %>
 
 <script type="text/javascript">
@@ -87,4 +112,22 @@
     $('.by_email').prop('checked','checked')
     $('.by_sms').prop('checked','checked')
   <%end%>
+
+  // preset the office365 value
+  if ( $('.sel-office365').val() == 'enable' ) {
+    $(".btn-office365").show();
+  } else {
+    $(".btn-office365").hide();
+  }
+
+  // when an entity is selected
+  $('.sel-office365').change(function(){
+    if($(this).val() == 'enable' )
+      {
+        $(".btn-office365").show();
+      } else
+      {
+       $(".btn-office365").hide();
+      }
+  });
 </script>
