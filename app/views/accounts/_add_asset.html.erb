@@ -57,6 +57,12 @@
                               <!-- required: value['required'].to_s == 'false' ? false : true -->
                             <%end%>
                           </ul>
+                        <%elsif value["format"] == 'select'%>
+                          <%options = []%>
+                          <%value['values'].each do |k,v|%>
+                            <%options << [v,k]%>
+                          <%end%>
+                          <%= select_tag "asset[properties][#{key}]", options_for_select(options),  class: 'form-control', required: value['required'].to_s == 'false' ? false : true%>
                         <%else%>
                           <%=text_field_tag "asset[properties][#{key}]",nil, class: "form-control", required: value['required'].to_s == 'false' ? false : true%>
                         <%end%>

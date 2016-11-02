@@ -44,7 +44,7 @@ class Admin::SettingsController < Admin::AdminController
   end
 
   def add_and_update_asset
-    if params[:format] == 'enum' && params[:values].present?
+    if (params[:format] == 'enum' || params[:format] == 'select') && params[:values].present?
       params[:values] =  params[:values].gsub("\"",'')
       new_value_arr = []
       new_value_hash = {}

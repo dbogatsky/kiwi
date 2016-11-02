@@ -112,7 +112,7 @@
   })
 
   $(".property_format").change(function(){
-    if($(this).val() == 'enum'){
+    if($(this).val() == 'enum' || $(this).val() == 'select'){
       $(".property_value").show(500)
     }else{
       $(".property_value").val(null)
@@ -135,7 +135,7 @@
     $(".property_id").prop('readonly', true)
     $(".property_label").val($(this).data('label'))
     $(".property_format").val($(this).data('format'))
-    if($(this).data('format') == 'enum'){
+    if($(this).data('format') == 'enum' || $(this).data('format') == 'select'){
       $(".property_value").show(500)
       $(".property_value").val($(this).data('values'))
     }else{
