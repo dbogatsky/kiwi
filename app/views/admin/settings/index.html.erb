@@ -26,6 +26,28 @@
             </div>
           </div>
         </div>
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <div class="panel-btns">
+              <a href="" class="minimize">−</a>
+            </div><!-- panel-btns -->
+            <h3 class="panel-title">Integrations</h3>
+          </div>
+          <div class="panel-body">
+            <div class="tab-pane" id="authentication">
+              <div class="row row-pad-5">
+                <div class="form-group">
+                  <label class="col-sm-4 control-label">Office 365</label>
+                  <div class="col-sm-4">
+                    <%=select_tag('office365_integration',options_for_select(office365_integration_select_options, selected: @office365_integration), prompt: '-select-', class: "form-control")%>
+                  </div>
+                </div>
+              </div><!-- row pad 5-->
+            </div>
+          </div>
+        </div>
+
         <div class="panel panel-default">
           <div class="panel-heading">
             <div class="panel-btns">
@@ -53,7 +75,7 @@
             <div class="panel-btns">
               <a href="" class="minimize">−</a>
             </div><!-- panel-btns -->
-            <h3 class="panel-title">Asset Properties</h3>
+            <h3 class="panel-title">Asset Management Properties</h3>
           </div>
           <div class="panel-body">
             <div class="tab-pane" id="authentication">
