@@ -203,7 +203,7 @@ class ScheduleController < ApplicationController
     search[:item_type_eq] = 'regular'
     search[:s] = "sort asc"
     events = []
-    @regular_visits = ConversationItemSearch.all(params: { search: search, user_ids: user_ids, per_page: 20 })
+    @regular_visits = ConversationItemSearch.all(params: { search: search, user_ids: user_ids, per_page: 50 })
     sort_0_visit = []
     sort_visit = []
     @regular_visits.each do |i|

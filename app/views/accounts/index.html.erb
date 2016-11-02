@@ -5,17 +5,33 @@
   </div>
 <% end %>
 
-<div class="row row-pad-5">
+<div class="row">
   <div class="col-md-5">
     <%= simple_form_for :search, method: :get do |f| %>
       <%= f.input :name_cont, wrapper: :vertical_input_group, label: false do %>
-        <%= f.input_field :name_cont, class: "form-control", placeholder: "Search here ...", value: session[:search].try(:[], "name_cont")%>
+        <%= f.input_field :name_cont, class: "form-control", placeholder: "Search here ...", value: session[:search].try(:[], "name_cont") %>
         <div class="input-group-btn">
           <button type="submit" class="btn btn-primary">
             <i class="fa fa-search"></i>
           </button>
         </div>
-      <% end %><%=advance_search_criteria%>
+      <% end %>
+      <%if (@search_all_accounts == 'enable' && @is_admin != true)%>
+        <div style="margin-top:-10px;">
+          <small>
+            <input type="radio" name="company_search" value="false" class="company_search check_false" style="margin-left:10px;"
+              <% if session[:company_search] == false || session[:company_search].blank? %>
+                checked="checked"
+              <% end %>
+            ><label for="false">&nbsp;&nbsp;My Accounts</label>
+            <input type="radio" name="company_search" value="true" class="company_search check_true" style="margin-left:10px;"
+              <% if session[:company_search] == true %>
+                checked="checked"
+              <% end %>
+            ><label for="true">&nbsp;&nbsp;All Accounts</label>
+          </small>
+        </div>
+      <% end %>
     <% end %>
   </div>
   <div class="col-md-1">
@@ -31,17 +47,7 @@
   </div>
 </div><!-- row -->
 <div class="row row-pad-5">
-<%if (@search_all_accounts == 'enable' && @is_admin != true)%>
-  <div class="col-md-2">
-      <input type="radio" name="company_search" value="false" checked="checked" class="company_search check_false"><label for="false">&nbsp;&nbsp;My Accounts</label>
-  </div>
-  <div class="col-md-2">
-  <input type="radio" name="company_search" value="true" class="company_search check_true"><label for="true">&nbsp;&nbsp;All Accounts</label>
-  </div>
-  <div class="col-md-5"></div>
-<% else %>
   <div class="col-md-9"></div>
-<%end%>
   <div class="col-md-1">
     <%if (@is_admin == true)%>
       <div class="btn-group mr5 pull-right">
@@ -101,20 +107,6 @@
 <% end %>
 <div class="mb30"></div>
 <%= render partial: "accounts/account_list" %>
-
-<script type="text/javascript">
-  $(".company_search").click(function(){
-    search_val = $(this).val()
-    window.location.href = "/accounts?company_search="+search_val
-  })
-
-  <%if session[:company_search]%>
-     $(".check_true").prop('checked','checked')
-  <%else%>
-    $(".check_false").prop('checked','checked')
-  <%end%>
-
-</script>
 
 <% content_for :custom_css do %>
   <style>

@@ -13,6 +13,7 @@ class AccountsController < ApplicationController
 
   def index
     @user_preference = user_preferences_load
+
     if (@search_all_accounts == 'enable' && @is_admin != true)
       if params[:company_search].present?
         session[:company_search] = (params[:company_search] == 'true') ? true : false
@@ -20,16 +21,17 @@ class AccountsController < ApplicationController
         session[:company_search] = false
       end
     end
+    
     show_accounts_per_page = @user_preference['show_accounts_per_page']
     @show_accounts_per_page = show_accounts_per_page.to_i > 0 ? show_accounts_per_page.to_i : 26
     page = params[:page].present? ? params[:page] : 1
     session[:page] = page
-    advanced_search  #call advanced search
+    advanced_search # call advanced search
     if params[:view_all].present?
-       session.delete(:search)
-       if (@search_all_accounts == 'enable' && @is_admin != true)
-          session[:company_search] = false
-       end
+      session.delete(:search)
+      if (@search_all_accounts == 'enable' && @is_admin != true)
+        session[:company_search] = false
+      end
     end
     search = @search.present? ? @search : (params[:search].present? ? params[:search] : session[:search])
     if params[:search1].present? && params[:search2].present?
