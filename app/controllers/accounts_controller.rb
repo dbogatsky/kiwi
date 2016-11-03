@@ -21,7 +21,7 @@ class AccountsController < ApplicationController
         session[:company_search] = false
       end
     end
-    
+
     show_accounts_per_page = @user_preference['show_accounts_per_page']
     @show_accounts_per_page = show_accounts_per_page.to_i > 0 ? show_accounts_per_page.to_i : 26
     page = params[:page].present? ? params[:page] : 1

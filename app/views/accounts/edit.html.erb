@@ -64,7 +64,8 @@ jQuery(document).ready(function(){
 		  var $valid = jQuery('#account-edit-form').valid();
 		  if ($("#vtab3").hasClass('active')){
         $(".phone_validate").each(function() {
-          var status = phonenumber($(this));
+          // var status = phonenumber($(this));
+            var status = $(this).intlTelInput("isValidNumber")
           if (!status && $(this).val() != ''){
             $(this).after('<label class="error error_lable">Please enter valid number</label>')
           }

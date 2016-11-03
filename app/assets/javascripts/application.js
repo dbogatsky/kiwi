@@ -74,6 +74,8 @@
 
 // custom
 //= require bootstrap/custom
+//= require intlTelInput
+//= require libphonenumber/utils
 
 
 $.webshims.setOptions('basePath', '/assets/webshims/shims/')
@@ -95,20 +97,20 @@ function url_status() {
   return flag
 }
 
-function phonenumber(inputtxt) {
-  if ($("#country").val() == 'CA' || $("#country").val() == 'US'){
-    var phoneno = /^\(?([0-9]{3})\)?[-]?([0-9]{3})[-]?([0-9]{4})$/;
-  }else{
-    var phoneno = /^\+(?:[0-9] ?){6,14}[0-9]$/;
-  }
+// function phonenumber(inputtxt) {
+//   if ($("#country").val() == 'CA' || $("#country").val() == 'US'){
+//     var phoneno = /^\(?([0-9]{3})\)?[-]?([0-9]{3})[-]?([0-9]{4})$/;
+//   }else{
+//     var phoneno = /^\+(?:[0-9] ?){6,14}[0-9]$/;
+//   }
 
-  if(inputtxt.val().match(phoneno)){
-    return true;
-  }
-  else{
-    return false;
-  }
-}
+//   if(inputtxt.val().match(phoneno)){
+//     return true;
+//   }
+//   else{
+//     return false;
+//   }
+// }
 
 function valid_url(inputtxt) {
   var url = /^((https?):\/\/)?(.)+[a-zA-Z0-9\-\.]{3,}\.[a-zA-Z]{2,}(\.[a-zA-Z]{2,})?$/;
@@ -124,7 +126,8 @@ function phonenumber_status() {
   flag = true
   if ($("#vtab3").hasClass('active')){
     $(".phone_validate").each(function() {
-      var status = phonenumber($(this))
+      // var status = phonenumber($(this))
+      var status = $(this).intlTelInput("isValidNumber")
       if (!status){
         flag = false;
         return flag;

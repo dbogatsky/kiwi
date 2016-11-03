@@ -380,3 +380,6 @@ width:50%;
 .right_align{
   text-align: right;
 }
+.intl-tel-input.allow-dropdown input, .intl-tel-input.allow-dropdown input[type=text], .intl-tel-input.allow-dropdown input[type=tel]{
+  padding-right: 36px !important;
+}

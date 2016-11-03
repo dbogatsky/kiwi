@@ -140,4 +140,15 @@ module ApplicationHelper
     end
     return check_out_time
   end
+
+  def get_current_company_country
+    company = Company.find(uid: RequestStore.store[:tenant])
+    if company.addresses.present?
+      country = company.addresses.last.country
+    else
+      country = 'US'
+    end
+
+    return country
+  end
 end
