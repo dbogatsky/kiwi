@@ -26,6 +26,23 @@ class PreferencesController < ApplicationController
     redirect_to preference_path
   end
 
+  def integration_office365
+    get_api_values
+    return_url = request.original_url
+
+    # https://acme-api.code10.ca/api/v1/integrations/office365
+    apiOffice365 = RequestStore.store[:api_url] + "/integrations/office365"
+    curlResIntegrationOffice365 = `curl -X POST -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json" -d '{"redirect_to": "#{return_url}"}' "#{apiOffice365}"`
+    resultResIntegrationOffice365 = JSON.parse(curlResIntegrationOffice365)
+
+    if resultResIntegrationOffice365["login_url"].present?
+      render json: {"login_url" => resultResIntegrationOffice365["login_url"]}
+    else
+      render json: {"login_url" => ""}
+    end
+
+  end
+
 
   private
 

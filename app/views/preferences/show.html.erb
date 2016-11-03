@@ -65,27 +65,32 @@
     </div> <!-- panel-body -->
   </div>
 
+
+<% if @integrations_settings == true %>
   <div class="panel panel-default">
     <div class="panel-heading">
       <h3 class="panel-title">Integrations</h3>
     </div>
-
-    <div class="panel-body">
-      <div class="form-group">
-        <label class="col-sm-3 control-label">Office 365</label>
-        <div class="col-sm-6">
-          <%=select_tag('preference[office365]', options_for_select([['Disable', 'disable'],['Enable', 'enable']], selected: @user_preference['office365']), {:class => 'form-control input-sm sel-office365', required: true})%>
-          <div class="btn btn-office365">
-            <% if @current_user.try(&:office365_auth) == true %>
-              <a class="btn-xs btn-success-alt" href="#">Reconnect</a>
-            <% else %>
-              <a class="btn-sm btn-success" href="#">Connect</a>
-            <% end %>
+    <% if @integration_office365 == true %>
+      <div class="panel-body">
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Office 365</label>
+          <div class="col-sm-6">
+            <%=select_tag('preference[office365]', options_for_select([['Disable', 'disable'],['Enable', 'enable']], selected: @user_preference['office365']), {:class => 'form-control input-sm sel-office365', required: true})%>
+            <div class="btn btn-office365">
+              <% if @current_user.try(&:office365_auth) == true %>
+                <a id="connect_office365" class="btn-xs btn-success-alt" href="javascript:void(0)">Reconnect</a>
+              <% else %>
+                <a id="connect_office365" class="btn-sm btn-success" href="javascript:void(0)">Connect</a>
+              <% end %>
+            </div>
           </div>
         </div>
-      </div>
-    </div> <!-- panel-body -->
+      </div> <!-- panel-body -->
+    <% end %>
   </div>
+<% end %>
+
 
   <div class="panel panel-default">
     <div class="panel-footer">
@@ -129,5 +134,20 @@
       {
        $(".btn-office365").hide();
       }
+  });
+
+  $("#connect_office365").on("click", function () {
+    $.ajax({
+      type: "GET",
+      dataType: "json",
+      url: "preference/integration_office365",
+      success: function(data){
+        var login_url = data["login_url"];
+        window.location.replace(login_url);
+      },
+      failure: function(data){
+        var login_url = null;
+      }
+    })
   });
 </script>

@@ -567,7 +567,8 @@ class ApplicationController < ActionController::Base
     apiFullUrl = RequestStore.store[:api_url] + '/company/settings/integrations'
     integrations_settings = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -H "Cache-Control: no-cache" "#{apiFullUrl}"`
     integrations_settings = JSON.parse(integrations_settings)
-    @office365 = integrations_settings['company']['settings']['integrations']['office365'] == "true" ? true : false
+    @integration_office365 = integrations_settings['company']['settings']['integrations']['office365'] == "true" ? true : false
+    integrations_settings = @integration_office365 # in case of more integration settings available and related to current user, use this as a boolean to OR all integrations
   end
 
   def get_api_values
