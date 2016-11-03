@@ -75,8 +75,10 @@
       <div class="panel-body">
         <div class="form-group">
           <label class="col-sm-3 control-label">Office 365</label>
-          <div class="col-sm-6">
+          <div class="col-sm-5">
             <%=select_tag('preference[office365]', options_for_select([['Disable', 'disable'],['Enable', 'enable']], selected: @user_preference['office365']), {:class => 'form-control input-sm sel-office365', required: true})%>
+          </div>
+          <div class="col-xs-1">
             <div class="btn btn-office365">
               <% if @current_user.try(&:office365_auth) == true %>
                 <a id="connect_office365" class="btn-xs btn-success-alt" href="javascript:void(0)">Reconnect</a>
@@ -105,6 +107,7 @@
 <% end %>
 
 <script type="text/javascript">
+  $('#preloader').css('opacity', 0.8);
   <%if @user_notification_setting['email'] == 'true'%>
      $('.by_email').prop('checked','checked')
   <%end%>
@@ -137,6 +140,7 @@
   });
 
   $("#connect_office365").on("click", function () {
+    $('#preloader').show();
     $.ajax({
       type: "GET",
       dataType: "json",
