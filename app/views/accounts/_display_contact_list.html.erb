@@ -1,0 +1,20 @@
+<ul class="profile-social-list" id="account-contacts">
+  <% if !account.contact_name.nil? %>
+    <li><i class="fa fa-briefcase"></i>  <%=  account.contact_name.blank? ? "- n/a -" : account.contact_name %>
+      <% if !account.contact_title.nil? %>
+         <br ><div style="margin-left: 30px;"><small><%= account.contact_title %></small></div>
+      <% end %>
+    </li>
+  <% end %>
+  <% account.contacts.each do |contact| %>
+    <% if contact.type == "email" %>
+      <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name %>"></i><a href="mailto:<%= contact.value %>"><%= contact.value %></a></li>
+    <%elsif  contact.type == "website" || contact.type == "facebook" || contact.type == "youtube"%>
+     <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name == 'website' ? 'globe' :  contact.icon_name%>"></i><a href="<%=(contact.value.include?'http') ? contact.value : 'http://'+contact.value %>" target="_blank"><%= contact.value %></a></li>
+    <% elsif contact.type.eql? "phone"  or  contact.type.eql? "mobile"  or  contact.type.eql? "fax"%>
+      <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name %>"></i><a href="tel:<%= contact.value.delete(" ").delete("-") %>"><%= (contact.value.include?',') ? contact.value.gsub(',','x') : contact.value%></a></li>
+    <% else %>
+      <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name %>"></i><%= contact.value %></li>
+    <% end %>
+  <% end %>
+</ul>

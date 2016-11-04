@@ -1,0 +1,95 @@
+<%= form_tag update_account_contacts_account_path(account),method: :patch, remote: :true, id: "edit_contact_list" do |f| %>
+  <ul class="profile-social-list" id="account-dynamic-contacts">
+    <% if !account.contact_name.nil? %>
+      <li><i class="fa fa-briefcase"></i>  <%= account.contact_name.blank? ? "- n/a -" : account.contact_name %>
+        <% if !account.contact_title.nil? %>
+           <br ><div style="margin-left: 30px;"><small><%= account.contact_title %></small></div>
+        <% end %>
+      </li>
+    <% end %>
+    <%if account.contacts.present?%>
+      <% account.contacts.each do |contact| %>
+          <%type = (contact.type == "email") ? 'email' : 'text'%>
+          <input type="hidden" name="account[contacts_attributes][<%=contact.id%>][id]" value="<%=contact.id%>">
+          <input type="hidden" name="account[contacts_attributes][<%=contact.id%>][name]" value="<%=contact.name%>">
+          <input type="hidden" name="account[contacts_attributes][<%=contact.id%>][type]" value="<%=contact.type%>">
+        <% if contact.type.eql? "phone"  or  contact.type.eql? "mobile"  or  contact.type.eql? "fax" %>
+            <li id="<%= dom_id(contact) %>">
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-sm-1">
+                    <i class="fa fa-<%= contact.icon_name %>"></i>
+                  </div>
+                  <div class="col-sm-10">
+                    <input type='hidden' name='account[contacts_attributes][<%=contact.id%>][_destroy]' value='false' class="delete_contact_id">
+                    <input name="account[contacts_attributes][<%=contact.id%>][value]" class="contact_li phone_validate form-control input-sm" type="tel" value="<%=contact.value%>" required="true">
+                  </div>
+                  <div class="col-sm-1">
+                    <a href="javascript:void(0);" class="remove_contact" data-toggle="tooltip" title="Click to Remove Contacts"><i class="fa fa-times" aria-hidden="true"></i>
+                  </a>
+                  </a>
+                </div>
+              </div>
+            </li>
+        <%else%>
+          <li id="<%= dom_id(contact) %>">
+            <div class="form-group">
+              <div class="row">
+                <div class="col-sm-1">
+                  <i class="fa fa-<%= contact.icon_name == 'website' ? 'globe' :  contact.icon_name%>">
+                  </i>
+                </div>
+                <div class="col-sm-10">
+                  <input type='hidden' name='account[contacts_attributes][<%=contact.id%>][_destroy]' value='false' class="delete_contact_id">
+                  <input name="account[contacts_attributes][<%=contact.id%>][value]" class="contact_li form-control input-sm" type="<%=type%>" value="<%=contact.value%>" required="true">
+                </div>
+                <div class="col-sm-1">
+                  <a href="javascript:void(0);" class="remove_contact" data-toggle="tooltip" title="Click to Remove Contacts"><i class="fa fa-times" aria-hidden="true"></i>
+                  </a>
+                </div>
+                </div>
+              </div>
+            </div>
+          </li>
+        <% end %>
+      <% end %>
+    <%end%>
+    <li id="button_li">
+      <%= link_to "Add Contact","javascript:void(0);", class: "add-contact-button btn btn-success btn-xs"  %>
+      <%=submit_tag 'Save',  data: {disable_with: "Saving..." }, class: "btn btn-primary btn-xs"%>
+    </li>
+  </u>
+<%end%>
+
+<script type="text/javascript">
+  phone_validate();
+  $("#edit_contact_list").bind("submit", function(e){
+    $(".phone_validate").each(function() {
+      if ($(this).next().hasClass('error_lable')) {
+        $(this).next().remove()
+      }
+      var status = $(this).intlTelInput("isValidNumber")
+      if (!status && $(this).val() != ''){
+        $(this).after('<label class="error error_lable">Please enter valid number</label>')
+      }
+    });
+    check_phone = check_phone_number()
+    if (check_phone){
+      return true;
+    }else{
+      return false;
+    }
+  });
+
+  function check_phone_number() {
+    flag = true
+    $(".phone_validate").each(function() {
+      var status = $(this).intlTelInput("isValidNumber")
+      if (!status){
+        flag = false;
+        return flag;
+      }
+    });
+    return flag
+  }
+</script>
