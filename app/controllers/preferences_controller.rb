@@ -8,6 +8,13 @@ class PreferencesController < ApplicationController
     @user_notification_setting = @user_notification_setting['user']['settings']['notifications']
 
     @integrations_settings = integrations_settings
+
+    if params[:success].present?
+      flash[:success] = params[:success]
+    elsif params[:error].present?
+      flash[:danger] = params[:error]
+    end
+
   end
 
   def update
