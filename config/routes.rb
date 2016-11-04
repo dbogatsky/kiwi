@@ -32,6 +32,7 @@ Rails.application.routes.draw do
 
   resource :profile, only: [:show, :update]
   resource :preference, only: [:show, :update]
+  get '/preference/integration_office365', to: 'preferences#integration_office365', as: :preference_integration_office365
 
   match  '/accounts/import', to:'accounts#import', as: :account_import, via: [:get, :post]
   get  '/accounts/export', to:'accounts#export', as: :account_export

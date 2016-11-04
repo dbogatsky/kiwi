@@ -4,8 +4,10 @@ class PreferencesController < ApplicationController
   def show
     @user_preference = user_preferences_load
     @user_notification_setting = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -H "Cache-Control: no-cache" "#{@apiUrl_for_notification}"`
-      @user_notification_setting = JSON.parse(@user_notification_setting)
-      @user_notification_setting = @user_notification_setting['user']['settings']['notifications']
+    @user_notification_setting = JSON.parse(@user_notification_setting)
+    @user_notification_setting = @user_notification_setting['user']['settings']['notifications']
+
+    @integrations_settings = integrations_settings
   end
 
   def update
@@ -22,6 +24,23 @@ class PreferencesController < ApplicationController
     flash[:success] = 'Your preference has been successfully updated!'
     user_preferences_load(true)
     redirect_to preference_path
+  end
+
+  def integration_office365
+    get_api_values
+    return_url = request.protocol + request.host_with_port + '/preference'
+
+    # https://acme-api.code10.ca/api/v1/integrations/office365
+    apiOffice365 = RequestStore.store[:api_url] + "/integrations/office365"
+    curlResIntegrationOffice365 = `curl -X POST -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json" -d '{"redirect_to": "#{return_url}"}' "#{apiOffice365}"`
+    resultResIntegrationOffice365 = JSON.parse(curlResIntegrationOffice365)
+
+    if resultResIntegrationOffice365["login_url"].present?
+      render json: {"login_url" => resultResIntegrationOffice365["login_url"]}
+    else
+      render json: {"login_url" => ""}
+    end
+
   end
 
 
