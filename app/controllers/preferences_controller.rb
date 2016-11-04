@@ -28,7 +28,7 @@ class PreferencesController < ApplicationController
 
   def integration_office365
     get_api_values
-    return_url = request.original_url
+    return_url = request.protocol + request.host_with_port + '/preference'
 
     # https://acme-api.code10.ca/api/v1/integrations/office365
     apiOffice365 = RequestStore.store[:api_url] + "/integrations/office365"
