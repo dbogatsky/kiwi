@@ -74,16 +74,19 @@
   phone_validate();
   $("#edit_contact_list").bind("submit", function(e){
     $(".phone_validate").each(function() {
-      if ($(this).next().hasClass('error_lable')) {
-        $(this).next().remove()
+      if ($(this).closest('div').next().hasClass('error_lable')) {
+        $(this).closest('div').next().remove()
       }
       var status = $(this).intlTelInput("isValidNumber")
       if (!status && $(this).val() != ''){
-        $(this).after('<label class="error error_lable">Please enter valid number</label>')
+        $(this).closest('div').after('<label class="error error_lable">Please enter valid number</label>')
       }
     });
 
     $(".url_validate").each(function() {
+      if ($(this).next().hasClass('error_lable')) {
+        $(this).next().remove()
+      }
       var status = valid_url($(this))
       if (!status && $(this).val() != ''){
         $(this).after('<label class="error error_lable">Please enter valid URL</label>')
@@ -96,6 +99,57 @@
       return true;
     }else{
       return false;
+    }
+  });
+
+
+  $(document).on('change', '.type_select', function(){
+    var selected_value = $(this).val()
+    if (selected_value == 'email'){
+      $(this).closest('li').find('.phone_type_validate').removeClass('phone_validate')
+      $(this).closest('li').find('.phone_div').hide(500)
+      $(this).closest('li').find('.without_phone_div').removeClass('hidden')
+      $(this).closest('li').find('.type_validate').removeClass('url_validate')
+      $(this).closest('li').find('.type_validate').val(null)
+      $(this).closest('li').find('.type_validate').attr('type', 'email')
+      $(this).closest('li').find('.type_validate').attr('required', true)
+      $(this).closest('li').find('.type_validate').attr('disabled', false)
+      $(this).closest('li').find('.phone_type_validate').attr('required',false)
+      $(this).closest('li').find('.phone_type_validate').attr('disabled',true)
+    }else if(selected_value == 'facebook' || selected_value == 'youtube' || selected_value == 'website'){
+      $(this).closest('li').find('.phone_type_validate').removeClass('phone_validate')
+      $(this).closest('li').find('.phone_div').hide(500)
+      $(this).closest('li').find('.without_phone_div').removeClass('hidden')
+      $(this).closest('li').find('.type_validate').addClass('url_validate')
+      $(this).closest('li').find('.type_validate').val(null)
+      $(this).closest('li').find('.type_validate').attr('type', 'text')
+      $(this).closest('li').find('.type_validate').attr('required', true)
+      $(this).closest('li').find('.type_validate').attr('disabled', false)
+      $(this).closest('li').find('.phone_type_validate').attr('required',false)
+      $(this).closest('li').find('.phone_type_validate').attr('disabled',true)
+    }else if (selected_value == 'phone' || selected_value == 'mobile' || selected_value == 'fax'){
+      $(this).closest('li').find('.phone_div').show(500)
+      $(this).closest('li').find('.without_phone_div').addClass('hidden')
+      $(this).closest('li').find('.type_validate').val(null)
+      $(this).closest('li').find('.type_validate').attr('required', false)
+      $(this).closest('li').find('.type_validate').attr('disabled', true)
+      $(this).closest('li').find('.phone_type_validate').val(null)
+      $(this).closest('li').find('.phone_type_validate').attr('required',true)
+      $(this).closest('li').find('.phone_type_validate').attr('disabled',false)
+      $(this).closest('li').find('.phone_type_validate').addClass('phone_validate')
+      $(this).closest('li').find('.type_validate').removeClass('url_validate')
+      // $(this).closest('li').find('.type_validate').attr('type', 'tel')
+    }else{
+      $(this).closest('li').find('.phone_div').hide(500)
+      $(this).closest('li').find('.without_phone_div').removeClass('hidden')
+      $(this).closest('li').find('.phone_type_validate').removeClass('phone_validate')
+      $(this).closest('li').find('.type_validate').removeClass('url_validate')
+      $(this).closest('li').find('.type_validate').val(null)
+      $(this).closest('li').find('.type_validate').attr('required', true)
+      $(this).closest('li').find('.type_validate').attr('disabled', false)
+      $(this).closest('li').find('.type_validate').attr('type', 'text')
+      $(this).closest('li').find('.phone_type_validate').attr('required',false)
+      $(this).closest('li').find('.phone_type_validate').attr('disabled',true)
     }
   });
 

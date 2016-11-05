@@ -292,8 +292,23 @@
 <% content_for :custom_js do %>
   <script>
 
+      var x=0;
     $(".get_list_for_edit").click(function(){
-      $("#contacts_list").html("<%= escape_javascript render 'edit_contacts_list',account: @account%>");
+      account_id = '<%= @account.id %>'
+      if (x==0){
+        $("#contacts_list").html("<%= escape_javascript render 'edit_contacts_list',account: @account%>");
+        x=1;
+      }
+
+      if (x==1){
+        $.ajax({
+          type: "GET",
+          url: '/accounts/'+account_id+'/updated_account',
+          success: function (data) {
+          }
+        });
+      }
+
     })
 
     $(document).on('click', '.remove_contact', function(){

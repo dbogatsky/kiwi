@@ -455,6 +455,10 @@
         $(this).next().remove()
       }else if(($(this).val()=='') && ($(this).next().hasClass('error_lable'))){
         $(this).next().remove()
+      }else if(status && $(this).closest('div').next().hasClass('error_lable')){
+        $(this).closest('div').next().remove()
+      }else if(($(this).val()=='') && ($(this).closest('div').next().hasClass('error_lable'))){
+        $(this).closest('div').next().remove()
       }
     });
 
