@@ -76,14 +76,12 @@
         <div class="form-group">
           <label class="col-sm-3 control-label">Office 365</label>
           <div class="col-sm-5">
-            <%=select_tag('preference[office365]', options_for_select([['Disable', 'disable'],['Enable', 'enable']], selected: @user_preference['office365']), {:class => 'form-control input-sm sel-office365', required: true})%>
-          </div>
-          <div class="col-xs-1">
             <div class="btn btn-office365">
               <% if @current_user.try(&:office365_auth) == true %>
-                <a id="connect_office365" class="btn-xs btn-success-alt" href="javascript:void(0)">Reconnect</a>
+                <a class="btn btn-default-alt">Connected</a>
+                <a id="connect_office365" class="btn btn-success" href="javascript:void(0)">Reconnect</a>
               <% else %>
-                <a id="connect_office365" class="btn-sm btn-success" href="javascript:void(0)">Connect</a>
+                <a id="connect_office365" class="btn btn-success" href="javascript:void(0)">Connect</a>
               <% end %>
             </div>
           </div>
@@ -121,23 +119,6 @@
     $('.by_sms').prop('checked','checked')
   <%end%>
 
-  // preset the office365 value
-  if ( $('.sel-office365').val() == 'enable' ) {
-    $(".btn-office365").show();
-  } else {
-    $(".btn-office365").hide();
-  }
-
-  // when an entity is selected
-  $('.sel-office365').change(function(){
-    if($(this).val() == 'enable' )
-      {
-        $(".btn-office365").show();
-      } else
-      {
-       $(".btn-office365").hide();
-      }
-  });
 
   $("#connect_office365").on("click", function () {
     $('#preloader').show();
