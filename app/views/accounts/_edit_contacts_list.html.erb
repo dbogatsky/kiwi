@@ -34,7 +34,7 @@
                     <input name="account[contacts_attributes][<%=contact.id%>][value]" class="contact_li phone_validate form-control input-sm" type="tel" value="<%=contact.value%>" required="true">
                   </div>
                   <div class="col-sm-1">
-                    <a href="javascript:void(0);" class="remove_contact" data-toggle="tooltip" title="Click to Remove Contacts"><i class="fa fa-times" aria-hidden="true"></i>
+                    <a href="javascript:void(0);" class="remove_contact" data-toggle="tooltip" title="Click to Remove Contacts"><i class="fa fa-trash-o" aria-hidden="true"></i>
                   </a>
                   </a>
                 </div>
@@ -53,7 +53,7 @@
                   <input name="account[contacts_attributes][<%=contact.id%>][value]" class="contact_li form-control input-sm <%=cls%>" type="<%=type%>" value="<%=contact.value%>" required="true">
                 </div>
                 <div class="col-sm-1">
-                  <a href="javascript:void(0);" class="remove_contact" data-toggle="tooltip" title="Click to Remove Contacts"><i class="fa fa-times" aria-hidden="true"></i>
+                  <a href="javascript:void(0);" class="remove_contact" data-toggle="tooltip" title="Click to Remove Contacts"><i class="fa fa-trash-o" aria-hidden="true"></i>
                   </a>
                 </div>
                 </div>
@@ -64,14 +64,15 @@
       <% end %>
     <%end%>
     <li id="button_li">
-      <%= link_to "Add Contact","javascript:void(0);", class: "add-contact-button btn btn-success btn-xs"  %>
+      <%= link_to "+","javascript:void(0);", class: "add-contact-button btn btn-success btn-xs"  %>
       <%=submit_tag 'Save',  data: {disable_with: "Saving..." }, class: "btn btn-primary btn-xs"%>
+      <%= link_to account_path(account), class: "btn btn-white btn-block contct_cancel_bt" do %><i class="fa fa-minus-circle"></i>&nbsp;&nbsp;&nbsp;Cancel<% end %>
     </li>
   </u>
 <%end%>
 
 <script type="text/javascript">
-  phone_validate();
+  edit_contact_phone_validate();
   $("#edit_contact_list").bind("submit", function(e){
     $(".phone_validate").each(function() {
       if ($(this).closest('div').next().hasClass('error_lable')) {
@@ -96,6 +97,10 @@
     check_phone = check_phone_number()
     check_url = check_url_status()
     if (check_phone && check_url){
+      $(".phone_validate").each(function() {
+        virl = $(this).intlTelInput("getNumber");
+        $(this).val(virl);
+      });
       return true;
     }else{
       return false;
