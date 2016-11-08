@@ -295,12 +295,11 @@
       var x=0;
     $(".get_list_for_edit").click(function(){
       account_id = '<%= @account.id %>'
+      set_country_code();
       if (x==0){
         $("#contacts_list").html("<%= escape_javascript render 'edit_contacts_list',account: @account%>");
         x=1;
-      }
-
-      if (x==1){
+      }else{
         $.ajax({
           type: "GET",
           url: '/accounts/'+account_id+'/updated_account',
@@ -308,13 +307,18 @@
           }
         });
       }
-
-      $(".phone_validate").each(function() {
-        val = $(this).intlTelInput("getNumber");
-        virl = $(this).intlTelInput("setNumber", val);
-      });
-
     })
+
+    function set_country_code() {
+       $(".phone_validate").each(function() {
+        if ($(this).closest('div').find('.selected-dial-code').text()!="" && $(this).val()!=""){
+          val = $(this).intlTelInput("getNumber");
+          virl = $(this).intlTelInput("setNumber", val);
+        }else{
+          $(this).intlTelInput("setCountry", current_company_country)
+        }
+      })
+    }
 
     $(document).on('click', '.remove_contact', function(){
       $(this).closest('li').hide()
@@ -334,20 +338,28 @@
         separateDialCode: true,
         utilsScript: "assets/libphonenumber/utils.js"
       });
-      $(".phone_validate").intlTelInput("setCountry",current_company_country)
+      // $(".phone_validate").intlTelInput("setCountry", current_company_country)
+      set_country_code();
     }
 
+
+
     function edit_contact_phone_validate() {
+      current_company_country = '<%=get_current_company_country%>'
       $(".phone_validate").intlTelInput({
         formatOnInit: true,
         separateDialCode: true,
         utilsScript: "assets/libphonenumber/utils.js"
       });
-
-      $(".phone_validate").each(function() {
-        val = $(this).intlTelInput("getNumber");
-        virl = $(this).intlTelInput("setNumber", val);
-      });
+      set_country_code();
+      // $(".phone_validate").each(function() {
+      //   if ($(this).closest('div').find('.selected-dial-code').text()!=""){
+      //     val = $(this).intlTelInput("getNumber");
+      //     virl = $(this).intlTelInput("setNumber", val);
+      //   }else{
+      //     $(".phone_validate").intlTelInput("setCountry", current_company_country)
+      //   }
+      // })
     }
 
 
