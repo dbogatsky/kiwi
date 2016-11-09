@@ -124,6 +124,7 @@
                 <%if account.present?%>
                  <input type="hidden" name="id" value="<%=account.id%>">
                 <%end%>
+                <input type="hidden" name="user_selected" class="quote_user_selected_id" value= "">
                 <input type="hidden" name="conversation_item[type]" value="quote" >
               </div><!-- panel-body -->
               <div class="panel-footer">
@@ -158,6 +159,7 @@
 
   $(".conversation-quote-modal-form").on("shown.bs.modal", function(){
     getdate(30);
+    $(".quote_user_selected_id").val($("#schedule_user_list").val());
     $(".get_date").val(30);
     $(".display_date").val(final_date);
   });

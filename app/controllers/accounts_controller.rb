@@ -170,6 +170,7 @@ class AccountsController < ApplicationController
   end
 
   def schedule_meeting
+    session[:selected_user]= User.find(params[:user_selected]) if params[:user_selected].present?
     c_id = @account.conversation.id
     if params[:conversation_item][:item_type] == 'regular'
       if params[:conversation_item][:title].blank?
@@ -485,6 +486,7 @@ class AccountsController < ApplicationController
   end
 
   def add_reminder
+    session[:selected_user]= User.find(params[:user_selected]) if params[:user_selected].present?
     c_id = @account.conversation.id
     params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:scheduled_date], params[:scheduled_time]) if params[:scheduled_date].present? && params[:scheduled_time].present?
     check_daylight   #call to check daylight

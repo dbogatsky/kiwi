@@ -5,6 +5,8 @@ class ScheduleController < ApplicationController
   skip_before_filter :verify_authenticity_token, only: [:sort_regular_visits]
 
   def index
+    @user_selected = User.find(session[:selected_user]['id']) if session[:selected_user].present?
+
     @user_preference = user_preferences_load
     @users = User.all(uid: session[:user_id])
     get_meetings([current_user.id])

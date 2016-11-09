@@ -31,6 +31,10 @@
                   </div>
                   <div class="col-sm-10">
                     <input type='hidden' name='account[contacts_attributes][<%=contact.id%>][_destroy]' value='false' class="delete_contact_id">
+                    <% unless contact.name.blank? %>
+                      <input label="Name" name="account[contacts_attributes][<%=contact.id%>][name]" class="contact_li form-control input-sm user-error" id="account_contacts_attributes_name_<%=contact.id%>" value="<%=contact.name %>" required="true" type="text" placeholder="contact name" aria-invalid="true">
+                    <%end%>
+
                     <input name="account[contacts_attributes][<%=contact.id%>][value]" class="contact_li phone_validate form-control input-sm" type="tel" value="<%=contact.value%>" required="true">
                   </div>
                   <div class="col-sm-1">

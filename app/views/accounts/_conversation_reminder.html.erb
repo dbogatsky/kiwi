@@ -99,6 +99,7 @@
                  <input type="hidden" name="id" value="<%=account.id%>">
                 <%end%>
                 <input type="hidden" name="conversation_item[type]" value="reminder" >
+                <input type="hidden" name="user_selected" class="user_selected_id" value= "">
               </div><!-- panel-body -->
               <div class="panel-footer">
                 <%=submit_tag 'Save',  data: {disable_with: "Saving..." }, class: "btn btn-primary"%>
@@ -110,3 +111,9 @@
     </div><!-- modal content -->
   </div><!-- modal dialog -->
 </div><!-- modal -->
+
+<script type="text/javascript">
+  $(".conversation-reminder-modal-form").on("shown.bs.modal", function(){
+    $(".user_selected_id").val($("#schedule_user_list").val());
+  });
+</script
