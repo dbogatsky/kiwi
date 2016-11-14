@@ -14,27 +14,10 @@
       <img src="<%= (@account.avatar_url.eql? "/avatars/web/missing.png") ? '/assets/images/default_account_avatar.png' : @account.avatar_url %>" class="thumbnail img-responsive" alt="">
         <div class="mb30"></div>
         <div class="mb30"></div>
-        <h5 class="subtitle">Contact</h5>
-        <ul class="profile-social-list" id="account-contacts">
-          <% if !@account.contact_name.nil? %>
-            <li><i class="fa fa-briefcase"></i>  <%=  @account.contact_name.blank? ? "- n/a -" : @account.contact_name %>
-              <% if !@account.contact_title.nil? %>
-                 <br ><div style="margin-left: 30px;"><small><%= @account.contact_title %></small></div>
-              <% end %>
-            </li>
-          <% end %>
-          <% @account.contacts.each do |contact| %>
-            <% if contact.type == "email" %>
-              <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name %>"></i><a href="mailto:<%= contact.value %>"><%= contact.value %></a></li>
-            <%elsif  contact.type == "website" || contact.type == "facebook" || contact.type == "youtube"%>
-             <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name == 'website' ? 'globe' :  contact.icon_name%>"></i><a href="<%=(contact.value.include?'http') ? contact.value : 'http://'+contact.value %>" target="_blank"><%= contact.value %></a></li>
-            <% elsif contact.type.eql? "phone"  or  contact.type.eql? "mobile"  or  contact.type.eql? "fax"%>
-              <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name %>"></i><a href="tel:<%= contact.value.delete(" ").delete("-") %>"><%= (contact.value.include?',') ? contact.value.gsub(',','x') : contact.value%></a></li>
-            <% else %>
-              <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name %>"></i><%= contact.value %></li>
-            <% end %>
-          <% end %>
-        </ul>
+        <h5 class="subtitle">Contact  <a href="javascript:void(0);" class="get_list_for_edit" data-toggle="tooltip" title="Click to Edit Contacts"><i class="fa fa-pencil-square-o" style="padding-left: 10px;" aria-hidden="true"></i></a></h5>
+        <div id="contacts_list">
+          <%=render 'display_contact_list', account: @account%>
+        </div>
       <div class="mb30"></div>
       <h5 class="subtitle">Address&nbsp;<i class="fa fa-map-marker"></i>
       </h5>
@@ -308,6 +291,151 @@
 
 <% content_for :custom_js do %>
   <script>
+
+      var x=0;
+    $(".get_list_for_edit").click(function(){
+      account_id = '<%= @account.id %>'
+      set_country_code();
+      if (x==0){
+        $("#contacts_list").html("<%= escape_javascript render 'edit_contacts_list',account: @account%>");
+        x=1;
+      }else{
+        $.ajax({
+          type: "GET",
+          url: '/accounts/'+account_id+'/updated_account',
+          success: function (data) {
+          }
+        });
+      }
+    })
+
+    function set_country_code() {
+       $(".phone_validate").each(function() {
+        if ($(this).closest('div').find('.selected-dial-code').text()!="" && $(this).val()!=""){
+          val = $(this).intlTelInput("getNumber");
+          virl = $(this).intlTelInput("setNumber", val);
+        }else{
+          $(this).intlTelInput("setCountry", current_company_country)
+        }
+      })
+    }
+
+    $(document).on('click', '.remove_contact', function(){
+      $(this).closest('li').hide()
+      $(this).closest('li').find(".delete_contact_id").val("true")
+    })
+
+    $(document).on('click', '.remove_dynamic_contact', function(){
+      $(this).closest('li').remove()
+    })
+
+    phone_validate();
+
+    function phone_validate() {
+      current_company_country = '<%=get_current_company_country%>'
+      $(".phone_validate").intlTelInput({
+        formatOnInit: true,
+        separateDialCode: true,
+        utilsScript: "assets/libphonenumber/utils.js"
+      });
+      // $(".phone_validate").intlTelInput("setCountry", current_company_country)
+      set_country_code();
+    }
+
+
+    function add_contact_phone_validate() {
+      current_company_country = '<%=get_current_company_country%>'
+      current_user_country = '<%=get_current_user_country%>'
+      $(".phone_validate").intlTelInput({
+        formatOnInit: true,
+        separateDialCode: true,
+        utilsScript: "assets/libphonenumber/utils.js"
+      });
+
+      $(".phone_validate").each(function() {
+        if ($(this).closest('div').find('.selected-dial-code').text()!="" && $(this).val()!=""){
+          val = $(this).intlTelInput("getNumber");
+          virl = $(this).intlTelInput("setNumber", val);
+        }else{
+          $(this).intlTelInput("setCountry", current_user_country)
+        }
+      })
+      // $(".phone_validate").intlTelInput("setCountry", current_company_country)
+      // set_country_code();
+    }
+
+
+    function edit_contact_phone_validate() {
+      current_company_country = '<%=get_current_company_country%>'
+      $(".phone_validate").intlTelInput({
+        formatOnInit: true,
+        separateDialCode: true,
+        utilsScript: "assets/libphonenumber/utils.js"
+      });
+      set_country_code();
+      // $(".phone_validate").each(function() {
+      //   if ($(this).closest('div').find('.selected-dial-code').text()!=""){
+      //     val = $(this).intlTelInput("getNumber");
+      //     virl = $(this).intlTelInput("setNumber", val);
+      //   }else{
+      //     $(".phone_validate").intlTelInput("setCountry", current_company_country)
+      //   }
+      // })
+    }
+
+
+    <%
+     @contact_types = ""
+     Contact::CONTACT_TYPES.each { |x| @contact_types << '<option value="'+x+'">'+x+'</option>' }
+    %>
+
+    $(document).on('click', '.add-contact-button', function(e){
+      // e.preventDefault();
+      t = (new Date()).getTime();
+      str_html = '\
+        <li id="'+t+'">\
+          <div class="form-group">\
+            <div class="row">\
+              <div class="col-sm-1">\
+              </div>\
+              <div class="col-sm-10">\
+                <input label="Name" name="account[contacts_attributes]['+t+'][name]" class="contact_li form-control input-sm" required id="account_contacts_attributes_name_'+t+'" type="text" placeholder="contact name">\
+              </div>\
+              <div class="col-sm-1">\
+              </div>\
+            </div>\
+          </div>\
+          <div class="form-group">\
+            <div class="row">\
+              <div class="col-sm-1">\
+                 </div>\
+              <div class="col-sm-10">\
+                <select class="input-sm background_color type_select" style="width: 100%;" id="account_contacts_attributes_type_'+t+'" name="account[contacts_attributes]['+t+'][type]"><%= raw(@contact_types) %></select>\
+              </div>\
+              <div class="col-sm-1">\
+                <a href="javascript:void(0);" class="remove_dynamic_contact" style="margin-top: 9px;" data-toggle="tooltip" title="Click to Remove Contacts"><i class="fa fa-trash-o" aria-hidden="true"></i>\
+                </a>\
+              </div>\
+            </div>\
+          </div>\
+          <div class="form-group">\
+            <div class="row">\
+              <div class="col-sm-1">\
+              </div>\
+              <div class="col-sm-10 phone_div">\
+                <input label="Value" name="account[contacts_attributes]['+t+'][value]" class=" contact_li form-control input-sm phone_type_validate phone_validate" required id="account_contacts_attributes_value_'+t+'" type="tel" placeholder="contact value">\
+              </div>\
+              <div class="col-sm-10 without_phone_div hidden">\
+                <input label="Value" name="account[contacts_attributes]['+t+'][value]" class="form-control type_validate contact_li"  disabled id="account_contacts_attributes_value_'+t+'" type="text" placeholder="contact value">\
+              </div>\
+              <div class="col-sm-1">\
+              </div>\
+            </div>\
+          </div>\
+        </li>';
+      $(str_html).insertBefore($("#button_li"));
+      add_contact_phone_validate();
+    });
 
     $(document).on('change', '.meeting_type', function(){
       if($(this).val() == 'regular'){

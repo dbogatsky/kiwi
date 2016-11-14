@@ -301,6 +301,7 @@
             <%end%>
              <input type="hidden" name="conversation_item[latitude]">
              <input type="hidden" name="conversation_item[longitude]">
+             <input type="hidden" name="user_selected" id="user_selected_id" value= "">
             </div><!-- panel-body -->
             <div class="panel-footer">
               <%=submit_tag 'Save',  data: {disable_with: "Saving..." }, class: "btn btn-primary"%>
@@ -515,6 +516,7 @@
 
 
   $(".account-action-meeting").on("shown.bs.modal", function(){
+    $("#user_selected_id").val($("#schedule_user_list").val());
     $(".meeting_type").val('general');
     $(".meeting_title").prop("placeholder","Event")
     $(".meeting_title").val(null)

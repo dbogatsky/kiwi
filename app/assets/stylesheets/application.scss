@@ -61,7 +61,8 @@
  * -- custom styles
  *= require focus/style.focus
  *= require custom.scss
-
+ *= require intlTelInput
+ #@import "intlTelInput";
 
  */
 

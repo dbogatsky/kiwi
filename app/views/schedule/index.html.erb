@@ -36,7 +36,7 @@
               <select class="select2" name="users" id="schedule_user_list" data-placeholder="Filter schedule by user" required="required">
                 <option></option>
                 <option value="<%=current_user.id%>">My Schedule</option>
-                <%= options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] if current_user.id != u.id }) %>
+                <%= options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] if current_user.id != u.id }, @user_selected.present? ? @user_selected.id : "") %>
               </select>
             </div>
             <div class="col-sm-2">

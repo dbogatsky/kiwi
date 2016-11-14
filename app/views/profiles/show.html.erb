@@ -99,18 +99,20 @@
           <%= f.simple_fields_for :contacts_attributes do |c| %>
             <div class="form-group">
               <label class="col-sm-3 control-label">Phone:</label>
-              <div class="col-sm-2">
+              <div class="col-sm-3">
                 <% contact_value = current_user.contacts.first.value rescue nil%>
                 <%=c.hidden_field :type, value: 'phone', name: "user[contacts_attributes][][type]" %>
-                <%= c.input_field :value, { label: 'Phone', name: "user[contacts_attributes][][value]", class: "form-control", value: contact_value}%>
+                <%= c.input_field :value, {type: 'tel', label: 'Phone', name: "user[contacts_attributes][][value]", class: "form-control phone_validate", value: contact_value}%>
                 <% contact_id = current_user.contacts.first.id rescue nil %>
                 <%=c.hidden_field :id, value: contact_id, name: "user[contacts_attributes][][id]" %>
               </div>
-              <label class="col-sm-1 control-label">Mobile:</label>
-              <div class="col-sm-2">
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">Mobile:</label>
+              <div class="col-sm-3">
                 <% contact_value1 = current_user.contacts.last.value rescue nil%>
                 <%=c.hidden_field :type, value: 'mobile', name: "user[contacts_attributes][][type]" %>
-                <%= c.input_field :value, {label: 'Value', name: "user[contacts_attributes][][value]", class: "form-control", value: contact_value1}%>
+                <%= c.input_field :value, {type: 'tel', label: 'Value', name: "user[contacts_attributes][][value]", class: "form-control phone_validate", value: contact_value1}%>
                 <% contact_id1 = current_user.contacts.last.id rescue nil %>
                 <%=c.hidden_field :id, value: contact_id1, name: "user[contacts_attributes][][id]" %>
               </div>
@@ -162,6 +164,14 @@
       jQuery(element).closest('.form-group').removeClass('has-error');
     }
   });
+
+  current_company_country = '<%=get_current_company_country%>'
+  $(".phone_validate").intlTelInput({
+    formatOnInit: true,
+    separateDialCode: true,
+    utilsScript: "assets/libphonenumber/utils.js"
+  });
+  $(".phone_validate").intlTelInput("setCountry", current_company_country)
 
 
 $('.sel_role').change(function(){

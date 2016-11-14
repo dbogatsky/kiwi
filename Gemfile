@@ -23,6 +23,7 @@ gem 'rollbar'
 gem 'will_paginate'
 gem 'http_logger'
 gem 'countries', :require => 'countries/global'
+gem 'intl-tel-input-rails'
 
 # This gem is for accessing REST services in an ActiveRecord style.
 gem 'activeresource', require: 'active_resource'

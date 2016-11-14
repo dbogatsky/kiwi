@@ -3,7 +3,7 @@ include ApplicationHelper
 class AccountsController < ApplicationController
   skip_before_filter :verify_authenticity_token, only: [:delete_future_meeting, :destroy]
   before_action :get_token
-  before_action :find_account, only: [:show, :edit, :destroy, :conversation, :search, :add_quote, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting, :update_quote, :delete_quote, :add_reminder, :update_reminder, :delete_reminder]
+  before_action :find_account, only: [:show, :update_account_contacts, :updated_account, :edit, :destroy, :conversation, :search, :add_quote, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting, :update_quote, :delete_quote, :add_reminder, :update_reminder, :delete_reminder]
   before_action :get_api_values, only: [:search]
   before_action :application_settings, only: [:index, :show, :new, :edit, :generate_properties_csv_template, :properties_csv_validates, :assets_csv_validates, :generate_assets_csv_template]
   before_action :get_setting, only: [:index, :import, :export, :show, :edit, :new, :schedule_meeting, :update_meeting, :add_reminder, :update_reminder, :add_quote, :update_quote, :send_email, :update_email ]
@@ -21,7 +21,7 @@ class AccountsController < ApplicationController
         session[:company_search] = false
       end
     end
-    
+
     show_accounts_per_page = @user_preference['show_accounts_per_page']
     @show_accounts_per_page = show_accounts_per_page.to_i > 0 ? show_accounts_per_page.to_i : 26
     page = params[:page].present? ? params[:page] : 1
@@ -118,6 +118,36 @@ class AccountsController < ApplicationController
     redirect_to account_path(params[:id])
   end
 
+  def update_account_contacts
+    original = params[:account][:contacts_attributes]
+    params[:account][:contacts_attributes] = params[:account][:contacts_attributes].values if params[:account][:contacts_attributes].present?
+
+    if @account.contacts.present?
+       params[:account][:contacts_attributes].each do |acc|
+        acc["_destroy"]="true"
+       end
+
+       @account.update_attributes(name: @account.name, account: account_params)
+
+      array_of_hashes = []
+      original.values.each { |acc| array_of_hashes << {'name' => acc["name"], 'type' => acc["type"], 'value' => acc["value"], '_destroy' => acc["_destroy"]} }
+      original.values.each do |acc|
+        if acc["_destroy"]=="false"
+          acc["_destroy"]="false"
+        else
+          acc["_destroy"]="true"
+        end
+      end
+
+      params[:account][:contacts_attributes] = array_of_hashes
+      @account.update_attributes(name: @account.name, account: account_params)
+    else
+      @account.update_attributes(name: @account.name, account: account_params)
+    end
+
+  end
+
+
   def destroy
     if @account.destroy
       flash[:success] = 'Account has been deleted successfully'
@@ -164,6 +194,7 @@ class AccountsController < ApplicationController
   end
 
   def schedule_meeting
+    session[:selected_user]= User.find(params[:user_selected]) if params[:user_selected].present?
     c_id = @account.conversation.id
     if params[:conversation_item][:item_type] == 'regular'
       if params[:conversation_item][:title].blank?
@@ -479,6 +510,7 @@ class AccountsController < ApplicationController
   end
 
   def add_reminder
+    session[:selected_user]= User.find(params[:user_selected]) if params[:user_selected].present?
     c_id = @account.conversation.id
     params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:scheduled_date], params[:scheduled_time]) if params[:scheduled_date].present? && params[:scheduled_time].present?
     check_daylight   #call to check daylight
