@@ -119,8 +119,32 @@ class AccountsController < ApplicationController
   end
 
   def update_account_contacts
+    original = params[:account][:contacts_attributes]
     params[:account][:contacts_attributes] = params[:account][:contacts_attributes].values if params[:account][:contacts_attributes].present?
-    @account.update_attributes(name: @account.name, account: account_params)
+
+    if @account.contacts.present?
+       params[:account][:contacts_attributes].each do |acc|
+        acc["_destroy"]="true"
+       end
+
+       @account.update_attributes(name: @account.name, account: account_params)
+
+      array_of_hashes = []
+      original.values.each { |acc| array_of_hashes << {'name' => acc["name"], 'type' => acc["type"], 'value' => acc["value"], '_destroy' => acc["_destroy"]} }
+      original.values.each do |acc|
+        if acc["_destroy"]=="false"
+          acc["_destroy"]="false"
+        else
+          acc["_destroy"]="true"
+        end
+      end
+
+      params[:account][:contacts_attributes] = array_of_hashes
+      @account.update_attributes(name: @account.name, account: account_params)
+    else
+      @account.update_attributes(name: @account.name, account: account_params)
+    end
+
   end
 
 
