@@ -1,12 +1,17 @@
 <%= form_tag update_account_contacts_account_path(account),method: :patch, remote: :true, id: "edit_contact_list" do |f| %>
   <ul class="profile-social-list" id="account-dynamic-contacts">
-    <% if !account.contact_name.nil? %>
-      <li><i class="fa fa-briefcase"></i>  <%= account.contact_name.blank? ? "- n/a -" : account.contact_name %>
-        <% if !account.contact_title.nil? %>
-           <br ><div style="margin-left: 30px;"><small><%= account.contact_title %></small></div>
-        <% end %>
-      </li>
-    <% end %>
+    <%# if !account.contact_name.nil? %>
+      <!-- <li><i class="fa fa-briefcase"></i>  <%#= account.contact_name.blank? ? "- n/a -" : account.contact_name %>
+        <%# if !account.contact_title.nil? %>
+           <br ><div style="margin-left: 30px;"><small><%#= account.contact_title %></small></div>
+        <%# end %>
+      </li> -->
+    <%# end %>
+    <div class="edit_cont_title">
+      <i class="fa fa-briefcase"></i><%= text_field_tag "account[contact_name]", account.contact_name.present? ? account.contact_name : nil , class: "form-control input-sm"%>
+      <%= text_field_tag "account[contact_title]", account.contact_title.present? ? account.contact_title : nil, class: "form-control input-sm"%>
+    </div>
+
     <%
      @contact_types = ""
      Contact::CONTACT_TYPES.each { |x| @contact_types << '<option value="'+x+'">'+x+'</option>' }

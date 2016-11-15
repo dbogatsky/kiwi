@@ -393,3 +393,10 @@ width:50%;
     width: 35%;
     padding: 3px;
 }
+.edit_cont_title{
+  float: left;
+  margin-top: 12px;
+  margin-bottom: 13px;
+}
+.edit_cont_title i{float:left; width:20px; margin-top: inherit;}
+.edit_cont_title input{width:90%; float:right}

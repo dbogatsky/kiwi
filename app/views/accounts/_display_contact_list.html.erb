@@ -6,15 +6,18 @@
       <% end %>
     </li>
   <% end %>
-  <% account.contacts.each do |contact| %>
-    <% if contact.type == "email" %>
-      <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name %>"></i><a href="mailto:<%= contact.value %>"><%= contact.value %></a></li>
-    <%elsif  contact.type == "website" || contact.type == "facebook" || contact.type == "youtube"%>
-     <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name == 'website' ? 'globe' :  contact.icon_name%>"></i><a href="<%=(contact.value.include?'http') ? contact.value : 'http://'+contact.value %>" target="_blank"><%= contact.value %></a></li>
-    <% elsif contact.type.eql? "phone"  or  contact.type.eql? "mobile"  or  contact.type.eql? "fax"%>
-      <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name %>"></i><a href="tel:<%= contact.value.delete(" ").delete("-") %>"><%= (contact.value.include?',') ? contact.value.gsub(',','x') : contact.value%></a></li>
-    <% else %>
-      <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.icon_name %>"></i><%= contact.value %></li>
-    <% end %>
+  <% account.contacts.group_by{|x| x.name }.each do |contact| %>
+    <li id="<%#= dom_id(contact) %>"><%= contact[0] %></li>
+    <% contact.flatten[1..contact.length].each do |cont|%>
+      <% if cont.type == "email" %>
+        <li id="<%= dom_id(cont) %>"><i class="fa fa-<%= cont.icon_name %>"></i><a href="mailto:<%= cont.value %>"><%= cont.value %></a></li>
+      <%elsif  cont.type == "website" || cont.type == "facebook" || cont.type == "youtube"%>
+       <li id="<%= dom_id(cont) %>"><i class="fa fa-<%= cont.icon_name == 'website' ? 'globe' :  cont.icon_name%>"></i><a href="<%=(cont.value.include?'http') ? cont.value : 'http://'+cont.value %>" target="_blank"><%= cont.value %></a></li>
+      <% elsif cont.type.eql? "phone"  or  cont.type.eql? "mobile"  or  cont.type.eql? "fax"%>
+        <li id="<%= dom_id(cont) %>"><i class="fa fa-<%= cont.icon_name %>"></i><a href="tel:<%= cont.value.delete(" ").delete("-") %>"><%= (cont.value.include?',') ? cont.value.gsub(',','x') : cont.value%></a></li>
+      <% else %>
+        <li id="<%= dom_id(cont) %>"><i class="fa fa-<%= cont.icon_name %>"></i><%= cont.value %></li>
+      <% end %>
+    <%end%>
   <% end %>
 </ul>
