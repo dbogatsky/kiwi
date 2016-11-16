@@ -6,7 +6,25 @@
       <% end %>
     </li>
   <% end %>
-  <% account.contacts.group_by{|x| x.name }.each do |contact| %>
+
+<% if account.contacts.group_by{|x| x.name!=account.contact_name}[false].present? %>
+  <% account.contacts.group_by{|x| x.name!=account.contact_name}[false].group_by{|x| x.name }.each do |contact| %>
+    <% contact.flatten[1..contact.length].each do |cont|%>
+      <% if cont.type == "email" %>
+        <li id="<%= dom_id(cont) %>"><i class="fa fa-<%= cont.icon_name %>"></i><a href="mailto:<%= cont.value %>"><%= cont.value %></a></li>
+      <%elsif  cont.type == "website" || cont.type == "facebook" || cont.type == "youtube"%>
+       <li id="<%= dom_id(cont) %>"><i class="fa fa-<%= cont.icon_name == 'website' ? 'globe' :  cont.icon_name%>"></i><a href="<%=(cont.value.include?'http') ? cont.value : 'http://'+cont.value %>" target="_blank"><%= cont.value %></a></li>
+      <% elsif cont.type.eql? "phone"  or  cont.type.eql? "mobile"  or  cont.type.eql? "fax"%>
+        <li id="<%= dom_id(cont) %>"><i class="fa fa-<%= cont.icon_name %>"></i><a href="tel:<%= cont.value.delete(" ").delete("-") %>"><%= (cont.value.include?',') ? cont.value.gsub(',','x') : cont.value%></a></li>
+      <% else %>
+        <li id="<%= dom_id(cont) %>"><i class="fa fa-<%= cont.icon_name %>"></i><%= cont.value %></li>
+      <% end %>
+    <%end%>
+  <% end %>
+<%end%>
+
+<% if account.contacts.group_by{|x| x.name!=account.contact_name}[true].present? %>
+  <% account.contacts.group_by{|x| x.name!=account.contact_name}[true].group_by{|x| x.name }.each do |contact| %>
     <li id="<%#= dom_id(contact) %>"><%= contact[0] %></li>
     <% contact.flatten[1..contact.length].each do |cont|%>
       <% if cont.type == "email" %>
@@ -20,4 +38,5 @@
       <% end %>
     <%end%>
   <% end %>
+<%end%>
 </ul>
