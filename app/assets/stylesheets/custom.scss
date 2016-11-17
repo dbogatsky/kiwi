@@ -396,7 +396,23 @@ width:50%;
 .edit_cont_title{
   float: left;
   margin-top: 12px;
-  margin-bottom: 13px;
+  margin-bottom: 0;
 }
 .edit_cont_title i{float:left; width:20px; margin-top: inherit;}
 .edit_cont_title input{width:90%; float:right}
+.profile-social-list li.padd_lt31{
+  padding-left:31px;
+}
+#contacts_list .padd_lt31{
+  padding-left:31px;
+}
+#contacts_list .padd_lt25{
+  padding-left:25px;
+}
+#contacts_list .mar_lt21{
+  margin-left:-21px;
+}
+
+.contact_list .intl-tel-input.allow-dropdown input, .intl-tel-input.allow-dropdown input[type=text], .intl-tel-input.allow-dropdown input[type=tel] .phone_validate{
+  padding-right:0 !important;
+}

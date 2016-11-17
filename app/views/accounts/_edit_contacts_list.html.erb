@@ -8,7 +8,7 @@
       </li> -->
     <%# end %>
     <div class="edit_cont_title">
-      <i class="fa fa-briefcase"></i><%= text_field_tag "account[contact_name]", account.contact_name.present? ? account.contact_name : nil , class: "form-control input-sm"%>
+      <i class="fa fa-briefcase"></i><%= text_field_tag "account[contact_name]", account.contact_name.present? ? account.contact_name : nil , class: "form-control input-sm root_acc_name"%>
       <%= text_field_tag "account[contact_title]", account.contact_title.present? ? account.contact_title : nil, class: "form-control input-sm"%>
     </div>
 
@@ -20,7 +20,7 @@
       <% if account.contacts.group_by{|x| x.name!=account.contact_name}[false].present? %>
         <% account.contacts.group_by{|x| x.name!=account.contact_name}[false].group_by{|x| x.name }.each do |contact| %>
 
-          <% contact.flatten[1..contact.length].each do |contact| %>
+          <% contact.flatten[1..contact[1].length].each do |contact| %>
               <%if contact.type == 'email'%>
                 <%type = 'email'%>
                 <%cls = ''%>
@@ -43,7 +43,7 @@
                       <div class="col-sm-10">
                         <input type='hidden' name='account[contacts_attributes][<%=contact.id%>][_destroy]' value='false' class="delete_contact_id">
                           <% if account.contact_name == contact.name %>
-                            <input label="Name" name="account[contacts_attributes][<%=contact.id%>][name]" class="contact_li form-control input-sm user-error account_nam_edit hidden" id="account_contacts_attributes_name_<%=contact.id%>" value="<%=contact.name %>" required="true" type="text" placeholder="contact name" aria-invalid="true">
+                            <input label="Name" name="account[contacts_attributes][<%=contact.id%>][name]" class="contact_li form-control input-sm user-error account_nam_edit hidden_root_acc_name hidden" id="account_contacts_attributes_name_<%=contact.id%>" value="<%=contact.name %>" required="true" type="text" placeholder="contact name" aria-invalid="true">
                           <%else%>
                             <input label="Name" name="account[contacts_attributes][<%=contact.id%>][name]" class="contact_li form-control input-sm user-error" id="account_contacts_attributes_name_<%=contact.id%>" value="<%=contact.name %>" required="true" type="text" placeholder="contact name" aria-invalid="true">
                           <%end%>
@@ -57,7 +57,7 @@
                     <div class="row">
                       <div class="col-sm-1">
                       </div>
-                      <div class="col-sm-10">
+                      <div class="col-sm-10 padd_lt31">
                         <input type='hidden' name='account[contacts_attributes][<%=contact.id%>][_destroy]' value='false' class="delete_contact_id">
                         <select class="input-sm background_color type_select" style="width: 100%;" id="account_contacts_attributes_type_<%=contact.id%>" data-value="<%=contact.type%>" name="account[contacts_attributes][<%=contact.id%>][type]"><%= raw(@contact_types) %></select>
                       </div>
@@ -72,7 +72,7 @@
                     </div>
                   </div>
 
-                  <div class="form-group">
+                  <div class="form-group padd_lt25">
                     <div class="row">
                       <div class="col-sm-1">
                       </div>
@@ -100,7 +100,7 @@
                       <div class="col-sm-10">
                         <input type='hidden' name='account[contacts_attributes][<%=contact.id%>][_destroy]' value='false' class="delete_contact_id">
                         <% if account.contact_name == contact.name %>
-                          <input label="Name" name="account[contacts_attributes][<%=contact.id%>][name]" class="contact_li form-control input-sm user-error account_nam_edit hidden" id="account_contacts_attributes_name_<%=contact.id%>" value="<%=contact.name %>" required="true" type="text" placeholder="contact name" aria-invalid="true">
+                          <input label="Name" name="account[contacts_attributes][<%=contact.id%>][name]" class="contact_li form-control input-sm user-error account_nam_edit  hidden_root_acc_name hidden" id="account_contacts_attributes_name_<%=contact.id%>" value="<%=contact.name %>" required="true" type="text" placeholder="contact name" aria-invalid="true">
                         <%else%>
                           <input label="Name" name="account[contacts_attributes][<%=contact.id%>][name]" class="contact_li form-control input-sm user-error" id="account_contacts_attributes_name_<%=contact.id%>" value="<%=contact.name %>" required="true" type="text" placeholder="contact name" aria-invalid="true">
                         <%end%>
@@ -114,7 +114,7 @@
                     <div class="row">
                       <div class="col-sm-1">
                       </div>
-                      <div class="col-sm-10">
+                      <div class="col-sm-10 padd_lt31">
                         <input type='hidden' name='account[contacts_attributes][<%=contact.id%>][_destroy]' value='false' class="delete_contact_id">
                         <select class="input-sm background_color type_select" style="width: 100%;" id="account_contacts_attributes_type_<%=contact.id%>" data-value="<%=contact.type%>" name="account[contacts_attributes][<%=contact.id%>][type]"><%= raw(@contact_types) %></select>
                       </div>
@@ -129,7 +129,7 @@
                     </div>
                   </div>
 
-                <div class="form-group">
+                <div class="form-group padd_lt25">
                   <div class="row">
                     <div class="col-sm-1">
                       <i class="fa fa-<%= contact.icon_name == 'website' ? 'globe' :  contact.icon_name%>">
@@ -161,7 +161,7 @@
       <% if account.contacts.group_by{|x| x.name!=account.contact_name}[true].present? %>
         <% account.contacts.group_by{|x| x.name!=account.contact_name}[true].group_by{|x| x.name }.each do |contact| %>
 
-          <% contact.flatten[1..contact.length].each do |contact| %>
+          <% contact.flatten[1..contact[1].length].each do |contact| %>
               <%if contact.type == 'email'%>
                 <%type = 'email'%>
                 <%cls = ''%>
@@ -181,7 +181,7 @@
                     <div class="row">
                       <div class="col-sm-1">
                       </div>
-                      <div class="col-sm-10">
+                      <div class="col-sm-11 mar_lt21">
                         <input type='hidden' name='account[contacts_attributes][<%=contact.id%>][_destroy]' value='false' class="delete_contact_id">
                           <div id="same_cont_name">
                             <input label="Name" name="account[contacts_attributes][<%=contact.id%>][name]" class="contact_li form-control input-sm user-error same_cont_name" id="account_contacts_attributes_name_<%=contact.id%>" value="<%=contact.name %>" required="true" type="text" placeholder="contact name" aria-invalid="true">
@@ -196,7 +196,7 @@
                     <div class="row">
                       <div class="col-sm-1">
                       </div>
-                      <div class="col-sm-10">
+                      <div class="col-sm-10 padd_lt31">
                         <input type='hidden' name='account[contacts_attributes][<%=contact.id%>][_destroy]' value='false' class="delete_contact_id">
                         <select class="input-sm background_color type_select" style="width: 100%;" id="account_contacts_attributes_type_<%=contact.id%>" data-value="<%=contact.type%>" name="account[contacts_attributes][<%=contact.id%>][type]"><%= raw(@contact_types) %></select>
                       </div>
@@ -211,7 +211,7 @@
                     </div>
                   </div>
 
-                  <div class="form-group">
+                  <div class="form-group padd_lt25">
                     <div class="row">
                       <div class="col-sm-1">
                       </div>
@@ -236,7 +236,7 @@
                     <div class="row">
                       <div class="col-sm-1">
                       </div>
-                      <div class="col-sm-10">
+                      <div class="col-sm-11 mar_lt21">
                         <input type='hidden' name='account[contacts_attributes][<%=contact.id%>][_destroy]' value='false' class="delete_contact_id">
                         <div id="same_cont_name">
                           <input label="Name" name="account[contacts_attributes][<%=contact.id%>][name]" class="contact_li form-control input-sm user-error same_cont_name" id="account_contacts_attributes_name_<%=contact.id%>" value="<%=contact.name %>" required="true" type="text" placeholder="contact name" aria-invalid="true">
@@ -251,7 +251,7 @@
                     <div class="row">
                       <div class="col-sm-1">
                       </div>
-                      <div class="col-sm-10">
+                      <div class="col-sm-10 padd_lt31">
                         <input type='hidden' name='account[contacts_attributes][<%=contact.id%>][_destroy]' value='false' class="delete_contact_id">
                         <select class="input-sm background_color type_select" style="width: 100%;" id="account_contacts_attributes_type_<%=contact.id%>" data-value="<%=contact.type%>" name="account[contacts_attributes][<%=contact.id%>][type]"><%= raw(@contact_types) %></select>
                       </div>
@@ -266,7 +266,7 @@
                     </div>
                   </div>
 
-                <div class="form-group">
+                <div class="form-group padd_lt25">
                   <div class="row">
                     <div class="col-sm-1">
                       <i class="fa fa-<%= contact.icon_name == 'website' ? 'globe' :  contact.icon_name%>">
@@ -322,6 +322,7 @@
     }).not(":eq(0)").addClass('hide');
   });
 
+
   $(".type_select").each(function() {
     $(this).val($(this).attr('data-value'));
   })
@@ -360,6 +361,16 @@
         val = $(this).val();
         $(this).attr("value", val);
       });
+
+      $(".same_cont_name.hide").each(function(){
+        var val = $(this).closest('li').prevAll("li.contact_list:first").find('.same_cont_name').val();
+        $(this).val(val);
+      });
+
+      $(".hidden_root_acc_name").each(function(){
+        var name_val = $('.root_acc_name').val();
+        $(this).val(name_val)
+      })
       return true;
     }else{
       return false;
