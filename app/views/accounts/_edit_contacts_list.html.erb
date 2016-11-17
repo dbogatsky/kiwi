@@ -8,8 +8,8 @@
       </li> -->
     <%# end %>
     <div class="edit_cont_title">
-      <i class="fa fa-briefcase"></i><%= text_field_tag "account[contact_name]", account.contact_name.present? ? account.contact_name : nil , class: "form-control input-sm root_acc_name"%>
-      <%= text_field_tag "account[contact_title]", account.contact_title.present? ? account.contact_title : nil, class: "form-control input-sm"%>
+      <i class="fa fa-briefcase"></i><%= text_field_tag "account[contact_name]", account.contact_name.present? ? account.contact_name : nil , class: "form-control input-sm root_acc_name", placeholder: 'Primary Contact'%%>
+      <%= text_field_tag "account[contact_title]", account.contact_title.present? ? account.contact_title : nil, class: "form-control input-sm", placeholder: 'Primary Contact Title'%>
     </div>
 
     <%
