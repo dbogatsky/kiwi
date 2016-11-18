@@ -309,6 +309,20 @@
       }
     })
 
+    $(document).on('change', '.name_select', function(){
+      account_id = '<%= @account.id %>'
+      $('#preloader').show();
+
+      name = $(this).val();
+      $.ajax({
+        type: "GET",
+        url: '/accounts/'+account_id+'/contacts_by_name?name='+name,
+        success: function (data) {
+          $('#preloader').hide();
+        }
+      });
+    })
+
     function set_country_code() {
        $(".phone_validate").each(function() {
         if ($(this).closest('div').find('.selected-dial-code').text()!="" && $(this).val()!=""){
@@ -321,7 +335,8 @@
     }
 
     $(document).on('click', '.remove_contact', function(){
-      $(this).closest('li').hide()
+      $(this).closest('li').hide();
+      $("#contacts_by_name").closest('li').hide();
       $(this).closest('li').find(".delete_contact_id").val("true")
     })
 
@@ -388,6 +403,11 @@
      @contact_types = ""
      Contact::CONTACT_TYPES.each { |x| @contact_types << '<option value="'+x+'">'+x+'</option>' }
     %>
+    <% @contact_names = ""
+      @contact_names<<'<option value="" selected="selected">Select one</option>'
+      @account.contacts.each{|x| x.name}.uniq{|t| t.name}.each{|x| @contact_names << '<option value="'+x.name+'">'+x.name+'</option>'}
+      @contact_names<<'<option value="other">Other</option>'
+    %>
 
     $(document).on('click', '.add-contact-button', function(e){
       // e.preventDefault();
@@ -399,38 +419,13 @@
               <div class="col-sm-1">\
               </div>\
               <div class="col-sm-10">\
-                <input label="Name" name="account[contacts_attributes]['+t+'][name]" class="contact_li form-control input-sm" required id="account_contacts_attributes_name_'+t+'" type="text" placeholder="contact name">\
+                <select class="input-sm background_color name_select" style="width: 100%;" id="account_attributes_name_'+t+'" value="" name="account[name_selected]"><%= raw(@contact_names) %></select>\
               </div>\
               <div class="col-sm-1">\
               </div>\
             </div>\
           </div>\
-          <div class="form-group">\
-            <div class="row">\
-              <div class="col-sm-1">\
-                 </div>\
-              <div class="col-sm-10">\
-                <select class="input-sm background_color type_select" style="width: 100%;" id="account_contacts_attributes_type_'+t+'" name="account[contacts_attributes]['+t+'][type]"><%= raw(@contact_types) %></select>\
-              </div>\
-              <div class="col-sm-1">\
-                <a href="javascript:void(0);" class="remove_dynamic_contact" style="margin-top: 9px;" data-toggle="tooltip" title="Click to Remove Contacts"><i class="fa fa-trash-o" aria-hidden="true"></i>\
-                </a>\
-              </div>\
-            </div>\
-          </div>\
-          <div class="form-group">\
-            <div class="row">\
-              <div class="col-sm-1">\
-              </div>\
-              <div class="col-sm-10 phone_div">\
-                <input label="Value" name="account[contacts_attributes]['+t+'][value]" class=" contact_li form-control input-sm phone_type_validate phone_validate" required id="account_contacts_attributes_value_'+t+'" type="tel" placeholder="contact value">\
-              </div>\
-              <div class="col-sm-10 without_phone_div hidden">\
-                <input label="Value" name="account[contacts_attributes]['+t+'][value]" class="form-control type_validate contact_li"  disabled id="account_contacts_attributes_value_'+t+'" type="text" placeholder="contact value">\
-              </div>\
-              <div class="col-sm-1">\
-              </div>\
-            </div>\
+          <div id="contacts_by_name">\
           </div>\
         </li>';
       $(str_html).insertBefore($("#button_li"));

@@ -62,6 +62,7 @@ Rails.application.routes.draw do
       get    :load_more_conversation_item
       patch  :update_account_contacts
       get  :updated_account
+      get :contacts_by_name
     end
     resources :contacts, only: [:edit, :create, :update, :destroy]
     resources :addresses, only: [:edit, :create, :update, :destroy]
