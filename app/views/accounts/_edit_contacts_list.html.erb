@@ -8,8 +8,8 @@
       </li> -->
     <%# end %>
     <div class="edit_cont_title">
-      <i class="fa fa-briefcase"></i><%= text_field_tag "account[contact_name]", account.contact_name.present? ? account.contact_name : nil , class: "form-control input-sm root_acc_name"%>
-      <%= text_field_tag "account[contact_title]", account.contact_title.present? ? account.contact_title : nil, class: "form-control input-sm"%>
+      <i class="fa fa-briefcase"></i><%= text_field_tag "account[contact_name]", account.contact_name.present? ? account.contact_name : "" , class: "form-control input-sm root_acc_name", required: true, placeholder: "Primary Contact"%>
+      <%= text_field_tag "account[contact_title]", account.contact_title.present? ? account.contact_title : "", class: "form-control input-sm", required: true, placeholder: "Primary Contact Title" %>
     </div>
 
     <%
@@ -339,19 +339,19 @@
       }
     });
 
-    $(".url_validate").each(function() {
-      if ($(this).next().hasClass('error_lable')) {
-        $(this).next().remove()
-      }
-      var status = valid_url($(this))
-      if (!status && $(this).val() != ''){
-        $(this).after('<label class="error error_lable">Please enter valid URL</label>')
-      }
-    });
+    // $(".url_validate").each(function() {
+    //   if ($(this).next().hasClass('error_lable')) {
+    //     $(this).next().remove()
+    //   }
+    //   var status = valid_url($(this))
+    //   if (!status && $(this).val() != ''){
+    //     $(this).after('<label class="error error_lable">Please enter valid URL</label>')
+    //   }
+    // });
 
     check_phone = check_phone_number()
-    check_url = check_url_status()
-    if (check_phone && check_url){
+    // check_url = check_url_status()
+    if (check_phone){
       $(".phone_validate").each(function() {
         virl = $(this).intlTelInput("getNumber");
         $(this).val(virl);
