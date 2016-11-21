@@ -206,15 +206,52 @@
     minimumResultsForSearch: Infinity
   });
 
-  phone_validate();
 
-  function phone_validate() {
+  function add_contact_phone_validate() {
+    current_company_country = '<%=get_current_company_country%>'
+    current_user_country = '<%=get_current_user_country%>'
     $(".phone_validate").intlTelInput({
       formatOnInit: true,
       separateDialCode: true,
       utilsScript: "assets/libphonenumber/utils.js"
     });
-    $(".phone_validate").intlTelInput("setCountry", $("#country").val())
+
+    $(".phone_validate").each(function() {
+      if ($(this).closest('div').find('.selected-dial-code').text()!="" && $(this).val()!=""){
+        val = $(this).intlTelInput("getNumber");
+        virl = $(this).intlTelInput("setNumber", val);
+      }else{
+        $(this).intlTelInput("setCountry", current_user_country)
+      }
+    })
+    // $(".phone_validate").intlTelInput("setCountry", current_company_country)
+    // set_country_code();
+  }
+
+ function set_country_code() {
+     $(".phone_validate").each(function() {
+      if ($(this).closest('div').find('.selected-dial-code').text()!="" && $(this).val()!=""){
+        val = $(this).intlTelInput("getNumber");
+        virl = $(this).intlTelInput("setNumber", val);
+      }else{
+        $(this).intlTelInput("setCountry", current_company_country)
+      }
+    })
+  }
+
+
+
+  phone_validate();
+
+  function phone_validate() {
+    current_company_country = '<%=get_current_company_country%>'
+    $(".phone_validate").intlTelInput({
+      formatOnInit: true,
+      separateDialCode: true,
+      utilsScript: "assets/libphonenumber/utils.js"
+    });
+    // $(".phone_validate").intlTelInput("setCountry", $("#country").val())
+    set_country_code();
   }
 
   $("#country").change(function(){
@@ -274,7 +311,8 @@
         $(wrapper).append(str_html);
         // $("#account_contacts_attributes_type_"+t).select2({ width: '100%'});
     }
-    phone_validate();
+    add_contact_phone_validate();
+    // phone_validate();
   });
 
   $(wrapper).on("click",".remove-contact-button", function(e){ //user click on remove text
