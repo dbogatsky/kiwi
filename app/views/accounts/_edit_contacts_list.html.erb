@@ -8,7 +8,7 @@
       </li> -->
     <%# end %>
     <div class="edit_cont_title">
-      <i class="fa fa-briefcase"></i><%= text_field_tag "account[contact_name]", account.contact_name.present? ? account.contact_name : "" , class: "form-control input-sm root_acc_name", required: true, placeholder: "Primary Contact"%>
+      <i class="fa fa-briefcase"></i><%= text_field_tag "account[contact_name]", account.contact_name.present? ? account.contact_name : "Primary Contact" , class: "form-control input-sm root_acc_name", required: true, placeholder: "Primary Contact"%>
       <%= text_field_tag "account[contact_title]", account.contact_title.present? ? account.contact_title : "", class: "form-control input-sm", required: true, placeholder: "Primary Contact Title" %>
     </div>
 
