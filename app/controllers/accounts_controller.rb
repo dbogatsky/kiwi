@@ -198,6 +198,15 @@ class AccountsController < ApplicationController
     render :nothing => true
   end
 
+
+  def set_assign_to
+    @user=User.find(params[:value]) rescue nil
+    if @user.present?
+      @user_id=@user.id
+    end
+    render :nothing => true
+  end
+
   def schedule_meeting
     session[:selected_user]= User.find(params[:user_selected]) if params[:user_selected].present?
     c_id = @account.conversation.id
@@ -238,6 +247,18 @@ class AccountsController < ApplicationController
     elsif params[:conversation_item][:repetition_rule][:frequency_type] == 'yearly'
       params[:conversation_item][:repetition_rule][:frequency] = params[:conversation_item][:repetition_rule][:repeat_year]
     end
+
+    if params[:conversation_item][:created_by_id].present?
+      @assign_user = User.find(params[:conversation_item][:created_by_id])
+    end
+
+    if @assign_user.present?
+      @user=@assign_user
+    elsif session[:selected_user].present?
+      @user=session[:selected_user]
+    else
+      @user=current_user
+    end
     ci = ConversationItem.create(
       conversation_item: {
         title:              conversation_item_params[:title],
@@ -259,10 +280,11 @@ class AccountsController < ApplicationController
           day_of_week:        params[:conversation_item][:repetition_rule][:day_of_week],
           day_of_month:       params[:conversation_item][:repetition_rule][:day_of_month],
           weekday_of_month:   params[:conversation_item][:repetition_rule][:weekday_of_month],
-          created_by_id: current_user.id
+          created_by_id: @user.id
           },
         },
         conversation_id: c_id, type: 'meeting')
+
     if ci
       flash[:success] = 'Your meeting has been successfully scheduled'
     else
@@ -1328,7 +1350,7 @@ class AccountsController < ApplicationController
   end
 
   def conversation_item_params
-    params.require(:conversation_item).permit(:account_id, :type, :reminder, :scheduled_at, :subject, :body, :email, :send_later, :title, :status, :amount, :item_type, :ends_at)
+    params.require(:conversation_item).permit(:account_id, :created_by_id, :type, :reminder, :scheduled_at, :subject, :body, :email, :send_later, :title, :status, :amount, :item_type, :ends_at)
   end
 
   def account_params

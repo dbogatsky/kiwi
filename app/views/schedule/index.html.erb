@@ -101,6 +101,10 @@
   //   <%#end%>
   // })
 
+  $(document).ready(function (){
+    $(".assign_to_select").on('change', function(){alert($(this).val())});
+  });
+
   $(document).ready(function () {
     var page = 1;
     $(".add_remote_option").select2({

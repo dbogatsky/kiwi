@@ -46,6 +46,16 @@
                 </div>
               </div><!-- row -->
 
+              <% if @is_admin %>
+                <div class="row editable-list-item">
+                  <div class="col-sm-3">Assign To:</div>
+                  <div class="col-sm-9">
+                    <a href="#" id="" name="conversation_item[created_by_id]" data-type="select" class="editable editable-click meeting_assign_to"><%= current_user.first_name rescue nil %> <%= current_user.last_name rescue nil%>
+                    </a>
+                  </div>
+                </div>
+              <%end%>
+
               <div class="row row-pad-5 invitee_emails_div">
                 <div class="col-lg-12">
                   <div class="invitee_emails">
@@ -302,6 +312,7 @@
              <input type="hidden" name="conversation_item[latitude]">
              <input type="hidden" name="conversation_item[longitude]">
              <input type="hidden" name="user_selected" id="user_selected_id" value= "">
+             <input type="hidden" name="conversation_item[created_by_id]" class="assign_to_id" value="">
             </div><!-- panel-body -->
             <div class="panel-footer">
               <%=submit_tag 'Save',  data: {disable_with: "Saving..." }, class: "btn btn-primary"%>
@@ -312,6 +323,7 @@
     </div><!-- modal content -->
   </div><!-- modal dialog -->
 </div><!-- modal -->
+
 <script type="text/javascript">
 
   $("#meeting-repeat-settings").hide();

@@ -82,6 +82,7 @@ Rails.application.routes.draw do
   post '/accounts/:id/add_note', to: 'accounts#add_note', as: :account_add_note
   post '/accounts/:id/add_asset', to: 'accounts#add_asset', as: :account_add_asset
   put  '/update_asset', to: 'accounts#update_asset', as: :account_update_asset
+  put  '/set_assign_to', to: 'accounts#set_assign_to', as: :set_assign_to
   post '/accounts/add_quote', to:'accounts#add_quote', as: :account_add_quote
   post '/accounts/add_reminder', to: 'accounts#add_reminder', as: :account_add_reminder
   post '/accounts/:id/send_email', to: 'accounts#send_email', as: :account_send_email
