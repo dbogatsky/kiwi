@@ -45,12 +45,6 @@ class ApplicationController < ActionController::Base
     redirect_to root_url
   end
 
-  rescue_from ActiveResource::UnauthorizedAccess do |exception|
-    Rollbar.error(exception, use_exception_level_filters: true)
-    flash[:danger] = exception.message
-    redirect_to root_url
-  end
-
   rescue_from ActiveResource::ResourceInvalid do |exception|
     Rollbar.error(exception, use_exception_level_filters: true)
     flash[:danger] = exception.message
@@ -72,6 +66,19 @@ class ApplicationController < ActionController::Base
     Rollbar.error(exception, use_exception_level_filters: true)
     flash[:danger] = exception.message
     redirect_to root_url
+  end
+
+  rescue_from ActiveResource::UnauthorizedAccess do |exception|
+    #Rollbar.error(exception, use_exception_level_filters: true)
+    flash[:danger] = 'Your session has expired. Please log in again.'
+    RequestStore.store[:user_token] = nil
+    session[:user_id] = nil
+    session[:token] = nil
+    session[:user_preferences] = nil
+    session[:company_settings] = nil
+    session[:selected_user] = nil
+    current_user = nil
+    redirect_to root_path
   end
 
   def raise_bad_request
