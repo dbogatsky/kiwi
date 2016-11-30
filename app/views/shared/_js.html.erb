@@ -45,12 +45,11 @@
                 $("#country").select2().val();
 
               }else if (addressType == 'street_number' || addressType == 'premise'){
-                if(addressType == 'premise'){
-                  document.getElementById('street_number').value = val
-                }
-                else{
+                if(addressType == 'street_number'){
                   r = place.address_components[i+1][componentForm['route']]
                   document.getElementById('street_number').value = val+' '+r
+                }else{
+                  document.getElementById('street_number').value = val
                 }
               }else {
                 document.getElementById(addressType).value = val;
