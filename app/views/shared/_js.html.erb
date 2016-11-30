@@ -35,6 +35,7 @@
           }
         }
         for (var i = 0; i < place.address_components.length; i++) {
+          // console.log(place.address_components)
           var addressType = place.address_components[i].types[0];
           if (componentForm[addressType]) {
             var val = place.address_components[i][componentForm[addressType]];
@@ -44,8 +45,13 @@
                 $("#country").select2().val();
 
               }else if (addressType == 'street_number' || addressType == 'premise'){
-                r = place.address_components[i+1][componentForm['route']]
-                document.getElementById('street_number').value = val+' '+r
+                if(addressType == 'premise'){
+                  document.getElementById('street_number').value = val
+                }
+                else{
+                  r = place.address_components[i+1][componentForm['route']]
+                  document.getElementById('street_number').value = val+' '+r
+                }
               }else {
                 document.getElementById(addressType).value = val;
               }
