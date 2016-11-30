@@ -5,6 +5,7 @@
     function address_auto_fill(e){
       var componentForm = {
         street_number: 'short_name',
+        premise: 'short_name',
         subpremise: 'long_name',
         route: 'long_name',
         locality: 'long_name',
@@ -42,9 +43,9 @@
                 $("#country").select2().val(val);
                 $("#country").select2().val();
 
-              }else if (addressType == 'street_number'){
+              }else if (addressType == 'street_number' || addressType == 'premise'){
                 r = place.address_components[i+1][componentForm['route']]
-                document.getElementById(addressType).value = val+' '+r
+                document.getElementById('street_number').value = val+' '+r
               }else {
                 document.getElementById(addressType).value = val;
               }
