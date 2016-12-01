@@ -921,6 +921,17 @@ class AccountsController < ApplicationController
     send_data generate_assets_csv_template
   end
 
+  def address_mapping
+    address_mapping_info = {}
+    if request.post?
+
+      address_mapping_info[:place] = params[:data]
+      address_mapping_info[:status] = "ok"
+
+    end
+    render json: address_mapping_info
+  end
+
   private
 
   def find_account_by_name_or_id(row_value)

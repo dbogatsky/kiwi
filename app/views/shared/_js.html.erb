@@ -18,6 +18,23 @@
 
       function fillInAddress() {
         var place = autocomplete.getPlace();
+
+        $.ajax({
+            url: '/accounts/address_mapping',
+            dataType: 'json',
+            type: 'post',
+            contentType: 'application/json',
+            data: JSON.stringify( { "data" : place } ),
+            processData: false,
+            success: function( data, textStatus, jQxhr ){
+                console.log( JSON.stringify( data ) );
+                var place = data.place;
+            },
+            error: function( jqXhr, textStatus, errorThrown ){
+                console.log( errorThrown );
+            }
+        });
+
         if (e.id == 'account_name'){
 
           $("#account_name").val(titleize(place.name))
