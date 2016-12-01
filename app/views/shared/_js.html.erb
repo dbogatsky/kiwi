@@ -5,7 +5,6 @@
     function address_auto_fill(e){
       var componentForm = {
         street_number: 'short_name',
-        premise: 'short_name',
         subpremise: 'long_name',
         route: 'long_name',
         locality: 'long_name',
@@ -25,6 +24,7 @@
             }
           }
         }
+        var address_mapping
         $.ajax({
             url: '/accounts/address_mapping?country='+country_name,
             dataType: 'json',
@@ -32,52 +32,47 @@
             contentType: 'application/json',
             processData: false,
             success: function( data, textStatus, jQxhr ){
-                console.log( JSON.stringify( data ) );
+                // console.log( JSON.stringify( data ) );
+              if (e.id == 'account_name'){
+
+                $("#account_name").val(titleize(place.name))
+              }
+              var lat = place.geometry.location.lat();
+              var lng = place.geometry.location.lng();
+
+              $("#account_lat").val(lat);
+              $("#account_lng").val(lng);
+
+              for (var component in componentForm) {
+                if (component != 'route'){
+                  $('#'+component).val('');
+                  $('#'+component).attr('readonly', false)
+                }
+              }
+
+              for (var i = 0; i < place.address_components.length; i++) {
+                // console.log(place.address_components)
+                var addressType = place.address_components[i].types[0];
+                if (componentForm[addressType]) {
+                  var val = place.address_components[i][componentForm[addressType]];
+                  if (addressType !='route'){
+                    if (addressType == 'country'){
+                      $("#country").select2().val(val);
+                      $("#country").select2().val();
+                    }else if (addressType == 'street_number'){
+                        r = place.address_components[i+1][componentForm['route']]
+                        document.getElementById('street_number').value = val+' '+r
+                    }else {
+                      document.getElementById(addressType).value = val;
+                    }
+                  }
+                }
+              }
             },
             error: function( jqXhr, textStatus, errorThrown ){
-                console.log( errorThrown );
+              console.log( errorThrown );
             }
         });
-
-        if (e.id == 'account_name'){
-
-          $("#account_name").val(titleize(place.name))
-        }
-        var lat = place.geometry.location.lat();
-        var lng = place.geometry.location.lng();
-
-        $("#account_lat").val(lat);
-        $("#account_lng").val(lng);
-
-        for (var component in componentForm) {
-          if (component != 'route'){
-            $('#'+component).val('');
-            $('#'+component).attr('readonly', false)
-          }
-        }
-        for (var i = 0; i < place.address_components.length; i++) {
-          // console.log(place.address_components)
-          var addressType = place.address_components[i].types[0];
-          if (componentForm[addressType]) {
-            var val = place.address_components[i][componentForm[addressType]];
-            if (addressType !='route'){
-              if (addressType == 'country'){
-                $("#country").select2().val(val);
-                $("#country").select2().val();
-
-              }else if (addressType == 'street_number' || addressType == 'premise'){
-                if(addressType == 'street_number'){
-                  r = place.address_components[i+1][componentForm['route']]
-                  document.getElementById('street_number').value = val+' '+r
-                }else{
-                  document.getElementById('street_number').value = val
-                }
-              }else {
-                document.getElementById(addressType).value = val;
-              }
-            }
-          }
-        }
       }
     }
 
