@@ -922,17 +922,30 @@ class AccountsController < ApplicationController
   end
 
   def address_mapping
+    address_mapping_response = {}
     address_mapping_info = {}
-    if request.get?
+    if request.get? && params[:country].present?
 
+      case params[:country]
 
+      # United Arab Empire
+      when 'AE'
+        address_mapping_info = {"street_number" => "sublocality_level_1",
+                                "subpremise" => "premise",
+                                "locality" => "locality",
+                                "administrative_area_level_1" => "",
+                                "postal_code" => "",
+                                "country" => "country"
+                               }
 
-
-
-      address_mapping_info[:status] = "ok"
+      else
+        address_mapping_info = {}
+      end
 
     end
-    render json: address_mapping_info
+    address_mapping_response[:address_mapping] = address_mapping_info
+    address_mapping_response[:status] = "ok"
+    render json: address_mapping_response
   end
 
   private
