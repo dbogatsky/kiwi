@@ -15,12 +15,18 @@
       };
       var autocomplete = new google.maps.places.Autocomplete(e);
       autocomplete.addListener('place_changed', fillInAddress);
-
       function fillInAddress() {
         var place = autocomplete.getPlace();
-
+        for (var i = 0; i < place.address_components.length; i++) {
+          var addressType = place.address_components[i].types[0];
+          if (componentForm[addressType]) {
+            if (addressType == 'country'){
+              var country_name = place.address_components[i][componentForm[addressType]]
+            }
+          }
+        }
         $.ajax({
-            url: '/accounts/address_mapping?country=AE',
+            url: '/accounts/address_mapping?country='+country_name,
             dataType: 'json',
             type: 'get',
             contentType: 'application/json',
