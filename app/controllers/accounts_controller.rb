@@ -923,9 +923,12 @@ class AccountsController < ApplicationController
 
   def address_mapping
     address_mapping_info = {}
-    if request.post?
+    if request.get?
 
-      address_mapping_info[:place] = params[:data]
+      
+
+
+
       address_mapping_info[:status] = "ok"
 
     end

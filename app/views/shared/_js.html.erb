@@ -20,15 +20,13 @@
         var place = autocomplete.getPlace();
 
         $.ajax({
-            url: '/accounts/address_mapping',
+            url: '/accounts/address_mapping?country=AE',
             dataType: 'json',
-            type: 'post',
+            type: 'get',
             contentType: 'application/json',
-            data: JSON.stringify( { "data" : place } ),
             processData: false,
             success: function( data, textStatus, jQxhr ){
                 console.log( JSON.stringify( data ) );
-                var place = data.place;
             },
             error: function( jqXhr, textStatus, errorThrown ){
                 console.log( errorThrown );
