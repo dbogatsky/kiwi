@@ -202,6 +202,11 @@ class ApplicationController < ActionController::Base
 
     @current_user ||= User.find(session[:user_id], reload: true)
     @current_user.id = session[:user_id]
+
+    #DUBAI TIMEZONE TEMPFIX
+    if @current_user.time_zone == "Asia/Dubai"
+      @current_user.time_zone = "Abu Dhabi"
+    end
     Time.zone = @current_user.time_zone
   end
 
@@ -224,6 +229,11 @@ class ApplicationController < ActionController::Base
   end
 
   def convert_datetime_to_utc(timezone, date, time="00:00:00")
+    #DUBAI TIMEZONE TEMPFIX
+    if timezone == "Asia/Dubai"
+      timezone = "Abu Dhabi"
+    end
+
     @parsed_datetime = Chronic.parse("#{date} at #{time}").strftime('%Y-%m-%d %H:%M:%S')
     begin
       @timezone_short = TZInfo::Timezone.get("#{timezone}").period_for_utc(Time.now).abbreviation.to_s
