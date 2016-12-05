@@ -5,7 +5,9 @@
     function address_auto_fill(e){
       var componentForm = {
         street_number: 'short_name',
+        sublocality_level_1: 'short_name',
         subpremise: 'long_name',
+        premise: 'long_name',
         route: 'long_name',
         locality: 'long_name',
         administrative_area_level_1: 'long_name',
@@ -34,7 +36,6 @@
             success: function( data, textStatus, jQxhr ){
                 // console.log( JSON.stringify( data ) );
               if (e.id == 'account_name'){
-
                 $("#account_name").val(titleize(place.name))
               }
               var lat = place.geometry.location.lat();
@@ -49,21 +50,33 @@
                   $('#'+component).attr('readonly', false)
                 }
               }
-
+              var address_mapping = data.address_mapping
               for (var i = 0; i < place.address_components.length; i++) {
-                // console.log(place.address_components)
                 var addressType = place.address_components[i].types[0];
                 if (componentForm[addressType]) {
                   var val = place.address_components[i][componentForm[addressType]];
-                  if (addressType !='route'){
-                    if (addressType == 'country'){
+                  if(Object.keys(address_mapping).length > 0){
+                    if(addressType == 'sublocality_level_1'){
+                      document.getElementById('street_number').value = val
+                    }else if(addressType == 'premise'){
+                      document.getElementById('subpremise').value = val
+                    }else if (addressType == 'locality'){
+                      document.getElementById('locality').value = val;
+                    }else if (addressType == 'country'){
                       $("#country").select2().val(val);
                       $("#country").select2().val();
-                    }else if (addressType == 'street_number'){
+                    }
+                  }else{
+                    if (addressType !='route'){
+                      if (addressType == 'country'){
+                        $("#country").select2().val(val);
+                        $("#country").select2().val();
+                      }else if (addressType == 'street_number'){
                         r = place.address_components[i+1][componentForm['route']]
                         document.getElementById('street_number').value = val+' '+r
-                    }else {
-                      document.getElementById(addressType).value = val;
+                      }else if (!(addressType == 'sublocality_level_1' || addressType == 'premise')){
+                        document.getElementById(addressType).value = val;
+                      }
                     }
                   }
                 }
