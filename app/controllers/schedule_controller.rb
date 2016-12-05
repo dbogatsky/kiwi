@@ -118,10 +118,10 @@ class ScheduleController < ApplicationController
         end
         @users= User.where(id: user_list_ids)
 
-        array_of_arrays=@users.map{|x| [x.id, x.first_name]}
-        array_of_hashes = []
-        array_of_arrays.each { |record| array_of_hashes.push({value: record[0], text: record[1]}) }
-        @array_of_hashes = array_of_hashes
+        users_list_array = @users.map{|x| [x.id, x.first_name, x.last_name]}
+        users_list_hash = []
+        users_list_array.each { |record| users_list_hash.push({value: record[0], text: record[1] + ' ' + record[2]}) }
+        @users_list_hash = users_list_hash.sort_by{ |user| user[:text].downcase }
       end
 
       if address.present?
