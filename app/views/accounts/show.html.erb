@@ -34,8 +34,11 @@
                 <i class="fa fa-trash-o"></i><br/>
                 <% end %>
               <% end %>
-
-              <a href="https://maps.google.com?daddr=<%= address.suite_number %>+<%= address.street_address %>+<%= address.city %>+<%= address.region %>+<%= address.country %>+<%= address.postcode %>" target="_blank">
+              <%if address.latitude.present? && address.longitude.present?%>
+               <a href="http://www.google.com/maps/place/<%=address.latitude%>,<%=address.longitude%>" target="_blank">
+              <%else%>
+                <a href="https://maps.google.com?daddr=<%= address.suite_number %>+<%= address.street_address %>+<%= address.city %>+<%= address.region %>+<%= address.country %>+<%= address.postcode %>" target="_blank">
+              <%end%>
               <%= address.suite_number %><%=address.suite_number.present? ? '-' : ''%><%= address.street_address %><br>
               <%= address.city %>, <%= address.region %>, <%= address.country %><br />
               <%= address.postcode %>

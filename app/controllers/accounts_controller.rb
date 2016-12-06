@@ -943,6 +943,33 @@ class AccountsController < ApplicationController
     send_data generate_assets_csv_template
   end
 
+  def address_mapping
+    address_mapping_response = {}
+    address_mapping_info = {}
+    if request.get? && params[:country].present?
+
+      case params[:country]
+
+      # United Arab Empire
+      when 'AE'
+        address_mapping_info = {"street_number" => "sublocality_level_1",
+                                "subpremise" => "premise",
+                                "locality" => "locality",
+                                "administrative_area_level_1" => "",
+                                "postal_code" => "",
+                                "country" => "country"
+                               }
+
+      else
+        address_mapping_info = {}
+      end
+
+    end
+    address_mapping_response[:address_mapping] = address_mapping_info
+    address_mapping_response[:status] = "ok"
+    render json: address_mapping_response
+  end
+
   private
 
   def find_account_by_name_or_id(row_value)

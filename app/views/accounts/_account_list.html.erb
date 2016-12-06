@@ -18,7 +18,7 @@
           <div class="people-item">
             <div class="media">
               <div class="media-body">
-                <%if ((account.assigned_to.try(:id) == current_user.id) || (account.user_account_sharings.present? && (account.user_account_sharings.map(&:user).compact.map(&:id).include?current_user.id)) || @is_admin == true)%>
+                <%if ((account.assigned_to.try(:id) == current_user.id) || (account.user_account_sharings.present? && (account.user_account_sharings.map(&:user).compact.map(&:id).include?current_user.id)) || admin_enti_acct_access(account.assigned_to.try(:id)) || @is_admin == true) %>
                   <h4 class="person-name"><%= link_to account.name, account_path(account.id) %>
                 <%else%>
                   <h4 class="person-name-alt"><%=account.name%>
@@ -63,7 +63,11 @@
                 </div>
                 <ul class="social-list">
                   <% if !account.addresses.empty? %>
-                    <li><a href="https://maps.google.com?daddr=<%= account.addresses[0].suite_number.present? ? account.addresses[0].suite_number + "-" : "" %><%= account.addresses[0].street_address %>+<%= account.addresses[0].city %>+<%= account.addresses[0].region %>+<%= account.addresses[0].country %>+<%= account.addresses[0].postcode %>" target="_blank" class="tooltips" data-toggle="tooltip" data-placement="top" title="Map"><i class="fa fa-map-marker"></i></a></li>
+                    <%if account.addresses[0].latitude.present? && account.addresses[0].longitude.present?%>
+                      <li><a href="http://www.google.com/maps/place/<%=account.addresses[0].latitude%>,<%=account.addresses[0].longitude%>" target="_blank" class="tooltips" data-toggle="tooltip" data-placement="top" title="Map"><i class="fa fa-map-marker"></i></a></li>
+                    <%else%>
+                     <li><a href="https://maps.google.com?daddr=<%= account.addresses[0].suite_number.present? ? account.addresses[0].suite_number + "-" : "" %><%= account.addresses[0].street_address %>+<%= account.addresses[0].city %>+<%= account.addresses[0].region %>+<%= account.addresses[0].country %>+<%= account.addresses[0].postcode %>" target="_blank" class="tooltips" data-toggle="tooltip" data-placement="top" title="Map"><i class="fa fa-map-marker"></i></a></li>
+                    <%end%>
                   <% end %>
                   <% account.contacts.each do |contact| %>
                   	<% if contact.type.eql? "web" or contact.type.eql? "facebook" or contact.type.eql? "twitter" or contact.type.eql? "youtube"%>

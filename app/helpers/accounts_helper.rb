@@ -63,4 +63,14 @@ module AccountsHelper
     end
     html.html_safe
   end
+
+  def admin_enti_acct_access(account_user_id)
+    if current_user.roles.first.name == "Entity Admin" && account_user_id.present?
+      @users = User.all(uid: session[:user_id])
+      @users.map(&:id).include? account_user_id
+    else
+      false
+    end
+  end
+
 end
