@@ -1,4 +1,4 @@
-<%= form_tag update_account_contacts_account_path(account),method: :patch, remote: :true, id: "edit_contact_list" do |f| %>
+<%= form_tag update_account_contacts_account_path(account),method: :patch, remote: :true, novalidate: 'novalidate', id: "edit_contact_list" do |f| %>
   <ul class="profile-social-list" id="account-dynamic-contacts">
     <%# if !account.contact_name.nil? %>
       <!-- <li><i class="fa fa-briefcase"></i>  <%#= account.contact_name.blank? ? "- n/a -" : account.contact_name %>
@@ -31,9 +31,9 @@
                 <%type = 'text'%>
                 <%cls = ''%>
               <%end%>
-              <input type="hidden" name="account[contacts_attributes][<%=contact.id%>][id]" value="<%=contact.id%>">
-              <input type="hidden" name="account[contacts_attributes][<%=contact.id%>][name]" value="<%=contact.name%>">
-              <input type="hidden" name="account[contacts_attributes][<%=contact.id%>][type]" value="<%=contact.type%>">
+              <input type="hidden" name="account[contacts_attributes][<%=contact.id%>][id]" value="<%= contact.id %>">
+              <input type="hidden" name="account[contacts_attributes][<%=contact.id%>][name]" value="<%= contact.name.blank? ? "na" : contact.name %>">
+              <input type="hidden" name="account[contacts_attributes][<%=contact.id%>][type]" value="<%= contact.type %>">
             <% if contact.type.eql? "phone"  or  contact.type.eql? "mobile"  or  contact.type.eql? "fax" %>
                 <li id="<%= dom_id(contact) %>">
                   <div class="form-group">
@@ -147,7 +147,6 @@
                         <input name="account[contacts_attributes][<%=contact.id%>][value]" class="contact_li phone_type_validate form-control input-sm" disabled value="abc" type="tel" required="true" id="account_contacts_attributes_value_<%=contact.id%>" >
                       </div>
 
-
                     </div>
                   </div>
                 </div>
@@ -173,7 +172,7 @@
                 <%cls = ''%>
               <%end%>
               <input type="hidden" name="account[contacts_attributes][<%=contact.id%>][id]" value="<%=contact.id%>">
-              <input type="hidden" name="account[contacts_attributes][<%=contact.id%>][name]" value="<%=contact.name%>">
+              <input type="hidden" name="account[contacts_attributes][<%=contact.id%>][name]" value="<%= contact.name.blank? ? "na" : contact.name %>">
               <input type="hidden" name="account[contacts_attributes][<%=contact.id%>][type]" value="<%=contact.type%>">
             <% if contact.type.eql? "phone"  or  contact.type.eql? "mobile"  or  contact.type.eql? "fax" %>
                 <li id="<%= dom_id(contact) %>" class="contact_list">
@@ -373,7 +372,7 @@
         $(this).val(name_val)
       })
       return true;
-    }else{
+    } else {
       return false;
     }
   });
