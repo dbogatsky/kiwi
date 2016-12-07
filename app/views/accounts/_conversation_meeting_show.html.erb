@@ -2,11 +2,22 @@
   <img src="/assets/vertical-timeline/img/cd-icon-calendar.svg" alt="Meeting">
 </div>
 <div class="cd-timeline-content">
-  <%if citem.starts_at.present? && citem.ends_at.present? %>
+  <%if citem.starts_at.present? && citem.ends_at.present?%>
     <span class="cd-date">
-      <%=Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p")%>
-      to
-      <%=Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p")%>&nbsp;&nbsp;</span>
+      <% if citem.item_type == 'regular' %>
+        <%= citem.starts_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y ")%>&nbsp;&nbsp;</span>
+      <% else %>
+        <% if Chronic.parse(citem.starts_at.to_date.in_time_zone(current_user.time_zone).to_s).to_i < Chronic.parse(citem.ends_at.to_date.in_time_zone(current_user.time_zone).to_s).to_i %>
+          <%= citem.starts_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %I:%M %p ")%>
+          to
+          <%=Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %I:%M %p")%>&nbsp;&nbsp;</span>
+        <% else %>
+          <%= citem.starts_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y from ")%>
+          <%=Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p")%>
+          to
+          <%=Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p")%>&nbsp;&nbsp;</span>
+        <% end %>
+      <% end %>
   <% else %>
     <span class="cd-date"><%= citem.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%></span>
   <% end %>
