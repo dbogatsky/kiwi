@@ -177,15 +177,28 @@
     }
   })
 
-  phone_validate();
+  $(".account_next").click(function(){
+    if ($("#vtab2").hasClass('active')){
+      phone_validate();
+    }
+  })
+
   function phone_validate() {
-    current_company_country = '<%=get_current_company_country%>'
     $(".phone_validate").intlTelInput({
       formatOnInit: true,
       separateDialCode: true,
-      utilsScript: "assets/libphonenumber/utils.js"
-    });
-    $(".phone_validate").intlTelInput("setCountry", current_company_country)
+      utilsScript: "assets/libphonenumber/utils.js",
+      customPlaceholder: function(selectedCountryPlaceholder, selectedCountryData) {
+        return null
+      }
+    })
+
+    $(".phone_validate").each(function() {
+      if ($(this).val() == ''){
+        selected_country = $("#country").val()
+        $(this).intlTelInput("setCountry", selected_country)
+      }
+    })
   }
 
   $(".select2AccountStatus").select2({
