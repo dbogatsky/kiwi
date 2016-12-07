@@ -1,6 +1,6 @@
 $("#keyword").val('<%=@full_address%>')
 <% if @users_list_hash.present? %>
-    $(".meeting_assign_to").html("<%= @account_assigned_to%>")
+    // $(".meeting_assign_to").html("<%#= @account_assigned_to%>")
     var users_list_hash = []
     <%@users_list_hash.each do |a|%>
     users_list_hash.push({value: <%=a[:value]%>, text: '<%=a[:text]%>'})

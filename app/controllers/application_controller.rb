@@ -191,6 +191,7 @@ class ApplicationController < ActionController::Base
       session.delete(:search)
       session.delete(:page)
       session.delete(:company_search)
+      session.delete(:selected_user) if controller_name != "schedule"
     end
   end
 
