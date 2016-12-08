@@ -57,8 +57,10 @@ jQuery(document).ready(function(){
 
 	jQuery("#account-edit-form").on("submit", function(e){
 	 	$(".phone_validate").each(function() {
-      var virl = $(this).intlTelInput("getNumber");
-      $(this).val(virl);
+	 		if($(this).closest('div').find('.selected-dial-code').text()!=""){
+	      var virl = $(this).intlTelInput("getNumber");
+	      $(this).val(virl);
+	    }
     });
 	});
 

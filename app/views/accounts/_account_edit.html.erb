@@ -207,41 +207,11 @@
   });
 
 
-  function add_contact_phone_validate() {
-    current_user_country = '<%#=get_current_user_country%>'
-    selected_country = $("#country").val()
-    $(".phone_validate").intlTelInput({
-      formatOnInit: true,
-      separateDialCode: true,
-      utilsScript: "assets/libphonenumber/utils.js",
-      customPlaceholder: function(selectedCountryPlaceholder, selectedCountryData) {
-        return null
-      }
-    });
-
-    $(".phone_validate").each(function() {
-      if ($(this).closest('div').find('.selected-dial-code').text()!="" && $(this).val()!=""){
-        val = $(this).intlTelInput("getNumber");
-        virl = $(this).intlTelInput("setNumber", val);
-      }else{
-        $(this).intlTelInput("setCountry", current_user_country)
-        $(this).intlTelInput("setCountry", selected_country)
-      }
-    })
-  }
-
-  function set_country_code() {
-    $(".phone_validate").each(function() {
-      if ($(this).closest('div').find('.selected-dial-code').text()!="" && $(this).val()!=""){
-        val = $(this).intlTelInput("getNumber");
-        virl = $(this).intlTelInput("setNumber", val);
-      }else{
-        $(this).intlTelInput("setCountry", $("#country").val())
-      }
-    })
-  }
-
-  phone_validate();
+  $(".account_next").click(function(){
+    if ($("#vtab2").hasClass('active')){
+      phone_validate();
+    }
+  })
 
   function phone_validate() {
     $(".phone_validate").intlTelInput({
@@ -251,13 +221,18 @@
       customPlaceholder: function(selectedCountryPlaceholder, selectedCountryData) {
         return null
       }
-    });
-    set_country_code();
-  }
+    })
 
-  $("#country").change(function(){
-    phone_validate();
-  })
+    $(".phone_validate").each(function() {
+      selected_country = $("#country").val()
+      if($(this).closest('div').find('.selected-dial-code').text()!="" && $(this).val() != ""){
+        val = $(this).intlTelInput("getNumber");
+        $(this).intlTelInput("setNumber", val)
+      }else if ($(this).val() == ""){
+        $(this).intlTelInput("setCountry", selected_country)
+      }
+    })
+  }
 
   $(".select2AssignTo").select2({
     width: '100%'
@@ -312,8 +287,7 @@
         $(wrapper).append(str_html);
         // $("#account_contacts_attributes_type_"+t).select2({ width: '100%'});
     }
-    add_contact_phone_validate();
-    // phone_validate();
+    phone_validate();
   });
 
   $(wrapper).on("click",".remove-contact-button", function(e){ //user click on remove text
