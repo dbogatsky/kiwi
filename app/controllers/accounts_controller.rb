@@ -14,6 +14,7 @@ class AccountsController < ApplicationController
   def index
     @user_preference = user_preferences_load
 
+
     if (@search_all_accounts == 'enable' && @is_admin != true)
       if params[:company_search].present?
         session[:company_search] = (params[:company_search] == 'true') ? true : false
@@ -66,6 +67,7 @@ class AccountsController < ApplicationController
     @users = User.all(uid: session[:user_id])
     @notifiable_users = notifiable_users_json(params[:id])
     @timeline_conversation_items = @account.conversation.conversation_items
+    assign_to_user_list_for_meeting(@account)
   end
 
   def new

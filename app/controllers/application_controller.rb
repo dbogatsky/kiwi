@@ -357,6 +357,46 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def assign_to_user_list_for_meeting(account = nil)
+    @account = account
+    if @account.present?
+      if (['Admin', 'Entity Admin'].include?(current_user.roles.first.name))
+        @account_assigned_to = (@account.assigned_to.nil? ? "Unkonwn" : "#{@account.assigned_to.first_name} #{@account.assigned_to.last_name}")
+
+        @account_owner = (@account.assigned_to.nil? ? "Unkonwn" : @account.assigned_to)
+        @shared_account_users = []
+        @admin_users = []
+
+        @account.user_account_sharings.each do |shared_account|
+          @shared_account_users << shared_account.user
+        end
+
+        User.all.each do |user|
+          if user.roles.present?
+            if ['Admin', 'Entity Admin'].include?(user.roles.first.name)
+              @admin_users<<user
+            end
+          end
+        end
+
+        ids = @admin_users.map(&:id)
+        if @account_owner=="Unkonwn"
+          ids-= @shared_account_users.map(&:id)#<<@account_owner.id
+          user_list_ids = @shared_account_users.map(&:id)+ids
+        else
+          ids-= @shared_account_users.map(&:id)<<@account_owner.id
+          user_list_ids = [@account_owner.id]+@shared_account_users.map(&:id)+ids
+        end
+        @users= User.where(id: user_list_ids)
+
+        users_list_array = @users.map{|x| [x.id, x.first_name, x.last_name]}
+        users_list_hash = []
+        users_list_array.each { |record| users_list_hash.push({value: record[0], text: record[1] + ' ' + record[2]}) }
+        @users_list_hash = users_list_hash.sort_by{ |user| user[:text].downcase }
+      end
+    end
+  end
+
   def notification_info
     @read_items = Array[]
     @unread_items = Array[]
