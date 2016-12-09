@@ -378,83 +378,91 @@
   });
 
 
-  $(document).on('change', '.type_select', function(){
-    edit_contact_phone_validate();
-    var selected_value = $(this).val()
-    if (selected_value == 'email'){
-      $(this).closest('li').find('.phone_type_validate').removeClass('phone_validate')
+  (function () {
+    var prev_selected_value;
+    $(".type_select").on('click', function() {
+      prev_selected_value = $(this).val();
+    }).change( function() {
+      edit_contact_phone_validate();
+      var selected_value = $(this).val()
+      if (selected_value == 'email'){
+        $(this).closest('li').find('.phone_type_validate').removeClass('phone_validate')
 
-      $(this).closest('li').find('.phone_div').hide(500)
-      $(this).closest('li').find('.without_phone_div').removeClass('hidden')
+        $(this).closest('li').find('.phone_div').hide(500)
+        $(this).closest('li').find('.without_phone_div').removeClass('hidden')
 
-      $(this).closest('li').find('.edit_phone_div').addClass('hidden')
-      $(this).closest('li').find('.edit_phone_div').find('.contact_li').removeClass('phone_validate')
-      $(this).closest('li').find('.text_div').show(500)
+        $(this).closest('li').find('.edit_phone_div').addClass('hidden')
+        $(this).closest('li').find('.edit_phone_div').find('.contact_li').removeClass('phone_validate')
+        $(this).closest('li').find('.text_div').show(500)
 
-      $(this).closest('li').find('.type_validate').removeClass('url_validate')
-      $(this).closest('li').find('.type_validate').val(null)
-      $(this).closest('li').find('.type_validate').attr('type', 'email')
-      $(this).closest('li').find('.text_div').find('.contact_li').attr('type','email')
-      $(this).closest('li').find('.type_validate').attr('required', true)
-      $(this).closest('li').find('.type_validate').attr('disabled', false)
-      $(this).closest('li').find('.phone_type_validate').attr('required',false)
-      $(this).closest('li').find('.phone_type_validate').attr('disabled',true)
-    }else if(selected_value == 'facebook' || selected_value == 'youtube' || selected_value == 'website'){
-      $(this).closest('li').find('.phone_type_validate').removeClass('phone_validate')
-      $(this).closest('li').find('.phone_div').hide(500)
-      $(this).closest('li').find('.without_phone_div').removeClass('hidden')
+        $(this).closest('li').find('.type_validate').removeClass('url_validate')
+        $(this).closest('li').find('.type_validate').val(null)
+        $(this).closest('li').find('.type_validate').attr('type', 'email')
+        $(this).closest('li').find('.text_div').find('.contact_li').attr('type','email')
+        $(this).closest('li').find('.type_validate').attr('required', true)
+        $(this).closest('li').find('.type_validate').attr('disabled', false)
+        $(this).closest('li').find('.phone_type_validate').attr('required',false)
+        $(this).closest('li').find('.phone_type_validate').attr('disabled',true)
+      }else if(selected_value == 'facebook' || selected_value == 'youtube' || selected_value == 'website'){
+        $(this).closest('li').find('.phone_type_validate').removeClass('phone_validate')
+        $(this).closest('li').find('.phone_div').hide(500)
+        $(this).closest('li').find('.without_phone_div').removeClass('hidden')
 
-      $(this).closest('li').find('.edit_phone_div').addClass('hidden')
-      $(this).closest('li').find('.edit_phone_div').find('.contact_li').removeClass('phone_validate')
-      $(this).closest('li').find('.text_div').show()
-      $(this).closest('li').find('.text_div').find('.contact_li').attr('type','text')
-      $(this).closest('li').find('.type_validate').addClass('url_validate')
-      $(this).closest('li').find('.type_validate').val(null)
-      $(this).closest('li').find('.type_validate').attr('type', 'text')
-      $(this).closest('li').find('.type_validate').attr('required', true)
-      $(this).closest('li').find('.type_validate').attr('disabled', false)
-      $(this).closest('li').find('.phone_type_validate').attr('required',false)
-      $(this).closest('li').find('.phone_type_validate').attr('disabled',true)
-    }else if (selected_value == 'phone' || selected_value == 'mobile' || selected_value == 'fax'){
-      $(this).closest('li').find('.phone_div').show(500)
-      $(this).closest('li').find('.without_phone_div').addClass('hidden')
+        $(this).closest('li').find('.edit_phone_div').addClass('hidden')
+        $(this).closest('li').find('.edit_phone_div').find('.contact_li').removeClass('phone_validate')
+        $(this).closest('li').find('.text_div').show()
+        $(this).closest('li').find('.text_div').find('.contact_li').attr('type','text')
+        $(this).closest('li').find('.type_validate').addClass('url_validate')
+        $(this).closest('li').find('.type_validate').val(null)
+        $(this).closest('li').find('.type_validate').attr('type', 'text')
+        $(this).closest('li').find('.type_validate').attr('required', true)
+        $(this).closest('li').find('.type_validate').attr('disabled', false)
+        $(this).closest('li').find('.phone_type_validate').attr('required',false)
+        $(this).closest('li').find('.phone_type_validate').attr('disabled',true)
+      }else if (selected_value == 'phone' || selected_value == 'mobile' || selected_value == 'fax'){
+        $(this).closest('li').find('.phone_div').show(500)
+        $(this).closest('li').find('.without_phone_div').addClass('hidden')
 
-      $(this).closest('li').find('.edit_phone_div').removeClass('hidden')
-      $(this).closest('li').find('.edit_phone_div').find('.contact_li').addClass('phone_validate')
-      $(this).closest('li').find('.text_div').hide()
-      $(this).closest('li').find('.text_div').find('.contact_li').attr("value", "")
+        $(this).closest('li').find('.edit_phone_div').removeClass('hidden')
+        $(this).closest('li').find('.edit_phone_div').find('.contact_li').addClass('phone_validate')
+        $(this).closest('li').find('.text_div').hide()
+        $(this).closest('li').find('.text_div').find('.contact_li').attr("value", "")
 
-      $(this).closest('li').find('.edit_phone_div').find('.contact_li').attr('type','tel')
-      $(this).closest('li').find('.edit_phone_div').find('.contact_li').attr("value", "")
+        $(this).closest('li').find('.edit_phone_div').find('.contact_li').attr('type','tel')
+        $(this).closest('li').find('.edit_phone_div').find('.contact_li').attr("value", "")
 
+        $(this).closest('li').find('.type_validate').val(null)
+        $(this).closest('li').find('.type_validate').attr('required', false)
+        $(this).closest('li').find('.type_validate').attr('disabled', true)
 
-      $(this).closest('li').find('.type_validate').val(null)
-      $(this).closest('li').find('.type_validate').attr('required', false)
-      $(this).closest('li').find('.type_validate').attr('disabled', true)
-      $(this).closest('li').find('.phone_type_validate').val(null)
-      $(this).closest('li').find('.phone_type_validate').attr('required',true)
-      $(this).closest('li').find('.phone_type_validate').attr('disabled',false)
-      $(this).closest('li').find('.phone_type_validate').addClass('phone_validate')
-      $(this).closest('li').find('.type_validate').removeClass('url_validate')
-      // $(this).closest('li').find('.type_validate').attr('type', 'tel')
-    }else{
-      $(this).closest('li').find('.phone_div').hide(500)
-      $(this).closest('li').find('.without_phone_div').removeClass('hidden')
+        if (prev_selected_value != 'phone' && prev_selected_value != 'mobile' && prev_selected_value != 'fax') {
+          $(this).closest('li').find('.phone_type_validate').val(null)
+        }
 
-      $(this).closest('li').find('.edit_phone_div').addClass('hidden')
-      $(this).closest('li').find('.edit_phone_div').find('.contact_li').removeClass('phone_validate')
-      $(this).closest('li').find('.text_div').show()
+        $(this).closest('li').find('.phone_type_validate').attr('required',true)
+        $(this).closest('li').find('.phone_type_validate').attr('disabled',false)
+        $(this).closest('li').find('.phone_type_validate').addClass('phone_validate')
+        $(this).closest('li').find('.type_validate').removeClass('url_validate')
+        // $(this).closest('li').find('.type_validate').attr('type', 'tel')
+      }else{
+        $(this).closest('li').find('.phone_div').hide(500)
+        $(this).closest('li').find('.without_phone_div').removeClass('hidden')
 
-      $(this).closest('li').find('.phone_type_validate').removeClass('phone_validate')
-      $(this).closest('li').find('.type_validate').removeClass('url_validate')
-      $(this).closest('li').find('.type_validate').val(null)
-      $(this).closest('li').find('.type_validate').attr('required', true)
-      $(this).closest('li').find('.type_validate').attr('disabled', false)
-      $(this).closest('li').find('.type_validate').attr('type', 'text')
-      $(this).closest('li').find('.phone_type_validate').attr('required',false)
-      $(this).closest('li').find('.phone_type_validate').attr('disabled',true)
-    }
-  });
+        $(this).closest('li').find('.edit_phone_div').addClass('hidden')
+        $(this).closest('li').find('.edit_phone_div').find('.contact_li').removeClass('phone_validate')
+        $(this).closest('li').find('.text_div').show()
+
+        $(this).closest('li').find('.phone_type_validate').removeClass('phone_validate')
+        $(this).closest('li').find('.type_validate').removeClass('url_validate')
+        $(this).closest('li').find('.type_validate').val(null)
+        $(this).closest('li').find('.type_validate').attr('required', true)
+        $(this).closest('li').find('.type_validate').attr('disabled', false)
+        $(this).closest('li').find('.type_validate').attr('type', 'text')
+        $(this).closest('li').find('.phone_type_validate').attr('required',false)
+        $(this).closest('li').find('.phone_type_validate').attr('disabled',true)
+      }
+    });
+  })();
 
   function check_phone_number() {
     flag = true
