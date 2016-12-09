@@ -327,7 +327,7 @@
     $(this).val($(this).attr('data-value'));
   })
 
-  edit_contact_phone_validate();
+  phone_validate();
   $("#edit_contact_list").bind("submit", function(e){
     $(".phone_validate").each(function() {
       if ($(this).closest('div').next().hasClass('error_lable')) {
@@ -383,7 +383,7 @@
     $(".type_select").on('click', function() {
       prev_selected_value = $(this).val();
     }).change( function() {
-      edit_contact_phone_validate();
+      phone_validate();
       var selected_value = $(this).val()
       if (selected_value == 'email'){
         $(this).closest('li').find('.phone_type_validate').removeClass('phone_validate')

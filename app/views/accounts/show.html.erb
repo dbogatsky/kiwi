@@ -347,17 +347,6 @@
       // });
     })
 
-    function set_country_code() {
-       $(".phone_validate").each(function() {
-        if ($(this).closest('div').find('.selected-dial-code').text()!="" && $(this).val()!=""){
-          val = $(this).intlTelInput("getNumber");
-          virl = $(this).intlTelInput("setNumber", val);
-        }else{
-          $(this).intlTelInput("setCountry", current_company_country)
-        }
-      })
-    }
-
     $(document).on('click', '.remove_contact', function(){
       $(this).closest('li').hide();
       $("#contacts_by_name").closest('li').hide();
@@ -372,60 +361,35 @@
       $(this).closest('li').remove();
     })
 
-    phone_validate();
+
+    default_country = '<%=get_current_account_or_current_user_country(@account)%>'
+    current_user_country = '<%=get_current_user_country%>'
 
     function phone_validate() {
-      current_company_country = '<%=get_current_company_country%>'
       $(".phone_validate").intlTelInput({
         formatOnInit: true,
-        separateDialCode: true
-        //,utilsScript: "assets/libphonenumber/utils.js"
-      });
-      // $(".phone_validate").intlTelInput("setCountry", current_company_country)
-      set_country_code();
-    }
-
-
-    function add_contact_phone_validate() {
-      current_company_country = '<%=get_current_company_country%>'
-      current_user_country = '<%=get_current_user_country%>'
-      $(".phone_validate").intlTelInput({
-        formatOnInit: true,
-        separateDialCode: true
-        //,utilsScript: "assets/libphonenumber/utils.js"
-      });
-
-      $(".phone_validate").each(function() {
-        if ($(this).closest('div').find('.selected-dial-code').text()!="" && $(this).val()!=""){
-          val = $(this).intlTelInput("getNumber");
-          virl = $(this).intlTelInput("setNumber", val);
-        }else{
-          $(this).intlTelInput("setCountry", current_user_country)
+        separateDialCode: true,
+        preferredCountries: [current_user_country],
+        //utilsScript: "assets/libphonenumber/utils.js",
+        customPlaceholder: function(selectedCountryPlaceholder, selectedCountryData) {
+          return null
         }
       })
-      // $(".phone_validate").intlTelInput("setCountry", current_company_country)
-      // set_country_code();
-    }
-
-
-    function edit_contact_phone_validate() {
-      current_company_country = '<%=get_current_company_country%>'
-      $(".phone_validate").intlTelInput({
-        formatOnInit: true,
-        separateDialCode: true
-        //,utilsScript: "assets/libphonenumber/utils.js"
-      });
       set_country_code();
-      // $(".phone_validate").each(function() {
-      //   if ($(this).closest('div').find('.selected-dial-code').text()!=""){
-      //     val = $(this).intlTelInput("getNumber");
-      //     virl = $(this).intlTelInput("setNumber", val);
-      //   }else{
-      //     $(".phone_validate").intlTelInput("setCountry", current_company_country)
-      //   }
-      // })
     }
 
+    function set_country_code() {
+      $(".phone_validate").each(function() {
+        if($(this).closest('div').find('.selected-dial-code').text()!="" && $(this).val() != ""){
+          val = $(this).intlTelInput("getNumber");
+          $(this).intlTelInput("setNumber", val)
+        }else if ($(this).val() == ""){
+          $(this).intlTelInput("setCountry", default_country)
+        }
+      })
+    }
+
+    phone_validate();
 
     <%
      @contact_types = ""
@@ -495,7 +459,8 @@
           </div>\
         </li>';
       $(str_html).insertBefore($("#button_li"));
-      add_contact_phone_validate();
+      // add_contact_phone_validate();
+      phone_validate()
       $(".name_field").attr('required', false);
       $(".contacts_by_name").find('input').attr('required', false);
     });
