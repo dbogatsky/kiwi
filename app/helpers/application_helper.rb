@@ -163,4 +163,14 @@ module ApplicationHelper
     return country
   end
 
+  def get_current_account_or_current_user_country(account)
+    if account.addresses.present?
+      country = account.addresses.first.country
+    elsif current_user.addresses.present?
+      country = current_user.addresses.first.country
+    else
+      country = 'US'
+    end
+    return country
+  end
 end
