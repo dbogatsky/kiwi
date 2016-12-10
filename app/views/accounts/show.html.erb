@@ -363,13 +363,13 @@
 
 
     default_country = '<%=get_current_account_or_current_user_country(@account)%>'
-    current_user_country = '<%=get_current_user_country%>'
+    current_user_country = [default_country, '<%=get_current_user_country%>']
 
     function phone_validate() {
       $(".phone_validate").intlTelInput({
         formatOnInit: true,
         separateDialCode: true,
-        preferredCountries: [current_user_country],
+        preferredCountries: current_user_country,
         //utilsScript: "assets/libphonenumber/utils.js",
         customPlaceholder: function(selectedCountryPlaceholder, selectedCountryData) {
           return null
