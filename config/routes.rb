@@ -62,8 +62,9 @@ Rails.application.routes.draw do
       get    :get_users_list # get '/accounts/:id/get_users_list', to: 'accounts#get_users_list'
       get    :load_more_conversation_item
       patch  :update_account_contacts
-      get  :updated_account
-      get :contacts_by_name
+      get    :updated_account
+      patch  :add_related_to_account
+      get    :contacts_by_name
     end
     resources :contacts, only: [:edit, :create, :update, :destroy]
     resources :addresses, only: [:edit, :create, :update, :destroy]

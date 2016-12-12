@@ -3,7 +3,7 @@ include ApplicationHelper
 class AccountsController < ApplicationController
   skip_before_filter :verify_authenticity_token, only: [:delete_future_meeting, :destroy]
   before_action :get_token
-  before_action :find_account, only: [:show, :update_account_contacts, :contacts_by_name, :updated_account, :edit, :destroy, :conversation, :search, :add_quote, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting, :update_quote, :delete_quote, :add_reminder, :update_reminder, :delete_reminder]
+  before_action :find_account, only: [:show, :update_account_contacts, :add_related_to_account, :contacts_by_name, :updated_account, :edit, :destroy, :conversation, :search, :add_quote, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting, :update_quote, :delete_quote, :add_reminder, :update_reminder, :delete_reminder]
   before_action :get_api_values, only: [:search]
   before_action :application_settings, only: [:index, :show, :new, :edit, :generate_properties_csv_template, :properties_csv_validates, :assets_csv_validates, :generate_assets_csv_template]
   before_action :get_setting, only: [:index, :import, :export, :show, :edit, :new, :schedule_meeting, :update_meeting, :add_reminder, :update_reminder, :add_quote, :update_quote, :send_email, :update_email ]
@@ -116,6 +116,13 @@ class AccountsController < ApplicationController
       end
     end
     redirect_to account_path(params[:id])
+  end
+
+  def add_related_to_account
+    params[:account] ={}
+    params[:account][:children_relationships_attributes] = [{child_id: params[:related_to], _destroy: false}]
+    @account.update_attributes(request: :update, account: related_account_params)
+    render :nothing => true
   end
 
   def update_account_contacts
@@ -1373,6 +1380,12 @@ class AccountsController < ApplicationController
   def shared_account_params
     params.require(:account).permit(
       user_account_sharings_attributes: [:user_id, :permission, :_destroy]
+    )
+  end
+
+  def related_account_params
+    params.require(:account).permit(
+      children_relationships_attributes: [:child_id, :_destroy]
     )
   end
 

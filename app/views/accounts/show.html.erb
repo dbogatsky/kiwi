@@ -129,9 +129,19 @@
                     <%= @account.updated_by.nil? ? "" : @account.updated_by.first_name + " " + @account.updated_by.last_name %>
                   </div>
                 </div>
+                <div class="row bars">
+                  <div class="col-xs-5" style="text-align:right">
+                    <strong>Related to</strong>
+                  </div>
+                  <div class="col-xs-7">
+                    <a href="#" data-toggle="modal" data-target=".account-relationship">None
+                      <%#= @account.user_account_sharings.count == 0 ? "Nobody" : "#{pluralize(@account.user_account_sharings.count, 'user')}" %>
+                    </a>
+                  </div>
+                </div>
               </div><!-- col-sm-4 -->
               <%if @account.properties.present? && @account.properties.try(:attributes).present?%>
-                <%x = x == 7 ? 5 : 7%>
+                <%x = x == 5 ? 7 : 5%>
                 <%@account.properties.attributes.each do |key,value|%>
                   <div class="col-sm-<%=x%>">
                     <div class="row bars">
@@ -141,7 +151,7 @@
                       <div class="col-xs-7"><%=value%></div>
                     </div>
                   </div>
-                  <%x = x==7 ? 5 : 7%>
+                  <%x = x==5 ? 7 : 5%>
                 <%end%>
               <%end%>
             </small>
@@ -287,6 +297,7 @@
   <%= render "conversation_reminder", account: @account %>
   <%= render "conversation_reminder_edit", account: @account%>
   <%= render "conversation_sharedusers" %>
+  <%= render "account_relationship_modal" %>
   <%= render "schedule/delete_meeting_modal"%>
   <%= render "schedule/delete_future_meeting_modal"%>
 <% end %>
@@ -294,8 +305,22 @@
 
 <% content_for :custom_js do %>
   <script>
+    $.fn.modal.Constructor.prototype.enforceFocus = function () {};
 
-      var x=0;
+    $("#add_related_to_account").click(function(){
+      account_id = '<%= @account.id %>'
+      selected_account = $(".account_selected").val()
+      if(selected_account != null){
+        $.ajax({
+          type: "patch",
+          url: '/accounts/'+account_id+'/add_related_to_account?related_to='+selected_account,
+          success: function (data) {
+          }
+        });
+      }
+    });
+
+    var x=0;
     $(".get_list_for_edit").click(function(){
       account_id = '<%= @account.id %>'
       set_country_code();

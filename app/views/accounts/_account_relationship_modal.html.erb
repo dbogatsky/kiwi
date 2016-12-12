@@ -1,0 +1,22 @@
+<div class="modal fade account-relationship" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">&times;</button>
+        <h4 class="modal-title">Account Relations</h4>
+        <p>Below are a list of accounts related to this current one.(Name of Account Here)</p>
+      </div>
+      <div class="modal-body" id="">
+        <div class="row">
+          <div class="col-sm-10 country_select">
+            <select class="form-control select2 account_selected add_remote_option" name="id" required="required"></select>
+          </div>
+          <div class="col-sm-2">
+            <button type="button" id="add_related_to_account" class="btn btn-primary"><i class="fa fa-plus-circle mr5"></i>Add</button>
+          </div>
+        </div>
+        <%= render 'list_of_related_to_account'%>
+      </div><!-- modal body -->
+    </div><!-- modal content -->
+  </div><!-- modal dialog -->
+</div><!-- modal -->
