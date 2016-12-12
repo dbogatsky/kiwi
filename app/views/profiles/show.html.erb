@@ -168,8 +168,8 @@
   current_company_country = '<%=get_current_company_country%>'
   $(".phone_validate").intlTelInput({
     formatOnInit: true,
-    separateDialCode: true,
-    utilsScript: "assets/libphonenumber/utils.js"
+    separateDialCode: true
+    //,utilsScript: "assets/libphonenumber/utils.js"
   });
   $(".phone_validate").intlTelInput("setCountry", current_company_country)
 

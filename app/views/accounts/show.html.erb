@@ -343,28 +343,38 @@
 
     $(document).on('change', '.name_select', function(){
       account_id = '<%= @account.id %>'
-      $('#preloader').show();
-
       name = $(this).val();
-      $.ajax({
-        type: "GET",
-        url: '/accounts/'+account_id+'/contacts_by_name?name='+name,
-        success: function (data) {
-          $('#preloader').hide();
-        }
-      });
-    })
-
-    function set_country_code() {
-       $(".phone_validate").each(function() {
-        if ($(this).closest('div').find('.selected-dial-code').text()!="" && $(this).val()!=""){
-          val = $(this).intlTelInput("getNumber");
-          virl = $(this).intlTelInput("setNumber", val);
+      if (name!=""){
+        if (name!="other"){
+          $(".name_field").addClass('hidden');
+          $(".name_field").attr('required', false);
+          $(".contacts_by_name").removeClass('hidden');
+          $(".contacts_by_name").find('input').attr('required',true)
+          $(".name_field").val(name);
+          $('.remove_add_contact').hide()
         }else{
-          $(this).intlTelInput("setCountry", current_company_country)
+          $(".contacts_by_name").removeClass('hidden');
+          $(".contacts_by_name").find('input').attr('required', true);
+          $(".name_field").removeClass('hidden');
+          $(".name_field").val("");
+          $('.remove_add_contact').hide()
         }
-      })
-    }
+
+      }else{
+        $('.remove_add_contact').show()
+        $(".name_field").addClass('hidden');
+        $(".contacts_by_name").addClass('hidden');
+        $(".name_field").attr('required', false);
+        $(".contacts_by_name").find('input').attr('required', false);
+      }
+      // $.ajax({
+      //   type: "GET",
+      //   url: '/accounts/'+account_id+'/contacts_by_name?name='+name,
+      //   success: function (data) {
+      //     $('#preloader').hide();
+      //   }
+      // });
+    })
 
     $(document).on('click', '.remove_contact', function(){
       $(this).closest('li').hide();
@@ -376,60 +386,39 @@
       $(this).closest('li').remove()
     })
 
-    phone_validate();
+    $(document).on('click', '.remove_add_contact', function(){
+      $(this).closest('li').remove();
+    })
+
+
+    default_country = '<%=get_current_account_or_current_user_country(@account)%>'
+    current_user_country = [default_country, '<%=get_current_user_country%>']
 
     function phone_validate() {
-      current_company_country = '<%=get_current_company_country%>'
       $(".phone_validate").intlTelInput({
         formatOnInit: true,
         separateDialCode: true,
-        utilsScript: "assets/libphonenumber/utils.js"
-      });
-      // $(".phone_validate").intlTelInput("setCountry", current_company_country)
-      set_country_code();
-    }
-
-
-    function add_contact_phone_validate() {
-      current_company_country = '<%=get_current_company_country%>'
-      current_user_country = '<%=get_current_user_country%>'
-      $(".phone_validate").intlTelInput({
-        formatOnInit: true,
-        separateDialCode: true,
-        utilsScript: "assets/libphonenumber/utils.js"
-      });
-
-      $(".phone_validate").each(function() {
-        if ($(this).closest('div').find('.selected-dial-code').text()!="" && $(this).val()!=""){
-          val = $(this).intlTelInput("getNumber");
-          virl = $(this).intlTelInput("setNumber", val);
-        }else{
-          $(this).intlTelInput("setCountry", current_user_country)
+        preferredCountries: current_user_country,
+        //utilsScript: "assets/libphonenumber/utils.js",
+        customPlaceholder: function(selectedCountryPlaceholder, selectedCountryData) {
+          return null
         }
       })
-      // $(".phone_validate").intlTelInput("setCountry", current_company_country)
-      // set_country_code();
-    }
-
-
-    function edit_contact_phone_validate() {
-      current_company_country = '<%=get_current_company_country%>'
-      $(".phone_validate").intlTelInput({
-        formatOnInit: true,
-        separateDialCode: true,
-        utilsScript: "assets/libphonenumber/utils.js"
-      });
       set_country_code();
-      // $(".phone_validate").each(function() {
-      //   if ($(this).closest('div').find('.selected-dial-code').text()!=""){
-      //     val = $(this).intlTelInput("getNumber");
-      //     virl = $(this).intlTelInput("setNumber", val);
-      //   }else{
-      //     $(".phone_validate").intlTelInput("setCountry", current_company_country)
-      //   }
-      // })
     }
 
+    function set_country_code() {
+      $(".phone_validate").each(function() {
+        if($(this).closest('div').find('.selected-dial-code').text()!="" && $(this).val() != ""){
+          val = $(this).intlTelInput("getNumber");
+          $(this).intlTelInput("setNumber", val)
+        }else if ($(this).val() == ""){
+          $(this).intlTelInput("setCountry", default_country)
+        }
+      })
+    }
+
+    phone_validate();
 
     <%
      @contact_types = ""
@@ -451,17 +440,58 @@
               <div class="col-sm-1">\
               </div>\
               <div class="col-sm-10">\
-                <select class="input-sm background_color name_select" style="width: 100%;" id="account_attributes_name_'+t+'" value="" name="account[name_selected]"><%= raw(@contact_names) %></select>\
+                <select class="input-sm background_color name_select" style="width: 100%;" id="account_attributes_name_'+t+'" required value="" name="account[name_selected]"><%= raw(@contact_names) %></select>\
+              </div>\
+              <div class="col-sm-1">\
+                <a href="javascript:void(0);" class="remove_add_contact" style="margin-top: 9px;" data-toggle="tooltip" title="Click to Remove Contacts"><i class="fa fa-trash-o" aria-hidden="true"></i>\
+                </a>\
+              </div>\
+            </div>\
+            <div class="row">\
+              <div class="col-sm-1">\
+              </div>\
+              <div class="col-sm-10">\
+                <input label="Name" name="account[contacts_attributes]['+t+'][name]" class="contact_li form-control name_field hidden input-sm" required id="account_contacts_attributes_name_'+t+'" type="text" placeholder="contact name">\
               </div>\
               <div class="col-sm-1">\
               </div>\
             </div>\
           </div>\
-          <div id="contacts_by_name">\
+          <div id="contacts_by_name" class="contacts_by_name hidden">\
+            <div class="form-group">\
+              <div class="row">\
+                <div class="col-sm-1">\
+                   </div>\
+                <div class="col-sm-10">\
+                  <select class="input-sm background_color type_select" style="width: 100%;" id="account_contacts_attributes_type_'+t+'" name="account[contacts_attributes]['+t+'][type]"><%= raw(@contact_types) %></select>\
+                </div>\
+                <div class="col-sm-1">\
+                  <a href="javascript:void(0);" class="remove_dynamic_contact" style="margin-top: 9px;" data-toggle="tooltip" title="Click to Remove Contacts"><i class="fa fa-trash-o" aria-hidden="true"></i>\
+                  </a>\
+                </div>\
+              </div>\
+            </div>\
+            <div class="form-group">\
+              <div class="row">\
+                <div class="col-sm-1">\
+                </div>\
+                <div class="col-sm-10 phone_div">\
+                  <input label="Value" name="account[contacts_attributes]['+t+'][value]" class=" contact_li form-control input-sm phone_type_validate phone_validate" required id="account_contacts_attributes_value_'+t+'" type="tel" placeholder="contact value">\
+                </div>\
+                <div class="col-sm-10 without_phone_div hidden">\
+                  <input label="Value" name="account[contacts_attributes]['+t+'][value]" class="form-control type_validate contact_li"  disabled id="account_contacts_attributes_value_'+t+'" type="text" placeholder="contact value">\
+                </div>\
+                <div class="col-sm-1">\
+                </div>\
+              </div>\
+            </div>\
           </div>\
         </li>';
       $(str_html).insertBefore($("#button_li"));
-      add_contact_phone_validate();
+      // add_contact_phone_validate();
+      phone_validate()
+      $(".name_field").attr('required', false);
+      $(".contacts_by_name").find('input').attr('required', false);
     });
 
     $(document).on('change', '.meeting_type', function(){

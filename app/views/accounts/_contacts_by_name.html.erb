@@ -145,9 +145,9 @@
   $(".type_select").each(function() {
     $(this).val($(this).attr('data-value'));
   });
-  edit_contact_phone_validate();
+  phone_validate();
   $(document).on('change', '.type_select', function(){
-    edit_contact_phone_validate();
+    phone_validate();
     var selected_value = $(this).val()
     if (selected_value == 'email'){
       $(this).closest('li').find('.phone_type_validate').removeClass('phone_validate')
