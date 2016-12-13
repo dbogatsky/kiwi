@@ -1,22 +1,24 @@
-<div class="panel panel-default">
-  <div class="panel-body" id="user_list">
-    <div class="table-responsive">
-      <table class="table mb30" id="list_of_related_to_account">
-        <thead>
+<div class="table-responsive">
+  <table class="table mb30">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Account</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <%if related_to_account.count > 0%>
+        <%related_to_account.each do |acc|%>
+        <%relation = (acc.class.name == 'Account::Parent') ? 'parent' : 'child'%>
           <tr>
-            <th>ID</th>
-            <th>Account</th>
-            <th></th>
+            <td><%=acc.id%></td>
+            <td><%=acc.name%></td>
+            <td><%=link_to add_related_to_account_account_path(id: @account,related_to: acc.id, destroy: true, relationship_type: relation), method: :patch, remote: :true do%><i class="fa fa-trash-o"></i><%end%>
+            </td>
           </tr>
-        </thead>
-        <tbody>
-
-        </tbody>
-      </table>
-    </div>
-  </div><!-- panel-body -->
-  <div class="panel-footer">
-    <div class="row">
-    </div>
-  </div><!-- panel footer -->
-</div><!-- panel -->
+        <%end%>
+      <%end%>
+    </tbody>
+  </table>
+</div>

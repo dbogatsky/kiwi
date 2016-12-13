@@ -66,6 +66,7 @@ class AccountsController < ApplicationController
     @users = User.all(uid: session[:user_id])
     @notifiable_users = notifiable_users_json(params[:id])
     @timeline_conversation_items = @account.conversation.conversation_items
+    get_related_account(@account)
   end
 
   def new
@@ -119,10 +120,20 @@ class AccountsController < ApplicationController
   end
 
   def add_related_to_account
+    get_related_account(@account)
     params[:account] ={}
-    params[:account][:children_relationships_attributes] = [{child_id: params[:related_to], _destroy: false}]
-    @account.update_attributes(request: :update, account: related_account_params)
-    render :nothing => true
+    all_related_account = @related_to_account.map(&:id)
+    account_exist = all_related_account.include?(params[:related_to].to_i)
+    account_exist = false if params[:destroy] == 'true'
+    unless account_exist
+      if params[:relationship_type] == "parent"
+        params[:account][:parents_relationships_attributes] = [{parent_id: params[:related_to], _destroy: params[:destroy]}]
+      else
+        params[:account][:children_relationships_attributes] = [{child_id: params[:related_to], _destroy: params[:destroy]}]
+      end
+      @account.update_attributes(request: :update, account: related_account_params)
+      get_related_account(@account)
+    end
   end
 
   def update_account_contacts
@@ -957,6 +968,14 @@ class AccountsController < ApplicationController
 
   private
 
+
+  def get_related_account(account)
+    related_to_account = account.parents
+    related_to_account << account.children
+    @related_to_account = related_to_account.flatten.uniq
+  end
+
+
   def find_account_by_name_or_id(row_value)
     if row_value.to_i != 0
       @account = Account.find(row_value.to_i)
@@ -1385,7 +1404,8 @@ class AccountsController < ApplicationController
 
   def related_account_params
     params.require(:account).permit(
-      children_relationships_attributes: [:child_id, :_destroy]
+      children_relationships_attributes: [:child_id, :_destroy],
+      parents_relationships_attributes: [:parent_id, :_destroy]
     )
   end
 

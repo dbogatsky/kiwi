@@ -133,9 +133,8 @@
                   <div class="col-xs-5" style="text-align:right">
                     <strong>Related to</strong>
                   </div>
-                  <div class="col-xs-7">
-                    <a href="#" data-toggle="modal" data-target=".account-relationship">None
-                      <%#= @account.user_account_sharings.count == 0 ? "Nobody" : "#{pluralize(@account.user_account_sharings.count, 'user')}" %>
+                  <div class="col-xs-7" id="related_account_name">
+                    <a href="#" data-toggle="modal" data-target=".account-relationship"><%=@related_to_account.count == 0 ? "None" : related_account(@related_to_account)%>
                     </a>
                   </div>
                 </div>
@@ -306,19 +305,6 @@
 <% content_for :custom_js do %>
   <script>
     $.fn.modal.Constructor.prototype.enforceFocus = function () {};
-
-    $("#add_related_to_account").click(function(){
-      account_id = '<%= @account.id %>'
-      selected_account = $(".account_selected").val()
-      if(selected_account != null){
-        $.ajax({
-          type: "patch",
-          url: '/accounts/'+account_id+'/add_related_to_account?related_to='+selected_account,
-          success: function (data) {
-          }
-        });
-      }
-    });
 
     var x=0;
     $(".get_list_for_edit").click(function(){
