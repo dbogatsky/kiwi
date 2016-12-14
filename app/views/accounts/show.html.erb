@@ -294,36 +294,6 @@
 
 <% content_for :custom_js do %>
   <script>
-    <% if @users_list_hash.present? %>
-        // $(".meeting_assign_to").html("<%#= @account_assigned_to%>")
-        var users_list_hash = []
-        <%@users_list_hash.each do |a|%>
-        users_list_hash.push({value: <%=a[:value]%>, text: '<%=a[:text]%>'})
-      <%end%>
-
-      <%@users_list_hash.each do |value|%>
-        $(".meeting_assign_to").editable({
-          source: users_list_hash,
-          value: "<%=value[:value]%>",
-          mode: 'inline',
-          inputclass: 'assign_to_select',
-          name: 'assign_to_select',
-          url: '/set_assign_to?account_id=<%=@account.id%>',
-          pk: '<%=value[:value]%>',
-          ajaxOptions: {
-            type: 'put'
-          },
-          success: function(response, newValue) {
-            if(response.status == 'error'){
-              return response.msg;
-            }else{
-              $(".assign_to_id").val(newValue);
-            }
-          },
-        });
-      <%end%>
-    <%end%>
-
     var x=0;
     $(".get_list_for_edit").click(function(){
       account_id = '<%= @account.id %>'

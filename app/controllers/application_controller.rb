@@ -360,36 +360,21 @@ class ApplicationController < ActionController::Base
   def assign_to_user_list_for_meeting(account = nil)
     @account = account
     if @account.present?
-      if (['Admin', 'Entity Admin'].include?(current_user.roles.first.name))
-        @account_assigned_to = (@account.assigned_to.nil? ? "Unkonwn" : "#{@account.assigned_to.first_name} #{@account.assigned_to.last_name}")
-
-        @account_owner = (@account.assigned_to.nil? ? "Unkonwn" : @account.assigned_to)
-        @shared_account_users = []
-        @admin_users = []
-
-        @account.user_account_sharings.each do |shared_account|
-          @shared_account_users << shared_account.user
-        end
-
+      if current_user.roles.first.name == 'Admin'
+        @assigned_to = "#{current_user.first_name} #{current_user.last_name}"
+        user_list = []
+        user_list << @account.assigned_to unless @account.assigned_to.nil?
+        user_list << @account.user_account_sharings.map(&:user) if @account.user_account_sharings.count > 0
         User.all.each do |user|
           if user.roles.present?
-            if ['Admin', 'Entity Admin'].include?(user.roles.first.name)
-              @admin_users<<user
+            if user.roles.first.name == "Admin"
+              user_list << user
             end
           end
         end
-
-        ids = @admin_users.map(&:id)
-        if @account_owner=="Unkonwn"
-          ids-= @shared_account_users.map(&:id)#<<@account_owner.id
-          user_list_ids = @shared_account_users.map(&:id)+ids
-        else
-          ids-= @shared_account_users.map(&:id)<<@account_owner.id
-          user_list_ids = [@account_owner.id]+@shared_account_users.map(&:id)+ids
-        end
-        @users= User.where(id: user_list_ids)
-
-        users_list_array = @users.map{|x| [x.id, x.first_name, x.last_name]}
+        user_list = user_list.flatten
+        users_list_array = user_list.map{|x| [x.id, x.first_name, x.last_name]}
+        users_list_array = users_list_array.uniq
         users_list_hash = []
         users_list_array.each { |record| users_list_hash.push({value: record[0], text: record[1] + ' ' + record[2]}) }
         @users_list_hash = users_list_hash.sort_by{ |user| user[:text].downcase }

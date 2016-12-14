@@ -68,11 +68,18 @@ class ScheduleController < ApplicationController
     if params[:account_id].present?
       begin
         @notifiable_users = notifiable_users_json(params[:account_id])
+        @account = Account.find(params[:account_id])
+        assign_to_user_list_for_meeting(@account)
         @result = true
       rescue
         @result = false
       end
     end
+  end
+
+  def get_assign_to_user_list_for_quote
+    @account = Account.find(params[:account_id])
+    assign_to_user_list_for_meeting(@account)
   end
 
   def sort_regular_visits

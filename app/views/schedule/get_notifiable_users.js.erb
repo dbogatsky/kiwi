@@ -4,6 +4,36 @@
 	    data: new_data
 	  });
 	 $(".conversation-reminder-modal-form .select2").css('width', '100%');
+
+  <% if @users_list_hash.present? %>
+    var users_list_hash = []
+    <%@users_list_hash.each do |a|%>
+    users_list_hash.push({value: <%=a[:value]%>, text: '<%=a[:text]%>'})
+ 	<%end%>
+
+	<%@users_list_hash.each do |value|%>
+	 	$(".reminder_assign_to").editable({
+      source: users_list_hash,
+      value: '<%=current_user.id%>',
+      mode: 'inline',
+      inputclass: 'assign_to_select',
+      name: 'assign_to_select',
+      url: '/set_assign_to?account_id=<%=@account.id%>',
+      pk: '<%=value[:value]%>',
+      ajaxOptions: {
+        type: 'put'
+      },
+      success: function(response, newValue) {
+        if(response == true){
+          $(".reminder_assign_to_id").val(newValue);
+        }else{
+          $(".reminder_assign_to_id").val('')
+        	return "user does not have access"
+        }
+      },
+    });
+	<%end%>
+<%end%>
   $('#preloader').hide();
 <%else%>
   window.location.reload();

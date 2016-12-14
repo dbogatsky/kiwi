@@ -91,6 +91,7 @@ Rails.application.routes.draw do
 
   match '/schedule', to: 'schedule#index', as: :schedule, via: [:get]
   get   '/schedule/get_notifiable_users', to: 'schedule#get_notifiable_users', as: :schedule_get_notifiable_users
+  get   '/schedule/get_assign_to_user_list_for_quote', to: 'schedule#get_assign_to_user_list_for_quote', as: :schedule_get_assign_to_user_list_for_quote
   patch '/schedule/sort_regular_visits', to: 'schedule#sort_regular_visits', as: :schedule_sort_regular_visits
   get   '/schedule/calendar_event', to: 'schedule#calendar_event', as: :schedule_calendar_event
   get   '/schedule/get_meeting', to: 'schedule#get_meeting', as: :schedule_get_meeting

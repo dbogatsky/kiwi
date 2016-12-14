@@ -46,7 +46,7 @@
                 </div>
               </div><!-- row -->
 
-              <% if @is_admin %>
+              <% if @is_admin && account.blank?%>
                 <div class="row editable-list-item">
                   <div class="col-sm-3">Assign To:</div>
                   <div class="col-sm-9">

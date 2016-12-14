@@ -1,13 +1,10 @@
-$("#keyword").val('<%=@full_address%>')
 <% if @users_list_hash.present? %>
-      // $(".meeting_assign_to").html("<%#= @assigned_to%>")
-    var users_list_hash = []
-    <%@users_list_hash.each do |a|%>
+  var users_list_hash = []
+  <%@users_list_hash.each do |a|%>
     users_list_hash.push({value: <%=a[:value]%>, text: '<%=a[:text]%>'})
- 	<%end%>
-
-	<%@users_list_hash.each do |value|%>
-	 	$(".meeting_assign_to").editable({
+	  <%end%>
+  <%@users_list_hash.each do |value|%>
+	 	$(".quote_assign_to").editable({
       source: users_list_hash,
       value: '<%=current_user.id%>',
       mode: 'inline',
@@ -20,14 +17,13 @@ $("#keyword").val('<%=@full_address%>')
       },
       success: function(response, newValue) {
         if(response == true){
-          $(".assign_to_id").val(newValue);
+          $(".quote_assign_to_id").val(newValue);
         }else{
-      	  // $(".assign_to_select").val('<%#=current_user.id%>')
-          $(".assign_to_id").val('')
+          $(".quote_assign_to_id").val('')
         	return "user does not have access"
         }
       },
     });
-	<%end%>
+  <%end%>
 <%end%>
 $('#preloader').hide();

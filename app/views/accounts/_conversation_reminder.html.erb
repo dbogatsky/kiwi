@@ -24,6 +24,15 @@
                   </div><!-- row -->
                   <input type="hidden" name="add_from_schedule" value= "true">
                 <%end%>
+                <% if @is_admin && account.blank?%>
+                  <div class="row row-pad-5 editable-list-item">
+                    <div class="col-sm-3">Assign To:</div>
+                    <div class="col-sm-9">
+                      <a href="#" id="" name="conversation_item[created_by_id]" data-type="select" class="editable editable-click reminder_assign_to"><%= current_user.first_name rescue nil %> <%= current_user.last_name rescue nil%>
+                      </a>
+                    </div>
+                  </div>
+                <%end%>
                 <div class="row row-pad-5">
                   <div class="col-lg-12">
                     <textarea class="form-control wysihtml5" id="new_reminder" rows="5" placeholder="Message" name="conversation_item[body]"></textarea>
@@ -100,6 +109,7 @@
                 <%end%>
                 <input type="hidden" name="conversation_item[type]" value="reminder" >
                 <input type="hidden" name="user_selected" class="user_selected_id" value= "">
+                <input type="hidden" name="conversation_item[created_by_id]" class="reminder_assign_to_id" value="">
               </div><!-- panel-body -->
               <div class="panel-footer">
                 <%=submit_tag 'Save',  data: {disable_with: "Saving..." }, class: "btn btn-primary"%>

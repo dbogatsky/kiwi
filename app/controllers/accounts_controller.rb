@@ -67,7 +67,7 @@ class AccountsController < ApplicationController
     @users = User.all(uid: session[:user_id])
     @notifiable_users = notifiable_users_json(params[:id])
     @timeline_conversation_items = @account.conversation.conversation_items
-    assign_to_user_list_for_meeting(@account)
+    # assign_to_user_list_for_meeting(@account)
   end
 
   def new
@@ -203,10 +203,13 @@ class AccountsController < ApplicationController
 
   def set_assign_to
     @user=User.find(params[:value]) rescue nil
-    if @user.present?
-      @user_id=@user.id
+    if @user.present? && ((Ability.new(@user).can? :manage_permission, Conversation) || (Ability.new(@user).can? :manage_permission, Account))
+      @user_id = @user.id
+      status = true
+    else
+      status = false
     end
-    render :nothing => true
+    render json: status
   end
 
   def schedule_meeting
@@ -249,7 +252,6 @@ class AccountsController < ApplicationController
     elsif params[:conversation_item][:repetition_rule][:frequency_type] == 'yearly'
       params[:conversation_item][:repetition_rule][:frequency] = params[:conversation_item][:repetition_rule][:repeat_year]
     end
-
     if params[:conversation_item][:created_by_id].present?
       @assign_user = User.find(params[:conversation_item][:created_by_id])
     end
@@ -275,6 +277,7 @@ class AccountsController < ApplicationController
         ends_at:            params[:conversation_item][:ends_at],
         item_type:          params[:conversation_item][:item_type],
         all_day_appointment: params[:conversation_item][:all_day_appointment],
+        created_by_id: @user.id,
         repetition_rules: {
           frequency_type:     params[:conversation_item][:repetition_rule][:frequency_type],
           frequency:          params[:conversation_item][:repetition_rule][:frequency],
@@ -282,11 +285,9 @@ class AccountsController < ApplicationController
           day_of_week:        params[:conversation_item][:repetition_rule][:day_of_week],
           day_of_month:       params[:conversation_item][:repetition_rule][:day_of_month],
           weekday_of_month:   params[:conversation_item][:repetition_rule][:weekday_of_month],
-          created_by_id: @user.id
           },
         },
         conversation_id: c_id, type: 'meeting')
-
     if ci
       flash[:success] = 'Your meeting has been successfully scheduled'
     else
@@ -452,7 +453,20 @@ class AccountsController < ApplicationController
       params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:follow_date], params[:follow_time])
     end
     check_daylight   #call to check daylight
-    ci = ConversationItem.create(conversation_item: { title: conversation_item_params[:title], ends_at: conversation_item_params[:ends_at], body: conversation_item_params[:body], reminder: conversation_item_params[:reminder], scheduled_at: params[:conversation_item][:scheduled_at], status: conversation_item_params[:status], amount: conversation_item_params[:amount], item_type: conversation_item_params[:item_type], created_by_id: current_user.id}, conversation_id: c_id, type: conversation_item_params[:type])
+
+    if params[:conversation_item][:created_by_id].present?
+      @assign_user = User.find(params[:conversation_item][:created_by_id])
+    end
+
+    if @assign_user.present?
+      @user=@assign_user
+    elsif session[:selected_user].present?
+      @user=session[:selected_user]
+    else
+      @user=current_user
+    end
+
+    ci = ConversationItem.create(conversation_item: { title: conversation_item_params[:title], ends_at: conversation_item_params[:ends_at], body: conversation_item_params[:body], reminder: conversation_item_params[:reminder], scheduled_at: params[:conversation_item][:scheduled_at], status: conversation_item_params[:status], amount: conversation_item_params[:amount], item_type: conversation_item_params[:item_type], created_by_id: @user.id}, conversation_id: c_id, type: conversation_item_params[:type])
     if ci
       flash[:success] = 'Your quote has been added to the conversation'
     else
@@ -543,7 +557,20 @@ class AccountsController < ApplicationController
     c_id = @account.conversation.id
     params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:scheduled_date], params[:scheduled_time]) if params[:scheduled_date].present? && params[:scheduled_time].present?
     check_daylight   #call to check daylight
-    ci = ConversationItem.create(conversation_item: { title: conversation_item_params[:subject], body: conversation_item_params[:body], scheduled_at: params[:conversation_item][:scheduled_at], created_by_id: current_user.id, notify_by_sms: params[:conversation_item][:notify_by_sms], notify_by_email: params[:conversation_item][:notify_by_email], users_to_notify_ids: params[:conversation_item][:users_to_notify_ids] }, conversation_id: c_id, type: conversation_item_params[:type])
+
+    if params[:conversation_item][:created_by_id].present?
+      @assign_user = User.find(params[:conversation_item][:created_by_id])
+    end
+
+    if @assign_user.present?
+      @user=@assign_user
+    elsif session[:selected_user].present?
+      @user=session[:selected_user]
+    else
+      @user=current_user
+    end
+
+    ci = ConversationItem.create(conversation_item: { title: conversation_item_params[:subject], body: conversation_item_params[:body], scheduled_at: params[:conversation_item][:scheduled_at], created_by_id: @user.id, notify_by_sms: params[:conversation_item][:notify_by_sms], notify_by_email: params[:conversation_item][:notify_by_email], users_to_notify_ids: params[:conversation_item][:users_to_notify_ids] }, conversation_id: c_id, type: conversation_item_params[:type])
     if ci
       flash[:success] = 'Your reminder has been added to the conversation!'
     else
