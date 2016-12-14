@@ -122,14 +122,29 @@ class AccountsController < ApplicationController
   def add_related_to_account
     get_related_account(@account)
     params[:account] ={}
-    all_related_account = @related_to_account.map(&:id)
+    all_related_account = []
+    @related_to_account.each do |acc|
+      if acc.class.name == 'Account::Parent'
+        all_related_account << acc.parent_id
+      else
+        all_related_account << acc.child_id
+      end
+    end
     account_exist = all_related_account.include?(params[:related_to].to_i)
     account_exist = false if params[:destroy] == 'true'
     unless account_exist
       if params[:relationship_type] == "parent"
-        params[:account][:parents_relationships_attributes] = [{parent_id: params[:related_to], _destroy: params[:destroy]}]
+        if params[:destroy] == 'true'
+          params[:account][:parents_relationships_attributes] = [{id: params[:related_to], _destroy: params[:destroy]}]
+        else
+          params[:account][:parents_relationships_attributes] = [{parent_id: params[:related_to], _destroy: params[:destroy]}]
+        end
       else
-        params[:account][:children_relationships_attributes] = [{child_id: params[:related_to], _destroy: params[:destroy]}]
+        if params[:destroy] == 'true'
+          params[:account][:children_relationships_attributes] = [{id: params[:related_to], _destroy: params[:destroy]}]
+        else
+          params[:account][:children_relationships_attributes] = [{child_id: params[:related_to], _destroy: params[:destroy]}]
+        end
       end
       @account.update_attributes(request: :update, account: related_account_params)
       get_related_account(@account)
@@ -1404,8 +1419,8 @@ class AccountsController < ApplicationController
 
   def related_account_params
     params.require(:account).permit(
-      children_relationships_attributes: [:child_id, :_destroy],
-      parents_relationships_attributes: [:parent_id, :_destroy]
+      children_relationships_attributes: [:id, :child_id, :_destroy],
+      parents_relationships_attributes: [:id, :parent_id, :_destroy]
     )
   end
 

@@ -10,9 +10,15 @@
     <tbody>
       <%if related_to_account.count > 0%>
         <%related_to_account.each do |acc|%>
-        <%relation = (acc.class.name == 'Account::Parent') ? 'parent' : 'child'%>
+          <%if acc.class.name == 'Account::Parent'%>
+            <%relation = 'parent'%>
+            <%related_id = acc.parent_id%>
+          <%else%>
+            <%relation = 'child'%>
+            <%related_id = acc.child_id%>
+          <%end%>
           <tr>
-            <td><%=acc.id%></td>
+            <td><%=related_id%></td>
             <td><%=acc.name%></td>
             <td><%=link_to add_related_to_account_account_path(id: @account,related_to: acc.id, destroy: true, relationship_type: relation), method: :patch, remote: :true do%><i class="fa fa-trash-o"></i><%end%>
             </td>
