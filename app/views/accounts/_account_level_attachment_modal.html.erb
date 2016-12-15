@@ -1,0 +1,31 @@
+<div class="modal fade account-level-attachment" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">&times;</button>
+        <h4 class="modal-title">Account Attachments</h4>
+        <p>Below are all attachments related to this account</p>
+      </div>
+      <div class="modal-body" id="attachtment_list">
+        <div class="row row-pad-5 drop_zone_height">
+          <div class="col-lg-12">
+            <form action="/accounts/<%=@account.id%>/add_account_attachment" id="my-awesome-dropzone" class="dropzone drop_zon_box" id="dropzone_from_submit"enctype="multipart/form-data" method="post">
+            </form>
+          </div>
+        </div>
+        <div class="row row-pad-5">
+          <div class="col-lg-12" style="text-align: right;">
+            <button type="submit" id="submit_dropzone_form" class="btn btn-primary">Upload</button>
+          </div>
+        </div>
+        <div class="panel-footer">
+          <div class="row">
+            <div class="col-sm-12">
+               <button aria-hidden="true" data-dismiss="modal" class="btn btn-primary save" type="button">Close</button>
+            </div>
+          </div>
+        </div><!-- panel footer -->
+      </div><!-- modal body -->
+    </div><!-- modal content -->
+  </div><!-- modal dialog -->
+</div><!-- modal -->

@@ -1,7 +1,7 @@
 require 'net/http/post/multipart'
 include ApplicationHelper
 class AccountsController < ApplicationController
-  skip_before_filter :verify_authenticity_token, only: [:delete_future_meeting, :destroy]
+  skip_before_filter :verify_authenticity_token, only: [:add_account_attachment, :delete_future_meeting, :destroy]
   before_action :get_token
   before_action :find_account, only: [:show, :update_account_contacts, :contacts_by_name, :updated_account, :edit, :destroy, :conversation, :search, :add_quote, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting, :update_quote, :delete_quote, :add_reminder, :update_reminder, :delete_reminder]
   before_action :get_api_values, only: [:search]
@@ -144,7 +144,6 @@ class AccountsController < ApplicationController
     else
       @account.update_attributes(name: @account.name, account: account_params)
     end
-
   end
 
 
@@ -152,6 +151,10 @@ class AccountsController < ApplicationController
     @contacts = @account.contacts.group_by{|x| x.name==params[:name]}[true]
   end
 
+
+  def add_account_attachment
+    render json: 'window.location.reload()'
+  end
 
   def destroy
     if @account.destroy

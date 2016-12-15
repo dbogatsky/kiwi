@@ -94,6 +94,16 @@
                     </a>
                   </div>
                 </div>
+                <div class="row bars">
+                  <div class="col-xs-5" style="text-align:right">
+                    <strong>Attachments</strong>
+                  </div>
+                  <div class="col-xs-7">
+                    <a href="#" data-toggle="modal" data-target=".account-level-attachment">None
+                      <%#= @account.user_account_sharings.count == 0 ? "Nobody" : "#{pluralize(@account.user_account_sharings.count, 'user')}" %>
+                    </a>
+                  </div>
+                </div>
                 <%if @enable_expected_sales == 'enable'%>
                   <%x = 7%>
                   <div class="row bars">
@@ -289,13 +299,13 @@
   <%= render "conversation_sharedusers" %>
   <%= render "schedule/delete_meeting_modal"%>
   <%= render "schedule/delete_future_meeting_modal"%>
+  <%= render "account_level_attachment_modal"%>
 <% end %>
 
 
 <% content_for :custom_js do %>
   <script>
-
-      var x=0;
+    var x=0;
     $(".get_list_for_edit").click(function(){
       account_id = '<%= @account.id %>'
       set_country_code();
