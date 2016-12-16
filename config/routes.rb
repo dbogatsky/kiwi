@@ -51,6 +51,7 @@ Rails.application.routes.draw do
       patch  :update_reminder
       patch  :update_email
       patch  :update_meeting
+      patch  :delete_account_attachment
       patch  :update_quote
       delete :delete_reminder
       delete :delete_note

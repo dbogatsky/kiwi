@@ -126,7 +126,7 @@
       thumbnailWidth: 120,
       thumbnailHeight: 120,
       filesizeBase: 1000,
-      maxFiles: null,
+      maxFiles: 1,
       params: {},
       clickable: true,
       ignoreHiddenFiles: true,
@@ -151,11 +151,29 @@
       dictRemoveFileConfirmation: null,
       dictMaxFilesExceeded: "You can not upload any more files.",
       accept: function(file, done) {
+        var final_encode;
+        if (file) {
+          var reader = new FileReader();
+          reader.onload = function(readerEvt) {
+            var binaryString = readerEvt.target.result;
+            var fileending = file.type;
+            var test = btoa(binaryString);
+            final_encode = "data:"+fileending+";base64,"+test;
+            document.getElementById("new_base64_data").value = final_encode;
+          };
+          reader.readAsBinaryString(file);
+        }
         return done();
       },
+
       init: function() {
-        // return noop;
         var myDropzone = this;
+        myDropzone.on('addedfile', function(file) {
+          if (myDropzone.files.length > 1) {
+            myDropzone.removeFile(myDropzone.files[0]);
+          }
+        });
+
         $("#submit_dropzone_form").click(function(e) {
           e.preventDefault();
           e.stopPropagation();
@@ -1389,6 +1407,7 @@
     };
 
     Dropzone.prototype.submitRequest = function(xhr, formData, files) {
+      $('#preloader').show();
       return xhr.send(formData);
     };
 
@@ -1407,6 +1426,7 @@
       if (this.options.autoProcessQueue) {
         return this.processQueue();
       }
+      window.location.reload()
     };
 
     Dropzone.prototype._errorProcessing = function(files, message, xhr) {

@@ -99,8 +99,8 @@
                     <strong>Attachments</strong>
                   </div>
                   <div class="col-xs-7">
-                    <a href="#" data-toggle="modal" data-target=".account-level-attachment">None
-                      <%#= @account.user_account_sharings.count == 0 ? "Nobody" : "#{pluralize(@account.user_account_sharings.count, 'user')}" %>
+                    <a href="#" data-toggle="modal" data-target=".account-level-attachment">
+                      <%= @account.media.count == 0 ? "None" : "#{pluralize(@account.media.count, 'file')}" %>
                     </a>
                   </div>
                 </div>
