@@ -434,9 +434,9 @@
 
     (function () {
       var prev_selected_value;
-      $(".type_select").on('click', function() {
+      $("#vtab3").on('click', '.type_select', function() {
         prev_selected_value = $(this).val();
-      }).change( function() {
+      }).on('change', '.type_select', function() {
         var selected_value = $(this).val();
         if (selected_value == 'email'){
           $(this).closest('div').parent().find('.phone_type_validate').removeClass('phone_validate')
