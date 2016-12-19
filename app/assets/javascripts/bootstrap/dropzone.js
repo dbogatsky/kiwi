@@ -117,7 +117,7 @@
       url: null,
       method: "post",
       withCredentials: false,
-      parallelUploads: 2,
+      parallelUploads: 5,
       uploadMultiple: false,
       maxFilesize: 256,
       paramName: "file",
@@ -126,7 +126,7 @@
       thumbnailWidth: 120,
       thumbnailHeight: 120,
       filesizeBase: 1000,
-      maxFiles: 1,
+      maxFiles: 5,
       params: {},
       clickable: true,
       ignoreHiddenFiles: true,
@@ -151,27 +151,39 @@
       dictRemoveFileConfirmation: null,
       dictMaxFilesExceeded: "You can not upload any more files.",
       accept: function(file, done) {
-        var final_encode;
-        if (file) {
-          var reader = new FileReader();
-          reader.onload = function(readerEvt) {
-            var binaryString = readerEvt.target.result;
-            var fileending = file.type;
-            var test = btoa(binaryString);
-            final_encode = "data:"+fileending+";base64,"+test;
-            document.getElementById("new_base64_data").value = final_encode;
-          };
-          reader.readAsBinaryString(file);
-        }
+        // var final_encode
+        // if (file) {
+        //   var reader = new FileReader();
+        //   reader.onload = function(readerEvt) {
+        //     var binaryString = readerEvt.target.result;
+        //     var fileending = file.type;
+        //     var test = btoa(binaryString);
+        //     final_encode = "data:"+fileending+";base64,"+test ;
+
+        //     document.getElementById("new_base64_data").value = final_encode;
+        //   };
+        //   reader.readAsBinaryString(file);
+        // }
         return done();
       },
 
       init: function() {
         var myDropzone = this;
         myDropzone.on('addedfile', function(file) {
-          if (myDropzone.files.length > 1) {
-            myDropzone.removeFile(myDropzone.files[0]);
+          // if (myDropzone.files.length > 1) {
+          //   myDropzone.removeFile(myDropzone.files[0]);
+          // }
+
+          if(file.size < 10000000){
+            var filesize = (file.size/1000).toFixed(1)+"KB"
+            alert('File is too small'+'('+filesize+').'+ 'Min filesize: 10 MB)');
+            myDropzone.removeFile(file)
           }
+        });
+
+        myDropzone.on("maxfilesexceeded", function(file){
+          alert("You can not upload any more files!");
+          myDropzone.removeFile(myDropzone.files[5]);
         });
 
         $("#submit_dropzone_form").click(function(e) {

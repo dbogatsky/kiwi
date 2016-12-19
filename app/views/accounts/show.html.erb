@@ -94,16 +94,18 @@
                     </a>
                   </div>
                 </div>
-                <div class="row bars">
-                  <div class="col-xs-5" style="text-align:right">
-                    <strong>Attachments</strong>
+                <%if @account_attachment == "on"%>
+                  <div class="row bars">
+                    <div class="col-xs-5" style="text-align:right">
+                      <strong>Attachments</strong>
+                    </div>
+                    <div class="col-xs-7">
+                      <a href="#" id="attachment_count" data-toggle="modal" data-target=".account-level-attachment">
+                        <%= @account.media.count == 0 ? "None" : "#{pluralize(@account.media.count, 'file')}" %>
+                      </a>
+                    </div>
                   </div>
-                  <div class="col-xs-7">
-                    <a href="#" data-toggle="modal" data-target=".account-level-attachment">
-                      <%= @account.media.count == 0 ? "None" : "#{pluralize(@account.media.count, 'file')}" %>
-                    </a>
-                  </div>
-                </div>
+                <%end%>
                 <%if @enable_expected_sales == 'enable'%>
                   <%x = 7%>
                   <div class="row bars">

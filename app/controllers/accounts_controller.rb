@@ -154,6 +154,12 @@ class AccountsController < ApplicationController
 
 
   def add_account_attachment
+    name = params[:file].original_filename
+    directory = "/tmp/"
+    path = File.join(directory, name)
+    File.open(path, "wb") { |f| f.write(params[:file].read) }
+    base64_data  =  Base64.encode64(File.open(path, "rb").read)
+    payload = "data:#{params[:file].content_type};base64,#{base64_data}"
     content_type = params[:file].content_type
     if(content_type == 'image/png' || content_type == 'image/gif' || content_type == 'image/jpg' || content_type == 'image/jpeg')
       type = 'Media::Image'
@@ -165,8 +171,10 @@ class AccountsController < ApplicationController
       type = 'Media::Video'
     end
     params[:account] = {}
-    params[:account][:media_attributes] = [{name: params[:file].original_filename, payload: params[:new_base64_data], type: type}]
+    # params[:account][:media_attributes] = [{name: params[:file].original_filename, payload: params[:new_base64_data], type: type}]
+    params[:account][:media_attributes] = [{name: name, payload: payload, type: type}]
     @account.update_attributes(request: :update, account: account_attachment_params)
+    File.delete(path)
     render :nothing => true
   end
 
