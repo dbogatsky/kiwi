@@ -1,2 +1,3 @@
 $("#list_of_related_to_account").html("<%=j render 'list_of_related_to_account', related_to_account: @related_to_account%>");
-$('#preloader').hide()
+$("#related_account_name").html("<%=j render 'three_related_account', related_to_account: @related_to_account%>");
+$('#preloader').hide();

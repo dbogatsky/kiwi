@@ -305,6 +305,34 @@
 <% content_for :custom_js do %>
   <script>
     $.fn.modal.Constructor.prototype.enforceFocus = function () {};
+    var current_account = "<%=@account.id%>"
+    var page = 1;
+    $(".add_remote_option_for_relationship").select2({
+      placeholder: "-Select an Account-",
+      minimumInputLength: 3,
+      width: "15em",
+      ajax: {
+        url: "/accounts/<%=@account.id%>/get_account_list_by_scrolling",
+        dataType: "json",
+        data: function (term) {
+            return term;
+        },
+        processResults: function (data) {
+          total_page = data[1]
+          more = page++ < total_page;
+          var result = [];
+          $.each( data[0], function( i, val ) {
+            if(current_account != val.id){
+              result.push({id: val.id, text: val.name});
+            }
+          });
+          return {
+            results: result,
+            pagination: {more: more}
+          };
+        }
+      }
+    });
 
     var x=0;
     $(".get_list_for_edit").click(function(){

@@ -151,6 +151,16 @@ class AccountsController < ApplicationController
     end
   end
 
+  def get_account_list_by_scrolling
+    search = {}
+    search[:name_cont] = params[:term]
+    search[:s] = "name asc"
+    params[:page] = 1 if params[:page].blank?
+    accounts = Account.all(params: {search: search, per_page: 50, page: params[:page]})
+    total_pages = accounts.total_pages
+    render json: [accounts, total_pages]
+  end
+
   def update_account_contacts
     original = params[:account][:contacts_attributes]
     params[:account][:contacts_attributes] = params[:account][:contacts_attributes].values if params[:account][:contacts_attributes].present?
