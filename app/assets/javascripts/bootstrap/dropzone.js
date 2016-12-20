@@ -119,7 +119,7 @@
       withCredentials: false,
       parallelUploads: 5,
       uploadMultiple: false,
-      maxFilesize: 256,
+      maxFilesize: 10,
       paramName: "file",
       createImageThumbnails: true,
       maxThumbnailFilesize: 10,
@@ -134,7 +134,7 @@
       acceptedMimeTypes: null,
       autoProcessQueue: false,
       autoQueue: true,
-      addRemoveLinks: false,
+      addRemoveLinks: true,
       previewsContainer: null,
       hiddenInputContainer: "body",
       capture: null,
@@ -169,22 +169,22 @@
 
       init: function() {
         var myDropzone = this;
-        myDropzone.on('addedfile', function(file) {
+        // myDropzone.on('addedfile', function(file) {
           // if (myDropzone.files.length > 1) {
           //   myDropzone.removeFile(myDropzone.files[0]);
           // }
 
-          if(file.size < 10000000){
-            var filesize = (file.size/1000).toFixed(1)+"KB"
-            alert('File is too small'+'('+filesize+').'+ 'Min filesize: 10 MB)');
-            myDropzone.removeFile(file)
-          }
-        });
+          // if(file.size < 10000000){
+          //   var filesize = (file.size/1000).toFixed(1)+"KB"
+          //   alert('File is too small'+'('+filesize+').'+ 'Min filesize: 10 MB)');
+          //   myDropzone.removeFile(file)
+          // }
+        // });
 
-        myDropzone.on("maxfilesexceeded", function(file){
-          alert("You can not upload any more files!");
-          myDropzone.removeFile(myDropzone.files[5]);
-        });
+        // myDropzone.on("maxfilesexceeded", function(file){
+        //   alert("You can not upload any more files!");
+        //   myDropzone.removeFile(myDropzone.files[5]);
+        // });
 
         $("#submit_dropzone_form").click(function(e) {
           e.preventDefault();
@@ -425,7 +425,7 @@
         }
       },
       completemultiple: noop,
-      maxfilesexceeded: noop,
+      maxfilesexceeded: 5,
       maxfilesreached: noop,
       queuecomplete: noop,
       addedfiles: noop,
