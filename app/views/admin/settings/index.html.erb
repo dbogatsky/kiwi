@@ -27,7 +27,7 @@
                 <div class="form-group">
                   <label class="col-sm-4 control-label">Account Attachment</label>
                   <div class="col-sm-4">
-                    <%=select_tag('account_attachment',options_for_select(assets_management_select_options, selected: @account_attachment), prompt: '-select-', class: "form-control")%>
+                    <%=select_tag('account_attachment',options_for_select(assets_management_select_options, selected: @account_attachment),class: "form-control")%>
                   </div>
                 </div>
               </div><!-- row pad 5-->
@@ -35,7 +35,7 @@
                 <div class="form-group">
                   <label class="col-sm-4 control-label">Conversation Item Attachment</label>
                   <div class="col-sm-4">
-                    <%=select_tag('conversation_item_attachment',options_for_select(assets_management_select_options, selected: @conversation_item_attachment), prompt: '-select-', class: "form-control")%>
+                    <%=select_tag('conversation_item_attachment',options_for_select(assets_management_select_options, selected: @conversation_item_attachment), class: "form-control")%>
                   </div>
                 </div>
               </div><!-- row pad 5-->
