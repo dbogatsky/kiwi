@@ -11,7 +11,13 @@
       <%if attachments.count > 0%>
         <% attachments.each do |media| %>
         <tr>
-          <td><%=link_to media.name, (media.urls.try(:thumb) ? image_path(media.urls.thumb) : "javascript:void(0);"), target: '_blank'%></td>
+          <td>
+            <%if media.type == "document" %>
+              <%=link_to media.name, (media.urls.try(:original) ? image_path(media.urls.original) : "javascript:void(0);"), target: '_blank'%>
+            <%else%>
+              <%=link_to media.name, (media.urls.try(:thumb) ? image_path(media.urls.thumb) : "javascript:void(0);"), target: '_blank'%>
+            <%end%>
+          </td>
           <td><%=media.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %I:%M %p ")%></td>
           <td>
             <%=link_to delete_account_attachment_account_path(@account, destroy: true,attachment_id: media.id), remote: :true, method: :patch do%>

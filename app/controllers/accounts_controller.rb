@@ -171,7 +171,6 @@ class AccountsController < ApplicationController
       type = 'Media::Video'
     end
     params[:account] = {}
-    # params[:account][:media_attributes] = [{name: params[:file].original_filename, payload: params[:new_base64_data], type: type}]
     params[:account][:media_attributes] = [{name: name, payload: payload, type: type}]
     @account.update_attributes(request: :update, account: account_attachment_params)
     File.delete(path)
