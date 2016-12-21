@@ -18,8 +18,8 @@
             <%related_id = acc.child_id%>
           <%end%>
           <tr>
-            <td><%=related_id%></td>
-            <td><%=acc.name%></td>
+            <td><%=link_to related_id, account_path(related_id)%></td>
+            <td><%=link_to acc.name, account_path(related_id)%></td>
             <td><%=link_to add_related_to_account_account_path(id: @account,related_to: acc.id, destroy: true, relationship_type: relation), method: :patch, remote: :true do%><i class="fa fa-trash-o"></i><%end%>
             </td>
           </tr>
