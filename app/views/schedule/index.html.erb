@@ -53,6 +53,7 @@
               <span class="caret"></span>
           </button>
           <ul class="dropdown-menu">
+              <li><a href="#" data-toggle="modal" data-target=".schedule-call-rotation">Add Call Rotation</a></li>
               <li><a href="#" data-toggle="modal" data-target=".account-action-meeting">Schedule Meeting</a></li>
               <li><a href="#" data-toggle="modal" data-target=".conversation-reminder-modal-form">Add Reminder</a></li>
               <li><a href="#" data-toggle="modal" data-target=".conversation-quote-modal-form">Add Quote</a></li>
@@ -86,6 +87,7 @@
 <%= render "accounts/conversation_meeting_edit", account: nil, info: true%>
 <%= render "delete_meeting_modal"%>
 <%= render "delete_future_meeting_modal"%>
+<%= render "conversation_call_rotation"%>
 
 <script>
   $.fn.modal.Constructor.prototype.enforceFocus = function () {};
@@ -190,6 +192,18 @@
 
   $(function() {
     meeting_new_editor = $('#meeting_new_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false,
+      "events": {
+        "load": function() {
+          $(this.composer.iframe).wysihtml5_size_matters();
+        }
+      }
+    });
+  });
+
+  var call_rotation_new_editor
+
+  $(function() {
+    call_rotation_new_editor = $('#call_rotation_new_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false,
       "events": {
         "load": function() {
           $(this.composer.iframe).wysihtml5_size_matters();
@@ -331,7 +345,7 @@
 
     if(mobile == 'false'){
       $('#meeting-reminder-time-edit').timepicker({minuteStep: 5});
-      $('#meeting-reminder-time').timepicker({minuteStep: 5});
+      $('#meeting-reminder-time, #rotation-reminder-time').timepicker({minuteStep: 5});
     }
     // by default hide reminder settings for meetings
     $("#meeting-reminder-settings-edit").hide();

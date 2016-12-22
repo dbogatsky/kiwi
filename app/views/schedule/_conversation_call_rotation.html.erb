@@ -1,0 +1,394 @@
+<div class="modal fade schedule-call-rotation" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+          <button aria-hidden="true" data-dismiss="modal" class="close" type="button">&times;</button>
+          <h4 class="modal-title">Call Rotation(Regular Visits)</h4>
+      </div>
+      <div class="modal-body">
+      <p>Provide the details below to create a Call Rotation</p>
+        <%= form_tag(schedule_add_call_rotation_path) do |f| %>
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div class="row row-pad-5">
+                <div class="col-lg-12">
+                  <input type="text" name="conversation_item[title]" placeholder="Event(Optional)" class="form-control meeting_title"/>
+                </div>
+              </div><!-- row -->
+
+              <div class="row row-pad-5">
+                <div class="col-lg-12 country_select">
+                  <select class="form-control select2 add_remote_option_for_rotation" name="account_ids[]" placeholder="-Select an Account-" required="required">
+                  </select>
+                </div>
+              </div><!-- row -->
+
+              <div class="row">
+	              <div class="col-lg-4">
+	              <h5>Starts</h5>
+	              </div>
+              </div>
+
+              <div class="row row-pad-5">
+                <div class="col-lg-5">
+                  <div class="input-group ">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    <%if mobile?%>
+                      <input id="call-rotation-datepicker" type="date" name="starts_date" required="required"/>
+                    <%else%>
+                      <input type="text" class="form-control" placeholder="mm/dd/yy" name="starts_date" id="call-rotation-datepicker" required="required" />
+                    <%end%>
+                  </div>
+                </div>
+                <div class="col-lg-4 all-day" style="margin-top: 10px;">
+                  <div class="input-group">
+                    <label>All Day Appointment</label>
+                  </div>
+                </div>
+              </div><!-- row -->
+
+              <div class="row row-pad-5">
+                <div class="col-lg-6">
+                  <div class="ckbox ckbox-primary">
+                    <input type="checkbox" id="rotation_call_reminder" name="conversation_item[reminder]">
+                    <label for="rotation_call_reminder">Set a Custom Reminder</label>
+                  </div>
+                </div>
+              </div><!-- row -->
+
+			        <div id="rotation_call_reminder_settings">
+	              <div class="row row-pad-5">
+	                <div class="col-lg-5">
+	                  <div class="input-group">
+	                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                      <%if mobile?%>
+                        <input id="call-rotation-reminder-datepicker" type="date" name="reminder_date"/>
+                      <%else%>
+                        <input type="text" class="form-control" placeholder="mm/dd/yy" name="reminder_date" id="call-rotation-reminder-datepicker"/>
+                      <%end%>
+	                   </div>
+	                </div>
+
+	                <div class="col-lg-4">
+	                  <div class="input-group">
+	                    <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+	                    <div class="bootstrap-timepicker">
+                        <%if mobile?%>
+                          <input id="rotation-reminder-time" type="time" name="reminder_time" step=900 />
+                        <%else%>
+                          <input name="reminder_time" id="rotation-reminder-time" type="text" class="form-control" />
+                        <%end%>
+                      </div>
+	                  </div>
+	                </div>
+	              </div><!-- row -->
+			        </div><!-- meeting reminder settings -->
+
+							<div id="call-rotation-repeat-settings">
+								<div class="row row-pad-5">
+									<div class="col-sm-4">
+										<label for="call-rotation-repeat-frequency">Frequency:</label>
+										<select class="form-control input-sm mb15" name="conversation_item[repetition_rule][frequency_type]" id="call-rotation-repeat-frequency" required>
+										  <option value=''>-select -</option>
+											<option value="daily">Daily</option>
+											<option value="weekly">Weekly</option>
+											<option value="monthly">Monthly</option>
+											<option value="yearly">Yearly</option>
+										</select>
+									</div>
+
+									<div class="col-sm-4">
+										<label for="call-rotation-repeat-occurrences">Stop After:</label>
+										<select class="form-control input-sm mb15" name="conversation_item[repetition_rule][repeat_occurrences]" id="call-rotation-repeat-occurrences" required>
+										  <option value=''>-select -</option>
+											<% (1..50).each do |i| %>
+											<option value="<%= i %>">
+												<%= pluralize(i, 'Occurrence') %>
+											</option>
+											<% end %>
+										</select>
+									</div>
+
+                  <div class="col-sm-4">
+                    <div id="call-rotation-repeat-frequency-day">
+                      <label for="call-rotation-repeat-every-day">Repeat Every:</label>
+                      <select class="form-control input-sm mb15" name="conversation_item[repetition_rule][repeat_day]" id="call-rotation-repeat-every-day">
+                        <option value=''>- select-</option>
+                        <% (1..6).each do |i| %>
+                        <option value="<%= i %>">
+                            <% if i == 1 %>
+                              Day
+                          <% else %>
+                            <%= "#{i.ordinalize} Day" %>
+                          <% end %>
+                        </option>
+                        <% end %>
+                      </select>
+                    </div><!-- repeat every: day -->
+
+                    <div id="call-rotation-repeat-frequency-week">
+                      <label for="call-rotation-repeat-every-week">Repeat Every:</label>
+                      <select class="form-control input-sm mb15"  name="conversation_item[repetition_rule][repeat_week]" id="call-rotation-repeat-every-week">
+                        <option value=''>- select-</option>
+                        <% (1..52).each do |i| %>
+                        <option value="<%= i %>">
+                            <% if i == 1 %>
+                                Week
+                            <% else %>
+                                <%= "#{i.ordinalize} Week" %>
+                            <% end %>
+                        </option>
+                        <% end %>
+                      </select>
+                    </div><!-- repeat every: week -->
+
+                    <div id="call-rotation-repeat-frequency-month">
+                      <label for="call-rotation-repeat-every-month">Repeat Every:</label>
+                      <select class="form-control input-sm mb15" name="conversation_item[repetition_rule][repeat_month]" id="call-rotation-repeat-every-month">
+                        <option value=''>- select-</option>
+                        <% (1..12).each do |i| %>
+                        <option value="<%= i %>">
+                            <%= pluralize(i, 'Month') %>
+                        </option>
+                        <% end %>
+                      </select>
+                    </div><!-- repeat every: month -->
+
+                    <div id="call-rotation-repeat-frequency-year">
+                      <label for="call-rotation-repeat-every-year">Repeat Every:</label>
+                      <select class="form-control input-sm mb15" name="conversation_item[repetition_rule][repeat_year]" id="call-rotation-repeat-every-year">
+                        <option value=''>- select-</option>
+                        <% (1..4).each do |i| %>
+                        <option value="<%= i %>">
+                            <%= pluralize(i, 'Year') %>
+                        </option>
+                        <% end %>
+                      </select>
+                    </div><!-- repeat every: year -->
+
+                  </div><!-- col -->
+                </div><!-- row -->
+
+								<div id="call-rotation-repeat-frequency-weekday-on">
+                  <div class="row row-pad-5">
+  									<div class="col-sm-12">
+											Repeat On:<br/>
+                        <input type="checkbox" id="call-rotation-repeat-day-mon" class="outline_none" name="conversation_item][repetition_rule][day_of_week][]" value='1'>
+                        <label for="call-rotation-repeat-day-mon" style="padding:4px;">M</label>
+
+                        <input type="checkbox" id="call-rotation-repeat-day-tue" class="outline_none" name="conversation_item][repetition_rule][day_of_week][]" value="2">
+                        <label for="call-rotation-repeat-day-tue" style="padding:4px;">T</label>
+                        <input type="checkbox" id="call-rotation-repeat-day-wed" class="outline_none" name="conversation_item][repetition_rule][day_of_week][]" value="3">
+                        <label for="call-rotation-repeat-day-wed" style="padding:5px;">W</label>
+                        <input type="checkbox" id="call-rotation-repeat-day-thu" class="outline_none"  name="conversation_item][repetition_rule][day_of_week][]" value="4">
+                        <label for="call-rotation-repeat-day-thu" style="padding:4px;">T</label>
+                        <input type="checkbox" id="call-rotation-repeat-day-fri" class="outline_none" name="conversation_item][repetition_rule][day_of_week][]" value="5">
+                        <label for="call-rotation-repeat-day-fri" style="padding:4px;">F</label>
+                        <input type="checkbox" id="call-rotation-repeat-day-sat" class="outline_none" name="conversation_item][repetition_rule][day_of_week][]" value="6">
+                        <label for="call-rotation-repeat-day-sat" style="padding:4px;">S</label>
+                        <input type="checkbox" id="call-rotation-repeat-day-sun" class="outline_none" name="conversation_item][repetition_rule][day_of_week][]" value="0">
+                        <label for="call-rotation-repeat-day-sun" style="padding:4px;">S</label>
+  									</div>
+                  </div>
+								</div><!-- row repeat week: weekdays -->
+
+
+								<div id="call-rotation-repeat-frequency-month-on">
+									<div class="row row-pad-5">
+										<div class="col-sm-12">
+											<label for="call-rotation-repeat-every-month-on">Repeat On:</label>
+											<select class="form-control input-sm mb15" name="month_week" id="call-rotation-repeat-every-month-on">
+											  <option value=''>-select-</option>
+												<option value="dayofmonth">Day of the Month</option>
+												<option value="dayofweek">Day of the Week</option>
+											</select>
+										</div>
+									</div>
+								</div><!-- row repeat frequency month -->
+							</div><!-- meeting repeat settings -->
+
+              <div class="row row-pad-5">
+                <div class="col-lg-12 mb15">
+                  <textarea class="form-control wysihtml5" name="conversation_item[body]" id="call_rotation_new_editor"  rows="5" placeholder="Agenda"></textarea>
+                </div>
+              </div><!-- row -->
+            </div><!-- panel-body -->
+            <div class="panel-footer">
+              <%=submit_tag 'Save',  data: {disable_with: "Saving..." }, class: "btn btn-primary"%>
+            </div>
+          </div><!-- panel -->
+        <% end %> <!-- end form -->
+      </div><!-- modal body -->
+    </div><!-- modal content -->
+  </div><!-- modal dialog -->
+</div><!-- modal -->
+<script type="text/javascript">
+
+  var page = 1;
+  $(".add_remote_option_for_rotation").select2({
+    placeholder: "-Select an Account-",
+    minimumInputLength: 3,
+    width: "15em",
+    tags: true,
+    multiple: true,
+    ajax: {
+      url: "/schedule/get_account_list_by_scrolling",
+      dataType: "json",
+      data: function (term) {
+          return term;
+      },
+      processResults: function (data) {
+        total_page = data[1]
+        more = page++ < total_page;
+        var result = [];
+        $.each( data[0], function( i, val ) {
+          result.push({id: val.id, text: val.name});
+        });
+        return {
+          results: result,
+          pagination: {more: more}
+        };
+      }
+    }
+  });
+
+  $("#rotation_call_reminder").change(function(){
+    if ($(this).is(':checked')) {
+      $("#rotation_call_reminder_settings").show(500)
+      $("#call-rotation-reminder-datepicker").prop('required', true)
+      $("#rotation-reminder-time").prop('required', true)
+    }else{
+      $("#rotation_call_reminder_settings").hide(500)
+      $("#call-rotation-reminder-datepicker").val(null)
+      $("#call-rotation-reminder-datepicker").prop('required', false)
+      $("#rotation-reminder-time").prop('required', false)
+      $("#rotation-reminder-time").val(null)
+    }
+  });
+
+  $("#rotation_call_reminder_settings").hide();
+  $("#call-rotation-repeat-frequency-week").hide();
+  $("#call-rotation-repeat-frequency-month").hide();
+  $("#call-rotation-repeat-frequency-year").hide();
+  $("#call-rotation-repeat-frequency-weekday-on").hide();
+  $("#call-rotation-repeat-frequency-month-on").hide();
+
+  $('#call-rotation-repeat-frequency').change(function () {
+    if($(this).val() == "daily") {
+      $("#call-rotation-repeat-frequency-day").show(500);
+      $("#call-rotation-repeat-frequency-week").hide(500);
+      $("#call-rotation-repeat-frequency-month").hide(500);
+      $("#call-rotation-repeat-frequency-year").hide(500);
+      $("#call-rotation-repeat-frequency-weekday-on").hide(500);
+      $("#call-rotation-repeat-frequency-month-on").hide(500);
+      $("#call-rotation-repeat-every-day").attr('required', true);
+      $("#call-rotation-repeat-every-week").attr('required', false);
+      $("#call-rotation-repeat-every-month").attr('required', false);
+      $("#call-rotation-repeat-every-year").attr('required', false);
+      $("#call-rotation-repeat-every-month-on").attr('required',false);
+      repeat_on_required(false)
+    }
+    else if($(this).val() == "weekly"){
+      $("#call-rotation-repeat-frequency-day").hide(500);
+      $("#call-rotation-repeat-frequency-week").show(500);
+      $("#call-rotation-repeat-frequency-month").hide(500);
+      $("#call-rotation-repeat-frequency-year").hide(500);
+      $("#call-rotation-repeat-frequency-weekday-on").show(500);
+      $("#call-rotation-repeat-frequency-month-on").hide(500);
+      $("#call-rotation-repeat-every-day").attr('required', false);
+      $("#call-rotation-repeat-every-week").attr('required', true);
+      $("#call-rotation-repeat-every-month").attr('required', false);
+      $("#call-rotation-repeat-every-year").attr('required', false);
+      $("#call-rotation-repeat-every-month-on").attr('required',false);
+      repeat_on_required(true)
+      repeat_on_check(false)
+
+    }
+    else if($(this).val() == "monthly"){
+      $("#call-rotation-repeat-frequency-day").hide(500);
+      $("#call-rotation-repeat-frequency-week").hide(500);
+      $("#call-rotation-repeat-frequency-month").show(500);
+      $("#call-rotation-repeat-frequency-year").hide(500);
+      $("#call-rotation-repeat-frequency-weekday-on").hide(500);
+      $("#call-rotation-repeat-frequency-month-on").show(500);
+      $("#call-rotation-repeat-every-day").attr('required', false);
+      $("#call-rotation-repeat-every-week").attr('required', false);
+      $("#call-rotation-repeat-every-month").attr('required', true);
+      $("#call-rotation-repeat-every-year").attr('required', false);
+      $("#call-rotation-repeat-every-month-on").attr('required',true);
+      repeat_on_required(false)
+    }
+    else if($(this).val() == "yearly"){
+      $("#call-rotation-repeat-frequency-day").hide(500);
+      $("#call-rotation-repeat-frequency-week").hide(500);
+      $("#call-rotation-repeat-frequency-month").hide(500);
+      $("#call-rotation-repeat-frequency-year").show(500);
+      $("#call-rotation-repeat-frequency-weekday-on").hide(500);
+      $("#call-rotation-repeat-frequency-month-on").hide(500);
+      $("#call-rotation-repeat-every-day").attr('required', false);
+      $("#call-rotation-repeat-every-week").attr('required', false);
+      $("#call-rotation-repeat-every-month").attr('required', false);
+      $("#call-rotation-repeat-every-year").attr('required', true);
+      $("#call-rotation-repeat-every-month-on").attr('required',false);
+      repeat_on_required(false)
+    }
+    else if($(this).val() == ""){
+      $("#call-rotation-repeat-frequency-day").show(500);
+      $("#call-rotation-repeat-frequency-week").hide(500);
+      $("#call-rotation-repeat-frequency-month").hide(500);
+      $("#call-rotation-repeat-frequency-year").hide(500);
+      $("#call-rotation-repeat-frequency-weekday-on").hide(500);
+      $("#call-rotation-repeat-frequency-month-on").hide(500);
+      $("#call-rotation-repeat-every-day").attr('required', true);
+      $("#call-rotation-repeat-every-week").attr('required', false);
+      $("#call-rotation-repeat-every-month").attr('required', false);
+      $("#call-rotation-repeat-every-year").attr('required', false);
+      $("#call-rotation-repeat-every-month-on").attr('required',false);
+      repeat_on_required(false)
+    }
+  });
+
+  function repeat_on_required(e){
+    $("#call-rotation-repeat-day-mon").attr("required", e)
+    $("#call-rotation-repeat-day-tue").attr("required", e)
+    $("#call-rotation-repeat-day-wed").attr("required", e)
+    $("#call-rotation-repeat-day-thu").attr("required", e)
+    $("#call-rotation-repeat-day-fri").attr("required", e)
+    $("#call-rotation-repeat-day-sat").attr("required", e)
+    $("#call-rotation-repeat-day-sun").attr("required", e)
+  }
+
+  function repeat_on_check(e){
+    $("#call-rotation-repeat-day-mon").attr("checked", e)
+    $("#call-rotation-repeat-day-tue").attr("checked", e)
+    $("#call-rotation-repeat-day-wed").attr("checked", e)
+    $("#call-rotation-repeat-day-thu").attr("checked", e)
+    $("#call-rotation-repeat-day-fri").attr("checked", e)
+    $("#call-rotation-repeat-day-sat").attr("checked", e)
+    $("#call-rotation-repeat-day-sun").attr("checked", e)
+  }
+
+
+  $("#call-rotation-repeat-day-mon, #call-rotation-repeat-day-tue, #call-rotation-repeat-day-wed, #call-rotation-repeat-day-thu, #call-rotation-repeat-day-fri, #call-rotation-repeat-day-sat, #call-rotation-repeat-day-sun").on('change', function(){
+    if ($("#call-rotation-repeat-day-mon").is(":checked") || $("#call-rotation-repeat-day-tue").is(":checked") || $("#call-rotation-repeat-day-wed").is(":checked") || $("#call-rotation-repeat-day-thu").is(":checked") || $("#call-rotation-repeat-day-fri").is(":checked") || $("#call-rotation-repeat-day-sat").is(":checked") || $("#call-rotation-repeat-day-sun").is(":checked")){
+      repeat_on_required(false)
+    }else{
+      repeat_on_required(true)
+    }
+  })
+
+  // $(".schedule-call-rotation").on("shown.bs.modal", function(){
+  //   $(".meeting_title").val(null)
+  //   $("#call-rotation-repeat-frequency").val(null);
+  //   $("#call-rotation-repeat-occurrences").val(null);
+  //   $('#call-rotation-repeat-every-day').val(null);
+  //   $('#call-rotation-repeat-every-week').val(null);
+  //   $('#call-rotation-repeat-every-month').val(null);
+  //   $('#call-rotation-repeat-every-year').val(null);
+  //   $('#call-rotation-repeat-every-month-on').val(null);
+  //   $('#call-rotation-repeat-frequency-weekday-on').val(null);
+  //   $("#call-rotation-repeat-frequency").attr('required', false);
+  //   $("#call-rotation-repeat-occurrences").attr('required', false);
+  //   $("#call-rotation-repeat-every-day").attr('required', false);
+  // });
+</script>

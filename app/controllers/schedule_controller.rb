@@ -33,6 +33,75 @@ class ScheduleController < ApplicationController
     end
   end
 
+  def add_call_rotation
+    if params[:starts_date].present?
+      params[:conversation_item][:starts_at] = convert_datetime_to_utc(current_user.time_zone, params[:starts_date], "00:00:00")
+      params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone, params[:starts_date], "23:59:59")
+    end
+    params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:scheduled_date], params[:scheduled_time]) if params[:reminder_date].present? && params[:reminder_time].present?
+
+    check_daylight   #call to check daylight
+    if params[:conversation_item][:repetition_rule][:frequency_type] == 'monthly'
+      params[:conversation_item][:repetition_rule][:day_of_month] = params[:conversation_item][:starts_at].to_datetime.day if params[:month_week] == 'dayofmonth'
+      params[:conversation_item][:repetition_rule][:weekday_of_month] = params[:conversation_item][:starts_at].to_datetime.wday if params[:month_week] == 'dayofweek'
+      params[:conversation_item][:repetition_rule][:frequency] = params[:conversation_item][:repetition_rule][:repeat_month]
+    elsif params[:conversation_item][:repetition_rule][:frequency_type] == 'weekly'
+      params[:conversation_item][:repetition_rule][:day_of_week] = params[:conversation_item][:repetition_rule][:day_of_week].map{|x| x.to_i} if params[:conversation_item][:repetition_rule][:day_of_week].present?
+      params[:conversation_item][:repetition_rule][:frequency] = params[:conversation_item][:repetition_rule][:repeat_week]
+    elsif params[:conversation_item][:repetition_rule][:frequency_type] == 'daily'
+      params[:conversation_item][:repetition_rule][:frequency] = params[:conversation_item][:repetition_rule][:repeat_day]
+    elsif params[:conversation_item][:repetition_rule][:frequency_type] == 'yearly'
+      params[:conversation_item][:repetition_rule][:frequency] = params[:conversation_item][:repetition_rule][:repeat_year]
+    end
+    if params[:account_ids].present?
+      params[:account_ids].each do |a_id|
+        @account = Account.find(a_id)
+        c_id = @account.conversation.id
+        if @account.addresses.present?
+          address = @account.addresses.first
+          @location = "#{address.suite_number}" +"#{address.suite_number.present? ? '-' : ''}"+"#{address.street_address}" +', ' + "#{address.city}" +', ' + "#{address.postcode}" +', ' + "#{address.region}" +', ' + "#{address.country}"
+          @latitude = address.latitude
+          @longitude = address.longitude
+        end
+        if params[:conversation_item][:title].blank?
+          @title =  @account.name+' '+ params[:conversation_item][:repetition_rule][:frequency_type].capitalize+' '+'Visits'
+        else
+          @title  = params[:conversation_item][:title].titleize
+        end
+        ci = ConversationItem.create(
+          conversation_item: {
+            title:              @title,
+            body:               params[:conversation_item][:body],
+            latitude:           @latitude,
+            longitude:          @longitude,
+            scheduled_at:       params[:conversation_item][:scheduled_at],
+            location:           @location,
+            reminder:           params[:conversation_item][:reminder],
+            starts_at:          params[:conversation_item][:starts_at],
+            ends_at:            params[:conversation_item][:ends_at],
+            item_type:          'regular',
+            all_day_appointment: true,
+            created_by_id: current_user.id,
+            repetition_rules: {
+              frequency_type:     params[:conversation_item][:repetition_rule][:frequency_type],
+              frequency:          params[:conversation_item][:repetition_rule][:frequency],
+              repeat_occurrences: params[:conversation_item][:repetition_rule][:repeat_occurrences],
+              day_of_week:        params[:conversation_item][:repetition_rule][:day_of_week],
+              day_of_month:       params[:conversation_item][:repetition_rule][:day_of_month],
+              weekday_of_month:   params[:conversation_item][:repetition_rule][:weekday_of_month],
+              },
+            },
+            conversation_id: c_id, type: 'meeting')
+      end
+    else
+      ci = false
+    end
+    if ci
+      flash[:success] = 'Your Call Rotation has been successfully created'
+    end
+    redirect_to schedule_path
+  end
+
   def get_account_list_by_scrolling
     search = {}
     search[:name_cont] = params[:term]
@@ -243,6 +312,26 @@ class ScheduleController < ApplicationController
   # end
 
   private
+
+  def check_daylight
+    if @daylight_setting == 'enable'
+      if params[:conversation_item][:starts_at].present?
+        starts_at = Chronic.parse(params[:conversation_item][:starts_at]).in_time_zone(current_user.time_zone)
+        starts_at = starts_at - 1.hour if starts_at.dst?
+        params[:conversation_item][:starts_at] = starts_at
+      end
+      if params[:conversation_item][:ends_at].present?
+        ends_at = Chronic.parse(params[:conversation_item][:ends_at]).in_time_zone(current_user.time_zone)
+        ends_at = ends_at - 1.hour if ends_at.dst?
+        params[:conversation_item][:ends_at] = ends_at
+      end
+      if params[:conversation_item][:scheduled_at].present?
+        scheduled_at = Chronic.parse(params[:conversation_item][:scheduled_at]).in_time_zone(current_user.time_zone)
+        scheduled_at = scheduled_at - 1.hour if scheduled_at.dst?
+        params[:conversation_item][:scheduled_at] = scheduled_at
+      end
+    end
+  end
 
   def get_meetings(user_ids)
     @all_items = []
