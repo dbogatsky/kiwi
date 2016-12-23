@@ -101,34 +101,6 @@
   //   <%#end%>
   // })
 
-  $(document).ready(function () {
-    var page = 1;
-    $(".add_remote_option").select2({
-        placeholder: "-search account-",
-        minimumInputLength: 3,
-        width: "15em",
-        ajax: {
-          url: "/schedule/get_account_list_by_scrolling",
-          dataType: "json",
-          data: function (term) {
-              return term;
-          },
-          processResults: function (data) {
-            total_page = data[1]
-            more = page++ < total_page;
-            var result = [];
-            $.each( data[0], function( i, val ) {
-              result.push({id: val.id, text: val.name});
-            });
-            return {
-              results: result,
-              pagination: {more: more}
-            };
-          }
-        }
-    });
-  });
-
   $(document).on("change",".get_address",function() {
     var account_id = $(this).val();
     if (account_id != ''){

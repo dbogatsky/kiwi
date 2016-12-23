@@ -3,7 +3,8 @@ include ApplicationHelper
 class AccountsController < ApplicationController
   skip_before_filter :verify_authenticity_token, only: [:add_account_attachment, :delete_future_meeting, :destroy]
   before_action :get_token
-  before_action :find_account, only: [:show, :delete_account_attachment, :add_account_attachment, :update_account_contacts, :contacts_by_name, :updated_account, :edit, :destroy, :conversation, :search, :add_quote, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting, :update_quote, :delete_quote, :add_reminder, :update_reminder, :delete_reminder]
+  before_action :find_account, only: [:show, :delete_account_attachment, :add_account_attachment, :add_related_to_account, :update_account_contacts, :contacts_by_name, :updated_account, :edit, :destroy, :conversation, :search, :add_quote, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting, :update_quote, :delete_quote, :add_reminder, :update_reminder, :delete_reminder]
+
   before_action :get_api_values, only: [:search]
   before_action :application_settings, only: [:index, :show, :new, :edit, :generate_properties_csv_template, :properties_csv_validates, :assets_csv_validates, :generate_assets_csv_template]
   before_action :get_setting, only: [:index, :import, :export, :show, :edit, :new, :schedule_meeting, :update_meeting, :add_reminder, :update_reminder, :add_quote, :update_quote, :send_email, :update_email ]
@@ -67,6 +68,7 @@ class AccountsController < ApplicationController
     @notifiable_users = notifiable_users_json(params[:id])
     @timeline_conversation_items = @account.conversation.conversation_items
     @attachments = @account.media
+    get_related_account(@account)
   end
 
   def new
@@ -117,6 +119,48 @@ class AccountsController < ApplicationController
       end
     end
     redirect_to account_path(params[:id])
+  end
+
+  def add_related_to_account
+    get_related_account(@account)
+    params[:account] ={}
+    all_related_account = []
+    @related_to_account.each do |acc|
+      if acc.class.name == 'Account::Parent'
+        all_related_account << acc.parent_id
+      else
+        all_related_account << acc.child_id
+      end
+    end
+    account_exist = all_related_account.include?(params[:related_to].to_i)
+    account_exist = false if params[:destroy] == 'true'
+    unless account_exist
+      if params[:relationship_type] == "parent"
+        if params[:destroy] == 'true'
+          params[:account][:parents_relationships_attributes] = [{id: params[:related_to], _destroy: params[:destroy]}]
+        else
+          params[:account][:parents_relationships_attributes] = [{parent_id: params[:related_to], _destroy: params[:destroy]}]
+        end
+      else
+        if params[:destroy] == 'true'
+          params[:account][:children_relationships_attributes] = [{id: params[:related_to], _destroy: params[:destroy]}]
+        else
+          params[:account][:children_relationships_attributes] = [{child_id: params[:related_to], _destroy: params[:destroy]}]
+        end
+      end
+      @account.update_attributes(request: :update, account: related_account_params)
+      get_related_account(@account)
+    end
+  end
+
+  def get_account_list_by_scrolling
+    search = {}
+    search[:name_cont] = params[:term]
+    search[:s] = "name asc"
+    params[:page] = 1 if params[:page].blank?
+    accounts = Account.all(params: {search: search, per_page: 50, page: params[:page]})
+    total_pages = accounts.total_pages
+    render json: [accounts, total_pages]
   end
 
   def update_account_contacts
@@ -980,6 +1024,14 @@ class AccountsController < ApplicationController
 
   private
 
+
+  def get_related_account(account)
+    related_to_account = account.parents
+    related_to_account << account.children
+    @related_to_account = related_to_account.flatten.uniq
+  end
+
+
   def find_account_by_name_or_id(row_value)
     if row_value.to_i != 0
       @account = Account.find(row_value.to_i)
@@ -1408,7 +1460,13 @@ class AccountsController < ApplicationController
 
   def account_attachment_params
     params.require(:account).permit(
-      media_attributes: [:id, :name, :payload, :type, :_destroy]
+      media_attributes: [:id, :name, :payload, :type, :_destroy])
+  end
+
+  def related_account_params
+    params.require(:account).permit(
+      children_relationships_attributes: [:id, :child_id, :_destroy],
+      parents_relationships_attributes: [:id, :parent_id, :_destroy]
     )
   end
 

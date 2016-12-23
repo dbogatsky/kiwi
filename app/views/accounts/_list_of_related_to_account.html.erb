@@ -1,0 +1,35 @@
+<div class="table-responsive">
+  <table class="table mb30">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Account</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <%if related_to_account.count > 0%>
+        <%related_to_account.each do |acc|%>
+          <%if acc.class.name == 'Account::Parent'%>
+            <%relation = 'parent'%>
+            <%related_id = acc.parent_id%>
+          <%else%>
+            <%relation = 'child'%>
+            <%related_id = acc.child_id%>
+          <%end%>
+          <tr>
+            <%if acc.name.nil?%>
+              <td><%=related_id%></td>
+              <td>Account Deleted</td>
+            <%else%>
+              <td><%=link_to related_id, account_path(related_id)%></td>
+              <td><%=link_to acc.name, account_path(related_id)%></td>
+            <%end%>
+            <td><%=link_to add_related_to_account_account_path(id: @account,related_to: acc.id, destroy: true, relationship_type: relation), method: :patch, remote: :true do%><i class="fa fa-trash-o"></i><%end%>
+            </td>
+          </tr>
+        <%end%>
+      <%end%>
+    </tbody>
+  </table>
+</div>
