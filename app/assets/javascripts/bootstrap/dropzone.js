@@ -114,7 +114,7 @@
     Dropzone.prototype.events = ["drop", "dragstart", "dragend", "dragenter", "dragover", "dragleave", "addedfile", "addedfiles", "removedfile", "thumbnail", "error", "errormultiple", "processing", "processingmultiple", "uploadprogress", "totaluploadprogress", "sending", "sendingmultiple", "success", "successmultiple", "canceled", "canceledmultiple", "complete", "completemultiple", "reset", "maxfilesexceeded", "maxfilesreached", "queuecomplete"];
 
     Dropzone.prototype.defaultOptions = {
-      url: '/accounts/6451/add_note',
+      url: null,
       method: "post",
       withCredentials: false,
       parallelUploads: 5,
@@ -151,45 +151,14 @@
       dictRemoveFileConfirmation: null,
       dictMaxFilesExceeded: "You can not upload any more files.",
       accept: function(file, done) {
-        // var final_encode
-        // if (file) {
-        //   var reader = new FileReader();
-        //   reader.onload = function(readerEvt) {
-        //     var binaryString = readerEvt.target.result;
-        //     var fileending = file.type;
-        //     var test = btoa(binaryString);
-        //     final_encode = "data:"+fileending+";base64,"+test ;
-
-        //     document.getElementById("new_base64_data").value = final_encode;
-        //   };
-        //   reader.readAsBinaryString(file);
-        // }
         return done();
       },
 
       init: function() {
         var myDropzone = this;
-        // myDropzone.on('addedfile', function(file) {
-          // if (myDropzone.files.length > 1) {
-          //   myDropzone.removeFile(myDropzone.files[0]);
-          // }
-
-          // if(file.size < 10000000){
-          //   var filesize = (file.size/1000).toFixed(1)+"KB"
-          //   alert('File is too small'+'('+filesize+').'+ 'Min filesize: 10 MB)');
-          //   myDropzone.removeFile(file)
-          // }
-        // });
-
-        // myDropzone.on("maxfilesexceeded", function(file){
-        //   alert("You can not upload any more files!");
-        //   myDropzone.removeFile(myDropzone.files[5]);
-        // });
-
         $("#submit_dropzone_form").click(function(e) {
           e.preventDefault();
           e.stopPropagation();
-          $("#submit_note").submit();
           myDropzone.processQueue();
         });
       },

@@ -1,7 +1,7 @@
 require 'net/http/post/multipart'
 include ApplicationHelper
 class AccountsController < ApplicationController
-  skip_before_filter :verify_authenticity_token, only: [:delete_future_meeting, :destroy]
+  skip_before_filter :verify_authenticity_token, only: [:add_conversation_attachment, :delete_future_meeting, :destroy]
   before_action :get_token
   before_action :find_account, only: [:show, :update_account_contacts, :add_related_to_account, :contacts_by_name, :updated_account, :edit, :destroy, :conversation, :search, :add_quote, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting, :update_quote, :delete_quote, :add_reminder, :update_reminder, :delete_reminder]
   before_action :get_api_values, only: [:search]
@@ -455,8 +455,12 @@ class AccountsController < ApplicationController
     else
       flash[:danger] = 'Oops! Unable to add note.'
     end
-
+     # render :nothing => true
     redirect_to account_path(conversation_item_params[:account_id])
+  end
+
+  def add_conversation_attachment
+    render :nothing => true
   end
 
   def add_quote

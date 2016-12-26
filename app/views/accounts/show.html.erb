@@ -334,6 +334,41 @@
       }
     });
 
+
+    $(".add_attachment").click(function(){
+      if ($(this).closest('div').find('.drop_zone_height').hasClass('hidden')){
+        $(this).closest('div').find('.drop_zone_height').removeClass('hidden').addClass('shown')
+        $(this).closest('div').parent().find(".save_btn").val("Upload and Save");
+        // $(this).closest('div').parent().find(".save_btn").prop("id", "submit_dropzone_form");
+        $(this).find('i').removeClass("fa-plus").addClass("fa-minus")
+      }else{
+        $(this).closest('div').find('.drop_zone_height').removeClass('shown').addClass('hidden')
+        $(this).find('i').removeClass("fa-minus").addClass("fa-plus")
+        $(this).closest('div').parent().find(".save_btn").val("Save");
+        // $(this).closest('div').parent().find(".save_btn").prop("id", "");
+      }
+    });
+
+    // $("#submit_dropzone_form").click(function(){
+    //   $("#submit_note").submit()
+    // })
+
+      Dropzone.autoDiscover = false;
+      $("div.drop_zon_box").dropzone({
+        url: '/accounts/<%=@account.id%>/add_conversation_attachment',
+        uploadMultiple: true,
+        acceptedFiles: "image/jpeg,image/png,image/gif",
+        init: function() {
+          var myDropzone = this;
+          $("#submit_dropzone_form").click(function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            $("#submit_note").submit();
+            myDropzone.processQueue();
+          });
+        },
+      });
+
     var x=0;
     $(".get_list_for_edit").click(function(){
       account_id = '<%= @account.id %>'
