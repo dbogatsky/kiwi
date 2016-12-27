@@ -161,6 +161,10 @@
           e.stopPropagation();
           myDropzone.processQueue();
         });
+
+        myDropzone.on("complete", function (file) {
+          window.location.reload()
+        });
       },
       forceFallback: false,
       fallback: function() {
@@ -1408,7 +1412,6 @@
       if (this.options.autoProcessQueue) {
         return this.processQueue();
       }
-      window.location.reload()
     };
 
     Dropzone.prototype._errorProcessing = function(files, message, xhr) {

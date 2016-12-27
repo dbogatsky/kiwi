@@ -3,7 +3,7 @@ include ApplicationHelper
 class AccountsController < ApplicationController
   skip_before_filter :verify_authenticity_token, only: [:add_conversation_attachment, :delete_future_meeting, :destroy]
   before_action :get_token
-  before_action :find_account, only: [:show, :update_account_contacts, :add_related_to_account, :contacts_by_name, :updated_account, :edit, :destroy, :conversation, :search, :add_quote, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting, :update_quote, :delete_quote, :add_reminder, :update_reminder, :delete_reminder]
+  before_action :find_account, only: [:show, :get_or_delete_conversation_attachment, :add_conversation_attachment, :update_account_contacts, :add_related_to_account, :contacts_by_name, :updated_account, :edit, :destroy, :conversation, :search, :add_quote, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting, :update_quote, :delete_quote, :add_reminder, :update_reminder, :delete_reminder]
   before_action :get_api_values, only: [:search]
   before_action :application_settings, only: [:index, :show, :new, :edit, :generate_properties_csv_template, :properties_csv_validates, :assets_csv_validates, :generate_assets_csv_template]
   before_action :get_setting, only: [:index, :import, :export, :show, :edit, :new, :schedule_meeting, :update_meeting, :add_reminder, :update_reminder, :add_quote, :update_quote, :send_email, :update_email ]
@@ -67,6 +67,7 @@ class AccountsController < ApplicationController
     @notifiable_users = notifiable_users_json(params[:id])
     @timeline_conversation_items = @account.conversation.conversation_items
     get_related_account(@account)
+    session.delete(:note_id)
   end
 
   def new
@@ -455,12 +456,59 @@ class AccountsController < ApplicationController
     else
       flash[:danger] = 'Oops! Unable to add note.'
     end
-     # render :nothing => true
-    redirect_to account_path(conversation_item_params[:account_id])
+    session[:note_id] = ci.id
+    render js: 'window.location.reload()'
+    # redirect_to account_path(conversation_item_params[:account_id])
   end
 
   def add_conversation_attachment
+    # if session[:note_id].present?
+      c_id = @account.conversation.id
+      # @conversation_item = ConversationItem.find(session[:note_id], params: {conversation_id: c_id})
+      if params[:upload_info] == "upload_from_edit"
+        @conversation_item = ConversationItem.find(params[:conversation_id], params: {conversation_id: c_id})
+      else
+        @conversation_item = ConversationItem.find(:all, params: {conversation_id: c_id}).first
+      end
+      if params[:file].present?
+        params[:file].values.each do |file|
+          name = file.original_filename
+          directory = "/tmp/"
+          path = File.join(directory, name)
+          File.open(path, "wb") { |f| f.write(file.read) }
+          base64_data  =  Base64.encode64(File.open(path, "rb").read)
+          payload = "data:#{file.content_type};base64,#{base64_data}"
+          content_type = file.content_type
+          if(content_type == 'image/png' || content_type == 'image/gif' || content_type == 'image/jpg' || content_type == 'image/jpeg')
+            type = 'Media::Image'
+          elsif (content_type == "application/force-download" || content_type == 'application/pdf' || content_type == 'application/vnd.ms-excel' || content_type == 'application/vnd.ms-excel' || content_type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || content_type == 'application/msword' || content_type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || content_type == 'text/plain')
+            type = 'Media::Document'
+          elsif (content_type == 'audio/mpeg' || content_type == 'audio/x-mpeg' || content_type == 'audio/mp3' || content_type == 'audio/x-mp3' || content_type == 'audio/mpeg3' || content_type == 'audio/x-mpeg3' || content_type == 'audio/mpg' || content_type == 'audio/x-mpg' || content_type == 'audio/x-mpegaudio')
+            type = 'Media::Audio'
+          elsif (content_type == 'video/x-flv' || content_type == 'video/MP2T' || content_type == 'video/3gpp' || content_type == 'video/quicktime' || content_type == ' video/x-msvideo' || content_type == 'video/x-ms-wmv' || content_type == 'video/mpeg')
+            type = 'Media::Video'
+          end
+          params[:conversation_item] = {}
+          params[:conversation_item][:media_attributes] = [{name: name, payload: payload, type: type}]
+          @conversation_item.update_attributes(request: :update, conversation_item: params[:conversation_item],conversation_id: c_id)
+          File.delete(path)
+        end
+      end
+    # end
+    session.delete(:note_id)
     render :nothing => true
+  end
+
+  def get_or_delete_conversation_attachment
+    c_id = @account.conversation.id
+    item = ConversationItem.find(params[:item_id], params:{conversation_id: c_id})
+    if params[:destroy] == "true"
+      params[:conversation_item] = {}
+      params[:conversation_item][:media_attributes] = [{id: params[:attachment_id], _destroy: true}]
+      item.update_attributes(request: :update, conversation_item: params[:conversation_item],conversation_id: c_id)
+    end
+    @attachments = item.media
+    @item_id = item.id
   end
 
   def add_quote

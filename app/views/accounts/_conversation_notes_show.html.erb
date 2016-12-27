@@ -12,11 +12,12 @@
       </button>
       <ul class="dropdown-menu">
         <li>
-          <a class="edit_note" href="#"
+          <a class="edit_note get_conversation_attachment" href="#"
             data-toggle="modal"
             data-target=".conversation-edit-note-modal-form"
             data-id="<%= citem.id %>"
             data-title="<%=citem.title%>"
+            data-attachment="<%=citem.media.present?%>"
             data-description="<%= citem.body %>">Edit
           </a>
         </li>
@@ -34,4 +35,17 @@
     <% end %>
     <i class="fa fa-user tooltips mr10" data-toggle="tooltip" data-original-title="Created by"></i><%=citem.created_by.try(:first_name)%> <%=citem.created_by.try(:last_name)%>
   </div>
+  <%if citem.media.present?%>
+    <div class="ci_footer">
+      <ul style="list-style: none;padding-left: 3px">
+        <%citem.media.each do |media|%>
+          <li>
+            <%=link_to media.urls.try(:thumb) do%>
+              <i class="fa fa-file-image-o" aria-hidden="true"></i> <%=media.name%>
+            <%end%>
+          </li>
+        <%end%>
+      </ul>
+    </div>
+  <%end%>
 </div>

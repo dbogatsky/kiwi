@@ -1,0 +1,29 @@
+<div class="table-responsive">
+  <table class="table mb30">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Date/Time</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <%if attachments.count > 0%>
+        <% attachments.each do |media| %>
+          <tr>
+            <td>
+              <%=link_to media.name, (media.urls.try(:thumb) ? image_path(media. urls.thumb) : "javascript:void(0);"), target: '_blank'%>
+            </td>
+            <td>
+              <%=media.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %I:%M %p ")%>
+            </td>
+            <td>
+              <%=link_to  account_get_or_delete_conversation_attachment_path(@account,attachment_id: media.id, item_id: @item_id, destroy: :true), remote: :true, method: :patch do%>
+                <i class="fa fa-trash-o" aria-hidden="true"></i><%end%>
+            </td>
+         </tr>
+        <%end%>
+      <%end%>
+    </tbody>
+  </table>
+</div>

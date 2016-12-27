@@ -349,25 +349,77 @@
       }
     });
 
-    // $("#submit_dropzone_form").click(function(){
-    //   $("#submit_note").submit()
-    // })
+    Dropzone.autoDiscover = false;
+    $("div.drop_zon_box_for_add").dropzone({
+      url: '/accounts/<%=@account.id%>/add_conversation_attachment',
+      uploadMultiple: true,
+      acceptedFiles: "image/jpeg,image/png,image/gif",
+      init: function() {
+        var myDropzone = this;
+        $("#submit_dropzone_form").click(function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          $("#submit_note").submit()
+          myDropzone.processQueue();
+        });
+      },
+    });
 
-      Dropzone.autoDiscover = false;
-      $("div.drop_zon_box").dropzone({
-        url: '/accounts/<%=@account.id%>/add_conversation_attachment',
-        uploadMultiple: true,
-        acceptedFiles: "image/jpeg,image/png,image/gif",
-        init: function() {
-          var myDropzone = this;
-          $("#submit_dropzone_form").click(function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            $("#submit_note").submit();
-            myDropzone.processQueue();
+    $("div.drop_zon_box_for_edit").dropzone({
+      url: '/accounts/<%=@account.id%>/add_conversation_attachment',
+      uploadMultiple: true,
+      acceptedFiles: "image/jpeg,image/png,image/gif",
+      init: function() {
+        var myDropzone = this;
+        $("#submit_upload_edit").click(function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          myDropzone.processQueue();
+        });
+
+        myDropzone.on("complete", function (file) {
+          var conversation_id = document.getElementById("conversation_id_for_edit").value;
+          $.ajax({
+            type: "PATCH",
+            url: "/accounts/<%=@account.id%>/get_or_delete_conversation_attachment?item_id="+conversation_id,
+            success: function (data) {
+            },
+            beforeSend: function() {
+              $('#preloader').show();
+            },
+            complete: function() {
+              $('#preloader').hide();
+            },
           });
-        },
-      });
+          myDropzone.removeAllFiles();
+        });
+      },
+      sending: function(file, xhr, formData) {
+        var conversation_id = document.getElementById("conversation_id_for_edit").value;
+        var upload_info = document.getElementById("upload_info_for_edit").value;
+        formData.append("conversation_id", conversation_id);
+        formData.append("upload_info", upload_info);
+      },
+    });
+
+    $(".get_conversation_attachment").click(function(){
+      item_id = $(this).attr('data-id')
+      attachment = $(this).attr('data-attachment')
+      if (attachment == 'true'){
+        $.ajax({
+          type: "PATCH",
+          url: "/accounts/<%=@account.id%>/get_or_delete_conversation_attachment?item_id="+item_id,
+          success: function (data) {
+          },
+          beforeSend: function() {
+            $('#preloader').show();
+          },
+          complete: function() {
+            $('#preloader').hide();
+          },
+        });
+      }
+    })
 
     var x=0;
     $(".get_list_for_edit").click(function(){
