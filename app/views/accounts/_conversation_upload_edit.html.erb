@@ -10,39 +10,41 @@
 
   <script type="text/javascript">
     Dropzone.autoDiscover = false;
-    $("div.drop_zon_box_for_edit_<%=box_for%>").dropzone({
-      url: '/accounts/<%=@account.id%>/add_conversation_attachment',
-      uploadMultiple: true,
-      acceptedFiles: "image/jpeg,image/png,image/gif",
-      init: function() {
-        var myDropzone = this;
-        $("#upload_edit_<%=box_for%>").click(function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          myDropzone.processQueue();
-        });
-
-        myDropzone.on("complete", function (file) {
-          var conversation_id = document.getElementById("conversation_id_for_edit_<%=box_for%>").value;
-          $.ajax({
-            type: "PATCH",
-            url: "/accounts/<%=@account.id%>/get_or_delete_conversation_attachment?item_id="+conversation_id,
-            success: function (data) {
-            },
-            beforeSend: function() {
-              $('#preloader').show();
-            },
-            complete: function() {
-              $('#preloader').hide();
-            },
+    <%if @account.present?%>
+      $("div.drop_zon_box_for_edit_<%=box_for%>").dropzone({
+        url: '/accounts/<%=@account.id%>/add_conversation_attachment',
+        uploadMultiple: true,
+        acceptedFiles: "image/jpeg,image/png,image/gif",
+        init: function() {
+          var myDropzone = this;
+          $("#upload_edit_<%=box_for%>").click(function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            myDropzone.processQueue();
           });
-          myDropzone.removeAllFiles();
-        });
-      },
-      sending: function(file, xhr, formData) {
-        var conversation_id = document.getElementById("conversation_id_for_edit_<%=box_for%>").value;
-        formData.append("conversation_id", conversation_id);
-        formData.append("upload_info", "upload_from_edit");
-      },
-    });
+
+          myDropzone.on("complete", function (file) {
+            var conversation_id = document.getElementById("conversation_id_for_edit_<%=box_for%>").value;
+            $.ajax({
+              type: "PATCH",
+              url: "/accounts/<%=@account.id%>/get_or_delete_conversation_attachment?item_id="+conversation_id,
+              success: function (data) {
+              },
+              beforeSend: function() {
+                $('#preloader').show();
+              },
+              complete: function() {
+                $('#preloader').hide();
+              },
+            });
+            myDropzone.removeAllFiles();
+          });
+        },
+        sending: function(file, xhr, formData) {
+          var conversation_id = document.getElementById("conversation_id_for_edit_<%=box_for%>").value;
+          formData.append("conversation_id", conversation_id);
+          formData.append("upload_info", "upload_from_edit");
+        },
+      });
+    <%end%>
   </script>

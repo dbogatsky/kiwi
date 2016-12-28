@@ -5,8 +5,8 @@ class ScheduleController < ApplicationController
   skip_before_filter :verify_authenticity_token, only: [:sort_regular_visits]
 
   def index
+    @@new_item_id = nil
     @user_selected = User.find(session[:selected_user]['id']) if session[:selected_user].present?
-
     @user_preference = user_preferences_load
     @users = User.all(uid: session[:user_id])
     get_meetings([current_user.id])
@@ -63,6 +63,7 @@ class ScheduleController < ApplicationController
   def get_notifiable_users
     if params[:account_id].present?
       begin
+        @account = Account.find(params[:account_id])
         @notifiable_users = notifiable_users_json(params[:account_id])
         @result = true
       rescue
@@ -83,10 +84,10 @@ class ScheduleController < ApplicationController
 
   def get_account_address
     if params[:account_id].present?
-      account =  Account.find(params[:account_id])
-      address =  account.addresses.first
+      @account =  Account.find(params[:account_id])
+      address =  @account.addresses.first
       if address.present?
-        @full_address = "#{account.addresses.first.suite_number}" +"#{account.addresses.first.suite_number.present? ? '-' : ''}"+"#{address.street_address}" +', ' + "#{address.city}" +', ' + "#{address.postcode}" +', ' + "#{address.region}" +', ' + "#{address.country}"
+        @full_address = "#{address.suite_number}" +"#{address.suite_number.present? ? '-' : ''}"+"#{address.street_address}" +', ' + "#{address.city}" +', ' + "#{address.postcode}" +', ' + "#{address.region}" +', ' + "#{address.country}"
       end
     end
   end

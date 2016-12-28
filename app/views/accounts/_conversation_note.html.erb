@@ -20,7 +20,7 @@
                   <textarea class="form-control wysihtml5" id="new_editor" rows="5" placeholder="Message" required="required" name="conversation_item[body]"></textarea>
                 </div>
               </div>
-              <%=render "conversation_upload", box_for: 'note'%>
+              <%=render "accounts/conversation_upload", box_for: 'note', account: @account%>
               <input type="hidden" name="conversation_item[account_id]" value=<%= @account.id %> >
               <input type="hidden" name="conversation_item[type]" value="note" >
             </div><!-- panel-body -->

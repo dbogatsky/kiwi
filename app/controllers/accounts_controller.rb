@@ -314,12 +314,12 @@ class AccountsController < ApplicationController
     else
       flash[:danger] = 'Oops! Unable to scheduled meeting'
     end
-    if params[:add_from_schedule].present?
-      redirect_to schedule_path
-    else
+    # if params[:add_from_schedule].present?
+    #   redirect_to schedule_path
+    # else
       render js: 'window.location.reload()'
       # redirect_to account_path(params[:id])
-    end
+    # end
   end
 
   def delete_meeting
@@ -530,12 +530,12 @@ class AccountsController < ApplicationController
     else
       flash[:danger] = 'Oops! Unable to add quote'
     end
-    if params[:add_from_schedule].present?
-      redirect_to schedule_path
-    else
+    # if params[:add_from_schedule].present?
+    #   redirect_to schedule_path
+    # else
       render js: 'window.location.reload()'
       # redirect_to account_path(params[:id])
-    end
+    # end
   end
 
   def update_quote

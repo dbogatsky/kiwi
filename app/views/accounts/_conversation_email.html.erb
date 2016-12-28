@@ -66,7 +66,7 @@
 	                </div>
 	              </div>
 			        </div>
-              <%=render "conversation_upload", box_for: 'email'%>
+              <%=render "accounts/conversation_upload", box_for: 'email', account: @account%>
               <input type="hidden" name="conversation_item[account_id]" value=<%= @account.id %> >
             </div><!-- panel-body -->
             <div class="panel-footer">

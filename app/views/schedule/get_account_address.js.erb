@@ -1,2 +1,3 @@
  $("#keyword").val('<%=@full_address%>')
+ $("#render_upload_partial_for_meeting").html("<%=j render 'accounts/conversation_upload', box_for: 'meeting',account: @account%>");
  $('#preloader').hide();
