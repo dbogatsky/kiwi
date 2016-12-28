@@ -38,10 +38,11 @@
         </a>
       </li>
       <li>
-        <a class="edit_meeting" href="#"
+        <a class="edit_meeting get_conversation_attachment" href="#"
         data-toggle="modal"
         data-target=".conversation-edit-meeting-modal-form"
         data-id="<%= citem.id %>"
+        data-attachment="<%=citem.media.present?%>"
         data-invitees="<%=citem.invitees%>"
         data-title="<%=citem.title %>"
         data-date="<%=(mobile? ? Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") :  Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y")) if citem.scheduled_at.present?%>"
@@ -128,4 +129,5 @@
         <%end%>
     </div>
   </div>
+  <%=render "conversation_attachment_show", citem: citem%>
 </div>

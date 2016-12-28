@@ -7,7 +7,7 @@
       </div>
       <div class="modal-body">
         <p>Provide the details below to schedule a meeting</p>
-        <%= form_tag(account_schedule_meeting_url) do |f| %>
+        <%= form_tag account_schedule_meeting_path, enctype: "multipart/form-data", id: 'submit_conversation_meeting_form', remote: :true do |f| %>
           <div class="panel panel-default">
             <div class="panel-body">
               <div class="row row-pad-5">
@@ -296,15 +296,16 @@
                   <textarea class="form-control wysihtml5" name="conversation_item[body]" id="meeting_new_editor"  rows="5" placeholder="Agenda"></textarea>
                 </div>
               </div><!-- row -->
-            <%if account.present?%>
-              <input type="hidden" name="id" value="<%=account.id%>">
-            <%end%>
-             <input type="hidden" name="conversation_item[latitude]">
-             <input type="hidden" name="conversation_item[longitude]">
-             <input type="hidden" name="user_selected" id="user_selected_id" value= "">
+              <%=render "conversation_upload", box_for: 'meeting'%>
+              <%if account.present?%>
+                <input type="hidden" name="id" value="<%=account.id%>">
+              <%end%>
+              <input type="hidden" name="conversation_item[latitude]">
+              <input type="hidden" name="conversation_item[longitude]">
+              <input type="hidden" name="user_selected" id="user_selected_id" value= "">
             </div><!-- panel-body -->
             <div class="panel-footer">
-              <%=submit_tag 'Save',  data: {disable_with: "Saving..." }, class: "btn btn-primary"%>
+              <%=submit_tag 'Save',  data: {disable_with: "Saving..." }, class: "btn btn-primary save_btn", id: "submit_meeting_form"%>
             </div>
           </div><!-- panel -->
         <% end %> <!-- end form -->

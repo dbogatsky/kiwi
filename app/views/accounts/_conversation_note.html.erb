@@ -6,7 +6,7 @@
         <h4 class="modal-title">Add Note</h4>
       </div>
       <div class="modal-body">
-        <%= form_tag account_add_note_path, enctype: "multipart/form-data", id: 'submit_note', remote: :true do %>
+        <%= form_tag account_add_note_path, enctype: "multipart/form-data", id: 'submit_conversation_note_form', remote: :true do %>
           <div class="panel panel-default">
             <div class="panel-body">
               <div class="row row-pad-5">
@@ -20,12 +20,12 @@
                   <textarea class="form-control wysihtml5" id="new_editor" rows="5" placeholder="Message" required="required" name="conversation_item[body]"></textarea>
                 </div>
               </div>
-              <%=render "conversation_upload"%>
+              <%=render "conversation_upload", box_for: 'note'%>
               <input type="hidden" name="conversation_item[account_id]" value=<%= @account.id %> >
               <input type="hidden" name="conversation_item[type]" value="note" >
             </div><!-- panel-body -->
             <div class="panel-footer">
-              <%=submit_tag 'Save',  data: {disable_with: "Saving..." }, class: "btn btn-primary save_btn", id: "submit_dropzone_form"%>
+              <%=submit_tag 'Save',  data: {disable_with: "Saving..." }, class: "btn btn-primary save_btn", id: "submit_note_form"%>
               <button type="reset" class="btn btn-default">Reset</button>
             </div>
           </div><!-- panel -->

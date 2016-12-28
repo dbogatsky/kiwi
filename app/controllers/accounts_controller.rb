@@ -10,6 +10,7 @@ class AccountsController < ApplicationController
   before_action :check_permission_for_import, only: [:import]
   before_action :check_permission_for_export, only: [:export]
   @@account_with_previous_value = nil
+  @@new_item_id = nil
 
   def index
     @user_preference = user_preferences_load
@@ -67,7 +68,7 @@ class AccountsController < ApplicationController
     @notifiable_users = notifiable_users_json(params[:id])
     @timeline_conversation_items = @account.conversation.conversation_items
     get_related_account(@account)
-    session.delete(:note_id)
+    @@new_item_id = nil
   end
 
   def new
@@ -309,13 +310,15 @@ class AccountsController < ApplicationController
         conversation_id: c_id, type: 'meeting')
     if ci
       flash[:success] = 'Your meeting has been successfully scheduled'
+      @@new_item_id = ci.id
     else
       flash[:danger] = 'Oops! Unable to scheduled meeting'
     end
     if params[:add_from_schedule].present?
       redirect_to schedule_path
     else
-      redirect_to account_path(params[:id])
+      render js: 'window.location.reload()'
+      # redirect_to account_path(params[:id])
     end
   end
 
@@ -453,49 +456,46 @@ class AccountsController < ApplicationController
     ci = ConversationItem.create(conversation_item: { title: conversation_item_params[:subject], body: conversation_item_params[:body], scheduled_at: params[:conversation_item][:scheduled_at], created_by_id: current_user.id }, conversation_id: c_id, type: conversation_item_params[:type])
     if ci
       flash[:success] = 'Your note has been added to the conversation!'
+      @@new_item_id = ci.id
     else
       flash[:danger] = 'Oops! Unable to add note.'
     end
-    session[:note_id] = ci.id
     render js: 'window.location.reload()'
     # redirect_to account_path(conversation_item_params[:account_id])
   end
 
   def add_conversation_attachment
-    # if session[:note_id].present?
-      c_id = @account.conversation.id
-      # @conversation_item = ConversationItem.find(session[:note_id], params: {conversation_id: c_id})
-      if params[:upload_info] == "upload_from_edit"
-        @conversation_item = ConversationItem.find(params[:conversation_id], params: {conversation_id: c_id})
-      else
-        @conversation_item = ConversationItem.find(:all, params: {conversation_id: c_id}).first
-      end
-      if params[:file].present?
-        params[:file].values.each do |file|
-          name = file.original_filename
-          directory = "/tmp/"
-          path = File.join(directory, name)
-          File.open(path, "wb") { |f| f.write(file.read) }
-          base64_data  =  Base64.encode64(File.open(path, "rb").read)
-          payload = "data:#{file.content_type};base64,#{base64_data}"
-          content_type = file.content_type
-          if(content_type == 'image/png' || content_type == 'image/gif' || content_type == 'image/jpg' || content_type == 'image/jpeg')
-            type = 'Media::Image'
-          elsif (content_type == "application/force-download" || content_type == 'application/pdf' || content_type == 'application/vnd.ms-excel' || content_type == 'application/vnd.ms-excel' || content_type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || content_type == 'application/msword' || content_type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || content_type == 'text/plain')
-            type = 'Media::Document'
-          elsif (content_type == 'audio/mpeg' || content_type == 'audio/x-mpeg' || content_type == 'audio/mp3' || content_type == 'audio/x-mp3' || content_type == 'audio/mpeg3' || content_type == 'audio/x-mpeg3' || content_type == 'audio/mpg' || content_type == 'audio/x-mpg' || content_type == 'audio/x-mpegaudio')
-            type = 'Media::Audio'
-          elsif (content_type == 'video/x-flv' || content_type == 'video/MP2T' || content_type == 'video/3gpp' || content_type == 'video/quicktime' || content_type == ' video/x-msvideo' || content_type == 'video/x-ms-wmv' || content_type == 'video/mpeg')
-            type = 'Media::Video'
-          end
-          params[:conversation_item] = {}
-          params[:conversation_item][:media_attributes] = [{name: name, payload: payload, type: type}]
-          @conversation_item.update_attributes(request: :update, conversation_item: params[:conversation_item],conversation_id: c_id)
-          File.delete(path)
+    c_id = @account.conversation.id
+    if params[:upload_info] == "upload_from_edit"
+      @conversation_item = ConversationItem.find(params[:conversation_id], params: {conversation_id: c_id})
+    elsif @@new_item_id.present?
+      @conversation_item = ConversationItem.find(@@new_item_id, params: {conversation_id: c_id})
+    end
+    if @conversation_item.present? && params[:file].present?
+      params[:file].values.each do |file|
+        name = file.original_filename
+        directory = "/tmp/"
+        path = File.join(directory, name)
+        File.open(path, "wb") { |f| f.write(file.read) }
+        base64_data  =  Base64.encode64(File.open(path, "rb").read)
+        payload = "data:#{file.content_type};base64,#{base64_data}"
+        content_type = file.content_type
+        if(content_type == 'image/png' || content_type == 'image/gif' || content_type == 'image/jpg' || content_type == 'image/jpeg')
+          type = 'Media::Image'
+        elsif (content_type == "application/force-download" || content_type == 'application/pdf' || content_type == 'application/vnd.ms-excel' || content_type == 'application/vnd.ms-excel' || content_type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || content_type == 'application/msword' || content_type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || content_type == 'text/plain')
+          type = 'Media::Document'
+        elsif (content_type == 'audio/mpeg' || content_type == 'audio/x-mpeg' || content_type == 'audio/mp3' || content_type == 'audio/x-mp3' || content_type == 'audio/mpeg3' || content_type == 'audio/x-mpeg3' || content_type == 'audio/mpg' || content_type == 'audio/x-mpg' || content_type == 'audio/x-mpegaudio')
+          type = 'Media::Audio'
+        elsif (content_type == 'video/x-flv' || content_type == 'video/MP2T' || content_type == 'video/3gpp' || content_type == 'video/quicktime' || content_type == ' video/x-msvideo' || content_type == 'video/x-ms-wmv' || content_type == 'video/mpeg')
+          type = 'Media::Video'
         end
+        params[:conversation_item] = {}
+        params[:conversation_item][:media_attributes] = [{name: name, payload: payload, type: type}]
+        @conversation_item.update_attributes(request: :update, conversation_item: params[:conversation_item],conversation_id: c_id)
+        File.delete(path)
       end
-    # end
-    session.delete(:note_id)
+    end
+    @@new_item_id = nil
     render :nothing => true
   end
 
@@ -526,13 +526,15 @@ class AccountsController < ApplicationController
     ci = ConversationItem.create(conversation_item: { title: conversation_item_params[:title], ends_at: conversation_item_params[:ends_at], body: conversation_item_params[:body], reminder: conversation_item_params[:reminder], scheduled_at: params[:conversation_item][:scheduled_at], status: conversation_item_params[:status], amount: conversation_item_params[:amount], item_type: conversation_item_params[:item_type], created_by_id: current_user.id}, conversation_id: c_id, type: conversation_item_params[:type])
     if ci
       flash[:success] = 'Your quote has been added to the conversation'
+      @@new_item_id = ci.id
     else
       flash[:danger] = 'Oops! Unable to add quote'
     end
     if params[:add_from_schedule].present?
       redirect_to schedule_path
     else
-      redirect_to account_path(params[:id])
+      render js: 'window.location.reload()'
+      # redirect_to account_path(params[:id])
     end
   end
 
@@ -617,13 +619,15 @@ class AccountsController < ApplicationController
     ci = ConversationItem.create(conversation_item: { title: conversation_item_params[:subject], body: conversation_item_params[:body], scheduled_at: params[:conversation_item][:scheduled_at], created_by_id: current_user.id, notify_by_sms: params[:conversation_item][:notify_by_sms], notify_by_email: params[:conversation_item][:notify_by_email], users_to_notify_ids: params[:conversation_item][:users_to_notify_ids] }, conversation_id: c_id, type: conversation_item_params[:type])
     if ci
       flash[:success] = 'Your reminder has been added to the conversation!'
+      @@new_item_id = ci.id
     else
       flash[:danger] = 'Oops! Unable to add reminder.'
     end
     if params[:add_from_schedule].present?
       redirect_to schedule_path
     else
-      redirect_to account_path(params[:id])
+      render js: 'window.location.reload()'
+      # redirect_to account_path(params[:id])
     end
   end
 
@@ -686,10 +690,12 @@ class AccountsController < ApplicationController
       conversation_id: c_id, type: 'email')
     if ci
       flash[:success] = 'Your email has been successfully sent!'
+      @@new_item_id = ci.id
     else
       flash[:danger] = 'Oops! Looks like there was a problem sending your email.'
     end
-    redirect_to account_path(conversation_item_params[:account_id])
+    render js: 'window.location.reload()'
+    # redirect_to account_path(conversation_item_params[:account_id])
   end
 
   def update_email

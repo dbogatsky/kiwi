@@ -6,7 +6,7 @@
             <h4 class="modal-title">Email</h4>
         </div>
         <div class="modal-body">
-	    <%= form_tag(account_send_email_url) do |f| %>
+	    <%= form_tag account_send_email_path, enctype: "multipart/form-data", id: 'submit_conversation_email_form', remote: :true do |f| %>
         <p>Send an email by filling in the details below:</p>
         <div class="panel panel-default">
               <form>
@@ -66,11 +66,12 @@
 	                </div>
 	              </div>
 			        </div>
+              <%=render "conversation_upload", box_for: 'email'%>
               <input type="hidden" name="conversation_item[account_id]" value=<%= @account.id %> >
             </div><!-- panel-body -->
             <div class="panel-footer">
               <!-- <button class="btn btn-primary">Send Email</button> -->
-              <%=submit_tag 'Send Email',  data: {disable_with: "Sending..." }, class: "btn btn-primary"%>
+              <%=submit_tag 'Send Email',  data: {disable_with: "Sending..." }, class: "btn btn-primary save_btn", id: "submit_email_form"%>
               <button type="reset" class="btn btn-default">Reset</button>
             </div>
         </div><!-- panel -->

@@ -13,10 +13,11 @@
           </button>
           <ul class="dropdown-menu">
             <li>
-              <a class="edit_reminder" href="#"
+              <a class="edit_reminder get_conversation_attachment" href="#"
                data-toggle="modal"
                data-target=".conversation-edit-reminder-modal-form"
                data-id="<%= citem.id %>"
+               data-attachment="<%=citem.media.present?%>"
                data-title="<%=citem.title%>"
                data-notify-by-sms="<%=(citem.notify_by_sms.present?) ? 'true' : 'false'%>"
                data-notify-by-email="<%=(citem.notify_by_email.present?) ? 'true' : 'false'%>"
@@ -52,4 +53,5 @@
       <% end %>
     </div>
   <% end %>
+  <%=render "conversation_attachment_show", citem: citem%>
 </div>

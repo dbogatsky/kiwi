@@ -13,10 +13,11 @@
       </button>
       <ul class="dropdown-menu">
         <li>
-            <a class="edit_quote" href="#"
+            <a class="edit_quote get_conversation_attachment" href="#"
              data-toggle="modal"
              data-target=".conversation-edit-quote-modal-form"
              data-id="<%= citem.id %>"
+             data-attachment="<%=citem.media.present?%>"
              data-title="<%=citem.title%>"
              data-date="<%=mobile? ? Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") : Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y")  if citem.scheduled_at.present?%>"
              data-time-24="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%H:%M") if citem.scheduled_at.present? %>"
@@ -62,23 +63,24 @@
         <% end %>
       <% end %>
   </div>
-    <div class="ci_footer">
-      <div class="col-sm-10">
-        <i class="fa fa-user tooltips mr10" data-toggle="tooltip" data-original-title="Created by"></i><%=citem.created_by.first_name%> <%=citem.created_by.last_name%><br />
-        <% if citem.ends_at.present? %>
-          <i class="fa fa-clock-o tooltips mr10" data-toggle="tooltip" data-original-title="Expires Date"></i><%=citem.ends_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y")%>&nbsp;
-          (
-          <%if citem.ends_at.in_time_zone(current_user.time_zone).to_date > Date.today.in_time_zone(current_user.time_zone).to_date%>
-            <%= time_ago_in_words(citem.ends_at.to_date).gsub('about','')%>
-          <%elsif citem.ends_at.in_time_zone(current_user.time_zone).to_date == Date.today.in_time_zone(current_user.time_zone).to_date%>
-            <span>Today</span>
-          <%end%>
-          )<br />
-        <% end %>
-        <% if (citem.scheduled_at.present?) %>
-          <i class="fa fa-bell tooltips mr10" data-toggle="tooltip" data-original-title="Reminder"></i>
-          <%=citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %>
+  <div class="ci_footer">
+    <div class="col-sm-10">
+      <i class="fa fa-user tooltips mr10" data-toggle="tooltip" data-original-title="Created by"></i><%=citem.created_by.first_name%> <%=citem.created_by.last_name%><br />
+      <% if citem.ends_at.present? %>
+        <i class="fa fa-clock-o tooltips mr10" data-toggle="tooltip" data-original-title="Expires Date"></i><%=citem.ends_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y")%>&nbsp;
+        (
+        <%if citem.ends_at.in_time_zone(current_user.time_zone).to_date > Date.today.in_time_zone(current_user.time_zone).to_date%>
+          <%= time_ago_in_words(citem.ends_at.to_date).gsub('about','')%>
+        <%elsif citem.ends_at.in_time_zone(current_user.time_zone).to_date == Date.today.in_time_zone(current_user.time_zone).to_date%>
+          <span>Today</span>
         <%end%>
-      </div>
+        )<br />
+      <% end %>
+      <% if (citem.scheduled_at.present?) %>
+        <i class="fa fa-bell tooltips mr10" data-toggle="tooltip" data-original-title="Reminder"></i>
+        <%=citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %>
+      <%end%>
     </div>
+  </div>
+  <%=render "conversation_attachment_show", citem: citem%>
 </div>

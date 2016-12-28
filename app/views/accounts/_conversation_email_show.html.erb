@@ -13,12 +13,13 @@
         </button>
         <ul class="dropdown-menu">
           <li>
-            <a class="edit_email" href="#"
+            <a class="edit_email get_conversation_attachment" href="#"
              data-toggle="modal"
              data-target=".conversation-edit-email-modal-form"
              data-id="<%= citem.id %>"
              data-invitees="<%=citem.invitees %>"
              data-title="<%=citem.title %>"
+             data-attachment="<%=citem.media.present?%>"
              data-date="<%=mobile? ? Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") : Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.scheduled_at.present?%>"
              data-time-24="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%H:%M") if citem.scheduled_at.present? %>"
              data-time="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p") if citem.scheduled_at.present? %>"
@@ -41,4 +42,5 @@
         <i class="fa fa-calendar"></i><%=citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>
       <% end %>
     </div>
+    <%=render "conversation_attachment_show", citem: citem%>
 </div>

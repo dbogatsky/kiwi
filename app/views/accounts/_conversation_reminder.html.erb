@@ -6,7 +6,7 @@
         <h4 class="modal-title">Add Reminder</h4>
       </div>
       <div class="modal-body">
-        <%= form_tag(account_add_reminder_url) do %>
+        <%= form_tag account_add_reminder_path, enctype: "multipart/form-data", id: 'submit_conversation_reminder_form', remote: :true do %>
           <div class="panel panel-default">
               <div class="panel-body">
                 <div class="row row-pad-5">
@@ -95,6 +95,7 @@
                     </div>
                   </div>
                 </div><!-- row -->
+                <%=render "conversation_upload", box_for: 'reminder'%>
                 <%if account.present?%>
                  <input type="hidden" name="id" value="<%=account.id%>">
                 <%end%>
@@ -102,7 +103,7 @@
                 <input type="hidden" name="user_selected" class="user_selected_id" value= "">
               </div><!-- panel-body -->
               <div class="panel-footer">
-                <%=submit_tag 'Save',  data: {disable_with: "Saving..." }, class: "btn btn-primary"%>
+                <%=submit_tag 'Save',  data: {disable_with: "Saving..." }, class: "btn btn-primary save_btn", id: "submit_reminder_form"%>
                 <button type="reset" class="btn btn-default">Reset</button>
               </div>
           </div><!-- panel -->
