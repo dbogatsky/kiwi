@@ -18,10 +18,20 @@
 
               <div class="row row-pad-5">
                 <div class="col-lg-12 country_select">
-                  <select class="form-control select2 add_remote_option_for_rotation" name="account_ids[]" placeholder="-Select an Account-" required="required">
+                  <select class="form-control select2 add_remote_option_for_rotation get_call_rotation_assign_to" name="account_ids[]" placeholder="-Select an Account-" required="required">
                   </select>
                 </div>
               </div><!-- row -->
+
+              <% if @is_admin %>
+                <div class="row editable-list-item">
+                  <div class="col-sm-3">Assign To:</div>
+                  <div class="col-sm-9">
+                    <a href="#" id="" name="conversation_item[created_by_id]" data-type="select" class="editable editable-click callrotation_assign_to"><%= current_user.first_name rescue nil %> <%= current_user.last_name rescue nil%>
+                    </a>
+                  </div>
+                </div>
+              <%end%>
 
               <div class="row">
 	              <div class="col-lg-4">
@@ -212,6 +222,7 @@
                   <textarea class="form-control wysihtml5" name="conversation_item[body]" id="call_rotation_new_editor"  rows="5" placeholder="Agenda"></textarea>
                 </div>
               </div><!-- row -->
+              <input type="hidden" name="assign_to" class="callrotation_assign_to"></input>
             </div><!-- panel-body -->
             <div class="panel-footer">
               <%=submit_tag 'Save',  data: {disable_with: "Saving..." }, class: "btn btn-primary"%>
@@ -249,6 +260,20 @@
           pagination: {more: more}
         };
       }
+    }
+  });
+
+  $(".get_call_rotation_assign_to").change(function(){
+    account_id = $(this).val();
+    if (account_id != ''){
+      $('#preloader').css('opacity', 0.8);
+      $('#preloader').show();
+      $.ajax({
+        type: "GET",
+        url: '/schedule/get_call_rotation_assign_to?account_id='+account_id,
+        success: function (data) {
+        }
+      });
     }
   });
 

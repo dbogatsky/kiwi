@@ -216,6 +216,31 @@ class ApplicationController < ActionController::Base
     false
   end
 
+  def assign_to_user_list_for_meeting(account = nil)
+    @account = account
+    if @account.present?
+      if current_user.roles.first.name == 'Admin'
+        @assigned_to = "#{current_user.first_name} #{current_user.last_name}"
+        user_list = []
+        user_list << @account.assigned_to unless @account.assigned_to.nil?
+        user_list << @account.user_account_sharings.map(&:user) if @account.user_account_sharings.count > 0
+        User.all.each do |user|
+          if user.roles.present?
+            if user.roles.first.name == "Admin"
+              user_list << user
+            end
+          end
+        end
+        user_list = user_list.flatten
+        users_list_array = user_list.map{|x| [x.id, x.first_name, x.last_name]}
+        users_list_array = users_list_array.uniq
+        users_list_hash = []
+        users_list_array.each { |record| users_list_hash.push({value: record[0], text: record[1] + ' ' + record[2]}) }
+        @users_list_hash = users_list_hash.sort_by{ |user| user[:text].downcase }
+      end
+    end
+  end
+
   def current_user
     @current_user
   end

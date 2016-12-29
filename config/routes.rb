@@ -92,6 +92,7 @@ Rails.application.routes.draw do
 
   match '/schedule', to: 'schedule#index', as: :schedule, via: [:get]
   get   '/schedule/get_notifiable_users', to: 'schedule#get_notifiable_users', as: :schedule_get_notifiable_users
+  get   '/schedule/get_call_rotation_assign_to', to: 'schedule#get_call_rotation_assign_to', as: :schedule_get_call_rotation_assign_to
   post  '/schedule/add_call_rotation', to: 'schedule#add_call_rotation', as: :schedule_add_call_rotation
   patch '/schedule/sort_regular_visits', to: 'schedule#sort_regular_visits', as: :schedule_sort_regular_visits
   get   '/schedule/calendar_event', to: 'schedule#calendar_event', as: :schedule_calendar_event

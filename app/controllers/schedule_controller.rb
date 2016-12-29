@@ -9,6 +9,7 @@ class ScheduleController < ApplicationController
 
     @user_preference = user_preferences_load
     @users = User.all(uid: session[:user_id])
+    @is_admin = current_user.roles.map(&:name).compact.include?'Admin'
     get_meetings([current_user.id])
     # no_of_account = Account.all.total_entries
     # @all_accounts = Account.all(params: {per_page: no_of_account})
@@ -157,6 +158,13 @@ class ScheduleController < ApplicationController
       if address.present?
         @full_address = "#{account.addresses.first.suite_number}" +"#{account.addresses.first.suite_number.present? ? '-' : ''}"+"#{address.street_address}" +', ' + "#{address.city}" +', ' + "#{address.postcode}" +', ' + "#{address.region}" +', ' + "#{address.country}"
       end
+    end
+  end
+
+  def get_call_rotation_assign_to
+    if params[:account_id].present?
+      @account = Account.find(params[:account_id])
+      assign_to_user_list_for_meeting(@account)
     end
   end
 
