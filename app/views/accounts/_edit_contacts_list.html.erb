@@ -335,7 +335,7 @@
       }
       var status = $(this).intlTelInput("isValidNumber")
       if (!status && $(this).val() != ''){
-        $(this).closest('div').after('<label class="error error_lable">Please enter valid number</label>')
+        //DISABLE PHONE VALIDATION //$(this).closest('div').after('<label class="error error_lable">Please enter valid number</label>')
       }
     });
 
@@ -380,9 +380,9 @@
 
   (function () {
     var prev_selected_value;
-    $(".type_select").on('click', function() {
+    $("#account-dynamic-contacts").on('click', '.type_select', function() {
       prev_selected_value = $(this).val();
-    }).change( function() {
+    }).on('change', '.type_select', function() {
       phone_validate();
       var selected_value = $(this).val()
       if (selected_value == 'email'){
@@ -465,6 +465,7 @@
   })();
 
   function check_phone_number() {
+    return true; //DISABLE PHONE VALIDATION
     flag = true
     $(".phone_validate").each(function() {
       var status = $(this).intlTelInput("isValidNumber")

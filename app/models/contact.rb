@@ -1,6 +1,6 @@
 class Contact < OrchardApiModel
   self.prefix = "/accounts/:account_id/"
-  CONTACT_TYPES = ["phone", "mobile", "email", "fax", "twitter", "facebook", "youtube","website"]
+  CONTACT_TYPES = ["phone", "mobile", "fax", "email", "website", "twitter", "facebook", "youtube"]
   belongs_to :account
 
   schema do

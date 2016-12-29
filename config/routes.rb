@@ -62,8 +62,9 @@ Rails.application.routes.draw do
       get    :get_users_list # get '/accounts/:id/get_users_list', to: 'accounts#get_users_list'
       get    :load_more_conversation_item
       patch  :update_account_contacts
-      get  :updated_account
-      get :contacts_by_name
+      get    :updated_account
+      patch  :add_related_to_account
+      get    :contacts_by_name
     end
     resources :contacts, only: [:edit, :create, :update, :destroy]
     resources :addresses, only: [:edit, :create, :update, :destroy]
@@ -88,6 +89,7 @@ Rails.application.routes.draw do
   post '/accounts/add_reminder', to: 'accounts#add_reminder', as: :account_add_reminder
   post '/accounts/:id/send_email', to: 'accounts#send_email', as: :account_send_email
   post '/accounts/:id/share', to: 'accounts#share', as: :account_share
+  get  '/accounts/:id/get_account_list_by_scrolling', to: 'accounts#get_account_list_by_scrolling', as: :account_get_account_list_by_scrolling
 
   match '/schedule', to: 'schedule#index', as: :schedule, via: [:get]
   get   '/schedule/get_notifiable_users', to: 'schedule#get_notifiable_users', as: :schedule_get_notifiable_users

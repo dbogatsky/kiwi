@@ -434,9 +434,9 @@
 
     (function () {
       var prev_selected_value;
-      $(".type_select").on('click', function() {
+      $("#vtab3").on('click', '.type_select', function() {
         prev_selected_value = $(this).val();
-      }).change( function() {
+      }).on('change', '.type_select', function() {
         var selected_value = $(this).val();
         if (selected_value == 'email'){
           $(this).closest('div').parent().find('.phone_type_validate').removeClass('phone_validate')
@@ -511,6 +511,32 @@
         $(this).next().remove()
       }else if(($(this).val()=='') && ($(this).next().hasClass('error_lable'))){
         $(this).next().remove()
+      }
+    });
+
+    var page = 1;
+    $(".add_remote_option").select2({
+      placeholder: "-Select an Account-",
+      minimumInputLength: 3,
+      width: "15em",
+      ajax: {
+        url: "/schedule/get_account_list_by_scrolling",
+        dataType: "json",
+        data: function (term) {
+            return term;
+        },
+        processResults: function (data) {
+          total_page = data[1]
+          more = page++ < total_page;
+          var result = [];
+          $.each( data[0], function( i, val ) {
+            result.push({id: val.id, text: val.name});
+          });
+          return {
+            results: result,
+            pagination: {more: more}
+          };
+        }
       }
     });
   });

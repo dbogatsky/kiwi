@@ -129,9 +129,18 @@
                     <%= @account.updated_by.nil? ? "" : @account.updated_by.first_name + " " + @account.updated_by.last_name %>
                   </div>
                 </div>
+                <div class="row bars">
+                  <div class="col-xs-5" style="text-align:right">
+                    <strong>Related to</strong>
+                  </div>
+                  <div class="col-xs-7" id="related_account_name">
+                    <a href="#" data-toggle="modal" data-target=".account-relationship"><%=@related_to_account.count == 0 ? "None" : related_account(@related_to_account)%>
+                    </a>
+                  </div>
+                </div>
               </div><!-- col-sm-4 -->
               <%if @account.properties.present? && @account.properties.try(:attributes).present?%>
-                <%x = x == 7 ? 5 : 7%>
+                <%x = x == 5 ? 7 : 5%>
                 <%@account.properties.attributes.each do |key,value|%>
                   <div class="col-sm-<%=x%>">
                     <div class="row bars">
@@ -141,7 +150,7 @@
                       <div class="col-xs-7"><%=value%></div>
                     </div>
                   </div>
-                  <%x = x==7 ? 5 : 7%>
+                  <%x = x==5 ? 7 : 5%>
                 <%end%>
               <%end%>
             </small>
@@ -287,6 +296,7 @@
   <%= render "conversation_reminder", account: @account %>
   <%= render "conversation_reminder_edit", account: @account%>
   <%= render "conversation_sharedusers" %>
+  <%= render "account_relationship_modal" %>
   <%= render "schedule/delete_meeting_modal"%>
   <%= render "schedule/delete_future_meeting_modal"%>
 <% end %>
@@ -294,6 +304,37 @@
 
 <% content_for :custom_js do %>
   <script>
+    $.fn.modal.Constructor.prototype.enforceFocus = function () {};
+    var current_account = "<%=@account.id%>"
+    var page = 1;
+    $(".add_remote_option_for_relationship").select2({
+      placeholder: "-Select an Account-",
+      minimumInputLength: 3,
+      width: "15em",
+      ajax: {
+        url: "/accounts/<%=@account.id%>/get_account_list_by_scrolling",
+        dataType: "json",
+        data: function (term) {
+            return term;
+        },
+        processResults: function (data) {
+          total_page = data[1]
+          more = page++ < total_page;
+          var result = [];
+          $.each( data[0], function( i, val ) {
+            if(current_account != val.id){
+              result.push({id: val.id, text: val.name});
+            }
+          });
+          return {
+            results: result,
+            pagination: {more: more}
+          };
+        }
+      }
+    });
+
+
     var x=0;
     $(".get_list_for_edit").click(function(){
       account_id = '<%= @account.id %>'
@@ -323,7 +364,7 @@
           $(".name_field").val(name);
           $('.remove_add_contact').hide()
         }else{
-          $(".contacts_by_name").removeClass('hidden');
+         $(".contacts_by_name").removeClass('hidden');
           $(".contacts_by_name").find('input').attr('required', true);
           $(".name_field").removeClass('hidden');
           $(".name_field").val("");
@@ -421,7 +462,7 @@
               <div class="col-sm-1">\
               </div>\
               <div class="col-sm-10">\
-                <input label="Name" name="account[contacts_attributes]['+t+'][name]" class="contact_li form-control name_field hidden input-sm" required id="account_contacts_attributes_name_'+t+'" type="text" placeholder="contact name">\
+                <input label="Name" name="account[contacts_attributes]['+t+'][name]" class="contact_li form-control name_field hidden input-sm" required id="account_contacts_attributes_name_'+t+'" type="text" placeholder="contact name" style="margin-top: 16px;">\
               </div>\
               <div class="col-sm-1">\
               </div>\
