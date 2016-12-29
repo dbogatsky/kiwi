@@ -95,6 +95,7 @@ Rails.application.routes.draw do
   get   '/schedule/get_call_rotation_assign_to', to: 'schedule#get_call_rotation_assign_to', as: :schedule_get_call_rotation_assign_to
   post  '/schedule/add_call_rotation', to: 'schedule#add_call_rotation', as: :schedule_add_call_rotation
   patch '/schedule/sort_regular_visits', to: 'schedule#sort_regular_visits', as: :schedule_sort_regular_visits
+  put   '/schedule/set_assign_to', to: 'schedule#set_assign_to', as: :schedule_set_assign_to
   get   '/schedule/calendar_event', to: 'schedule#calendar_event', as: :schedule_calendar_event
   get   '/schedule/get_meeting', to: 'schedule#get_meeting', as: :schedule_get_meeting
   get   '/schedule/get_events', to: 'schedule#get_events', as: :schedule_get_events

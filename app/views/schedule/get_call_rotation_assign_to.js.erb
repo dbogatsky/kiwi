@@ -1,16 +1,16 @@
-<% if @users_list_hash.present? %>
-  var users_list_hash = []
-  <%@users_list_hash.each do |a|%>
-    users_list_hash.push({value: <%=a[:value]%>, text: '<%=a[:text]%>'})
-	  <%end%>
-  <%@users_list_hash.each do |value|%>
+<% if @assign_to_users_list.present? %>
+  var assign_to_users_list = []
+  <%@assign_to_users_list.each do |a|%>
+    assign_to_users_list.push({value: <%=a[:value]%>, text: '<%=a[:text]%>'})
+	<%end%>
+  <%@assign_to_users_list.each do |value|%>
 	 	$(".callrotation_assign_to").editable({
-      source: users_list_hash,
+      source: assign_to_users_list,
       value: '<%=current_user.id%>',
       mode: 'inline',
       inputclass: 'assign_to_select',
       name: 'assign_to_select',
-      url: '/set_assign_to?account_id=<%=@account.id%>',
+      url: '/schedule/set_assign_to?account_id=<%=@account.id%>',
       pk: '<%=value[:value]%>',
       ajaxOptions: {
         type: 'put'
@@ -26,3 +26,4 @@
     });
   <%end%>
 <%end%>
+$('#preloader').hide();

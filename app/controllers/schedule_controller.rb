@@ -69,6 +69,13 @@ class ScheduleController < ApplicationController
         else
           @title  = params[:conversation_item][:title].titleize
         end
+        if params[:assign_to].present?
+          @user = params[:assign_to]
+        elsif session[:selected_user].present?
+          @user = session[:selected_user]
+        else
+          @user = current_user.id
+        end
         ci = ConversationItem.create(
           conversation_item: {
             title:              @title,
@@ -82,7 +89,7 @@ class ScheduleController < ApplicationController
             ends_at:            params[:conversation_item][:ends_at],
             item_type:          'regular',
             all_day_appointment: true,
-            created_by_id: current_user.id,
+            created_by_id: @user,
             repetition_rules: {
               frequency_type:     params[:conversation_item][:repetition_rule][:frequency_type],
               frequency:          params[:conversation_item][:repetition_rule][:frequency],
@@ -163,9 +170,26 @@ class ScheduleController < ApplicationController
 
   def get_call_rotation_assign_to
     if params[:account_id].present?
-      @account = Account.find(params[:account_id])
-      assign_to_user_list_for_meeting(@account)
+      @assign_to_users_list = []
+      account_ids = params[:account_id].split(",")
+      account_ids.each do |account|
+        @account = Account.find(account)
+        assign_to_user_list_for_meeting(@account)
+        @assign_to_users_list << @users_list_hash
     end
+     @assign_to_users_list = @assign_to_users_list.flatten.uniq
+    end
+  end
+
+  def set_assign_to
+    @user=User.find(params[:value]) rescue nil
+    if @user.present? && ((Ability.new(@user).can? :manage_permission, Conversation) || (Ability.new(@user).can? :manage_permission, Account))
+      @user_id = @user.id
+      status = true
+    else
+      status = false
+    end
+    render json: status
   end
 
   def get_events
