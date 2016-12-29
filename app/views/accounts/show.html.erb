@@ -338,14 +338,10 @@
     $(".add_attachment").click(function(){
       if ($(this).closest('div').find('.drop_zone_height').hasClass('hidden')){
         $(this).closest('div').find('.drop_zone_height').removeClass('hidden').addClass('shown')
-        $(this).closest('div').parent().find(".save_btn").val("Upload and Save");
-        // $(this).closest('div').parent().find(".save_btn").prop("id", "submit_dropzone_form");
         $(this).find('i').removeClass("fa-plus").addClass("fa-minus")
       }else{
         $(this).closest('div').find('.drop_zone_height').removeClass('shown').addClass('hidden')
         $(this).find('i').removeClass("fa-minus").addClass("fa-plus")
-        $(this).closest('div').parent().find(".save_btn").val("Save");
-        // $(this).closest('div').parent().find(".save_btn").prop("id", "");
       }
     });
 

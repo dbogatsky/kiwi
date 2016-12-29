@@ -1398,6 +1398,7 @@
     };
 
     Dropzone.prototype._finished = function(files, responseText, e) {
+      $('#preloader').show();
       var file, _i, _len;
       for (_i = 0, _len = files.length; _i < _len; _i++) {
         file = files[_i];
@@ -1412,6 +1413,7 @@
       if (this.options.autoProcessQueue) {
         return this.processQueue();
       }
+      window.location.reload();
     };
 
     Dropzone.prototype._errorProcessing = function(files, message, xhr) {
