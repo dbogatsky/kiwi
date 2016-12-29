@@ -1,0 +1,28 @@
+<% if @users_list_hash.present? %>
+  var users_list_hash = []
+  <%@users_list_hash.each do |a|%>
+    users_list_hash.push({value: <%=a[:value]%>, text: '<%=a[:text]%>'})
+	  <%end%>
+  <%@users_list_hash.each do |value|%>
+	 	$(".callrotation_assign_to").editable({
+      source: users_list_hash,
+      value: '<%=current_user.id%>',
+      mode: 'inline',
+      inputclass: 'assign_to_select',
+      name: 'assign_to_select',
+      url: '/set_assign_to?account_id=<%=@account.id%>',
+      pk: '<%=value[:value]%>',
+      ajaxOptions: {
+        type: 'put'
+      },
+      success: function(response, newValue) {
+        if(response == true){
+          $(".callrotation_assign_to").val(newValue);
+        }else{
+          $(".callrotation_assign_to").val('')
+        	return "user does not have access"
+        }
+      },
+    });
+  <%end%>
+<%end%>
