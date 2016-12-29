@@ -18,6 +18,7 @@
                data-target=".conversation-edit-reminder-modal-form"
                data-id="<%= citem.id %>"
                data-attachment="<%=citem.media.present?%>"
+               data-account-conversation-id="<%=((citem.try(:conversation_id).present?) ? citem.conversation_id : citem.prefix_options[:conversation_id]) %>"
                data-title="<%=citem.title%>"
                data-notify-by-sms="<%=(citem.notify_by_sms.present?) ? 'true' : 'false'%>"
                data-notify-by-email="<%=(citem.notify_by_email.present?) ? 'true' : 'false'%>"

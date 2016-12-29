@@ -95,11 +95,7 @@
                     </div>
                   </div>
                 </div><!-- row -->
-                <div id="render_upload_partial_for_reminder">
-                  <%if @account.present?%>
-                    <%=render "accounts/conversation_upload", box_for: 'reminder', account: @account%>
-                  <%end%>
-                </div>
+                <%=render "accounts/conversation_upload", box_for: 'reminder'%>
                 <%if account.present?%>
                  <input type="hidden" name="id" value="<%=account.id%>">
                 <%end%>

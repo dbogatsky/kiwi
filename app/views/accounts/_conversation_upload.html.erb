@@ -6,7 +6,7 @@
   <script type="text/javascript">
 		Dropzone.autoDiscover = false;
 		$("div.drop_zon_box_for_<%=box_for%>").dropzone({
-		  url: '/accounts/<%=account.id%>/add_conversation_attachment',
+		  url: '/accounts/add_conversation_attachment',
 		  uploadMultiple: true,
 		  acceptedFiles: "image/jpeg,image/png,image/gif",
 		  init: function() {

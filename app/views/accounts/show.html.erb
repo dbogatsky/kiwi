@@ -352,10 +352,11 @@
     $(".get_conversation_attachment").click(function(){
       item_id = $(this).attr('data-id')
       attachment = $(this).attr('data-attachment')
+      account_conversation_id = $(this).attr('data-account-conversation-id')
       if (attachment == 'true'){
         $.ajax({
           type: "PATCH",
-          url: "/accounts/<%=@account.id%>/get_or_delete_conversation_attachment?item_id="+item_id,
+          url: "/accounts/get_or_delete_conversation_attachment?item_id="+item_id+"&account_conversation_id="+account_conversation_id,
           success: function (data) {
           },
           beforeSend: function() {
@@ -751,6 +752,8 @@
     $(document).on('click', "a.edit_email", function(e){
       id = $(this).attr('data-id')
       $("#conversation_id_for_edit_email").val(id);
+      account_conversation_id = $(this).attr('data-account-conversation-id')
+      $("#account_conversation_id_for_edit_email").val(account_conversation_id)
       $('.conversation-edit-email-modal-form input[name="conversation_item[invitees]"]').val($(this).attr('data-invitees'));
       $('.conversation-edit-email-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
       if(mobile == 'false'){
@@ -780,6 +783,8 @@
     $(document).on('click', "a.edit_note", function(e){
       id = $(this).attr('data-id')
       $("#conversation_id_for_edit_note").val(id);
+      account_conversation_id = $(this).attr('data-account-conversation-id')
+      $("#account_conversation_id_for_edit_note").val(account_conversation_id)
       $('.conversation-edit-note-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
       // $('.conversation-edit-note-modal-form textarea[name="covnersation_item[body]"]').val($(this).attr('data-description'));
       edit_editor.data("wysihtml5").editor.setValue($(this).attr('data-description'));
@@ -789,6 +794,8 @@
     $(document).on('click', "a.edit_reminder", function(e){
       id = $(this).attr('data-id')
       $("#conversation_id_for_edit_reminder").val(id);
+      account_conversation_id = $(this).attr('data-account-conversation-id')
+      $("#account_conversation_id_for_edit_reminder").val(account_conversation_id)
       $('.conversation-edit-reminder-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
       if(mobile == 'false'){
         $('.conversation-edit-reminder-modal-form input[name="scheduled_time"]').val($(this).attr('data-time'));
@@ -822,6 +829,8 @@
     $(document).on('click', "a.edit_meeting", function(e){
       id = $(this).attr('data-id')
       $("#conversation_id_for_edit_meeting").val(id);
+      account_conversation_id = $(this).attr('data-account-conversation-id')
+      $("#account_conversation_id_for_edit_meeting").val(account_conversation_id)
       invitees = $(this).attr('data-invitees')
       invitees_array = invitees.split(',')
       $.each(invitees_array, function(index, value){
@@ -955,6 +964,8 @@
     $(document).on('click', "a.edit_quote", function(e){
       id = $(this).attr('data-id')
       $("#conversation_id_for_edit_quote").val(id);
+      account_conversation_id = $(this).attr('data-account-conversation-id')
+      $("#account_conversation_id_for_edit_quote").val(account_conversation_id)
       status = $(this).attr('data-status')
       body = $(this).attr('data-description')
       $('.conversation-edit-quote-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));

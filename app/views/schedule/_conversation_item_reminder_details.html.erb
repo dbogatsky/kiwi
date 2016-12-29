@@ -14,11 +14,13 @@
             </button>
             <ul class="dropdown-menu">
               <li>
-                  <a class="edit_reminder" href="#"
+                  <a class="edit_reminder get_conversation_attachment" href="#"
                    data-toggle="modal"
                    data-target=".conversation-edit-reminder-modal-form"
                    data-id="<%= citem.id %>"
                    data-title="<%=citem.title%>"
+                   data-attachment="<%=citem.media.present?%>"
+                   data-account-conversation-id="<%=((citem.try(:conversation_id).present?) ? citem.conversation_id : citem.prefix_options[:conversation_id]) %>"
                    data-notify-by-sms="<%=(citem.notify_by_sms.present?) ? 'true' : 'false'%>"
                    data-notify-by-email="<%=(citem.notify_by_email.present?) ? 'true' : 'false'%>"
                    data-users-to-notify-ids="<%=citem.conversation_item_user_to_notify.map(&:user_id) if citem.conversation_item_user_to_notify.present? %>"
@@ -64,6 +66,9 @@
       <i class="fa fa-briefcase tooltips mr10" data-toggle="tooltip" data-original-title="Account"></i><%= citem.account.try(:name) ? citem.account.name : "Account Deleted" %>
     </div>
   <% end %>
+  <div class="row">
+    <%=render "accounts/conversation_attachment_show", citem: citem%>
+  </div>
 </div>
 <%=render "accounts/conversation_reminder_edit", account: account.id, info: true%>
 <script type="text/javascript">
@@ -112,6 +117,9 @@
 
   $(document).on('click', "a.edit_reminder", function(e){
     id = $(this).attr('data-id')
+    $("#conversation_id_for_edit_reminder").val(id);
+    account_conversation_id = $(this).attr('data-account-conversation-id')
+    $("#account_conversation_id_for_edit_reminder").val(account_conversation_id)
     $('.conversation-edit-reminder-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
     if(mobile == 'false'){
       $('.conversation-edit-reminder-modal-form input[name="scheduled_time"]').val($(this).attr('data-time'));

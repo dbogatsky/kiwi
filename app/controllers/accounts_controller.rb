@@ -3,7 +3,7 @@ include ApplicationHelper
 class AccountsController < ApplicationController
   skip_before_filter :verify_authenticity_token, only: [:add_conversation_attachment, :delete_future_meeting, :destroy]
   before_action :get_token
-  before_action :find_account, only: [:show, :get_or_delete_conversation_attachment, :add_conversation_attachment, :update_account_contacts, :add_related_to_account, :contacts_by_name, :updated_account, :edit, :destroy, :conversation, :search, :add_quote, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting, :update_quote, :delete_quote, :add_reminder, :update_reminder, :delete_reminder]
+  before_action :find_account, only: [:show,:update_account_contacts, :add_related_to_account, :contacts_by_name, :updated_account, :edit, :destroy, :conversation, :search, :add_quote, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting, :update_quote, :delete_quote, :add_reminder, :update_reminder, :delete_reminder]
   before_action :get_api_values, only: [:search]
   before_action :application_settings, only: [:index, :show, :new, :edit, :generate_properties_csv_template, :properties_csv_validates, :assets_csv_validates, :generate_assets_csv_template]
   before_action :get_setting, only: [:index, :import, :export, :show, :edit, :new, :schedule_meeting, :update_meeting, :add_reminder, :update_reminder, :add_quote, :update_quote, :send_email, :update_email ]
@@ -11,6 +11,7 @@ class AccountsController < ApplicationController
   before_action :check_permission_for_export, only: [:export]
   @@account_with_previous_value = nil
   @@new_item_id = nil
+  @@account_conversation_id = nil
 
   def index
     @user_preference = user_preferences_load
@@ -69,6 +70,7 @@ class AccountsController < ApplicationController
     @timeline_conversation_items = @account.conversation.conversation_items
     get_related_account(@account)
     @@new_item_id = nil
+    @@account_conversation_id = nil
   end
 
   def new
@@ -311,6 +313,7 @@ class AccountsController < ApplicationController
     if ci
       flash[:success] = 'Your meeting has been successfully scheduled'
       @@new_item_id = ci.id
+      @@account_conversation_id = c_id
     else
       flash[:danger] = 'Oops! Unable to scheduled meeting'
     end
@@ -457,6 +460,7 @@ class AccountsController < ApplicationController
     if ci
       flash[:success] = 'Your note has been added to the conversation!'
       @@new_item_id = ci.id
+      @@account_conversation_id = c_id
     else
       flash[:danger] = 'Oops! Unable to add note.'
     end
@@ -465,10 +469,11 @@ class AccountsController < ApplicationController
   end
 
   def add_conversation_attachment
-    c_id = @account.conversation.id
-    if params[:upload_info] == "upload_from_edit"
+    if params[:upload_info] == "upload_from_edit" && params[:account_conversation_id].present?
+      c_id = params[:account_conversation_id]
       @conversation_item = ConversationItem.find(params[:conversation_id], params: {conversation_id: c_id})
-    elsif @@new_item_id.present?
+    elsif @@new_item_id.present? && @@account_conversation_id.present?
+      c_id = @@account_conversation_id
       @conversation_item = ConversationItem.find(@@new_item_id, params: {conversation_id: c_id})
     end
     if @conversation_item.present? && params[:file].present?
@@ -500,7 +505,7 @@ class AccountsController < ApplicationController
   end
 
   def get_or_delete_conversation_attachment
-    c_id = @account.conversation.id
+    c_id = params[:account_conversation_id]
     item = ConversationItem.find(params[:item_id], params:{conversation_id: c_id})
     if params[:destroy] == "true"
       params[:conversation_item] = {}
@@ -509,6 +514,7 @@ class AccountsController < ApplicationController
     end
     @attachments = item.media
     @item_id = item.id
+    @account_conversation_id = c_id
   end
 
   def add_quote
@@ -527,6 +533,7 @@ class AccountsController < ApplicationController
     if ci
       flash[:success] = 'Your quote has been added to the conversation'
       @@new_item_id = ci.id
+      @@account_conversation_id = c_id
     else
       flash[:danger] = 'Oops! Unable to add quote'
     end
@@ -620,15 +627,16 @@ class AccountsController < ApplicationController
     if ci
       flash[:success] = 'Your reminder has been added to the conversation!'
       @@new_item_id = ci.id
+      @@account_conversation_id = c_id
     else
       flash[:danger] = 'Oops! Unable to add reminder.'
     end
-    if params[:add_from_schedule].present?
-      redirect_to schedule_path
-    else
+    # if params[:add_from_schedule].present?
+    #   redirect_to schedule_path
+    # else
       render js: 'window.location.reload()'
       # redirect_to account_path(params[:id])
-    end
+    # end
   end
 
   def update_reminder
@@ -691,6 +699,7 @@ class AccountsController < ApplicationController
     if ci
       flash[:success] = 'Your email has been successfully sent!'
       @@new_item_id = ci.id
+      @@account_conversation_id = c_id
     else
       flash[:danger] = 'Oops! Looks like there was a problem sending your email.'
     end

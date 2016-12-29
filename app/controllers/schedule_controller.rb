@@ -6,6 +6,7 @@ class ScheduleController < ApplicationController
 
   def index
     @@new_item_id = nil
+    @@account_conversation_id = nil
     @user_selected = User.find(session[:selected_user]['id']) if session[:selected_user].present?
     @user_preference = user_preferences_load
     @users = User.all(uid: session[:user_id])
@@ -63,7 +64,6 @@ class ScheduleController < ApplicationController
   def get_notifiable_users
     if params[:account_id].present?
       begin
-        @account = Account.find(params[:account_id])
         @notifiable_users = notifiable_users_json(params[:account_id])
         @result = true
       rescue

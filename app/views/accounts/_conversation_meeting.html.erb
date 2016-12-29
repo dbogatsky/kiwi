@@ -296,11 +296,7 @@
                   <textarea class="form-control wysihtml5" name="conversation_item[body]" id="meeting_new_editor"  rows="5" placeholder="Agenda"></textarea>
                 </div>
               </div><!-- row -->
-              <div id="render_upload_partial_for_meeting">
-                <%if @account.present?%>
-                  <%=render "accounts/conversation_upload", box_for: 'meeting', account: @account%>
-                <%end%>
-              </div>
+              <%=render "accounts/conversation_upload", box_for: 'meeting'%>
               <%if account.present?%>
                 <input type="hidden" name="id" value="<%=account.id%>">
               <%end%>

@@ -115,6 +115,28 @@
     }
   });
 
+  $(document).on('click', '.get_conversation_attachment', function(){
+    item_id = $(this).attr('data-id')
+    attachment = $(this).attr('data-attachment')
+    account_conversation_id = $(this).attr('data-account-conversation-id')
+    if (attachment == 'true'){
+      $.ajax({
+        type: "PATCH",
+        url: "/accounts/get_or_delete_conversation_attachment?item_id="+item_id+"&account_conversation_id="+account_conversation_id,
+        success: function (data) {
+        },
+        beforeSend: function() {
+          $('#preloader').show();
+        },
+        complete: function() {
+          $('#preloader').hide();
+        },
+      });
+    }else{
+      $(".list_of_attachment").html("")
+    }
+  })
+
   $(document).on("change",".get_address",function() {
     var account_id = $(this).val();
     if (account_id != ''){
@@ -264,9 +286,10 @@
   });
 
   $(document).on('click', "a.edit_meeting", function(){
-  // $('.edit_meeting').click(function(){
-    console.log($(this).attr('data-starts-date'))
     id = $(this).attr('data-id')
+    $("#conversation_id_for_edit_meeting").val(id);
+    account_conversation_id = $(this).attr('data-account-conversation-id')
+    $("#account_conversation_id_for_edit_meeting").val(account_conversation_id)
     account_id = $(this).attr('data-account-id')
     $(".conversation-edit-meeting-modal-form form").attr("action", "/accounts/" + account_id + "/update_meeting");
     $('.conversation-edit-meeting-modal-form input[name="id"]').val($(this).attr('data-account-id'));

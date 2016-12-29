@@ -16,11 +16,13 @@
           </button>
           <ul class="dropdown-menu">
             <li>
-                <a class="edit_quote" href="#"
+                <a class="edit_quote get_conversation_attachment" href="#"
                  data-toggle="modal"
                  data-target=".conversation-edit-quote-modal-form"
                  data-id="<%= citem.id %>"
                  data-title="<%=citem.title%>"
+                 data-attachment="<%=citem.media.present?%>"
+                 data-account-conversation-id="<%=((citem.try(:conversation_id).present?) ? citem.conversation_id : citem.prefix_options[:conversation_id]) %>"
                  data-date="<%=mobile? ? Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") : Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y")  if citem.scheduled_at.present?%>"
                  data-time-24="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%H:%M") if citem.scheduled_at.present? %>"
                  data-time="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p") if citem.scheduled_at.present? %>"
@@ -85,6 +87,9 @@
     <%end%>
     <i class="fa fa-briefcase tooltips mr10" data-toggle="tooltip" data-original-title="Account"></i><%= citem.account.try(:name) ? citem.account.name : "Account Deleted" %>
   </div>
+  <div class="row">
+    <%=render "accounts/conversation_attachment_show", citem: citem%>
+  </div>
 </div>
 <%= render "accounts/conversation_quote_edit", account: account %>
 <%= render "accounts/conversation_quote_complete", account: account%>
@@ -120,6 +125,9 @@
   }
   $(document).on('click', "a.edit_quote", function(e){
     id = $(this).attr('data-id')
+    $("#conversation_id_for_edit_quote").val(id);
+    account_conversation_id = $(this).attr('data-account-conversation-id')
+    $("#account_conversation_id_for_edit_quote").val(account_conversation_id)
     status = $(this).attr('data-status')
     body = $(this).attr('data-description')
     $('.conversation-edit-quote-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));

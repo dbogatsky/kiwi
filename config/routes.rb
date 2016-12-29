@@ -40,8 +40,6 @@ Rails.application.routes.draw do
   get  '/accounts/csv_template', to: 'accounts#csv_template', as: :accounts_csv_template
   get  '/accounts/batch', to:'accounts#batch', as: :account_batch
   post '/accounts/batch_notes', to:'accounts#batch_notes', as: :account_batch_notes
-  post '/accounts/:id/add_conversation_attachment', to:'accounts#add_conversation_attachment', as: :account_add_conversation_attachment
-  patch '/accounts/:id/get_or_delete_conversation_attachment', to:'accounts#get_or_delete_conversation_attachment', as: :account_get_or_delete_conversation_attachment
   match '/accounts/add_account_properties', to:'accounts#add_account_properties', as: :account_add_account_properties, via: [:get, :post]
   match '/accounts/import_assets', to:'accounts#import_assets', as: :account_import_assets, via: [:get, :post]
   get  '/accounts/properties_csv_template', to: 'accounts#properties_csv_template', as: :accounts_properties_csv_template
@@ -67,6 +65,10 @@ Rails.application.routes.draw do
       get    :updated_account
       patch  :add_related_to_account
       get    :contacts_by_name
+    end
+    collection do
+      post :add_conversation_attachment
+      patch :get_or_delete_conversation_attachment
     end
     resources :contacts, only: [:edit, :create, :update, :destroy]
     resources :addresses, only: [:edit, :create, :update, :destroy]

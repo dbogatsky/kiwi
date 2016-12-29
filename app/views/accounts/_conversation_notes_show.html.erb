@@ -18,6 +18,7 @@
             data-id="<%= citem.id %>"
             data-title="<%=citem.title%>"
             data-attachment="<%=citem.media.present?%>"
+            data-account-conversation-id="<%=((citem.try(:conversation_id).present?) ? citem.conversation_id : citem.prefix_options[:conversation_id]) %>"
             data-description="<%= citem.body %>">Edit
           </a>
         </li>

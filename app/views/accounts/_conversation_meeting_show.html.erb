@@ -45,6 +45,7 @@
         data-attachment="<%=citem.media.present?%>"
         data-invitees="<%=citem.invitees%>"
         data-title="<%=citem.title %>"
+        data-account-conversation-id="<%=((citem.try(:conversation_id).present?) ? citem.conversation_id : citem.prefix_options[:conversation_id]) %>"
         data-date="<%=(mobile? ? Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") :  Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y")) if citem.scheduled_at.present?%>"
         data-time="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p") if citem.scheduled_at.present? %>"
         data-time-24="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%H:%M") if citem.scheduled_at.present? %>"

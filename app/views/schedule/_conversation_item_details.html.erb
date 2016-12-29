@@ -26,11 +26,13 @@
             </a>
           </li>
           <li>
-            <a class="edit_meeting" href="#"
+            <a class="edit_meeting get_conversation_attachment" href="#"
                data-toggle="modal"
                data-target=".conversation-edit-meeting-modal-form"
                data-id="<%= citem.id %>"
                data-account-id="<%=citem.account_id%>"
+               data-attachment="<%=citem.media.present?%>"
+               data-account-conversation-id="<%=((citem.try(:conversation_id).present?) ? citem.conversation_id : citem.prefix_options[:conversation_id]) %>"
                data-invitees="<%=citem.invitees%>"
                data-title="<%=citem.title %>"
                data-date="<%=(mobile? ? Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") : Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y")) if citem.scheduled_at.present?%>"
@@ -137,5 +139,8 @@
       </div>
       <div class="col-sm-2">
       </div>
+  </div>
+  <div class="row">
+    <%=render "accounts/conversation_attachment_show", citem: citem%>
   </div>
 </div>
