@@ -68,6 +68,9 @@
       <span class="subheading">Amount:<br></span>
       $<%=number_with_precision(citem.amount, :precision => 2)%>
   </div>
+  <div>
+    <%=render "accounts/conversation_attachment_show", citem: citem%>
+  </div>
   <div class="ci_footer">
     <i class="fa fa-user tooltips mr10" data-toggle="tooltip" data-original-title="Created by"></i><%=citem.created_by.first_name%> <%=citem.created_by.last_name%><br />
     <% if citem.ends_at.present? %>
@@ -86,9 +89,6 @@
         <br>
     <%end%>
     <i class="fa fa-briefcase tooltips mr10" data-toggle="tooltip" data-original-title="Account"></i><%= citem.account.try(:name) ? citem.account.name : "Account Deleted" %>
-  </div>
-  <div class="row">
-    <%=render "accounts/conversation_attachment_show", citem: citem%>
   </div>
 </div>
 <%= render "accounts/conversation_quote_edit", account: account %>

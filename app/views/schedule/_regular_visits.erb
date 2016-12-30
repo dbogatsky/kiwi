@@ -70,6 +70,9 @@
           <% if (!citem.notes.nil?) %>
             <p><span class="subheading">Notes:<br/></span><%= sanitize citem.notes %></p>
           <% end %>
+          <div>
+            <%=render "accounts/conversation_attachment_show", citem: citem%>
+          </div>
           <div class="row ci_footer">
             <div class="col-sm-10">
               <% if (citem.scheduled_at.present?) %>
@@ -123,9 +126,6 @@
                 <% end %>
               <% end %>
             </div>
-          </div>
-          <div class="row">
-            <%=render "accounts/conversation_attachment_show", citem: citem%>
           </div>
         </div>
       </div>

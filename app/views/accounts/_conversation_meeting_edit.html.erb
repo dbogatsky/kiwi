@@ -7,7 +7,7 @@
         </div>
         <div class="modal-body">
           <% account = 0 if account.nil? %>
-          <%= form_tag update_meeting_account_path(account), method: :patch do %>
+          <%= form_tag update_meeting_account_path(account), method: :patch, enctype: "multipart/form-data", id: 'submit_conversation_edit_meeting_form', remote: :true do %>
             <div class="panel panel-default">
               <div class="panel-body">
                 <div class="row row-pad-5">
@@ -290,7 +290,7 @@
               </div><!-- panel-body -->
               <div class="panel-footer">
                 <!-- <button class="btn btn-primary">Update Meeting</button> -->
-                <%=submit_tag 'Save',  data: {disable_with: "Saving..." }, class: "btn btn-primary"%>
+                <%=submit_tag 'Save',  data: {disable_with: "Saving..." }, class: "btn btn-primary", id: "submit_edit_meeting_form"%>
               </div>
             </div><!-- panel -->
           <% end %>

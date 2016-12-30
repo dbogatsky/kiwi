@@ -384,11 +384,12 @@ class AccountsController < ApplicationController
     else
       flash[:danger] = 'Meeting not updated!'
     end
-    if params[:info].present?
-      redirect_to schedule_path
-    else
-      redirect_to account_path(params[:id])
-    end
+    # if params[:info].present?
+    #   redirect_to schedule_path
+    # else
+    #   redirect_to account_path(params[:id])
+    # end
+    render js: 'window.location.reload()'
   end
 
   def check_in
@@ -567,11 +568,12 @@ class AccountsController < ApplicationController
     else
       flash[:danger] = 'Quote not updated!'
     end
-    if params[:info].present?
-      redirect_to schedule_path
-    else
-      redirect_to account_path(params[:id])
-    end
+    render js: 'window.location.reload()'
+    # if params[:info].present?
+    #   redirect_to schedule_path
+    # else
+    #   redirect_to account_path(params[:id])
+    # end
   end
 
   def delete_quote
@@ -597,11 +599,12 @@ class AccountsController < ApplicationController
     else
       flash[:danger] = 'Note not updated!'
     end
-    if params[:info].present?
-      redirect_to schedule_path
-    else
-      redirect_to account_path(params[:id])
-    end
+    render js: 'window.location.reload()'
+    # if params[:info].present?
+    #   redirect_to schedule_path
+    # else
+    #   redirect_to account_path(params[:id])
+    # end
   end
 
   def delete_note
@@ -657,11 +660,12 @@ class AccountsController < ApplicationController
     else
       flash[:danger] = 'Reminder not updated!'
     end
-    if params[:info].present?
-      redirect_to schedule_path
-    else
-      redirect_to account_path(params[:id])
-    end
+    render js: 'window.location.reload()'
+    # if params[:info].present?
+    #   redirect_to schedule_path
+    # else
+    #   redirect_to account_path(params[:id])
+    # end
   end
 
   def delete_reminder
@@ -724,7 +728,8 @@ class AccountsController < ApplicationController
     else
       flash[:danger] = 'Email not updated!'
     end
-    redirect_to account_path(params[:id])
+    render js: 'window.location.reload()'
+    # redirect_to account_path(params[:id])
   end
 
   def delete_email

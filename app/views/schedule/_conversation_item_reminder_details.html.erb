@@ -48,6 +48,9 @@
 </div>
 <div class="panel-body">
   <div class="ci_reminder_body"><%= sanitize citem.body %></div>
+  <div>
+    <%=render "accounts/conversation_attachment_show", citem: citem%>
+  </div>
   <% if (citem.scheduled_at.present?) %>
     <div class="ci_footer">
         <i class="fa fa-bell"></i>
@@ -66,9 +69,6 @@
       <i class="fa fa-briefcase tooltips mr10" data-toggle="tooltip" data-original-title="Account"></i><%= citem.account.try(:name) ? citem.account.name : "Account Deleted" %>
     </div>
   <% end %>
-  <div class="row">
-    <%=render "accounts/conversation_attachment_show", citem: citem%>
-  </div>
 </div>
 <%=render "accounts/conversation_reminder_edit", account: account.id, info: true%>
 <script type="text/javascript">

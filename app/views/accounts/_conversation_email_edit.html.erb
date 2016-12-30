@@ -6,7 +6,7 @@
             <h4 class="modal-title">Email</h4>
         </div>
         <div class="modal-body">
-        <%= form_tag update_email_account_path(@account), method: :patch do %>
+        <%= form_tag update_email_account_path(@account), method: :patch, enctype: "multipart/form-data", id: 'submit_conversation_edit_email_form', remote: :true do %>
         <div class="panel panel-default">
               <form>
             <div class="panel-body">
@@ -74,7 +74,7 @@
             </div><!-- panel-body -->
             <div class="panel-footer">
               <!-- <button class="btn btn-primary">Update Email</button> -->
-              <%=submit_tag 'Save',  data: {disable_with: "Saving..." }, class: "btn btn-primary"%>
+              <%=submit_tag 'Save',  data: {disable_with: "Saving..." }, class: "btn btn-primary", id: "submit_edit_email_form"%>
             </div>
         </div><!-- panel -->
         <% end %>
