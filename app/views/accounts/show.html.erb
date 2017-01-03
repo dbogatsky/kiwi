@@ -59,7 +59,7 @@
         <div class="col-sm-11">
           <div class="row">
             <small>
-              <div class="col-sm-5">
+              <div class="col-sm-6">
                 <div class="row bars">
                   <div class="col-xs-5" style="text-align:right">
                     <strong>Account ID</strong>
@@ -72,9 +72,9 @@
                   <div class="col-xs-5" style="text-align:right">
                     <strong>Status</strong>
                   </div>
-                    <div class="col-xs-7">
-                      <%= get_styled_status(@account, false) %>
-                    </div>
+                  <div class="col-xs-7">
+                    <%= get_styled_status(@account, false) %>
+                  </div>
                 </div>
                 <div class="row bars">
                   <div class="col-xs-5" style="text-align:right">
@@ -94,31 +94,8 @@
                     </a>
                   </div>
                 </div>
-                <%if @account_attachment == "on"%>
-                  <div class="row bars">
-                    <div class="col-xs-5" style="text-align:right">
-                      <strong>Attachments</strong>
-                    </div>
-                    <div class="col-xs-7">
-                      <a href="#" id="attachment_count" data-toggle="modal" data-target=".account-level-attachment">
-                        <%= @account.media.count == 0 ? "None" : "#{pluralize(@account.media.count, 'file')}" %>
-                      </a>
-                    </div>
-                  </div>
-                <%end%>
-                <%if @enable_expected_sales == 'enable'%>
-                  <%x = 7%>
-                  <div class="row bars">
-                    <div class="col-xs-5" style="text-align:right">
-                      <strong>Estimated Sales</strong>
-                    </div>
-                    <div class="col-xs-7">
-                      <span class="pink_text"><%=number_to_currency(@account.expected_sales)%></span>
-                    </div>
-                  </div>
-                <%end%>
               </div><!-- col-sm-4 -->
-              <div class="col-sm-7">
+              <div class="col-sm-6">
                 <div class="row bars">
                   <div class="col-xs-5" style="text-align:right">
                     <strong>Created</strong>
@@ -141,7 +118,7 @@
                     <%= @account.updated_by.nil? ? "" : @account.updated_by.first_name + " " + @account.updated_by.last_name %>
                   </div>
                 </div>
-                <div class="row bars">
+                <div class="row bars" style="margin-bottom: -9px;">
                   <div class="col-xs-5" style="text-align:right">
                     <strong>Related to</strong>
                   </div>
@@ -151,10 +128,35 @@
                   </div>
                 </div>
               </div><!-- col-sm-4 -->
+              <%if @enable_expected_sales == 'enable'%>
+                <div class="col-sm-6">
+                  <div class="row bars">
+                    <div class="col-xs-5" style="text-align:right">
+                      <strong>Estimated Sales</strong>
+                    </div>
+                    <div class="col-xs-7">
+                      <span class="pink_text"><%=number_to_currency(@account.expected_sales)%></span>
+                    </div>
+                  </div>
+                </div>
+              <%end%>
+              <%if @account_attachment == "on"%>
+                <div class="col-sm-6">
+                  <div class="row bars">
+                    <div class="col-xs-5" style="text-align:right">
+                      <strong>Attachments</strong>
+                    </div>
+                    <div class="col-xs-7">
+                      <a href="#" id="attachment_count" data-toggle="modal" data-target=".account-level-attachment">
+                        <%= @account.media.count == 0 ? "None" : "#{pluralize(@account.media.count, 'file')}" %>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              <%end%>
               <%if @account.properties.present? && @account.properties.try(:attributes).present?%>
-                <%x = x == 7 ? 5 : 7%>
                 <%@account.properties.attributes.each do |key,value|%>
-                  <div class="col-sm-<%=x%>">
+                  <div class="col-sm-6">
                     <div class="row bars">
                       <div class="col-xs-5" style="text-align:right">
                         <strong><%=key.split('_').join(' ').titleize%></strong>
@@ -162,7 +164,6 @@
                       <div class="col-xs-7"><%=value%></div>
                     </div>
                   </div>
-                  <%x = x==7 ? 5 : 7%>
                 <%end%>
               <%end%>
             </small>
