@@ -15,7 +15,7 @@
               <%=link_to media.name, (media.urls.try(:original) ? image_path(media. urls.original) : "javascript:void(0);"), target: '_blank'%>
             </td>
             <td>
-              <%=media.try(:created_at).present? ? media.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %I:%M %p ") : ''%>
+              <%=media.try(:created_at).present? ? media.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%d/%m/%Y  %I:%M %p ") : '-'%>
             </td>
             <td>
               <%=link_to  get_or_delete_conversation_attachment_accounts_path(account_conversation_id: account_conversation_id, attachment_id: media.id, item_id: @item_id, destroy: :true), remote: :true, method: :patch do%>
