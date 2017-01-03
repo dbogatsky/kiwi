@@ -299,6 +299,7 @@
   <%= render "account_relationship_modal" %>
   <%= render "schedule/delete_meeting_modal"%>
   <%= render "schedule/delete_future_meeting_modal"%>
+  <%= render "add_conversation_attachment"%>
 <% end %>
 
 
@@ -334,6 +335,14 @@
       }
     });
 
+    $(document).on('click', "a.open_add_conversation_attachment_modal", function(e){
+      id = $(this).attr('data-id')
+      $("#item_id_for_add_attachment").val(id);
+      account_conversation_id = $(this).attr('data-account-conversation-id')
+      $("#account_conversation_id_for_add_attachment").val(account_conversation_id)
+      $("#item_title").text($(this).attr('data-title'))
+      $("#item_created_at").text($(this).attr('data-created-at'))
+    });
 
     $(".add_attachment").click(function(){
       if ($(this).closest('div').find('.drop_zone_height').hasClass('hidden')){

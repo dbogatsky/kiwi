@@ -86,6 +86,7 @@
 <%= render "accounts/conversation_meeting_edit", account: nil, info: true%>
 <%= render "delete_meeting_modal"%>
 <%= render "delete_future_meeting_modal"%>
+<%= render "accounts/add_conversation_attachment"%>
 
 <script>
   $.fn.modal.Constructor.prototype.enforceFocus = function () {};
@@ -109,6 +110,15 @@
       $(this).closest('div').find('.drop_zone_height').removeClass('shown').addClass('hidden')
       $(this).find('i').removeClass("fa-minus").addClass("fa-plus")
     }
+  });
+
+  $(document).on('click', "a.open_add_conversation_attachment_modal", function(e){
+    id = $(this).attr('data-id')
+    $("#item_id_for_add_attachment").val(id);
+    account_conversation_id = $(this).attr('data-account-conversation-id')
+    $("#account_conversation_id_for_add_attachment").val(account_conversation_id)
+    $("#item_title").text($(this).attr('data-title'))
+    $("#item_created_at").text($(this).attr('data-created-at'))
   });
 
   $(document).on('click', '.get_conversation_attachment', function(){

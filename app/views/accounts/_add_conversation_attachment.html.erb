@@ -1,0 +1,60 @@
+
+<div class="modal fade add-conversation-attachment-modal-form" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">&times;</button>
+        <p><h4 class="modal-title">Add Attachments</h4></p>
+        <p id="item_created_at"></p>
+        <p id="item_title"></p>
+      </div>
+      <div class="modal-body">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div class="row row-pad-5">
+                <div class="col-lg-12">
+                  <div class="drop_zone_height">
+                    <div class="col-lg-12 dropzone drop_zon_box add_conversation_attachment_box">
+                      <input type="hidden" name="conversation_item_id" id="item_id_for_add_attachment">
+                      <input type="hidden" name="account_conversation_id" id="account_conversation_id_for_add_attachment">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-12" style="text-align: right;">
+                   <button class="btn btn-primary" id="submit_add_attachment_for_item">Upload</button>
+                </div>
+              </div>
+            </div><!-- panel-body -->
+            <div class="panel-footer">
+            </div>
+          </div><!-- panel -->
+      </div><!-- modal body -->
+    </div><!-- modal content -->
+  </div><!-- modal dialog -->
+</div><!-- modal -->
+
+  <script type="text/javascript">
+    Dropzone.autoDiscover = false;
+    $("div.add_conversation_attachment_box").dropzone({
+      url: '/accounts/add_conversation_attachment',
+      uploadMultiple: true,
+      acceptedFiles: "image/jpeg,image/png,image/gif",
+      init: function() {
+        var myDropzone = this;
+        $(document).on("click","#submit_add_attachment_for_item",function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          myDropzone.processQueue();
+        });
+      },
+      sending: function(file, xhr, formData) {
+        var conversation_id = document.getElementById("item_id_for_add_attachment").value;
+        var account_conversation_id = document.getElementById("account_conversation_id_for_add_attachment").value;
+        formData.append("conversation_id", conversation_id);
+        formData.append("account_conversation_id", account_conversation_id);
+        formData.append("upload_info", "upload_from_edit");
+      },
+    });
+  </script>
