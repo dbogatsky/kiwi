@@ -77,10 +77,14 @@ module AccountsHelper
     no_of_account = account.count
     rest_no_of_account = account.count - 3
     content_tag :ul do
-      account.first(3).each do |a|
-        concat(content_tag(:li, a.name, class: "related_account_list"))
+      if no_of_account == 0
+       concat(content_tag(:li, 'None', class: "related_account_list"))
+      else
+        account.first(3).each do |a|
+          concat(content_tag(:li, a.name, class: "related_account_list"))
+        end
+        concat(content_tag(:li, "...#{rest_no_of_account} More", class: "related_account_list")) if no_of_account > 3
       end
-      concat(content_tag(:li, "...#{rest_no_of_account} More", class: "related_account_list")) if no_of_account > 3
     end
   end
 end
