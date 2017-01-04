@@ -66,7 +66,9 @@
 	                </div>
 	              </div>
 			        </div>
-              <%=render "accounts/conversation_upload", box_for: 'email', account: @account%>
+              <%if @conversation_item_attachment == 'on'%>
+                <%=render "accounts/conversation_upload", box_for: 'email', account: @account%>
+              <%end%>
               <input type="hidden" name="conversation_item[account_id]" value=<%= @account.id %> >
             </div><!-- panel-body -->
             <div class="panel-footer">

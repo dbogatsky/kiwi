@@ -121,7 +121,9 @@
                     </div>
                   </div>
                 </div>
-                <%=render "accounts/conversation_upload", box_for: 'quote'%>
+                <%if @conversation_item_attachment == 'on'%>
+                  <%=render "accounts/conversation_upload", box_for: 'quote'%>
+                <%end%>
                 <%if account.present?%>
                  <input type="hidden" name="id" value="<%=account.id%>">
                 <%end%>
