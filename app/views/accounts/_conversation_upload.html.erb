@@ -8,7 +8,6 @@
 		$("div.drop_zon_box_for_<%=box_for%>").dropzone({
 		  url: '/accounts/add_conversation_attachment',
 		  uploadMultiple: true,
-		  acceptedFiles: "image/jpeg,image/png,image/gif",
 		  init: function() {
 		    var myDropzone = this;
 		    $(document).on("click","#submit_<%=box_for%>_form",function(e) {

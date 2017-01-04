@@ -40,7 +40,6 @@
     $("div.add_conversation_attachment_box").dropzone({
       url: '/accounts/add_conversation_attachment',
       uploadMultiple: true,
-      acceptedFiles: "image/jpeg,image/png,image/gif",
       init: function() {
         var myDropzone = this;
         $(document).on("click","#submit_add_attachment_for_item",function(e) {
