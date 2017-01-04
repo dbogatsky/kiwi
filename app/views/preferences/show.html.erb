@@ -18,6 +18,7 @@
     </div> <!-- panel-body -->
 
 <%
+# ##Using 'timeline_days_in_the_future' to replace the one below.
 #    <div class="panel-body">
 #      <div class="form-group">
 #        <label class="col-sm-3 control-label">Preview conversation timeline</label>
@@ -45,6 +46,7 @@
         </div>
       </div>
     </div> <!-- panel-body -->
+
     <div class="panel-body">
       <div class="form-group">
         <label class="col-sm-3 control-label">Get Notifications by</label>
@@ -63,6 +65,20 @@
         </div>
       </div>
     </div> <!-- panel-body -->
+
+    <div class="panel-body">
+      <div class="form-group">
+        <label class="col-sm-3 control-label">Preview conversation timeline</label>
+        <div class="col-sm-6">
+        <% if @user_preference['timeline_days_in_the_future'].present? %>
+          <%=select_tag('preference[timeline_days_in_the_future]', options_for_select([['1 day', 1],['2 days', 2],['3 days', 3],['7 days', 7],['14 days', 14],['30 days', 30],['60 days', 60],['90 days', 90]], selected: @user_preference['timeline_days_in_the_future']), {:class => 'form-control input-sm'})%>
+        <%else%>
+          <%=select_tag('preference[timeline_days_in_the_future]', options_for_select([['1 day', 1],['2 days', 2],['3 days', 3],['7 days', 7],['14 days', 14],['30 days', 30],['60 days', 60],['90 days', 90]], selected: @user_preference['timeline_days_in_the_future']), {prompt: "Company Default", :class => 'form-control input-sm', required: true})%>
+        <%end%>
+        </div>
+      </div>
+    </div> <!-- panel-body -->
+
   </div>
 
 
