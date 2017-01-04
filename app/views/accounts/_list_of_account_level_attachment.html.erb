@@ -15,7 +15,7 @@
             <%if media.type == "document" %>
               <%=link_to media.name, (media.urls.try(:original) ? image_path(media.urls.original) : "javascript:void(0);"), target: '_blank'%>
             <%else%>
-              <%=link_to media.name, (media.urls.try(:thumb) ? image_path(media.urls.thumb) : "javascript:void(0);"), target: '_blank'%>
+              <%=link_to media.name, (media.urls.try(:original) ? image_path(media.urls.original) : "javascript:void(0);"), target: '_blank'%>
             <%end%>
           </td>
           <td>
