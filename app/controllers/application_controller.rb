@@ -567,6 +567,7 @@ class ApplicationController < ActionController::Base
     @assets = JSON.parse(@assets) unless (@assets.blank? || @assets.is_a?(Hash))
     @leads = application_setting['company']['settings']['private']['leads_enabled']
     @assets_management = application_setting['company']['settings']['private']['asset_management']
+    @conversation_item_attachment = application_setting['company']['settings']['private']['conversation_item_attachment']
   end
 
   def integrations_settings
