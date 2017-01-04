@@ -1255,17 +1255,18 @@
       xhr.open(method, url, true);
       xhr.withCredentials = !!this.options.withCredentials;
       response = null;
-      handleError = (function(_this) {
-        return function() {
-          var _j, _len1, _results;
-          _results = [];
-          for (_j = 0, _len1 = files.length; _j < _len1; _j++) {
-            file = files[_j];
-            _results.push(_this._errorProcessing(files, response || _this.options.dictResponseError.replace("{{statusCode}}", xhr.status), xhr));
-          }
-          return _results;
-        };
-      })(this);
+      handleError = null;
+      // handleError = (function(_this) {
+      //   return function() {
+      //     var _j, _len1, _results;
+      //     _results = [];
+      //     for (_j = 0, _len1 = files.length; _j < _len1; _j++) {
+      //       file = files[_j];
+      //       _results.push(_this._errorProcessing(files, response || _this.options.dictResponseError.replace("{{statusCode}}", xhr.status), xhr));
+      //     }
+      //     return _results;
+      //   };
+      // })(this);
       updateProgress = (function(_this) {
         return function(e) {
           var allFilesFinished, progress, _j, _k, _l, _len1, _len2, _len3, _results;
