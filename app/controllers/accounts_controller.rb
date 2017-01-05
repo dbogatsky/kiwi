@@ -1,6 +1,7 @@
 require 'net/http/post/multipart'
 include ApplicationHelper
 class AccountsController < ApplicationController
+  include HTTParty
   skip_before_filter :verify_authenticity_token, only: [:delete_future_meeting, :destroy]
   before_action :get_token
   before_action :find_account, only: [:show, :update_account_contacts, :add_related_to_account, :contacts_by_name, :updated_account, :edit, :destroy, :conversation, :search, :add_quote, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting, :update_quote, :delete_quote, :add_reminder, :update_reminder, :delete_reminder]
@@ -117,6 +118,25 @@ class AccountsController < ApplicationController
       end
     end
     redirect_to account_path(params[:id])
+  end
+
+  def check_account_duplication
+    search = {}
+    search[:name_eq] = params[:account_name]
+    search[:addresses_street_address_cont]  = params[:street_number]
+    search[:addresses_suite_number_cont] = params[:suite_number]
+    search[:addresses_city_eq] = params[:city]
+    search[:addresses_postcode_eq] = params[:postal_code]
+    search[:addresses_region_cont] = params[:state]
+    search[:addresses_country_cont] = params[:country]
+    # get_api_values
+    # headers = {}
+    # headers["Authorization"] = "Token token=\"#{@token}\",email=\"#{@email}\", app_key=\"#{@appKey}\""
+    # @headers = headers
+    # @ApiFullUrl = RequestStore.store[:api_url] + "/accounts/check_duplication.json?"
+    # HTTParty.put(@ApiFullUrl,:query => search,:headers => @headers)
+    # CheckDuplication.find(params: {search: search})
+    @duplication = true
   end
 
   def add_related_to_account

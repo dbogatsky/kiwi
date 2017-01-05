@@ -66,6 +66,9 @@ Rails.application.routes.draw do
       patch  :add_related_to_account
       get    :contacts_by_name
     end
+    collection do
+      get :check_account_duplication
+    end
     resources :contacts, only: [:edit, :create, :update, :destroy]
     resources :addresses, only: [:edit, :create, :update, :destroy]
   end
