@@ -129,14 +129,12 @@ class AccountsController < ApplicationController
     search[:addresses_postcode_eq] = params[:postal_code]
     search[:addresses_region_cont] = params[:state]
     search[:addresses_country_cont] = params[:country]
-    # get_api_values
-    # headers = {}
-    # headers["Authorization"] = "Token token=\"#{@token}\",email=\"#{@email}\", app_key=\"#{@appKey}\""
-    # @headers = headers
-    # @ApiFullUrl = RequestStore.store[:api_url] + "/accounts/check_duplication.json?"
-    # HTTParty.put(@ApiFullUrl,:query => search,:headers => @headers)
-    # CheckDuplication.find(params: {search: search})
-    @duplication = true
+    @duplicate_accounts = CheckDuplication.find(params: {search: search})
+    if @duplicate_accounts.elements.present?
+      @duplication = true
+    else
+      @duplication = false
+    end
   end
 
   def add_related_to_account

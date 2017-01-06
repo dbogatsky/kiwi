@@ -3,11 +3,11 @@
 	The account you are currently entering could already exist in the system.<br/>
 	Please see below for details:
 	<br/>
-	Account Name: <%=values[:account_name]%><br/>
-	Street: <%=values[:street_number]%><br/>
-	Suite Number: <%=values[:suite_number]%><br/>
-	City: <%=values[:city]%><br/>
-	Region: <%=values[:state]%><br/>
-	Country: <%=values[:country]%><br/>
-	Postal Code: <%=values[:postal_code]%><br/>
+	Account Name: <%=values.elements.last["name"] rescue nil%><br/>
+	Street: <%=values.elements.last["addresses"].last["street_address"] rescue nil%><br/>
+	Suite Number: <%=values.elements.last["addresses"].last["suite_number"] rescue nil%><br/>
+	City: <%=values.elements.last["addresses"].last["city"] rescue nil%><br/>
+	Region: <%=values.elements.last["addresses"].last["region"] rescue nil%><br/>
+	Country: <%=values.elements.last["addresses"].last["country"] rescue nil%><br/>
+	Postal Code: <%=values.elements.last["addresses"].last["postcode"] rescue nil%><br/>
 </div>
