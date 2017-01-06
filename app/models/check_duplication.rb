@@ -2,6 +2,7 @@ class CheckDuplication < OrchardApiModel
   include ActiveResource::Singleton
   #cached_resource
 
+  attr_accessor :elements
   self.prefix = '/api/v1/accounts/'
 
   def initialize(parsed = {}, param)
