@@ -122,7 +122,7 @@ class AccountsController < ApplicationController
 
   def check_account_duplication
     search = {}
-    search[:name_eq] = params[:account_name]
+    search[:name_cont] = params[:account_name]
     search[:addresses_street_address_cont]  = params[:street_number]
     search[:addresses_suite_number_cont] = params[:suite_number]
     search[:addresses_city_eq] = params[:city]
