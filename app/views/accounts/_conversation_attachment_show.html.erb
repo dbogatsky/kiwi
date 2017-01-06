@@ -4,9 +4,14 @@
     <ul style="list-style: none;padding-left: 3px">
       <%citem.media.each do |media|%>
         <li>
-          <%=link_to media.urls.try(:original) do%>
-            <img src="<%=media.urls.try(:thumb)%>" class="thumbnail img-responsive" alt="">
-            <!-- <i class="fa fa-file-image-o" aria-hidden="true"></i> <%#=media.name%> -->
+          <%if media.urls.try(:thumb)%>
+            <%=link_to media.urls.try(:original) do%>
+              <img src="<%=media.urls.try(:thumb)%>" class="thumbnail img-responsive" alt="">
+            <%end%>
+          <%else%>
+            <%=link_to media.urls.try(:original), target: "_blank" do %>
+              <i class="fa fa-paperclip" aria-hidden="true"></i> <%=media.name%>
+             <%end%>
           <%end%>
         </li>
       <%end%>
