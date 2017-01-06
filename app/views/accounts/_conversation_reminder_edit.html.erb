@@ -6,7 +6,7 @@
         <h4 class="modal-title">Edit Reminder</h4>
       </div>
       <div class="modal-body">
-        <%= form_tag update_reminder_account_path(account), method: :patch, enctype: "multipart/form-data", id: 'submit_conversation_edit_reminder_form', remote: :true do %>
+        <%= form_tag update_reminder_account_path(account), method: :patch do %>
           <div class="panel panel-default">
             <form>
               <div class="panel-body">
@@ -83,9 +83,6 @@
                     </div>
                   </div>
                 </div><!-- row -->
-                <%if @conversation_item_attachment == 'on'%>
-                  <%=render "accounts/conversation_upload_edit", box_for: 'reminder'%>
-                <%end%>
                 <div class="row row-pad-5">
                   <div class="col-lg-12 list_of_attachment">
                   </div>
@@ -94,7 +91,7 @@
                 <input type="hidden" name="info" >
               </div><!-- panel-body -->
               <div class="panel-footer">
-                <%=submit_tag 'Save',  data: {disable_with: "Saving..." }, class: "btn btn-primary", id: "submit_edit_reminder_form"%>
+                <%=submit_tag 'Save',  data: {disable_with: "Saving..." }, class: "btn btn-primary" %>
                 <button type="reset" class="btn btn-default">Reset</button>
               </div>
           </div><!-- panel -->

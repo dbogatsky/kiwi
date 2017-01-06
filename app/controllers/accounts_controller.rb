@@ -634,12 +634,11 @@ class AccountsController < ApplicationController
     else
       flash[:danger] = 'Oops! Unable to add reminder.'
     end
-    # if params[:add_from_schedule].present?
-    #   redirect_to schedule_path
-    # else
-      render js: 'window.location.reload()'
-      # redirect_to account_path(params[:id])
-    # end
+    if params[:add_from_schedule].present?
+      redirect_to schedule_path
+    else
+      redirect_to account_path(params[:id])
+    end
   end
 
   def update_reminder
@@ -660,12 +659,11 @@ class AccountsController < ApplicationController
     else
       flash[:danger] = 'Reminder not updated!'
     end
-    render js: 'window.location.reload()'
-    # if params[:info].present?
-    #   redirect_to schedule_path
-    # else
-    #   redirect_to account_path(params[:id])
-    # end
+    if params[:info].present?
+      redirect_to schedule_path
+    else
+      redirect_to account_path(params[:id])
+    end
   end
 
   def delete_reminder

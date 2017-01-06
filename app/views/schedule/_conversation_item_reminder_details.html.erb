@@ -14,7 +14,7 @@
             </button>
             <ul class="dropdown-menu">
               <li>
-                  <a class="edit_reminder get_conversation_attachment" href="#"
+                  <a class="edit_reminder" href="#"
                    data-toggle="modal"
                    data-target=".conversation-edit-reminder-modal-form"
                    data-id="<%= citem.id %>"
@@ -33,16 +33,6 @@
                 <%=link_to 'Delete', delete_reminder_account_path(citem.account_id, item_id: citem.id, info: true), method: :delete,data: {confirm: 'Are you sure to delete this reminder?'}%>
               </li>
               <li>
-                <a class="open_add_conversation_attachment_modal" href="#"
-                  data-toggle="modal"
-                  data-target=".add-conversation-attachment-modal-form"
-                  data-account-conversation-id="<%=((citem.try(:conversation_id).present?) ? citem.conversation_id : citem.prefix_options[:conversation_id]) %>"
-                  data-title="<%=citem.title %>"
-                  data-created-at="<%= citem.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>"
-                  data-id="<%=citem.id%>">Add Attachment
-                </a>
-              </li>
-              <li>
                 <%=link_to 'Go To Account', account_path(citem.account_id)%>
               </li>
             </ul>
@@ -58,9 +48,6 @@
 </div>
 <div class="panel-body">
   <div class="ci_reminder_body"><%= sanitize citem.body %></div>
-  <div>
-    <%=render "accounts/conversation_attachment_show", citem: citem%>
-  </div>
   <% if (citem.scheduled_at.present?) %>
     <div class="ci_footer">
         <i class="fa fa-bell"></i>
@@ -127,9 +114,6 @@
 
   $(document).on('click', "a.edit_reminder", function(e){
     id = $(this).attr('data-id')
-    $("#conversation_id_for_edit_reminder").val(id);
-    account_conversation_id = $(this).attr('data-account-conversation-id')
-    $("#account_conversation_id_for_edit_reminder").val(account_conversation_id)
     $('.conversation-edit-reminder-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
     if(mobile == 'false'){
       $('.conversation-edit-reminder-modal-form input[name="scheduled_time"]').val($(this).attr('data-time'));
