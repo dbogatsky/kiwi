@@ -1,0 +1,20 @@
+<%if citem.media.present?%>
+  <div>
+    <p><span class="subheading">ATTACHMENT(S):</span></p>
+    <ul style="list-style: none;padding-left: 3px">
+      <%citem.media.each do |media|%>
+        <li>
+          <%if media.urls.try(:thumb)%>
+            <%=link_to media.urls.try(:original) do%>
+              <img src="<%=media.urls.try(:thumb)%>" class="thumbnail img-responsive" alt="">
+            <%end%>
+          <%else%>
+            <%=link_to media.urls.try(:original), target: "_blank" do %>
+              <i class="fa fa-paperclip" aria-hidden="true"></i> <%=media.name%>
+             <%end%>
+          <%end%>
+        </li>
+      <%end%>
+    </ul>
+  </div>
+<%end%>

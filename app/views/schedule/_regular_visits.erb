@@ -32,13 +32,15 @@
                 </a>
               </li>
               <li>
-                  <a class="edit_meeting" href="#"
+                  <a class="edit_meeting get_conversation_attachment" href="#"
                    data-toggle="modal"
                    data-target=".conversation-edit-meeting-modal-form"
                    data-id="<%= citem.id %>"
                    data-account-id="<%=citem.account_id%>"
                    data-invitees="<%=citem.invitees%>"
                    data-title="<%=citem.title %>"
+                   data-attachment="<%=citem.media.present?%>"
+                   data-account-conversation-id="<%=((citem.try(:conversation_id).present?) ? citem.conversation_id : citem.prefix_options[:conversation_id]) %>"
                    data-date="<%=(mobile? ? Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") :  Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y")) if citem.scheduled_at.present?%>"
                    data-time="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p") if citem.scheduled_at.present? %>"
                    data-time-24="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%H:%M") if citem.scheduled_at.present? %>"
@@ -56,6 +58,16 @@
               <li>
                 <%=link_to 'Delete', "javascript:void(0)", class: "delete_item", data:{id: citem.id, account_id: citem.account_id}%>
               </li>
+              <li>
+                <a class="open_add_conversation_attachment_modal" href="#"
+                  data-toggle="modal"
+                  data-target=".add-conversation-attachment-modal-form"
+                  data-account-conversation-id="<%=((citem.try(:conversation_id).present?) ? citem.conversation_id : citem.prefix_options[:conversation_id]) %>"
+                  data-title="<%=citem.title %>"
+                  data-created-at="<%= citem.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>"
+                  data-id="<%=citem.id%>">Add Attachment
+                </a>
+              </li>
               <li class="divider"></li>
               <li><%= link_to "Go To Account", account_path(citem.account_id) %></li>
             </ul>
@@ -68,6 +80,9 @@
           <% if (!citem.notes.nil?) %>
             <p><span class="subheading">Notes:<br/></span><%= sanitize citem.notes %></p>
           <% end %>
+          <div>
+            <%=render "accounts/conversation_attachment_show", citem: citem%>
+          </div>
           <div class="row ci_footer">
             <div class="col-sm-10">
               <% if (citem.scheduled_at.present?) %>

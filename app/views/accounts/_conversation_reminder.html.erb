@@ -6,7 +6,7 @@
         <h4 class="modal-title">Add Reminder</h4>
       </div>
       <div class="modal-body">
-        <%= form_tag(account_add_reminder_url) do %>
+        <%= form_tag account_add_reminder_path do%>
           <div class="panel panel-default">
               <div class="panel-body">
                 <div class="row row-pad-5">
@@ -102,7 +102,7 @@
                 <input type="hidden" name="user_selected" class="user_selected_id" value= "">
               </div><!-- panel-body -->
               <div class="panel-footer">
-                <%=submit_tag 'Save',  data: {disable_with: "Saving..." }, class: "btn btn-primary"%>
+                <%=submit_tag 'Save',  data: {disable_with: "Saving..." }, class: "btn btn-primary save_btn"%>
                 <button type="reset" class="btn btn-default">Reset</button>
               </div>
           </div><!-- panel -->

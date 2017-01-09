@@ -12,22 +12,35 @@
       </button>
       <ul class="dropdown-menu">
         <li>
-          <a class="edit_note" href="#"
+          <a class="edit_note get_conversation_attachment" href="#"
             data-toggle="modal"
             data-target=".conversation-edit-note-modal-form"
             data-id="<%= citem.id %>"
             data-title="<%=citem.title%>"
+            data-attachment="<%=citem.media.present?%>"
+            data-account-conversation-id="<%=((citem.try(:conversation_id).present?) ? citem.conversation_id : citem.prefix_options[:conversation_id]) %>"
             data-description="<%= citem.body %>">Edit
           </a>
         </li>
         <li>
           <%=link_to 'Delete', delete_note_account_path(@account, item_id: citem.id), method: :delete,data: {confirm: 'Are you sure to delete this note?'}%>
         </li>
+        <li>
+          <a class="open_add_conversation_attachment_modal" href="#"
+            data-toggle="modal"
+            data-target=".add-conversation-attachment-modal-form"
+            data-account-conversation-id="<%=((citem.try(:conversation_id).present?) ? citem.conversation_id : citem.prefix_options[:conversation_id]) %>"
+            data-title="<%=citem.title %>"
+            data-created-at="<%= citem.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>"
+            data-id="<%=citem.id%>">Add Attachment
+          </a>
+        </li>
       </ul>
     </div>
   </div>
   <h2 class="ci_header"><%= citem.title %></h2>
   <div class="ci_note_body"><%= sanitize citem.body %></div>
+  <%=render "conversation_attachment_show", citem: citem%>
   <div class="ci_footer">
     <% if (citem.scheduled_at.present?) %>
       <i class="fa fa-bell"></i><%= citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %><br/>

@@ -1,0 +1,40 @@
+<div class="table-responsive">
+  <table class="table mb30">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Date/Time</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <%if attachments.count > 0%>
+        <% attachments.each do |media| %>
+        <tr>
+          <td>
+            <%if media.type == "document" %>
+              <%=link_to media.name, (media.urls.try(:original) ? image_path(media.urls.original) : "javascript:void(0);"), target: '_blank'%>
+            <%else%>
+              <%=link_to media.name, (media.urls.try(:original) ? image_path(media.urls.original) : "javascript:void(0);"), target: '_blank'%>
+            <%end%>
+          </td>
+          <td>
+            <%if media.try(:created_at)
+                #media.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %I:%M %p ")
+            %>
+            <%= media.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%d/%m/%Y  %I:%M %p ") %>
+            <%else%>
+            -
+            <%end%>
+          </td>
+          <td>
+            <%=link_to delete_account_attachment_account_path(@account, destroy: true,attachment_id: media.id), remote: :true, method: :patch do%>
+              <i class="fa fa-trash-o"></i>
+            <%end%>
+          </td>
+        </tr>
+        <% end %>
+      <%end%>
+    </tbody>
+  </table>
+</div>
