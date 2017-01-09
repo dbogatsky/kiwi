@@ -51,6 +51,7 @@ Rails.application.routes.draw do
       patch  :update_reminder
       patch  :update_email
       patch  :update_meeting
+      patch  :delete_account_attachment
       patch  :update_quote
       delete :delete_reminder
       delete :delete_note
@@ -92,6 +93,7 @@ Rails.application.routes.draw do
   post '/accounts/add_reminder', to: 'accounts#add_reminder', as: :account_add_reminder
   post '/accounts/:id/send_email', to: 'accounts#send_email', as: :account_send_email
   post '/accounts/:id/share', to: 'accounts#share', as: :account_share
+  post '/accounts/:id/account_attachment',to: "accounts#account_attachment", as: :account_attachment
   get  '/accounts/:id/get_account_list_by_scrolling', to: 'accounts#get_account_list_by_scrolling', as: :account_get_account_list_by_scrolling
 
   match '/schedule', to: 'schedule#index', as: :schedule, via: [:get]
