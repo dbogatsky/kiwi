@@ -1,0 +1,4 @@
+$("#account_attachment_list").html("<%=j render 'list_of_account_level_attachment', attachments: @attachments%>")
+<%attachment_count =  @attachments.count == 0 ? "None" : "#{pluralize(@attachments.count, 'file')}" %>
+$("#attachment_count").text('<%=attachment_count%>')
+$('#preloader').hide();

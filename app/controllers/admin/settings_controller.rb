@@ -10,7 +10,7 @@ class Admin::SettingsController < Admin::AdminController
   def update_settings
     get_api_values
     apiFullUrl = ENV.fetch("ORCHARD_BO_API_HOST") + "/companies/#{params[:company_id]}/settings/private"
-    curlRes = `curl -X PUT -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -d '{"settings":{"asset_management": "#{params[:asset_management]}"}}' '#{apiFullUrl}'`
+    curlRes = `curl -X PUT -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -d '{"settings":{"asset_management": "#{params[:asset_management]}", "account_attachment": "#{params[:account_attachment]}", "conversation_item_attachment": "#{params[:conversation_item_attachment]}" }}' '#{apiFullUrl}'`
 
     boApiIntegrationFullUrl = ENV.fetch("ORCHARD_BO_API_HOST") + "/companies/#{params[:company_id]}/settings/integrations"
     office365 = params[:office365_integration].to_s == 'on' ? 'true' : 'false'
@@ -108,6 +108,8 @@ class Admin::SettingsController < Admin::AdminController
       @assets = JSON.parse(@assets) unless (@assets.blank? || @assets.is_a?(Hash))
       @leads = application_setting['company']['settings']['private']['leads_enabled']
       @assets_management = application_setting['company']['settings']['private']['asset_management']
+      @account_attachment = application_setting['company']['settings']['private']['account_attachment']
+      @conversation_item_attachment = application_setting['company']['settings']['private']['conversation_item_attachment']
 
       @boApiIntegrationFullUrl = ENV.fetch("ORCHARD_BO_API_HOST") + "/companies/#{params[:company_id]}/settings/integrations"
       application_integration_setting = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -H "Cache-Control: no-cache" "#{@boApiIntegrationFullUrl}"`

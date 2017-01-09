@@ -417,6 +417,22 @@ width:50%;
   padding-right:0 !important;
 }
 
+.dropzone{
+  text-align:center;
+  font-size:18px;
+}
+
+.drop_zone_height{
+   min-height: 150px;
+}
+
+.drop_zon_box{
+  border: #ccc;
+  border-style: dotted;
+  min-height: 150px;
+  border-width: 1px;
+}
+
 .related_account_list{
   list-style: none;
   margin-left: -39px;

@@ -25,6 +25,7 @@
 //= require bootstrap/raphael-2.1.0.min
 //= require bootstrap/jquery.datatables.min
 //= require bootstrap/gmaps
+//= require bootstrap/dropzone
 //= require bootstrap/jquery.twbsPagination.min
 //= require bootstrap/holder
 

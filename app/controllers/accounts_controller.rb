@@ -1,9 +1,10 @@
 require 'net/http/post/multipart'
 include ApplicationHelper
 class AccountsController < ApplicationController
-  skip_before_filter :verify_authenticity_token, only: [:delete_future_meeting, :destroy]
+  skip_before_filter :verify_authenticity_token, only: [:account_attachment, :delete_future_meeting, :destroy]
   before_action :get_token
-  before_action :find_account, only: [:show, :update_account_contacts, :add_related_to_account, :contacts_by_name, :updated_account, :edit, :destroy, :conversation, :search, :add_quote, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting, :update_quote, :delete_quote, :add_reminder, :update_reminder, :delete_reminder]
+  before_action :find_account, only: [:show, :delete_account_attachment, :account_attachment, :add_related_to_account, :update_account_contacts, :contacts_by_name, :updated_account, :edit, :destroy, :conversation, :search, :add_quote, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting, :update_quote, :delete_quote, :add_reminder, :update_reminder, :delete_reminder]
+
   before_action :get_api_values, only: [:search]
   before_action :application_settings, only: [:index, :show, :new, :edit, :generate_properties_csv_template, :properties_csv_validates, :assets_csv_validates, :generate_assets_csv_template]
   before_action :get_setting, only: [:index, :import, :export, :show, :edit, :new, :schedule_meeting, :update_meeting, :add_reminder, :update_reminder, :add_quote, :update_quote, :send_email, :update_email ]
@@ -66,6 +67,7 @@ class AccountsController < ApplicationController
     @users = User.all(uid: session[:user_id])
     @notifiable_users = notifiable_users_json(params[:id])
     @timeline_conversation_items = @account.conversation.conversation_items
+    @attachments = @account.media
     get_related_account(@account)
   end
 
@@ -187,7 +189,6 @@ class AccountsController < ApplicationController
     else
       @account.update_attributes(name: @account.name, account: account_params)
     end
-
   end
 
 
@@ -195,6 +196,37 @@ class AccountsController < ApplicationController
     @contacts = @account.contacts.group_by{|x| x.name==params[:name]}[true]
   end
 
+
+  def account_attachment
+    name = params[:file].original_filename
+    directory = "/tmp/"
+    path = File.join(directory, name)
+    File.open(path, "wb") { |f| f.write(params[:file].read) }
+    base64_data  =  Base64.encode64(File.open(path, "rb").read)
+    payload = "data:#{params[:file].content_type};base64,#{base64_data}"
+    content_type = params[:file].content_type
+    if(content_type == 'image/png' || content_type == 'image/gif' || content_type == 'image/jpg' || content_type == 'image/jpeg')
+      type = 'Media::Image'
+    elsif (content_type == "application/force-download" || content_type == 'application/pdf' || content_type == 'application/vnd.ms-excel' || content_type == 'application/vnd.ms-excel' || content_type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || content_type == 'application/msword' || content_type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || content_type == 'text/plain')
+      type = 'Media::Document'
+    elsif (content_type == 'audio/mpeg' || content_type == 'audio/x-mpeg' || content_type == 'audio/mp3' || content_type == 'audio/x-mp3' || content_type == 'audio/mpeg3' || content_type == 'audio/x-mpeg3' || content_type == 'audio/mpg' || content_type == 'audio/x-mpg' || content_type == 'audio/x-mpegaudio')
+      type = 'Media::Audio'
+    elsif (content_type == 'video/x-flv' || content_type == 'video/MP2T' || content_type == 'video/3gpp' || content_type == 'video/quicktime' || content_type == ' video/x-msvideo' || content_type == 'video/x-ms-wmv' || content_type == 'video/mpeg')
+      type = 'Media::Video'
+    end
+    params[:account] = {}
+    params[:account][:media_attributes] = [{name: name, payload: payload, type: type}]
+    @account.update_attributes(request: :update, account: account_attachment_params)
+    File.delete(path)
+    render :nothing => true
+  end
+
+  def delete_account_attachment
+    params[:account] = {}
+    params[:account][:media_attributes] = [id: params[:attachment_id], _destroy: true]
+    @account.update_attributes(request: :update, account: account_attachment_params)
+    @attachments = @account.media
+  end
 
   def destroy
     if @account.destroy
@@ -204,7 +236,6 @@ class AccountsController < ApplicationController
     end
     render :nothing => true
   end
-
 
   def load_more_conversation_item
     @account = params[:id]
@@ -1425,6 +1456,11 @@ class AccountsController < ApplicationController
     params.require(:account).permit(
       user_account_sharings_attributes: [:user_id, :permission, :_destroy]
     )
+  end
+
+  def account_attachment_params
+    params.require(:account).permit(
+      media_attributes: [:id, :name, :payload, :type, :_destroy])
   end
 
   def related_account_params
