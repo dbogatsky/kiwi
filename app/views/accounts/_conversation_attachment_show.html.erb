@@ -1,19 +1,28 @@
 <%if citem.media.present?%>
   <div>
     <p><span class="subheading">ATTACHMENT(S):</span></p>
-    <ul style="list-style: none;padding-left: 3px">
+    <ul class="attachment_list"style="list-style: none;padding-left: 3px">
       <%citem.media.each do |media|%>
         <li>
           <%if media.urls.try(:thumb)%>
-            <%=link_to media.urls.try(:original) do%>
+            <%=link_to media.urls.try(:original), target: "_blank" do%>
               <img src="<%=media.urls.try(:thumb)%>" class="thumbnail img-responsive" alt="">
             <%end%>
           <%else%>
             <%=link_to media.urls.try(:original), target: "_blank" do %>
-              <i class="fa fa-paperclip" aria-hidden="true"></i> <%=media.name%>
+              <%if media.type == 'document'%>
+                <%icon = 'fa-paperclip'%>
+              <%elsif media.type == 'audio'%>
+                <%icon = 'fa-file-sound-o'%>
+              <%elsif media.type == 'video'%>
+                <%icon = 'fa-file-video-o'%>
+              <%else%>
+                <%icon = 'fa-paperclip'%>
+              <%end%>
+              <i class="fa <%=icon%>" aria-hidden="true"></i>  <%=media.name%>
              <%end%>
           <%end%>
-        </li>
+        </li><br/>
       <%end%>
     </ul>
   </div>
