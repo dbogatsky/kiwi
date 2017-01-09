@@ -219,26 +219,30 @@ class AccountsController < ApplicationController
 
 
   def account_attachment
-    name = params[:file].original_filename
-    directory = "/tmp/"
-    path = File.join(directory, name)
-    File.open(path, "wb") { |f| f.write(params[:file].read) }
-    base64_data  =  Base64.encode64(File.open(path, "rb").read)
-    payload = "data:#{params[:file].content_type};base64,#{base64_data}"
-    content_type = params[:file].content_type
-    if(content_type == 'image/png' || content_type == 'image/gif' || content_type == 'image/jpg' || content_type == 'image/jpeg')
-      type = 'Media::Image'
-    elsif (content_type == "application/force-download" || content_type == 'application/pdf' || content_type == 'application/vnd.ms-excel' || content_type == 'application/vnd.ms-excel' || content_type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || content_type == 'application/msword' || content_type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || content_type == 'text/plain')
-      type = 'Media::Document'
-    elsif (content_type == 'audio/mpeg' || content_type == 'audio/x-mpeg' || content_type == 'audio/mp3' || content_type == 'audio/x-mp3' || content_type == 'audio/mpeg3' || content_type == 'audio/x-mpeg3' || content_type == 'audio/mpg' || content_type == 'audio/x-mpg' || content_type == 'audio/x-mpegaudio')
-      type = 'Media::Audio'
-    elsif (content_type == 'video/x-flv' || content_type == 'video/MP2T' || content_type == 'video/3gpp' || content_type == 'video/quicktime' || content_type == ' video/x-msvideo' || content_type == 'video/x-ms-wmv' || content_type == 'video/mpeg')
-      type = 'Media::Video'
+    if params[:file].present?
+      params[:file].values.each do |file|
+        name = file.original_filename
+        directory = "/tmp/"
+        path = File.join(directory, name)
+        File.open(path, "wb") { |f| f.write(file.read) }
+        base64_data  =  Base64.encode64(File.open(path, "rb").read)
+        payload = "data:#{file.content_type};base64,#{base64_data}"
+        content_type = file.content_type
+        if(content_type == 'image/png' || content_type == 'image/gif' || content_type == 'image/jpg' || content_type == 'image/jpeg')
+          type = 'Media::Image'
+        elsif (content_type == "application/force-download" || content_type == 'application/pdf' || content_type == 'application/vnd.ms-excel' || content_type == 'application/vnd.ms-excel' || content_type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || content_type == 'application/msword' || content_type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || content_type == 'text/plain')
+          type = 'Media::Document'
+        elsif (content_type == 'audio/mpeg' || content_type == 'audio/x-mpeg' || content_type == 'audio/mp3' || content_type == 'audio/x-mp3' || content_type == 'audio/mpeg3' || content_type == 'audio/x-mpeg3' || content_type == 'audio/mpg' || content_type == 'audio/x-mpg' || content_type == 'audio/x-mpegaudio')
+          type = 'Media::Audio'
+        elsif (content_type == 'video/x-flv' || content_type == 'video/MP2T' || content_type == 'video/3gpp' || content_type == 'video/quicktime' || content_type == ' video/x-msvideo' || content_type == 'video/x-ms-wmv' || content_type == 'video/mpeg')
+          type = 'Media::Video'
+        end
+        params[:account] = {}
+        params[:account][:media_attributes] = [{name: name, payload: payload, type: type}]
+        @account.update_attributes(request: :update, account: account_attachment_params)
+        File.delete(path)
+      end
     end
-    params[:account] = {}
-    params[:account][:media_attributes] = [{name: name, payload: payload, type: type}]
-    @account.update_attributes(request: :update, account: account_attachment_params)
-    File.delete(path)
     render :nothing => true
   end
 

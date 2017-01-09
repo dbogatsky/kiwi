@@ -156,12 +156,6 @@
 
       init: function() {
         var myDropzone = this;
-        $("#submit_dropzone_form").click(function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          myDropzone.processQueue();
-        });
-
         myDropzone.on("complete", function (file) {
           window.location.reload()
         });
