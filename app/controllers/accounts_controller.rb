@@ -1,7 +1,6 @@
 require 'net/http/post/multipart'
 include ApplicationHelper
 class AccountsController < ApplicationController
-
   skip_before_filter :verify_authenticity_token, only: [:account_attachment, :delete_future_meeting, :add_conversation_attachment, :destroy]
   before_action :get_token
   before_action :find_account, only: [:show, :delete_account_attachment, :account_attachment, :add_related_to_account, :update_account_contacts, :contacts_by_name, :updated_account, :destroy, :conversation, :search, :add_quote, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting, :update_quote, :delete_quote, :add_reminder, :update_reminder, :delete_reminder]
@@ -124,6 +123,23 @@ class AccountsController < ApplicationController
       end
     end
     redirect_to account_path(params[:id])
+  end
+
+  def check_account_duplication
+    search = {}
+    search[:name_cont] = params[:account_name]
+    search[:addresses_street_address_cont]  = params[:street_number]
+    search[:addresses_suite_number_cont] = params[:suite_number]
+    search[:addresses_city_eq] = params[:city]
+    search[:addresses_postcode_eq] = params[:postal_code]
+    search[:addresses_region_cont] = params[:state]
+    search[:addresses_country_cont] = params[:country]
+    @duplicate_accounts = CheckDuplication.find(params: {search: search})
+    if @duplicate_accounts.elements.present?
+      @duplication = true
+    else
+      @duplication = false
+    end
   end
 
   def add_related_to_account

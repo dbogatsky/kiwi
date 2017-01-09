@@ -175,6 +175,21 @@
       var contact_name = $("#account_contact_name").val()
       $(".first_contact").val(contact_name)
     }
+    if($("#vtab2").hasClass('active')){
+      $.ajax({
+        type: "GET",
+        data: {"account_name" : $("#account_name").val(), "street_number" : $("#street_number").val(), "suite_number" : $("#subpremise").val(), "city" : $("#locality").val(), "state" : $("#administrative_area_level_1").val(), "postal_code" : $("#postal_code").val(), "country" : $("#country").val()},
+        url: '/accounts/check_account_duplication',
+        success: function (data) {
+        },
+        beforeSend: function(xhr) {
+          $("#preloader").show();
+        },
+        complete: function() {
+          $('#preloader').hide();
+        },
+      });
+    }
   })
 
   $(".account_next").click(function(){

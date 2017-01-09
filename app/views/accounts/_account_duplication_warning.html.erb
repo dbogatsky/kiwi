@@ -1,0 +1,13 @@
+<div class="alert alert-warning">
+	<strong>Warning! Possible Duplicate Account Detected!</strong><br/>
+	The account you are currently entering could already exist in the system.<br/>
+	Please see below for details:
+	<br/>
+	Account Name: <%=values.elements.last["name"] rescue nil%><br/>
+	Street: <%=values.elements.last["addresses"].last["street_address"] rescue nil%><br/>
+	Suite Number: <%=values.elements.last["addresses"].last["suite_number"] rescue nil%><br/>
+	City: <%=values.elements.last["addresses"].last["city"] rescue nil%><br/>
+	Region: <%=values.elements.last["addresses"].last["region"] rescue nil%><br/>
+	Country: <%=values.elements.last["addresses"].last["country"] rescue nil%><br/>
+	Postal Code: <%=values.elements.last["addresses"].last["postcode"] rescue nil%><br/>
+</div>

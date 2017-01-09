@@ -68,6 +68,7 @@ Rails.application.routes.draw do
       get    :contacts_by_name
     end
     collection do
+      get :check_account_duplication
       post :add_conversation_attachment
       patch :get_or_delete_conversation_attachment
     end
