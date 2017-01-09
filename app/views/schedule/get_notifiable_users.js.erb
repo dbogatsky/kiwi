@@ -1,9 +1,9 @@
 <%if @result%>
-	 var new_data = <%= raw(@notifiable_users) %>
-	  $("#notifiable_users").select2({
-	    data: new_data
-	  });
-	 $(".conversation-reminder-modal-form .select2").css('width', '100%');
+	var new_data = <%= raw(@notifiable_users) %>
+  $("#notifiable_users").select2({
+    data: new_data
+  });
+	$(".conversation-reminder-modal-form .select2").css('width', '100%');
   $('#preloader').hide();
 <%else%>
   window.location.reload();

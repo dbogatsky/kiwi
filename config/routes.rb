@@ -67,6 +67,10 @@ Rails.application.routes.draw do
       patch  :add_related_to_account
       get    :contacts_by_name
     end
+    collection do
+      post :add_conversation_attachment
+      patch :get_or_delete_conversation_attachment
+    end
     resources :contacts, only: [:edit, :create, :update, :destroy]
     resources :addresses, only: [:edit, :create, :update, :destroy]
   end

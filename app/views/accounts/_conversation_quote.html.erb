@@ -6,7 +6,7 @@
         <h4 class="modal-title">Add Quote</h4>
       </div>
       <div class="modal-body">
-        <%= form_tag(account_add_quote_url) do %>
+        <%= form_tag account_add_quote_path, enctype: "multipart/form-data", id: 'submit_conversation_quote_form', remote: :true  do %>
           <div class="panel panel-default">
               <div class="panel-body">
                 <div class="row row-pad-5">
@@ -121,6 +121,9 @@
                     </div>
                   </div>
                 </div>
+                <%if @conversation_item_attachment == 'on'%>
+                  <%=render "accounts/conversation_upload", box_for: 'quote'%>
+                <%end%>
                 <%if account.present?%>
                  <input type="hidden" name="id" value="<%=account.id%>">
                 <%end%>
@@ -129,7 +132,7 @@
               </div><!-- panel-body -->
               <div class="panel-footer">
                 <!-- <button type="submit" class="btn btn-primary">Save</button> -->
-                <%=submit_tag 'Save',  data: {disable_with: "Saving..." }, class: "btn btn-primary"%>
+                <%=submit_tag 'Save',  data: {disable_with: "Saving..." }, class: "btn btn-primary save_btn", id: "submit_quote_form"%>
                 <button type="reset" class="btn btn-default">Reset</button>
               </div>
           </div><!-- panel -->

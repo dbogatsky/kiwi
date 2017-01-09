@@ -16,11 +16,13 @@
           </button>
           <ul class="dropdown-menu">
             <li>
-                <a class="edit_quote" href="#"
+                <a class="edit_quote get_conversation_attachment" href="#"
                  data-toggle="modal"
                  data-target=".conversation-edit-quote-modal-form"
                  data-id="<%= citem.id %>"
                  data-title="<%=citem.title%>"
+                 data-attachment="<%=citem.media.present?%>"
+                 data-account-conversation-id="<%=((citem.try(:conversation_id).present?) ? citem.conversation_id : citem.prefix_options[:conversation_id]) %>"
                  data-date="<%=mobile? ? Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") : Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y")  if citem.scheduled_at.present?%>"
                  data-time-24="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%H:%M") if citem.scheduled_at.present? %>"
                  data-time="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p") if citem.scheduled_at.present? %>"
@@ -40,6 +42,16 @@
             </li>
             <li>
               <%=link_to 'Delete', delete_quote_account_path(citem.account_id, item_id: citem.id, info: true), method: :delete,data: {confirm: 'Are you sure to delete this quote?'}%>
+            </li>
+            <li>
+              <a class="open_add_conversation_attachment_modal" href="#"
+                data-toggle="modal"
+                data-target=".add-conversation-attachment-modal-form"
+                data-account-conversation-id="<%=((citem.try(:conversation_id).present?) ? citem.conversation_id : citem.prefix_options[:conversation_id]) %>"
+                data-title="<%=citem.title %>"
+                data-created-at="<%= citem.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>"
+                data-id="<%=citem.id%>">Add Attachment
+              </a>
             </li>
             <li>
               <%=link_to 'Go To Account', account_path(citem.account_id)%>
@@ -65,6 +77,9 @@
   <div class="ci_amount">
       <span class="subheading">Amount:<br></span>
       $<%=number_with_precision(citem.amount, :precision => 2)%>
+  </div>
+  <div>
+    <%=render "accounts/conversation_attachment_show", citem: citem%>
   </div>
   <div class="ci_footer">
     <i class="fa fa-user tooltips mr10" data-toggle="tooltip" data-original-title="Created by"></i><%=citem.created_by.first_name%> <%=citem.created_by.last_name%><br />
@@ -120,6 +135,9 @@
   }
   $(document).on('click', "a.edit_quote", function(e){
     id = $(this).attr('data-id')
+    $("#conversation_id_for_edit_quote").val(id);
+    account_conversation_id = $(this).attr('data-account-conversation-id')
+    $("#account_conversation_id_for_edit_quote").val(account_conversation_id)
     status = $(this).attr('data-status')
     body = $(this).attr('data-description')
     $('.conversation-edit-quote-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));

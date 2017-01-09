@@ -1,9 +1,10 @@
 require 'net/http/post/multipart'
 include ApplicationHelper
 class AccountsController < ApplicationController
-  skip_before_filter :verify_authenticity_token, only: [:account_attachment, :delete_future_meeting, :destroy]
+
+  skip_before_filter :verify_authenticity_token, only: [:account_attachment, :delete_future_meeting, :add_conversation_attachment, :destroy]
   before_action :get_token
-  before_action :find_account, only: [:show, :delete_account_attachment, :account_attachment, :add_related_to_account, :update_account_contacts, :contacts_by_name, :updated_account, :edit, :destroy, :conversation, :search, :add_quote, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting, :update_quote, :delete_quote, :add_reminder, :update_reminder, :delete_reminder]
+  before_action :find_account, only: [:show, :delete_account_attachment, :account_attachment, :add_related_to_account, :update_account_contacts, :contacts_by_name, :updated_account, :destroy, :conversation, :search, :add_quote, :edit, :update, :share, :update_note, :update_email, :delete_note, :delete_email, :schedule_meeting, :delete_meeting, :update_meeting, :delete_future_meeting, :update_quote, :delete_quote, :add_reminder, :update_reminder, :delete_reminder]
 
   before_action :get_api_values, only: [:search]
   before_action :application_settings, only: [:index, :show, :new, :edit, :generate_properties_csv_template, :properties_csv_validates, :assets_csv_validates, :generate_assets_csv_template]
@@ -11,6 +12,8 @@ class AccountsController < ApplicationController
   before_action :check_permission_for_import, only: [:import]
   before_action :check_permission_for_export, only: [:export]
   @@account_with_previous_value = nil
+  @@new_item_id = nil
+  @@account_conversation_id = nil
 
   def index
     @user_preference = user_preferences_load
@@ -69,6 +72,8 @@ class AccountsController < ApplicationController
     @timeline_conversation_items = @account.conversation.conversation_items
     @attachments = @account.media
     get_related_account(@account)
+    @@new_item_id = nil
+    @@account_conversation_id = nil
   end
 
   def new
@@ -339,14 +344,17 @@ class AccountsController < ApplicationController
         conversation_id: c_id, type: 'meeting')
     if ci
       flash[:success] = 'Your meeting has been successfully scheduled'
+      @@new_item_id = ci.id
+      @@account_conversation_id = c_id
     else
       flash[:danger] = 'Oops! Unable to scheduled meeting'
     end
-    if params[:add_from_schedule].present?
-      redirect_to schedule_path
-    else
-      redirect_to account_path(params[:id])
-    end
+    # if params[:add_from_schedule].present?
+    #   redirect_to schedule_path
+    # else
+      render js: 'window.location.reload()'
+      # redirect_to account_path(params[:id])
+    # end
   end
 
   def delete_meeting
@@ -408,11 +416,12 @@ class AccountsController < ApplicationController
     else
       flash[:danger] = 'Meeting not updated!'
     end
-    if params[:info].present?
-      redirect_to schedule_path
-    else
-      redirect_to account_path(params[:id])
-    end
+    # if params[:info].present?
+    #   redirect_to schedule_path
+    # else
+    #   redirect_to account_path(params[:id])
+    # end
+    render js: 'window.location.reload()'
   end
 
   def check_in
@@ -483,11 +492,62 @@ class AccountsController < ApplicationController
     ci = ConversationItem.create(conversation_item: { title: conversation_item_params[:subject], body: conversation_item_params[:body], scheduled_at: params[:conversation_item][:scheduled_at], created_by_id: current_user.id }, conversation_id: c_id, type: conversation_item_params[:type])
     if ci
       flash[:success] = 'Your note has been added to the conversation!'
+      @@new_item_id = ci.id
+      @@account_conversation_id = c_id
     else
       flash[:danger] = 'Oops! Unable to add note.'
     end
+    render js: 'window.location.reload()'
+    # redirect_to account_path(conversation_item_params[:account_id])
+  end
 
-    redirect_to account_path(conversation_item_params[:account_id])
+  def add_conversation_attachment
+    if params[:upload_info] == "upload_from_edit" && params[:account_conversation_id].present?
+      c_id = params[:account_conversation_id]
+      @conversation_item = ConversationItem.find(params[:conversation_id], params: {conversation_id: c_id})
+    elsif @@new_item_id.present? && @@account_conversation_id.present?
+      c_id = @@account_conversation_id
+      @conversation_item = ConversationItem.find(@@new_item_id, params: {conversation_id: c_id})
+    end
+    if @conversation_item.present? && params[:file].present?
+      params[:file].values.each do |file|
+        name = file.original_filename
+        directory = "/tmp/"
+        path = File.join(directory, name)
+        File.open(path, "wb") { |f| f.write(file.read) }
+        base64_data  =  Base64.encode64(File.open(path, "rb").read)
+        payload = "data:#{file.content_type};base64,#{base64_data}"
+        content_type = file.content_type
+        if(content_type == 'image/png' || content_type == 'image/gif' || content_type == 'image/jpg' || content_type == 'image/jpeg')
+          type = 'Media::Image'
+        elsif (content_type == "application/force-download" || content_type == 'application/pdf' || content_type == 'application/vnd.ms-excel' || content_type == 'application/vnd.ms-excel' || content_type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || content_type == 'application/msword' || content_type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || content_type == 'text/plain')
+          type = 'Media::Document'
+        elsif (content_type == 'audio/mpeg' || content_type == 'audio/x-mpeg' || content_type == 'audio/mp3' || content_type == 'audio/x-mp3' || content_type == 'audio/mpeg3' || content_type == 'audio/x-mpeg3' || content_type == 'audio/mpg' || content_type == 'audio/x-mpg' || content_type == 'audio/x-mpegaudio')
+          type = 'Media::Audio'
+        elsif (content_type == 'video/x-flv' || content_type == 'video/MP2T' || content_type == 'video/3gpp' || content_type == 'video/quicktime' || content_type == ' video/x-msvideo' || content_type == 'video/x-ms-wmv' || content_type == 'video/mpeg')
+          type = 'Media::Video'
+        end
+        params[:conversation_item] = {}
+        params[:conversation_item][:media_attributes] = [{name: name, payload: payload, type: type}]
+        @conversation_item.update_attributes(request: :update, conversation_item: params[:conversation_item],conversation_id: c_id)
+        File.delete(path)
+      end
+    end
+    @@new_item_id = nil
+    render :nothing => true
+  end
+
+  def get_or_delete_conversation_attachment
+    c_id = params[:account_conversation_id]
+    item = ConversationItem.find(params[:item_id], params:{conversation_id: c_id})
+    if params[:destroy] == "true"
+      params[:conversation_item] = {}
+      params[:conversation_item][:media_attributes] = [{id: params[:attachment_id], _destroy: true}]
+      item.update_attributes(request: :update, conversation_item: params[:conversation_item],conversation_id: c_id)
+    end
+    @attachments = item.media
+    @item_id = item.id
+    @account_conversation_id = c_id
   end
 
   def add_quote
@@ -505,14 +565,17 @@ class AccountsController < ApplicationController
     ci = ConversationItem.create(conversation_item: { title: conversation_item_params[:title], ends_at: conversation_item_params[:ends_at], body: conversation_item_params[:body], reminder: conversation_item_params[:reminder], scheduled_at: params[:conversation_item][:scheduled_at], status: conversation_item_params[:status], amount: conversation_item_params[:amount], item_type: conversation_item_params[:item_type], created_by_id: current_user.id}, conversation_id: c_id, type: conversation_item_params[:type])
     if ci
       flash[:success] = 'Your quote has been added to the conversation'
+      @@new_item_id = ci.id
+      @@account_conversation_id = c_id
     else
       flash[:danger] = 'Oops! Unable to add quote'
     end
-    if params[:add_from_schedule].present?
-      redirect_to schedule_path
-    else
-      redirect_to account_path(params[:id])
-    end
+    # if params[:add_from_schedule].present?
+    #   redirect_to schedule_path
+    # else
+      render js: 'window.location.reload()'
+      # redirect_to account_path(params[:id])
+    # end
   end
 
   def update_quote
@@ -537,11 +600,12 @@ class AccountsController < ApplicationController
     else
       flash[:danger] = 'Quote not updated!'
     end
-    if params[:info].present?
-      redirect_to schedule_path
-    else
-      redirect_to account_path(params[:id])
-    end
+    render js: 'window.location.reload()'
+    # if params[:info].present?
+    #   redirect_to schedule_path
+    # else
+    #   redirect_to account_path(params[:id])
+    # end
   end
 
   def delete_quote
@@ -567,11 +631,12 @@ class AccountsController < ApplicationController
     else
       flash[:danger] = 'Note not updated!'
     end
-    if params[:info].present?
-      redirect_to schedule_path
-    else
-      redirect_to account_path(params[:id])
-    end
+    render js: 'window.location.reload()'
+    # if params[:info].present?
+    #   redirect_to schedule_path
+    # else
+    #   redirect_to account_path(params[:id])
+    # end
   end
 
   def delete_note
@@ -596,6 +661,8 @@ class AccountsController < ApplicationController
     ci = ConversationItem.create(conversation_item: { title: conversation_item_params[:subject], body: conversation_item_params[:body], scheduled_at: params[:conversation_item][:scheduled_at], created_by_id: current_user.id, notify_by_sms: params[:conversation_item][:notify_by_sms], notify_by_email: params[:conversation_item][:notify_by_email], users_to_notify_ids: params[:conversation_item][:users_to_notify_ids] }, conversation_id: c_id, type: conversation_item_params[:type])
     if ci
       flash[:success] = 'Your reminder has been added to the conversation!'
+      @@new_item_id = ci.id
+      @@account_conversation_id = c_id
     else
       flash[:danger] = 'Oops! Unable to add reminder.'
     end
@@ -665,10 +732,13 @@ class AccountsController < ApplicationController
       conversation_id: c_id, type: 'email')
     if ci
       flash[:success] = 'Your email has been successfully sent!'
+      @@new_item_id = ci.id
+      @@account_conversation_id = c_id
     else
       flash[:danger] = 'Oops! Looks like there was a problem sending your email.'
     end
-    redirect_to account_path(conversation_item_params[:account_id])
+    render js: 'window.location.reload()'
+    # redirect_to account_path(conversation_item_params[:account_id])
   end
 
   def update_email
@@ -688,7 +758,8 @@ class AccountsController < ApplicationController
     else
       flash[:danger] = 'Email not updated!'
     end
-    redirect_to account_path(params[:id])
+    render js: 'window.location.reload()'
+    # redirect_to account_path(params[:id])
   end
 
   def delete_email

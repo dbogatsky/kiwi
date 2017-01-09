@@ -151,45 +151,19 @@
       dictRemoveFileConfirmation: null,
       dictMaxFilesExceeded: "You can not upload any more files.",
       accept: function(file, done) {
-        // var final_encode
-        // if (file) {
-        //   var reader = new FileReader();
-        //   reader.onload = function(readerEvt) {
-        //     var binaryString = readerEvt.target.result;
-        //     var fileending = file.type;
-        //     var test = btoa(binaryString);
-        //     final_encode = "data:"+fileending+";base64,"+test ;
-
-        //     document.getElementById("new_base64_data").value = final_encode;
-        //   };
-        //   reader.readAsBinaryString(file);
-        // }
         return done();
       },
 
       init: function() {
         var myDropzone = this;
-        // myDropzone.on('addedfile', function(file) {
-          // if (myDropzone.files.length > 1) {
-          //   myDropzone.removeFile(myDropzone.files[0]);
-          // }
-
-          // if(file.size < 10000000){
-          //   var filesize = (file.size/1000).toFixed(1)+"KB"
-          //   alert('File is too small'+'('+filesize+').'+ 'Min filesize: 10 MB)');
-          //   myDropzone.removeFile(file)
-          // }
-        // });
-
-        // myDropzone.on("maxfilesexceeded", function(file){
-        //   alert("You can not upload any more files!");
-        //   myDropzone.removeFile(myDropzone.files[5]);
-        // });
-
         $("#submit_dropzone_form").click(function(e) {
           e.preventDefault();
           e.stopPropagation();
           myDropzone.processQueue();
+        });
+
+        myDropzone.on("complete", function (file) {
+          window.location.reload()
         });
       },
       forceFallback: false,
@@ -1281,17 +1255,18 @@
       xhr.open(method, url, true);
       xhr.withCredentials = !!this.options.withCredentials;
       response = null;
-      handleError = (function(_this) {
-        return function() {
-          var _j, _len1, _results;
-          _results = [];
-          for (_j = 0, _len1 = files.length; _j < _len1; _j++) {
-            file = files[_j];
-            _results.push(_this._errorProcessing(files, response || _this.options.dictResponseError.replace("{{statusCode}}", xhr.status), xhr));
-          }
-          return _results;
-        };
-      })(this);
+      handleError = null;
+      // handleError = (function(_this) {
+      //   return function() {
+      //     var _j, _len1, _results;
+      //     _results = [];
+      //     for (_j = 0, _len1 = files.length; _j < _len1; _j++) {
+      //       file = files[_j];
+      //       _results.push(_this._errorProcessing(files, response || _this.options.dictResponseError.replace("{{statusCode}}", xhr.status), xhr));
+      //     }
+      //     return _results;
+      //   };
+      // })(this);
       updateProgress = (function(_this) {
         return function(e) {
           var allFilesFinished, progress, _j, _k, _l, _len1, _len2, _len3, _results;
@@ -1424,6 +1399,7 @@
     };
 
     Dropzone.prototype._finished = function(files, responseText, e) {
+      $('#preloader').show();
       var file, _i, _len;
       for (_i = 0, _len = files.length; _i < _len; _i++) {
         file = files[_i];
@@ -1438,7 +1414,7 @@
       if (this.options.autoProcessQueue) {
         return this.processQueue();
       }
-      window.location.reload()
+      window.location.reload();
     };
 
     Dropzone.prototype._errorProcessing = function(files, message, xhr) {

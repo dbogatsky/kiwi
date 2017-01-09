@@ -312,6 +312,7 @@
   <%= render "account_relationship_modal" %>
   <%= render "schedule/delete_meeting_modal"%>
   <%= render "schedule/delete_future_meeting_modal"%>
+  <%= render "add_conversation_attachment"%>
   <%= render "account_level_attachment_modal"%>
 <% end %>
 
@@ -347,6 +348,47 @@
         }
       }
     });
+
+    $(document).on('click', "a.open_add_conversation_attachment_modal", function(e){
+      id = $(this).attr('data-id')
+      $("#item_id_for_add_attachment").val(id);
+      account_conversation_id = $(this).attr('data-account-conversation-id')
+      $("#account_conversation_id_for_add_attachment").val(account_conversation_id)
+      $("#item_title").text($(this).attr('data-title'))
+      $("#item_created_at").text($(this).attr('data-created-at'))
+    });
+
+    $(".add_attachment").click(function(){
+      if ($(this).closest('div').find('.drop_zone_height').hasClass('hidden')){
+        $(this).closest('div').find('.drop_zone_height').removeClass('hidden').addClass('shown')
+        $(this).find('i').removeClass("fa-plus").addClass("fa-minus")
+      }else{
+        $(this).closest('div').find('.drop_zone_height').removeClass('shown').addClass('hidden')
+        $(this).find('i').removeClass("fa-minus").addClass("fa-plus")
+      }
+    });
+
+    $(".get_conversation_attachment").click(function(){
+      item_id = $(this).attr('data-id')
+      attachment = $(this).attr('data-attachment')
+      account_conversation_id = $(this).attr('data-account-conversation-id')
+      if (attachment == 'true'){
+        $.ajax({
+          type: "PATCH",
+          url: "/accounts/get_or_delete_conversation_attachment?item_id="+item_id+"&account_conversation_id="+account_conversation_id,
+          success: function (data) {
+          },
+          beforeSend: function() {
+            $('#preloader').show();
+          },
+          complete: function() {
+            $('#preloader').hide();
+          },
+        });
+      }else{
+        $(".list_of_attachment").html("")
+      }
+    })
 
     var x=0;
     $(".get_list_for_edit").click(function(){
@@ -728,6 +770,9 @@
 
     $(document).on('click', "a.edit_email", function(e){
       id = $(this).attr('data-id')
+      $("#conversation_id_for_edit_email").val(id);
+      account_conversation_id = $(this).attr('data-account-conversation-id')
+      $("#account_conversation_id_for_edit_email").val(account_conversation_id)
       $('.conversation-edit-email-modal-form input[name="conversation_item[invitees]"]').val($(this).attr('data-invitees'));
       $('.conversation-edit-email-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
       if(mobile == 'false'){
@@ -756,6 +801,9 @@
 
     $(document).on('click', "a.edit_note", function(e){
       id = $(this).attr('data-id')
+      $("#conversation_id_for_edit_note").val(id);
+      account_conversation_id = $(this).attr('data-account-conversation-id')
+      $("#account_conversation_id_for_edit_note").val(account_conversation_id)
       $('.conversation-edit-note-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
       // $('.conversation-edit-note-modal-form textarea[name="covnersation_item[body]"]').val($(this).attr('data-description'));
       edit_editor.data("wysihtml5").editor.setValue($(this).attr('data-description'));
@@ -796,6 +844,9 @@
 
     $(document).on('click', "a.edit_meeting", function(e){
       id = $(this).attr('data-id')
+      $("#conversation_id_for_edit_meeting").val(id);
+      account_conversation_id = $(this).attr('data-account-conversation-id')
+      $("#account_conversation_id_for_edit_meeting").val(account_conversation_id)
       invitees = $(this).attr('data-invitees')
       invitees_array = invitees.split(',')
       $.each(invitees_array, function(index, value){
@@ -928,6 +979,9 @@
 
     $(document).on('click', "a.edit_quote", function(e){
       id = $(this).attr('data-id')
+      $("#conversation_id_for_edit_quote").val(id);
+      account_conversation_id = $(this).attr('data-account-conversation-id')
+      $("#account_conversation_id_for_edit_quote").val(account_conversation_id)
       status = $(this).attr('data-status')
       body = $(this).attr('data-description')
       $('.conversation-edit-quote-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
