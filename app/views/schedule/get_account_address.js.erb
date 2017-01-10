@@ -1,2 +1,5 @@
  $("#keyword").val('<%=@full_address%>')
+ var address = $("#keyword").val()
+ address = address.replace(/&amp;/g, '&')
+ $("#keyword").val(address)
  $('#preloader').hide();
