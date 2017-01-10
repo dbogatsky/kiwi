@@ -10,25 +10,21 @@
             <%end%>
           <%else%>
             <%=link_to media.urls.try(:original), target: "_blank" do %>
-              <%if media.type == 'document'%>
-                  <%if ((media.name.include?'.doc') || (media.name.include?'.docx'))%>
-                    <%icon = 'fa-file-word-o'%>
-                  <%elsif ((media.name.include?".xls") || (media.name.include?".xlsx"))%>
-                    <%icon = 'fa-file-excel-o'%>
-                  <%elsif ((media.name.include?".ppt") || (media.name.include?".pptx"))%>
-                    <%icon = 'fa-file-powerpoint-o'%>
-                  <%elsif (media.name.include?".pdf")%>
-                    <%icon = 'fa-file-pdf-o'%>
-                  <%else%>
-                    <%icon = 'fa-paperclip'%>
-                  <%end%>
-              <%elsif media.type == 'audio'%>
+              <%if ((media.name.include?'.doc') || (media.name.include?'.docx'))%>
+                <%icon = 'fa-file-word-o'%>
+              <%elsif ((media.name.include?".xls") || (media.name.include?".xlsx"))%>
+                <%icon = 'fa-file-excel-o'%>
+              <%elsif ((media.name.include?".ppt") || (media.name.include?".pptx"))%>
+                <%icon = 'fa-file-powerpoint-o'%>
+              <%elsif (media.name.include?".pdf")%>
+                <%icon = 'fa-file-pdf-o'%>
+              <%end%>
+              <%if media.type == 'audio'%>
                 <%icon = 'fa-file-sound-o'%>
               <%elsif media.type == 'video'%>
                 <%icon = 'fa-file-video-o'%>
-              <%else%>
-                <%icon = 'fa-paperclip'%>
               <%end%>
+              <%icon ||= 'fa-paperclip'%>
               <i class="fa <%=icon%>" aria-hidden="true"></i>  <%=media.name%>
              <%end%>
           <%end%>
