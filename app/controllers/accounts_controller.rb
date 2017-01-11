@@ -436,12 +436,15 @@ class AccountsController < ApplicationController
     else
       flash[:danger] = 'Meeting not updated!'
     end
-    # if params[:info].present?
-    #   redirect_to schedule_path
-    # else
-    #   redirect_to account_path(params[:id])
-    # end
-    render js: 'window.location.reload()'
+    if params[:info].present?
+      @path = schedule_path
+    else
+      @path = account_path(params[:id])
+    end
+    respond_to do |format|
+      format.html {redirect_to @path}
+      format.js {render js: 'window.location.reload()'}
+    end
   end
 
   def check_in
@@ -620,12 +623,15 @@ class AccountsController < ApplicationController
     else
       flash[:danger] = 'Quote not updated!'
     end
-    render js: 'window.location.reload()'
-    # if params[:info].present?
-    #   redirect_to schedule_path
-    # else
-    #   redirect_to account_path(params[:id])
-    # end
+    if params[:info].present?
+      @path = schedule_path
+    else
+      @path = account_path(params[:id])
+    end
+    respond_to do |format|
+      format.html {redirect_to @path}
+      format.js {render js: 'window.location.reload()'}
+    end
   end
 
   def delete_quote
