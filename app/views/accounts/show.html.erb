@@ -349,6 +349,25 @@
       }
     });
 
+    $(window).bind("beforeunload", function(){
+      $("#submit_edit_quote_form").val("Saving...");
+      $("#submit_edit_quote_form").attr("disabled", "disabled");
+      $("#submit_quote_form").val("Saving...");
+      $("#submit_quote_form").attr("disabled", "disabled");
+      $("#submit_edit_note_form").val("Saving...");
+      $("#submit_edit_note_form").attr("disabled", "disabled");
+      $("#submit_note_form").val("Saving...");
+      $("#submit_note_form").attr("disabled", "disabled");
+      $("#submit_edit_meeting_form").val("Saving...");
+      $("#submit_edit_meeting_form").attr("disabled", "disabled");
+      $("#submit_meeting_form").val("Saving...");
+      $("#submit_meeting_form").attr("disabled", "disabled");
+      $("#submit_email_form").val("Sending...");
+      $("#submit_email_form").attr("disabled", "disabled");
+      $("#submit_edit_email_form").val("Sending...");
+      $("#submit_edit_email_form").attr("disabled", "disabled");
+    });
+
     $(document).on('click', "a.open_add_conversation_attachment_modal", function(e){
       id = $(this).attr('data-id')
       $("#item_id_for_add_attachment").val(id);
