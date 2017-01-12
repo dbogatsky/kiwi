@@ -220,6 +220,7 @@ class AccountsController < ApplicationController
 
   def account_attachment
     if params[:file].present?
+      failed_uploaded_files = []
       params[:file].values.each do |file|
         name = file.original_filename
         directory = "/tmp/"
@@ -239,10 +240,18 @@ class AccountsController < ApplicationController
         end
         params[:account] = {}
         params[:account][:media_attributes] = [{name: name, payload: payload, type: type}]
-        @account.update_attributes(request: :update, account: account_attachment_params)
+        status = @account.update_attributes(request: :update, account: account_attachment_params)
         File.delete(path)
+        if status == false
+          failed_uploaded_files.push(name)
+        end
       end
     end
+
+    if failed_uploaded_files.count > 0
+      flash[:danger] = 'There seems to be a error with the file and so it couldn’t be uploaded.'
+    end
+
     render :nothing => true
   end
 

@@ -90,17 +90,33 @@
 
 <script>
   $.fn.modal.Constructor.prototype.enforceFocus = function () {};
-  // $('.select2').select2();
-  // var check_open_modal
-  // $(".account-action-meeting, .conversation-quote-modal-form, .conversation-reminder-modal-form").on("shown.bs.modal", function(){
-  //   var select = $('.selected_account');
-  //   check_open_modal = $(this).attr('id')
-  //   select.empty();
-  //   select.append("<option value=''>-Select account-</option>");
-  //   <%#@all_accounts.each do |account|%>
-  //     $('<option>').val('<%#=account.id%>').text('<%#=account.name%>').appendTo('.selected_account');
-  //   <%#end%>
-  // })
+    $(document).on('ajax:complete', "#submit_conversation_edit_meeting_form, #submit_conversation_edit_quote_form, #submit_conversation_edit_note_form, #submit_conversation_quote_form, #submit_conversation_meeting_form", function(){
+      $("#preloader").show();
+      if (document.getElementById("submit_edit_meeting_form") != null){
+        document.getElementById("submit_edit_meeting_form").value = "Saving..."
+        document.getElementById("submit_edit_meeting_form").disabled = "true"
+      }
+
+      if (document.getElementById("submit_edit_quote_form") != null){
+        document.getElementById("submit_edit_quote_form").value = "Saving..."
+        document.getElementById("submit_edit_quote_form").disabled = "true"
+      }
+
+      if (document.getElementById("submit_edit_note_form") != null){
+        document.getElementById("submit_edit_note_form").value = "Saving..."
+        document.getElementById("submit_edit_note_form").disabled = "true"
+      }
+
+      if (document.getElementById("submit_quote_form") != null){
+        document.getElementById("submit_quote_form").value = "Saving..."
+        document.getElementById("submit_quote_form").disabled = "true"
+      }
+
+      if (document.getElementById("submit_meeting_form") != null){
+        document.getElementById("submit_meeting_form").value = "Saving..."
+        document.getElementById("submit_meeting_form").disabled = "true"
+      }
+    })
 
   $(document).on('click', '.add_attachment', function(){
     if ($(this).closest('div').find('.drop_zone_height').hasClass('hidden')){
@@ -151,7 +167,7 @@
         dataType: "script",
         url: '/schedule/get_account_address?account_id='+ account_id,
         beforeSend: function() {
-         $('#preloader').css('opacity', 0.8);
+         $('#preloader').css('opacity', 0.3);
          $('#preloader').show();
         }
       });
@@ -216,7 +232,7 @@
   $(".get_notifiable_users").change(function(){
     account_id = $(this).val();
     if (account_id != ''){
-      $('#preloader').css('opacity', 0.8);
+      $('#preloader').css('opacity', 0.3);
       $('#preloader').show();
       $.ajax({
         type: "GET",
