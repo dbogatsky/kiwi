@@ -349,24 +349,48 @@
       }
     });
 
-    $(window).bind("beforeunload", function(){
-      $("#submit_edit_quote_form").val("Saving...");
-      $("#submit_edit_quote_form").attr("disabled", "disabled");
-      $("#submit_quote_form").val("Saving...");
-      $("#submit_quote_form").attr("disabled", "disabled");
-      $("#submit_edit_note_form").val("Saving...");
-      $("#submit_edit_note_form").attr("disabled", "disabled");
-      $("#submit_note_form").val("Saving...");
-      $("#submit_note_form").attr("disabled", "disabled");
-      $("#submit_edit_meeting_form").val("Saving...");
-      $("#submit_edit_meeting_form").attr("disabled", "disabled");
-      $("#submit_meeting_form").val("Saving...");
-      $("#submit_meeting_form").attr("disabled", "disabled");
-      $("#submit_email_form").val("Sending...");
-      $("#submit_email_form").attr("disabled", "disabled");
-      $("#submit_edit_email_form").val("Sending...");
-      $("#submit_edit_email_form").attr("disabled", "disabled");
-    });
+    $(document).on('ajax:complete', "#submit_conversation_edit_meeting_form, #submit_conversation_edit_quote_form, #submit_conversation_edit_note_form, #submit_conversation_quote_form, #submit_conversation_meeting_form, #submit_conversation_note_form, #submit_conversation_email_form, #submit_conversation_edit_email_form", function(){
+      $("#preloader").show();
+      if (document.getElementById("submit_edit_meeting_form") != null){
+        document.getElementById("submit_edit_meeting_form").value = "Saving..."
+        document.getElementById("submit_edit_meeting_form").disabled = "true"
+      }
+
+      if (document.getElementById("submit_edit_quote_form") != null){
+        document.getElementById("submit_edit_quote_form").value = "Saving..."
+        document.getElementById("submit_edit_quote_form").disabled = "true"
+      }
+
+      if (document.getElementById("submit_edit_note_form") != null){
+        document.getElementById("submit_edit_note_form").value = "Saving..."
+        document.getElementById("submit_edit_note_form").disabled = "true"
+      }
+
+      if (document.getElementById("submit_quote_form") != null){
+        document.getElementById("submit_quote_form").value = "Saving..."
+        document.getElementById("submit_quote_form").disabled = "true"
+      }
+
+      if (document.getElementById("submit_meeting_form") != null){
+        document.getElementById("submit_meeting_form").value = "Saving..."
+        document.getElementById("submit_meeting_form").disabled = "true"
+      }
+
+      if (document.getElementById("submit_note_form") != null){
+        document.getElementById("submit_note_form").value = "Saving..."
+        document.getElementById("submit_note_form").disabled = "true"
+      }
+
+      if (document.getElementById("submit_edit_email_form") != null){
+        document.getElementById("submit_edit_email_form").value = "Saving..."
+        document.getElementById("submit_edit_email_form").disabled = "true"
+      }
+
+      if (document.getElementById("submit_email_form") != null){
+        document.getElementById("submit_email_form").value = "Saving..."
+        document.getElementById("submit_email_form").disabled = "true"
+      }
+    })
 
     $(document).on('click', "a.open_add_conversation_attachment_modal", function(e){
       id = $(this).attr('data-id')
