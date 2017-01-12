@@ -80,6 +80,24 @@
           <% if (!citem.notes.nil?) %>
             <p><span class="subheading">Notes:<br/></span><%= sanitize citem.notes %></p>
           <% end %>
+          <% if citem.location.present?%>
+            <p style="margin-bottom: 0px;">
+              <span class="subheading"><i class="fa fa-map-marker"></i>&nbsp;Address&nbsp;:</br></span>
+            </p>
+            <address style="font-size: 12px; padding-left: 15px;">
+              <%if citem.latitude.present? && citem.longitude.present?%>
+                <a href="http://www.google.com/maps/place/<%= citem.latitude %>,<%= citem.longitude %>" target="_blank">
+              <%else%>
+                <a href="https://maps.google.com?daddr=<%=citem.location%>" target="_blank">
+              <%end%> 
+                <%address = citem.location.split(',')%>
+                <%=address[0]%><br>
+                <%=address[1] %><%=address[3].present? ? ', '+"#{address[3]}" : ''%>
+                <%=address[4].present? ? ', '+"#{address[4]}" : ''%><br/>
+                <%=address[2]%>
+              </a>
+            </address>  
+          <% end %>      
           <div>
             <%=render "accounts/conversation_attachment_show", citem: citem%>
           </div>
