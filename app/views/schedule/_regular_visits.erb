@@ -84,7 +84,7 @@
             <p style="margin-bottom: 0px;">
               <span class="subheading"><i class="fa fa-map-marker"></i>&nbsp;Address&nbsp;:</br></span>
             </p>
-            <address style="font-size: 12px; padding-left: 15px;">
+            <address class="regular-visits-address">
               <%if citem.latitude.present? && citem.longitude.present?%>
                 <a href="http://www.google.com/maps/place/<%= citem.latitude %>,<%= citem.longitude %>" target="_blank">
               <%else%>
