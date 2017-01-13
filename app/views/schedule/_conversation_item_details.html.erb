@@ -56,16 +56,18 @@
             <%#=link_to 'Delete',"javascript:void(0)", id: "del_item_#{citem.id}"%>
             <%=link_to 'Delete', "javascript:void(0)", class: "delete_item", data:{id: citem.id, account_id: citem.account_id}%>
           </li>
-          <li>
-            <a class="open_add_conversation_attachment_modal" href="#"
-              data-toggle="modal"
-              data-target=".add-conversation-attachment-modal-form"
-              data-account-conversation-id="<%=((citem.try(:conversation_id).present?) ? citem.conversation_id : citem.prefix_options[:conversation_id]) %>"
-              data-title="<%=citem.title %>"
-              data-created-at="<%= citem.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>"
-              data-id="<%=citem.id%>">Add Attachment
-            </a>
-          </li>
+          <%if @conversation_item_attachment == 'on'%>
+            <li>
+              <a class="open_add_conversation_attachment_modal" href="#"
+                data-toggle="modal"
+                data-target=".add-conversation-attachment-modal-form"
+                data-account-conversation-id="<%=((citem.try(:conversation_id).present?) ? citem.conversation_id : citem.prefix_options[:conversation_id]) %>"
+                data-title="<%=citem.title %>"
+                data-created-at="<%= citem.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>"
+                data-id="<%=citem.id%>">Add Attachment
+              </a>
+            </li>
+          <%end%>
           <li class="divider"></li>
           <li><%= link_to "Go To Account", account_path(citem.account_id) %></li>
         </ul>
