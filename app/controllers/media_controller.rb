@@ -184,7 +184,11 @@ class MediaController < ApplicationController
     require 'open-uri'
     url = params[:url]
     uri = URI.parse(params[:url])
-    filename = params[:name]+ File.extname(uri.path)
+    if params[:format].present?
+      filename = params[:name]+'.'+params[:format]+ File.extname(uri.path)
+    else
+      filename = params[:name]+ File.extname(uri.path)
+    end
     data = open(url).read
     send_data data, disposition: 'attachment', filename: filename
   end
