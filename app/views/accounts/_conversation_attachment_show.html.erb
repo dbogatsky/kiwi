@@ -5,12 +5,12 @@
       <%citem.media.each do |media|%>
         <li>
           <%if media.urls.try(:thumb)%>
-            <%=link_to media.urls.try(:original), target: "_blank" do%>
+            <%=link_to download_file_path(media.urls.try(:original), media.name), target: "_blank" do%>
               <img src="<%=media.urls.try(:thumb)%>" class="thumbnail img-responsive" alt="">
             <%end%>
           <%else%>
               <%icon = nil%>
-              <%doc_type = nil%>
+              <%doc_type = true%>
               <%if ((media.name.include?'.doc') || (media.name.include?'.docx'))%>
                 <%icon = 'fa-file-word-o'%>
               <%elsif ((media.name.include?".xls") || (media.name.include?".xlsx"))%>
@@ -20,14 +20,16 @@
               <%elsif (media.name.include?".pdf")%>
                 <%icon = 'fa-file-pdf-o'%>
               <%end%>
-              <%doc_type = 'doc' if icon.present? || media.type == 'document'%>
+              <%doc_type = false if icon.present? || media.type == 'document' || media.type == 'image'%>
               <%if media.type == 'audio'%>
                 <%icon = 'fa-file-sound-o'%>
               <%elsif media.type == 'video'%>
                 <%icon = 'fa-file-video-o'%>
+              <%elsif media.type == 'image'%>
+                <%icon = 'fa-picture-o'%>
               <%end%>
               <%icon ||= 'fa-paperclip'%>
-              <%if doc_type.nil?%>
+              <%if doc_type%>
                 <%=link_to media.urls.try(:original), target: "_blank" do %>
                   <i class="fa <%=icon%>" aria-hidden="true"></i>  <%=media.name%>
                 <%end%>
