@@ -1,5 +1,6 @@
 class ScheduleController < ApplicationController
   include ApplicationHelper
+  before_action :application_settings, only: [:index, :regular_visits]
   before_action :get_api_values, only: [:index, :calendar_event]
   before_action :get_account_display_setting, only: [:index, :get_events, :get_meeting, :regular_visits ]
   skip_before_filter :verify_authenticity_token, only: [:sort_regular_visits]
