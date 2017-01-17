@@ -388,7 +388,7 @@ class AccountsController < ApplicationController
 
   def delete_meeting
     @conversation = ConversationItem.find(params[:item_id], params: { conversation_id: @account.conversation.id })
-    if @conversation.present? && (@conversation.related_to.present? || @conversation.repetition_rule.present?)
+    if @conversation.present? && (@conversation.related_to.present? || @conversation.repetition_rule.present? || @conversation.future_meetings.present?)
       @show_alert = true
     else
       @show_alert = false
@@ -402,6 +402,9 @@ class AccountsController < ApplicationController
   def delete_future_meeting
     @item = ConversationItem.find(params[:citem_id], params: { conversation_id: @account.conversation.id })
     if params[:destroy_future_meetings].present?
+      # get_api_values
+      # url = "https://acme-api.code10.ca:443/api/v1/conversations/#{@account.conversation.id}/items/#{@item.id}.json"
+      # `curl -X DELETE -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json" -H "Cache-Control: no-cache" -d '{"destroy_future_meetings": "true"}' '#{url}'`
       ConversationItem.delete(@item.id, { destroy_future_meetings: true, conversation_id: @account.conversation.id })
       flash[:success] = 'All future Meeting successfully deleted'
     else
