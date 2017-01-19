@@ -199,12 +199,14 @@ class ApplicationController < ActionController::Base
     RequestStore.store[:user_token] = session[:token]
     #Move into a service
     OrchardApiModel.headers['Authorization'] = "Token token=\"#{RequestStore.store[:user_token]}\", app_key=\"#{APP_CONFIG['api_app_key']}\""
-
+    tries ||= 3
     @current_user ||= User.find(session[:user_id], reload: true)
+    rescue ActiveResource::ServerError => e
+      retry unless (tries -= 1).zero?
     @current_user.id = session[:user_id]
-
     Time.zone = @current_user.time_zone
   end
+
 
   def set_superadmin
     RequestStore.store[:user_token] = session[:token]
