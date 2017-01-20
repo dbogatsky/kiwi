@@ -454,6 +454,7 @@ class AccountsController < ApplicationController
       @path = account_path(params[:id])
     end
     respond_to do |format|
+      request.format = :html if request.format.symbol == :mobile
       format.html {redirect_to @path}
       format.js {render js: 'window.location.reload()'}
     end
@@ -641,6 +642,7 @@ class AccountsController < ApplicationController
       @path = account_path(params[:id])
     end
     respond_to do |format|
+      request.format = :html if request.format.symbol == :mobile
       format.html {redirect_to @path}
       format.js {render js: 'window.location.reload()'}
     end
