@@ -424,6 +424,7 @@ width:50%;
 
 .drop_zone_height{
    min-height: 150px;
+   padding-top: 5px;
 }
 
 .drop_zon_box{
@@ -438,7 +439,7 @@ width:50%;
   margin-left: -39px;
 }
 
-.alert {
+.alert{
   padding: 15px;
   margin-top: 20px;
   margin-bottom: 10px;
@@ -448,4 +449,8 @@ width:50%;
 
 .attachment_list li{
   display:inline-block;
+}
+
+.add_attachment:hover, .add_attachment:active, .add_attachment:focus{
+  text-decoration: none;
 }
