@@ -471,6 +471,7 @@
     /* initialize the calendar
      -----------------------------------------------------------------*/
     $('#calendar').fullCalendar({
+        now: '<%=@current_time_fullcalendar.iso8601%>',
         customButtons: {
           todayCustomButton: {
               text: 'today',

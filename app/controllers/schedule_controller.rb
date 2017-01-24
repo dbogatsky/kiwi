@@ -11,6 +11,7 @@ class ScheduleController < ApplicationController
     @user_selected = User.find(session[:selected_user]['id']) if session[:selected_user].present?
     @user_preference = user_preferences_load
     @users = User.all(uid: session[:user_id])
+    @current_time_fullcalendar = Time.now.in_time_zone(current_user.time_zone) # To correctly set fullcalendar's today's date based on the users timezone
     get_meetings([current_user.id])
     # no_of_account = Account.all.total_entries
     # @all_accounts = Account.all(params: {per_page: no_of_account})
