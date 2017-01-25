@@ -93,7 +93,12 @@
         <br />
       <% end %>
 
-      <i class="fa fa-user tooltips mr10" data-toggle="tooltip" data-original-title="Created by"></i><%=created_by.first_name%> <%=created_by.last_name%><br />
+      <i class="fa fa-user tooltips mr10" data-toggle="tooltip" data-original-title="Created by"></i>
+      <% if created_by.present? %>
+        <%=created_by.try(:first_name)%> <%=created_by.try(:last_name)%>
+      <% else %>
+        Deleted User
+      <% end %><br />
 
       <% if citem.invitees.present? %>
         <i class="fa fa-users tooltips mr10" data-toggle="tooltip" data-original-title="Invitees"></i><%= citem.invitees %><br/>
@@ -118,14 +123,14 @@
       <%time = citem.ends_at.present? ? (DateTime.now.in_time_zone(current_user.time_zone) > citem.ends_at.to_datetime.in_time_zone(current_user.time_zone)+1.hour) : false%>
         <%if @enable_checkin_checkout == 'enable'%>
           <% if (citem.status == "scheduled" || citem.status == "in_progress")%>
-            <%if current_user.id == created_by.id || invitees.include?(current_user.email)%>
+            <%if current_user.id == created_by.try(:id) || invitees.include?(current_user.email)%>
               <%if check_in(citem,info) && !time%>
-                <a class="btn btn-xs btn-default pull-right mr5 checkin" id="<%=citem.id%>" data-created-by="<%=citem.created_by.id%>" data-conversation-id = "<%=citem.prefix_options[:conversation_id].present? ? citem.prefix_options[:conversation_id] : citem.conversation_id%>">
+                <a class="btn btn-xs btn-default pull-right mr5 checkin" id="<%=citem.id%>" data-created-by="<%=citem.created_by.try(:id)%>" data-conversation-id = "<%=citem.prefix_options[:conversation_id].present? ? citem.prefix_options[:conversation_id] : citem.conversation_id%>">
                   <i class="fa fa-sign-in mr5"></i><span class="position_button">Check In</span>
                 </a>
               <%end%>
               <%if !check_in(citem,info) && check_out(citem,info)%>
-                <a class="btn btn-xs btn-default pull-right mr5 checkout" id="<%=citem.id%>" data-created-by="<%=citem.created_by.id%>" data-conversation-id = "<%=citem.prefix_options[:conversation_id].present? ? citem.prefix_options[:conversation_id] : citem.conversation_id%>">
+                <a class="btn btn-xs btn-default pull-right mr5 checkout" id="<%=citem.id%>" data-created-by="<%=citem.created_by.try(:id)%>" data-conversation-id = "<%=citem.prefix_options[:conversation_id].present? ? citem.prefix_options[:conversation_id] : citem.conversation_id%>">
                   <i class="fa fa-sign-out mr5"></i><span class="position_button">Check Out</span>
                 </a>
               <%end%>
@@ -135,7 +140,7 @@
               </a>
             <%end%>
           <% elsif !check_in(citem,info) && check_out(citem,info) && (citem.status == "in_progress" || citem.status == "completed")%>
-            <a class="btn btn-xs btn-default pull-right mr5 checkout" id="<%=citem.id%>" data-created-by="<%=citem.created_by.id%>" data-conversation-id = "<%=citem.prefix_options[:conversation_id].present? ? citem.prefix_options[:conversation_id] : citem.conversation_id%>">
+            <a class="btn btn-xs btn-default pull-right mr5 checkout" id="<%=citem.id%>" data-created-by="<%=citem.created_by.try(:id)%>" data-conversation-id = "<%=citem.prefix_options[:conversation_id].present? ? citem.prefix_options[:conversation_id] : citem.conversation_id%>">
               <i class="fa fa-sign-out mr5"></i><span class="position_button">Check Out</span>
             </a>
           <% end %>
