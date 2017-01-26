@@ -9,37 +9,40 @@
               <img src="<%=media.urls.try(:thumb)%>" class="thumbnail img-responsive" alt="">
             <%end%>
           <%else%>
-              <%icon = nil%>
-              <%doc_type = true%>
-              <%if ((media.name.include?'.doc') || (media.name.include?'.docx'))%>
-                <%icon = 'fa-file-word-o'%>
-              <%elsif ((media.name.include?".xls") || (media.name.include?".xlsx"))%>
-                <%icon = 'fa-file-excel-o'%>
-              <%elsif ((media.name.include?".ppt") || (media.name.include?".pptx"))%>
-                <%icon = 'fa-file-powerpoint-o'%>
-              <%elsif (media.name.include?".pdf")%>
-                <%icon = 'fa-file-pdf-o'%>
-              <%elsif (media.name.include?".csv")%>
-                <%icon = 'fa-paperclip'%>
+            <%icon = nil%>
+            <%doc_type = true%>
+            <%if ((media.name.include?'.doc') || (media.name.include?'.docx'))%>
+              <%icon = 'fa-file-word-o'%>
+            <%elsif ((media.name.include?".xls") || (media.name.include?".xlsx"))%>
+              <%icon = 'fa-file-excel-o'%>
+            <%elsif ((media.name.include?".ppt") || (media.name.include?".pptx"))%>
+              <%icon = 'fa-file-powerpoint-o'%>
+            <%elsif (media.name.include?".pdf")%>
+              <%icon = 'fa-file-pdf-o'%>
+            <%elsif (media.name.include?".csv")%>
+              <%icon = 'fa-paperclip'%>
+            <%end%>
+            <%doc_type = false if icon.present? || media.type == 'document' || media.type == 'image'%>
+            <%if media.type == 'audio'%>
+              <%icon = 'fa-file-sound-o'%>
+            <%elsif media.type == 'video'%>
+              <%icon = 'fa-file-video-o'%>
+            <%elsif media.type == 'image'%>
+              <%icon = 'fa-picture-o'%>
+            <%end%>
+            <%icon ||= 'fa-paperclip'%>
+            <%if doc_type%>
+              <%=link_to media.urls.try(:original) do %>
+                <i class="fa <%=icon%>" aria-hidden="true"></i>  <%=media.name%>
               <%end%>
-              <%doc_type = false if icon.present? || media.type == 'document' || media.type == 'image'%>
-              <%if media.type == 'audio'%>
-                <%icon = 'fa-file-sound-o'%>
-              <%elsif media.type == 'video'%>
-                <%icon = 'fa-file-video-o'%>
-              <%elsif media.type == 'image'%>
-                <%icon = 'fa-picture-o'%>
+            <%else%>
+              <%=link_to download_file_path(media.urls.try(:original), media.name) do %>
+                <i class="fa <%=icon%>" aria-hidden="true"></i>  <%=media.name%>
               <%end%>
-              <%icon ||= 'fa-paperclip'%>
-              <%if doc_type%>
-                <%=link_to media.urls.try(:original) do %>
-                  <i class="fa <%=icon%>" aria-hidden="true"></i>  <%=media.name%>
-                <%end%>
-              <%else%>
-                <%=link_to download_file_path(media.urls.try(:original), media.name) do %>
-                  <i class="fa <%=icon%>" aria-hidden="true"></i>  <%=media.name%>
-                <%end%>
-              <%end%>
+            <%end%>
+          <%end%>
+          <%=link_to get_or_delete_conversation_attachment_accounts_path(account_conversation_id: ((citem.try(:conversation_id).present?) ? citem.conversation_id : citem.prefix_options[:conversation_id]), attachment_id: media.id, item_id: citem.id, destroy: :true), remote: :true, method: :patch do%>
+            <i class="fa fa-trash-o" aria-hidden="true"></i>
           <%end%>
         </li><br/>
       <%end%>
