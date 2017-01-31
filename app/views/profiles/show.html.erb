@@ -102,7 +102,7 @@
               <div class="col-sm-3">
                 <% contact_value = current_user.contacts.first.value rescue nil%>
                 <%=c.hidden_field :type, value: 'phone', name: "user[contacts_attributes][][type]" %>
-                <%= c.input_field :value, {type: 'tel', label: 'Phone', name: "user[contacts_attributes][][value]", class: "form-control phone_validate", value: contact_value}%>
+                <%= c.input_field :value, {type: 'tel', label: 'Phone', name: "user[contacts_attributes][][value]", class: "contact_li phone_type_validate phone_validate form-control input-sm", value: contact_value}%>
                 <% contact_id = current_user.contacts.first.id rescue nil %>
                 <%=c.hidden_field :id, value: contact_id, name: "user[contacts_attributes][][id]" %>
               </div>
@@ -112,7 +112,7 @@
               <div class="col-sm-3">
                 <% contact_value1 = current_user.contacts.last.value rescue nil%>
                 <%=c.hidden_field :type, value: 'mobile', name: "user[contacts_attributes][][type]" %>
-                <%= c.input_field :value, {type: 'tel', label: 'Value', name: "user[contacts_attributes][][value]", class: "form-control phone_validate", value: contact_value1}%>
+                <%= c.input_field :value, {type: 'tel', label: 'Value', name: "user[contacts_attributes][][value]", class: "contact_li phone_type_validate phone_validate form-control input-sm", value: contact_value1}%>
                 <% contact_id1 = current_user.contacts.last.id rescue nil %>
                 <%=c.hidden_field :id, value: contact_id1, name: "user[contacts_attributes][][id]" %>
               </div>
@@ -151,12 +151,27 @@
 
 <script>
 
+  phone_validate();
   $(".select2Country").select2({
     width: '100%'
   });
 
   // Form validation
   jQuery(".simple_form").validate({
+    submitHandler: function(form) {
+      check_phone = check_phone_number()
+      form.submit();
+      if (check_phone){
+        $(".phone_validate").each(function() {
+          virl = $(this).intlTelInput("getNumber");
+          $(this).val(virl);
+        });
+        return true;
+      }else {
+        return false;
+      }
+
+    },
     highlight: function(element) {
       jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
     },
@@ -166,12 +181,50 @@
   });
 
   current_company_country = '<%=get_current_company_country%>'
-  $(".phone_validate").intlTelInput({
-    formatOnInit: true,
-    separateDialCode: true
-    //,utilsScript: "assets/libphonenumber/utils.js"
-  });
-  $(".phone_validate").intlTelInput("setCountry", current_company_country)
+  // $(".phone_validate").intlTelInput({
+  //   formatOnInit: true,
+  //   separateDialCode: true
+  //   //,utilsScript: "assets/libphonenumber/utils.js"
+  // });
+  // $(".phone_validate").intlTelInput("setCountry", current_company_country)
+  
+  
+  function phone_validate() {
+      $(".phone_validate").intlTelInput({
+        formatOnInit: true,
+        separateDialCode: true,
+        //utilsScript: "assets/libphonenumber/utils.js",
+        customPlaceholder: function(selectedCountryPlaceholder, selectedCountryData) {
+          return null
+        }
+      })
+      set_country_code();
+    }
+
+  function set_country_code() {
+    $(".phone_validate").each(function() {
+      if($(this).closest('div').find('.selected-dial-code').text()!="" && $(this).val() != ""){
+        val = $(this).intlTelInput("getNumber");
+        $(this).intlTelInput("setNumber", val)
+      }else if ($(this).val() == ""){
+        $(this).intlTelInput("setCountry", current_company_country)
+      }
+    })
+  }
+
+
+  function check_phone_number() {
+    return true; //DISABLE PHONE VALIDATION
+    flag = true
+    $(".phone_validate").each(function() {
+      var status = $(this).intlTelInput("isValidNumber")
+      if (!status){
+        flag = false;
+        return flag;
+      }
+    });
+    return flag
+  }
 
 
 $('.sel_role').change(function(){
