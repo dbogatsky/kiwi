@@ -34,7 +34,7 @@ Rails.application.routes.draw do
   resource :preference, only: [:show, :update]
   get '/preference/integration_office365', to: 'preferences#integration_office365', as: :preference_integration_office365
 
-  get '/accounts/address_mapping', to:'accounts#address_mapping', as: :account_address_mapping
+  match '/accounts/address_mapping', to:'accounts#address_mapping', as: :account_address_mapping, via: [:get, :post]
   match  '/accounts/import', to:'accounts#import', as: :account_import, via: [:get, :post]
   get  '/accounts/export', to:'accounts#export', as: :account_export
   get  '/accounts/csv_template', to: 'accounts#csv_template', as: :accounts_csv_template

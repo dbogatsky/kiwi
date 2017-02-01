@@ -1113,15 +1113,82 @@ class AccountsController < ApplicationController
 
       case params[:country]
 
+      # United Arab Empire (PREVIOUS - NOT IN USE)
+      when 'PREVIOUS_AE'
+      address_mapping_info = {"street_number" => "sublocality_level_1",
+                        "subpremise" => "premise",
+                        "locality" => "locality",
+                        "administrative_area_level_1" => "",
+                        "postal_code" => "",
+                        "country" => "country"
+                       }
+
       # United Arab Empire
       when 'AE'
-        address_mapping_info = {"street_number" => "sublocality_level_1",
-                                "subpremise" => "premise",
+        address_mapping_info = {"premise" => "street_number",
+                                "sublocality_level_1" => "subpremise",
                                 "locality" => "locality",
-                                "administrative_area_level_1" => "",
-                                "postal_code" => "",
+                                # "administrative_area_level_1" => "",
+                                # "postal_code" => "",
                                 "country" => "country"
                                }
+      else
+        address_mapping_info = {}
+      end
+
+    elsif request.post? && params[:_json].present?
+      address = {}
+      post = params[:_json]
+      post.each do |address_item|
+        if address_item[:types].include? "country"
+          address[:country] = address_item[:short_name]
+          address[:country_full] = address_item[:long_name]
+        elsif address_item[:types].include? "street_number"
+          address[:street_number] = address_item[:short_name]
+        elsif address_item[:types].include? "route"
+          address[:route] = address_item[:long_name]
+        elsif address_item[:types].include? "neighborhood"
+          address[:neighborhood] = address_item[:short_name]
+        elsif address_item[:types].include? "premise"
+          address[:premise] = address_item[:short_name]
+        elsif address_item[:types].include? "sublocality_level_1"
+          address[:sublocality_level_1] = address_item[:short_name]
+        elsif address_item[:types].include? "locality"
+          address[:locality] = address_item[:short_name]
+        elsif address_item[:types].include? "administrative_area_level_1"
+          address[:administrative_area_level_1] = address_item[:long_name]
+        elsif address_item[:types].include? "administrative_area_level_2"
+          address[:administrative_area_level_2] = address_item[:short_name]
+        elsif address_item[:types].include? "postal_code"
+          address[:postal_code] = address_item[:short_name]
+        end
+      end
+
+
+      case address[:country]
+
+      # United Arab Empire
+      when 'AE'
+
+        if address.has_key? :sublocality_level_1
+          # For 'Building 16, Internet City' search example
+          address_mapping_info = {"premise" => "subpremise",
+                                "sublocality_level_1" => "street_number",
+                                "locality" => "locality",
+                                # "administrative_area_level_1" => "",
+                                # "postal_code" => "",
+                                "country" => "country"
+                               }
+        else
+          # For 'Cayan Tower' search example
+          address_mapping_info = {"premise" => "street_number",
+                                #"sublocality_level_1" => "",
+                                "locality" => "locality",
+                                # "administrative_area_level_1" => "",
+                                # "postal_code" => "",
+                                "country" => "country"
+                               }
+        end
 
       else
         address_mapping_info = {}
