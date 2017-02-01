@@ -102,7 +102,7 @@
               <div class="col-sm-3">
                 <% contact_value = current_user.contacts.first.value rescue nil%>
                 <%=c.hidden_field :type, value: 'phone', name: "user[contacts_attributes][][type]" %>
-                <%= c.input_field :value, {type: 'tel', label: 'Phone', name: "user[contacts_attributes][][value]", class: "contact_li phone_type_validate phone_validate form-control input-sm", value: contact_value}%>
+                <%= c.input_field :value, {type: 'tel', label: 'Phone', name: "user[contacts_attributes][][value]", class: "contact_li phone_validate phone_type_validate form-control input-sm", value: contact_value}%>
                 <% contact_id = current_user.contacts.first.id rescue nil %>
                 <%=c.hidden_field :id, value: contact_id, name: "user[contacts_attributes][][id]" %>
               </div>
@@ -112,7 +112,7 @@
               <div class="col-sm-3">
                 <% contact_value1 = current_user.contacts.last.value rescue nil%>
                 <%=c.hidden_field :type, value: 'mobile', name: "user[contacts_attributes][][type]" %>
-                <%= c.input_field :value, {type: 'tel', label: 'Value', name: "user[contacts_attributes][][value]", class: "contact_li phone_type_validate phone_validate form-control input-sm", value: contact_value1}%>
+                <%= c.input_field :value, {type: 'tel', label: 'Value', name: "user[contacts_attributes][][value]", class: "contact_li phone_validate phone_type_validate form-control input-sm", value: contact_value1}%>
                 <% contact_id1 = current_user.contacts.last.id rescue nil %>
                 <%=c.hidden_field :id, value: contact_id1, name: "user[contacts_attributes][][id]" %>
               </div>
@@ -155,17 +155,58 @@
   $(".select2Country").select2({
     width: '100%'
   });
+  // $("#save").bind("submit", function(e){
+  //   $(".phone_validate").each(function() {
+  //     if ($(this).closest('div').next().hasClass('error_lable')) {
+  //       $(this).closest('div').next().remove()
+  //     }
+  //     var status = $(this).intlTelInput("isValidNumber")
+  //     console.log("submit bind")
+  //     if (!status && $(this).val() == ''){
+  //       $(this).closest('div').after('<label class="error error_lable">Invalid mobile number.Only numbers,hyphens and brackets are accepted</label>')
+  //     }
+  //   });
+
+  //   check_phone = check_phone_number()
+  //   // check_url = check_url_status()
+  //   if (check_phone){
+  //     $(".phone_validate").each(function() {
+  //       virl = $(this).intlTelInput("getNumber");
+  //       $(this).val(virl);
+  //     });
+
+  //     $(".phone_type_validate").each(function() {
+  //       val = $(this).val();
+  //       $(this).attr("value", val);
+  //     });
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // });
 
   // Form validation
   jQuery(".simple_form").validate({
     submitHandler: function(form) {
       check_phone = check_phone_number()
-      form.submit();
+
+      $(".phone_validate").each(function() {
+        if ($(this).closest('div').next().hasClass('error_lable')) {
+          $(this).closest('div').next().remove()
+        }
+        var status = $(this).intlTelInput("isValidNumber")
+        if (!status){
+          $(this).closest('div').after('<label class="error error_lable">Invalid mobile number.Only numbers,hyphens and brackets are accepted</label>')
+        }
+      });
+
+
       if (check_phone){
         $(".phone_validate").each(function() {
           virl = $(this).intlTelInput("getNumber");
           $(this).val(virl);
         });
+        form.submit();
         return true;
       }else {
         return false;
@@ -214,7 +255,7 @@
 
 
   function check_phone_number() {
-    return true; //DISABLE PHONE VALIDATION
+    // return true; //DISABLE PHONE VALIDATION
     flag = true
     $(".phone_validate").each(function() {
       var status = $(this).intlTelInput("isValidNumber")
