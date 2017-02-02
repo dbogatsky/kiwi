@@ -28,10 +28,11 @@
         }
         var address_mapping
         $.ajax({
-            url: '/accounts/address_mapping?country='+country_name,
+            url: '/accounts/address_mapping',
             dataType: 'json',
-            type: 'get',
-            contentType: 'application/json',
+            data: JSON.stringify(place.address_components),
+            type: 'post',
+            contentType: 'application/json, charset=UTF-8',
             processData: false,
             success: function( data, textStatus, jQxhr ){
                 // console.log( JSON.stringify( data ) );
@@ -57,11 +58,11 @@
                   var val = place.address_components[i][componentForm[addressType]];
                   if(Object.keys(address_mapping).length > 0){
                     if(addressType == 'sublocality_level_1'){
-                      document.getElementById('street_number').value = val
+                      document.getElementById(address_mapping.sublocality_level_1).value = val
                     }else if(addressType == 'premise'){
-                      document.getElementById('subpremise').value = val
+                      document.getElementById(address_mapping.premise).value = val
                     }else if (addressType == 'locality'){
-                      document.getElementById('locality').value = val;
+                      document.getElementById(address_mapping.locality).value = val;
                     }else if (addressType == 'country'){
                       $("#country").select2().val(val);
                       $("#country").select2().val();
