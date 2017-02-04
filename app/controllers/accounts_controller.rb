@@ -1172,8 +1172,8 @@ class AccountsController < ApplicationController
 
         if address.has_key? :sublocality_level_1
           # For 'Building 16, Internet City' search example
-          address_mapping_info = {"premise" => "subpremise",
-                                "sublocality_level_1" => "street_number",
+          address_mapping_info = {"premise" => "street_number",
+                                "sublocality_level_1" => "subpremise",
                                 "locality" => "locality",
                                 # "administrative_area_level_1" => "",
                                 # "postal_code" => "",
