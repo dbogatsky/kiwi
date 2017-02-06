@@ -1117,15 +1117,82 @@ class AccountsController < ApplicationController
 
       case params[:country]
 
+      # United Arab Empire (PREVIOUS - NOT IN USE)
+      when 'PREVIOUS_AE'
+      address_mapping_info = {"street_number" => "sublocality_level_1",
+                        "subpremise" => "premise",
+                        "locality" => "locality",
+                        "administrative_area_level_1" => "",
+                        "postal_code" => "",
+                        "country" => "country"
+                       }
+
       # United Arab Empire
       when 'AE'
-        address_mapping_info = {"street_number" => "sublocality_level_1",
-                                "subpremise" => "premise",
+        address_mapping_info = {"premise" => "street_number",
+                                "sublocality_level_1" => "subpremise",
                                 "locality" => "locality",
-                                "administrative_area_level_1" => "",
-                                "postal_code" => "",
+                                # "administrative_area_level_1" => "",
+                                # "postal_code" => "",
                                 "country" => "country"
                                }
+      else
+        address_mapping_info = {}
+      end
+
+    elsif request.post? && params[:_json].present?
+      address = {}
+      post = params[:_json]
+      post.each do |address_item|
+        if address_item[:types].include? "country"
+          address[:country] = address_item[:short_name]
+          address[:country_full] = address_item[:long_name]
+        elsif address_item[:types].include? "street_number"
+          address[:street_number] = address_item[:short_name]
+        elsif address_item[:types].include? "route"
+          address[:route] = address_item[:long_name]
+        elsif address_item[:types].include? "neighborhood"
+          address[:neighborhood] = address_item[:short_name]
+        elsif address_item[:types].include? "premise"
+          address[:premise] = address_item[:short_name]
+        elsif address_item[:types].include? "sublocality_level_1"
+          address[:sublocality_level_1] = address_item[:short_name]
+        elsif address_item[:types].include? "locality"
+          address[:locality] = address_item[:short_name]
+        elsif address_item[:types].include? "administrative_area_level_1"
+          address[:administrative_area_level_1] = address_item[:long_name]
+        elsif address_item[:types].include? "administrative_area_level_2"
+          address[:administrative_area_level_2] = address_item[:short_name]
+        elsif address_item[:types].include? "postal_code"
+          address[:postal_code] = address_item[:short_name]
+        end
+      end
+
+
+      case address[:country]
+
+      # United Arab Empire
+      when 'AE'
+
+        if address.has_key? :sublocality_level_1
+          # For 'Building 16, Internet City' search example
+          address_mapping_info = {"premise" => "street_number",
+                                "sublocality_level_1" => "subpremise",
+                                "locality" => "locality",
+                                # "administrative_area_level_1" => "",
+                                # "postal_code" => "",
+                                "country" => "country"
+                               }
+        else
+          # For 'Cayan Tower' search example
+          address_mapping_info = {"premise" => "street_number",
+                                #"sublocality_level_1" => "",
+                                "locality" => "locality",
+                                # "administrative_area_level_1" => "",
+                                # "postal_code" => "",
+                                "country" => "country"
+                               }
+        end
 
       else
         address_mapping_info = {}
@@ -1767,7 +1834,7 @@ class AccountsController < ApplicationController
         changed_value[:updated_website] = updated_website.join(',')
       end
     end
-    @note_body = "<p><b>Previous Value => Updated Value</b></p><ul>#{changed_value[:prev_name].present? ? "<li> <b>Account Name:</b> #{changed_value[:prev_name]} => #{changed_value[:updated_name]} </li>" : ''}#{changed_value[:prev_status].present? ? "<li> <b>Account Status:</b> #{changed_value[:prev_status]} => #{changed_value[:updated_status]} </li>" : ''}#{changed_value[:prev_contact_name].present? ? "<li> <b>Contact Name:</b> #{changed_value[:prev_contact_name]} => #{changed_value[:updated_contact_name]} </li>" : ''}#{changed_value[:prev_contact_title].present? ? "<li> <b>Contact Title:</b> #{changed_value[:prev_contact_title]} => #{changed_value[:updated_contact_title]} </li>" : ''}#{changed_value[:prev_expected_sales].present? ? "<li> <b>Expected Sales:</b> #{changed_value[:prev_expected_sales]} => #{changed_value[:updated_expected_sales]} </li>" : ''}#{changed_value[:prev_assigned_to].present? ? "<li> <b>Assign To:</b> #{changed_value[:prev_assigned_to]} => #{changed_value[:updated_assigned_to]} </li>" : ''}#{changed_value[:prev_address_name].present? ? "<li> <b>Address Name:</b> #{changed_value[:prev_address_name]} => #{changed_value[:updated_address_name]} </li>" : ''}#{changed_value[:prev_address_street_address].present? ? "<li> <b>Street Address:</b> #{changed_value[:prev_address_street_address]} => #{changed_value[:updated_address_street_address]} </li>" : ''}#{changed_value[:prev_address_city].present? ? "<li> <b>City:</b> #{changed_value[:prev_address_city]} => #{changed_value[:updated_address_city]} </li>" : ''}#{changed_value[:prev_address_postcode].present? ? "<li> <b>Post/Zipcode:</b> #{changed_value[:prev_address_postcode]} => #{changed_value[:updated_address_postcode]} </li>" : ''}#{changed_value[:prev_address_region].present? ? "<li> <b>Province/State:</b> #{changed_value[:prev_address_region]} => #{changed_value[:updated_address_region]} </li>" : ''}#{changed_value[:prev_address_country].present? ? "<li> <b>Country:</b> #{changed_value[:prev_address_country]} => #{changed_value[:updated_address_country]} </li>" : ''}#{changed_value[:prev_about].present? ? "<li> <b>About:</b> #{changed_value[:prev_about]} => #{changed_value[:updated_about]} </li>" : ''}#{changed_value[:prev_phone].present? ? "<li> <b>Phone Number:</b> #{changed_value[:prev_phone]} => #{changed_value[:updated_phone]} </li>" : ''}#{changed_value[:prev_mobile].present? ? "<li> <b>Mobile Number:</b> #{changed_value[:prev_mobile]} => #{changed_value[:updated_mobile]} </li>" : ''}#{changed_value[:prev_email].present? ? "<li> <b>Email:</b> #{changed_value[:prev_email]} => #{changed_value[:updated_email]} </li>" : ''}#{changed_value[:prev_facebook].present? ? "<li> <b>Facebook:</b> #{changed_value[:prev_facebook]} => #{changed_value[:updated_facebook]} </li>" : ''}#{changed_value[:prev_twitter].present? ? "<li> <b>Twitter:</b> #{changed_value[:prev_twitter]} => #{changed_value[:updated_twitter]} </li>" : ''}#{changed_value[:prev_fax].present? ? "<li> <b>Fax:</b> #{changed_value[:prev_fax]} => #{changed_value[:updated_fax]} </li>" : ''}#{changed_value[:prev_youtube].present? ? "<li> <b>Youtube:</b> #{changed_value[:prev_youtube]} => #{changed_value[:updated_youtube]} </li>" : ''}#{changed_value[:prev_website].present? ? "<li> <b>Website:</b> #{changed_value[:prev_website]} => #{changed_value[:updated_website]} </li>" : ''}#{changed_value[:prev_quick_facts].present? ? "<li> <b>Quick Facts:</b> #{changed_value[:prev_quick_facts]} => #{changed_value[:updated_quick_facts]} </li>" : ''}#{(changed_value[:prev_phone].blank? && changed_value[:updated_phone].present?) || (changed_value[:prev_mobile].blank? && changed_value[:updated_mobile].present?) ||(changed_value[:prev_email].blank? && changed_value[:updated_email].present?) ||(changed_value[:prev_facebook].blank? && changed_value[:updated_facebook].present?) ||(changed_value[:prev_twitter].blank? && changed_value[:updated_twitter].present?) ||(changed_value[:prev_youtube].blank? && changed_value[:updated_youtube].present?) ||(changed_value[:prev_website].blank? && changed_value[:updated_website].present?) ||(changed_value[:prev_fax].blank? && changed_value[:updated_fax].present?) ? "<li style=list-style-type: none;><b>New Contact(s) Added</b></li>" : ''}#{(changed_value[:prev_phone].blank? && changed_value[:updated_phone].present?) ? "<li> <b>Phone:</b> #{changed_value[:updated_phone]} </li>" : ''}#{(changed_value[:prev_mobile].blank? && changed_value[:updated_mobile].present?) ? "<li> <b>Mobile:</b> #{changed_value[:updated_mobile]} </li>" : ''}#{(changed_value[:prev_email].blank? && changed_value[:updated_email].present?) ? "<li> <b>Email:</b> #{changed_value[:updated_email]} </li>" : ''}#{(changed_value[:prev_facebook].blank? && changed_value[:updated_facebook].present?) ? "<li> <b>Facebook:</b> #{changed_value[:updated_facebook]} </li>" : ''}#{(changed_value[:prev_twitter].blank? && changed_value[:updated_twitter].present?) ? "<li> <b>Twitter:</b> #{changed_value[:updated_twitter]} </li>" : ''}#{(changed_value[:prev_youtube].blank? && changed_value[:updated_youtube].present?) ? "<li> <b>Youtube:</b> #{changed_value[:updated_youtube]} </li>" : ''}#{(changed_value[:prev_website].blank? && changed_value[:updated_website].present?) ? "<li> <b>Website:</b> #{changed_value[:updated_website]} </li>" : ''}#{(changed_value[:prev_fax].blank? && changed_value[:updated_fax].present?) ? "<li> <b>Fax:</b> #{changed_value[:updated_fax]} </li>" : ''}</ul><p><b>Updated by:</b> #{current_user.first_name} #{current_user.last_name} </p>".html_safe
+    @note_body = "<p><b>Previous Value => Updated Value</b></p><ul>#{changed_value[:prev_name].present? ? "<li> <b>Account Name:</b> #{changed_value[:prev_name]} => #{changed_value[:updated_name]} </li>" : ''}#{changed_value[:prev_status].present? ? "<li> <b>Account Status:</b> #{changed_value[:prev_status]} => #{changed_value[:updated_status]} </li>" : ''}#{changed_value[:prev_contact_name].present? ? "<li> <b>Contact Name:</b> #{changed_value[:prev_contact_name]} => #{changed_value[:updated_contact_name]} </li>" : ''}#{changed_value[:prev_contact_title].present? ? "<li> <b>Contact Title:</b> #{changed_value[:prev_contact_title]} => #{changed_value[:updated_contact_title]} </li>" : ''}#{changed_value[:prev_expected_sales].present? ? "<li> <b>Expected Sales:</b> #{changed_value[:prev_expected_sales]} => #{changed_value[:updated_expected_sales]} </li>" : ''}#{changed_value[:prev_assigned_to].present? ? "<li> <b>Assign To:</b> #{changed_value[:prev_assigned_to]} => #{changed_value[:updated_assigned_to]} </li>" : ''}#{changed_value[:prev_address_name].present? ? "<li> <b>Address Name:</b> #{changed_value[:prev_address_name]} => #{changed_value[:updated_address_name]} </li>" : ''}#{changed_value[:prev_address_street_address].present? ? "<li> <b>Address:</b> #{changed_value[:prev_address_street_address]} => #{changed_value[:updated_address_street_address]} </li>" : ''}#{changed_value[:prev_address_city].present? ? "<li> <b>City:</b> #{changed_value[:prev_address_city]} => #{changed_value[:updated_address_city]} </li>" : ''}#{changed_value[:prev_address_postcode].present? ? "<li> <b>Post/Zipcode:</b> #{changed_value[:prev_address_postcode]} => #{changed_value[:updated_address_postcode]} </li>" : ''}#{changed_value[:prev_address_region].present? ? "<li> <b>Province/State:</b> #{changed_value[:prev_address_region]} => #{changed_value[:updated_address_region]} </li>" : ''}#{changed_value[:prev_address_country].present? ? "<li> <b>Country:</b> #{changed_value[:prev_address_country]} => #{changed_value[:updated_address_country]} </li>" : ''}#{changed_value[:prev_about].present? ? "<li> <b>About:</b> #{changed_value[:prev_about]} => #{changed_value[:updated_about]} </li>" : ''}#{changed_value[:prev_phone].present? ? "<li> <b>Phone Number:</b> #{changed_value[:prev_phone]} => #{changed_value[:updated_phone]} </li>" : ''}#{changed_value[:prev_mobile].present? ? "<li> <b>Mobile Number:</b> #{changed_value[:prev_mobile]} => #{changed_value[:updated_mobile]} </li>" : ''}#{changed_value[:prev_email].present? ? "<li> <b>Email:</b> #{changed_value[:prev_email]} => #{changed_value[:updated_email]} </li>" : ''}#{changed_value[:prev_facebook].present? ? "<li> <b>Facebook:</b> #{changed_value[:prev_facebook]} => #{changed_value[:updated_facebook]} </li>" : ''}#{changed_value[:prev_twitter].present? ? "<li> <b>Twitter:</b> #{changed_value[:prev_twitter]} => #{changed_value[:updated_twitter]} </li>" : ''}#{changed_value[:prev_fax].present? ? "<li> <b>Fax:</b> #{changed_value[:prev_fax]} => #{changed_value[:updated_fax]} </li>" : ''}#{changed_value[:prev_youtube].present? ? "<li> <b>Youtube:</b> #{changed_value[:prev_youtube]} => #{changed_value[:updated_youtube]} </li>" : ''}#{changed_value[:prev_website].present? ? "<li> <b>Website:</b> #{changed_value[:prev_website]} => #{changed_value[:updated_website]} </li>" : ''}#{changed_value[:prev_quick_facts].present? ? "<li> <b>Quick Facts:</b> #{changed_value[:prev_quick_facts]} => #{changed_value[:updated_quick_facts]} </li>" : ''}#{(changed_value[:prev_phone].blank? && changed_value[:updated_phone].present?) || (changed_value[:prev_mobile].blank? && changed_value[:updated_mobile].present?) ||(changed_value[:prev_email].blank? && changed_value[:updated_email].present?) ||(changed_value[:prev_facebook].blank? && changed_value[:updated_facebook].present?) ||(changed_value[:prev_twitter].blank? && changed_value[:updated_twitter].present?) ||(changed_value[:prev_youtube].blank? && changed_value[:updated_youtube].present?) ||(changed_value[:prev_website].blank? && changed_value[:updated_website].present?) ||(changed_value[:prev_fax].blank? && changed_value[:updated_fax].present?) ? "<li style=list-style-type: none;><b>New Contact(s) Added</b></li>" : ''}#{(changed_value[:prev_phone].blank? && changed_value[:updated_phone].present?) ? "<li> <b>Phone:</b> #{changed_value[:updated_phone]} </li>" : ''}#{(changed_value[:prev_mobile].blank? && changed_value[:updated_mobile].present?) ? "<li> <b>Mobile:</b> #{changed_value[:updated_mobile]} </li>" : ''}#{(changed_value[:prev_email].blank? && changed_value[:updated_email].present?) ? "<li> <b>Email:</b> #{changed_value[:updated_email]} </li>" : ''}#{(changed_value[:prev_facebook].blank? && changed_value[:updated_facebook].present?) ? "<li> <b>Facebook:</b> #{changed_value[:updated_facebook]} </li>" : ''}#{(changed_value[:prev_twitter].blank? && changed_value[:updated_twitter].present?) ? "<li> <b>Twitter:</b> #{changed_value[:updated_twitter]} </li>" : ''}#{(changed_value[:prev_youtube].blank? && changed_value[:updated_youtube].present?) ? "<li> <b>Youtube:</b> #{changed_value[:updated_youtube]} </li>" : ''}#{(changed_value[:prev_website].blank? && changed_value[:updated_website].present?) ? "<li> <b>Website:</b> #{changed_value[:updated_website]} </li>" : ''}#{(changed_value[:prev_fax].blank? && changed_value[:updated_fax].present?) ? "<li> <b>Fax:</b> #{changed_value[:updated_fax]} </li>" : ''}</ul><p><b>Updated by:</b> #{current_user.first_name} #{current_user.last_name} </p>".html_safe
      return @note_body
   end
 end
