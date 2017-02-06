@@ -372,6 +372,43 @@
       });
     });
 
+    $(document).on('click', '.delete_attachment', function(){
+      $(".delete-attachment-modal-form").modal('show');
+      var account_conversation_id = $(this).data('account-conversation-id')
+      var item_id =   $(this).data('item-id')
+      var attachment_id = $(this).data('attachment-id')
+      var destroy = $(this).data('destroy')
+      var media_name = $(this).data('media-name')
+      $(".delete-attachment-modal-form").data('account_conversation_id',account_conversation_id );
+      $(".delete-attachment-modal-form").data('item_id', item_id);
+      $(".delete-attachment-modal-form").data('attachment_id', attachment_id);
+      $(".delete-attachment-modal-form").data('destroy', destroy);
+      $("#media_name").text(media_name);
+    })
+
+    $(document).on('click', '#ok_delete_attachment', function(){
+      var account_conversation_id = $(".delete-attachment-modal-form").data('account_conversation_id')
+      var item_id =   $(".delete-attachment-modal-form").data('item_id')
+      var attachment_id = $(".delete-attachment-modal-form").data('attachment_id')
+      var destroy = $(".delete-attachment-modal-form").data('destroy')
+      $(".delete-attachment-modal-form").modal('hide');
+      $('#preloader').css('opacity', 0.8);
+      $('#preloader').show();
+
+      $.ajax({
+        type: 'PATCH',
+        url: '/accounts/get_or_delete_conversation_attachment',
+        data: {
+          account_conversation_id: account_conversation_id, 
+          item_id: item_id, 
+          attachment_id: attachment_id, 
+          destroy: destroy 
+        },success: function (data) {
+        }
+      });
+    });
+
+
     $(document).on('click', '#yes_delete_future_meeting, #no_delete_future_meeting, #modal_cross_button', function(){
       var item_id =  $(".delete-future-meeting-modal-form").data('id')
       var account_id = $(".delete-future-meeting-modal-form").data('account_id')

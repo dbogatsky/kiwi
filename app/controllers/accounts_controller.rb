@@ -574,12 +574,16 @@ class AccountsController < ApplicationController
   end
 
   def get_or_delete_conversation_attachment
+    @result = false
     c_id = params[:account_conversation_id]
     item = ConversationItem.find(params[:item_id], params:{conversation_id: c_id})
+    @attachment_id = params[:attachment_id]
     if params[:destroy] == "true"
       params[:conversation_item] = {}
       params[:conversation_item][:media_attributes] = [{id: params[:attachment_id], _destroy: true}]
-      item.update_attributes(request: :update, conversation_item: params[:conversation_item],conversation_id: c_id)
+      if item.update_attributes(request: :update, conversation_item: params[:conversation_item],conversation_id: c_id)
+        @result = true
+      end
     end
     @attachments = item.media
     @item_id = item.id
