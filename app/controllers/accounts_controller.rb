@@ -1161,6 +1161,8 @@ class AccountsController < ApplicationController
           address[:administrative_area_level_2] = address_item[:short_name]
         elsif address_item[:types].include? "postal_code"
           address[:postal_code] = address_item[:short_name]
+        elsif address_item[:types].include? "name"
+          address[:name] = address_item[:name]
         end
       end
 
@@ -1170,26 +1172,18 @@ class AccountsController < ApplicationController
       # United Arab Empire
       when 'AE'
 
-        if address.has_key? :sublocality_level_1
-          # For 'Building 16, Internet City' search example
+        if address.has_key? :premise # For 'Cayan Tower' and 'Building 16, Internet City' search examples
           address_mapping_info = {"premise" => "street_number",
-                                "sublocality_level_1" => "subpremise",
-                                "locality" => "locality",
-                                # "administrative_area_level_1" => "",
-                                # "postal_code" => "",
-                                "country" => "country"
-                               }
-        else
-          # For 'Cayan Tower' search example
-          address_mapping_info = {"premise" => "street_number",
-                                #"sublocality_level_1" => "",
-                                "locality" => "locality",
-                                # "administrative_area_level_1" => "",
-                                # "postal_code" => "",
-                                "country" => "country"
-                               }
+                                  "country" => "country"
+                                  }
+        else # For 'Al Hilal Bank - Al Qusais' search example
+          address_mapping_info = {"name" => "street_number",
+                                  "country" => "country"
+                                  }
         end
 
+        address_mapping_info.merge!("sublocality_level_1" => "subpremise") if address.has_key? :sublocality_level_1
+        address_mapping_info.merge!("locality" => "locality") if address.has_key? :locality
       else
         address_mapping_info = {}
       end
