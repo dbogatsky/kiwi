@@ -102,7 +102,7 @@
               <div class="col-sm-3">
                 <% contact_value = current_user.contacts.first.value rescue nil%>
                 <%=c.hidden_field :type, value: 'phone', name: "user[contacts_attributes][][type]" %>
-                <%= c.input_field :value, {type: 'tel', label: 'Phone', name: "user[contacts_attributes][][value]", class: "contact_li phone_validate phone_type_validate form-control input-sm", value: contact_value}%>
+                <%= c.input_field :value, {type: 'tel', label: 'Phone', name: "user[contacts_attributes][][value]", class: "contact_li phone_validate phone_type_validate form-control", value: contact_value}%>
                 <% contact_id = current_user.contacts.first.id rescue nil %>
                 <%=c.hidden_field :id, value: contact_id, name: "user[contacts_attributes][][id]" %>
               </div>
@@ -112,7 +112,7 @@
               <div class="col-sm-3">
                 <% contact_value1 = current_user.contacts.last.value rescue nil%>
                 <%=c.hidden_field :type, value: 'mobile', name: "user[contacts_attributes][][type]" %>
-                <%= c.input_field :value, {type: 'tel', label: 'Value', name: "user[contacts_attributes][][value]", class: "contact_li phone_validate phone_type_validate form-control input-sm", value: contact_value1}%>
+                <%= c.input_field :value, {type: 'tel', label: 'Value', name: "user[contacts_attributes][][value]", class: "contact_li phone_validate phone_type_validate form-control", value: contact_value1}%>
                 <% contact_id1 = current_user.contacts.last.id rescue nil %>
                 <%=c.hidden_field :id, value: contact_id1, name: "user[contacts_attributes][][id]" %>
               </div>
