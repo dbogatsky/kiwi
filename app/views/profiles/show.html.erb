@@ -188,30 +188,68 @@
   // Form validation
   jQuery(".simple_form").validate({
     submitHandler: function(form) {
-      check_phone = check_phone_number()
+      // check_phone = check_phone_number()
+      var flag = true;
+      var re = new RegExp("^[0-9 ()\-]+$");
 
       $(".phone_validate").each(function() {
         if ($(this).closest('div').next().hasClass('error_lable')) {
           $(this).closest('div').next().remove()
         }
+
         var status = $(this).intlTelInput("isValidNumber")
-        if (!status){
-          $(this).closest('div').after('<label class="error error_lable">Invalid mobile number.Only numbers,hyphens and brackets are accepted</label>')
+        var number = $(this).val();
+        if(!(status && re.test(number))){
+          $(this).closest('div').after('<label class="error error_lable">Invalid mobile number. Only numbers, hyphens and brackets are accepted.</label>')
+          flag = false;
         }
       });
 
 
-      if (check_phone){
+      if(flag){
         $(".phone_validate").each(function() {
           virl = $(this).intlTelInput("getNumber");
           $(this).val(virl);
         });
         form.submit();
-        return true;
-      }else {
-        return false;
       }
+      return flag;
 
+
+
+
+      // $(".phone_validate").each(function() {
+      //   if ($(this).closest('div').next().hasClass('error_lable')) {
+      //     $(this).closest('div').next().remove()
+      //   }
+
+      //   var status = $(this).intlTelInput("isValidNumber")
+      //   //var status = $(this).val();
+      //   console.log("status")
+      //   console.log(status)
+      //   if(!status){
+      //     $(this).closest('div').after('<label class="error error_lable">Invalid mobile number.Only numbers,hyphens and brackets are accepted</label>')
+      //   }
+      // });
+      // console.log("check_phone");
+      // console.log(check_phone);
+      // if (check_phone){
+      //   $(".phone_validate").each(function() {
+      //     console.log("$(this).val()")
+      //     console.log($(this).val())
+      //     // virl = $(this).intlTelInput("getNumber");
+      //     virl = $(this).val();
+
+      //     console.log("virl")
+      //     console.log(virl)
+      //     $(this).val(virl);
+      //   });
+      //   flag = true;
+      // }else {
+      //   flag = false;
+      // }
+      // // form.submit();
+      // return flag;   
     },
     highlight: function(element) {
       jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
