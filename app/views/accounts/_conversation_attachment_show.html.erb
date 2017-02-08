@@ -3,7 +3,7 @@
     <p><span class="subheading">ATTACHMENT(S):</span></p>
     <ul class="attachment_list"style="list-style: none;padding-left: 3px">
       <%citem.media.each do |media|%>
-        <li>
+        <li id="media_<%=media.id%>"> 
           <%if media.urls.try(:thumb)%>
             <%=link_to download_file_path(media.urls.try(:original), media.name), target: "_blank" do%>
               <img src="<%=media.urls.try(:thumb)%>" class="thumbnail img-responsive" alt="">
@@ -41,9 +41,13 @@
               <%end%>
             <%end%>
           <%end%>
-          <%=link_to get_or_delete_conversation_attachment_accounts_path(account_conversation_id: ((citem.try(:conversation_id).present?) ? citem.conversation_id : citem.prefix_options[:conversation_id]), attachment_id: media.id, item_id: citem.id, destroy: :true), remote: :true, method: :patch do%>
+          <%#=link_to get_or_delete_conversation_attachment_accounts_path(account_conversation_id: ((citem.try(:conversation_id).present?) ? citem.conversation_id : citem.prefix_options[:conversation_id]), attachment_id: media.id, item_id: citem.id, destroy: :true), remote: :true, method: :patch do%>
+            <!-- <i class="fa fa-trash-o" aria-hidden="true"></i> -->
+          <%#end%>
+
+          <%= link_to "javascript:void(0)", class: "delete_attachment", data:{account_conversation_id: ((citem.try(:conversation_id).present?) ? citem.conversation_id : citem.prefix_options[:conversation_id]), attachment_id: media.id, item_id: citem.id, destroy: :true, media_name: media.name} do %>
             <i class="fa fa-trash-o" aria-hidden="true"></i>
-          <%end%>
+          <% end %>
         </li><br/>
       <%end%>
     </ul>

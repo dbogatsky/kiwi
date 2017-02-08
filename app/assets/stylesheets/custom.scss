@@ -454,3 +454,10 @@ width:50%;
 .add_attachment:hover, .add_attachment:active, .add_attachment:focus{
   text-decoration: none;
 }
+.attachment_list li a{display: inline-block;}
+.attachment_list img{
+  margin-bottom: 0;
+}
+.delete_attachment{
+  display: inline-block;
+}

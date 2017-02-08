@@ -38,8 +38,8 @@
       <div class="tab-pane" id="vtab2">
         <%= f.fields_for :addresses_attributes do |add| %>
           <input type="hidden" name="account[addresses_attributes][][id]" value="<%= @addresses.first.id %>" >
-          <%= add.input :street_address, wrapper: :wizard_horizontal_form, required: true, label: "Street Address", :input_html => { :name => "account[addresses_attributes][][street_address]",id: "street_number", :value => @addresses.first.street_address } %>
-          <%= add.input :suite_number, wrapper: :wizard_horizontal_form, required: false, label: "Suite Number", :input_html => { :name => "account[addresses_attributes][][suite_number]", id: "subpremise",:value => @addresses.first.suite_number} %>
+          <%= add.input :street_address, wrapper: :wizard_horizontal_form, required: true, label: "Address", :input_html => { :name => "account[addresses_attributes][][street_address]",id: "street_number", :value => @addresses.first.street_address } %>
+          <%= add.input :suite_number, wrapper: :wizard_horizontal_form, required: false, label: "Address 2", :input_html => { :name => "account[addresses_attributes][][suite_number]", id: "subpremise",:value => @addresses.first.suite_number} %>
           <%= add.input :city, wrapper: :wizard_horizontal_form, required: true, label: "City", :input_html => { :name => "account[addresses_attributes][][city]",id: "locality", :value => @addresses.first.city } %>
           <%= add.input :postcode, wrapper: :wizard_horizontal_form, required: false, label: "Post/Zipcode", :input_html => { :name => "account[addresses_attributes][][postcode]",id: "postal_code", :value => @addresses.first.postcode } %>
           <%= add.input :region, wrapper: :wizard_horizontal_form, required: false, label: "Province/State", :input_html => { :name => "account[addresses_attributes][][region]",id: "administrative_area_level_1", :value => @addresses.first.region } %>

@@ -1,2 +1,8 @@
 $(".list_of_attachment").html("<%=j render 'accounts/list_of_conversation_level_attachment', attachments: @attachments, account_conversation_id: @account_conversation_id%>");
-$('#preloader').hide();
+<%if @result == true%>
+   $('#media_' + '<%= @attachment_id %>').remove();
+   $('#preloader').hide();
+<%else%>
+   $(".file-error-pop-up-modal-form").modal('show');
+   $('#preloader').hide();
+<%end%>
