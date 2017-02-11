@@ -550,6 +550,7 @@ class ApplicationController < ActionController::Base
     @enable_regular_visits_sort = preferences['enable_regular_visits_sort'] || "unknown"
     @timezone_setting = preferences['enable_timezone_detect']
     @search_all_accounts = preferences['search_all_accounts']
+    @needs_approval_for_account_transfer = preferences['needs_approval_for_account_transfer'] || false
   end
 
   def get_timezone_setting
