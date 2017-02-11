@@ -78,7 +78,7 @@
             <div class="tab-pane" id="accounts">
               <div class="row row-pad-5">
                 <div class="form-group">
-                  <label class="col-sm-4 control-label">Account Transfer Approval</label>
+                  <label class="col-sm-4 control-label">Account Transfer Approval By</label>
                   <div class="col-sm-4">
                     <%=select_tag('approval_for_account_transfer',options_for_select(approval_for_account_transfer_options, selected: @needs_approval_for_account_transfer), class: "form-control")%>
                   </div>
