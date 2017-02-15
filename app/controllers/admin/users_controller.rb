@@ -24,13 +24,17 @@ class Admin::UsersController < Admin::AdminController
     # Create new user
     params[:user][:addresses_attributes] = params[:user][:addresses_attributes].values
     @user = BoUser.new(request: :create, user: params[:user], company_id: params[:company_id], reload: true)
-    if @user.save
-      save_avatar
-      flash[:success] = 'User has been added successfully'
-    else
-      flash[:danger] = 'Oops! Unable to add the user'
+    begin
+      if @user.save
+        save_avatar
+        flash[:success] = 'User has been added successfully'
+      else
+        flash[:danger] = 'Oops! Unable to add the user'
+      end
+    rescue NoMethodError
+      flash[:danger] = 'User can not be created due to that the email address already exist in the system.'
+      redirect_to admin_companies_path
     end
-    redirect_to admin_company_path(params[:company_id])
   end
 
   def update
