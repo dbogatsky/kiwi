@@ -28,6 +28,17 @@ class CompanyController < ApplicationController
     @sub_entites = @entity.descendants
   end
 
+  def default_account_statuses
+    AccountStatus::STATUS.each do |status|
+      new_status = AccountStatus.new
+      new_status.name = status[:name]
+      new_status.color = status[:color]
+      new_status.description = status[:description]
+      new_status.save!
+    end
+    redirect_to company_path
+  end
+
   def account_status
     # Save changes from Add/Edit Account Statuses page
 

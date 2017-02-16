@@ -130,7 +130,7 @@ Rails.application.routes.draw do
   get '/company/edit_entity/:id', to: 'company#edit_entity', as: :company_edit_entity
   get '/company/:id/display_sub_entites', to: 'company#display_sub_entites', as: :company_display_sub_entites
   post '/company/delete/:id', to: 'company#delete', as: :company_delete
-
+  get '/company/default_account_statuses', to: 'company#default_account_statuses', as: :default_account_statuses
   post '/company/account_status', to: 'company#account_status', as: :account_status
   post '/company/:company_id/company_news', to: 'company#company_news', as: :company_news
   delete '/company/:company_id/delete_news', to: 'company#delete_news', as: :delete_news
