@@ -8,6 +8,10 @@ class ReportsController < ApplicationController
     @users = User.all(uid: session[:user_id], reload: true)
   end
 
+  def sales_report
+    @users = User.all(uid: session[:user_id], reload: true)
+  end
+
   def meeting_report_result
     if current_user.roles.last.try(:name) == 'User'
       user_ids = [current_user.id]
@@ -152,6 +156,23 @@ Please contact your administrator to help generate a report.'
       end
       @sorted_citems[citem.type.to_sym].push(citem)
     end
+  end
+
+  def sales_report_result
+    if current_user.roles.last.try(:name) == 'User'
+      user_ids = [current_user.id]
+    else
+      if params[:users].present?
+        if params[:users].include? 'all'
+          user_ids = User.all(uid: session[:user_id], reload: true).map(&:id)
+        else
+          user_ids = params[:users]
+        end
+      else
+        user_ids = [current_user.id]
+      end
+    end
+
   end
 
   private

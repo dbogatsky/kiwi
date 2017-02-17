@@ -151,5 +151,8 @@ Rails.application.routes.draw do
   get :activity_report, to: 'reports#activity_report'
   get :activity_report_result, to: 'reports#activity_report_result'
 
+  get :sales_report, to: 'reports#sales_report'
+  get :sales_report_result, to: 'reports#sales_report_result'
+
   match '(*any)', to: 'errors#routing', via: [:get, :post]
 end
