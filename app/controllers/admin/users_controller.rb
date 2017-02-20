@@ -32,7 +32,7 @@ class Admin::UsersController < Admin::AdminController
         flash[:danger] = 'Oops! Unable to add the user'
       end
     rescue NoMethodError
-      flash[:danger] = 'User can not be created due to that the email address already exist in the system.'
+      flash[:danger] = 'User can not be created due to that the email address already exists in the system.'
       redirect_to admin_companies_path
     end
   end

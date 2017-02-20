@@ -87,6 +87,16 @@
           </div>
           <div class="row ci_footer">
             <div class="col-sm-10">
+              <% if citem.location.present?%>
+                <i class="fa fa-map-marker tooltips mr10" data-toggle="tooltip" data-original-title="Address"></i>
+                <%if citem.latitude.present? && citem.longitude.present?%>
+                  <a href="http://www.google.com/maps/place/<%= citem.latitude %>,<%= citem.longitude %>" target="_blank">
+                <%else%>
+                  <a href="https://maps.google.com?daddr=<%=citem.location%>" target="_blank">
+                <%end%>
+                <%address = citem.location.split(',')%><%=address[0]%>, <%=address[1] %>, <%=address[3] %>
+                </a><br />
+              <% end %>
               <% if (citem.scheduled_at.present?) %>
                 <i class="fa fa-bell tooltips mr10" data-toggle="tooltip" data-original-title="Reminder"></i>
                 <%=citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%><br />

@@ -109,7 +109,11 @@ class ApplicationController < ActionController::Base
   private
 
   def render_403
-    render file: "#{Rails.root}/public/403.html", status: 403
+    if session[:user_id].eql?('superadmin')
+      render file: "#{Rails.root}/public/403_admin.html", status: 403
+    else
+      render file: "#{Rails.root}/public/403.html", status: 403
+    end
   end
 
   def render_404
@@ -118,7 +122,7 @@ class ApplicationController < ActionController::Base
 
   def render_500
     if session[:user_id].eql?('superadmin')
-      render file: "#{Rails.root}/public/500_super_admin.html", status: 500
+      render file: "#{Rails.root}/public/500_admin.html", status: 500
     else
       render file: "#{Rails.root}/public/500.html", status: 500
     end
