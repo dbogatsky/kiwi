@@ -29,12 +29,16 @@ class CompanyController < ApplicationController
   end
 
   def default_account_statuses
-    AccountStatus::STATUS.each do |status|
-      new_status = AccountStatus.new
-      new_status.name = status[:name]
-      new_status.color = status[:color]
-      new_status.description = status[:description]
-      new_status.save!
+    account_statuses = AccountStatus.all(uid: RequestStore.store[:tenant], reload: true)
+
+    if account_statuses.count == 0
+      AccountStatus::STATUS.each do |status|
+        new_status = AccountStatus.new
+        new_status.name = status[:name]
+        new_status.color = status[:color]
+        new_status.description = status[:description]
+        new_status.save!
+      end
     end
     redirect_to company_path
   end
