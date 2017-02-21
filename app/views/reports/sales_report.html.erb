@@ -25,9 +25,9 @@
             <div class="form-group">
               <label class="control-label"></label>
               <%if mobile?%>
-                <input class="report_from_datepicker" type="date" name="search[date_gteq]" required="required" placeholder="Start Date"/>
+                <input class="report_from_datepicker" type="date" name="search[date_gteq]" placeholder="Start Date"/>
               <%else%>
-                <input type="text" name="search[date_gteq]" class="form-control report_from_datepicker" placeholder="Start Date" required="required">
+                <input type="text" name="search[date_gteq]" class="form-control report_from_datepicker" placeholder="Start Date">
               <%end%>
             </div>
           </div>
@@ -35,9 +35,9 @@
             <div class="form-group">
               <label class="control-label"></label>
               <%if mobile?%>
-                <input  class="report_to_datepicker" type="date" name="search[date_lteq]" required="required" placeholder="End Date"/>
+                <input  class="report_to_datepicker" type="date" name="search[date_lteq]" placeholder="End Date"/>
               <%else%>
-                <input type="text" class="form-control report_to_datepicker" name="search[date_lteq]" placeholder="End Date" required="required">
+                <input type="text" class="form-control report_to_datepicker" name="search[date_lteq]" placeholder="End Date">
               <%end%>
             </div>
           </div>
@@ -67,12 +67,15 @@
 
 <script>
   $("#custom_date_search_report").hide();
+  $(".report_from_datepicker").removeAttr('required');
 
   $('#search_period').change(function(){
     if ($(this).val() == 'custom') {
       $("#custom_date_search_report").show();
+      $(".report_from_datepicker").attr('required', 'true');
     } else {
       $("#custom_date_search_report").hide();
+      $(".report_from_datepicker").removeAttr('required');
     }
   });
 
