@@ -159,6 +159,7 @@ Please contact your administrator to help generate a report.'
   end
 
   def sales_report_result
+    valid_date = true
     if current_user.roles.last.try(:name) == 'User'
       user_ids = [current_user.id]
     else
@@ -173,7 +174,65 @@ Please contact your administrator to help generate a report.'
       end
     end
 
-#binding.pry
+
+    Time.zone = current_user.time_zone # Now use Time.current after this line
+    date_format = '%Y-%m-%d'
+
+    case params["search"]["period"]
+
+    when "today"
+      @datetime_start = Time.current.at_beginning_of_day
+      @datetime_end = Time.current.end_of_day
+      @date_heading = "Today (#{Time.current.strftime(date_format)})"
+
+    when "yesterday"
+      @datetime_start = (Time.current - 1.day).at_beginning_of_day #  Time.current.yesterday works too
+      @datetime_end = (Time.current - 1.day).end_of_day
+      @date_heading = "Yesterday (#{(Time.current - 1.day).strftime(date_format)})"
+
+    when "current_week"
+      @datetime_start = Time.current.at_beginning_of_week  # at_beginning_of_week = Monday
+      @datetime_end = Time.current.end_of_week  # end_of_week = Sunday
+      @date_heading = "Current Week (#{Time.current.at_beginning_of_week.strftime(date_format)} to #{Time.current.end_of_week.strftime(date_format)})"
+
+    when "current_month"
+      @datetime_start = Time.current.at_beginning_of_month
+      @datetime_end = Time.current.end_of_month
+      @date_heading = "Current Month (#{Time.current.strftime('%b %Y')})" # Or display Month all cap -> ('%^b %Y'), or use %B to display full name
+
+    when "current_year"
+      @datetime_start = Time.current.at_beginning_of_year
+      @datetime_end = Time.current.end_of_year
+      @date_heading = "Current Year (#{Time.current.strftime('%Y')})"
+
+    when "last_week"
+      @datetime_start = (Time.current - 7.day).at_beginning_of_week  # at_beginning_of_week = Monday, Time.current.last_week works too
+      @datetime_end = (Time.current - 7.day).end_of_week  # end_of_week = Sunday
+      @date_heading = "Last Week (#{(Time.current - 7.day).at_beginning_of_week.strftime(date_format)} - #{(Time.current - 7.day).end_of_week.strftime(date_format)})"
+
+    when "last_month"
+      @datetime_start = Time.current.last_month.at_beginning_of_month
+      @datetime_end = Time.current.last_month.end_of_month
+      @date_heading = "Last Month (#{Time.current.last_month.strftime('%b %Y')})"
+
+    when "last_year"
+      @datetime_start = Time.current.last_year.at_beginning_of_year
+      @datetime_end = Time.current.last_year.end_of_year
+      @date_heading = "Last Year (#{Time.current.last_year.strftime('%Y')})"
+
+    when "custom"
+      @datetime_start = Chronic.parse(params[:search][:date_gteq]).in_time_zone(Time.zone).at_beginning_of_day
+      @datetime_end = Chronic.parse(params[:search][:date_lteq]).in_time_zone(Time.zone).end_of_day
+      @date_heading = "Custom (#{@datetime_start.strftime(date_format)} - #{@datetime_end.strftime(date_format)})"
+    else
+      valid_date = false
+    end
+
+    if (valid_date == false)
+      redirect_to sales_report_path
+    else
+
+    end
 
   end
 
