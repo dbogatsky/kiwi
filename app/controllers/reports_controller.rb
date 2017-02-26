@@ -308,9 +308,9 @@ Please contact your administrator to help generate a report.'
       meetings.each do |m|
         account_id = m.account_id
         account = Account.find(account_id)
-        account_status = account.status.name
+        account_status = account.status.try(:name)
         statuses.each do |k, v|
-          if account_status.to_sym == k
+          if account_status.try(:to_sym) == k
             statuses[k] = statuses[k] + 1
           end
         end
