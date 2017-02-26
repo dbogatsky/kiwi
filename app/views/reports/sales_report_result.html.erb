@@ -441,7 +441,7 @@
     <div class="col-sm-12">
       <div class="panel panel-report panel-alt">
         <div class="panel-heading">
-          <h3 class="panel-title">Sales by Tier</h3>
+          <h3 class="panel-title">Sales by Tier Chart</h3>
         </div>
         <div class="panel-body">
          <div id="account_status_pie_chart" class="chart-height"></div>
@@ -454,7 +454,7 @@
     <div class="col-sm-12">
       <div class="panel panel-report panel-alt">
         <div class="panel-heading">
-          <h3 class="panel-title">Sales by Tier</h3>
+          <h3 class="panel-title">Sales by Tier Data Table</h3>
         </div>
         <div class="panel-body">
           <table class="table table-hover mb30">
@@ -520,17 +520,28 @@
   </div>
 
   <div class="row">
-    <div class="col-sm-12">
+    <div class="col-sm-6">
       <div class="panel panel-report panel-alt">
         <div class="panel-heading">
-          <h3 class="panel-title">Sales by Category by Merchandiser</h3>
+          <h3 class="panel-title">Sales by Tier Donut</h3>
         </div>
         <div class="panel-body">
-         <div id="day_of_week_bar_chart" class="chart-height"></div>
+         <div id="sales_by_tier_donut_chart" class="chart-height"></div>
+        </div><!-- panel-body -->
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="panel panel-report panel-alt">
+        <div class="panel-heading">
+          <h3 class="panel-title">Average Time being on Site per Tier (Mins)</h3>
+        </div>
+        <div class="panel-body">
+         <div id="average_time_on_site_per_tier_donut_chart" class="chart-height"></div>
         </div><!-- panel-body -->
       </div>
     </div>
   </div>
+
   <div class="row">
     <div class="col-sm-6">
       <div class="panel panel-report panel-alt">
@@ -545,10 +556,23 @@
     <div class="col-sm-6">
       <div class="panel panel-report panel-alt">
         <div class="panel-heading">
-          <h3 class="panel-title">Meetings by Type</h3>
+          <h3 class="panel-title">Average Time being on Site per Tier (Mins)</h3>
         </div>
         <div class="panel-body">
-         <div id="type_of_meeting_bar_chart" class="chart-height"></div>
+         <div id="average_time_on_site_per_tier_chart" class="chart-height"></div>
+        </div><!-- panel-body -->
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="panel panel-report panel-alt">
+        <div class="panel-heading">
+          <h3 class="panel-title">Sales by Category by Merchandiser</h3>
+        </div>
+        <div class="panel-body">
+         <div id="day_of_week_bar_chart" class="chart-height"></div>
         </div><!-- panel-body -->
       </div>
     </div>
@@ -556,30 +580,37 @@
 
 <script type="text/javascript">
 
-  function showMap(div_id, lat, lng, loc){
-    var map = new GMaps({
-      div: div_id,
-      lat: lat,
-      lng: lng,
-      zoom: 1,
-    });
+  var sales_by_tier_donut_chart_data =  '[{&quot;label&quot;:&quot;Tier A&quot;,&quot;value&quot;:60.00},{&quot;label&quot;:&quot;Tier B&quot;,&quot;value&quot;:30.00},{&quot;label&quot;:&quot;Tier C&quot;,&quot;value&quot;:10.00}]';
+  sales_by_tier_donut_chart_data = JSON.parse(sales_by_tier_donut_chart_data.replace(/&quot;/g,'"'));
+  var sales_by_tier_donut_chart =  new Morris.Donut({
+    element: 'sales_by_tier_donut_chart',
+    data: sales_by_tier_donut_chart_data,
+    resize: true,
+    stacked: true,
+    colors: ['#428BCA', '#4CAF50', '#999'],
+    formatter: function (y, data) { return y + '%'}
+  });
 
-    var marker = map.addMarker({
-      lat: lat,
-      lng: lng,
-      title: loc,
-    });
-  }
+  var average_time_on_site_per_tier_donut_chart_data =  '[{&quot;label&quot;:&quot;Tier A&quot;,&quot;value&quot;:30.00},{&quot;label&quot;:&quot;Tier B&quot;,&quot;value&quot;:18.00},{&quot;label&quot;:&quot;Tier C&quot;,&quot;value&quot;:25.00}]';
+  average_time_on_site_per_tier_donut_chart_data = JSON.parse(average_time_on_site_per_tier_donut_chart_data.replace(/&quot;/g,'"'));
+  var average_time_on_site_per_tier_donut_chart =  new Morris.Donut({
+    element: 'average_time_on_site_per_tier_donut_chart',
+    data: average_time_on_site_per_tier_donut_chart_data,
+    resize: true,
+    stacked: true,
+    colors: ['#428BCA', '#4CAF50', '#999'],
+    formatter: function (y, data) { return y + ' mins'}
+  });
 
-  var data = '<%=@data%>';
-  data = JSON.parse(data.replace(/&quot;/g,'"'))
-  var m4 = new Morris.Bar({
-    element: 'day_of_week_bar_chart',
-    data: data,
+  var average_time_on_site_per_tier_chart_data = '[{&quot;y&quot;:&quot;Tier A&quot;,&quot;a&quot;:30.00},{&quot;y&quot;:&quot;Tier B&quot;,&quot;a&quot;:18.00},{&quot;y&quot;:&quot;Tier C&quot;,&quot;a&quot;:25.00}]';
+  average_time_on_site_per_tier_chart_data = JSON.parse(average_time_on_site_per_tier_chart_data.replace(/&quot;/g,'"'))
+  var average_time_on_site_per_tier_chart = new Morris.Bar({
+    element: 'average_time_on_site_per_tier_chart',
+    data: average_time_on_site_per_tier_chart_data,
     xkey: 'y',
     ykeys: ['a'],
     xLabelMargin: 5,
-    labels: ['Meetings'],
+    labels: ['Avg Time (Mins)'],
     barColors: ['#1CAF9A'],
     lineWidth: '1px',
     fillOpacity: 0.8,
@@ -589,58 +620,14 @@
     hideHover: true
   });
 
-  var meeting_comparison_data = "<%=@meeting_comparison_data%>"
-  meeting_comparison_data = JSON.parse(meeting_comparison_data.replace(/&quot;/g,'"'))
-  var m5 = new Morris.Bar({
-    element: 'type_of_meeting_bar_chart',
-    data: meeting_comparison_data,
-    xkey: 'y',
-    ykeys: ['a', 'b'],
-    labels: ['General meetings', 'Regular meetings'],
-    barColors: ['#428BCA', '#4CAF50'],
-    resize: true,
-    hideHover: true,
-    barSizeRatio: .2
-  });
-
-  var account_data=  '<%=@account_data%>';
-  var color = '<%=@color%>'
-  account_data = JSON.parse(account_data.replace(/&quot;/g,'"'));
-  color = JSON.parse(color.replace(/&quot;/g,'"'));
-  var m6 =  new Morris.Donut({
-    element: 'account_status_pie_chart',
-    data: account_data,
-    resize: true,
-    stacked: true,
-    colors: color,
-    formatter: function (y, data) { return y + '%'}
-  });
-
-  var meeting_by_status=  '<%=@meeting_by_status%>';
-  meeting_by_status = JSON.parse(meeting_by_status.replace(/&quot;/g,'"'));
-  var m7 =  new Morris.Donut({
-    element: 'meeting_by_status_dognut_chart',
-    data: meeting_by_status,
-    resize: true,
-    stacked: true,
-    colors: ['#428BCA', '#4CAF50', '#999'],
-    formatter: function (y, data) { return y + '%'}
-  });
-
   jQuery(document).ready(function() {
     //"use strict";
-    jQuery('#meetingTable').dataTable({
-      "sPaginationType": "full_numbers",
-      "lengthMenu": [[50, 100, 150, -1], [50, 100, 150, "All"]],
-      "pageLength": 50,
-      "bFilter": false
-    });
   });
+
   $(window).resize(function () {
-    m4.redraw();
-    m5.redraw();
-    m6.redraw();
-    m7.redraw();
+    sales_by_tier_donut_chart.redraw();
+    average_time_on_site_per_tier_donut_chart.redraw();
+    average_time_on_site_per_tier_chart.redraw();
   });
 </script>
 
