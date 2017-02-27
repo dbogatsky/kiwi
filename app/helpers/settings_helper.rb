@@ -24,6 +24,6 @@ module SettingsHelper
   end
 
   def approval_for_account_transfer_options
-    return [['Admins and Entity Admins Only', false],['Allow All Users', true]]
+    return [['By Admins and Entity Admins Only', false],['None', true]]
   end
 end
