@@ -1,0 +1,24 @@
+<div id="confirm_box" class="modal fade confirm-box-modal-form" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body">
+       <%= form_tag account_transfers_path(account_id: @user, to_user_id: @user), method: :post do |f| %>
+          <div class="panel panel-default" style="text-align: center">
+              <div class="panel-body">
+                <div class="row row-pad-5">
+                  <p>Are you sure you wish to complete this account transfer.<span id="media_name"></span></p>
+                  <p>From: {<%= user.first_name %> <%= user.last_name %>} </p>
+                  <p>To: {<span id="to_name"></span>} </p>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-default btn-sm" id="yes">Yes</button>
+              <button class="btn btn-default btn-sm" data-dismiss="modal">No</button>
+          </div><!-- panel -->
+        <% end %>
+      </div><!-- modal body -->
+    </div><!-- modal content -->
+  </div><!-- modal dialog -->
+</div><!-- modal -->
+
+
+

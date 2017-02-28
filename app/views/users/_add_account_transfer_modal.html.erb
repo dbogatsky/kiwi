@@ -1,0 +1,55 @@
+<div id="add_account_transfer" class="modal fade account-transfer-add" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+          <button aria-hidden="true" data-dismiss="modal" class="close" type="button">&times;</button>
+          <h4 class="modal-title">Transfer Account</h4>
+    </div>
+      <div class="modal-body">
+        <%= simple_form_for accounts_path, html: {class: "form-horizontal", multipart: true} do |f| %>
+          <div class="panel panel-default">
+              <div class="panel-body">
+                <div class="row row-pad-5 m_btm30">
+                  <%= render "fetch" %>
+                </div>
+                <div class="form-group transfr_custom_select">
+                  <label class="col-sm-4 trnsfr_acc_label">Transfer Account To
+                  </label>
+                  <div class="col-sm-6">
+                    <%= f.select( :assign_to, options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] }, selected: @user.id), {}, { :class => 'select2TransferAccountTo' })%>
+                  </div>
+                </div>
+              </div><!-- panel-body -->
+
+            <div class="panel-footer">
+              <a href="#" class="btn btn-primary" id="transfer">Transfer</a>
+              <button type="button" class="btn btn-default" "btn btn-xs btn-default mr5 close_div" data-dismiss="modal">Cancel</button>
+            </div>
+          </div><!-- panel -->
+        <% end %>
+      </div><!-- modal body -->
+    </div><!-- modal content -->
+  </div><!-- modal dialog -->
+</div><!-- modal -->
+
+
+<script>
+
+  $(".select2TransferAccountTo").select2()
+  .on("select2:select", function(e){
+    var selected_element = $(e.currentTarget);
+    var select_text = $(".select2TransferAccountTo option:selected").text();
+    var select_val = selected_element.val();
+    $('#to_name').text(select_text);
+  });
+
+  $(".select2TransferAccountTo").select2({
+    width: '100%'
+  });
+
+  $("#transfer").click(function(){
+    $('#add_account_transfer').modal('hide');
+    $("#confirm_box").modal('show');
+  });
+
+</script>
