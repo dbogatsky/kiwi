@@ -31,11 +31,23 @@ class Ability
 
               # defining ability with subject class as just the class name
               if permission.action == 'manage' && current_user_role.name != 'Entity Admin'
-                can :manage_permission, permission.subject_class.constantize
-                abilities_debug.push('can :manage_permission, ' + permission.subject_class)
+                begin
+                  can :manage_permission, permission.subject_class.constantize
+                  abilities_debug.push('can :manage_permission, ' + permission.subject_class)
+                rescue NameError
+                  #raise("#{permission.subject_class} Permission Not Handled")
+                  abilities_debug.push('NOT HANDLED NameError : can :manage_permission, ' + permission.subject_class)
+                  next
+                end
               else
-                can permission.action.to_sym, permission.subject_class.constantize
-                abilities_debug.push('can :' + permission.action + ', ' + permission.subject_class)
+                begin
+                  can permission.action.to_sym, permission.subject_class.constantize
+                  abilities_debug.push('can :' + permission.action + ', ' + permission.subject_class)
+                rescue NameError
+                  #raise("#{permission.subject_class} Permission Not Handled")
+                  abilities_debug.push('NOT HANDLED NameError : can :manage_permission, ' + permission.subject_class)
+                  next
+                end
               end
 
               # defining ability with subject class being constantized (tries to find a declared constant with the name specified in the string)

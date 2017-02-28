@@ -43,13 +43,17 @@ class UsersController < ApplicationController
 
     # Create new user
     @user = User.new(request: :create, user: params[:user])
-    if @user.save
-      save_avatar
-      flash[:success] = 'User has been added successfully'
-    else
-      flash[:danger] = 'Oops! Unable to add the user'
+    begin
+      if @user.save
+        save_avatar
+        flash[:success] = 'User has been added successfully'
+      else
+        flash[:danger] = 'Oops! Unable to add the user'
+      end
+    rescue NoMethodError
+      flash[:danger] = 'User can not be created due to that the email address already exist in the system.'
+      redirect_to users_path
     end
-    redirect_to users_path
   end
 
   def update

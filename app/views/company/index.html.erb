@@ -190,6 +190,11 @@
                   </tbody>
                 </table>
               </div><!-- table-responsive -->
+            <% if @account_statuses.count == 0 %>
+              <div class="col-md-4">
+                <a href="<%= default_account_statuses_path %>" id="add_default_status" class="btn btn-primary btn-block"><i class="fa fa-th-list"></i>&nbsp;&nbsp;&nbsp;Add Default Statuses</a>
+              </div>
+            <%end%>
             </div><!-- col-md-6 -->
           </div><!-- row pad 5-->
         <%end%>
@@ -265,6 +270,7 @@
 			}
 	 });
 	}
+
 
 	$(document).on("click", ".modal-link", function () {
 		var statusID = $(this).data('id');
