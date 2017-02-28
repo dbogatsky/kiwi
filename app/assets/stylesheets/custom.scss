@@ -461,3 +461,20 @@ width:50%;
 .delete_attachment{
   display: inline-block;
 }
+
+.m_btm30{
+  margin-bottom:30px;
+}
+.trnsfr_acc_label{
+  vertical-align: middle;
+  position: relative;
+  top: 9px;
+  color:#636e7b;
+}
+.transfr_custom_select .select2-container--default .select2-selection--single{
+  height:35px;
+}
+.transfr_custom_select .select2-container--default .select2-selection--single .select2-selection__rendered{
+  height:35px;line-height:35px;
+  color:#636e7b;
+}

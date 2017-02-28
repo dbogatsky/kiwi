@@ -2,13 +2,27 @@ require 'net/http/post/multipart'
 class UsersController < ApplicationController
   load_and_authorize_resource except: [:index, :new, :edit, :create, :update, :destroy, :update_time_zone, :not_update_time_zone]
   before_action :get_token
-  before_action :find_user, only: [:edit, :update, :destroy, :update_time_zone]
+  before_action :find_user, only: [:edit, :update, :destroy, :update_time_zone, :fetch]
 
   def index
     authorize! :user_management, User
 
     # Get all users
     @all_users = User.find(:all, reload: true)
+    @users = User.all(uid: session[:user_id])
+  end
+
+  def account_transfers
+    redirect_to users_path
+  end
+
+  def fetch
+    authorize! :user_management, User
+
+    @users = User.all(uid: session[:user_id])
+    search = {:assigned_to_first_name_eq=>@user.first_name, :assigned_to_last_name_eq=>@user.last_name}
+    @accounts = Account.all(params: { search: search})
+    @total_entries = @accounts.meta["total_entries"]
   end
 
   def new
