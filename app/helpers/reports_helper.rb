@@ -1,7 +1,19 @@
 module ReportsHelper
-  COLOUR_PALETTES = ["#D9534F", "#1CAF9A", "#F0AD4E", "#428BCA", "#5BC0DE"]
+  COLOUR_PALETTES = ["#1CAF9A", "#428BCA", "#7A92A3", "#0B62A4", "#5BC0DE", "#D9534F", "#F0AD4E", "#4CAF50"]
 
   def chart_morris_bar(chart_data)
+    chart_html = ''
+    chart_html += chart_layout(chart_data[:title], chart_data[:id_name])
+    chart_html.html_safe
+  end
+
+  def chart_morris_donut(chart_data)
+    chart_html = ''
+    chart_html += chart_layout(chart_data[:title], chart_data[:id_name])
+    chart_html.html_safe
+  end
+
+  def chart_flot_bar(chart_data)
     chart_html = ''
     chart_html += chart_layout(chart_data[:title], chart_data[:id_name])
     chart_html.html_safe
@@ -13,11 +25,6 @@ module ReportsHelper
     chart_html.html_safe
   end
 
-  def chart_morris_donut(chart_data)
-    chart_html = ''
-    chart_html += chart_layout(chart_data[:title], chart_data[:id_name])
-    chart_html.html_safe
-  end
 
   def chart_layout(chart_title, chart_div_id, layout_col_size='col-sm-6')
     chart_layout_html = ''
@@ -119,21 +126,25 @@ module ReportsHelper
   def chart_morris_bar_js(chart_data)
     chart_js = ''
 
+    unless chart_data[:barColors].present?
+      unless chart_data[:labels].present?
+        chart_data[:barColors] = default_colour_palettes(1)
+      else
+        chart_data[:barColors] = default_colour_palettes(chart_data[:labels].count)
+      end
+    end
+
     chart_js += "
-    var #{chart_data[:id_name]}_data =  [
-        { x: 'Tier A', y :30.00 },
-        { x: 'Tier B', y :18.00 },
-        { x: 'Tier C', y :25.00 }
-      ];
+    var #{chart_data[:id_name]}_data = #{chart_data[:data].to_json};
 
     var #{chart_data[:id_name]} = new Morris.Bar({
       element: '#{chart_data[:id_name]}',
       data: #{chart_data[:id_name]}_data,
-      xkey: 'x',
-      ykeys: ['y'],
+      xkey: #{chart_data[:xkey].present? ? "'" + chart_data[:xkey] + "'" : "'x'"},
+      ykeys: #{chart_data[:ykeys].present? ? chart_data[:ykeys].to_json : "['y']"},
       xLabelMargin: 5,
-      labels: ['Avg Time (Mins)'],
-      barColors: ['#1CAF9A'],
+      labels: #{chart_data[:labels].present? ? chart_data[:labels].to_json : "['Label']"},
+      barColors: #{chart_data[:barColors].to_json},
       lineWidth: '1px',
       fillOpacity: 0.8,
       smooth: false,
@@ -344,7 +355,9 @@ module ReportsHelper
     ranking_stat_html.html_safe
   end
 
-
+  def default_colour_palettes(number_of_bars)
+    COLOUR_PALETTES[0, number_of_bars]
+  end
 
   def meeting_duration(meeting)
     begin

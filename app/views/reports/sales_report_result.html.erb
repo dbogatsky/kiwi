@@ -474,6 +474,11 @@
   </div>
 
   <div class="row">
+    <%= chart_morris_bar({id_name: 'barchart2', title: 'Double Bar Charts'})%>
+    <%= chart_morris_bar({id_name: 'stacked_barchart', title: 'Stacked Bar Chart'})%>
+  </div>
+
+  <div class="row">
     <div class="col-sm-12">
       <div class="panel panel-report panel-alt">
         <div class="panel-heading">
@@ -510,12 +515,73 @@
     });
 
 
-    <%= chart_morris_bar_js({id_name: 'average_time_on_site_per_tier_chart'}) %>
+    <%= chart_morris_bar_js({
+      id_name: 'average_time_on_site_per_tier_chart', 
+      data: [
+        { x: 'Tier A', y: 30.00 },
+        { x: 'Tier B', y: 18.00 },
+        { x: 'Tier C', y: 25.00 }],
+      xkey: 'x',
+      ykeys: ['y'],
+      labels: ['Avg Time (Mins)'],
+      barColors: ['#1CAF9A'],
+      }) %>
+
+   var barchart2 = new Morris.Bar({
+        // ID of the element in which to draw the chart.
+        element: 'barchart2',
+        // Chart data records -- each entry in this array corresponds to a point on
+        // the chart.
+        data: [
+            { y: '2006', a: 30, b: 20 },
+            { y: '2007', a: 75,  b: 65 },
+            { y: '2008', a: 50,  b: 40 },
+            { y: '2009', a: 75,  b: 65 },
+            { y: '2010', a: 50,  b: 40 },
+            { y: '2011', a: 75,  b: 65 },
+            { y: '2012', a: 100, b: 90 }
+        ],
+        xkey: 'y',
+        ykeys: ['a', 'b'],
+        labels: ['Series A', 'Series B'],
+        lineWidth: '1px',
+        fillOpacity: 0.8,
+        smooth: false,
+        hideHover: true
+    });
+    
+   var stacked_barchart = new Morris.Bar({
+        // ID of the element in which to draw the chart.
+        element: 'stacked_barchart',
+        // Chart data records -- each entry in this array corresponds to a point on
+        // the chart.
+        data: [
+            { y: '2006', a: 30, b: 20 },
+            { y: '2007', a: 75,  b: 65 },
+            { y: '2008', a: 50,  b: 40 },
+            { y: '2009', a: 75,  b: 65 },
+            { y: '2010', a: 50,  b: 40 },
+            { y: '2011', a: 75,  b: 65 },
+            { y: '2012', a: 100, b: 90 }
+        ],
+        xkey: 'y',
+        ykeys: ['a', 'b'],
+        labels: ['Series A', 'Series B'],
+        barColors: ['#1CAF9A', '#428BCA'],
+        lineWidth: '1px',
+        fillOpacity: 0.8,
+        smooth: false,
+        stacked: true,
+        hideHover: true
+   });
+
 
     $(window).resize(function () {
       sales_by_tier_donut_chart.redraw();
       average_time_on_site_per_tier_donut_chart.redraw();
       average_time_on_site_per_tier_chart.redraw();
+      barchart2.redraw();
+      stacked_barchart.redraw();
     });
 
   });
