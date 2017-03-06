@@ -6,7 +6,7 @@
   <div class="row">
     <div class="col-sm-6 col-md-3">
       <div class="panel panel-success panel-stat">
-        <div class="panel-heading hight_145">
+        <div class="panel-heading">
           <div class="stat">
             <div class="row">
               <div class="col-xs-4">
@@ -34,7 +34,7 @@
     </div><!-- col-sm-6 -->
     <div class="col-sm-6 col-md-3">
       <div class="panel panel-primary panel-stat">
-        <div class="panel-heading hight_145">
+        <div class="panel-heading">
           <div class="stat">
             <div class="row">
               <div class="col-xs-4">
@@ -62,7 +62,7 @@
     </div><!-- col-sm-6 -->
     <div class="col-sm-6 col-md-3">
       <div class="panel panel-dark panel-stat">
-        <div class="panel-heading hight_145">
+        <div class="panel-heading">
           <div class="stat">
             <div class="row">
               <div class="col-xs-4">
@@ -96,7 +96,7 @@
     </div><!-- col-sm-6 -->
     <div class="col-sm-6 col-md-3">
       <div class="panel panel-danger panel-stat">
-        <div class="panel-heading" style="height: 165px;">
+        <div class="panel-heading" style="height: 145px;">
           <div class="stat">
             <div class="row">
               <div class="col-xs-4">
@@ -135,37 +135,10 @@
   </div><!-- row -->
 
   <div class="row">
-    <div class="col-sm-6 col-md-3">
-      <div class="panel panel-success panel-stat">
-        <div class="panel-heading hight_145">
-          <div class="stat">
-            <div class="row">
-              <div class="col-xs-4">
-                <i class="fa fa-dollar"></i>
-              </div>
-              <div class="col-xs-8 text-center">
-                <small class="stat-label"><strong>Grand Total Of Sales (000's)</strong></small>
-                <h1><%= %>$10,000</h1>
-              </div>
-            </div><!-- row -->
-            <div class="mb15"></div>
-            <div class="row">
-              <div class="col-xs-6 text-center" style="padding-left: 0px">
-                <small class="stat-label"><strong>AVG Per Week</strong></small>
-                <h5><%= %>$10</h5>
-              </div>
-              <div class="col-xs-6 text-center" style="padding-right: 0px">
-                <small class="stat-label"><strong>AVG Per Day</strong></small>
-                  <h5><%= %>$1</h5>
-              </div>
-            </div>
-          </div><!-- stat -->
-        </div><!-- panel-heading -->
-      </div>
-    </div><!-- col-sm-6 -->
+    <%=  panel_quick_stat({}) %>
     <div class="col-sm-6 col-md-3">
       <div class="panel panel-primary panel-stat">
-        <div class="panel-heading hight_145">
+        <div class="panel-heading">
           <div class="stat">
             <div class="row">
               <div class="col-xs-4">
@@ -191,40 +164,10 @@
         </div><!-- panel-heading -->
       </div><!-- panel -->
     </div><!-- col-sm-6 -->
-    <div class="col-sm-6 col-md-3">
-      <div class="panel panel-info panel-stat">
-        <div class="panel-heading hight_145">
-          <div class="stat">
-            <div class="row">
-              <div class="col-xs-4">
-               <i class="fa fa-arrow-up"></i>
-              </div>
-              <div class="col-xs-8 text-center">
-                <small class="stat-label"><strong>Top Performing Products</strong></small>
-                <small class="stat-label" style="text-align: left;">
-                <h6>
-                1. Product 1<br />
-                2. Product 2<br />
-                3. Product 3<br />
-                4. Product 4<br />
-                5. Product 5<br />
-                </h6></small>
-              </div>
-            </div>
-            <div class="mb15"></div>
-            <div class="row">
-              <div class="col-xs-6 text-center" style="padding-left: 0px">
-                <small class="stat-label"><strong></strong></small>
-                <h5><%=%></h5>
-              </div>
-            </div>
-          </div><!-- stat -->
-        </div><!-- panel-heading -->
-      </div><!-- panel -->
-    </div><!-- col-sm-6 -->
+    <%= panel_ranking_stat({}) %>
     <div class="col-sm-6 col-md-3">
       <div class="panel panel-warning panel-stat">
-        <div class="panel-heading" style="height: 165px;">
+        <div class="panel-heading" style="height: 145px;">
           <div class="stat">
             <div class="row">
               <div class="col-xs-4">
@@ -457,6 +400,7 @@
           <h3 class="panel-title">Sales by Tier Data Table</h3>
         </div>
         <div class="panel-body">
+          <div class="table-responsive">
           <table class="table table-hover mb30">
             <thead>
               <tr>
@@ -473,96 +417,60 @@
             <tbody>
               <tr>
                 <td>A</td>
-                <th>60.0%</th>
-                <th>$20,000</th>
-                <th>50.0%</th>
-                <th>$16,000</th>
-                <th>+ 12.0%</th>
-                <th>$20,000</th>
-                <th>+ 0.0%</th>
+                <td>60.0%</td>
+                <td>$20,000</td>
+                <td>50.0%</td>
+                <td>$16,000</td>
+                <td>+ 12.0%</td>
+                <td>$20,000</td>
+                <td>+ 0.0%</td>
               </tr>
               <tr>
                 <td>B</td>
-                <th>30.0%</th>
-                <th>$12,000</th>
-                <th>35.0%</th>
-                <th>$16,000</th>
-                <th>- 25.0%</th>
-                <th>$18,000</th>
-                <th>- 33.0%</th>
+                <td>30.0%</td>
+                <td>$12,000</td>
+                <td>35.0%</td>
+                <td>$16,000</td>
+                <td>- 25.0%</td>
+                <td>$18,000</td>
+                <td>- 33.0%</td>
               </tr>
               <tr>
                 <td>C</td>
-                <th>10.0%</th>
-                <th>$10,000</th>
-                <th>15.0%</th>
-                <th>$8,000</th>
-                <th>+ 20.0%</th>
-                <th>$9,000</th>
-                <th>+ 10.0%</th>
+                <td>10.0%</td>
+                <td>$10,000</td>
+                <td>15.0%</td>
+                <td>$8,000</td>
+                <td>+ 20.0%</td>
+                <td>$9,000</td>
+                <td>+ 10.0%</td>
               </tr>
               <tr style="font-weight: 700;">
                 <td>Grand Total</td>
                 <td>100.0%</td>
-                <th>$42,000</th>
-                <th>100.0%</th>
-                <th>$40,000</th>
-                <th>+ 5.0%</th>
-                <th>$41,000</th>
-                <th>+ 2.0%</th>
+                <td>$42,000</td>
+                <td>100.0%</td>
+                <td>$40,000</td>
+                <td>+ 5.0%</td>
+                <td>$41,000</td>
+                <td>+ 2.0%</td>
               </tr>
             </tbody>
           </table>
-
+          </div>
         </div><!-- panel-body -->
       </div>
     </div>
   </div>
 
   <div class="row">
-    <div class="col-sm-6">
-      <div class="panel panel-report panel-alt">
-        <div class="panel-heading">
-          <h3 class="panel-title">Sales by Tier Donut</h3>
-        </div>
-        <div class="panel-body">
-         <div id="sales_by_tier_donut_chart" class="chart-height"></div>
-        </div><!-- panel-body -->
-      </div>
-    </div>
-    <div class="col-sm-6">
-      <div class="panel panel-report panel-alt">
-        <div class="panel-heading">
-          <h3 class="panel-title">Average Time being on Site per Tier (Mins)</h3>
-        </div>
-        <div class="panel-body">
-         <div id="average_time_on_site_per_tier_donut_chart" class="chart-height"></div>
-        </div><!-- panel-body -->
-      </div>
-    </div>
+    <%= chart_morris_donut({id_name: 'sales_by_tier_donut_chart', title: 'Sales by Tier Donut'})%>
+    <%= chart_morris_donut({id_name: 'average_time_on_site_per_tier_donut_chart', title: 'Average Time being on Site per Tier (Mins)'})%>
   </div>
 
   <div class="row">
-    <div class="col-sm-6">
-      <div class="panel panel-report panel-alt">
-        <div class="panel-heading">
-          <h3 class="panel-title">Meetings by Status</h3>
-        </div>
-        <div class="panel-body">
-         <div id="meeting_by_status_dognut_chart" class="chart-height"></div>
-        </div><!-- panel-body -->
-      </div>
-    </div>
-    <div class="col-sm-6">
-      <div class="panel panel-report panel-alt">
-        <div class="panel-heading">
-          <h3 class="panel-title">Average Time being on Site per Tier (Mins)</h3>
-        </div>
-        <div class="panel-body">
-         <div id="average_time_on_site_per_tier_chart" class="chart-height"></div>
-        </div><!-- panel-body -->
-      </div>
-    </div>
+    <%= chart_flot_pie({id_name: 'piechart', title: 'Sales by Tier [Pie]'})%>
+    <%= chart_morris_bar({id_name: 'average_time_on_site_per_tier_chart', title: 'Average Time being on Site per Tier (Mins)'})%>
   </div>
 
   <div class="row">
@@ -580,54 +488,37 @@
 
 <script type="text/javascript">
 
-  var sales_by_tier_donut_chart_data =  '[{&quot;label&quot;:&quot;Tier A&quot;,&quot;value&quot;:60.00},{&quot;label&quot;:&quot;Tier B&quot;,&quot;value&quot;:30.00},{&quot;label&quot;:&quot;Tier C&quot;,&quot;value&quot;:10.00}]';
-  sales_by_tier_donut_chart_data = JSON.parse(sales_by_tier_donut_chart_data.replace(/&quot;/g,'"'));
-  var sales_by_tier_donut_chart =  new Morris.Donut({
-    element: 'sales_by_tier_donut_chart',
-    data: sales_by_tier_donut_chart_data,
-    resize: true,
-    stacked: true,
-    colors: ['#428BCA', '#4CAF50', '#999'],
-    formatter: function (y, data) { return y + '%'}
-  });
-
-  var average_time_on_site_per_tier_donut_chart_data =  '[{&quot;label&quot;:&quot;Tier A&quot;,&quot;value&quot;:30.00},{&quot;label&quot;:&quot;Tier B&quot;,&quot;value&quot;:18.00},{&quot;label&quot;:&quot;Tier C&quot;,&quot;value&quot;:25.00}]';
-  average_time_on_site_per_tier_donut_chart_data = JSON.parse(average_time_on_site_per_tier_donut_chart_data.replace(/&quot;/g,'"'));
-  var average_time_on_site_per_tier_donut_chart =  new Morris.Donut({
-    element: 'average_time_on_site_per_tier_donut_chart',
-    data: average_time_on_site_per_tier_donut_chart_data,
-    resize: true,
-    stacked: true,
-    colors: ['#428BCA', '#4CAF50', '#999'],
-    formatter: function (y, data) { return y + ' mins'}
-  });
-
-  var average_time_on_site_per_tier_chart_data = '[{&quot;y&quot;:&quot;Tier A&quot;,&quot;a&quot;:30.00},{&quot;y&quot;:&quot;Tier B&quot;,&quot;a&quot;:18.00},{&quot;y&quot;:&quot;Tier C&quot;,&quot;a&quot;:25.00}]';
-  average_time_on_site_per_tier_chart_data = JSON.parse(average_time_on_site_per_tier_chart_data.replace(/&quot;/g,'"'))
-  var average_time_on_site_per_tier_chart = new Morris.Bar({
-    element: 'average_time_on_site_per_tier_chart',
-    data: average_time_on_site_per_tier_chart_data,
-    xkey: 'y',
-    ykeys: ['a'],
-    xLabelMargin: 5,
-    labels: ['Avg Time (Mins)'],
-    barColors: ['#1CAF9A'],
-    lineWidth: '1px',
-    fillOpacity: 0.8,
-    smooth: false,
-    stacked: true,
-    resize: true,
-    hideHover: true
-  });
-
   jQuery(document).ready(function() {
     //"use strict";
+
+    <%= chart_flot_pie_js({id_name: 'piechart'}) %>
+    function labelFormatter(label, series) {
+    return "<div style='font-size:8pt; text-align:center; padding:2px; color:white;'>" + label + "<br/>" + Math.round(series.percent) + "%</div>";
+    }
+
+    <%= chart_morris_donut_js({id_name: 'sales_by_tier_donut_chart'}) %>
+
+    var average_time_on_site_per_tier_donut_chart_data =  '[{&quot;label&quot;:&quot;Tier A&quot;,&quot;value&quot;:30.00},{&quot;label&quot;:&quot;Tier B&quot;,&quot;value&quot;:18.00},{&quot;label&quot;:&quot;Tier C&quot;,&quot;value&quot;:25.00}]';
+    average_time_on_site_per_tier_donut_chart_data = JSON.parse(average_time_on_site_per_tier_donut_chart_data.replace(/&quot;/g,'"'));
+    var average_time_on_site_per_tier_donut_chart =  new Morris.Donut({
+      element: 'average_time_on_site_per_tier_donut_chart',
+      data: average_time_on_site_per_tier_donut_chart_data,
+      resize: true,
+      stacked: true,
+      colors: ['#428BCA', '#4CAF50', '#999'],
+      formatter: function (y, data) { return y + ' mins'}
+    });
+
+
+    <%= chart_morris_bar_js({id_name: 'average_time_on_site_per_tier_chart'}) %>
+
+    $(window).resize(function () {
+      sales_by_tier_donut_chart.redraw();
+      average_time_on_site_per_tier_donut_chart.redraw();
+      average_time_on_site_per_tier_chart.redraw();
+    });
+
   });
 
-  $(window).resize(function () {
-    sales_by_tier_donut_chart.redraw();
-    average_time_on_site_per_tier_donut_chart.redraw();
-    average_time_on_site_per_tier_chart.redraw();
-  });
 </script>
 

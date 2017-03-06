@@ -78,6 +78,14 @@
 //= require intlTelInput
 //= require libphonenumber/utils
 
+// flot charts
+//= require flot/jquery.flot.min
+//= require flot/jquery.flot.categories.min
+//= require flot/jquery.flot.crosshair.min
+//= require flot/jquery.flot.pie.min
+//= require flot/jquery.flot.resize.min
+//= require flot/jquery.flot.symbol.min
+
 
 $.webshims.setOptions('basePath', '/assets/webshims/shims/')
 $.webshims.polyfill('forms')
