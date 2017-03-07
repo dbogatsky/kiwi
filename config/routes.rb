@@ -86,6 +86,7 @@ Rails.application.routes.draw do
   get '/notifications/conversation_detail', to: 'notifications#conversation_detail', as: :notifications_conversation_detail
   get '/n/:id', to: 'notifications#show'
   post '/users/account_transfers', to: 'users#account_transfers', as: :account_transfers
+  post '/users/transfers', to: 'users#transfers', as: :transfers
   match '/users/:id/update_time_zone', to: 'users#update_time_zone', as: :users_update_time_zone, via: [:patch]
   get  '/users/:id/not_update_time_zone', to: 'users#not_update_time_zone', as: :users_not_update_time_zone
   post '/accounts/schedule_meeting', to: 'accounts#schedule_meeting', as: :account_schedule_meeting

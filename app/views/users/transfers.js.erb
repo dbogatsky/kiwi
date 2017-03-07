@@ -1,0 +1,3 @@
+$('#add_account_transfer').modal('hide');
+$("#confirm_box_modal").html('<%=j render("confirm_box", from_user: @from_user, to_user: @to_user, from_user_id: params[:from_user_id], to_user_id: params[:to_user_id]) %>')
+$('#confirm_box').modal('show');

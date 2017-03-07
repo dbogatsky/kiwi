@@ -1,6 +1,6 @@
 require 'net/http/post/multipart'
 class UsersController < ApplicationController
-  load_and_authorize_resource except: [:index, :new, :edit, :create, :update, :destroy, :update_time_zone, :not_update_time_zone]
+  load_and_authorize_resource except: [:index, :new, :edit, :create, :update, :destroy, :update_time_zone, :not_update_time_zone, :transfers, :account_transfers, :fetch]
   before_action :get_token
   before_action :find_user, only: [:edit, :update, :destroy, :update_time_zone, :fetch]
 
@@ -12,8 +12,22 @@ class UsersController < ApplicationController
     @users = User.all(uid: session[:user_id])
   end
 
+  #To open confirmation_box
+  def transfers
+    authorize! :user_management, User
+
+    @from_user = User.find(params[:from_user_id])
+    @to_user = User.find(params[:to_user_id])
+  end
+
+  #Account transfers on click yes
   def account_transfers
-    redirect_to users_path
+    authorize! :user_management, User
+
+    result = AccountTransfer.account_transfer_user_to_user(params[:from_user_id], params[:to_user_id])
+    flash[:success] = 'Account transfer successfully completed.'
+    response = result.body
+    response_code = result.code
   end
 
   def fetch
