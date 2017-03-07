@@ -33,7 +33,13 @@ class UsersController < ApplicationController
   def fetch
     authorize! :user_management, User
 
-    @users = User.all(uid: session[:user_id])
+    @all_users = User.all(uid: session[:user_id])
+    @users = []
+    @all_users.each do|user|
+      if user.id != @user.id
+        @users << user
+      end
+    end
     search = {:assigned_to_first_name_eq=>@user.first_name, :assigned_to_last_name_eq=>@user.last_name}
     @accounts = Account.all(params: { search: search})
     @total_entries = @accounts.meta["total_entries"]
