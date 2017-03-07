@@ -148,9 +148,9 @@ module ReportsHelper
       lineWidth: '1px',
       fillOpacity: 0.8,
       smooth: false,
-      stacked: true,
-      resize: true,
-      hideHover: true
+      hideHover: true,
+      #{(chart_data[:stacked].present? && chart_data[:stacked] == 'true') ? "stacked: true," : ""}
+      #{(chart_data[:resize].present? && chart_data[:resize] == 'true') ? "resize: true," : ""}
     });
     "
 

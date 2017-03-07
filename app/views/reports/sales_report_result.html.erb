@@ -527,29 +527,21 @@
       barColors: ['#1CAF9A'],
       }) %>
 
-   var barchart2 = new Morris.Bar({
-        // ID of the element in which to draw the chart.
-        element: 'barchart2',
-        // Chart data records -- each entry in this array corresponds to a point on
-        // the chart.
-        data: [
-            { y: '2006', a: 30, b: 20 },
-            { y: '2007', a: 75,  b: 65 },
-            { y: '2008', a: 50,  b: 40 },
-            { y: '2009', a: 75,  b: 65 },
-            { y: '2010', a: 50,  b: 40 },
-            { y: '2011', a: 75,  b: 65 },
-            { y: '2012', a: 100, b: 90 }
-        ],
-        xkey: 'y',
-        ykeys: ['a', 'b'],
-        labels: ['Series A', 'Series B'],
-        lineWidth: '1px',
-        fillOpacity: 0.8,
-        smooth: false,
-        hideHover: true
-    });
-    
+    <%= chart_morris_bar_js({
+      id_name: 'barchart2',
+      data: [
+        { y: '2006', a: 30, b: 20 },
+        { y: '2007', a: 75,  b: 65 },
+        { y: '2008', a: 50,  b: 40 },
+        { y: '2009', a: 75,  b: 65 },
+        { y: '2010', a: 50,  b: 40 },
+        { y: '2011', a: 75,  b: 65 },
+        { y: '2012', a: 100, b: 90 }],
+      xkey: 'y',
+      ykeys: ['a', 'b'],
+      labels: ['Series A', 'Series B']
+      }) %>
+
    var stacked_barchart = new Morris.Bar({
         // ID of the element in which to draw the chart.
         element: 'stacked_barchart',
