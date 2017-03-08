@@ -58,6 +58,8 @@
                 notification.value.meeting_id
               when 'account_status_change'
                 notification.value.account_id
+              when 'account_transfer'
+                notification.value.account_id
               end
             %>"
             data-notification-type="<%=notification.type%>"
@@ -79,6 +81,10 @@
 					        <span class="thumb notification_calender" style="background: #333;">
 					          <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-briefcase.svg" alt="Reminder">
 					        </span>
+                <%elsif notification.type == 'account_transfer'%>
+                  <span class="thumb notification_calender" style="background: #1d2939;">
+                    <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-arrow-right.svg" alt="Reminder">
+                  </span>
 					      <%end%>
 		          <%#end%>
 		        </td>
