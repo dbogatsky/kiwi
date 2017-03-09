@@ -318,7 +318,7 @@ class AccountsController < ApplicationController
     end
     if params[:conversation_item][:item_type] == 'regular' && params[:starts_date].present?
       params[:conversation_item][:all_day_appointment] = true
-      params[:conversation_item][:starts_at] = convert_datetime_to_utc(current_user.time_zone, params[:starts_date], "00:00:00")
+      params[:conversation_item][:starts_at] = convert_datetime_to_utc(current_user.time_zone, params[:starts_date], "07:00:00")
       params[:conversation_item][:ends_at] = convert_datetime_to_utc(current_user.time_zone, params[:starts_date], "23:59:59")
       params[:conversation_item][:invitees] = ""
     else
