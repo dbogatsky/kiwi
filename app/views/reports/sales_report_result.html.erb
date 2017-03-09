@@ -501,7 +501,15 @@
     return "<div style='font-size:8pt; text-align:center; padding:2px; color:white;'>" + label + "<br/>" + Math.round(series.percent) + "%</div>";
     }
 
-    <%= chart_morris_donut_js({id_name: 'sales_by_tier_donut_chart'}) %>
+    <%= chart_morris_donut_js({
+      id_name: 'sales_by_tier_donut_chart',
+      data: [
+        { label: 'Tier A', value: 60.00 },
+        { label: 'Tier B', value: 30.00 },
+        { label: 'Tier C', value: 10.00 }],
+      colors: ['#428BCA', '#4CAF50', '#999'],
+      formatter: "function (y, data) { return y + '%'}",
+    }) %>
 
     var average_time_on_site_per_tier_donut_chart_data =  '[{&quot;label&quot;:&quot;Tier A&quot;,&quot;value&quot;:30.00},{&quot;label&quot;:&quot;Tier B&quot;,&quot;value&quot;:18.00},{&quot;label&quot;:&quot;Tier C&quot;,&quot;value&quot;:25.00}]';
     average_time_on_site_per_tier_donut_chart_data = JSON.parse(average_time_on_site_per_tier_donut_chart_data.replace(/&quot;/g,'"'));
@@ -525,7 +533,7 @@
       ykeys: ['y'],
       labels: ['Avg Time (Mins)'],
       barColors: ['#1CAF9A'],
-      }) %>
+    }) %>
 
     <%= chart_morris_bar_js({
       id_name: 'barchart2',
@@ -540,7 +548,7 @@
       xkey: 'y',
       ykeys: ['a', 'b'],
       labels: ['Series A', 'Series B']
-      }) %>
+    }) %>
 
    var stacked_barchart = new Morris.Bar({
         // ID of the element in which to draw the chart.

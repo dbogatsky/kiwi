@@ -103,20 +103,20 @@ module ReportsHelper
   def chart_morris_donut_js(chart_data)
     chart_js = ''
 
+    unless chart_data[:colors].present?
+      chart_data[:colors] = default_colour_palettes(chart_data[:data].count)
+    end
+
     chart_js += "
-    var #{chart_data[:id_name]}_data =  [ 
-        { label: 'Tier A', value: 60.00 },
-        { label: 'Tier B', value: 30.00 },
-        { label: 'Tier C', value: 10.00 }
-      ];
+    var #{chart_data[:id_name]}_data = #{chart_data[:data].to_json};
 
     var #{chart_data[:id_name]} =  new Morris.Donut({
       element: '#{chart_data[:id_name]}',
       data: #{chart_data[:id_name]}_data,
       resize: true,
       stacked: true,
-      colors: ['#428BCA', '#4CAF50', '#999'],
-      formatter: function (y, data) { return y + '%'}
+      colors: #{chart_data[:colors].to_json},
+      formatter: #{chart_data[:formatter].to_json}
     });
     "
 
