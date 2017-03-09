@@ -17,7 +17,11 @@
                 </label>
                 <div class="col-sm-6">
                   <%= hidden_field_tag :from_user_id, @user.id %>
-                  <%= select_tag :to_user_id, options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] }, selected: @user.id), { :class => 'select2TransferAccountTo' } %>
+                  <%if @total_entries != 0 %>
+                    <%= select_tag :to_user_id, options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] }, selected: @user.id), { :class => 'select2TransferAccountTo' } %>
+                  <% else %>
+                    <p>Current user has no accounts to transfer.</p>
+                  <% end %>
                 </div>
               </div>
             </div><!-- panel-body -->
