@@ -396,6 +396,7 @@ class ApplicationController < ActionController::Base
           end_date = (Date.current - 1.month).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
           search[:created_at_gteq] = convert_datetime_to_utc(current_user.time_zone, end_date, "00:00:00")
         end
+        #@notifications = Notification.all
         @notifications = Notification.all(params: {search: search})
       else
         @notifications = Notification.all

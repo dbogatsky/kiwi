@@ -29,7 +29,10 @@
 		  });
 	  }
   }
+
 </script>
+
+
 
 <%if notifications.present?%>
 	<table class="table table-responsive">
@@ -41,7 +44,33 @@
 	      <th>Unread</th>
 	    </tr>
 	  </thead>
+
 	  <tbody>
+
+        <%if pending_account_notifications.present?%>
+          <%pending_account_notifications.each do |pending_account|%>
+            <%if pending_account["account"].present?%>
+              <tr>
+                <td>
+                  <span class="thumb notification_calender" style="background: #1d2939;">
+                    <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-arrow-right.svg" alt="Reminder">
+                  </span>
+                </td>
+                <td id="pending" class="remove_bold_<%= pending_account["account"]["id"]%>">
+                  <p>Account Transfer Approval Required</p>
+                  <p><%= pending_account["account"]["name"] %></p>
+                </td>
+                <td class="remove_bold_<%= pending_account["account"]["id"]%>" >
+                  <%=Chronic.parse(pending_account["account"]["created_at"]).in_time_zone(current_user.time_zone).strftime("%b %d at %l:%M %p")%>
+                </td>
+                <td class="remove_bold_<%= pending_account["account"]["id"]%>" >
+                  <i class="fa fa-exclamation-circle tooltips mr10" data-toggle="tooltip" data-original-title="Unread" ></i>
+                </td>
+              </tr>
+            <%end%>
+          <% end %>
+        <%end%>
+
 	    <%notifications.each do |notification|%>
 	      <%if params[:id].present? && notification.id == params[:id].to_i %>
           <%show_conversation_details = true%>
@@ -57,8 +86,6 @@
               when 'meeting_reminder'
                 notification.value.meeting_id
               when 'account_status_change'
-                notification.value.account_id
-              when 'account_transfer'
                 notification.value.account_id
               end
             %>"
@@ -81,16 +108,12 @@
 					        <span class="thumb notification_calender" style="background: #333;">
 					          <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-briefcase.svg" alt="Reminder">
 					        </span>
-                <%elsif notification.type == 'account_transfer'%>
-                  <span class="thumb notification_calender" style="background: #1d2939;">
-                    <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-arrow-right.svg" alt="Reminder">
-                  </span>
 					      <%end%>
 		          <%#end%>
 		        </td>
-			        <td class="remove_bold_<%= notification.id %>" style="<%=notification.read_at.blank? ? 'font-weight:bold' : ''%>">
-				        <%= notification.title == nil ? "Click to see Details" : notification.title %>
-			        </td>
+		        <td class="remove_bold_<%= notification.id %>" style="<%=notification.read_at.blank? ? 'font-weight:bold' : ''%>">
+			        <%= notification.title == nil ? "Click to see Details" : notification.title %>
+		        </td>
 		        <td class="remove_bold_<%= notification.id%>" style="<%=notification.read_at.blank? ? 'font-weight:bold' : ''%>">
 		          <%=Chronic.parse(notification.created_at).in_time_zone(current_user.time_zone).strftime("%b %d at %l:%M %p")%>
 		        </td>
