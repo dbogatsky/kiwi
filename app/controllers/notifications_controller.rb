@@ -1,13 +1,16 @@
 class NotificationsController < ApplicationController
   def index
-    result = AccountTransfer.pending_approval
-    pending_account_transfers = JSON.parse(result.body)
-    # @pending_account_notifications = pending_account_transfers["account_transfers"]
-    @pending_account_notifications = pending_account_transfers["account_transfers"].nil? ? {} : pending_account_transfers["account_transfers"]
+    current_user_roles = current_user.roles.collect { |r| r.name }
+    if current_user_roles.include?("Entity Admin") || current_user_roles.include?("Admin")
+      result = AccountTransfer.pending_approval
+      pending_account_transfers = JSON.parse(result.body)
+      # @pending_account_notifications = pending_account_transfers["account_transfers"]
+      @pending_account_notifications = pending_account_transfers["account_transfers"].nil? ? {} : pending_account_transfers["account_transfers"]
 
-    @pending_account_notifications.each do |pending_account|
-      account_id = pending_account["account"]["id"]
-      account_transfer_id = pending_account["id"]
+      @pending_account_notifications.each do |pending_account|
+        account_id = pending_account["account"]["id"]
+        account_transfer_id = pending_account["id"]
+      end
     end
   end
 

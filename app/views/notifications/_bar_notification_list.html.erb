@@ -40,7 +40,8 @@
       </li>
     <%end%>
   <%end%>
-  <% rest_no = (pending_account_notifications.count < 5) ? (5 - pending_account_notifications.count) : 0 %>
+  <% pending_acc = pending_account_notifications.nil? ? {} : pending_account_notifications %>
+  <% rest_no = (pending_acc.count < 5) ? (5 - pending_acc.count) : 0 %>
   <% @unread_items.first(rest_no).each do |notification| %>
     <li class="new">
       <a href="/notifications/<%= notification.id %>" data-remote="true" rel="nofollow" data-method="patch">
