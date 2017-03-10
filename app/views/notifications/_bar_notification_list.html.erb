@@ -20,7 +20,6 @@
 <h5 class="title">You Have <%=unread_items.count%> New Notifications</h5>
 <ul class="dropdown-list gen-list">
   <%if pending_account_notifications.present?%>
-    <% rest_no = (pending_account_notifications.count < 5) ? (5 - pending_account_notifications.count) : 0 %>
     <%pending_account_notifications.first(5).each do |pending_account|%>
       <li class="new">
         <a href="<%= notifications_path %>">
@@ -41,7 +40,7 @@
       </li>
     <%end%>
   <%end%>
-
+  <% rest_no = (pending_account_notifications.count < 5) ? (5 - pending_account_notifications.count) : 0 %>
   <% @unread_items.first(rest_no).each do |notification| %>
     <li class="new">
       <a href="/notifications/<%= notification.id %>" data-remote="true" rel="nofollow" data-method="patch">
