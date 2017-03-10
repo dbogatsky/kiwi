@@ -497,6 +497,7 @@
     //"use strict";
 
     <%= chart_flot_pie_js({id_name: 'piechart'}) %>
+    
     function labelFormatter(label, series) {
     return "<div style='font-size:8pt; text-align:center; padding:2px; color:white;'>" + label + "<br/>" + Math.round(series.percent) + "%</div>";
     }
@@ -548,30 +549,21 @@
       labels: ['Series A', 'Series B']
     }) %>
 
-   var stacked_barchart = new Morris.Bar({
-        // ID of the element in which to draw the chart.
-        element: 'stacked_barchart',
-        // Chart data records -- each entry in this array corresponds to a point on
-        // the chart.
-        data: [
-            { y: '2006', a: 30, b: 20 },
-            { y: '2007', a: 75,  b: 65 },
-            { y: '2008', a: 50,  b: 40 },
-            { y: '2009', a: 75,  b: 65 },
-            { y: '2010', a: 50,  b: 40 },
-            { y: '2011', a: 75,  b: 65 },
-            { y: '2012', a: 100, b: 90 }
-        ],
-        xkey: 'y',
-        ykeys: ['a', 'b'],
-        labels: ['Series A', 'Series B'],
-        barColors: ['#1CAF9A', '#428BCA'],
-        lineWidth: '1px',
-        fillOpacity: 0.8,
-        smooth: false,
-        stacked: true,
-        hideHover: true
-   });
+    <%= chart_morris_stacked_bar_js({
+      id_name: 'stacked_barchart',
+      data: [
+        { y: '2006', a: 30, b: 20 },
+        { y: '2007', a: 75,  b: 65 },
+        { y: '2008', a: 50,  b: 40 },
+        { y: '2009', a: 75,  b: 65 },
+        { y: '2010', a: 50,  b: 40 },
+        { y: '2011', a: 75,  b: 65 },
+        { y: '2012', a: 100, b: 90 }],
+      xkey: 'y',
+      ykeys: ['a', 'b'],
+      labels: ['Series A', 'Series B'],
+      barColors: ['#1CAF9A', '#428BCA'],
+    }) %>
 
 
     $(window).resize(function () {

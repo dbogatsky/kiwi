@@ -157,6 +157,39 @@ module ReportsHelper
     chart_js.html_safe
   end
 
+  def chart_morris_stacked_bar_js(chart_data)
+    chart_js = ''
+
+    unless chart_data[:barColors].present?
+      unless chart_data[:labels].present?
+        chart_data[:barColors] = default_colour_palettes(1)
+      else
+        chart_data[:barColors] = default_colour_palettes(chart_data[:labels].count)
+      end
+    end
+
+    chart_js += "
+    var #{chart_data[:id_name]}_data = #{chart_data[:data].to_json};
+
+    var #{chart_data[:id_name]} = new Morris.Bar({
+      element: '#{chart_data[:id_name]}',
+      data: #{chart_data[:id_name]}_data,
+      xkey: #{chart_data[:xkey].present? ? "'" + chart_data[:xkey] + "'" : "'x'"},
+      ykeys: #{chart_data[:ykeys].present? ? chart_data[:ykeys].to_json : "['y']"},
+      xLabelMargin: 5,
+      labels: #{chart_data[:labels].present? ? chart_data[:labels].to_json : "['Label']"},
+      barColors: #{chart_data[:barColors].to_json},
+      lineWidth: '1px',
+      fillOpacity: 0.8,
+      smooth: false,
+      hideHover: true,
+      stacked: true,
+    });
+    "
+
+    chart_js.html_safe
+  end
+
   def table_data_detail(data)
     table_html = ''
 
