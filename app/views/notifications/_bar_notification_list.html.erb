@@ -19,7 +19,30 @@
 
 <h5 class="title">You Have <%=unread_items.count%> New Notifications</h5>
 <ul class="dropdown-list gen-list">
-  <% @unread_items.first(5).each do |notification| %>
+  <%if pending_account_notifications.present?%>
+    <% rest_no = (pending_account_notifications.count < 5) ? (5 - pending_account_notifications.count) : 0 %>
+    <%pending_account_notifications.first(5).each do |pending_account|%>
+      <li class="new">
+        <a href="<%= notifications_path %>">
+          <span class="thumb notification_calender" style="background: #1d2939;">
+            <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-arrow-right.svg" alt="Reminder">
+          </span>
+          <span class="desc">
+            <span class="name">
+              <small>
+                <p>Account Transfer Approval Required</br>
+                <%= pending_account["account"]["name"] %></p>
+              </small>
+              <span class="badge badge-success">new</span>
+            </span>
+            <span class="msg"><%=Chronic.parse(pending_account["account"]["created_at"]).in_time_zone(current_user.time_zone).strftime("%b %d at %l:%M %p")%></span>
+          </span>
+        </a>
+      </li>
+    <%end%>
+  <%end%>
+
+  <% @unread_items.first(rest_no).each do |notification| %>
     <li class="new">
       <a href="/notifications/<%= notification.id %>" data-remote="true" rel="nofollow" data-method="patch">
       <% if notification.type == 'reminder' %>

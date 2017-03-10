@@ -1,8 +1,12 @@
 class NotificationsController < ApplicationController
   def index
     result = AccountTransfer.pending_approval
-    @pending_account = JSON.parse(result.body)
-    @pending_account_notifications = @pending_account["account_transfers"]
+    pending_account_transfers = JSON.parse(result.body)
+    @pending_account_notifications = pending_account_transfers["account_transfers"]
+    @pending_account_notifications.each do |pending_account|
+      account_id = pending_account["account"]["id"]
+      account_transfer_id = pending_account["id"]
+    end
   end
 
   def update

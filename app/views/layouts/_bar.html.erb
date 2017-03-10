@@ -12,7 +12,7 @@
                 <span class="badge" id="bar_unread_count"><%=@unread_items.count%></span>
               </button>
               <div class="dropdown-menu dropdown-menu-head pull-right" id='bar_notification_list'>
-                <%=render 'notifications/bar_notification_list',unread_items: @unread_items%>
+                <%=render 'notifications/bar_notification_list',unread_items: @unread_items,pending_account_notifications: @pending_account_notifications%>
               </div>
             </div>
           </li>

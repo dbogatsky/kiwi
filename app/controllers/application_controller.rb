@@ -366,6 +366,9 @@ class ApplicationController < ActionController::Base
     @read_items = Array[]
     @unread_items = Array[]
     @menu_bar_items = {}
+    result = AccountTransfer.pending_approval
+    pending_account_transfers = JSON.parse(result.body)
+    @pending_account_notifications = pending_account_transfers["account_transfers"]
 
     # check if we have set the current user before getting any notifications
     if current_user.present?
