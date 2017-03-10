@@ -511,17 +511,15 @@
       formatter: "function (y, data) { return y + '%'}",
     }) %>
 
-    var average_time_on_site_per_tier_donut_chart_data =  '[{&quot;label&quot;:&quot;Tier A&quot;,&quot;value&quot;:30.00},{&quot;label&quot;:&quot;Tier B&quot;,&quot;value&quot;:18.00},{&quot;label&quot;:&quot;Tier C&quot;,&quot;value&quot;:25.00}]';
-    average_time_on_site_per_tier_donut_chart_data = JSON.parse(average_time_on_site_per_tier_donut_chart_data.replace(/&quot;/g,'"'));
-    var average_time_on_site_per_tier_donut_chart =  new Morris.Donut({
-      element: 'average_time_on_site_per_tier_donut_chart',
-      data: average_time_on_site_per_tier_donut_chart_data,
-      resize: true,
-      stacked: true,
+    <%= chart_morris_donut_js({
+      id_name: 'average_time_on_site_per_tier_donut_chart',
+      data: [
+        { label: 'Tier A', value: 30.00 },
+        { label: 'Tier B', value: 18.00 },
+        { label: 'Tier C', value: 25.00 }],
       colors: ['#428BCA', '#4CAF50', '#999'],
-      formatter: function (y, data) { return y + ' mins'}
-    });
-
+      formatter: "function (y, data) { return y + ' mins'}",
+    }) %>
 
     <%= chart_morris_bar_js({
       id_name: 'average_time_on_site_per_tier_chart', 

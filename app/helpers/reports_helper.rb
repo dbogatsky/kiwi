@@ -116,7 +116,7 @@ module ReportsHelper
       resize: true,
       stacked: true,
       colors: #{chart_data[:colors].to_json},
-      formatter: #{chart_data[:formatter].to_json}
+      formatter: #{chart_data[:formatter]}
     });
     "
 
