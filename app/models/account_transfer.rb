@@ -16,15 +16,15 @@ class AccountTransfer < OrchardApiModel
     response = ActiveResource::Connection.new(OrchardApiModel.site).get('/api/v1/account_transfers/pending_approval', OrchardApiModel.headers)
   end
 
-  #api/v1/accounts/<account_id>/account_transfer/<account_transfer_id>/approve
+  #api/v1/accounts/<account_id>/account_transfers/<account_transfer_id>/approve
   def self.approve(account_id, account_transfer_id)
-    url = "/api/v1/accounts/#{account_id}/account_transfer/#{account_transfer_id}/approve"
+    url = "/api/v1/accounts/#{account_id}/account_transfers/#{account_transfer_id}/approve"
     response = ActiveResource::Connection.new(OrchardApiModel.site).put(url, '', OrchardApiModel.headers)
   end
 
-  #api/v1/accounts/<account_id>/account_transfer/<account_transfer_id>/deny
+  #api/v1/accounts/<account_id>/account_transfers/<account_transfer_id>/deny
   def self.deny(account_id, account_transfer_id)
-    url = "/api/v1/accounts/#{account_id}/account_transfer/#{account_transfer_id}/deny"
+    url = "/api/v1/accounts/#{account_id}/account_transfers/#{account_transfer_id}/deny"
     response = ActiveResource::Connection.new(OrchardApiModel.site).put(url, '', OrchardApiModel.headers)
   end
 
