@@ -1,32 +1,31 @@
 module ReportsHelper
   COLOUR_PALETTES = ["#1CAF9A", "#428BCA", "#7A92A3", "#0B62A4", "#5BC0DE", "#D9534F", "#F0AD4E", "#4CAF50"]
 
-  def chart_morris_bar(chart_data)
+  def chart_morris_bar(chart_data, layout_col_size='col-sm-6')
     chart_html = ''
-    chart_html += chart_layout(chart_data[:title], chart_data[:id_name])
+    chart_html += chart_layout(chart_data[:title], chart_data[:id_name], layout_col_size)
     chart_html.html_safe
   end
 
-  def chart_morris_donut(chart_data)
+  def chart_morris_donut(chart_data, layout_col_size='col-sm-6')
     chart_html = ''
-    chart_html += chart_layout(chart_data[:title], chart_data[:id_name])
+    chart_html += chart_layout(chart_data[:title], chart_data[:id_name], layout_col_size)
     chart_html.html_safe
   end
 
-  def chart_flot_bar(chart_data)
+  def chart_flot_bar(chart_data, layout_col_size='col-sm-6')
     chart_html = ''
-    chart_html += chart_layout(chart_data[:title], chart_data[:id_name])
+    chart_html += chart_layout(chart_data[:title], chart_data[:id_name], layout_col_size)
     chart_html.html_safe
   end
 
-  def chart_flot_pie(chart_data)
+  def chart_flot_pie(chart_data, layout_col_size='col-sm-6')
     chart_html = ''
-    chart_html += chart_layout(chart_data[:title], chart_data[:id_name])
+    chart_html += chart_layout(chart_data[:title], chart_data[:id_name], layout_col_size)
     chart_html.html_safe
   end
 
-
-  def chart_layout(chart_title, chart_div_id, layout_col_size='col-sm-6')
+  def chart_layout(chart_title, chart_div_id, layout_col_size)
     chart_layout_html = ''
 
     chart_layout_html += "
@@ -54,51 +53,75 @@ module ReportsHelper
   end
 
 
-
-
   def chart_flot_pie_js(chart_data)
     chart_js = ''
 
-#    piedata = [
-#        { label: 'Series 1', data: [[1,10]], color: '#D9534F'},
-#        { label: 'Series 2', data: [[1,30]], color: '#1CAF9A'},
-#        { label: 'Series 3', data: [[1,90]], color: '#F0AD4E'},
-#        { label: 'Series 4', data: [[1,70]], color: '#428BCA'},
-#        { label: 'Series 5', data: [[1,80]], color: '#5BC0DE'}
-#    ];
+    chart_js += "
+    var #{chart_data[:id_name]}_data = #{chart_data[:data].to_json};
+
+    jQuery.plot('##{chart_data[:id_name]}', #{chart_data[:id_name]}_data, {
+      series: {
+        pie: {
+          show: true,
+          radius: 1,
+          label: {
+            show: true,
+            radius: 2/3,
+            formatter: #{chart_data[:id_name]}_labelFormatter,
+            threshold: 0.1
+          }
+        }
+      },
+      grid: {
+        hoverable: true,
+        clickable: true
+      }
+    });
+    "
 
     chart_js += "
+    function #{chart_data[:id_name]}_labelFormatter(label, series) {
+    return \"<div style='font-size:8pt; text-align:center; padding:2px; color:white;'>\" + label + \"<br/>\" + Math.round(series.percent) + \"%</div>\";
+    }
+    "
 
-    var piedata = [
-        { label: 'Series 1', data: [[1,10]], color: '#D9534F'},
-        { label: 'Series 2', data: [[1,30]], color: '#1CAF9A'},
-        { label: 'Series 3', data: [[1,90]], color: '#F0AD4E'},
-        { label: 'Series 4', data: [[1,70]], color: '#428BCA'},
-        { label: 'Series 5', data: [[1,80]], color: '#5BC0DE'}
-      ];
+    chart_js.html_safe
+  end
 
-    jQuery.plot('##{chart_data[:id_name]}', piedata, {
-        series: {
-            pie: {
-                show: true,
-                radius: 1,
-                label: {
-                    show: true,
-                    radius: 2/3,
-                    formatter: labelFormatter,
-                    threshold: 0.1
-                }
-            }
+  def chart_flot_bar_js(chart_data)
+    chart_js = ''
+
+    chart_js += "
+    var #{chart_data[:id_name]}_data = #{chart_data[:data].to_json};
+
+    jQuery.plot(\"##{chart_data[:id_name]}\", [ #{chart_data[:id_name]}_data ], {
+      series: {
+        lines: {
+          lineWidth: 1  
         },
-        grid: {
-            hoverable: true,
-            clickable: true
+        bars: {
+          show: true,
+          barWidth: 0.5,
+          align: 'center',
+          lineWidth: 0,
+          fillColor: '#428BCA'
         }
+      },
+      grid: {
+        borderColor: '#ddd',
+        borderWidth: 1,
+        labelMargin: 10
+      },
+      xaxis: {
+        mode: 'categories',
+        tickLength: 0
+      }
     });
     "
 
     chart_js.html_safe
   end
+
 
   def chart_morris_donut_js(chart_data)
     chart_js = ''
@@ -386,6 +409,24 @@ module ReportsHelper
     "
 
     ranking_stat_html.html_safe
+  end
+
+  def chart_morris_resize_js(chart_ids)
+    chart_js = ''
+
+    chart_js += "
+    $(window).resize(function () {"
+
+    chart_ids.each do |chart_id|
+      chart_js += "
+      #{chart_id}.redraw();"
+    end
+
+    chart_js += "
+    });
+    "
+
+    chart_js.html_safe
   end
 
   def default_colour_palettes(number_of_bars)

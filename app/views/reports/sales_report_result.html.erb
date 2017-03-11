@@ -485,7 +485,7 @@
           <h3 class="panel-title">Sales by Category by Merchandiser</h3>
         </div>
         <div class="panel-body">
-         <div id="day_of_week_bar_chart" class="chart-height"></div>
+         <div id="flot_barchart" class="chart-height"></div>
         </div><!-- panel-body -->
       </div>
     </div>
@@ -496,11 +496,44 @@
   jQuery(document).ready(function() {
     //"use strict";
 
-    <%= chart_flot_pie_js({id_name: 'piechart'}) %>
-    
-    function labelFormatter(label, series) {
-    return "<div style='font-size:8pt; text-align:center; padding:2px; color:white;'>" + label + "<br/>" + Math.round(series.percent) + "%</div>";
-    }
+    <%= chart_flot_pie_js({
+      id_name: 'piechart',
+      data: [
+        { label: 'Series 1', data: [[1,10]], color: '#D9534F' },
+        { label: 'Series 2', data: [[1,30]], color: '#1CAF9A' },
+        { label: 'Series 3', data: [[1,90]], color: '#F0AD4E' },
+        { label: 'Series 4', data: [[1,70]], color: '#428BCA' },
+        { label: 'Series 5', data: [[1,80]], color: '#5BC0DE' }],
+      formatter: "",
+    }) %>
+
+
+
+   var bardata = [ ["Jan", 10], ["Feb", 23], ["Mar", 18], ["Apr", 13], ["May", 17], ["Jun", 30], ["Jul", 26], ["Aug", 16], ["Sep", 17], ["Oct", 5], ["Nov", 8], ["Dec", 15] ];
+
+   jQuery.plot("#flot_barchart", [ bardata ], {
+      series: {
+            lines: {
+              lineWidth: 1  
+            },
+        bars: {
+          show: true,
+          barWidth: 0.5,
+          align: "center",
+               lineWidth: 0,
+               fillColor: "#428BCA"
+        }
+      },
+        grid: {
+            borderColor: '#ddd',
+            borderWidth: 1,
+            labelMargin: 10
+      },
+      xaxis: {
+        mode: "categories",
+        tickLength: 0
+      }
+   });
 
     <%= chart_morris_donut_js({
       id_name: 'sales_by_tier_donut_chart',
@@ -565,14 +598,21 @@
       barColors: ['#1CAF9A', '#428BCA'],
     }) %>
 
+    <%= chart_morris_resize_js([
+      'sales_by_tier_donut_chart',
+      'average_time_on_site_per_tier_donut_chart',
+      'average_time_on_site_per_tier_chart',
+      'barchart2',
+      'stacked_barchart',
+    ]) %>
 
-    $(window).resize(function () {
-      sales_by_tier_donut_chart.redraw();
-      average_time_on_site_per_tier_donut_chart.redraw();
-      average_time_on_site_per_tier_chart.redraw();
-      barchart2.redraw();
-      stacked_barchart.redraw();
-    });
+    //$(window).resize(function () {
+    //  sales_by_tier_donut_chart.redraw();
+    //  average_time_on_site_per_tier_donut_chart.redraw();
+    //  average_time_on_site_per_tier_chart.redraw();
+    //  barchart2.redraw();
+    //  stacked_barchart.redraw();
+    //});
 
   });
 
