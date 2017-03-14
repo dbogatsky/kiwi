@@ -1,3 +1,5 @@
+@import "//fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic";
+
 abbr[title] {
     border-bottom: none;
     color: #D9534F;
@@ -762,6 +764,16 @@ h4, .h4 {
    font-size: 13px;
    text-transform: uppercase;
    font-family: 'LatoBold';
+}
+
+.panel-alt .panel-title-reporting {
+   font-size: 15px;
+   text-transform: uppercase;
+   font-family: "Open Sans",sans-serif;
+   color: #797979;
+   margin: 0 !important;
+   padding: 0 !important;
+   text-rendering: optimizelegibility;
 }
 
 .panel-alt .panel-heading p {

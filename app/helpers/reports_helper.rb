@@ -36,7 +36,7 @@ module ReportsHelper
     if chart_title.present?
       chart_layout_html += "  
         <div class=\"panel-heading\">
-          <h3 class=\"panel-title\">#{chart_title}</h3>
+          <h3 class=\"panel-title-reporting\">#{chart_title}</h3>
         </div>
     "    
     end
@@ -88,8 +88,12 @@ module ReportsHelper
     chart_js.html_safe
   end
 
-  def chart_flot_bar_js(chart_data)
+  def chart_flot_singlebar_js(chart_data)
     chart_js = ''
+
+    unless chart_data[:fillColor].present?
+      chart_data[:fillColor] = default_colour_palettes(1).first
+    end
 
     chart_js += "
     var #{chart_data[:id_name]}_data = #{chart_data[:data].to_json};
@@ -104,7 +108,7 @@ module ReportsHelper
           barWidth: 0.5,
           align: 'center',
           lineWidth: 0,
-          fillColor: '#428BCA'
+          fillColor: \"#{chart_data[:fillColor].to_s}\"
         }
       },
       grid: {
@@ -220,7 +224,7 @@ module ReportsHelper
     <div class=\"col-sm-12\">
       <div class=\"panel panel-report panel-alt\">
         <div class=\"panel-heading\">
-          <h3 class=\"panel-title\">Sales by Tier Data Table</h3>
+          <h3 class=\"panel-title-reporting\">#{data[:title]}</h3>
         </div>
         <div class=\"panel-body\">
           <div class=\"table-responsive\">"
@@ -237,20 +241,20 @@ module ReportsHelper
     table_html.html_safe
   end
 
-
-  def table_data_trending(data)
+  # panel_style can be any one in [success, primary, info, warning, danger, dark]
+  def table_data_trending(data, panel_style='report')
     table_html = ''
 
     table_html += "
     <div class=\"col-md-6\">
-      <div class=\"panel panel-alt\">
+      <div class=\"panel panel-#{panel_style} panel-alt\">
         <div class=\"panel-heading\">
-          <h5 class=\"panel-title\">Bottom Trending Products</h5>
+          <h5 class=\"panel-title-reporting\">#{data[:title]}</h5>
         </div>
         <div class=\"panel-body panel-table\">
           <div class=\"table-responsive\">"
 
-    table_html += table_data_layout(table_headings, table_data, show_percentage_bar, percentage_index)
+    table_html += table_data_layout(data[:header], data[:data])
 
     table_html += "
           </div><!-- table-responsive -->
@@ -262,11 +266,11 @@ module ReportsHelper
     table_html.html_safe
   end
 
-  def table_data_layout(table_headings, table_data, show_percentage_bar=false, percentage_index='')
+  def table_data_layout(table_headings, table_data, table_footer=[], show_percentage_bar=false, percentage_index='')
     table_data_html = ''
 
     table_data_html += "
-      <table class=\"table\">"
+      <table class=\"table table-reporting\">"
     
     if table_headings.count > 0
       table_data_html += "
@@ -326,10 +330,26 @@ module ReportsHelper
   def panel_quick_stat(quick_stat_data, panel_icon='fa-exclamation', panel_style='success')
     quick_stat_html = ''
 
-    quick_stat_data = { main_stat: { label: 'Grand Total Of Sales (000\'s)', value: '$10,000'},
-                        sub1_stat: { label: 'AVG Per Week', value: '$1500'},
-                        sub2_stat: { label: 'AVG Per Day', value: '$200'}
-                      }
+    if quick_stat_data[:main_stat].nil?
+      quick_stat_data[:main_stat] = { label: '&nbsp;', value: '&nbsp;'}
+    else
+      quick_stat_data[:main_stat][:label] = '&nbsp;' if quick_stat_data[:main_stat][:label].nil?
+      quick_stat_data[:main_stat][:value] = '&nbsp;' if quick_stat_data[:main_stat][:value].nil?
+    end
+
+    if quick_stat_data[:sub1_stat].nil?
+      quick_stat_data[:sub1_stat] = { label: '&nbsp;', value: '&nbsp;'}
+    else
+      quick_stat_data[:sub1_stat][:label] = '&nbsp;' if quick_stat_data[:main_stat][:label].nil?
+      quick_stat_data[:sub1_stat][:value] = '&nbsp;' if quick_stat_data[:main_stat][:value].nil?
+    end
+
+    if quick_stat_data[:sub2_stat].nil?
+      quick_stat_data[:sub2_stat] = { label: '&nbsp;', value: '&nbsp;'}
+    else
+      quick_stat_data[:sub2_stat][:label] = '&nbsp;' if quick_stat_data[:main_stat][:label].nil?
+      quick_stat_data[:sub2_stat][:value] = '&nbsp;' if quick_stat_data[:main_stat][:value].nil?
+    end
 
     quick_stat_html += "
       <div class=\"col-sm-6 col-md-3\">
@@ -340,19 +360,19 @@ module ReportsHelper
                 <div class=\"col-xs-4\">
                   <i class=\"fa #{panel_icon}\"></i>
                 </div>
-                <div class=\"col-xs-8 text-center\">
-                  <small class=\"stat-label\"><strong>#{quick_stat_data[:main_stat][:label]}</strong></small>
+                <div class=\"col-xs-8 text-center stat-label-quick\">
+                  <small class=\"stat-label-quick\"><strong><h5>#{quick_stat_data[:main_stat][:label]}</h5></strong></small>
                   <h1>#{quick_stat_data[:main_stat][:value]}</h1>
                 </div>
               </div><!-- row -->
               <div class=\"mb15\"></div>
               <div class=\"row\">
-                <div class=\"col-xs-6 text-center\" style=\"padding-left: 0px\">
-                  <small class=\"stat-label\"><strong>#{quick_stat_data[:sub1_stat][:label]}</strong></small>
+                <div class=\"col-xs-6 text-center stat-label-quick\" style=\"padding-left: 0px\">
+                  <small class=\"stat-label-quick\"><strong><h5>#{quick_stat_data[:sub1_stat][:label]}</h5></strong></small>
                   <h4>#{quick_stat_data[:sub1_stat][:value]}</h4>
                 </div>
-                <div class=\"col-xs-6 text-center\" style=\"padding-right: 0px\">
-                  <small class=\"stat-label\"><strong>#{quick_stat_data[:sub2_stat][:label]}</strong></small>
+                <div class=\"col-xs-6 text-center stat-label-quick\" style=\"padding-right: 0px\">
+                  <small class=\"stat-label-quick\"><strong><h5>#{quick_stat_data[:sub2_stat][:label]}</h5></strong></small>
                     <h4>#{quick_stat_data[:sub2_stat][:value]}</h4>
                 </div>
               </div>
@@ -370,16 +390,14 @@ module ReportsHelper
   def panel_ranking_stat(quick_stat_data, panel_icon='fa-arrow-up', panel_style='dark')
     ranking_stat_html = ''
 
-    ranking_stat_data = [ 'Product 1', 
-                          'Product 2',
-                          'Product 3',
-                          'Product 4',
-                          'Product 5',
-                        ]
+    ranking_stat_data = []
+    unless quick_stat_data[:data].nil?
+      ranking_stat_data = quick_stat_data[:data]
+    end
 
     ranking_stat_html += "
       <div class=\"col-sm-6 col-md-3\">
-        <div class=\"panel panel-#{panel_style} panel-stat\"  style=\"height: 145px;\">
+        <div class=\"panel panel-#{panel_style} panel-stat\">
           <div class=\"panel-heading\">
             <div class=\"stat\">
               <div class=\"row\">
@@ -387,21 +405,19 @@ module ReportsHelper
                  <i class=\"fa #{panel_icon}\"></i>
                 </div>
                 <div class=\"col-xs-8 text-center\">
-                  <small class=\"stat-label\"><strong>Top Performing Products</strong></small>
-                  <small class=\"stat-label\" style=\"text-align: left; padding-left: 10px;\">
-                  <h6>"
+                  <small class=\"stat-label-reporting\"><strong><h5>#{quick_stat_data[:title]}</h5></strong></small>
+                  <small class=\"stat-label-reporting\" style=\"text-align: left;\">
+                  "
 
     ranking_stat_data.each do |data_item|
       ranking_stat_html += "
-      #{data_item}<br />"
+                    <h6>#{data_item}</h6>"
     end
 
     ranking_stat_html += "
-                  </h6>
                   </small>
                 </div>
               </div>
-              <div class=\"mb15\"></div>
             </div><!-- stat -->
           </div><!-- panel-heading -->
         </div><!-- panel -->

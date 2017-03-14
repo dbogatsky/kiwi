@@ -957,6 +957,73 @@ p {
     margin-bottom: 2px;
 }
 
+.panel-stat .stat-label-reporting {
+    text-transform: uppercase;
+    font-size: 11px;
+    opacity: 0.75;
+    display: block;
+    line-height: normal;
+    font-family: "Open Sans",sans-serif;
+    padding-left: 5px;
+}
+
+.panel-stat .stat-label-quick h1 {
+    font-family: "Open Sans",sans-serif;
+    font-size: 38px;
+    color: #fff;
+    margin: 0px;
+    line-height: normal;
+}
+
+.panel-stat .stat-label-quick h4 {
+    font-family: "Open Sans",sans-serif;
+    font-size: 14px;
+    color: #fff;
+    margin: 0px;
+    line-height: normal;
+}
+
+.panel-stat .stat-label-quick h5 {
+    text-transform: uppercase;
+    font-family: "Open Sans",sans-serif;
+    font-size: 11px;
+    color: #fff;
+    margin: 0px;
+    line-height: normal;
+}
+
+.panel-stat .stat-label-reporting h5 {
+    margin-top: 0px;
+    margin-bottom: 15px;
+    font-size: 11px;
+    font-family: "Open Sans",sans-serif;
+    color: #fff;
+}
+
+.panel-stat .stat-label-reporting h6 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 11px;
+    font-family: "Open Sans",sans-serif;
+    color: #fff;
+}
+
+.panel-table .table-reporting th {
+    text-transform: uppercase;
+    font-family: "Open Sans",sans-serif;
+    color: #797979;
+    font-size: 12px;
+    text-align: center;
+}
+
+.panel-table .table-reporting td {
+    text-transform: uppercase;
+    font-family: "Open Sans",sans-serif;
+    color: #797979;
+    font-size: 11px;
+    text-align: center;
+}
+
 .panel-stat h1 {
     margin: 0;
     line-height: 36px;

@@ -4,203 +4,86 @@
 <div class="contentpanel">
 
   <div class="row">
-    <div class="col-sm-6 col-md-3">
-      <div class="panel panel-success panel-stat">
-        <div class="panel-heading">
-          <div class="stat">
-            <div class="row">
-              <div class="col-xs-4">
-                <i class="fa fa-dollar"></i>
-              </div>
-              <div class="col-xs-8 text-center">
-                <small class="stat-label"><strong>Grand Total Of Sales (000's)</strong></small>
-                <h1><%= %>$10,000</h1>
-              </div>
-            </div><!-- row -->
-            <div class="mb15"></div>
-            <div class="row">
-              <div class="col-xs-6 text-center" style="padding-left: 0px">
-                <small class="stat-label"><strong>AVG Per Week</strong></small>
-                <h5><%= %>$10</h5>
-              </div>
-              <div class="col-xs-6 text-center" style="padding-right: 0px">
-                <small class="stat-label"><strong>AVG Per Day</strong></small>
-                  <h5><%= %>$1</h5>
-              </div>
-            </div>
-          </div><!-- stat -->
-        </div><!-- panel-heading -->
-      </div>
-    </div><!-- col-sm-6 -->
-    <div class="col-sm-6 col-md-3">
-      <div class="panel panel-primary panel-stat">
-        <div class="panel-heading">
-          <div class="stat">
-            <div class="row">
-              <div class="col-xs-4">
-                <i class="fa fa-sign-in"></i>
-              </div>
-              <div class="col-xs-8 text-center">
-                <small class="stat-label"><strong>Total Visits</strong></small>
-                <h1><%= %>1000</h1>
-              </div>
-            </div><!-- row -->
-            <div class="mb15"></div>
-            <div class="row">
-              <div class="col-xs-6 text-center" style="padding-left: 0px">
-                <small class="stat-label"><strong>AVG Per Week</strong></small>
-                <h5><%= %>100</h5>
-              </div>
-              <div class="col-xs-6 text-center" style="padding-right: 0px">
-                <small class="stat-label"><strong>AVG Per Day</strong></small>
-                <h5><%= %>1.25</h5>
-              </div>
-            </div><!-- row -->
-          </div><!-- stat -->
-        </div><!-- panel-heading -->
-      </div><!-- panel -->
-    </div><!-- col-sm-6 -->
-    <div class="col-sm-6 col-md-3">
-      <div class="panel panel-dark panel-stat">
-        <div class="panel-heading">
-          <div class="stat">
-            <div class="row">
-              <div class="col-xs-4">
-               <i class="fa fa-arrow-circle-up"></i>
-              </div>
-              <div class="col-xs-8 text-center">
-                <small class="stat-label"><strong>Top Trending <br />Products</strong></small>
-                <small class="stat-label" style="text-align: left;">
-                <h5>
-                1. Product 1<br />
-                2. Product 2<br />
-                3. Product 3<br />
-                </h5>
-                <h6>
-                4. Product 4<br />
-                5. Product 5<br />
-                6. Product 6<br />
-                </h6></small>
-              </div>
-            </div>
-            <div class="mb15"></div>
-            <div class="row">
-              <div class="col-xs-6 text-center" style="padding-left: 0px">
-                <small class="stat-label"><strong></strong></small>
-                <h5><%=%></h5>
-              </div>
-            </div>
-          </div><!-- stat -->
-        </div><!-- panel-heading -->
-      </div><!-- panel -->
-    </div><!-- col-sm-6 -->
-    <div class="col-sm-6 col-md-3">
-      <div class="panel panel-danger panel-stat">
-        <div class="panel-heading" style="height: 145px;">
-          <div class="stat">
-            <div class="row">
-              <div class="col-xs-4">
-                <i class="fa fa-arrow-circle-down"></i>
-              </div>
-              <div class="col-xs-8 text-center">
-                <small class="stat-label"><strong>Bottom Trending <br />Products</strong></small>
-                <small class="stat-label" style="text-align: left;">
-                <h5>
-                1. Product 1<br />
-                2. Product 2<br />
-                3. Product 3<br />
-                </h5>
-                <h6>
-                4. Product 4<br />
-                5. Product 5<br />
-                6. Product 6<br />
-                </h6></small>
-              </div>
-            </div><!-- row -->
-            <div class="mb15"></div>
-            <div class="row">
-              <div class="col-xs-6 text-center" style="padding-left: 0px">
-                <small class="stat-label"><strong></strong></small>
-                <h5><%=%></h5>
-              </div>
-              <div class="col-xs-6 text-center" style="padding-right: 0px">
-                <small class="stat-label"><strong></strong></small>
-                <h5><%=%></h5>
-              </div>
-            </div>
-          </div><!-- stat -->
-        </div><!-- panel-heading -->
-      </div><!-- panel -->
-    </div><!-- col-sm-6 -->
+    <%=  panel_quick_stat({
+      main_stat: { label: 'Grand Total Of Sales (000\'s)', value: '$20,000'},
+      sub1_stat: { label: 'AVG Per Week', value: '$2500'},
+      sub2_stat: { label: 'AVG Per Day', value: '$500'}
+      },
+      "fa-dollar",
+      "success")
+    %>
+
+    <%=  panel_quick_stat({
+      main_stat: { label: 'Total Visits', value: '1000'},
+      sub1_stat: { label: 'AVG Per Week', value: '100'},
+      sub2_stat: { label: 'AVG Per Day', value: '1.20'}
+      },
+      "fa-sign-in",
+      "primary"
+    ) %>
+
+    <%= panel_ranking_stat({
+      title: "Top Trending<br />Products",
+      data: ["Product 1", "Product 2", "Product 3", "Product 4", "Product 5"],
+      },
+      "fa-arrow-circle-up")
+    %>
+
+    <%= panel_ranking_stat({
+      title: "Bottom Trending<br />Products",
+      data: ["Product 1", "Product 2", "Product 3", "Product 4", "Product 5"],
+      },
+      "fa-arrow-circle-down",
+      "danger")
+    %>
+
   </div><!-- row -->
 
   <div class="row">
-    <%=  panel_quick_stat({}) %>
-    <div class="col-sm-6 col-md-3">
-      <div class="panel panel-primary panel-stat">
-        <div class="panel-heading">
-          <div class="stat">
-            <div class="row">
-              <div class="col-xs-4">
-                <i class="fa fa-sign-in"></i>
-              </div>
-              <div class="col-xs-8 text-center">
-                <small class="stat-label"><strong>Total Visits</strong></small>
-                <h1><%= %>1000</h1>
-              </div>
-            </div><!-- row -->
-            <div class="mb15"></div>
-            <div class="row">
-              <div class="col-xs-6 text-center" style="padding-left: 0px">
-                <small class="stat-label"><strong>AVG Per Week</strong></small>
-                <h5><%= %>100</h5>
-              </div>
-              <div class="col-xs-6 text-center" style="padding-right: 0px">
-                <small class="stat-label"><strong>AVG Per Day</strong></small>
-                <h5><%= %>1.25</h5>
-              </div>
-            </div><!-- row -->
-          </div><!-- stat -->
-        </div><!-- panel-heading -->
-      </div><!-- panel -->
-    </div><!-- col-sm-6 -->
-    <%= panel_ranking_stat({}) %>
-    <div class="col-sm-6 col-md-3">
-      <div class="panel panel-warning panel-stat">
-        <div class="panel-heading" style="height: 145px;">
-          <div class="stat">
-            <div class="row">
-              <div class="col-xs-4">
-                <i class="fa fa-arrow-down"></i>
-              </div>
-              <div class="col-xs-8 text-center">
-                <small class="stat-label"><strong>Top Underacheiving Products</strong></small>
-                <small class="stat-label" style="text-align: left;">
-                <h6>
-                1. Product 1<br />
-                2. Product 2<br />
-                3. Product 3<br />
-                4. Product 4<br />
-                5. Product 5<br />
-                </h6></small>
-              </div>
-            </div><!-- row -->
-            <div class="mb15"></div>
-            <div class="row">
-              <div class="col-xs-6 text-center" style="padding-left: 0px">
-                <small class="stat-label"><strong></strong></small>
-                <h5><%=%></h5>
-              </div>
-              <div class="col-xs-6 text-center" style="padding-right: 0px">
-                <small class="stat-label"><strong></strong></small>
-                <h5><%=%></h5>
-              </div>
-            </div>
-          </div><!-- stat -->
-        </div><!-- panel-heading -->
-      </div><!-- panel -->
-    </div><!-- col-sm-6 -->
+    <%=  panel_quick_stat({
+      main_stat: { label: 'Grand Total Of Sales (000\'s)', value: '$10,000'},
+      sub1_stat: { label: 'AVG Per Week', value: '$1500'},
+      sub2_stat: { label: 'AVG Per Day', value: '$200'}
+    }) %>
+
+    <%=  panel_quick_stat({
+      main_stat: { label: 'Total Visits', value: '1000'},
+      sub1_stat: { label: 'AVG Per Week', value: '100'},
+      sub2_stat: { label: 'AVG Per Day', value: '1.20'}
+      },
+      "fa-sign-in",
+      "primary"
+    ) %>
+
+    <%= panel_ranking_stat({
+      title: "Top Performing Products",
+      data: ["Product 1", "Product 2", "Product 3", "Product 4", "Product 5"],
+    }) %>
+
+    <%= panel_ranking_stat({
+      title: "Top Underacheiving Products",
+      data: ["Product 1", "Product 2", "Product 3", "Product 4", "Product 5"],
+      },
+      "fa-arrow-down",
+      "warning")
+    %>
   </div><!-- row -->
+
+  <div class="row">
+    <%= table_data_trending({
+      title: "Top Trending Products",
+      header: [ "#", "Product", "ID", "Percentage"],
+      data: [
+        ["1", "Product 1", "001", "45%"],
+        ["2", "Product 2", "101", "25%"],
+        ["3", "Product 3", "025", "20%"],
+        ["4", "Product 4", "090", "10%"],
+        ["5", "Product 5", "201", "5%"],
+        ],
+      footer: []
+    }) %>
+  </div><!-- row -->
+
 
   <div class="row">
     <div class="col-md-6">
@@ -210,11 +93,11 @@
                   <a href="" class="panel-close">&times;</a>
                   <a href="" class="minimize">&minus;</a>
               </div><!-- panel-btns -->
-              <h5 class="panel-title">Top Trending Products</h5>
+              <h5 class="panel-title-reporting" style="color: #ffffff">Top Trending Products</h5>
           </div><!-- panel-heading -->
           <div class="panel-body panel-table">
               <div class="table-responsive">
-                <table class="table">
+                <table class="table table-reporting">
                   <thead>
                       <tr class="table-head-alt">
                           <th>Product</th>
@@ -298,11 +181,11 @@
                   <a href="" class="panel-close">&times;</a>
                   <a href="" class="minimize">&minus;</a>
               </div><!-- panel-btns -->
-              <h5 class="panel-title">Bottom Trending Products</h5>
+              <h5 class="panel-title-reporting" style="color: #ffffff">Bottom Trending Products</h5>
           </div><!-- panel-heading -->
             <div class="panel-body panel-table">
               <div class="table-responsive">
-                <table class="table">
+                <table class="table table-reporting">
                   <thead>
                       <tr class="table-head-alt">
                           <th>Product</th>
@@ -381,16 +264,7 @@
   </div><!-- row -->
 
   <div class="row">
-    <div class="col-sm-12">
-      <div class="panel panel-report panel-alt">
-        <div class="panel-heading">
-          <h3 class="panel-title">Sales by Tier Chart</h3>
-        </div>
-        <div class="panel-body">
-         <div id="account_status_pie_chart" class="chart-height"></div>
-        </div><!-- panel-body -->
-      </div>
-    </div>
+    <%= chart_morris_bar({id_name: 'sales_by_tier_chart', title: 'Sales by Tier Chart'}, 'col-sm-12')%>
   </div>
 
   <div class="row">
@@ -479,22 +353,34 @@
   </div>
 
   <div class="row">
-    <div class="col-sm-12">
-      <div class="panel panel-report panel-alt">
-        <div class="panel-heading">
-          <h3 class="panel-title">Sales by Category by Merchandiser</h3>
-        </div>
-        <div class="panel-body">
-         <div id="flot_barchart" class="chart-height"></div>
-        </div><!-- panel-body -->
-      </div>
-    </div>
+    <%= chart_morris_bar({id_name: 'flot_barchart', title: 'Sales by Category by Merchandiser'}, 'col-sm-12')%>
   </div>
 
 <script type="text/javascript">
 
   jQuery(document).ready(function() {
     //"use strict";
+
+    <%= chart_morris_stacked_bar_js({
+      id_name: 'sales_by_tier_chart',
+      data: [
+        { y: 'Jan', a: 30,  b: 20, c: 10 },
+        { y: 'Feb', a: 75,  b: 65, c: 50 },
+        { y: 'Mar', a: 50,  b: 40, c: 20 },
+        { y: 'Apr', a: 75,  b: 65, c: 50 },
+        { y: 'May', a: 50,  b: 40, c: 20 },
+        { y: 'Jun', a: 75,  b: 65, c: 40 },
+        { y: 'Jul', a: 100, b: 90, c: 80 },
+        { y: 'Aug', a: 30,  b: 20, c: 10 },
+        { y: 'Sep', a: 75,  b: 65, c: 50 },
+        { y: 'Oct', a: 50,  b: 40, c: 20 },
+        { y: 'Nov', a: 75,  b: 65, c: 50 },
+        { y: 'Dec', a: 50,  b: 40, c: 20 }],
+      xkey: 'y',
+      ykeys: ['a', 'b', 'c'],
+      labels: ['Tier A', 'Tier B', 'Tier C'],
+      barColors: ['#1CAF9A', '#428BCA', '#5BC0DE'],
+    }) %>
 
     <%= chart_flot_pie_js({
       id_name: 'piechart',
@@ -507,33 +393,15 @@
       formatter: "",
     }) %>
 
-
-
-   var bardata = [ ["Jan", 10], ["Feb", 23], ["Mar", 18], ["Apr", 13], ["May", 17], ["Jun", 30], ["Jul", 26], ["Aug", 16], ["Sep", 17], ["Oct", 5], ["Nov", 8], ["Dec", 15] ];
-
-   jQuery.plot("#flot_barchart", [ bardata ], {
-      series: {
-            lines: {
-              lineWidth: 1  
-            },
-        bars: {
-          show: true,
-          barWidth: 0.5,
-          align: "center",
-               lineWidth: 0,
-               fillColor: "#428BCA"
-        }
-      },
-        grid: {
-            borderColor: '#ddd',
-            borderWidth: 1,
-            labelMargin: 10
-      },
-      xaxis: {
-        mode: "categories",
-        tickLength: 0
-      }
-   });
+    <%= chart_flot_singlebar_js({
+      id_name: 'flot_barchart',
+      data: [
+        ["Jan", 10], ["Feb", 23], ["Mar", 18], ["Apr", 13],
+        ["May", 17], ["Jun", 30], ["Jul", 26], ["Aug", 16],
+        ["Sep", 17], ["Oct", 5],  ["Nov", 8],  ["Dec", 15]],
+      fillColor: "#428BCA",
+      })
+    %>
 
     <%= chart_morris_donut_js({
       id_name: 'sales_by_tier_donut_chart',
@@ -605,14 +473,6 @@
       'barchart2',
       'stacked_barchart',
     ]) %>
-
-    //$(window).resize(function () {
-    //  sales_by_tier_donut_chart.redraw();
-    //  average_time_on_site_per_tier_donut_chart.redraw();
-    //  average_time_on_site_per_tier_chart.redraw();
-    //  barchart2.redraw();
-    //  stacked_barchart.redraw();
-    //});
 
   });
 
