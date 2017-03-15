@@ -1008,6 +1008,10 @@ p {
     color: #fff;
 }
 
+.panel-table .table-reporting {
+    margin-bottom: 10px !important;
+}
+
 .panel-table .table-reporting th {
     text-transform: uppercase;
     font-family: "Open Sans",sans-serif;
@@ -1022,6 +1026,15 @@ p {
     color: #797979;
     font-size: 11px;
     text-align: center;
+}
+
+.panel-table .table-reporting tfoot {
+    text-transform: uppercase;
+    font-family: "Open Sans",sans-serif;
+    color: #797979;
+    font-size: 11px;
+    text-align: center;
+    font-weight: 600;
 }
 
 .panel-stat h1 {

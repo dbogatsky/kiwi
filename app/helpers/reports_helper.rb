@@ -220,16 +220,20 @@ module ReportsHelper
   def table_data_detail(data)
     table_html = ''
 
+    data[:header] = [] if data[:header].nil?
+    data[:data] = [] if data[:data].nil?
+    data[:footer] = [] if data[:footer].nil?
+
     table_html += "
     <div class=\"col-sm-12\">
       <div class=\"panel panel-report panel-alt\">
         <div class=\"panel-heading\">
           <h3 class=\"panel-title-reporting\">#{data[:title]}</h3>
         </div>
-        <div class=\"panel-body\">
+        <div class=\"panel-body panel-table\">
           <div class=\"table-responsive\">"
 
-    table_html += table_data_layout(table_headings, table_data)
+    table_html += table_data_layout(data[:header], data[:data], data[:footer])
 
     table_html += "
           </div>
@@ -266,20 +270,51 @@ module ReportsHelper
     table_html.html_safe
   end
 
-  def table_data_layout(table_headings, table_data, table_footer=[], show_percentage_bar=false, percentage_index='')
+  # panel_style can be any one in [success, primary, info, warning, danger, dark]
+  def table_data_trending_percentage_bar(data, panel_style='report')
+    table_html = ''
+
+    table_html += "
+    <div class=\"col-md-6\">
+      <div class=\"panel panel-#{panel_style} panel-alt\">
+        <div class=\"panel-heading\">
+          <h5 class=\"panel-title-reporting\">#{data[:title]}</h5>
+        </div>
+        <div class=\"panel-body panel-table\">
+          <div class=\"table-responsive\">"
+
+    table_html += table_data_layout(data[:header], data[:data], [], true)
+
+    table_html += "
+          </div><!-- table-responsive -->
+        </div><!-- panel-body -->
+      </div><!-- panel -->
+    </div><!-- col-md-6 -->
+    "
+
+    table_html.html_safe
+  end
+
+  def table_data_layout(table_headings, table_data, table_footers=[], show_percentage_bar=false)
+    # Note: if show_percentage_bar is true, then make sure that the percentage column is the last item of the array
     table_data_html = ''
 
+    last_column_index = table_headings.count - 1
+    last_item = ''
+
     table_data_html += "
-      <table class=\"table table-reporting\">"
+      <table class=\"table table-hover table-reporting\">"
     
     if table_headings.count > 0
       table_data_html += "
         <thead>
           <tr class=\"table-head-alt\">"
 
+      percentage_counter = 0
       table_headings.each do |table_heading|
         table_data_html += "
-            <th>#{table_heading}</th>"
+            <th>#{table_heading}</th>" unless show_percentage_bar && percentage_counter == last_column_index
+        percentage_counter += 1
       end
 
       if show_percentage_bar
@@ -300,14 +335,18 @@ module ReportsHelper
       table_data_html += "
           <tr>"
 
+      percentage_counter = 0
       table_data.each do |data_item|
         table_data_html += "
-            <td>#{data_item}</td>"
+            <td>#{data_item}</td>" unless show_percentage_bar && percentage_counter == last_column_index
+        last_item = data_item if show_percentage_bar && percentage_counter == last_column_index
+        percentage_counter += 1
       end
       if show_percentage_bar
+        percentage_bar = table_data_percentage_bar(last_item)
         table_data_html += "
-            <td></td>
-            <td></td>"
+            <td>#{percentage_bar}</td>
+            <td>#{last_item}</td>"
       end
       table_data_html += "
           </tr>"      
@@ -315,6 +354,17 @@ module ReportsHelper
     table_data_html += "
         </tbody>"
     
+    table_data_html += "
+        <tfoot>
+          <tr class=\"table-head-alt\">"
+
+      table_footers.each do |table_footer|
+        table_data_html += "
+            <td>#{table_footer}</td>"
+      end
+    table_data_html += "
+          </tr>
+        </tfoot>"
 
     table_data_html += "</table>"
 
@@ -322,7 +372,19 @@ module ReportsHelper
   end
 
   def table_data_percentage_bar(percentage)
+    percentage_bar_html = ''
 
+    percentage_number = percentage.delete("^0-9")
+    percentage_width = percentage_number.to_i > 2 ? percentage_number : "3"
+
+    percentage_bar_html += "
+                              <div class=\"progress\">
+                                  <div style=\"width: #{percentage_width}%\" aria-valuemax=\"100\" aria-valuemin=\"0\" aria-valuenow=\"#{percentage_width}\" role=\"progressbar\" class=\"progress-bar progress-bar-primary\">
+                                    <span class=\"sr-only\">#{percentage_number}%</span>
+                                  </div>
+                              </div>"
+
+    percentage_bar_html
   end
 
   # panel_icon can be any font awesome icon
