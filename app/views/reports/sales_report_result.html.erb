@@ -54,7 +54,7 @@
       title: "Top Performing Products",
       data: ["Product 1", "Product 2", "Product 3", "Product 4", "Product 5"],
       },
-      "fa-arrow-down",
+      "fa-arrow-up",
       "dark",
       "col-sm-6 col-md-4"
     ) %>
@@ -98,13 +98,17 @@
   </div><!-- row -->
 
   <div class="row">
-    <%= chart_morris_bar({id_name: 'sales_by_tier_chart', title: 'Sales by Tier Chart'}, 'col-sm-12')%>
+    <%= chart_morris_bar({id_name: 'sales_by_tier_chart', title: 'Sales by Tier Chart [Stack Bar]'}, 'col-sm-12')%>
+  </div>
+
+  <div class="row">
+    <%= chart_morris_bar({id_name: 'sales_by_tier_chart2', title: 'Sales by Tier Chart [Bar]'}, 'col-sm-12')%>
   </div>
 
   <div class="row">
     <%= table_data_detail({
-      title: "Sales by Tier Data Table Function",
-      header: [ "Tier<br />", "YTD Sales<br />%-Tot", "YTD $ Sales<br />(000's)", "L-YTD Sales<br />%-Tot", "L-YTD $ Sales<br />(000's)",
+      title: "Sales by Tier Data Table",
+      header: [ "Tier<br />&nbsp;", "YTD Sales<br />%-Tot", "YTD $ Sales<br />(000's)", "L-YTD Sales<br />%-Tot", "L-YTD $ Sales<br />(000's)",
         "YTD $ Sales<br />%-Comp", "YTD Projected<br />(000's)", "YTD Projected<br />%-Comp"
         ],
       data: [
@@ -117,7 +121,7 @@
   </div><!-- row -->
 
   <div class="row">
-    <%= chart_morris_donut({id_name: 'sales_by_tier_donut_chart', title: 'Sales by Tier Donut'})%>
+    <%= chart_morris_donut({id_name: 'sales_by_tier_donut_chart', title: 'Sales by Tier [Donut]'})%>
     <%= chart_morris_donut({id_name: 'average_time_on_site_per_tier_donut_chart', title: 'Average Time being on Site per Tier (Mins)'})%>
   </div>
 
@@ -127,8 +131,8 @@
   </div>
 
   <div class="row">
-    <%= chart_morris_bar({id_name: 'barchart2', title: 'Double Bar Charts'})%>
-    <%= chart_morris_bar({id_name: 'stacked_barchart', title: 'Stacked Bar Chart'})%>
+    <%= chart_morris_bar({id_name: 'multi_barchart', title: 'Multi Bar Charts [Bar]'})%>
+    <%= chart_morris_bar({id_name: 'stacked_barchart', title: 'Stacked Bar Chart [Stack]'})%>
   </div>
 
   <div class="row">
@@ -136,7 +140,7 @@
   </div>
 
   <div class="row">
-    <%= chart_morris_line({id_name: 'chart_morris_line', title: 'Sales by Category by Merchandiser'}, 'col-sm-12')%>
+    <%= chart_morris_line({id_name: 'sales_by_tier_line_chart', title: 'Sales by Tier [Line]'}, 'col-sm-12')%>
   </div>
 
 <script type="text/javascript">
@@ -165,14 +169,33 @@
       barColors: ['#1CAF9A', '#428BCA', '#5BC0DE'],
     }) %>
 
+    <%= chart_morris_bar_js({
+      id_name: 'sales_by_tier_chart2',
+      data: [
+        { y: 'Jan', a: 30,  b: 20, c: 10 },
+        { y: 'Feb', a: 75,  b: 65, c: 50 },
+        { y: 'Mar', a: 50,  b: 40, c: 20 },
+        { y: 'Apr', a: 75,  b: 65, c: 50 },
+        { y: 'May', a: 50,  b: 40, c: 20 },
+        { y: 'Jun', a: 75,  b: 65, c: 40 },
+        { y: 'Jul', a: 100, b: 90, c: 80 },
+        { y: 'Aug', a: 30,  b: 20, c: 10 },
+        { y: 'Sep', a: 75,  b: 65, c: 50 },
+        { y: 'Oct', a: 50,  b: 40, c: 20 },
+        { y: 'Nov', a: 75,  b: 65, c: 50 },
+        { y: 'Dec', a: 50,  b: 40, c: 20 }],
+      xkey: 'y',
+      ykeys: ['a', 'b', 'c'],
+      labels: ['Tier A', 'Tier B', 'Tier C'],
+      barColors: ['#1CAF9A', '#428BCA', '#5BC0DE'],
+    }) %>
+
     <%= chart_flot_pie_js({
       id_name: 'piechart',
       data: [
-        { label: 'Series 1', data: [[1,10]], color: '#D9534F' },
-        { label: 'Series 2', data: [[1,30]], color: '#1CAF9A' },
-        { label: 'Series 3', data: [[1,90]], color: '#F0AD4E' },
-        { label: 'Series 4', data: [[1,70]], color: '#428BCA' },
-        { label: 'Series 5', data: [[1,80]], color: '#5BC0DE' }],
+        { label: 'Tier A', data: [[1,60]], color: '#428BCA' },
+        { label: 'Tier B', data: [[1,30]], color: '#4CAF50' },
+        { label: 'Tier C', data: [[1,10]], color: '#999999' },],
       formatter: "",
     }) %>
 
@@ -219,49 +242,46 @@
     }) %>
 
     <%= chart_morris_line_js({
-      id_name: 'chart_morris_line',
+      id_name: 'sales_by_tier_line_chart',
       data: [
-        { y: '2006', a: 30, b: 20 },
-        { y: '2007', a: 75,  b: 65 },
-        { y: '2008', a: 50,  b: 40 },
-        { y: '2009', a: 75,  b: 65 },
-        { y: '2010', a: 50,  b: 40 },
-        { y: '2011', a: 75,  b: 65 },
-        { y: '2012', a: 100, b: 90 }],
+        { y: '2016-01', a: 30, b: 20, c: 10 },
+        { y: '2016-02', a: 75,  b: 65, c: 45 },
+        { y: '2016-03', a: 50,  b: 40, c: 35 },
+        { y: '2016-04', a: 75,  b: 65, c: 50 },
+        { y: '2016-05', a: 50,  b: 40, c: 30 },
+        { y: '2016-06', a: 75,  b: 65, c: 30 },],
       xkey: 'y',
-      ykeys: ['a', 'b'],
-      labels: ['Series A', 'Series B']
+      ykeys: ['a', 'b', 'c'],
+      labels: ['Tier A', 'Tier B', 'Tier C'],
+      lineColors: ['#428BCA', '#4CAF50', '#999999'],
     }) %>
 
     <%= chart_morris_bar_js({
-      id_name: 'barchart2',
+      id_name: 'multi_barchart',
       data: [
-        { y: '2006', a: 30, b: 20 },
-        { y: '2007', a: 75,  b: 65 },
-        { y: '2008', a: 50,  b: 40 },
-        { y: '2009', a: 75,  b: 65 },
-        { y: '2010', a: 50,  b: 40 },
-        { y: '2011', a: 75,  b: 65 },
-        { y: '2012', a: 100, b: 90 }],
+        { y: '2012', a: 50,  b: 40, c: 20 },
+        { y: '2013', a: 75,  b: 65, c: 45 },
+        { y: '2014', a: 50,  b: 60, c: 20 },
+        { y: '2015', a: 75,  b: 65, c: 10 },
+        { y: '2016', a: 80, b: 90, c: 100 }],
       xkey: 'y',
-      ykeys: ['a', 'b'],
-      labels: ['Series A', 'Series B']
+      ykeys: ['a', 'b', 'c'],
+      labels: ['Tier A', 'Tier B', 'Tier C'],
+      barColors: ['#428BCA', '#4CAF50', '#999999'],
     }) %>
 
     <%= chart_morris_stacked_bar_js({
       id_name: 'stacked_barchart',
       data: [
-        { y: '2006', a: 30, b: 20 },
-        { y: '2007', a: 75,  b: 65 },
-        { y: '2008', a: 50,  b: 40 },
-        { y: '2009', a: 75,  b: 65 },
-        { y: '2010', a: 50,  b: 40 },
-        { y: '2011', a: 75,  b: 65 },
-        { y: '2012', a: 100, b: 90 }],
+        { y: '2012', a: 50,  b: 40, c: 20 },
+        { y: '2013', a: 75,  b: 65, c: 45 },
+        { y: '2014', a: 50,  b: 60, c: 20 },
+        { y: '2015', a: 75,  b: 65, c: 10 },
+        { y: '2016', a: 80, b: 90, c: 100 }],
       xkey: 'y',
-      ykeys: ['a', 'b'],
-      labels: ['Series A', 'Series B'],
-      barColors: ['#1CAF9A', '#428BCA'],
+      ykeys: ['a', 'b', 'c'],
+      labels: ['Tier A', 'Tier B', 'Tier C'],
+      barColors: ['#428BCA', '#4CAF50', '#999999'],
     }) %>
 
 
@@ -269,10 +289,11 @@
       'sales_by_tier_donut_chart',
       'average_time_on_site_per_tier_donut_chart',
       'average_time_on_site_per_tier_chart',
-      'barchart2',
+      'multi_barchart',
       'stacked_barchart',
-      'chart_morris_line',
-      'sales_by_tier_chart'
+      'sales_by_tier_line_chart',
+      'sales_by_tier_chart',
+      'sales_by_tier_chart2'
     ]) %>
 
   });
