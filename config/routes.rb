@@ -145,6 +145,8 @@ Rails.application.routes.draw do
   patch '/settings/company_level_setting', to: 'settings#company_level_setting', as: :settings_company_level_setting
   root 'login#index'
 
+  get :sample_report, to: 'reports#sample_report'
+
   get :meeting_report, to: 'reports#meeting_report'
   get :meeting_report_result, to: 'reports#meeting_report_result'
 

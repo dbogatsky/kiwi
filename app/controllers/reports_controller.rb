@@ -1,4 +1,10 @@
 class ReportsController < ApplicationController
+  # For reference to how-to display different charts
+  def sample_report
+    @date_heading = "Any Period"
+    redirect_to root_path #redirect to dashboard to prevent access / for DEV ONLY
+  end
+
   def meeting_report
     @users = User.all(uid: session[:user_id], reload: true)
     get_account_display_setting
