@@ -10,8 +10,8 @@
       sub2_stat: { label: 'AVG Per Day', value: '$500'}
       },
       "fa-dollar",
-      "success")
-    %>
+      "success"
+    ) %>
 
     <%=  panel_quick_stat({
       main_stat: { label: 'Total Visits', value: '1000'},
@@ -26,16 +26,16 @@
       title: "Top Trending<br />Products",
       data: ["Product 1", "Product 2", "Product 3", "Product 4", "Product 5"],
       },
-      "fa-arrow-circle-up")
-    %>
+      "fa-arrow-circle-up"
+    ) %>
 
     <%= panel_ranking_stat({
       title: "Bottom Trending<br />Products",
       data: ["Product 1", "Product 2", "Product 3", "Product 4", "Product 5"],
       },
       "fa-arrow-circle-down",
-      "danger")
-    %>
+      "danger"
+    ) %>
 
   </div><!-- row -->
 
@@ -44,29 +44,29 @@
       main_stat: { label: 'Grand Total Of Sales (000\'s)', value: '$10,000'},
       sub1_stat: { label: 'AVG Per Week', value: '$1500'},
       sub2_stat: { label: 'AVG Per Day', value: '$200'}
-    }) %>
-
-    <%=  panel_quick_stat({
-      main_stat: { label: 'Total Visits', value: '1000'},
-      sub1_stat: { label: 'AVG Per Week', value: '100'},
-      sub2_stat: { label: 'AVG Per Day', value: '1.20'}
       },
-      "fa-sign-in",
-      "primary"
+      "fa-dollar",
+      "success",
+      "col-sm-6 col-md-4"
     ) %>
 
     <%= panel_ranking_stat({
       title: "Top Performing Products",
       data: ["Product 1", "Product 2", "Product 3", "Product 4", "Product 5"],
-    }) %>
+      },
+      "fa-arrow-down",
+      "dark",
+      "col-sm-6 col-md-4"
+    ) %>
 
     <%= panel_ranking_stat({
       title: "Top Underacheiving Products",
       data: ["Product 1", "Product 2", "Product 3", "Product 4", "Product 5"],
       },
       "fa-arrow-down",
-      "warning")
-    %>
+      "warning",
+      "col-sm-6 col-md-4"
+    ) %>
   </div><!-- row -->
 
   <div class="row">

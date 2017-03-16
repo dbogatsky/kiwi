@@ -425,7 +425,7 @@ module ReportsHelper
 
   # panel_icon can be any font awesome icon
   # panel_style can be any one in [success, primary, info, warning, danger, dark]
-  def panel_quick_stat(quick_stat_data, panel_icon='fa-exclamation', panel_style='success')
+  def panel_quick_stat(quick_stat_data, panel_icon='fa-exclamation', panel_style='success', layout_col_size='col-sm-6 col-md-3')
     quick_stat_html = ''
 
     if quick_stat_data[:main_stat].nil?
@@ -450,7 +450,7 @@ module ReportsHelper
     end
 
     quick_stat_html += "
-      <div class=\"col-sm-6 col-md-3\">
+      <div class=\"#{layout_col_size}\">
         <div class=\"panel panel-#{panel_style} panel-stat\">
           <div class=\"panel-heading\">
             <div class=\"stat\">
@@ -485,7 +485,7 @@ module ReportsHelper
 
   # panel_icon can be any font awesome icon
   # panel_style can be any one in [success, primary, info, warning, danger, dark]
-  def panel_ranking_stat(quick_stat_data, panel_icon='fa-arrow-up', panel_style='dark')
+  def panel_ranking_stat(quick_stat_data, panel_icon='fa-arrow-up', panel_style='dark', layout_col_size='col-sm-6 col-md-3')
     ranking_stat_html = ''
 
     ranking_stat_data = []
@@ -494,7 +494,7 @@ module ReportsHelper
     end
 
     ranking_stat_html += "
-      <div class=\"col-sm-6 col-md-3\">
+      <div class=\"#{layout_col_size}\">
         <div class=\"panel panel-#{panel_style} panel-stat\">
           <div class=\"panel-heading\">
             <div class=\"stat\">
