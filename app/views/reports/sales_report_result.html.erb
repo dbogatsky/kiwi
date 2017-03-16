@@ -132,7 +132,11 @@
   </div>
 
   <div class="row">
-    <%= chart_morris_bar({id_name: 'flot_barchart', title: 'Sales by Category by Merchandiser'}, 'col-sm-12')%>
+    <%= chart_flot_bar({id_name: 'flot_barchart', title: 'Sales by Category by Merchandiser'}, 'col-sm-12')%>
+  </div>
+
+  <div class="row">
+    <%= chart_morris_line({id_name: 'chart_morris_line', title: 'Sales by Category by Merchandiser'}, 'col-sm-12')%>
   </div>
 
 <script type="text/javascript">
@@ -214,6 +218,21 @@
       barColors: ['#1CAF9A'],
     }) %>
 
+    <%= chart_morris_line_js({
+      id_name: 'chart_morris_line',
+      data: [
+        { y: '2006', a: 30, b: 20 },
+        { y: '2007', a: 75,  b: 65 },
+        { y: '2008', a: 50,  b: 40 },
+        { y: '2009', a: 75,  b: 65 },
+        { y: '2010', a: 50,  b: 40 },
+        { y: '2011', a: 75,  b: 65 },
+        { y: '2012', a: 100, b: 90 }],
+      xkey: 'y',
+      ykeys: ['a', 'b'],
+      labels: ['Series A', 'Series B']
+    }) %>
+
     <%= chart_morris_bar_js({
       id_name: 'barchart2',
       data: [
@@ -245,12 +264,15 @@
       barColors: ['#1CAF9A', '#428BCA'],
     }) %>
 
+
     <%= chart_morris_resize_js([
       'sales_by_tier_donut_chart',
       'average_time_on_site_per_tier_donut_chart',
       'average_time_on_site_per_tier_chart',
       'barchart2',
       'stacked_barchart',
+      'chart_morris_line',
+      'sales_by_tier_chart'
     ]) %>
 
   });

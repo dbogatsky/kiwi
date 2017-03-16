@@ -1,6 +1,12 @@
 module ReportsHelper
   COLOUR_PALETTES = ["#1CAF9A", "#428BCA", "#7A92A3", "#0B62A4", "#5BC0DE", "#D9534F", "#F0AD4E", "#4CAF50"]
 
+  def chart_morris_line(chart_data, layout_col_size='col-sm-6')
+    chart_html = ''
+    chart_html += chart_layout(chart_data[:title], chart_data[:id_name], layout_col_size)
+    chart_html.html_safe
+  end
+
   def chart_morris_bar(chart_data, layout_col_size='col-sm-6')
     chart_html = ''
     chart_html += chart_layout(chart_data[:title], chart_data[:id_name], layout_col_size)
@@ -144,6 +150,36 @@ module ReportsHelper
       stacked: true,
       colors: #{chart_data[:colors].to_json},
       formatter: #{chart_data[:formatter]}
+    });
+    "
+
+    chart_js.html_safe
+  end
+
+  def chart_morris_line_js(chart_data)
+    chart_js = ''
+
+    unless chart_data[:lineColors].present?
+      unless chart_data[:labels].present?
+        chart_data[:lineColors] = default_colour_palettes(1)
+      else
+        chart_data[:lineColors] = default_colour_palettes(chart_data[:labels].count)
+      end
+    end
+
+    chart_js += "
+    var #{chart_data[:id_name]}_data = #{chart_data[:data].to_json};
+
+    var #{chart_data[:id_name]} = new Morris.Line({
+      element: '#{chart_data[:id_name]}',
+      data: #{chart_data[:id_name]}_data,
+      xkey: #{chart_data[:xkey].present? ? "'" + chart_data[:xkey] + "'" : "'x'"},
+      ykeys: #{chart_data[:ykeys].present? ? chart_data[:ykeys].to_json : "['y']"},
+      labels: #{chart_data[:labels].present? ? chart_data[:labels].to_json : "['Label']"},
+      lineColors: #{chart_data[:lineColors].to_json},
+      lineWidth: '1px',
+      hideHover: true,
+      smooth: false,
     });
     "
 
