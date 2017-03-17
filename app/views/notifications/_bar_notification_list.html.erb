@@ -17,7 +17,7 @@
 
 </style>
 
-<h5 class="title">You Have <%=unread_items.count%> New Notifications</h5>
+<h5 class="title">You Have <%= (unread_items.count + pending_account_notifications.count) %> New Notifications</h5>
 <ul class="dropdown-list gen-list">
   <%if pending_account_notifications.present?%>
     <%pending_account_notifications.first(5).each do |pending_account|%>

@@ -426,11 +426,11 @@ class ApplicationController < ActionController::Base
       end
 
       #add the Account transfer notification to the notification
-      if @pending_account_notifications.present?
-        @pending_account_notifications.each do |pending_account|
-          @unread_items.push(pending_account)
-        end
-      end
+      # if @pending_account_notifications.present?
+      #   @pending_account_notifications.each do |pending_account|
+      #     @unread_items.push(pending_account)
+      #   end
+      # end
     end
   end
 
