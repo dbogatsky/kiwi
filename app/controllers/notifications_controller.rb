@@ -3,33 +3,25 @@ class NotificationsController < ApplicationController
     current_user_roles = current_user.roles.collect { |r| r.name }
     if current_user_roles.include?("Entity Admin") || current_user_roles.include?("Admin")
       result = AccountTransfer.pending_approval
+      response_code = result.code
       pending_account_transfers = JSON.parse(result.body)
-      # @pending_account_notifications = pending_account_transfers["account_transfers"]
       @pending_account_notifications = pending_account_transfers["account_transfers"].nil? ? {} : pending_account_transfers["account_transfers"]
 
-      @pending_account_notifications.each do |pending_account|
-        account_id = pending_account["account"]["id"]
-        account_transfer_id = pending_account["id"]
-      end
+
     end
   end
 
   def account_approve
-    @pending_account_notifications.each do |pending_account|
-      account_id = pending_account["account"]["id"]
-      account_transfer_id = pending_account["id"]
-      result = AccountTransfer.approve(account_id, account_transfer_id)
-      response = JSON.parse(result.body)
-    end
+    result = AccountTransfer.approve(params[:account_id], params[:account_transfer_id])
+    response = JSON.parse(result.body)
+    response_code = result.code
   end
 
+
   def account_deny
-    @pending_account_notifications.each do |pending_account|
-      account_id = pending_account["account"]["id"]
-      account_transfer_id = pending_account["id"]
-      result = AccountTransfer.deny(account_id, account_transfer_id)
-      response = JSON.parse(result.body)
-    end
+    result = AccountTransfer.deny(params[:account_id], params[:account_transfer_id])
+    response = JSON.parse(result.body)
+    response_code = result.code
   end
 
   def update

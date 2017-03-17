@@ -83,8 +83,8 @@ Rails.application.routes.draw do
   end
   resources :notifications, only: [:index, :update]
   get '/n/:id', to: 'notifications#show'
-  get '/notifications/account_approve', to: 'notifications#account_approve', as: :account_approve
-  get '/notifications/account_deny', to: 'notifications#account_deny', as: :account_deny
+  get '/notifications/account_approve/:account_id/:account_transfer_id', to: 'notifications#account_approve', as: :account_approve
+  get '/notifications/account_deny/:account_id/:account_transfer_id', to: 'notifications#account_deny', as: :account_deny
   get '/notifications/conversation_detail', to: 'notifications#conversation_detail', as: :notifications_conversation_detail
   get '/n/:id', to: 'notifications#show'
   post '/users/account_transfers', to: 'users#account_transfers', as: :account_transfers
