@@ -71,30 +71,36 @@
 
   <div class="row">
     <%= table_data_trending({
-      title: "Top Trending Products",
+      title: "Top Performing Products",
       header: [ "#", "Product", "ID", "Percentage"],
       data: [
-        ["1", "Product 1", "001", "45%"],
-        ["2", "Product 2", "101", "25%"],
-        ["3", "Product 3", "025", "20%"],
-        ["4", "Product 4", "090", "10%"],
-        ["5", "Product 5", "201", "1%"],
+        ["1", "Product 1", "001", "25%"],
+        ["2", "Product 2", "101", "20%"],
+        ["3", "Product 3", "025", "18%"],
+        ["4", "Product 4", "090", "15%"],
+        ["5", "Product 5", "201", "10%"],
         ],
       footer: []
     }) %>
 
-    <%= table_data_trending_percentage_bar({
-      title: "Top Trending Products (w/ Percentage Bar)",
+    <%= chart_flot_pie({id_name: 'top_performing_products', title: 'Top Performing Products'})%>
+  </div><!-- row -->
+
+  <div class="row">
+    <%= table_data_trending({
+      title: "Slow Moving Products",
       header: [ "#", "Product", "ID", "Percentage"],
       data: [
-        ["1", "Product 1", "001", "45%"],
-        ["2", "Product 2", "101", "25%"],
-        ["3", "Product 3", "025", "20%"],
-        ["4", "Product 4", "090", "10%"],
-        ["5", "Product 5", "201", "1%"],
+        ["1", "Product 10", "008", "1%"],
+        ["2", "Product 9", "023", "3%"],
+        ["3", "Product 8", "772", "5%"],
+        ["4", "Product 7", "199", "7%"],
+        ["5", "Product 6", "864", "9%"],
         ],
       footer: []
     }) %>
+
+    <%= chart_flot_pie({id_name: 'slow_moving_products', title: 'Slow Moving Products'})%>
   </div><!-- row -->
 
   <div class="row">
@@ -147,6 +153,30 @@
 
   jQuery(document).ready(function() {
     //"use strict";
+
+    <%= chart_flot_pie_js({
+      id_name: 'top_performing_products',
+      data: [
+        { label: 'Product 1 (001)', data: [[1,25]], color: '#428BCA' },
+        { label: 'Product 2 (101)', data: [[1,20]], color: '#4CAF50' },
+        { label: 'Product 3 (025)', data: [[1,18]], color: '#0B62A4' },
+        { label: 'Product 4 (090)', data: [[1,15]], color: '#1CAF9A' },
+        { label: 'Product 5 (201)', data: [[1,10]], color: '#7A92A3' },
+        { label: 'Other', data: [[1,12]], color: '#999999' },],
+      formatter: "",
+    }) %>
+
+    <%= chart_flot_pie_js({
+      id_name: 'slow_moving_products',
+      data: [
+        { label: 'Product 10 (001)', data: [[1,1]], color: '#428BCA' },
+        { label: 'Product 9 (101)', data: [[1,3]], color: '#4CAF50' },
+        { label: 'Product 8 (025)', data: [[1,5]], color: '#0B62A4' },
+        { label: 'Product 7 (090)', data: [[1,7]], color: '#1CAF9A' },
+        { label: 'Product 6 (201)', data: [[1,9]], color: '#7A92A3' },
+        { label: 'Other', data: [[1,75]], color: '#999999' },],
+      formatter: "",
+    }) %>
 
     <%= chart_morris_stacked_bar_js({
       id_name: 'sales_by_tier_chart',
