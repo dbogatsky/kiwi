@@ -1,5 +1,6 @@
 <%if @result%>
-	$("#nav_unread_count, #bar_unread_count").html('<%=@unread_items.count + @pending_account_notifications.count%>')
+  <% @pending_acc = @pending_account_notifications.nil? ? {} : @pending_account_notifications %>
+	$("#nav_unread_count, #bar_unread_count").html('<%=@unread_items.count + @pending_acc.count%>')
 	$("#bar_notification_list").html("<%=j render 'notifications/bar_notification_list', unread_items: @unread_items, pending_account_notifications: @pending_account_notifications %>")
 	// $("#unread_items").html("<%=j render 'notifications_details', notifications: @all_items%>")
 	// $("#read_items").html("<%=j render 'notifications_details', notifications: @read_items, read: true%>")

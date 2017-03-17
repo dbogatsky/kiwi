@@ -8,8 +8,9 @@
           <li>
             <div class="btn-group">
               <button class="btn btn-default dropdown-toggle tp-icon" data-toggle="dropdown">
+                <% @pending_acc = @pending_account_notifications.nil? ? {} : @pending_account_notifications %>
                 <i class="glyphicon glyphicon-bell"></i>
-                <span class="badge" id="bar_unread_count"><%=@unread_items.count + @pending_account_notifications.count%></span>
+                <span class="badge" id="bar_unread_count"><%=@unread_items.count + @pending_acc .count%></span>
               </button>
               <div class="dropdown-menu dropdown-menu-head pull-right" id='bar_notification_list'>
                 <%=render 'notifications/bar_notification_list',unread_items: @unread_items,pending_account_notifications: @pending_account_notifications%>

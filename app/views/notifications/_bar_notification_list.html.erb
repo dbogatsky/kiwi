@@ -16,8 +16,8 @@
 }
 
 </style>
-
-<h5 class="title">You Have <%= (unread_items.count + pending_account_notifications.count) %> New Notifications</h5>
+<% pending_acc = pending_account_notifications.nil? ? {} : pending_account_notifications %>
+<h5 class="title">You Have <%= (unread_items.count + pending_acc.count) %> New Notifications</h5>
 <ul class="dropdown-list gen-list">
   <%if pending_account_notifications.present?%>
     <%pending_account_notifications.first(5).each do |pending_account|%>
@@ -40,7 +40,6 @@
       </li>
     <%end%>
   <%end%>
-  <% pending_acc = pending_account_notifications.nil? ? {} : pending_account_notifications %>
   <% rest_no = (pending_acc.count < 5) ? (5 - pending_acc.count) : 0 %>
   <% @unread_items.first(rest_no).each do |notification| %>
     <li class="new">
