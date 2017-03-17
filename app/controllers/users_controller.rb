@@ -25,8 +25,10 @@ class UsersController < ApplicationController
     authorize! :user_management, User
 
     result = AccountTransfer.account_transfer_user_to_user(params[:from_user_id], params[:to_user_id])
-    flash[:success] = 'Account transfer successfully completed.'
     response = result.body
+    if response.present?
+      flash[:success] = 'Account transfer successfully completed.'
+    end
     response_code = result.code
   end
 

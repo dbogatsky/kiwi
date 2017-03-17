@@ -14,6 +14,24 @@ class NotificationsController < ApplicationController
     end
   end
 
+  def account_approve
+    @pending_account_notifications.each do |pending_account|
+      account_id = pending_account["account"]["id"]
+      account_transfer_id = pending_account["id"]
+      result = AccountTransfer.approve(account_id, account_transfer_id)
+      response = JSON.parse(result.body)
+    end
+  end
+
+  def account_deny
+    @pending_account_notifications.each do |pending_account|
+      account_id = pending_account["account"]["id"]
+      account_transfer_id = pending_account["id"]
+      result = AccountTransfer.deny(account_id, account_transfer_id)
+      response = JSON.parse(result.body)
+    end
+  end
+
   def update
     begin
       @notification = Notification.find(params[:id])
