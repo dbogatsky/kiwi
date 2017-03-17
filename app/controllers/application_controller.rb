@@ -424,6 +424,13 @@ class ApplicationController < ActionController::Base
       if (@unread_items.count > 1)
         @unread_items = @unread_items.sort_by { |k| k.created_at }.reverse
       end
+
+      #add the Account transfer notification to the notification
+      if @pending_account_notifications.present?
+        @pending_account_notifications.each do |pending_account|
+          @unread_items.push(pending_account)
+        end
+      end
     end
   end
 
