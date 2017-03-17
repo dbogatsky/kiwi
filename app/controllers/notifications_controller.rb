@@ -15,6 +15,7 @@ class NotificationsController < ApplicationController
     result = AccountTransfer.approve(params[:account_id], params[:account_transfer_id])
     response = JSON.parse(result.body)
     response_code = result.code
+    render :index
   end
 
 
@@ -22,6 +23,7 @@ class NotificationsController < ApplicationController
     result = AccountTransfer.deny(params[:account_id], params[:account_transfer_id])
     response = JSON.parse(result.body)
     response_code = result.code
+    render :index
   end
 
   def update
