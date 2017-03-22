@@ -53,7 +53,9 @@
                    data-longitude="<%=citem.longitude%>"
                    data-latitude="<%=citem.latitude%>"
                    data-item-type="<%=citem.item_type%>"
-                   data-body="<%= citem.body %>">Edit</a>
+                   data-body="<%= citem.body %>"
+                   select-date="<%= @date %>"
+                   select-user-id="<%= params[:user_id] %>">Edit</a>
               </li>
               <li>
                 <%=link_to 'Delete', "javascript:void(0)", class: "delete_item", data:{id: citem.id, account_id: citem.account_id}%>
