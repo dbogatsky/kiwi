@@ -6,6 +6,8 @@ $('#preloader').css('opacity', 0.8);
    $(".delete-future-meeting-modal-form").modal('show');
    $(".delete-future-meeting-modal-form").data('id', '<%=@conversation%>')
    $(".delete-future-meeting-modal-form").data('account_id', '<%=@account.id%>')
+   $(".delete-future-meeting-modal-form").data('select_date', '<%=params[:date]%>')
+   $(".delete-future-meeting-modal-form").data('select_user_id', '<%=params[:user_id]%>')
 <%else%>
   $.ajax({
     type: "DELETE",

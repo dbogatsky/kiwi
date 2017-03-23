@@ -411,7 +411,10 @@ class AccountsController < ApplicationController
       @item.destroy
       flash[:success] = 'Meeting successfully deleted'
     end
-    render js: 'window.location.reload()'
+    # render js: 'window.location.reload()'
+    respond_to do |format|
+      format.js
+    end
   end
 
   def update_meeting

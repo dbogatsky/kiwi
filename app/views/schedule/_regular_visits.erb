@@ -58,7 +58,7 @@
                    select-user-id="<%= params[:user_id] %>">Edit</a>
               </li>
               <li>
-                <%=link_to 'Delete', "javascript:void(0)", class: "delete_item", data:{id: citem.id, account_id: citem.account_id}%>
+                <%=link_to 'Delete', "javascript:void(0)", class: "delete_item", data:{id: citem.id, account_id: citem.account_id, select_date: @date, select_user_id: params[:user_id] }%>
               </li>
               <%if @conversation_item_attachment == 'on'%>
                 <li>
