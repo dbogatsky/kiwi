@@ -47,7 +47,7 @@
 
 	  <tbody>
       <%if @pending_account_notifications.present?%>
-        <%pending_account_notifications.each do |pending_account|%>
+        <%@pending_account_notifications.each do |pending_account|%>
           <%if pending_account["account"].present?%>
             <tr>
               <td>
