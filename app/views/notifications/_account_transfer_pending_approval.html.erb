@@ -11,9 +11,9 @@
       <h2 class="ci_header">Account Transfer Approval Required.</br><%= pending_account_notifications["account"]["name"] %></h2>
         <p>Your attention is required to approval or dis-approval the transfer of the account,<%= pending_account_notifications["account"]["name"] %>.</br>
         Please choose Accept or Reject the transfer of the account.</p>
-        <div class="col-sm-10 pull-right text-right">
-          <%=link_to account_deny_path(account_id: pending_account_notifications["account"]["id"], account_transfer_id: pending_account_notifications["id"]), class: 'btn btn-xs btn-default mr5 pull-right' do%>Reject<%end%>
-          <%=link_to account_approve_path(account_id: pending_account_notifications["account"]["id"], account_transfer_id: pending_account_notifications["id"]), class: 'btn btn-xs btn-default mr5 pull-right' do%>Accept<%end%>
+        <div class="col-sm-10 pull-right text-right" id="accept_deny_button">
+          <%=link_to account_deny_path(account_id: pending_account_notifications["account"]["id"], account_transfer_id: pending_account_notifications["id"]), remote: true, class: 'btn btn-xs btn-default mr5 pull-right' do%>Reject<%end%>
+          <%=link_to account_approve_path(account_id: pending_account_notifications["account"]["id"], account_transfer_id: pending_account_notifications["id"]),remote: true, class: 'btn btn-xs btn-default mr5 pull-right' do%>Accept<%end%>
         </div>
       <div class="border_top">
         <div class="col-sm-10 pull-right text-right mtop10">

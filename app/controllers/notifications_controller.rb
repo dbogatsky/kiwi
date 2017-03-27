@@ -15,7 +15,14 @@ class NotificationsController < ApplicationController
     result = AccountTransfer.approve(params[:account_id], params[:account_transfer_id])
     response = JSON.parse(result.body)
     response_code = result.code
-    render :index
+    if response_code == "200"
+      @response_code = true
+    else
+      @response_code = false
+    end
+    respond_to do |format|
+      format.js
+    end
   end
 
 
@@ -23,7 +30,14 @@ class NotificationsController < ApplicationController
     result = AccountTransfer.deny(params[:account_id], params[:account_transfer_id])
     response = JSON.parse(result.body)
     response_code = result.code
-    render :index
+    if response_code == "200"
+      @response_code = true
+    else
+      @response_code = false
+    end
+    respond_to do |format|
+      format.js
+    end
   end
 
   def update
