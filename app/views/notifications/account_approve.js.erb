@@ -1,5 +1,4 @@
 <%if @response_code%>
-  $("#accept_deny_button").hide();
-<%else%>
-  $("#accept_deny_button").show();
+  var account_id = "<%= params[:account_id]%>"
+  $('#accept_deny_button_'+account_id).hide();
 <%end%>

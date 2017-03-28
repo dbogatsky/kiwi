@@ -6,8 +6,6 @@ class NotificationsController < ApplicationController
       response_code = result.code
       pending_account_transfers = JSON.parse(result.body)
       @pending_account_notifications = pending_account_transfers["account_transfers"].nil? ? {} : pending_account_transfers["account_transfers"]
-
-
     end
   end
 
