@@ -366,11 +366,13 @@ class ApplicationController < ActionController::Base
     @read_items = Array[]
     @unread_items = Array[]
     @menu_bar_items = {}
-    current_user_roles = current_user.roles.collect { |r| r.name }
-    if current_user_roles.include?("Entity Admin") || current_user_roles.include?("Admin")
-      result = AccountTransfer.pending_approval
-      pending_account_transfers = JSON.parse(result.body)
-      @pending_account_notifications = pending_account_transfers["account_transfers"].nil? ? {} : pending_account_transfers["account_transfers"]
+    if current_user.present?
+      current_user_roles = current_user.roles.collect { |r| r.name }
+      if current_user_roles.include?("Entity Admin") || current_user_roles.include?("Admin")
+        result = AccountTransfer.pending_approval
+        pending_account_transfers = JSON.parse(result.body)
+        @pending_account_notifications = pending_account_transfers["account_transfers"].nil? ? {} : pending_account_transfers["account_transfers"]
+      end
     end
     # check if we have set the current user before getting any notifications
     if current_user.present?
