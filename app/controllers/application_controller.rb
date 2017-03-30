@@ -549,7 +549,7 @@ class ApplicationController < ActionController::Base
     @enable_import = preferences['enable_import'] || "unknown"
     @enable_export = preferences['enable_export'] || "unknown"
     @enable_expected_sales = preferences['enable_expected_sales_attributes'] || "unknown"
-    @daylight_setting = preferences['enable_dst']
+    @daylight_setting = 'disable' #preferences['enable_dst']
     @enable_checkin_checkout = preferences['enable_checkin_checkout'] || "unknown"
     @enable_regular_visits_sort = preferences['enable_regular_visits_sort'] || "unknown"
     @timezone_setting = preferences['enable_timezone_detect']

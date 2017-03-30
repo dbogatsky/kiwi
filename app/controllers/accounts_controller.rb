@@ -333,7 +333,7 @@ class AccountsController < ApplicationController
       params[:conversation_item][:scheduled_at] = nil
       params[:conversation_item][:reminder] = nil
     end
-    check_daylight   #call to check daylight
+    #check_daylight   #call to check daylight
     if params[:conversation_item][:repetition_rule][:frequency_type] == 'monthly'
       params[:conversation_item][:repetition_rule][:day_of_month] = params[:conversation_item][:starts_at].to_datetime.day if params[:month_week] == 'dayofmonth'
       params[:conversation_item][:repetition_rule][:weekday_of_month] = params[:conversation_item][:starts_at].to_datetime.wday if params[:month_week] == 'dayofweek'
@@ -436,7 +436,7 @@ class AccountsController < ApplicationController
     if @conversation.item_type == 'regular'
       params[:conversation_item][:title]  = params[:conversation_item][:title].present? ? params[:conversation_item][:title].titleize : @conversation.title
     end
-    check_daylight #call to check daylight
+    #check_daylight #call to check daylight
     if (params[:conversation_item][:status].present?) && (@conversation.check_ins.map(&:user_id).include?current_user.id) && (@conversation.status == 'in_progress')
       lat = request.location.latitude rescue 0.0
       lng = request.location.longitude rescue 0.0
@@ -601,7 +601,7 @@ class AccountsController < ApplicationController
     if params[:follow_date].present? && params[:follow_time].present?
       params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:follow_date], params[:follow_time])
     end
-    check_daylight   #call to check daylight
+    #check_daylight   #call to check daylight
     ci = ConversationItem.create(conversation_item: { title: conversation_item_params[:title], ends_at: conversation_item_params[:ends_at], body: conversation_item_params[:body], reminder: conversation_item_params[:reminder], scheduled_at: params[:conversation_item][:scheduled_at], status: conversation_item_params[:status], amount: conversation_item_params[:amount], item_type: conversation_item_params[:item_type], created_by_id: current_user.id}, conversation_id: c_id, type: conversation_item_params[:type])
     if ci
       flash[:success] = 'Your quote has been added to the conversation'
@@ -633,7 +633,7 @@ class AccountsController < ApplicationController
         params[:conversation_item][:scheduled_at] = nil
       end
     end
-    check_daylight   #call to check daylight
+    #check_daylight   #call to check daylight
     @conversation = ConversationItem.find(params[:conversation_item][:id], params: { conversation_id: @account.conversation.id })
     if @conversation.update_attributes(conversation_item: params[:conversation_item], conversation_id: conversation_id)
       flash[:success] = 'Quote successfully updated!'
@@ -701,7 +701,7 @@ class AccountsController < ApplicationController
     session[:selected_user]= User.find(params[:user_selected]) if params[:user_selected].present?
     c_id = @account.conversation.id
     params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:scheduled_date], params[:scheduled_time]) if params[:scheduled_date].present? && params[:scheduled_time].present?
-    check_daylight   #call to check daylight
+    #check_daylight   #call to check daylight
     ci = ConversationItem.create(conversation_item: { title: conversation_item_params[:subject], body: conversation_item_params[:body], scheduled_at: params[:conversation_item][:scheduled_at], created_by_id: current_user.id, notify_by_sms: params[:conversation_item][:notify_by_sms], notify_by_email: params[:conversation_item][:notify_by_email], users_to_notify_ids: params[:conversation_item][:users_to_notify_ids] }, conversation_id: c_id, type: conversation_item_params[:type])
     if ci
       flash[:success] = 'Your reminder has been added to the conversation!'
@@ -720,7 +720,7 @@ class AccountsController < ApplicationController
   def update_reminder
     conversation_id = @account.conversation.id
     params[:conversation_item][:scheduled_at] = convert_datetime_to_utc(current_user.time_zone, params[:scheduled_date], params[:scheduled_time]) if params[:scheduled_date].present? && params[:scheduled_time].present?
-    check_daylight   #call to check daylight
+    #check_daylight   #call to check daylight
     unless params[:conversation_item][:notify_by_email].present?
       params[:conversation_item][:notify_by_email] = nil
     end
@@ -764,7 +764,7 @@ class AccountsController < ApplicationController
       params[:conversation_item][:scheduled_at] = nil
       params[:conversation_item][:reminder] = nil
     end
-    check_daylight   #call to check daylight
+    #check_daylight   #call to check daylight
     ci = ConversationItem.create(
       conversation_item: {
         title: conversation_item_params[:title],
@@ -795,7 +795,7 @@ class AccountsController < ApplicationController
       params[:conversation_item][:scheduled_at] = nil
       params[:conversation_item][:reminder] = nil
     end
-    check_daylight   #call to check daylight
+    #check_daylight   #call to check daylight
     @conversation = ConversationItem.find(params[:conversation_item][:id], params:{conversation_id: @account.conversation.id})
     if @conversation.update_attributes(conversation_item: params[:conversation_item], conversation_id: conversation_id)
       flash[:success] = 'Email successfully updated!'
