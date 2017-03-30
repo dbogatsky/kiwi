@@ -9,6 +9,7 @@ class ScheduleController < ApplicationController
     @@new_item_id = nil
     @@account_conversation_id = nil
     @user_selected = User.find(session[:selected_user]['id']) if session[:selected_user].present?
+    @selected_user = User.find(params[:user_id]) if params[:user_id].present?
     @user_preference = user_preferences_load
     @users = User.all(uid: session[:user_id])
     @current_time_fullcalendar = Time.now.in_time_zone(current_user.time_zone) # To correctly set fullcalendar's today's date based on the users timezone
@@ -96,12 +97,14 @@ class ScheduleController < ApplicationController
 
   def get_events
     user_ids = []
-    user_ids.push(current_user.id) # push any additional user_id'
-
+    if params[:user_id].present?
+      user_ids.push(params[:user_id])
+    else
+      user_ids.push(current_user.id) # push any additional user_id'
+    end
     # get the current date
     start_date = params['start']
     end_date = params['end']
-
     # get all meetings between the date range
     search = Hash[]
     search[:type_eq] = 'ConversationItems::Meeting'
@@ -230,7 +233,8 @@ class ScheduleController < ApplicationController
       }
       events.push(event_data)
     end
-    @sorted_regular_visits = sort_visit + sort_0_visit
+    @sorted_regular_visits_count = sort_visit + sort_0_visit
+    @sorted_regular_visits= @sorted_regular_visits_count.nil? ? {} : @sorted_regular_visits_count
     render template: 'schedule/_regular_visits', layout: false
   end
 

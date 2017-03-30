@@ -364,19 +364,25 @@
       $(".delete-meeting-modal-form").modal('show');
       var item_id = $(this).data('id')
       var account_id = $(this).data('account-id')
+      var select_date = $(this).data('select-date')
+      var select_user_id = $(this).data('select-user-id')
       $(".delete-meeting-modal-form").data('id', item_id)
       $(".delete-meeting-modal-form").data('account_id', account_id)
+      $(".delete-meeting-modal-form").data('select_date', select_date)
+      $(".delete-meeting-modal-form").data('select_user_id', select_user_id)
     })
 
     $(document).on('click', '#ok_delete_meeting', function(){
       var item_id =   $(".delete-meeting-modal-form").data('id')
       var account_id = $(".delete-meeting-modal-form").data('account_id')
+      var select_date = $(".delete-meeting-modal-form").data('select_date')
+      var select_user_id = $(".delete-meeting-modal-form").data('select_user_id')
       $(".delete-meeting-modal-form").modal('hide');
       $('#preloader').css('opacity', 0.8);
       $('#preloader').show();
       $.ajax({
         type: "GET",
-        url: '/accounts/'+account_id+'/delete_meeting?item_id='+ item_id,
+        url: '/accounts/'+account_id+'/delete_meeting?item_id='+ item_id+'&date='+select_date+'&user_id='+select_user_id,
         success: function (data) {
         }
       });
@@ -409,10 +415,10 @@
         type: 'PATCH',
         url: '/accounts/get_or_delete_conversation_attachment',
         data: {
-          account_conversation_id: account_conversation_id, 
-          item_id: item_id, 
-          attachment_id: attachment_id, 
-          destroy: destroy 
+          account_conversation_id: account_conversation_id,
+          item_id: item_id,
+          attachment_id: attachment_id,
+          destroy: destroy
         },success: function (data) {
         }
       });
@@ -422,11 +428,13 @@
     $(document).on('click', '#yes_delete_future_meeting, #no_delete_future_meeting, #modal_cross_button', function(){
       var item_id =  $(".delete-future-meeting-modal-form").data('id')
       var account_id = $(".delete-future-meeting-modal-form").data('account_id')
+      var select_date = $(".delete-future-meeting-modal-form").data('select_date')
+      var select_user_id = $(".delete-future-meeting-modal-form").data('select_user_id')
       var button_id = $(this).attr('id')
       if(button_id == 'yes_delete_future_meeting'){
-       var url = '/accounts/'+account_id+'/delete_future_meeting?citem_id='+item_id+'&destroy_future_meetings=' + true
+       var url = '/accounts/'+account_id+'/delete_future_meeting?citem_id='+item_id+'&date='+select_date+'&user_id='+select_user_id+'&destroy_future_meetings=' + true
       }else{
-       var url = '/accounts/'+account_id+'/delete_future_meeting?citem_id='+item_id
+       var url = '/accounts/'+account_id+'/delete_future_meeting?citem_id='+item_id+'&date='+select_date+'&user_id='+select_user_id
       }
       $(".delete-future-meeting-modal-form").modal('hide');
       $('#preloader').css('opacity', 0.8);

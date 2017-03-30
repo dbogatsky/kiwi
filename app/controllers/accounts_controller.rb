@@ -411,7 +411,10 @@ class AccountsController < ApplicationController
       @item.destroy
       flash[:success] = 'Meeting successfully deleted'
     end
-    render js: 'window.location.reload()'
+    # render js: 'window.location.reload()'
+    respond_to do |format|
+      format.js
+    end
   end
 
   def update_meeting
@@ -456,7 +459,7 @@ class AccountsController < ApplicationController
     respond_to do |format|
       request.format = :html if request.format.symbol == :mobile
       format.html {redirect_to @path}
-      format.js {render js: 'window.location.reload()'}
+      format.js
     end
   end
 
