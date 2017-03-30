@@ -57,12 +57,14 @@
                     <%=select_tag('enable_timezone_detect',options_for_select(enable_disable_options, selected: @timezone_setting), prompt: '-select-', class: "form-control")%>
                   </div>
                 </div>
-                <div class="form-group">
-                  <label class="col-sm-4 control-label">Daylight Saving Time Detection</label>
-                  <div class="col-sm-4">
-                    <%=select_tag('enable_dst',options_for_select(enable_disable_options, selected: @daylight_setting), prompt: '-select-', class: "form-control")%>
-                  </div>
-                </div>
+<% ## Commented out - Daylight Saving Time Detection Not Working
+  #              <div class="form-group">
+  #                <label class="col-sm-4 control-label">Daylight Saving Time Detection</label>
+  #                <div class="col-sm-4">
+  #                  < %=select_tag('enable_dst',options_for_select(enable_disable_options, selected: @daylight_setting), prompt: '-select-', class: "form-control") % >
+  #                </div>
+  #              </div>
+%>
               </div><!-- row -->
             </div>
           </div>
