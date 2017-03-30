@@ -11,10 +11,14 @@
 		  init: function() {
 		    var myDropzone = this;
 		    $(document).on("click","#submit_<%=box_for%>_form",function(e) {
-		      e.preventDefault();
-		      e.stopPropagation();
-		      $("#submit_conversation_<%=box_for%>_form").submit();
-		      myDropzone.processQueue();
+
+          if($("#submit_conversation_<%=box_for%>_form").checkValidity()) {
+            e.preventDefault();
+            e.stopPropagation();
+            $("#submit_conversation_<%=box_for%>_form").submit();
+            myDropzone.processQueue();
+          }
+
 		    });
 		  },
 		  accept: function(file, done) {

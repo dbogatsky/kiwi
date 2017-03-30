@@ -12,6 +12,7 @@
             <img alt="" src="<%= current_user.avatar_url %>" class="thumbnail media-object" style="margin-bottom:0px; height:100px;">
           <% end %>
         </a>
+
         <div class="media-body event-body">
           <h3 class="subtitle-lined"><%= current_user.first_name rescue nil %> <%= current_user.last_name rescue nil%></h3>
           <small><%= current_user.time_zone %></small>
@@ -36,7 +37,7 @@
               <select class="select2" name="users" id="schedule_user_list" data-placeholder="Filter schedule by user" required="required">
                 <option></option>
                 <option value="<%=current_user.id%>">My Schedule</option>
-                <%= options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] if current_user.id != u.id }, @user_selected.present? ? @user_selected.id : "") %>
+                <%= options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] if current_user.id != u.id }, selected:(@selected_user.present? ? @selected_user.id : "") ) %>
               </select>
             </div>
             <div class="col-sm-2">
@@ -95,8 +96,10 @@
     $(document).on('ajax:complete', "#submit_conversation_edit_meeting_form, #submit_conversation_edit_quote_form, #submit_conversation_edit_note_form, #submit_conversation_quote_form, #submit_conversation_meeting_form", function(){
       $("#preloader").show();
       if (document.getElementById("submit_edit_meeting_form") != null){
-        document.getElementById("submit_edit_meeting_form").value = "Saving..."
-        document.getElementById("submit_edit_meeting_form").disabled = "true"
+        $("#preloader").hide();
+        $(".conversation-edit-meeting-modal-form").modal('hide');
+        // document.getElementById("submit_edit_meeting_form").value = "Saving..."
+        // document.getElementById("submit_edit_meeting_form").disabled = "true"
       }
 
       if (document.getElementById("submit_edit_quote_form") != null){
@@ -114,10 +117,10 @@
         document.getElementById("submit_quote_form").disabled = "true"
       }
 
-      if (document.getElementById("submit_meeting_form") != null){
-        document.getElementById("submit_meeting_form").value = "Saving..."
-        document.getElementById("submit_meeting_form").disabled = "true"
-      }
+      // if (document.getElementById("submit_meeting_form") != null){
+      //   // document.getElementById("submit_meeting_form").value = "Saving..."
+      //   // document.getElementById("submit_meeting_form").disabled = "true"
+      // }
     })
 
   $(document).on('click', '.add_attachment', function(){
@@ -315,7 +318,9 @@
     account_conversation_id = $(this).attr('data-account-conversation-id')
     $("#account_conversation_id_for_edit_meeting").val(account_conversation_id)
     account_id = $(this).attr('data-account-id')
-    $(".conversation-edit-meeting-modal-form form").attr("action", "/accounts/" + account_id + "/update_meeting");
+    select_date = $(this).attr('select-date')
+    select_user_id = $(this).attr('select-user-id')
+    $(".conversation-edit-meeting-modal-form form").attr("action", "/accounts/" + account_id + "/update_meeting?date="+select_date +'&user_id='+select_user_id);
     $('.conversation-edit-meeting-modal-form input[name="id"]').val($(this).attr('data-account-id'));
     invitees = $(this).attr('data-invitees')
     invitees_array = invitees.split(',')
@@ -453,7 +458,7 @@
     if($("#schedule_user_list").val() != ''){
      $('#preloader').css('opacity', 0.3);
      $('#preloader').show();
-     update_regular_visits(null)
+     update_regular_visits(null, null)
     }
   })
 
@@ -479,7 +484,7 @@
               text: 'today',
               click: function() {
                  $('#calendar').fullCalendar('today');
-                 update_regular_visits(null)
+                 update_regular_visits(null, null)
               }
           }
         },
@@ -490,7 +495,7 @@
         },
         defaultView: '<%=@calendar_view%>',
         dayClick: function(date, jsEvent, view) {
-          update_regular_visits(date);
+          update_regular_visits(date, null);
         },
         eventClick: function (calEvent, jsEvent, view) {
           var c_id = calEvent.id
@@ -531,7 +536,7 @@
     var view = $('#calendar').fullCalendar('getView').name
     if(view == 'agendaDay'){
       var date = $('#calendar').fullCalendar('getDate')
-      update_regular_visits(date)
+      update_regular_visits(date, null)
     }
   }
 
@@ -846,29 +851,32 @@
     if (minutes < 10) sMinutes = "0" + sMinutes;
   }
 
-  function update_regular_visits(date) {
-    var user_id = $("#schedule_user_list").val()
-    if (date == null) {
-      url_path = '/schedule/regular_visits?user_id='+user_id;
-    }
-    else {
-      url_path = '/schedule/regular_visits?date='+date.format()+'&user_id='+user_id;
-    }
-    $.ajax({
-      type: "GET",
-      url: url_path,
-      beforeSend: function() {
-        $('#spinner').show();
-        $('#regular_visits').html('');
-      },
-      complete: function() {
-        $('#spinner').hide();
-      },
-      success: function (data) {
-        $('#regular_visits').html(data);
+  function update_regular_visits(date, event_type) {
+      var user_id = $("#schedule_user_list").val()
+      if (date == null) {
+        url_path = '/schedule/regular_visits?user_id='+user_id;
       }
-    });
-
+      else {
+        if(event_type == null) {
+          url_path = '/schedule/regular_visits?date='+date.format()+'&user_id='+user_id;
+        } else {
+          url_path = '/schedule/regular_visits?date='+date+'&user_id='+user_id;
+        }
+      }
+      $.ajax({
+        type: "GET",
+        url: url_path,
+        beforeSend: function() {
+          $('#spinner').show();
+          $('#regular_visits').html('');
+        },
+        complete: function() {
+          $('#spinner').hide();
+        },
+        success: function (data) {
+          $('#regular_visits').html(data);
+        }
+      });
   }
 
   update_regular_visits(null);
