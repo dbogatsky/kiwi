@@ -1,4 +1,6 @@
-$('#calendar').fullCalendar('removeEvents');
+$('#calendar').fullCalendar('removeEvents')
+$('#calendar').fullCalendar('removeEventSources')
+$('#calendar').fullCalendar('addEventSource', '/schedule/get_events?user_id=<%=params[:users]%>')
 <%if @all_items.present?%>
   <%@all_items.each do |i|%>
     <%if i.type.eql? 'meeting'%>
@@ -27,10 +29,10 @@ $('#calendar').fullCalendar('removeEvents');
       color: '<%=color%>',
       allDay: '<%=all_day%>'
     }
-    $('#calendar').fullCalendar('renderEvent', event_data , true);
+    // $('#calendar').fullCalendar('renderEvent', event_data);
   <%end%>
 <%else%>
-   $('#calendar').fullCalendar('removeEvents');
-   $("#conversation_item_details").html('')
+  $('#calendar').fullCalendar('removeEvents');
+  $("#conversation_item_details").html('')
 <%end%>
 $('#preloader').hide();

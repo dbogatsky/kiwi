@@ -97,12 +97,14 @@ class ScheduleController < ApplicationController
 
   def get_events
     user_ids = []
-    user_ids.push(current_user.id) # push any additional user_id'
-
+    if params[:user_id].present?
+      user_ids.push(params[:user_id])
+    else
+      user_ids.push(current_user.id) # push any additional user_id'
+    end
     # get the current date
     start_date = params['start']
     end_date = params['end']
-
     # get all meetings between the date range
     search = Hash[]
     search[:type_eq] = 'ConversationItems::Meeting'
