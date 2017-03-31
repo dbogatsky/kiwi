@@ -1,0 +1,2 @@
+class JourneyPlannerController < ApplicationController
+end
