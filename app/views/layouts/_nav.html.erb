@@ -33,32 +33,32 @@
     <br />
     <h5 class="sidebartitle">Main</h5>
     <ul class="nav nav-pills nav-stacked nav-bracket">
-      <li><a href="<%= dashboard_path %>"><i class="fa fa-home"></i> <span>Dashboard</span></a></li>
+      <li class="<%= 'nav-active' if controller.controller_name=="dashboard" %>"><a href="<%= dashboard_path %>"><i class="fa fa-home"></i> <span>Dashboard</span></a></li>
       <% if can? :read, Account %>
-        <li><a href="<%= schedule_path %>"><i class="fa fa-calendar"></i> <span>Schedule</span></a></li>
+        <li class="<%= 'nav-active' if controller.controller_name=="schedule" %>"><a href="<%= schedule_path %>"><i class="fa fa-calendar"></i> <span>Schedule</span></a></li>
       <% end %>
 
       <% if can? :read, Account %>
-        <li><a href="<%= accounts_path %>"><i class="fa fa-briefcase"></i><span>Accounts</span></a></li>
+        <li class="<%= 'nav-active' if controller.controller_name=="accounts" %>"><a href="<%= accounts_path %>"><i class="fa fa-briefcase"></i><span>Accounts</span></a></li>
       <% end %>
 
       <% if can? :read, Medium %>
-        <li><a href="<%= media_path %>"><i class="fa fa-picture-o"></i><span>Media</span></a></li>
+        <li class="<%= 'nav-active' if controller.controller_name=="media" %>"><a href="<%= media_path %>"><i class="fa fa-picture-o"></i><span>Media</span></a></li>
       <% end %>
 
-      <li class="nav-parent"><a href=""><i class="fa fa-edit"></i> <span>Reports</span></a>
-        <ul class="children">
-          <li>
+      <li class="nav-parent <%= 'nav-active' if controller.controller_name=="reports" %>"><a href=""><i class="fa fa-edit"></i> <span>Reports</span></a>
+        <ul class="children" style="<%= 'display: block;' if controller.controller_name=="reports" %>">
+          <li class="<%= 'active' if controller.controller_name=="reports" && (["activity_report", "activity_report_result"].include? controller.action_name) %>">
             <%= link_to activity_report_path do %>
               <i class="fa fa-caret-right"></i> Activity
             <% end %>
           </li>
-          <li>
+          <li class="<%= 'active' if controller.controller_name=="reports" && (["meeting_report", "meeting_report_result"].include? controller.action_name) %>">
             <%= link_to meeting_report_path do %>
               <i class="fa fa-caret-right"></i> Meetings
             <%end%>
           </li>
-          <li>
+          <li class="<%= 'active' if controller.controller_name=="reports" && (["sales_report", "sales_report_result"].include? controller.action_name) %>">
             <%= link_to sales_report_path do %>
               <i class="fa fa-caret-right"></i> Sales
             <%end%>
@@ -67,7 +67,7 @@
       </li>
 
       <% if can? :read, Account %>
-        <li>
+        <li class="<%= 'nav-active' if controller.controller_name=="notifications" %>">
           <a href="<%= notifications_path %>">
             <span class="pull-right badge badge-success" id="nav_unread_count"><%=@unread_items.count%></span>
               <i class="fa fa-bell-o"></i>
@@ -87,15 +87,15 @@
       <ul class="nav nav-pills nav-stacked nav-bracket">
 
       <% if ( can? :read, Company ) || ( can? :read, CompanyEntity ) %>
-        <li><a href="<%= company_path %>"><i class="fa fa-building"></i> <span>Company</span></a></li>
+        <li class="<%= 'nav-active' if controller.controller_name=="company" %>"><a href="<%= company_path %>"><i class="fa fa-building"></i> <span>Company</span></a></li>
       <% end %>
 
       <% if can? :manage, :all %>
-        <li><a href="<%= users_path %>"><i class="fa fa-users"></i> <span>Users</span></a></li>
+        <li class="<%= 'nav-active' if controller.controller_name=="users" %>"><a href="<%= users_path %>"><i class="fa fa-users"></i> <span>Users</span></a></li>
       <% end %>
 
       <% if can? :manage, :all %>
-        <li><a href="<%= settings_path %>"><i class="fa fa-cogs"></i><span>Settings</span></a></li>
+        <li class="<%= 'nav-active' if controller.controller_name=="settings" %>"><a href="<%= settings_path %>"><i class="fa fa-cogs"></i><span>Settings</span></a></li>
       <% end %>
 
       </ul>
