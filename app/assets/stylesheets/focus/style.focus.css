@@ -401,10 +401,12 @@ select.input-reg {
 
 .nav-bracket .children > li.active > a {
     color: #333;
-    background-color: #fff;
+    background-color: #e0e5ea;
+    /*
     border: 1px solid #ccc;
     border-right: 0;
     border-left: 0;
+    */
 }
 
 .nav-bracket .children > li.active:first-child > a {
