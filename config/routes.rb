@@ -156,5 +156,7 @@ Rails.application.routes.draw do
   get :sales_report, to: 'reports#sales_report'
   get :sales_report_result, to: 'reports#sales_report_result'
 
+  resources :journey_planner, only: [:index]
+
   match '(*any)', to: 'errors#routing', via: [:get, :post]
 end
