@@ -1,14 +1,50 @@
 require 'net/http/post/multipart'
 class UsersController < ApplicationController
-  load_and_authorize_resource except: [:index, :new, :edit, :create, :update, :destroy, :update_time_zone, :not_update_time_zone]
+  load_and_authorize_resource except: [:index, :new, :edit, :create, :update, :destroy, :update_time_zone, :not_update_time_zone, :transfers, :account_transfers, :fetch]
   before_action :get_token
-  before_action :find_user, only: [:edit, :update, :destroy, :update_time_zone]
+  before_action :find_user, only: [:edit, :update, :destroy, :update_time_zone, :fetch]
 
   def index
     authorize! :user_management, User
 
     # Get all users
     @all_users = User.find(:all, reload: true)
+    @users = User.all(uid: session[:user_id])
+  end
+
+  #To open confirmation_box
+  def transfers
+    authorize! :user_management, User
+
+    @from_user = User.find(params[:from_user_id])
+    @to_user = User.find(params[:to_user_id])
+  end
+
+  #Account transfers on click yes
+  def account_transfers
+    authorize! :user_management, User
+
+    result = AccountTransfer.account_transfer_user_to_user(params[:from_user_id], params[:to_user_id])
+    response = result.body
+    if response.present?
+      flash[:success] = 'Account transfer successfully completed.'
+    end
+    response_code = result.code
+  end
+
+  def fetch
+    authorize! :user_management, User
+
+    @all_users = User.all(uid: session[:user_id])
+    @users = []
+    @all_users.each do|user|
+      if user.id != @user.id
+        @users << user
+      end
+    end
+    search = {:assigned_to_first_name_eq=>@user.first_name, :assigned_to_last_name_eq=>@user.last_name}
+    @accounts = Account.all(params: { search: search})
+    @total_entries = @accounts.meta["total_entries"]
   end
 
   def new

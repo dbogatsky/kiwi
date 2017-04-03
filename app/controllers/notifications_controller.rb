@@ -1,5 +1,41 @@
 class NotificationsController < ApplicationController
   def index
+    current_user_roles = current_user.roles.collect { |r| r.name }
+    if current_user_roles.include?("Entity Admin") || current_user_roles.include?("Admin")
+      result = AccountTransfer.pending_approval
+      response_code = result.code
+      pending_account_transfers = JSON.parse(result.body)
+      @pending_account_notifications = pending_account_transfers["account_transfers"].nil? ? {} : pending_account_transfers["account_transfers"]
+    end
+  end
+
+  def account_approve
+    result = AccountTransfer.approve(params[:account_id], params[:account_transfer_id])
+    response = JSON.parse(result.body)
+    response_code = result.code
+    if response_code == "200"
+      @response_code = true
+    else
+      @response_code = false
+    end
+    respond_to do |format|
+      format.js
+    end
+  end
+
+
+  def account_deny
+    result = AccountTransfer.deny(params[:account_id], params[:account_transfer_id])
+    response = JSON.parse(result.body)
+    response_code = result.code
+    if response_code == "200"
+      @response_code = true
+    else
+      @response_code = false
+    end
+    respond_to do |format|
+      format.js
+    end
   end
 
   def update

@@ -22,4 +22,8 @@ module SettingsHelper
   def enable_disable_options
     return [['Disable', 'disable'],['Enable','enable']]
   end
+
+  def approval_for_account_transfer_options
+    return [['By Admins and Entity Admins Only', true],['None', false]]
+  end
 end

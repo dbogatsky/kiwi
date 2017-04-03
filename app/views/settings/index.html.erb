@@ -80,6 +80,12 @@
             <div class="tab-pane" id="accounts">
               <div class="row row-pad-5">
                 <div class="form-group">
+                  <label class="col-sm-4 control-label">Account Transfer Approval</label>
+                  <div class="col-sm-4">
+                    <%=select_tag('approval_for_account_transfer',options_for_select(approval_for_account_transfer_options, selected: @needs_approval_for_account_transfer), class: "form-control")%>
+                  </div>
+                </div>
+                <div class="form-group">
                   <label class="col-sm-4 control-label">Search All Accounts</label>
                   <div class="col-sm-4">
                     <%=select_tag('search_all_accounts',options_for_select(enable_disable_options, selected: @search_all_accounts),class: "form-control")%>

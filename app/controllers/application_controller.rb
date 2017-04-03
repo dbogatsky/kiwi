@@ -366,7 +366,14 @@ class ApplicationController < ActionController::Base
     @read_items = Array[]
     @unread_items = Array[]
     @menu_bar_items = {}
-
+    if current_user.present?
+      current_user_roles = current_user.roles.collect { |r| r.name }
+      if current_user_roles.include?("Entity Admin") || current_user_roles.include?("Admin")
+        result = AccountTransfer.pending_approval
+        pending_account_transfers = JSON.parse(result.body)
+        @pending_account_notifications = pending_account_transfers["account_transfers"].nil? ? {} : pending_account_transfers["account_transfers"]
+      end
+    end
     # check if we have set the current user before getting any notifications
     if current_user.present?
       @user_preference = user_preferences_load
@@ -396,6 +403,7 @@ class ApplicationController < ActionController::Base
           end_date = (Date.current - 1.month).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d")
           search[:created_at_gteq] = convert_datetime_to_utc(current_user.time_zone, end_date, "00:00:00")
         end
+        #@notifications = Notification.all
         @notifications = Notification.all(params: {search: search})
       else
         @notifications = Notification.all
@@ -418,6 +426,13 @@ class ApplicationController < ActionController::Base
       if (@unread_items.count > 1)
         @unread_items = @unread_items.sort_by { |k| k.created_at }.reverse
       end
+
+      #add the Account transfer notification to the notification
+      # if @pending_account_notifications.present?
+      #   @pending_account_notifications.each do |pending_account|
+      #     @unread_items.push(pending_account)
+      #   end
+      # end
     end
   end
 
@@ -554,6 +569,7 @@ class ApplicationController < ActionController::Base
     @enable_regular_visits_sort = preferences['enable_regular_visits_sort'] || "unknown"
     @timezone_setting = preferences['enable_timezone_detect']
     @search_all_accounts = preferences['search_all_accounts']
+    @needs_approval_for_account_transfer = preferences['needs_approval_for_account_transfer'] || false
   end
 
   def get_timezone_setting
