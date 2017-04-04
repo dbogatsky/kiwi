@@ -6,6 +6,12 @@ class NotificationsController < ApplicationController
       response_code = result.code
       pending_account_transfers = JSON.parse(result.body)
       @pending_account_notifications = pending_account_transfers["account_transfers"].nil? ? {} : pending_account_transfers["account_transfers"]
+      @pending_account_notifications.each do |pending_account|
+        pending_id = pending_account["id"]
+        if pending_id == params[:pending_account_id].to_i
+          @pending_account_noti = pending_account
+        end
+      end
     end
   end
 
@@ -62,8 +68,9 @@ class NotificationsController < ApplicationController
       @notification = Notification.find(params[:notification_id])
       @notification.update_attributes(read_at: Time.now)
       notification_info
+    else
+      @notification = Notification.find(params[:notification_id])
     end
-
     user_ids = Array[]
     user_ids.push(current_user.id)
 
@@ -81,6 +88,12 @@ class NotificationsController < ApplicationController
         search[:type_eq] = 'ConversationItems::Meeting'
 
         @item = ConversationItemSearch.all(params: { user_ids: user_ids, search: search })
+      when 'meeting'
+        search = Hash[]
+        search[:id_eq] = params[:conversation_id]
+        search[:type_eq] = 'ConversationItems::Meeting'
+
+        @item = ConversationItemSearch.all(params: { user_ids: user_ids, search: search })
       when 'account_status_change'
         begin
           @item = Account.find(params[:conversation_id])
@@ -89,6 +102,12 @@ class NotificationsController < ApplicationController
         end
     end
     @notification = { id: params[:item_id], type: params[:notification_type] }
-    render template: 'notifications/_conversation_details', layout: false
+    respond_to do |format|
+      if request.format == :html
+        format.html {render template: 'notifications/_conversation_details', layout: false}
+      else
+        format.js
+      end
+    end
   end
 end

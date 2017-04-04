@@ -1,0 +1,66 @@
+<div id="ci_notification" class="modal fade conv_item" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">&times;</button>
+        <h4 class="modal-title">
+          <%if  notification[:type] == 'reminder'%>
+            <span style="background: #f0ca45; margin-right: 4px;" class="thumb notification_calender">
+              <img alt="Reminder" src="/assets/vertical-timeline/img/cd-icon-bell.svg" class="thumb-img">
+            </span><%= @item[0].title == nil ? "Click to see Details" : @item[0].title %>
+          <%elsif  notification[:type] == 'meeting_reminder' || notification[:type] == 'meeting'%>
+              <span class="thumb notification_calender" style="background:#1cc7c2; margin-right: 4px;">
+                <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-calendar.svg" alt="Meeting">
+              </span><%= @item[0].title == nil ? "Click to see Details" : @item[0].title %>
+          <%elsif  notification[:type] == 'account_status_change'%>
+            <span class="thumb notification_calender" style="background: #333; margin-right: 4px;">
+              <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-briefcase.svg" alt="Reminder">
+            </span><%= @item.name %>
+          <%end%>
+        </h4>
+      </div>
+      <div class="modal-body">
+        Details of the notification:<br>
+        <% if @item.is_a?(ActiveResource::Collection) && @item[0].present? && (@notification[:type] == 'meeting' || @notification[:type] == 'meeting_reminder')%>
+          <%if @item[0].starts_at.present? && @item[0].ends_at.present? %>
+            <span class="cd-date"><%= @item[0].starts_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y - %l:%M %p")%> to <%=@item[0].ends_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%l:%M %p")%>&nbsp;&nbsp;</span>
+          <% else %>
+            <span class="cd-date"><%= @item[0].created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%></span>
+          <% end %>
+          <%= get_styled_meetingstatus(@item[0], false) %>
+          <h4 class="ci_header" style="color: #333"><%= @item[0].title %></h4>
+          <p><span class="subheading">Agenda:<br/></span><%= sanitize @item[0].body %></p>
+          <% if (!@item[0].notes.nil?) %>
+            <p><span class="subheading">Notes:<br/></span><%= sanitize @item[0].notes %></p>
+          <% end %>
+          <div class="modal-footer">
+            <a href="<%= notifications_path %>" class="btn btn-xs btn-default mr5 pull-right">Go To Notification Page</a>
+            <%=link_to account_path(@item[0].account_id), class: 'btn btn-xs btn-default mr5 pull-right' do%>Go To Account<%end%>
+            <a href="/notifications/<%= notification[:id] %>" data-remote="true" rel="nofollow" data-method="patch" class="btn btn-xs btn-default mr5 pull-right">Marked Read</a>
+          </div>
+        <% elsif @item.is_a?(ActiveResource::Collection) && @item[0].present? && @notification[:type] == 'reminder' %>
+          <%=@item[0].created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>
+          <br><br>
+          <h4 class="ci_header" style="color: #333"><%= @item[0].title %></h4>
+          <%= @item[0].title %>
+          <br>
+          <div class="modal-footer">
+            <a href="<%= notifications_path %>" class="btn btn-xs btn-default mr5 pull-right">Go To Notification Page</a>
+            <%=link_to account_path(@item[0].account_id), class: 'btn btn-xs btn-default mr5 pull-right' do%>Go To Account<%end%>
+            <a href="/notifications/<%= notification[:id] %>" data-remote="true" rel="nofollow" data-method="patch" class="btn btn-xs btn-default mr5 pull-right">Marked Read</a>
+          </div>
+        <% elsif @item.is_a?(Account) && @notification[:type] == 'account_status_change' %>
+          <h4 class="ci_header" style="color: #333"><%= @item.name %></h4>
+          <%= get_styled_status(@item, false) %>
+          <p><span class="subheading">Assigned To: &nbsp;</span><%= (@item.assigned_to.nil? ? "Unkonwn" : "#{@item.assigned_to.first_name} #{@item.assigned_to.last_name}") %></p>
+          <p>Account status was updated.</p>
+          <div class="modal-footer">
+            <a href="<%= notifications_path %>" class="btn btn-xs btn-default mr5 pull-right">Go To Notification Page</a>
+            <%=link_to account_path(@item.id), class: 'btn btn-xs btn-default mr5 pull-right' do%>Go To Account<%end%>
+            <a href="/notifications/<%= notification[:id] %>" data-remote="true" rel="nofollow" data-method="patch" class="btn btn-xs btn-default mr5 pull-right">Marked Read</a>
+          </div>
+        <%end%>
+      </div>
+    </div>
+  </div>
+</div>
