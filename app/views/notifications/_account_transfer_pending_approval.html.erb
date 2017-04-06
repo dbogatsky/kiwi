@@ -3,7 +3,7 @@
 
     <div class="cd-timeline-content shadow_non">
       <span class="cd-date">
-        <%=pending_account_notifications["account"]["created_at"].to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>
+        <%=pending_account_notifications["created_at"].to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>
       </span>
       <span class="pull-right">
         <%=link_to "javascript:void(0)", class: 'btn btn-xs btn-default mr5 close_div' do%>X<%end%>

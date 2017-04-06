@@ -55,12 +55,12 @@
                   <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-arrow-right.svg" alt="Reminder">
                 </span>
               </td>
-              <td id="pending" class="remove_bold_<%= pending_account["account"]["id"]%>" data-pending-account-id="<%= pending_account["account"]["id"]%>">
+              <td id="pending" class="remove_bold_<%= pending_account["account"]["id"]%>" data-pending-account-id="<%= pending_account["account"]["id"]%>" style="font-weight:bold">
                 <p>Account Transfer Approval Required</br>
                 <%= pending_account["account"]["name"] %></p>
               </td>
-              <td class="remove_bold_<%= pending_account["account"]["id"]%>" >
-                <%=Chronic.parse(pending_account["account"]["created_at"]).in_time_zone(current_user.time_zone).strftime("%b %d at %l:%M %p")%>
+              <td class="remove_bold_<%= pending_account["account"]["id"]%>" style="font-weight:bold">
+                <%=Chronic.parse(pending_account["created_at"]).in_time_zone(current_user.time_zone).strftime("%b %d at %l:%M %p")%>
               </td>
               <td class="remove_bold_<%= pending_account["account"]["id"]%>" >
                 <i class="fa fa-exclamation-circle tooltips mr10" data-toggle="tooltip" data-original-title="Unread" ></i>
