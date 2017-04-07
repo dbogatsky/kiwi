@@ -3,12 +3,6 @@
 <% end %>
 <div class="contentpanel">
   <div class="panel panel-default">
-    <div class="panel-heading">
-      <div class="panel-btns">
-        <a href="" class="minimize">−</a>
-      </div>
-      <!-- <h4 class="panel-title">Unread Notifications</h4> -->
-    </div>
     <div class="panel-body", id="unread_items">
        <%=render 'notifications_details', notifications: @notifications, pending_account_notifications: @pending_account_notifications %>
     </div>
