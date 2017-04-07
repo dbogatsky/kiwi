@@ -9,9 +9,9 @@
               <img alt="Reminder" src="/assets/vertical-timeline/img/cd-icon-bell.svg" class="thumb-img">
             </span><%= @item[0].title == nil ? "Click to see Details" : @item[0].title %>
           <%elsif  notification[:type] == 'meeting_reminder' || notification[:type] == 'meeting'%>
-              <span class="thumb notification_calender" style="background:#1cc7c2; margin-right: 4px;">
-                <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-calendar.svg" alt="Meeting">
-              </span><%= @item[0].title == nil ? "Click to see Details" : @item[0].title %>
+            <span class="thumb notification_calender" style="background:#1cc7c2; margin-right: 4px;">
+              <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-calendar.svg" alt="Meeting">
+            </span><%= @item[0].title == nil ? "Click to see Details" : @item[0].title %>
           <%elsif  notification[:type] == 'account_status_change'%>
             <span class="thumb notification_calender" style="background: #333; margin-right: 4px;">
               <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-briefcase.svg" alt="Reminder">
