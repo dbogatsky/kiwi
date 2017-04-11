@@ -9,19 +9,25 @@
         <%= form_tag transfers_path, html: {class: "form-horizontal"}, remote: :true, method: :post  do %>
           <div class="panel panel-default">
             <div class="panel-body">
-              <div class="row row-pad-5 m_btm30">
-                <%= render "fetch" %>
+              <div class="row row-pad-5">
+                <div class="col-sm-4">Account Owner:</div>
+                <div class="col-sm-8"><strong><%= @user.first_name %> <%= @user.last_name %></strong></div>
               </div>
-              <div class="form-group transfr_custom_select">
-                <label class="col-sm-4 trnsfr_acc_label">Transfer Account To
-                </label>
-                <div class="col-sm-6">
+
+              <div class="row row-pad-5 m_btm30">
+                <div class="col-sm-4">Number of Accounts:</div>
+                <div class="col-sm-8"><strong><%= @total_entries %></strong></div>
+              </div>
+              <div class="row row-pad-5 form-group transfr_custom_select">
+                <div class="col-sm-4">Transfer Account To:
+                </div>
+                <div class="col-sm-8">
                   <%= hidden_field_tag :from_user_id, @user.id %>
                   <%if @total_entries != 0 %>
                     <% if @accounts[0].has_pending_transfer == false %>
                       <%= select_tag :to_user_id, options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] }, selected: @user.id), { :class => 'select2TransferAccountTo' } %>
                     <% else %>
-                      <p> There is one or more accounts in pend transfer state. Please resolve before performing this action. </p>
+                      <p> There is one or more accounts in pending transfer state for this Account Owner. <br />Please resolve before performing this action. </p>
                     <% end %>
                   <% else %>
                     <p>Current user has no accounts to transfer.</p>
