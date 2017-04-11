@@ -18,7 +18,11 @@
                 <div class="col-sm-6">
                   <%= hidden_field_tag :from_user_id, @user.id %>
                   <%if @total_entries != 0 %>
-                    <%= select_tag :to_user_id, options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] }, selected: @user.id), { :class => 'select2TransferAccountTo' } %>
+                    <% if @accounts[0].has_pending_transfer == false %>
+                      <%= select_tag :to_user_id, options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] }, selected: @user.id), { :class => 'select2TransferAccountTo' } %>
+                    <% else %>
+                      <p> There is one or more accounts in pend transfer state. Please resolve before performing this action. </p>
+                    <% end %>
                   <% else %>
                     <p>Current user has no accounts to transfer.</p>
                   <% end %>
@@ -28,7 +32,9 @@
 
             <div class="panel-footer">
               <% unless @total_entries == 0 %>
-                <button type="submit" class="btn btn-primary" id="transfer">Transfer</button>
+                <% if @accounts[0].has_pending_transfer == false %>
+                  <button type="submit" class="btn btn-primary" id="transfer">Transfer</button>
+                <% end %>
               <%end%>
               <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             </div>
