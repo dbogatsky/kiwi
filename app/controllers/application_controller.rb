@@ -368,7 +368,7 @@ class ApplicationController < ActionController::Base
     @menu_bar_items = {}
     if current_user.present?
       current_user_roles = current_user.roles.collect { |r| r.name }
-      if current_user_roles.include?("Entity Admin") || current_user_roles.include?("Admin")
+      if current_user_roles.include?("Admin") # || current_user_roles.include?("Entity Admin")
         result = AccountTransfer.pending_approval
         pending_account_transfers = JSON.parse(result.body)
         @pending_account_notifications = pending_account_transfers["account_transfers"].nil? ? {} : pending_account_transfers["account_transfers"]
