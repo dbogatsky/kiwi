@@ -33,6 +33,9 @@
           <% if (!@item[0].notes.nil?) %>
             <p><span class="subheading">Notes:<br/></span><%= sanitize @item[0].notes %></p>
           <% end %>
+          <div class="ci_footer">
+            <i class="fa fa-briefcase tooltips mr10" data-toggle="tooltip" data-original-title="Account"></i><%= @item[0].account.try(:name) ? @item[0].account.name : "Account Deleted" %>
+          </div>
           <div class="modal-footer">
             <a href="<%= notifications_path %>" class="btn btn-xs btn-default mr5 pull-right">Go To Notification Page</a>
             <%=link_to account_path(@item[0].account_id), class: 'btn btn-xs btn-default mr5 pull-right' do%>Go To Account<%end%>
