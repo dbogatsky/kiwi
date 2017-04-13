@@ -1,7 +1,7 @@
 class NotificationsController < ApplicationController
   def index
     current_user_roles = current_user.roles.collect { |r| r.name }
-    if current_user_roles.include?("Entity Admin") || current_user_roles.include?("Admin")
+    if current_user_roles.include?("Admin") # || current_user_roles.include?("Entity Admin")
       result = AccountTransfer.pending_approval
       response_code = result.code
       pending_account_transfers = JSON.parse(result.body)
