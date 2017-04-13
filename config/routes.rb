@@ -125,7 +125,6 @@ Rails.application.routes.draw do
 
   post '/media/upload_file', to: 'media#upload_file', as: :upload_file
   post '/media/email_file', to: 'media#email_file', as: :email_file
-  get '/media/download_file/:uid', to: 'media#download_file', as: :download_file_by_uid, via: [:get]
   get '/media/download_file/:url/:name', to: 'media#download_file', as: :download_file, :constraints => { :url => /.*/ }, via: [:get]
   post '/media/rename_media_file', to: 'media#rename_media_file', as: :rename_media_file
 

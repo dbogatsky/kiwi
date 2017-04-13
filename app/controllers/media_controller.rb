@@ -4,7 +4,7 @@ class MediaController < ApplicationController
   before_action :get_token
   before_action :get_api_values, only: [:index, :show, :save_folder,
                                         :email_file, :rename_media_file,
-                                        :upload_file, :show_large_image, :download_file
+                                        :upload_file, :show_large_image
                                        ]
 
   # Display all folders
@@ -182,32 +182,14 @@ class MediaController < ApplicationController
   # Used to download the media file
   def download_file
     require 'open-uri'
-    filename = 'File_Not_Exist.txt'
-    data = ''
-
-    if params.key? "uid"
-      uid = params[:uid]
-      apiURL = RequestStore.store[:api_url] + '/download/media'
-      apiFullUrl = apiURL + "/" +  uid + "?style=original"
-      curlRes = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" "#{apiFullUrl}"`
-      curlRes = JSON.parse(curlRes);
-
-      uri = URI.parse(curlRes['cdn_url'])
-      filename = File.basename(uri.path)
-      # fileinfo = open(curlRes['cdn_url']) # Use this to get content type
-      data = open(curlRes['cdn_url']).read
-
-    elsif ( params.key? "url" ) && ( params.key? "name" )
-      url = params[:url]
-      uri = URI.parse(params[:url])
-      if params[:format].present?
-        filename = params[:name]+'.'+params[:format]+ File.extname(uri.path)
-      else
-        filename = params[:name]+ File.extname(uri.path)
-      end
-      data = open(url).read
+    url = params[:url]
+    uri = URI.parse(params[:url])
+    if params[:format].present?
+      filename = params[:name]+'.'+params[:format]+ File.extname(uri.path)
+    else
+      filename = params[:name]+ File.extname(uri.path)
     end
-
+    data = open(url).read
     send_data data, disposition: 'attachment', filename: filename
   end
 

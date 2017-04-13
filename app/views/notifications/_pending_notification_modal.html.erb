@@ -1,0 +1,25 @@
+<div id="pending_pop_up" class="modal fade pending" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">&times;</button>
+        <h4 class="modal-title">
+          <span class="thumb notification_calender" style="background: #1d2939; margin-right: 4px;">
+            <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-arrow-right.svg" alt="Reminder">
+          </span>
+          Account Transfer Approval Required
+        </h4>
+      </div>
+      <div class="modal-body">
+        Details of the notification:<br>
+        <%=pending_account_notifications["created_at"].to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%><br><br>
+        Account Transfer Approval Required.</br>
+        <%= pending_account_notifications["account"]["name"] %>
+      </div>
+      <div class="modal-footer">
+        <%=link_to account_path(pending_account_notifications["account"]["id"]), class: 'btn btn-xs btn-default mr5 pull-right' do%>Go To Account<%end%>
+        <a href="<%= notifications_path %>" class="btn btn-xs btn-default mr5 pull-right">Go To Notification Page</a>
+      </div>
+    </div>
+  </div>
+</div>

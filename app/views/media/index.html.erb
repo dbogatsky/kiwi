@@ -78,7 +78,7 @@
                           <li><a class="rename-media-file" data-id= '<%=media.id%>' data-name='<%=media.name%>' href="#"><i class="fa fa-pencil"></i> Edit</a></li>
                         <% end %>
 
-                        <li><a target="_blank" href="<%=download_file_by_uid_path(media.uid)%>"><i class="fa fa-download"></i> Download</a></li>
+                        <li><a target="_blank" href="<%=download_file_path(cdn_url, media.name)%>"><i class="fa fa-download"></i> Download</a></li>
 
                         <% if can? :media_management, Medium %>
                           <li><a class="trash-media" data-id='<%=media.id%>' href="javascript:void(0)"><i class="fa fa-trash-o"></i> Delete</a></li>
@@ -559,7 +559,7 @@
             var checkbox = '<div class="ckbox ckbox-default" style="display: none;"><input class="media-checked" type="checkbox" value="'+value.id+'" id="check'+index+'" uid="'+ value.uid +'"><label for="check'+index+'"></label></div>';
             // <li><a class="share-media" href="#" data-img="'+value.cdn_url+'"><i class="fa fa-share"></i> Share</a></li>
 
-            var shareDropdown = '<div class="btn-group fm-group" style="display: none;"><button data-toggle="dropdown" class="btn btn-default dropdown-toggle fm-toggle" type="button"><span class="caret"></span></button><ul role="menu" class="dropdown-menu fm-menu"><li><a class="email-media-file" href="javascript:void(0)"><i class="fa fa-envelope-o"></i> Email</a></li><li><a href="javascript:void(0);" class="rename-media-file" data-id="'+value.id+'" data-name="'+value.name+'"><i class="fa fa-pencil"></i> Edit</a></li><li><a target="_blank" href="media/download_file/' + value.uid + '"><i class="fa fa-download"></i> Download</a></li><li><a href="javascript:void(0);" class="trash-media" data-id="'+value.id+'"><i class="fa fa-trash-o"></i> Delete</a></li></ul></div>';
+            var shareDropdown = '<div class="btn-group fm-group" style="display: none;"><button data-toggle="dropdown" class="btn btn-default dropdown-toggle fm-toggle" type="button"><span class="caret"></span></button><ul role="menu" class="dropdown-menu fm-menu"><li><a class="email-media-file" href="javascript:void(0)"><i class="fa fa-envelope-o"></i> Email</a></li><li><a href="javascript:void(0);" class="rename-media-file" data-id="'+value.id+'" data-name="'+value.name+'"><i class="fa fa-pencil"></i> Edit</a></li><li><a target="_blank" href="media/download_file/' + encodeURIComponent(value.cdn_url) + '/' + value.name + '"><i class="fa fa-download"></i> Download</a></li><li><a href="javascript:void(0);" class="trash-media" data-id="'+value.id+'"><i class="fa fa-trash-o"></i> Delete</a></li></ul></div>';
 
             container = $('<div class="col-xs-6 col-sm-4 col-md-3 image media-file-'+value.id+'"><div class="thmb">'+checkbox + shareDropdown +'<div class="thmb-prev"></div></div><!-- thmb --></div>');
 

@@ -55,12 +55,12 @@
                   <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-arrow-right.svg" alt="Reminder">
                 </span>
               </td>
-              <td id="pending" class="remove_bold_<%= pending_account["account"]["id"]%>" data-pending-account-id="<%= pending_account["account"]["id"]%>" style="font-weight:bold">
+              <td id="pending" class="remove_bold_<%= pending_account["account"]["id"]%>" data-pending-account-id="<%= pending_account["account"]["id"]%>">
                 <p>Account Transfer Approval Required</br>
-                <%= pending_account["account"]["name"] %> (<%= pending_account["account"]["id"] %>)</p>
+                <%= pending_account["account"]["name"] %></p>
               </td>
-              <td class="remove_bold_<%= pending_account["account"]["id"]%>" style="font-weight:bold">
-                <%=Chronic.parse(pending_account["created_at"]).in_time_zone(current_user.time_zone).strftime("%b %d at %l:%M %p")%>
+              <td class="remove_bold_<%= pending_account["account"]["id"]%>" >
+                <%=Chronic.parse(pending_account["account"]["created_at"]).in_time_zone(current_user.time_zone).strftime("%b %d at %l:%M %p")%>
               </td>
               <td class="remove_bold_<%= pending_account["account"]["id"]%>" >
                 <i class="fa fa-exclamation-circle tooltips mr10" data-toggle="tooltip" data-original-title="Unread" ></i>
@@ -99,7 +99,7 @@
 			            <span class="thumb notification_calender" style="background: #f0ca45;">
 			              <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-bell.svg" alt="Reminder">
 			            </span>
-			          <%elsif notification.type == 'meeting_reminder' ||  notification.type == 'meeting'%>
+			          <%elsif notification.type == 'meeting_reminder'%>
 				          <span class="thumb notification_calender" style="background:#1cc7c2;">
 				            <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-calendar.svg" alt="Meeting">
 				          </span>
