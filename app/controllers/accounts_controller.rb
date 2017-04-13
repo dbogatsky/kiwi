@@ -588,6 +588,9 @@ class AccountsController < ApplicationController
         @result = true
       end
     end
+    unless params[:destroy].present?
+      @result = nil
+    end
     @attachments = item.media
     @item_id = item.id
     @account_conversation_id = c_id

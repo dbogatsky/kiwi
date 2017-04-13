@@ -2,7 +2,9 @@ $(".list_of_attachment").html("<%=j render 'accounts/list_of_conversation_level_
 <%if @result == true%>
    $('#media_' + '<%= @attachment_id %>').remove();
    $('#preloader').hide();
-<%else%>
+<%elsif @result == false%>
    $(".file-error-pop-up-modal-form").modal('show');
+   $('#preloader').hide();
+<%else%>
    $('#preloader').hide();
 <%end%>
