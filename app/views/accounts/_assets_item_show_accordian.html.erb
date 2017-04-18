@@ -88,8 +88,10 @@
                               checked_value_arr = []
                               <%checked_value = (asset.properties.try(:attributes).present?) ?  asset.properties.attributes[key] : []%>
                                 <%unless checked_value.blank?%>
-                                  <%checked_value.each do |cv|%>
-                                    checked_value_arr.push('<%=cv%>')
+                                  <% if checked_value.class ==  Array %>
+                                    <%checked_value.each do |cv|%>
+                                      checked_value_arr.push('<%=cv%>')
+                                    <%end%>
                                   <%end%>
                                 <%end%>
                               <%value['values'].each do |k,v|%>
