@@ -1,5 +1,5 @@
 <%if @response_code%>
   var account_id = "<%= params[:account_id]%>"
-  $('#accept_deny_button_'+account_id).html('<b>Action Selected:</b> Accept');
+  $('#accept_deny_button_'+account_id).html('<b>Action Selected:</b> Accept <br> <strong class="text-success">Transfer Completed...</strong>');
   $("#preloader").hide();
 <%end%>
