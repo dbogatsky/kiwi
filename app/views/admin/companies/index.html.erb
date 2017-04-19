@@ -38,6 +38,9 @@
                       <td><%= company.locale == 'en' ? 'English' : '' %></td>
                       <td><%= company.time_zone %></td>
                       <td class="table-action">
+                        <%=link_to admin_company_swuser_path(company.id) do %>
+                          <i class="fa fa-user"></i>
+                        <% end %>
                         <%=link_to admin_company_path(company.id) do %>
                           <i class="fa fa-eye"></i>
                         <% end %>

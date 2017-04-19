@@ -48,6 +48,9 @@ class Admin::CompaniesController < Admin::AdminController
     redirect_to admin_companies_path
   end
 
+  def swuser
+
+  end
 
   private
 

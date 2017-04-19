@@ -14,6 +14,7 @@ Rails.application.routes.draw do
           delete :delete_asset
         end
       end
+      get '/swuser', to: 'companies#swuser', as: :swuser
     end
   end
 
