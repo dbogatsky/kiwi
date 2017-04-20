@@ -4,18 +4,23 @@
       <div class="modal-header">
         <button aria-hidden="true" data-dismiss="modal" class="close" type="button">&times;</button>
         <h4 class="modal-title">
-          <%if  notification[:type] == 'reminder'%>
+          <% if @item.is_a?(ActiveResource::Collection) && @item[0].present? %>
+            <%if  notification[:type] == 'reminder'%>
+              <span style="background: #f0ca45; margin-right: 4px;" class="thumb notification_calender">
+                <img alt="Reminder" src="/assets/vertical-timeline/img/cd-icon-bell.svg" class="thumb-img">
+              </span><%= @item[0].title == nil ? "Click to see Details" : @item[0].title %>
+            <%elsif  notification[:type] == 'meeting_reminder' || notification[:type] == 'meeting'%>
+              <span class="thumb notification_calender" style="background:#1cc7c2; margin-right: 4px;">
+                <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-calendar.svg" alt="Meeting">
+              </span><%= @item[0].title == nil ? "Click to see Details" : @item[0].title %>
+            <%elsif  notification[:type] == 'account_status_change'%>
+              <span class="thumb notification_calender" style="background: #333; margin-right: 4px;">
+                <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-briefcase.svg" alt="Reminder">
+              </span><%= @item.name %>
+            <%end%>
+          <%else%>
             <span style="background: #f0ca45; margin-right: 4px;" class="thumb notification_calender">
-              <img alt="Reminder" src="/assets/vertical-timeline/img/cd-icon-bell.svg" class="thumb-img">
-            </span><%= @item[0].title == nil ? "Click to see Details" : @item[0].title %>
-          <%elsif  notification[:type] == 'meeting_reminder' || notification[:type] == 'meeting'%>
-            <span class="thumb notification_calender" style="background:#1cc7c2; margin-right: 4px;">
-              <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-calendar.svg" alt="Meeting">
-            </span><%= @item[0].title == nil ? "Click to see Details" : @item[0].title %>
-          <%elsif  notification[:type] == 'account_status_change'%>
-            <span class="thumb notification_calender" style="background: #333; margin-right: 4px;">
-              <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-briefcase.svg" alt="Reminder">
-            </span><%= @item.name %>
+            <img alt="Reminder" src="/assets/vertical-timeline/img/cd-icon-bell.svg" class="thumb-img"></span>Sorry, related item has been deleted
           <%end%>
         </h4>
       </div>
@@ -62,6 +67,12 @@
           <div class="modal-footer">
             <a href="<%= notifications_path %>" class="btn btn-xs btn-default mr5 pull-right">Go To Notification Page</a>
             <%=link_to account_path(@item.id), class: 'btn btn-xs btn-default mr5 pull-right' do%>Go To Account<%end%>
+            <a href="/notifications/<%= notification[:id] %>" data-remote="true" rel="nofollow" data-method="patch" class="btn btn-xs btn-default mr5 pull-right">Marked Read</a>
+          </div>
+        <%else%>
+          <h4 class="ci_header" style="color: #333">Looks like the related item has been deleted.</h4>
+          <div class="modal-footer">
+            <a href="<%= notifications_path %>" class="btn btn-xs btn-default mr5 pull-right">Go To Notification Page</a>
             <a href="/notifications/<%= notification[:id] %>" data-remote="true" rel="nofollow" data-method="patch" class="btn btn-xs btn-default mr5 pull-right">Marked Read</a>
           </div>
         <%end%>
