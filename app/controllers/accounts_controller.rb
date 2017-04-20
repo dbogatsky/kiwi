@@ -459,7 +459,11 @@ class AccountsController < ApplicationController
     respond_to do |format|
       request.format = :html if request.format.symbol == :mobile
       format.html {redirect_to @path}
-      format.js
+      if params[:info].present?
+        format.js
+      else
+        format.js {render js: 'window.location.reload()'}
+      end
     end
   end
 
