@@ -413,7 +413,7 @@ class AccountsController < ApplicationController
     end
     # render js: 'window.location.reload()'
     respond_to do |format|
-      format.js
+      format.js {render js: 'window.location.reload()'}
     end
   end
 
