@@ -49,7 +49,10 @@ class Admin::CompaniesController < Admin::AdminController
   end
 
   def swuser
-
+    result = BoUser.impersonate(params[:c_id], params[:u_id])
+    response = result.body
+    data = JSON.parse(response)
+    redirect_to user_login_path(data)
   end
 
   private
