@@ -52,7 +52,14 @@ class Admin::CompaniesController < Admin::AdminController
     result = BoUser.impersonate(params[:c_id], params[:u_id])
     response = result.body
     data = JSON.parse(response)
-    redirect_to user_login_path(data)
+
+    session[:user_id] = data["user_id"]
+    session[:token] = data["token"]
+    set_tenant_subdomain(data["subdomain"])
+    set_current_user
+    @superadmin_email = nil
+
+    redirect_to("#{data["subdomain"]}.#{request.domain}#{ ":#{request.port}" unless request.port == 80 }")
   end
 
   private
