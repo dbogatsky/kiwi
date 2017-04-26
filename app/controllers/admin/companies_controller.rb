@@ -48,6 +48,20 @@ class Admin::CompaniesController < Admin::AdminController
     redirect_to admin_companies_path
   end
 
+  def swuser
+    result = BoUser.impersonate(params[:c_id], params[:u_id])
+    response = result.body
+    data = JSON.parse(response)
+
+    session[:user_id] = data["user_id"]
+    session[:token] = data["token"]
+    session[:subdomain] = data["subdomain"]
+    set_tenant_subdomain(data["subdomain"])
+    set_current_user
+    @superadmin_email = nil
+
+    redirect_to dashboard_path if current_user.present?
+  end
 
   private
 

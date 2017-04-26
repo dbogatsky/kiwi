@@ -17,6 +17,8 @@ Rails.application.routes.draw do
     end
   end
 
+  get "/admin/companies/:c_id/swuser", to: 'admin/companies#swuser', as: :swuser
+
   post '/login', to: 'login#login'
   get '/login', to: 'login#index', as: :user_login
 

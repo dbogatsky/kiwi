@@ -113,6 +113,9 @@
                   <td><%=user.roles.present? ? user.roles.last.name : ''%></td>
                   <td><%=user.entity.present? ? user.entity.name : 'N/A' %></td>
                   <td class="table-action">
+                    <%=link_to swuser_path(c_id: @company.id, u_id: user.id), data: {confirm: "Switch to this user?\n\nUser: #{user.first_name} #{user.last_name}\nEmail: #{user.email}\nRole: #{user.roles.last.name}\nEntity: #{user.entity.present? ? user.entity.name : 'N/A'}"} do %>
+                      <i class="fa fa-user"></i>
+                    <% end %>
                     <%=link_to edit_admin_company_user_path(company_id: @company.id, id: user.id) do %>
                       <i class="fa fa-pencil"></i>
                     <% end %>
