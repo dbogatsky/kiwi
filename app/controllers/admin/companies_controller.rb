@@ -55,11 +55,12 @@ class Admin::CompaniesController < Admin::AdminController
 
     session[:user_id] = data["user_id"]
     session[:token] = data["token"]
-    set_tenant_subdomain(data["subdomain"])
+    session[:subdomain] = data["subdomain"]
+    #set_tenant_subdomain(data["subdomain"])
     set_current_user
     @superadmin_email = nil
 
-    redirect_to("#{data["subdomain"]}.#{request.domain}#{ ":#{request.port}" unless request.port == 80 }")
+    redirect_to dashboard_path
   end
 
   private

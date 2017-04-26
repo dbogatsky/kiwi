@@ -146,7 +146,9 @@ class ApplicationController < ActionController::Base
   end
 
   def get_tenant_by_subdomain
-    if request.subdomains.any?
+    if session[:subdomain].present?
+      RequestStore.store[:tenant] = session[:subdomain]
+    elsif request.subdomains.any?
       # RequestStore.store[:tenant] = "acme"
       RequestStore.store[:tenant] = request.subdomain
     else
@@ -218,6 +220,7 @@ class ApplicationController < ActionController::Base
       session[:user_preferences] = nil
       session[:company_settings] = nil
       session[:selected_user] = nil
+      session[:subdomain] = nil
       current_user = nil
       redirect_to root_path
     end

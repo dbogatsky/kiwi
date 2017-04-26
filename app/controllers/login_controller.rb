@@ -93,6 +93,7 @@ class LoginController < ApplicationController
     session[:user_preferences] = nil
     session[:company_settings] = nil
     session[:selected_user] = nil
+    session[:subdomain] = nil
     current_user.logout unless current_user.nil?
     redirect_to root_path
   end
