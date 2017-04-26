@@ -56,7 +56,7 @@ class Admin::CompaniesController < Admin::AdminController
     session[:user_id] = data["user_id"]
     session[:token] = data["token"]
     session[:subdomain] = data["subdomain"]
-    #set_tenant_subdomain(data["subdomain"])
+    set_tenant_subdomain(data["subdomain"])
     set_current_user
     @superadmin_email = nil
 

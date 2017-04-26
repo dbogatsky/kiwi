@@ -209,7 +209,6 @@ class ApplicationController < ActionController::Base
     @current_user ||= User.find(session[:user_id], reload: true)
     rescue ActiveResource::ServerError => e
       retry unless (tries -= 1).zero?
-
     unless @current_user.nil?
       @current_user.id = session[:user_id]
       Time.zone = @current_user.time_zone
@@ -222,7 +221,6 @@ class ApplicationController < ActionController::Base
       session[:selected_user] = nil
       session[:subdomain] = nil
       current_user = nil
-      redirect_to root_path
     end
   end
 
