@@ -60,7 +60,7 @@ class Admin::CompaniesController < Admin::AdminController
     set_current_user
     @superadmin_email = nil
 
-    redirect_to dashboard_path
+    redirect_to dashboard_path if current_user.present?
   end
 
   private

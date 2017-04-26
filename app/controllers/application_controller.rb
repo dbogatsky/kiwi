@@ -221,6 +221,7 @@ class ApplicationController < ActionController::Base
       session[:selected_user] = nil
       session[:subdomain] = nil
       current_user = nil
+      redirect_to root_path
     end
   end
 
