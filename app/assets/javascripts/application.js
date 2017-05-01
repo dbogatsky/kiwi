@@ -78,6 +78,7 @@
 //= require intlTelInput
 //= require libphonenumber/utils
 
+//= require media
 
 $.webshims.setOptions('basePath', '/assets/webshims/shims/')
 $.webshims.polyfill('forms')
