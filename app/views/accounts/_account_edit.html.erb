@@ -72,36 +72,144 @@
                 <%type = 'text'%>
                 <%cls = ''%>
               <%end%>
-              <div class="form-group">
+             <!--  <div class="form-group">
                 <input type="hidden" name="account[contacts_attributes][<%= current_contact.id %>][id]" value="<%= current_contact.id %>" >
                 <label class="col-sm-1 control-label">Name<span class="asterisk">*</span></label>
                 <div class="col-sm-2">
-                  <%= c.input_field :name, { required: true, label: 'Contact', name: "account[contacts_attributes][#{current_contact.id}][name]", class: "form-control", :value => current_contact.name, :id => "account_contacts_attributes_name_#{current_contact.id}", placeholder: "contact name" } %>
+                  <%#= c.input_field :name, { required: true, label: 'Contact', name: "account[contacts_attributes][#{current_contact.id}][name]", class: "form-control", :value => current_contact.name, :id => "account_contacts_attributes_name_#{current_contact.id}", placeholder: "contact name" } %>
                 </div>
 
                 <label class="col-sm-1 control-label">Type<span class="asterisk">*</span></label>
                 <div class="col-sm-2">
-                  <%= c.select( :type, options_for_select(Contact::CONTACT_TYPES, current_contact.type), {}, { :class => "input-sm background_color type_select", :name => "account[contacts_attributes][#{current_contact.id}][type]", :id => "account_contacts_attributes_type_#{current_contact.id}" } ) %>
+                  <%#= c.select( :type, options_for_select(Contact::CONTACT_TYPES, current_contact.type), {}, { :class => "input-sm background_color type_select", :name => "account[contacts_attributes][#{current_contact.id}][type]", :id => "account_contacts_attributes_type_#{current_contact.id}" } ) %>
                 </div>
 
                 <label class="col-sm-1 control-label">Value<span class="asterisk">*</span></label>
-                <%if current_contact.type == 'phone' || current_contact.type == 'fax' || current_contact.type == 'mobile'%>
+                <%#if current_contact.type == 'phone' || current_contact.type == 'fax' || current_contact.type == 'mobile'%>
                   <div class="col-sm-3 phone_div">
-                    <%= c.input_field :value, { required: true, label: 'Value', name: "account[contacts_attributes][#{current_contact.id}][value]", type: 'tel' , class: "form-control phone_type_validate phone_validate", :value => current_contact.value, :id => "account_contacts_attributes_value_#{current_contact.id}" } %>
+                    <%#= c.input_field :value, { required: true, label: 'Value', name: "account[contacts_attributes][#{current_contact.id}][value]", type: 'tel' , class: "form-control phone_type_validate phone_validate", :value => current_contact.value, :id => "account_contacts_attributes_value_#{current_contact.id}" } %>
                   </div>
                   <div class="col-sm-3 without_phone_div hidden">
-                    <%= c.input_field :value, {label: 'Value', name: "account[contacts_attributes][#{current_contact.id}][value]", type: 'text' , class: "form-control type_validate", disabled: true, :id => "account_contacts_attributes_value_#{current_contact.id}" } %>
+                    <%#= c.input_field :value, {label: 'Value', name: "account[contacts_attributes][#{current_contact.id}][value]", type: 'text' , class: "form-control type_validate", disabled: true, :id => "account_contacts_attributes_value_#{current_contact.id}" } %>
                   </div>
-                <%else%>
+                <%#else%>
                   <div class="col-sm-3 phone_div" style="display:none">
-                    <%= c.input_field :value, {label: 'Value', name: "account[contacts_attributes][#{current_contact.id}][value]", type: 'tel' , class: "form-control phone_type_validate phone_validate",:id => "account_contacts_attributes_value_#{current_contact.id}", disabled: true } %>
+                    <%#= c.input_field :value, {label: 'Value', name: "account[contacts_attributes][#{current_contact.id}][value]", type: 'tel' , class: "form-control phone_type_validate phone_validate",:id => "account_contacts_attributes_value_#{current_contact.id}", disabled: true } %>
                   </div>
                   <div class="col-sm-3 without_phone_div">
-                    <%= c.input_field :value, { required: true, label: 'Value', name: "account[contacts_attributes][#{current_contact.id}][value]", type: type , class: "form-control type_validate #{cls}", :value => current_contact.value, :id => "account_contacts_attributes_value_#{current_contact.id}" } %>
+                    <%#= c.input_field :value, { required: true, label: 'Value', name: "account[contacts_attributes][#{current_contact.id}][value]", type: type , class: "form-control type_validate #{cls}", :value => current_contact.value, :id => "account_contacts_attributes_value_#{current_contact.id}" } %>
                   </div>
-                <%end%>
+                <%#end%>
                 <div class="col-sm-1"><button class="remove-contact-button btn btn-danger btn-xs">Remove</button></div>
+              </div> -->
+
+              <!-- New design -->
+              <div class="row">
+                <div class="col-md-8" style="margin-left: 140px;">
+                  <div class="table-responsive">
+                    <table class="table mb30">
+                      <thead>
+                        <tr>
+                          <th colspan="2"><h4 class="person-name"><%= current_contact.name %><a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="<%= current_contact.name %>"><i class="fa fa-edit" style="padding-left: 10px;"></i></a></h4></th>
+                          <th></th>
+                          <th><h4></h4></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <%if current_contact.type == 'phone'%>
+                          <tr>
+                            <td></td>
+                            <td style="font-size: 16px;"><i class="fa fa-phone"></i></td>
+                            <td><%= current_contact.value %></td>
+                            <td class="table-action">
+                              <a href="#"><i class="fa fa-pencil"></i></a>
+                              <a href="#" class="delete-row"><i class="fa fa-trash-o"></i></a>
+                            </td>
+                          </tr>
+                        <%end%>
+                        <%if current_contact.type == 'mobile'%>
+                          <tr>
+                            <td></td>
+                            <td style="font-size: 16px;"><i class="fa fa-mobile"></i></td>
+                            <td><%= current_contact.value %></td>
+                            <td class="table-action">
+                              <a href="#"><i class="fa fa-pencil"></i></a>
+                              <a href="#" class="delete-row"><i class="fa fa-trash-o"></i></a>
+                            </td>
+                          </tr>
+                        <%end%>
+                        <%if current_contact.type == 'fax'%>
+                          <tr>
+                            <td></td>
+                            <td style="font-size: 16px;"><i class="fa fa-fax"></i></td>
+                            <td><%= current_contact.value %></td>
+                            <td class="table-action">
+                              <a href="#"><i class="fa fa-pencil"></i></a>
+                              <a href="#" class="delete-row"><i class="fa fa-trash-o"></i></a>
+                            </td>
+                          </tr>
+                        <%end%>
+                        <%if current_contact.type == 'website'%>
+                          <tr>
+                            <td></td>
+                            <td style="font-size: 16px;"><i class="fa fa-globe"></i></td>
+                            <td><%= current_contact.value %></td>
+                            <td class="table-action">
+                              <a href="#"><i class="fa fa-pencil"></i></a>
+                              <a href="#" class="delete-row"><i class="fa fa-trash-o"></i></a>
+                            </td>
+                          </tr>
+                        <%end%>
+                        <%if current_contact.type == 'email'%>
+                          <tr>
+                            <td></td>
+                            <td style="font-size: 16px;"><i class="fa fa-envelope-o"></i></td>
+                            <td><%= current_contact.value %>/td>
+                            <td class="table-action">
+                              <a href="#"><i class="fa fa-pencil"></i></a>
+                              <a href="#" class="delete-row"><i class="fa fa-trash-o"></i></a>
+                            </td>
+                          </tr>
+                        <%end%>
+                        <%if current_contact.type == 'facebook'%>
+                          <tr>
+                            <td></td>
+                            <td style="font-size: 16px;"><i class="fa fa-facebook"></i></td>
+                            <td><%= current_contact.value %></td>
+                            <td class="table-action">
+                              <a href="#"><i class="fa fa-pencil"></i></a>
+                              <a href="#" class="delete-row"><i class="fa fa-trash-o"></i></a>
+                            </td>
+                          </tr>
+                        <%end%>
+                        <%if current_contact.type == 'twitter'%>
+                          <tr>
+                            <td></td>
+                            <td style="font-size: 16px;"><i class="fa fa-twitter"></i></td>
+                            <td><%= current_contact.value %></td>
+                            <td class="table-action">
+                              <a href="#"><i class="fa fa-pencil"></i></a>
+                              <a href="#" class="delete-row"><i class="fa fa-trash-o"></i></a>
+                            </td>
+                          </tr>
+                        <%end%>
+                        <%if current_contact.type == 'youtube'%>
+                          <tr>
+                            <td></td>
+                            <td style="font-size: 16px;"><i class="fa fa-youtube"></i></td>
+                            <td><%= current_contact.value %></td>
+                            <td class="table-action">
+                              <a href="#"><i class="fa fa-pencil"></i></a>
+                              <a href="#" class="delete-row"><i class="fa fa-trash-o"></i></a>
+                            </td>
+                          </tr>
+                        <%end%>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               </div>
+
             <% end %>
           </div>
         <% end %>
