@@ -94,7 +94,17 @@
                       <img src="<%=cdn_url%>" class="img-responsive" alt="" />
                     <%end%>
                   <% elsif media.document? %>
-                    <%= image_tag("photos/media-doc.png", class:"img-responsive") %>
+                    <% if media.doc_word? %>
+                      <%= image_tag("photos/Microsoft_Word_2013_logo.png", class:"img-responsive") %>
+                    <% elsif media.doc_excel? %>
+                      <%= image_tag("photos/Microsoft_Excel_2013_logo.png", class:"img-responsive") %>
+                    <% elsif media.doc_ppt? %>
+                      <%= image_tag("photos/Microsoft_PowerPoint_2013_logo.png", class:"img-responsive") %>
+                    <% elsif media.doc_pdf? %>
+                      <%= image_tag("photos/Gnome-x-office-document-PDF.png", class:"img-responsive") %>
+                    <% else %>
+                      <%= image_tag("photos/media-doc.png", class:"img-responsive") %>
+                    <% end %>
                   <% elsif media.audio? %>
                     <%= image_tag("photos/media-audio.png", class:"img-responsive") %>
                   <% elsif media.video? %>
