@@ -93,6 +93,14 @@ class AccountsController < ApplicationController
     puts "RECEIVED PARAMS = #{account_params}"
     # Create new account
     if params.key?(:save)
+      # Workaround - Set :company_entity_id for Entity Admins
+      if params[:account][:assign_to].present?
+        assigned_user = User.find(account_params["assign_to"].to_i)
+        if assigned_user.try(:roles).try(:first).try(:id) == 2 && assigned_user.try(:roles).try(:first).try(:name) == "Entity Admin"
+          params[:account][:company_entity_id] = assigned_user.entity.try(:id)
+        end
+      end
+
       params[:account][:contacts_attributes] = params[:account][:contacts_attributes].values
       params[:account][:properties] = params[:account][:properties].to_json
       @account = Account.new(request: :create, account: account_params)
@@ -1628,7 +1636,7 @@ class AccountsController < ApplicationController
 
   def account_params
     params.require(:account).permit(
-      :name, :status_id, :properties, :contact_name, :expected_sales, :contact_title, :assign_to, :shared_with, :about, :quick_facts, :avatar,
+      :name, :status_id, :properties, :contact_name, :expected_sales, :contact_title, :assign_to, :company_entity_id, :shared_with, :about, :quick_facts, :avatar,
       addresses_attributes: [:id, :name, :street_address, :suite_number, :postcode, :city, :region, :latitude, :longitude, :country, :_destroy],
       contacts_attributes: [:id, :type, :name, :value, :_destroy]
     )
