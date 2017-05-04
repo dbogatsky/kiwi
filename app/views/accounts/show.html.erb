@@ -537,7 +537,7 @@
     %>
     <% @contact_names = ""
       @contact_names<<'<option value="" selected="selected">Select one</option>'
-      @account.contacts.each{|x| x.name}.uniq{|t| t.name}.each{|x| @contact_names << '<option value="'+x.name+'">'+x.name+'</option>'}
+      @account.contacts.each{|x| x.name}.uniq{|t| t.name}.each{|x| @contact_names << '<option value="'+x.name+'">'+x.name+'</option>' if x.name.present?}
       @contact_names<<'<option value="other">Other</option>'
     %>
 
