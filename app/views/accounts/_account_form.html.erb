@@ -66,10 +66,10 @@
 
       <div class="tab-pane" id="vtab3">
         <p class="mb20" align="center">Below you can add contacts for the account.  For any additional contacts click the "add contact" button below.<br />
-        <div class="contact-form-wrap">
-        <div class="contact-element" style="padding-bottom: 10px;">
-          <%= f.simple_fields_for :contacts_attributes do |c| %>
-            <% t = Time.now.to_i %>
+        <!-- <div class="contact-form-wrap">
+        <div class="contact-element" style="padding-bottom: 10px;"> -->
+          <%#= f.simple_fields_for :contacts_attributes do |c| %>
+            <%# t = Time.now.to_i %>
             <!-- <div class="form-group">
               <label class="col-sm-1 control-label">Name<span class="asterisk">*</span></label>
               <div class="col-sm-2">
@@ -91,9 +91,9 @@
               </div>
             </div> -->
             <%= render 'contact_details_modal', f: f %>
-          <% end %>
-        </div>
-        </div>
+          <%# end %>
+        <!-- </div>
+        </div> -->
         <!-- <button class="add-contact-button btn btn-success btn-xs">Add Contact</button> -->
         <button class="btn btn-success btn-xs" data-toggle="modal" data-target=".contact-details-modal-form" type="button">Add Contact</button>
 
@@ -237,66 +237,66 @@
   // });
 
 
-    var max_fields      = 20; //maximum input boxes allowed
-    var wrapper         = $(".contact-form-wrap"); //Fields wrapper
-    var add_button      = $(".add-contact-button"); //Add button ID
+    // var max_fields      = 20; //maximum input boxes allowed
+    // var wrapper         = $(".contact-form-wrap"); //Fields wrapper
+    // var add_button      = $(".add-contact-button"); //Add button ID
 
-    <%
+    <%#
       @contact_types = ""
       Contact::CONTACT_TYPES.each { |x| @contact_types << '<option value="'+x+'">'+x+'</option>' }
     %>
 
 
-    var x = 1; //initlal text box count
-    $(add_button).click(function(e){ //on add input button click
-      e.preventDefault();
-      if(x < max_fields){ //max input box allowed
-          x++; //text box increment
-          //$(wrapper).append('<div><input type="text" name="mytext[]"/><a href="#" class="remove_field">Remove</a></div>'); //add input box
-          //alert("HTML to add = " + $(".contact-element:first").html());
-          //<button class="remove-contact-button btn btn-danger btn-xs">Remove</button>
-          t = (new Date()).getTime();
-          str_html = '\
-          <div class="contact-element" id="contact-element-'+x+'" style="padding-bottom: 10px;">\
-            <div class="form-group">\
-              <label class="col-sm-1 control-label">Name<span class="asterisk">*</span></label>\
-              <div class="col-sm-2">\
-                <input label="Contact" name="account[contacts_attributes]['+t+'][name]" class="form-control" required id="account_contacts_attributes_name_'+x+'" type="text" placeholder="contact name">\
-              </div>\
-              <label class="col-sm-1 control-label">Type<span class="asterisk">*</span></label>\
-              <div class="col-sm-2">\
-                <select class="input-sm background_color type_select" id="account_contacts_attributes_type_'+x+'" name="account[contacts_attributes]['+t+'][type]"><%= raw(@contact_types) %></select>\
-              </div>\
-              <label class="col-sm-1 control-label">Value<span class="asterisk">*</span></label>\
-              <div class="col-sm-3 phone_div">\
-                <input label="Value" name="account[contacts_attributes]['+t+'][value]" class="form-control phone_type_validate phone_validate" required id="account_contacts_attributes_value_'+x+'" type="tel">\
-              </div>\
-              <div class="col-sm-3 without_phone_div hidden">\
-                <input label="Value" name="account[contacts_attributes]['+t+'][value]" class="form-control type_validate" disabled id="account_contacts_attributes_value_'+x+'" type="text"  placeholder="contact value">\
-              </div>\
-              <div class="col-sm-1"><button class="remove-contact-button btn btn-danger btn-xs">Remove</button></div>\
-            </div>\
-          </div>';
-          $(wrapper).append(str_html);
-          // $("#account_contacts_attributes_type_"+x).select2({ width: '100%'});
-          //$('#account_contacts_attributes_value_'+x).rules('add', { required: true });
-          /*$('input[id="account_contacts_attributes_value_'+x+'"]').rules("add", {  // <- apply rule to new field
-            required: true
-          });*/
-        $('.work_emp_name').each(function () {
-          $(this).rules("add", {
-            required: true
-          });
-        });
-      }
-      phone_validate();
-    });
+    // var x = 1; //initlal text box count
+    // $(add_button).click(function(e){ //on add input button click
+    //   e.preventDefault();
+    //   if(x < max_fields){ //max input box allowed
+    //       x++; //text box increment
+    //       //$(wrapper).append('<div><input type="text" name="mytext[]"/><a href="#" class="remove_field">Remove</a></div>'); //add input box
+    //       //alert("HTML to add = " + $(".contact-element:first").html());
+    //       //<button class="remove-contact-button btn btn-danger btn-xs">Remove</button>
+    //       t = (new Date()).getTime();
+    //       str_html = '\
+    //       <div class="contact-element" id="contact-element-'+x+'" style="padding-bottom: 10px;">\
+    //         <div class="form-group">\
+    //           <label class="col-sm-1 control-label">Name<span class="asterisk">*</span></label>\
+    //           <div class="col-sm-2">\
+    //             <input label="Contact" name="account[contacts_attributes]['+t+'][name]" class="form-control" required id="account_contacts_attributes_name_'+x+'" type="text" placeholder="contact name">\
+    //           </div>\
+    //           <label class="col-sm-1 control-label">Type<span class="asterisk">*</span></label>\
+    //           <div class="col-sm-2">\
+    //             <select class="input-sm background_color type_select" id="account_contacts_attributes_type_'+x+'" name="account[contacts_attributes]['+t+'][type]"><%= raw(@contact_types) %></select>\
+    //           </div>\
+    //           <label class="col-sm-1 control-label">Value<span class="asterisk">*</span></label>\
+    //           <div class="col-sm-3 phone_div">\
+    //             <input label="Value" name="account[contacts_attributes]['+t+'][value]" class="form-control phone_type_validate phone_validate" required id="account_contacts_attributes_value_'+x+'" type="tel">\
+    //           </div>\
+    //           <div class="col-sm-3 without_phone_div hidden">\
+    //             <input label="Value" name="account[contacts_attributes]['+t+'][value]" class="form-control type_validate" disabled id="account_contacts_attributes_value_'+x+'" type="text"  placeholder="contact value">\
+    //           </div>\
+    //           <div class="col-sm-1"><button class="remove-contact-button btn btn-danger btn-xs">Remove</button></div>\
+    //         </div>\
+    //       </div>';
+    //       $(wrapper).append(str_html);
+    //       // $("#account_contacts_attributes_type_"+x).select2({ width: '100%'});
+    //       //$('#account_contacts_attributes_value_'+x).rules('add', { required: true });
+    //       /*$('input[id="account_contacts_attributes_value_'+x+'"]').rules("add", {  // <- apply rule to new field
+    //         required: true
+    //       });*/
+    //     $('.work_emp_name').each(function () {
+    //       $(this).rules("add", {
+    //         required: true
+    //       });
+    //     });
+    //   }
+    //   phone_validate();
+    // });
 
-    $(wrapper).on("click",".remove-contact-button", function(e){ //user click on remove text
-        e.preventDefault();
-        //$(this).parent('div').remove(); x--;
-        $(this).closest('div.contact-element').remove(); x--;
-    })
+    // $(wrapper).on("click",".remove-contact-button", function(e){ //user click on remove text
+    //     e.preventDefault();
+    //     //$(this).parent('div').remove(); x--;
+    //     $(this).closest('div.contact-element').remove(); x--;
+    // })
 
   //$("#street_number").click(function(event){
    $('#subpremise, #locality, #administrative_area_level_1, #postal_code ').attr('readonly', false);
