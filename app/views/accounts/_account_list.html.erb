@@ -47,7 +47,7 @@
                       <% counter = 0 %>
                       <% account.contacts.each do |contact, index| %>
                         <% if contact.type.eql? "phone"  or  contact.type.eql? "mobile"  or  contact.type.eql? "fax" %>
-                          <abbr title="<%= contact.name.capitalize %>" style="color:#666;"><i class="fa fa-<%= contact.icon_name %>"></i></abbr>&nbsp;<a href="tel:<%= contact.value.delete(" ").delete("-") %>"><%=(contact.value.include?',') ? contact.value.gsub(',','x') : contact.value%></a><br />
+                          <abbr title="<%= contact.name.capitalize if contact.name.present? %>" style="color:#666;"><i class="fa fa-<%= contact.icon_name %>"></i></abbr>&nbsp;<a href="tel:<%= contact.value.delete(" ").delete("-") %>"><%=(contact.value.include?',') ? contact.value.gsub(',','x') : contact.value%></a><br />
                           <% counter += 1 %>
                         <% end %>
                         <% if (counter > 2) %>
