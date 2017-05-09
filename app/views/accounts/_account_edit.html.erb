@@ -55,166 +55,132 @@
       </div>
 
       <div class="tab-pane" id="vtab3">
-        <div class="contact-form-wrap">
-        <% @contacts.each do |current_contact| %>
-          <div class="contact-element" data-id="<%= current_contact.id %>"  style="padding-bottom: 10px;">
-            <%= f.simple_fields_for :contacts_attributes do |c| %>
-              <%if current_contact.type == 'email'%>
-                <%type = 'email'%>
-                <%cls = ''%>
-              <%elsif current_contact.type == 'website' || current_contact.type == 'facebook' || current_contact.type == 'youtube'%>
-                <%type = 'text'%>
-                <%cls = 'url_validate'%>
-              <%elsif current_contact.type == 'phone' || current_contact.type == 'fax' || current_contact.type == 'mobile'%>
-                <%type = 'text'%>
-                <%cls = "phone_validate"%>
-              <%else%>
-                <%type = 'text'%>
-                <%cls = ''%>
-              <%end%>
-             <!--  <div class="form-group">
-                <input type="hidden" name="account[contacts_attributes][<%= current_contact.id %>][id]" value="<%= current_contact.id %>" >
-                <label class="col-sm-1 control-label">Name<span class="asterisk">*</span></label>
-                <div class="col-sm-2">
-                  <%#= c.input_field :name, { required: true, label: 'Contact', name: "account[contacts_attributes][#{current_contact.id}][name]", class: "form-control", :value => current_contact.name, :id => "account_contacts_attributes_name_#{current_contact.id}", placeholder: "contact name" } %>
-                </div>
-
-                <label class="col-sm-1 control-label">Type<span class="asterisk">*</span></label>
-                <div class="col-sm-2">
-                  <%#= c.select( :type, options_for_select(Contact::CONTACT_TYPES, current_contact.type), {}, { :class => "input-sm background_color type_select", :name => "account[contacts_attributes][#{current_contact.id}][type]", :id => "account_contacts_attributes_type_#{current_contact.id}" } ) %>
-                </div>
-
-                <label class="col-sm-1 control-label">Value<span class="asterisk">*</span></label>
-                <%#if current_contact.type == 'phone' || current_contact.type == 'fax' || current_contact.type == 'mobile'%>
-                  <div class="col-sm-3 phone_div">
-                    <%#= c.input_field :value, { required: true, label: 'Value', name: "account[contacts_attributes][#{current_contact.id}][value]", type: 'tel' , class: "form-control phone_type_validate phone_validate", :value => current_contact.value, :id => "account_contacts_attributes_value_#{current_contact.id}" } %>
-                  </div>
-                  <div class="col-sm-3 without_phone_div hidden">
-                    <%#= c.input_field :value, {label: 'Value', name: "account[contacts_attributes][#{current_contact.id}][value]", type: 'text' , class: "form-control type_validate", disabled: true, :id => "account_contacts_attributes_value_#{current_contact.id}" } %>
-                  </div>
-                <%#else%>
-                  <div class="col-sm-3 phone_div" style="display:none">
-                    <%#= c.input_field :value, {label: 'Value', name: "account[contacts_attributes][#{current_contact.id}][value]", type: 'tel' , class: "form-control phone_type_validate phone_validate",:id => "account_contacts_attributes_value_#{current_contact.id}", disabled: true } %>
-                  </div>
-                  <div class="col-sm-3 without_phone_div">
-                    <%#= c.input_field :value, { required: true, label: 'Value', name: "account[contacts_attributes][#{current_contact.id}][value]", type: type , class: "form-control type_validate #{cls}", :value => current_contact.value, :id => "account_contacts_attributes_value_#{current_contact.id}" } %>
-                  </div>
-                <%#end%>
-                <div class="col-sm-1"><button class="remove-contact-button btn btn-danger btn-xs">Remove</button></div>
-              </div> -->
+        <!-- <div class="contact-form-wrap">
+        <%# @contacts.each do |current_contact| %>
+          <div class="contact-element" data-id="<%#= current_contact.id %>"  style="padding-bottom: 10px;"> -->
+            <%#= f.simple_fields_for :contacts_attributes do |c| %>
 
               <!-- New design -->
               <div class="row">
                 <div class="col-md-8" style="margin-left: 140px;">
                   <div class="table-responsive">
                     <table class="table mb30">
-                      <thead>
-                        <tr>
-                          <th colspan="2"><h4 class="person-name"><%= current_contact.name %><a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="<%= current_contact.name %>"><i class="fa fa-edit" style="padding-left: 10px;"></i></a></h4></th>
-                          <th></th>
-                          <th><h4></h4></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <%if current_contact.type == 'phone'%>
+                      <% @contacts.group_by{|x| x.name!=@contacts}[true].group_by{|x| x.name }.each do |cont| %>
+                        <thead>
                           <tr>
-                            <td></td>
-                            <td style="font-size: 16px;"><i class="fa fa-phone"></i></td>
-                            <td><%= current_contact.value %></td>
-                            <td class="table-action">
-                              <a href="#"><i class="fa fa-pencil"></i></a>
-                              <a href="#" class="delete-row"><i class="fa fa-trash-o"></i></a>
-                            </td>
+                            <th colspan="2"><h4 class="person-name"><%= cont[0] %>
+                            <a href="#" class="tooltips" data-toggle="modal" data-target="#contact-modal" data-placement="top" title="" data-original-title="<%= cont[0] %>" id="edit-contact"><i class="fa fa-edit" style="padding-left: 10px;"></i></a></h4></th>
+                            <th></th>
+                            <th><h4></h4></th>
                           </tr>
+                        </thead>
+                        <% cont.flatten[1..cont[1].length].each do |current_contact|%>
+                          <tbody>
+                            <%if current_contact.type == 'phone'%>
+                              <tr>
+                                <td></td>
+                                <td style="font-size: 16px;"><i class="fa fa-phone"></i></td>
+                                <td><%= current_contact.value %></td>
+                                <td class="table-action">
+                                  <a href="#" data-toggle="modal" data-target="#edit-contact-modal" ><i class="fa fa-pencil"></i></a>
+                                  <a href="#" class="delete-row"><i class="fa fa-trash-o"></i></a>
+                                </td>
+                              </tr>
+                            <%end%>
+                            <%if current_contact.type == 'mobile'%>
+                              <tr>
+                                <td></td>
+                                <td style="font-size: 16px;"><i class="fa fa-mobile"></i></td>
+                                <td><%= current_contact.value %></td>
+                                <td class="table-action">
+                                  <a href="#" data-toggle="modal" data-target="#edit-contact-modal"><i class="fa fa-pencil"></i></a>
+                                  <a href="#" class="delete-row"><i class="fa fa-trash-o"></i></a>
+                                </td>
+                              </tr>
+                            <%end%>
+                            <%if current_contact.type == 'fax'%>
+                              <tr>
+                                <td></td>
+                                <td style="font-size: 16px;"><i class="fa fa-fax"></i></td>
+                                <td><%= current_contact.value %></td>
+                                <td class="table-action">
+                                  <a href="#" data-toggle="modal" data-target="#edit-contact-modal"><i class="fa fa-pencil"></i></a>
+                                  <a href="#" class="delete-row"><i class="fa fa-trash-o"></i></a>
+                                </td>
+                              </tr>
+                            <%end%>
+                            <%if current_contact.type == 'website'%>
+                              <tr>
+                                <td></td>
+                                <td style="font-size: 16px;"><i class="fa fa-globe"></i></td>
+                                <td><%= current_contact.value %></td>
+                                <td class="table-action">
+                                  <a href="#" data-toggle="modal" data-target="#edit-contact-modal"><i class="fa fa-pencil"></i></a>
+                                  <a href="#" class="delete-row"><i class="fa fa-trash-o"></i></a>
+                                </td>
+                              </tr>
+                            <%end%>
+                            <%if current_contact.type == 'email'%>
+                              <tr>
+                                <td></td>
+                                <td style="font-size: 16px;"><i class="fa fa-envelope-o"></i></td>
+                                <td><%= current_contact.value %></td>
+                                <td class="table-action">
+                                  <a href="#" data-toggle="modal" data-target="#edit-contact-modal"><i class="fa fa-pencil"></i></a>
+                                  <a href="#" class="delete-row"><i class="fa fa-trash-o"></i></a>
+                                </td>
+                              </tr>
+                            <%end%>
+                            <%if current_contact.type == 'facebook'%>
+                              <tr>
+                                <td></td>
+                                <td style="font-size: 16px;"><i class="fa fa-facebook"></i></td>
+                                <td><%= current_contact.value %></td>
+                                <td class="table-action">
+                                  <a href="#" data-toggle="modal" data-target="#edit-contact-modal"><i class="fa fa-pencil"></i></a>
+                                  <a href="#" class="delete-row"><i class="fa fa-trash-o"></i></a>
+                                </td>
+                              </tr>
+                            <%end%>
+                            <%if current_contact.type == 'twitter'%>
+                              <tr>
+                                <td></td>
+                                <td style="font-size: 16px;"><i class="fa fa-twitter"></i></td>
+                                <td><%= current_contact.value %></td>
+                                <td class="table-action">
+                                  <a href="#" data-toggle="modal" data-target="#edit-contact-modal"><i class="fa fa-pencil"></i></a>
+                                  <a href="#" class="delete-row"><i class="fa fa-trash-o"></i></a>
+                                </td>
+                              </tr>
+                            <%end%>
+                            <%if current_contact.type == 'youtube'%>
+                              <tr>
+                                <td></td>
+                                <td style="font-size: 16px;"><i class="fa fa-youtube"></i></td>
+                                <td><%= current_contact.value %></td>
+                                <td class="table-action">
+                                  <a href="#" data-toggle="modal" data-target="#edit-contact-modal"><i class="fa fa-pencil"></i></a>
+                                  <a href="#" class="delete-row"><i class="fa fa-trash-o"></i></a>
+                                </td>
+                              </tr>
+                            <%end%>
+                          </tbody>
                         <%end%>
-                        <%if current_contact.type == 'mobile'%>
-                          <tr>
-                            <td></td>
-                            <td style="font-size: 16px;"><i class="fa fa-mobile"></i></td>
-                            <td><%= current_contact.value %></td>
-                            <td class="table-action">
-                              <a href="#"><i class="fa fa-pencil"></i></a>
-                              <a href="#" class="delete-row"><i class="fa fa-trash-o"></i></a>
-                            </td>
-                          </tr>
-                        <%end%>
-                        <%if current_contact.type == 'fax'%>
-                          <tr>
-                            <td></td>
-                            <td style="font-size: 16px;"><i class="fa fa-fax"></i></td>
-                            <td><%= current_contact.value %></td>
-                            <td class="table-action">
-                              <a href="#"><i class="fa fa-pencil"></i></a>
-                              <a href="#" class="delete-row"><i class="fa fa-trash-o"></i></a>
-                            </td>
-                          </tr>
-                        <%end%>
-                        <%if current_contact.type == 'website'%>
-                          <tr>
-                            <td></td>
-                            <td style="font-size: 16px;"><i class="fa fa-globe"></i></td>
-                            <td><%= current_contact.value %></td>
-                            <td class="table-action">
-                              <a href="#"><i class="fa fa-pencil"></i></a>
-                              <a href="#" class="delete-row"><i class="fa fa-trash-o"></i></a>
-                            </td>
-                          </tr>
-                        <%end%>
-                        <%if current_contact.type == 'email'%>
-                          <tr>
-                            <td></td>
-                            <td style="font-size: 16px;"><i class="fa fa-envelope-o"></i></td>
-                            <td><%= current_contact.value %></td>
-                            <td class="table-action">
-                              <a href="#"><i class="fa fa-pencil"></i></a>
-                              <a href="#" class="delete-row"><i class="fa fa-trash-o"></i></a>
-                            </td>
-                          </tr>
-                        <%end%>
-                        <%if current_contact.type == 'facebook'%>
-                          <tr>
-                            <td></td>
-                            <td style="font-size: 16px;"><i class="fa fa-facebook"></i></td>
-                            <td><%= current_contact.value %></td>
-                            <td class="table-action">
-                              <a href="#"><i class="fa fa-pencil"></i></a>
-                              <a href="#" class="delete-row"><i class="fa fa-trash-o"></i></a>
-                            </td>
-                          </tr>
-                        <%end%>
-                        <%if current_contact.type == 'twitter'%>
-                          <tr>
-                            <td></td>
-                            <td style="font-size: 16px;"><i class="fa fa-twitter"></i></td>
-                            <td><%= current_contact.value %></td>
-                            <td class="table-action">
-                              <a href="#"><i class="fa fa-pencil"></i></a>
-                              <a href="#" class="delete-row"><i class="fa fa-trash-o"></i></a>
-                            </td>
-                          </tr>
-                        <%end%>
-                        <%if current_contact.type == 'youtube'%>
-                          <tr>
-                            <td></td>
-                            <td style="font-size: 16px;"><i class="fa fa-youtube"></i></td>
-                            <td><%= current_contact.value %></td>
-                            <td class="table-action">
-                              <a href="#"><i class="fa fa-pencil"></i></a>
-                              <a href="#" class="delete-row"><i class="fa fa-trash-o"></i></a>
-                            </td>
-                          </tr>
-                        <%end%>
-                      </tbody>
+                      <%end%>
                     </table>
+                    <%= render 'edit_contact_details_modal', f: f %>
                   </div>
                 </div>
               </div>
 
-            <% end %>
-          </div>
-        <% end %>
-        </div>
-        <button class="add-contact-button btn btn-success btn-xs">Add Contact</button>
+            <%# end %>
+          <!-- </div> -->
+        <%# end %>
+        <!-- </div> -->
+        <!-- <button class="add-contact-button btn btn-success btn-xs">Add Contact</button> -->
+        <!-- add new contact modal -->
+        <%= render 'contact_details_modal', f: f %>
+        <button class="btn btn-success btn-xs" data-toggle="modal" data-target=".contact-details-modal-form" type="button">Add Contact</button>
       </div>
 
       <div class="tab-pane" id="vtab4">
@@ -321,6 +287,10 @@
     }
   })
 
+  $( document ).ready(function() {
+    phone_validate();
+  });
+
   function phone_validate() {
     $(".phone_validate").intlTelInput({
       formatOnInit: true,
@@ -350,62 +320,63 @@
     width: '100%'
   });
 
-  //  $(".select2ContactTypes").select2({
-  //   width: '100%'
-  // });
+   $(".select2ContactTypes").select2({
+    width: '100%'
+  });
 
-  var max_fields      = 20; //maximum input boxes allowed
-  var wrapper         = $(".contact-form-wrap"); //Fields wrapper
-  var add_button      = $(".add-contact-button"); //Add button ID
+  // var max_fields      = 20; //maximum input boxes allowed
+  // var wrapper         = $(".contact-form-wrap"); //Fields wrapper
+  // var add_button      = $(".add-contact-button"); //Add button ID
 
-  <%
+  <%#
     @contact_types = ""
     Contact::CONTACT_TYPES.each { |x| @contact_types << '<option value="'+x+'">'+x+'</option>' }
   %>
 
   //var x = 1; //initlal text box count
-  var x = <%= @contacts.size %>; //initlal text box count
-  $(add_button).click(function(e){ //on add input button click
-    e.preventDefault();
-    if(x < max_fields){ //max input box allowed
-      x++;
+  // var x = <%= @contacts.size %>; //initlal text box count
+  // $(add_button).click(function(e){ //on add input button click
+  //   e.preventDefault();
+  //   if(x < max_fields){ //max input box allowed
+  //     x++;
 
-      t = (new Date()).getTime();
-        str_html = '\
-        <div class="contact-element" style="padding-bottom: 10px;">\
-          <div class="form-group">\
-            <label class="col-sm-1 control-label">Name<span class="asterisk">*</span></label>\
-            <div class="col-sm-2">\
-              <input label="Name" name="account[contacts_attributes]['+t+'][name]" class="form-control" required id="account_contacts_attributes_name_'+t+'" type="text" placeholder="contact name">\
-            </div>\
-            <label class="col-sm-1 control-label">Type<span class="asterisk">*</span></label>\
-            <div class="col-sm-2">\
-              <select class="input-sm background_color type_select" id="account_contacts_attributes_type_'+t+'" name="account[contacts_attributes]['+t+'][type]"><%= raw(@contact_types) %></select>\
-            </div>\
-            <label class="col-sm-1 control-label">Value<span class="asterisk">*</span></label>\
-            <div class="col-sm-3 phone_div">\
-              <input label="Value" name="account[contacts_attributes]['+t+'][value]" class="form-control phone_type_validate phone_validate" required id="account_contacts_attributes_value_'+t+'" type="tel">\
-            </div>\
-            <div class="col-sm-3 without_phone_div hidden">\
-              <input label="Value" name="account[contacts_attributes]['+t+'][value]" class="form-control type_validate" disabled id="account_contacts_attributes_value_'+t+'" type="text" placeholder="contact value">\
-            </div>\
-            <div class="col-sm-1"><button class="remove-contact-button btn btn-danger btn-xs">Remove</button></div>\
-          </div>\
-        </div>';
-        $(wrapper).append(str_html);
-        // $("#account_contacts_attributes_type_"+t).select2({ width: '100%'});
-    }
-    phone_validate();
-  });
+  //     t = (new Date()).getTime();
+  //       str_html = '\
+  //       <div class="contact-element" style="padding-bottom: 10px;">\
+  //         <div class="form-group">\
+  //           <label class="col-sm-1 control-label">Name<span class="asterisk">*</span></label>\
+  //           <div class="col-sm-2">\
+  //             <input label="Name" name="account[contacts_attributes]['+t+'][name]" class="form-control" required id="account_contacts_attributes_name_'+t+'" type="text" placeholder="contact name">\
+  //           </div>\
+  //           <label class="col-sm-1 control-label">Type<span class="asterisk">*</span></label>\
+  //           <div class="col-sm-2">\
+  //             <select class="input-sm background_color type_select" id="account_contacts_attributes_type_'+t+'" name="account[contacts_attributes]['+t+'][type]"><%= raw(@contact_types) %></select>\
+  //           </div>\
+  //           <label class="col-sm-1 control-label">Value<span class="asterisk">*</span></label>\
+  //           <div class="col-sm-3 phone_div">\
+  //             <input label="Value" name="account[contacts_attributes]['+t+'][value]" class="form-control phone_type_validate phone_validate" required id="account_contacts_attributes_value_'+t+'" type="tel">\
+  //           </div>\
+  //           <div class="col-sm-3 without_phone_div hidden">\
+  //             <input label="Value" name="account[contacts_attributes]['+t+'][value]" class="form-control type_validate" disabled id="account_contacts_attributes_value_'+t+'" type="text" placeholder="contact value">\
+  //           </div>\
+  //           <div class="col-sm-1"><button class="remove-contact-button btn btn-danger btn-xs">Remove</button></div>\
+  //         </div>\
+  //       </div>';
+  //       $(wrapper).append(str_html);
+  //       // $("#account_contacts_attributes_type_"+t).select2({ width: '100%'});
+  //   }
+  //   phone_validate();
+  // });
 
-  $(wrapper).on("click",".remove-contact-button", function(e){ //user click on remove text
-      e.preventDefault();
-      $(this).closest('div.contact-element').hide(); x--;
-      elem_id = $(this).closest('div.contact-element').data('id');
-      if(typeof(elem_id) != "undefined"){
-        $(this).closest('div.contact-element').append("<input type='hidden' name='account[contacts_attributes]["+elem_id+"][_destroy]' value='true' >");
-      }else{
-        $(this).closest('div.contact-element').remove(); x--;
-      }
-  })
+  // $(wrapper).on("click",".remove-contact-button", function(e){ //user click on remove text
+  //     e.preventDefault();
+  //     $(this).closest('div.contact-element').hide(); x--;
+  //     elem_id = $(this).closest('div.contact-element').data('id');
+  //     if(typeof(elem_id) != "undefined"){
+  //       $(this).closest('div.contact-element').append("<input type='hidden' name='account[contacts_attributes]["+elem_id+"][_destroy]' value='true' >");
+  //     }else{
+  //       $(this).closest('div.contact-element').remove(); x--;
+  //     }
+  // })
+
 </script>

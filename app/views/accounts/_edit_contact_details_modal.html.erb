@@ -1,0 +1,48 @@
+<div class="modal fade edit-contact-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" aria-hidden="true" id="edit-contact-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Edit Contact Details</h4>
+      </div><!-- modal header -->
+      <div class="modal-body">
+        <div class="panel panel-default" style="text-align: center">
+          <div class="panel-body">
+            <div class="row row-pad-5">
+              <div class="contact-form-wrap">
+                <div class="contact-element" data-id=""  style="padding-bottom: 10px;">
+                  <%= f.simple_fields_for :contacts_attributes do |c| %>
+                    <% t = Time.now.to_i %>
+                    <div class="form-group">
+                      <%= c.hidden_field :name, :name => "account[contacts_attributes][#{t}][name]", class: "contacts_attributes_name" %>
+
+                      <div class="row" id="type_value_div">
+                        <label class="col-sm-1 control-label">Type<span class="asterisk">*</span></label>
+                        <div class="col-sm-2">
+                          <%= c.select(:type, options_for_select(Contact::CONTACT_TYPES), {}, { :class => "input-sm background_color type_select", :name => "account[contacts_attributes][#{t}][type]", :id => "account_contacts_attributes_type_1" } ) %>
+                        </div>
+
+                        <label class="col-sm-1 control-label">Value<span class="asterisk">*</span></label>
+                        <div class="col-sm-6 phone_div">
+                          <%= c.input_field :value, {label: 'Value', type: 'tel', name: "account[contacts_attributes][#{t}][value]", required: true, class: "form-control phone_validate phone_type_validate"} %>
+                        </div>
+                        <div class="col-sm-6 without_phone_div hidden">
+                          <%= c.input_field :value, {label: 'Value', type: 'text', name: "account[contacts_attributes][#{t}][value]",class: "form-control type_validate", placeholder: 'contact value', disabled: true} %>
+                        </div>
+
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- panel -->
+      </div><!-- modal body -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-sm" id="btnEdit">Save</button>
+        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+      </div><!-- modal footer -->
+    </div><!-- modal content -->
+  </div><!-- modal dialog -->
+</div><!-- modal -->
+

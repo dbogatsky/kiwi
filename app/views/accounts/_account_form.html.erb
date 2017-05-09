@@ -90,11 +90,11 @@
                 <%#= c.input_field :value, {label: 'Value', type: 'text', name: "account[contacts_attributes][#{t}][value]",class: "form-control type_validate", placeholder: 'contact value', disabled: true} %>
               </div>
             </div> -->
-            <%= render 'contact_details_modal', f: f %>
           <%# end %>
         <!-- </div>
         </div> -->
         <!-- <button class="add-contact-button btn btn-success btn-xs">Add Contact</button> -->
+        <%= render 'contact_details_modal', f: f %>
         <button class="btn btn-success btn-xs" data-toggle="modal" data-target=".contact-details-modal-form" type="button">Add Contact</button>
 
       </div>
@@ -232,9 +232,9 @@
     width: '100%'
   });
 
-  //  $(".select2ContactTypes").select2({
-  //   width: '100%'
-  // });
+   $(".select2ContactTypes").select2({
+    width: '100%'
+  });
 
 
     // var max_fields      = 20; //maximum input boxes allowed
