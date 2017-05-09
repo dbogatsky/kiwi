@@ -81,7 +81,7 @@
                     <strong>Assigned To</strong>
                   </div>
                   <div class="col-xs-7">
-                    <%= (@account.assigned_to.nil? ? "Unkonwn" : "#{@account.assigned_to.first_name} #{@account.assigned_to.last_name}") %>
+                    <%= (@account.assigned_to.nil? ? "*Unassigned*" : "#{@account.assigned_to.first_name} #{@account.assigned_to.last_name}") %>
                   </div>
                 </div>
                 <div class="row bars">

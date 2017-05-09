@@ -62,7 +62,7 @@
         <% elsif @item.is_a?(Account) && @notification[:type] == 'account_status_change' %>
           <h4 class="ci_header" style="color: #333"><%= @item.name %></h4>
           <%= get_styled_status(@item, false) %>
-          <p><span class="subheading">Assigned To: &nbsp;</span><%= (@item.assigned_to.nil? ? "Unkonwn" : "#{@item.assigned_to.first_name} #{@item.assigned_to.last_name}") %></p>
+          <p><span class="subheading">Assigned To: &nbsp;</span><%= (@item.assigned_to.nil? ? "*Unassigned*" : "#{@item.assigned_to.first_name} #{@item.assigned_to.last_name}") %></p>
           <p>Account status was updated.</p>
           <div class="modal-footer">
             <a href="<%= notifications_path %>" class="btn btn-xs btn-default mr5 pull-right">Go To Notification Page</a>
