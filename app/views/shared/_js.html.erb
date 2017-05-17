@@ -604,6 +604,7 @@
     });
 
     window.gm_authFailure = function() {
+      console.log("Google Map API Key maybe no longer valid.");
       clear_googlemap_error("account_name");
       clear_googlemap_error("street_number");
       clear_googlemap_error("keyword");
