@@ -605,6 +605,7 @@ class ApplicationController < ActionController::Base
     @assets_management = application_setting['company']['settings']['private']['asset_management']
     @account_attachment = application_setting['company']['settings']['private']['account_attachment']
     @conversation_item_attachment = application_setting['company']['settings']['private']['conversation_item_attachment']
+    @googlemap_autocomplete = ( application_setting['company']['settings']['private']['googlemap_autocomplete'].nil? ) ? "on" : application_setting['company']['settings']['private']['googlemap_autocomplete']
   end
 
   def integrations_settings
