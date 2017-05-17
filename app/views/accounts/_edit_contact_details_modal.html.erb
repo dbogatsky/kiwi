@@ -31,12 +31,15 @@
                             <div class="row">
                               <input type="hidden" name="account[contacts_attributes][<%= current_contact.id %>][id]" value="<%= current_contact.id %>" >
 
-                                <label class="col-sm-1 control-label">Name<span class="asterisk">*</span></label>
-
+                              <label class="col-sm-1 control-label">Name<span class="asterisk">*</span></label>
                               <div class="col-sm-8">
                                 <%= c.input_field :name, { required: true, label: 'Contact', name: "account[contacts_attributes][#{current_contact.id}][name]", class: "form-control dis_input dis_name", :value => current_contact.name, :id => "account_contacts_attributes_name_#{current_contact.id}", placeholder: "contact name" } %>
                               </div>
                             </div>
+                          <%end%>
+                          <% if index != 0 %>
+                            <input type="hidden" name="account[contacts_attributes][<%= current_contact.id %>][id]" value="<%= current_contact.id %>" >
+                            <input type="hidden" name="account[contacts_attributes][<%= current_contact.id %>][name]" class="contacts_attributes_name dis_input">
                           <%end%>
                           <div class="row">
                             <label class="col-sm-1 control-label">Type<span class="asterisk">*</span></label>
@@ -47,17 +50,17 @@
                             <label class="col-sm-1 control-label">Value<span class="asterisk">*</span></label>
                             <%if current_contact.type == 'phone' || current_contact.type == 'fax' || current_contact.type == 'mobile'%>
                               <div class="col-sm-6 phone_div">
-                                <%= c.input_field :value, { required: true, label: 'Value', name: "account[contacts_attributes][#{current_contact.id}][value]", type: 'tel' , class: "form-control phone_type_validate phone_validate dis_input", :value => current_contact.value, :id => "account_contacts_attributes_value_#{current_contact.id}" } %>
+                                <%= c.input_field :value, { required: true, label: 'Value', name: "account[contacts_attributes][#{current_contact.id}][value]", type: 'tel' , class: "form-control phone_type_validate phone_validate dis_input", :value => current_contact.value, data_con_type: "#{current_contact.type}", :id => "account_contacts_attributes_value_#{current_contact.id}" } %>
                               </div>
                               <div class="col-sm-6 without_phone_div hidden">
-                                <%= c.input_field :value, {label: 'Value', name: "account[contacts_attributes][#{current_contact.id}][value]", type: 'text' , class: "form-control type_validate dis_input", disabled: true, :id => "account_contacts_attributes_value_#{current_contact.id}" } %>
+                                <%= c.input_field :value, {label: 'Value', name: "account[contacts_attributes][#{current_contact.id}][value]", type: 'text' , class: "form-control type_validate dis_input", data_con_type: "#{current_contact.type}", disabled: true, :id => "account_contacts_attributes_value_#{current_contact.id}" } %>
                               </div>
                             <%else%>
                               <div class="col-sm-6 phone_div" style="display:none">
-                                <%= c.input_field :value, {label: 'Value', name: "account[contacts_attributes][#{current_contact.id}][value]", type: 'tel' , class: "form-control phone_type_validate phone_validate dis_input",:id => "account_contacts_attributes_value_#{current_contact.id}", disabled: true } %>
+                                <%= c.input_field :value, {label: 'Value', name: "account[contacts_attributes][#{current_contact.id}][value]", type: 'tel' , class: "form-control phone_type_validate phone_validate dis_input",:id => "account_contacts_attributes_value_#{current_contact.id}", data_con_type: "#{current_contact.type}", disabled: true } %>
                               </div>
                               <div class="col-sm-6 without_phone_div">
-                                <%= c.input_field :value, { required: true, label: 'Value', name: "account[contacts_attributes][#{current_contact.id}][value]", type: type , class: "form-control type_validate #{cls} dis_input", :value => current_contact.value, :id => "account_contacts_attributes_value_#{current_contact.id}" } %>
+                                <%= c.input_field :value, { required: true, label: 'Value', name: "account[contacts_attributes][#{current_contact.id}][value]", type: type , class: "form-control type_validate #{cls} dis_input", :value => current_contact.value, data_con_type: "#{current_contact.type}", :id => "account_contacts_attributes_value_#{current_contact.id}" } %>
                               </div>
                             <%end%>
                             <div class="col-sm-1">
@@ -84,92 +87,3 @@
   </div><!-- modal dialog -->
 </div><!-- modal -->
 
-
-<script type="text/javascript">
-  // var max_fields      = 20; //maximum input boxes allowed
-  // var wrapper         = $(".contact-form-wrap"); //Fields wrapper
-  // var add_button      = $(".add-contact-button"); //Add button ID
-
-  <%#
-    @contact_types = ""
-    Contact::CONTACT_TYPES.each { |x| @contact_types << '<option value="'+x+'">'+x+'</option>' }
-  %>
-
-  // var x = 1; //initlal text box count
-  // $(add_button).click(function(e){ //on add input button click
-  //   e.preventDefault();
-  //   if(x < max_fields){ //max input box allowed
-  //       x++; //text box increment
-
-  //       t = (new Date()).getTime();
-  //       str_html = '\
-  //       <div class="contact-element" id="contact-element-'+x+'" style="padding-bottom: 10px;">\
-  //         <div class="form-group">\
-  //           <input type="hidden" name="account[contacts_attributes]['+t+'][name]" class="contacts_attributes_name dis_input">\
-  //           <label class="col-sm-1 control-label">Type<span class="asterisk">*</span></label>\
-  //           <div class="col-sm-2">\
-  //             <select class="input-sm background_color type_select dis_input" id="account_contacts_attributes_type_'+x+'" name="account[contacts_attributes]['+t+'][type]"><%= raw(@contact_types) %></select>\
-  //           </div>\
-  //           <label class="col-sm-1 control-label">Value<span class="asterisk">*</span></label>\
-  //           <div class="col-sm-6 phone_div">\
-  //             <input label="Value" name="account[contacts_attributes]['+t+'][value]" class="form-control phone_type_validate phone_validate dis_input" required id="account_contacts_attributes_value_'+x+'" type="tel">\
-  //           </div>\
-  //           <div class="col-sm-6 without_phone_div hidden">\
-  //             <input label="Value" name="account[contacts_attributes]['+t+'][value]" class="form-control type_validate dis_input" disabled id="account_contacts_attributes_value_'+x+'" type="text"  placeholder="contact value">\
-  //           </div>\
-  //           <div class="col-sm-1"><button class="remove-contact-button btn btn-danger btn-xs">-</button></div>\
-  //         </div>\
-  //       </div>';
-  //       $(wrapper).append(str_html);
-  //       // $(this).closest(".contact-form-wrap").append(str_html);
-  //     $('.work_emp_name').each(function () {
-  //       $(this).rules("add", {
-  //         required: true
-  //       });
-  //     });
-  //   }
-  //   phone_validate();
-  // });
-
-  // $(wrapper).on("click",".remove-contact-button", function(e){ //user click on remove text
-  //   e.preventDefault();
-  //   $(this).closest('div.contact-element').hide(); x--;
-  //   elem_id = $(this).closest('div.contact-element').data('id');
-  //   if(typeof(elem_id) != "undefined"){
-  //     $(this).closest('div.contact-element').append("<input type='hidden' name='account[contacts_attributes]["+elem_id+"][_destroy]' value='true' >");
-  //   }else{
-  //     $(this).closest('div.contact-element').remove(); x--;
-  //   }
-  // })
-
-  // $('.btnEdit').click(function() {
-  //   var name  = $('#edit_name').val();
-
-  //   console.log("aa");
-
-  //   $(this).closest('.edit-contact-modal').find('.dis_input:not(:disabled)').each(function() {
-  //     var index = $(this).closest('.edit-contact-modal').data('index');
-  //     var input_val = $(this).val();
-
-  //     console.log("sss");
-  //     console.log("index");
-  //     console.log(index);
-
-  //     $('.tbody_details_'+index).remove()
-
-  //     if ($(this).attr('type')=="tel" || $(this).attr('type')=="email" || $(this).attr('type')=="text"){
-  //       $('.t_head_'+index).after("<tbody class='tbody_details'><tr><td></td><td style='font-size: 16px;''><i class='fa fa-phone'></i></td><td>"+input_val+"</td></tr></tbody>");
-  //     }
-
-  //   });
-
-
-
-
-
-  //   $('.contacts_attributes_name').val(name);
-  //   $('.edit-contact-modal').modal('hide');
-  //   console.log("edit-contact-modal");
-  // });
-
-</script>

@@ -68,11 +68,15 @@
                       <% @contacts.group_by{|x| x.name!=@contacts}[true].group_by{|x| x.name }.each_with_index do |cont, index| %>
                         <thead class="t_head_<%=index%>">
                           <tr>
-                            <th colspan="2"><h4 class="person-name"><%= cont[0] %>
-                            <a href="#" class="tooltips" data-toggle="modal" data-target="#edit-contact-modal_<%= index %>" data-placement="top" title="" data-original-title="<%= cont[0] %>" id="edit-contact"><i class="fa fa-edit" style="padding-left: 10px;"></i></a></h4></th>
+                            <th colspan="2">
+                              <h4 class="person-name">
+                                <span class="contact_name_<%=index%>">
+                                  <%= cont[0] %>
+                                </span>
+                                <a href="#" class="tooltips" data-toggle="modal" data-target="#edit-contact-modal_<%= index %>" data-placement="top" title="" data-original-title="<%= cont[0] %>" id="edit-contact"><i class="fa fa-edit" style="padding-left: 10px;"></i></a>
+                              </h4>
+                            </th>
                             <%= render 'edit_contact_details_modal', f: f, index: index, contacts: @contacts.find_all { |x| x.name == cont[0] }  %>
-                            <th></th>
-                            <th><h4></h4></th>
                           </tr>
                         </thead>
                         <% cont.flatten[1..cont[1].length].each do |current_contact|%>
@@ -82,10 +86,6 @@
                                 <td></td>
                                 <td style="font-size: 16px;"><i class="fa fa-phone"></i></td>
                                 <td><%= current_contact.value %></td>
-                                <td class="table-action">
-                                  <a href="#" data-toggle="modal" data-target="#edit-contact-modal" ><i class="fa fa-pencil"></i></a>
-                                  <a href="#" class="delete-row"><i class="fa fa-trash-o"></i></a>
-                                </td>
                               </tr>
                             <%end%>
                             <%if current_contact.type == 'mobile'%>
@@ -93,10 +93,6 @@
                                 <td></td>
                                 <td style="font-size: 16px;"><i class="fa fa-mobile"></i></td>
                                 <td><%= current_contact.value %></td>
-                                <td class="table-action">
-                                  <a href="#" data-toggle="modal" data-target="#edit-contact-modal"><i class="fa fa-pencil"></i></a>
-                                  <a href="#" class="delete-row"><i class="fa fa-trash-o"></i></a>
-                                </td>
                               </tr>
                             <%end%>
                             <%if current_contact.type == 'fax'%>
@@ -104,10 +100,6 @@
                                 <td></td>
                                 <td style="font-size: 16px;"><i class="fa fa-fax"></i></td>
                                 <td><%= current_contact.value %></td>
-                                <td class="table-action">
-                                  <a href="#" data-toggle="modal" data-target="#edit-contact-modal"><i class="fa fa-pencil"></i></a>
-                                  <a href="#" class="delete-row"><i class="fa fa-trash-o"></i></a>
-                                </td>
                               </tr>
                             <%end%>
                             <%if current_contact.type == 'website'%>
@@ -115,10 +107,6 @@
                                 <td></td>
                                 <td style="font-size: 16px;"><i class="fa fa-globe"></i></td>
                                 <td><%= current_contact.value %></td>
-                                <td class="table-action">
-                                  <a href="#" data-toggle="modal" data-target="#edit-contact-modal"><i class="fa fa-pencil"></i></a>
-                                  <a href="#" class="delete-row"><i class="fa fa-trash-o"></i></a>
-                                </td>
                               </tr>
                             <%end%>
                             <%if current_contact.type == 'email'%>
@@ -126,10 +114,6 @@
                                 <td></td>
                                 <td style="font-size: 16px;"><i class="fa fa-envelope-o"></i></td>
                                 <td><%= current_contact.value %></td>
-                                <td class="table-action">
-                                  <a href="#" data-toggle="modal" data-target="#edit-contact-modal"><i class="fa fa-pencil"></i></a>
-                                  <a href="#" class="delete-row"><i class="fa fa-trash-o"></i></a>
-                                </td>
                               </tr>
                             <%end%>
                             <%if current_contact.type == 'facebook'%>
@@ -137,10 +121,6 @@
                                 <td></td>
                                 <td style="font-size: 16px;"><i class="fa fa-facebook"></i></td>
                                 <td><%= current_contact.value %></td>
-                                <td class="table-action">
-                                  <a href="#" data-toggle="modal" data-target="#edit-contact-modal"><i class="fa fa-pencil"></i></a>
-                                  <a href="#" class="delete-row"><i class="fa fa-trash-o"></i></a>
-                                </td>
                               </tr>
                             <%end%>
                             <%if current_contact.type == 'twitter'%>
@@ -148,10 +128,6 @@
                                 <td></td>
                                 <td style="font-size: 16px;"><i class="fa fa-twitter"></i></td>
                                 <td><%= current_contact.value %></td>
-                                <td class="table-action">
-                                  <a href="#" data-toggle="modal" data-target="#edit-contact-modal"><i class="fa fa-pencil"></i></a>
-                                  <a href="#" class="delete-row"><i class="fa fa-trash-o"></i></a>
-                                </td>
                               </tr>
                             <%end%>
                             <%if current_contact.type == 'youtube'%>
@@ -159,10 +135,6 @@
                                 <td></td>
                                 <td style="font-size: 16px;"><i class="fa fa-youtube"></i></td>
                                 <td><%= current_contact.value %></td>
-                                <td class="table-action">
-                                  <a href="#" data-toggle="modal" data-target="#edit-contact-modal"><i class="fa fa-pencil"></i></a>
-                                  <a href="#" class="delete-row"><i class="fa fa-trash-o"></i></a>
-                                </td>
                               </tr>
                             <%end%>
                           </tbody>
@@ -343,17 +315,17 @@
         str_html = '\
         <div class="contact-element" id="contact-element-'+x+'" style="padding-bottom: 10px;">\
           <div class="form-group">\
-            <input type="hidden" name="account[contacts_attributes]['+t+'][name]" class="contacts_attributes_name dis_input">\
+            <input type="hidden" name="account[contacts_attributes]['+t+'][name]" class="dis_input hid_name">\
             <label class="col-sm-1 control-label">Type<span class="asterisk">*</span></label>\
             <div class="col-sm-2">\
-              <select class="input-sm background_color type_select dis_input" id="account_contacts_attributes_type_'+x+'" name="account[contacts_attributes]['+t+'][type]"><%= raw(@contact_types) %></select>\
+              <select class="input-sm background_color type_select dis_input ddl_type" id="account_contacts_attributes_type_'+x+'" name="account[contacts_attributes]['+t+'][type]" selected=""><%= raw(@contact_types) %></select>\
             </div>\
             <label class="col-sm-1 control-label">Value<span class="asterisk">*</span></label>\
             <div class="col-sm-6 phone_div">\
-              <input label="Value" name="account[contacts_attributes]['+t+'][value]" class="form-control phone_type_validate phone_validate dis_input" required id="account_contacts_attributes_value_'+x+'" type="tel">\
+              <input label="Value" name="account[contacts_attributes]['+t+'][value]" class="form-control phone_type_validate phone_validate dis_input set_cont_type" data_con_type="phone" required id="account_contacts_attributes_value_'+x+'" type="tel">\
             </div>\
             <div class="col-sm-6 without_phone_div hidden">\
-              <input label="Value" name="account[contacts_attributes]['+t+'][value]" class="form-control type_validate dis_input" disabled id="account_contacts_attributes_value_'+x+'" type="text"  placeholder="contact value">\
+              <input label="Value" name="account[contacts_attributes]['+t+'][value]" class="form-control type_validate dis_input set_cont_type" disabled id="account_contacts_attributes_value_'+x+'" type="text" data_con_type="phone" placeholder="contact value">\
             </div>\
             <div class="col-sm-1"><button class="remove-contact-button btn btn-danger btn-xs">-</button></div>\
           </div>\
@@ -366,6 +338,16 @@
         });
       });
     }
+
+    // set conttact type to contact table
+    $('.ddl_type').on('change', function(){
+      // var ddl_cont_type = $(this).parent().parent('.form-group').find('.set_cont_type:not(:disabled)')
+      var val = $(this).val();
+      $(this).parent().parent('.form-group').find('.set_cont_type:not(:disabled)').attr("data_con_type", val)
+
+      // $('.set_cont_type').attr("data_con_type", ddl_cont_type)
+    });
+
     phone_validate();
   });
 
@@ -380,57 +362,64 @@
       }
   })
 
+
   // --------- Modal js --------------
 
   $('.btnEdit').click(function() {
-    var name  = $('#edit_name').val();
 
-    console.log("aa");
+    var mod_index = $(this).closest('.edit-contact-modal').data('index');
+    $('.tbody_details_'+mod_index).remove();
 
+    var hid_name  = $(this).closest('.edit-contact-modal').find('.dis_name').val();
+    $('.hid_name').val(hid_name);
+    $('.contact_name_'+mod_index).text(hid_name);
 
-    // table head for name
-
-    // $(this).closest('.edit-contact-modal').find('.dis_name:not(:disabled)').each(function() {
-    //   var index = $(this).closest('.edit-contact-modal').data('index');
-    //   var input_name = $(this).val();
-
-    //   console.log("table head for name");
-    //   console.log("index");
-    //   console.log(index);
-
-    //   $('.t_head_'+index).replaceWith("<thead class='t_head'><tr><th>"+input_name+"</th></tr></thead>");
-
-    //   // $('.tbody_details_'+index).remove()
-
-    //   // if ($(this).attr('type')=="tel" || $(this).attr('type')=="email" || $(this).attr('type')=="text"){
-    //   // }
-
-    // });
-
-
-    // table body for type and value
 
     $(this).closest('.edit-contact-modal').find('.dis_input:not(:disabled)').each(function() {
       var index = $(this).closest('.edit-contact-modal').data('index');
       var input_val = $(this).val();
 
-      console.log("sss");
-      console.log("index");
-      console.log(index);
-
-      $('.tbody_details_'+index).remove()
+      var class_name = 'tbody_details_'+index
 
       if ($(this).attr('type')=="tel" || $(this).attr('type')=="email" || $(this).attr('type')=="text"){
-        $('.t_head_'+index).after("<tbody class='tbody_details'><tr><td></td><td style='font-size: 16px;''><i class='fa fa-phone'></i></td><td>"+input_val+"</td></tr></tbody>");
+        if (!$(this).hasClass('dis_name')){
+
+          var con_type = $(this).attr('data_con_type')
+
+          if (con_type!=undefined){
+            if (con_type == "phone") {
+              var cont_icon = 'fa fa-phone'
+            } else if (con_type == "mobile") {
+              var cont_icon = 'fa fa-mobile'
+            } else if (con_type == "fax") {
+              var cont_icon = 'fa fa-fax'
+            } else if (con_type == "website") {
+              var cont_icon = 'fa fa-globe'
+            } else if (con_type == "email") {
+              var cont_icon = 'fa fa-envelope-o'
+            } else if (con_type == "facebook") {
+              var cont_icon = 'fa fa-facebook'
+            } else if (con_type == "twitter") {
+              var cont_icon = 'fa fa-twitter'
+            } else if (con_type == "youtube") {
+              var cont_icon = 'fa fa-youtube'
+            } else {
+              var cont_icon = 'fa fa-user'
+            }
+          }
+
+          $('.t_head_'+index).after("<tbody class="+class_name+"><tr><td></td><td style='font-size: 16px;'><i class='"+cont_icon+"'></i></td><td>"+input_val+"</td></tr></tbody>");
+        }
       }
 
     });
 
 
-
+    // set value to hidden field in modal
+    var name  = $('.dis_name').val();
     $('.contacts_attributes_name').val(name);
     $('.edit-contact-modal').modal('hide');
-    console.log("edit-contact-modal");
+
   });
 
 </script>
