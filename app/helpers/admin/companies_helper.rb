@@ -8,4 +8,8 @@ module Admin::CompaniesHelper
     return [['On', 'on'],['Off','off']]
   end
 
+  def googlemap_autocomplete_select_options
+    return [['On', 'on'],['Off','off']]
+  end
+
 end

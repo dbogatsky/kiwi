@@ -2,7 +2,16 @@
 <script>
   mobile = '<%=mobile?%>'
   $(document).ready(function() {
+
+    function clear_googlemap_error(element_name) {
+      $("#"+element_name).removeAttr('placeholder');
+      $("#"+element_name).removeAttr('disabled');
+      $("#"+element_name).removeClass('gm-err-autocomplete');
+      $("#"+element_name).css('background-image', 'none');
+    }
+
     function address_auto_fill(e){
+    <% if @googlemap_autocomplete == 'on' || superadmin_logged_in? %>
       var componentForm = {
         street_number: 'short_name',
         sublocality_level_1: 'short_name',
@@ -97,6 +106,7 @@
             }
         });
       }
+    <% end %>
     }
 
     if(mobile == 'true'){
@@ -594,6 +604,14 @@
         }
       }
     });
+
+    window.gm_authFailure = function() {
+      console.log("Google Map API Key maybe no longer valid.");
+      clear_googlemap_error("account_name");
+      clear_googlemap_error("street_number");
+      clear_googlemap_error("keyword");
+      $("#googlemap_api_key_warning").show();
+    };
   });
 </script>
 <!-- end of shared javascript -->
