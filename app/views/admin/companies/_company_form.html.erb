@@ -49,14 +49,14 @@
             <div class="form-group">
               <label class="col-sm-offset-2 col-sm-2 control-label">Address 2</label>
               <div class="col-sm-4">
-               <%= text_field_tag 'company[addresses_attributes][0][suite_number]' , @address.try(:suite_number), wrapper: :wizard_horizontal_form, class: 'form-control',id: 'subpremise', readonly: true%>
+               <%= text_field_tag 'company[addresses_attributes][0][suite_number]' , @address.try(:suite_number), wrapper: :wizard_horizontal_form, class: 'form-control',id: 'subpremise', readonly: false%>
               </div>
             </div>
 
             <div class="form-group">
               <label class="col-sm-offset-2 col-sm-2 control-label">City<span class="asterisk">*</span></label>
               <div class="col-sm-4">
-               <%= text_field_tag 'company[addresses_attributes][0][city]', @address.try(:city), wrapper: :wizard_horizontal_form, class: 'form-control', required: true, id: 'locality', readonly: true%>
+               <%= text_field_tag 'company[addresses_attributes][0][city]', @address.try(:city), wrapper: :wizard_horizontal_form, class: 'form-control', required: true, id: 'locality', readonly: false%>
               </div>
             </div>
             <div class="form-group">
@@ -74,7 +74,7 @@
             <div class="form-group">
               <label class="col-sm-offset-2 col-sm-2 control-label">Country<span class="asterisk">*</span></label>
               <div class="col-sm-4">
-              <%=country_select("company[addresses_attributes][0]", 'country', {priority_countries: ["GB", "FR", "DE"], selected: @address.try(:country) }, {class: 'form-control', prompt: "Select Country", required: true, id: 'country', readonly: true})%>
+              <%=country_select("company[addresses_attributes][0]", 'country', {priority_countries: ["GB", "FR", "DE"], selected: @address.try(:country) }, {class: 'form-control', prompt: "Select Country", required: true, id: 'country', readonly: false})%>
               </div>
             </div>
             <%=hidden_field_tag 'company[addresses_attributes][0][id]',@address.try(:id)%>

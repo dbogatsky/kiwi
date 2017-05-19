@@ -6,6 +6,29 @@
     <div class="row row-pad-5">
       <div class="col-md-12 mb20">
         <!-- Nav tabs -->
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <div class="panel-btns">
+              <a href="" class="minimize">−</a>
+            </div><!-- panel-btns -->
+            <h3 class="panel-title">General Application Settings</h3>
+          </div>
+          <div class="panel-body">
+            <div class="tab-pane" id="authentication">
+              <div class="row row-pad-5">
+                <div class="form-group">
+                  <label class="col-sm-4 control-label">Google Map Autocomplete</label>
+                  <div class="col-sm-4">
+                    <%=select_tag('googlemap_autocomplete',options_for_select(googlemap_autocomplete_select_options, selected: @googlemap_autocomplete), prompt: '-select-', class: "form-control")%>
+                  <p id="googlemap_api_key_warning" style="display: none; color: red; font-size: 9px;"><strong>Warning:</strong> Google Map API Key maybe no longer valid.  Please renew if neccessary.</p>
+                  </div>
+                </div>
+              </div><!-- row pad 5-->
+            </div>
+          </div>
+        </div>
+
         <div class="panel panel-default">
           <div class="panel-heading">
             <div class="panel-btns">

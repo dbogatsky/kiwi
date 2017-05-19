@@ -63,7 +63,7 @@
 			  </span>
 			  <h2 class="ci_header"><%= @item.name %></h2>
 			  <%= get_styled_status(@item, false) %>
-			  <p><span class="subheading">Assigned To: &nbsp;</span><%= (@item.assigned_to.nil? ? "Unkonwn" : "#{@item.assigned_to.first_name} #{@item.assigned_to.last_name}") %></p>
+			  <p><span class="subheading">Assigned To: &nbsp;</span><%= (@item.assigned_to.nil? ? "*Unassigned*" : "#{@item.assigned_to.first_name} #{@item.assigned_to.last_name}") %></p>
 			  <p>Account status was updated.</p>
 			  <div class="row ci_footer">
 			    <div class="col-sm-10">
