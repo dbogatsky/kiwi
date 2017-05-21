@@ -5,7 +5,7 @@
           <% if item.type.eql? 'meeting' %>
             <%= render "conversation_meeting_show",info: nil, created_by: item.created_by, :citem => item  %>
           <%elsif item.type.eql? 'note'%>
-            <%= render "conversation_notes_show", :citem => item%>
+            <%= render "conversation_notes_show", :citem => item %>
           <%elsif item.type.eql? 'email'%>
             <%= render "conversation_email_show", :citem => item %>
           <%elsif item.type.eql? 'call'%>

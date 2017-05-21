@@ -18,7 +18,12 @@
       <% if (citem.scheduled_at.present?) %>
         <i class="fa fa-bell"></i><%= citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %><br/>
       <% end %>
-      <i class="fa fa-user tooltips mr10" data-toggle="tooltip" data-original-title="Created by"></i><%=citem.created_by.try(:first_name)%> <%=citem.created_by.try(:last_name)%>
+      <i class="fa fa-user tooltips mr10" data-toggle="tooltip" data-original-title="Created by"></i>
+      <% if citem.created_by.present? %>
+        <%=citem.created_by.try(:first_name)%> <%=citem.created_by.try(:last_name)%>
+      <% else %>
+        Deleted User
+      <% end %><br />
     </div>
   </div>
 </div>
