@@ -292,9 +292,9 @@
     width: '100%'
   });
 
-  $(".select2ContactTypes").select2({
-    width: '100%'
-  });
+  // $(".select2ContactTypes").select2({
+  //   width: '100%'
+  // });
 
   var max_fields          = 20; //maximum input boxes allowed
   var wrapper             = $(".contact-form-wrap"); //Fields wrapper
@@ -392,7 +392,6 @@
     var hid_name  = $(this).closest('.edit-contact-modal').find('.dis_name').val();
     $('.contact_name_'+mod_index).text(hid_name);
 
-
     $(this).closest('.edit-contact-modal').find('.dis_input:not(:disabled)').each(function() {
       var index = $(this).closest('.edit-contact-modal').data('index');
       var input_val = $(this).val();
@@ -438,7 +437,6 @@
 
   // Check empty modal field
   $('.form_finish_btn').on("click", function() {
-    console.log("check empty function");
     var c_name = $.trim($('.c_name').val());
     var c_value = $.trim($('.c_value').val());
     if (c_name == "" && c_value == ""){
