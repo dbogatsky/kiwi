@@ -187,7 +187,7 @@
     <ul class="pager wizard">
       <li class="previous"><a href="javascript:void(0)">Previous</a></li>
       <li class="next"><a href="javascript:void(0)" class="account_next">Next</a></li>
-      <li class="next finish" style="display:none;"><a href="javascript:;">Finish</a></li>
+      <li class="next finish form_finish" style="display:none;"><a href="javascript:;">Finish</a></li>
     </ul>
 
   </div><!-- #validationWizard -->
@@ -253,105 +253,9 @@
     width: '100%'
   });
 
-  $(".select2ContactTypes").select2({
-    width: '100%'
-  });
-
-
-  var max_fields      = 20; //maximum input boxes allowed
-  var wrapper         = $(".contact-form-wrap"); //Fields wrapper
-  var add_button      = $(".add-contact-button"); //Add button ID
-
-  <%
-    @contact_types = ""
-    Contact::CONTACT_TYPES.each { |x| @contact_types << '<option value="'+x+'">'+x+'</option>' }
-  %>
-
-  var x = 1; //initlal text box count
-  $(add_button).click(function(e){ //on add input button click
-    e.preventDefault();
-    if(x < max_fields){ //max input box allowed
-        x++; //text box increment
-
-        t = (new Date()).getTime();
-        str_html = '\
-        <div class="contact-element" id="contact-element-'+x+'" style="padding-bottom: 10px;">\
-          <div class="form-group">\
-            <input type="hidden" name="account[contacts_attributes]['+t+'][name]" class="contacts_attributes_name">\
-            <label class="col-sm-1 control-label">Type<span class="asterisk">*</span></label>\
-            <div class="col-sm-2">\
-              <select class="input-sm background_color type_select" id="account_contacts_attributes_type_'+x+'" name="account[contacts_attributes]['+t+'][type]"><%= raw(@contact_types) %></select>\
-            </div>\
-            <label class="col-sm-1 control-label">Value<span class="asterisk">*</span></label>\
-            <div class="col-sm-6 phone_div">\
-              <input label="Value" name="account[contacts_attributes]['+t+'][value]" class="form-control phone_type_validate phone_validate cont_value" required id="account_contacts_attributes_value_'+x+'" type="tel">\
-            </div>\
-            <div class="col-sm-6 without_phone_div hidden">\
-              <input label="Value" name="account[contacts_attributes]['+t+'][value]" class="form-control type_validate cont_value" disabled id="account_contacts_attributes_value_'+x+'" type="text"  placeholder="contact value">\
-            </div>\
-            <div class="col-sm-1"><button class="remove-contact-button btn btn-danger btn-xs">-</button></div>\
-          </div>\
-        </div>';
-        $(wrapper).append(str_html);
-
-      $('.work_emp_name').each(function () {
-        $(this).rules("add", {
-          required: true
-        });
-      });
-
-    }
-    phone_validate();
-  });
-
-  $(wrapper).on("click",".remove-contact-button", function(e){ //user click on remove text
-      e.preventDefault();
-      //$(this).parent('div').remove(); x--;
-      $(this).closest('div.contact-element').remove(); x--;
-  })
-
-  // new contact modal save button js
-  $('.btnSave').click(function() {
-    var name  = $('#edit_name').val();
-    $('.contacts_attributes_name').val(name);
-    $('.contact_name').text(name);
-
-    // for each type and value
-    var i = 1;
-    $('.contact-element').each(function(){
-
-      var con_type = $('#contact-element-'+i).find(".type_select  option:selected").val();
-      var cont_value = $('#contact-element-'+i).find('.cont_value:not(:disabled)').val();
-
-      if (con_type!=undefined){
-        if (con_type == "phone") {
-          var cont_icon = 'fa fa-phone'
-        } else if (con_type == "mobile") {
-          var cont_icon = 'fa fa-mobile'
-        } else if (con_type == "fax") {
-          var cont_icon = 'fa fa-fax'
-        } else if (con_type == "website") {
-          var cont_icon = 'fa fa-globe'
-        } else if (con_type == "email") {
-          var cont_icon = 'fa fa-envelope-o'
-        } else if (con_type == "facebook") {
-          var cont_icon = 'fa fa-facebook'
-        } else if (con_type == "twitter") {
-          var cont_icon = 'fa fa-twitter'
-        } else if (con_type == "youtube") {
-          var cont_icon = 'fa fa-youtube'
-        } else {
-          var cont_icon = 'fa fa-user'
-        }
-      }
-
-      $('.tbody_details').append("<tr><td></td><td style='font-size: 16px;'><i class='"+cont_icon+"'></i></td><td>"+cont_value+"</td></tr>");
-      i++;
-    });
-
-    // modal hide
-    $('.contact-details-modal-form').modal('hide');
-  });
+  // $(".select2ContactTypes").select2({
+  //   width: '100%'
+  // });
 
 
   //$("#street_number").click(function(event){

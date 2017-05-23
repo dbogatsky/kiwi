@@ -151,7 +151,7 @@
         <!-- </div> -->
         <!-- <button class="add-contact-button btn btn-success btn-xs">Add Contact</button> -->
         <!-- add new contact modal -->
-        <%#= render 'contact_details_modal', f: f %>
+        <%= render 'contact_details_modal', f: f %>
         <button class="btn btn-success btn-xs" data-toggle="modal" data-target=".contact-details-modal-form" type="button">Add Contact</button>
       </div>
 
@@ -220,7 +220,7 @@
     <ul class="pager wizard">
       <li class="previous"><a href="javascript:void(0)">Previous</a></li>
       <li class="next"><a href="javascript:void(0)" class="account_next">Next</a></li>
-      <li class="next finish" style="display:none;"><a href="javascript:;">Finish</a></li>
+      <li class="next finish form_finish_btn" style="display:none;"><a href="javascript:;">Finish</a></li>
     </ul>
 
   </div><!-- #validationWizard -->
@@ -296,9 +296,9 @@
     width: '100%'
   });
 
-  var max_fields      = 20; //maximum input boxes allowed
-  var wrapper         = $(".contact-form-wrap"); //Fields wrapper
-  var add_button      = $(".add-contact-button"); //Add button ID
+  var max_fields          = 20; //maximum input boxes allowed
+  var wrapper             = $(".contact-form-wrap"); //Fields wrapper
+  var edit_account_button = $(".edit-contact-button"); //Add button ID
 
   <%
     @contact_types = ""
@@ -306,7 +306,7 @@
   %>
 
   var x = 1; //initlal text box count
-  $(add_button).click(function(e){ //on add input button click
+  $(edit_account_button).click(function(e){ //on add input button click
     e.preventDefault();
     if(x < max_fields){ //max input box allowed
         x++; //text box increment
@@ -315,7 +315,7 @@
         str_html = '\
         <div class="contact-element" id="contact-element-'+x+'" style="padding-bottom: 10px;">\
           <div class="form-group">\
-            <input type="hidden" name="account[contacts_attributes]['+t+'][name]" class="dis_input hid_name">\
+            <input type="hidden" name="account[contacts_attributes]['+t+'][name]" class="dis_input hid_name cont_name_'+x+'">\
             <label class="col-sm-1 control-label">Type<span class="asterisk">*</span></label>\
             <div class="col-sm-2">\
               <select class="input-sm background_color type_select dis_input ddl_type" id="account_contacts_attributes_type_'+x+'" name="account[contacts_attributes]['+t+'][type]" selected=""><%= raw(@contact_types) %></select>\
@@ -327,11 +327,22 @@
             <div class="col-sm-6 without_phone_div hidden">\
               <input label="Value" name="account[contacts_attributes]['+t+'][value]" class="form-control type_validate dis_input set_cont_type" disabled id="account_contacts_attributes_value_'+x+'" type="text" data_con_type="phone" placeholder="contact value">\
             </div>\
-            <div class="col-sm-1"><button class="remove-contact-button btn btn-danger btn-xs">-</button></div>\
+            <div class="col-sm-1"><button class="remove-new-edit-contact-button btn btn-danger btn-xs">-</button></div>\
           </div>\
         </div>';
-        $(wrapper).append(str_html);
-        // $(this).closest(".contact-form-wrap").append(str_html);
+
+        var modal_index = $(this).closest('.edit-contact-modal').data('index');
+        $(".contact-form-wrap_"+modal_index).append(str_html);
+
+        var con_name  = $('#edit-contact-modal_'+modal_index).find('.dis_name').val();
+        $('.cont_name_'+x).val(con_name);
+        $('#edit-contact-modal_'+modal_index).find('.contacts_attributes_name').val(con_name);
+
+        $('.remove-new-edit-contact-button').on("click", function(e){
+          e.preventDefault();
+          $(this).closest('div.contact-element').remove(); x--;
+        });
+
       $('.work_emp_name').each(function () {
         $(this).rules("add", {
           required: true
@@ -341,17 +352,25 @@
 
     // set conttact type to contact table
     $('.ddl_type').on('change', function(){
-      // var ddl_cont_type = $(this).parent().parent('.form-group').find('.set_cont_type:not(:disabled)')
       var val = $(this).val();
       $(this).parent().parent('.form-group').find('.set_cont_type:not(:disabled)').attr("data_con_type", val)
-
-      // $('.set_cont_type').attr("data_con_type", ddl_cont_type)
     });
 
     phone_validate();
   });
 
-  $(wrapper).on("click",".remove-contact-button", function(e){ //user click on remove text
+  // $(wrapper).on("click",".remove-edit-contact-button", function(e){ //user click on remove text
+  //     e.preventDefault();
+  //     $(this).closest('div.contact-element').hide(); x--;
+  //     elem_id = $(this).closest('div.contact-element').data('id');
+  //     if(typeof(elem_id) != "undefined"){
+  //       $(this).closest('div.contact-element').append("<input type='hidden' name='account[contacts_attributes]["+elem_id+"][_destroy]' value='true' >");
+  //     }else{
+  //       $(this).closest('div.contact-element').remove(); x--;
+  //     }
+  // })
+
+  $(".remove-edit-contact-button").on("click", function(e){ //user click on remove text
       e.preventDefault();
       $(this).closest('div.contact-element').hide(); x--;
       elem_id = $(this).closest('div.contact-element').data('id');
@@ -371,7 +390,6 @@
     $('.tbody_details_'+mod_index).remove();
 
     var hid_name  = $(this).closest('.edit-contact-modal').find('.dis_name').val();
-    $('.hid_name').val(hid_name);
     $('.contact_name_'+mod_index).text(hid_name);
 
 
@@ -414,12 +432,20 @@
 
     });
 
-
-    // set value to hidden field in modal
-    var name  = $('.dis_name').val();
-    $('.contacts_attributes_name').val(name);
     $('.edit-contact-modal').modal('hide');
 
+  });
+
+  // Check empty modal field
+  $('.form_finish_btn').on("click", function() {
+    console.log("check empty function");
+    var c_name = $.trim($('.c_name').val());
+    var c_value = $.trim($('.c_value').val());
+    if (c_name == "" && c_value == ""){
+      $('.c_name').attr('disabled','disabled');
+      $('.c_type').attr('disabled','disabled');
+      $('.c_value').attr('disabled','disabled');
+    }
   });
 
 </script>

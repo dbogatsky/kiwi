@@ -9,7 +9,7 @@
           <div class="panel-body">
             <div class="row row-pad-5">
               <div class="tab-pane" id="vtab3">
-                <div class="contact-form-wrap">
+                <div class="contact-form-wrap_<%=index%>">
                   <% contacts.each_with_index do |current_contact, index| %>
                     <div class="contact-element" data-id="<%= current_contact.id %>"  style="padding-bottom: 10px;">
                       <%= f.simple_fields_for :contacts_attributes do |c| %>
@@ -39,7 +39,7 @@
                           <%end%>
                           <% if index != 0 %>
                             <input type="hidden" name="account[contacts_attributes][<%= current_contact.id %>][id]" value="<%= current_contact.id %>" >
-                            <input type="hidden" name="account[contacts_attributes][<%= current_contact.id %>][name]" class="contacts_attributes_name dis_input">
+                            <input type="hidden" name="account[contacts_attributes][<%= current_contact.id %>][name]" class="contacts_attributes_name dis_input" value="<%= current_contact.name %>" >
                           <%end%>
                           <div class="row">
                             <label class="col-sm-1 control-label">Type<span class="asterisk">*</span></label>
@@ -64,7 +64,7 @@
                               </div>
                             <%end%>
                             <div class="col-sm-1">
-                              <button class="remove-contact-button btn btn-danger btn-xs">-</button>
+                              <button class="remove-edit-contact-button btn btn-danger btn-xs">-</button>
                             </div>
                           </div>
                         </div>
@@ -73,7 +73,7 @@
                   <% end %>
                   </div>
                 <!-- <button class="add-contact-button btn btn-success btn-xs">Add Contact</button> -->
-              <button class="add-contact-button btn btn-success btn-xs pull-left">+</button>
+              <button class="edit-contact-button btn btn-success btn-xs pull-left">+</button>
               </div>
             </div>
           </div>
