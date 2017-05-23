@@ -584,6 +584,7 @@ class ApplicationController < ActionController::Base
     @timezone_setting = preferences['enable_timezone_detect']
     @search_all_accounts = preferences['search_all_accounts']
     @needs_approval_for_account_transfer = preferences['needs_approval_for_account_transfer'] || false
+    @gps_tracking_interval = preferences['gps_tracking_interval'] || 0 #300000 # in milliseconds = 5 mins (default)
   end
 
   def get_timezone_setting

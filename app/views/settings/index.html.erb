@@ -119,6 +119,7 @@
             </div>
           </div>
         </div>
+
         <div class="panel panel-default">
           <div class="panel-heading">
             <div class="panel-btns">
@@ -139,6 +140,30 @@
             </div>
           </div>
         </div>
+
+        <% if @gps_tracking == 'on' %>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <div class="panel-btns">
+              <a href="" class="minimize">−</a>
+            </div><!-- panel-btns -->
+            <h3 class="panel-title">GPS Tracking</h3>
+          </div>
+          <div class="panel-body">
+            <div class="tab-pane" id="accounts">
+              <div class="row row-pad-5">
+                <div class="form-group">
+                  <label class="col-sm-4 control-label">GPS Tracking Interval</label>
+                  <div class="col-sm-4">
+                    <%=select_tag('gps_tracking_interval',options_for_select(gps_tracking_interval_options, selected: @gps_tracking_interval), class: "form-control")%>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% end %>
+
         <div class="panel panel-default">
           <div class="panel-footer">
             <div class="row row-pad-5">
