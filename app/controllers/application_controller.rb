@@ -606,6 +606,7 @@ class ApplicationController < ActionController::Base
     @account_attachment = application_setting['company']['settings']['private']['account_attachment']
     @conversation_item_attachment = application_setting['company']['settings']['private']['conversation_item_attachment']
     @googlemap_autocomplete = ( application_setting['company']['settings']['private']['googlemap_autocomplete'].nil? ) ? "on" : application_setting['company']['settings']['private']['googlemap_autocomplete']
+    @gps_tracking = ( application_setting['company']['settings']['private']['gps_tracking'].nil? ) ? "off" : application_setting['company']['settings']['private']['gps_tracking']
   end
 
   def integrations_settings
