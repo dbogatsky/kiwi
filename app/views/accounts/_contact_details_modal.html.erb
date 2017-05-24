@@ -112,7 +112,8 @@
   $('.btnSave').click(function() {
     var name  = $('#edit_name').val();
     $('.add_cont_name').val(name);
-    $('.contact_div').find('.contacts_attributes_name').val(name);
+    // $('.contact_div').find('.contacts_attributes_name').val(name);
+    $(this).closest('#contact-modal').find('.contact-element').find('.contacts_attributes_name').val(name);
     $('.contact_name').text(name);
 
     // for each type and value
