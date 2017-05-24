@@ -162,5 +162,7 @@ Rails.application.routes.draw do
   get :activity_report, to: 'reports#activity_report'
   get :activity_report_result, to: 'reports#activity_report_result'
 
+  get :visits_report, to: 'reports#visits_report'
+
   match '(*any)', to: 'errors#routing', via: [:get, :post]
 end

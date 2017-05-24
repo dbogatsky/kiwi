@@ -8,6 +8,10 @@ class ReportsController < ApplicationController
     @users = User.all(uid: session[:user_id], reload: true)
   end
 
+  def visits_report
+    @users = User.all(uid: session[:user_id], reload: true)
+  end
+
   def meeting_report_result
     if current_user.roles.last.try(:name) == 'User'
       user_ids = [current_user.id]
