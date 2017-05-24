@@ -55,104 +55,111 @@
       </div>
 
       <div class="tab-pane" id="vtab3">
-        <!-- <div class="contact-form-wrap">
-        <%# @contacts.each do |current_contact| %>
-          <div class="contact-element" data-id="<%#= current_contact.id %>"  style="padding-bottom: 10px;"> -->
-            <%#= f.simple_fields_for :contacts_attributes do |c| %>
 
-              <!-- New design -->
-              <div class="row">
-                <div class="col-md-8" style="margin-left: 140px;">
-                  <div class="table-responsive">
-                    <table class="table mb30">
-                      <% @contacts.group_by{|x| x.name!=@contacts}[true].group_by{|x| x.name }.each_with_index do |cont, index| %>
-                        <thead class="t_head_<%=index%>">
-                          <tr>
-                            <th colspan="2">
-                              <h4 class="person-name">
-                                <span class="contact_name_<%=index%>">
-                                  <%= cont[0] %>
-                                </span>
-                                <a href="#" class="tooltips" data-toggle="modal" data-target="#edit-contact-modal_<%= index %>" data-placement="top" title="" data-original-title="<%= cont[0] %>" id="edit-contact"><i class="fa fa-edit" style="padding-left: 10px;"></i></a>
-                              </h4>
-                            </th>
-                            <%= render 'edit_contact_details_modal', f: f, index: index, contacts: @contacts.find_all { |x| x.name == cont[0] }  %>
-                          </tr>
-                        </thead>
-                        <% cont.flatten[1..cont[1].length].each do |current_contact|%>
-                          <tbody class="tbody_details_<%=index%>">
-                            <%if current_contact.type == 'phone'%>
-                              <tr>
-                                <td></td>
-                                <td style="font-size: 16px;"><i class="fa fa-phone"></i></td>
-                                <td><%= current_contact.value %></td>
-                              </tr>
-                            <%end%>
-                            <%if current_contact.type == 'mobile'%>
-                              <tr>
-                                <td></td>
-                                <td style="font-size: 16px;"><i class="fa fa-mobile"></i></td>
-                                <td><%= current_contact.value %></td>
-                              </tr>
-                            <%end%>
-                            <%if current_contact.type == 'fax'%>
-                              <tr>
-                                <td></td>
-                                <td style="font-size: 16px;"><i class="fa fa-fax"></i></td>
-                                <td><%= current_contact.value %></td>
-                              </tr>
-                            <%end%>
-                            <%if current_contact.type == 'website'%>
-                              <tr>
-                                <td></td>
-                                <td style="font-size: 16px;"><i class="fa fa-globe"></i></td>
-                                <td><%= current_contact.value %></td>
-                              </tr>
-                            <%end%>
-                            <%if current_contact.type == 'email'%>
-                              <tr>
-                                <td></td>
-                                <td style="font-size: 16px;"><i class="fa fa-envelope-o"></i></td>
-                                <td><%= current_contact.value %></td>
-                              </tr>
-                            <%end%>
-                            <%if current_contact.type == 'facebook'%>
-                              <tr>
-                                <td></td>
-                                <td style="font-size: 16px;"><i class="fa fa-facebook"></i></td>
-                                <td><%= current_contact.value %></td>
-                              </tr>
-                            <%end%>
-                            <%if current_contact.type == 'twitter'%>
-                              <tr>
-                                <td></td>
-                                <td style="font-size: 16px;"><i class="fa fa-twitter"></i></td>
-                                <td><%= current_contact.value %></td>
-                              </tr>
-                            <%end%>
-                            <%if current_contact.type == 'youtube'%>
-                              <tr>
-                                <td></td>
-                                <td style="font-size: 16px;"><i class="fa fa-youtube"></i></td>
-                                <td><%= current_contact.value %></td>
-                              </tr>
-                            <%end%>
-                          </tbody>
-                        <%end%>
+        <!-- New design -->
+        <div class="row">
+          <div class="col-md-8" style="margin-left: 140px;">
+            <div class="table-responsive">
+              <table class="table mb30">
+                <% @contacts.group_by{|x| x.name!=@contacts}[true].group_by{|x| x.name }.each_with_index do |cont, index| %>
+                  <thead class="t_head_<%=index%>">
+                    <tr>
+                      <th colspan="2">
+                        <h4 class="person-name">
+                          <span class="contact_name_<%=index%>">
+                            <%= cont[0] %>
+                          </span>
+                          <a href="#" class="tooltips" data-toggle="modal" data-target="#edit-contact-modal_<%= index %>" data-placement="top" title="" data-original-title="<%= cont[0] %>" id="edit-contact"><i class="fa fa-edit" style="padding-left: 10px;"></i></a>
+                        </h4>
+                      </th>
+                      <%= render 'edit_contact_details_modal', f: f, index: index, contacts: @contacts.find_all { |x| x.name == cont[0] }  %>
+                    </tr>
+                  </thead>
+                  <% cont.flatten[1..cont[1].length].each do |current_contact|%>
+                    <tbody class="tbody_details_<%=index%>">
+                      <%if current_contact.type == 'phone'%>
+                        <tr>
+                          <td></td>
+                          <td style="font-size: 16px;"><i class="fa fa-phone"></i></td>
+                          <td><%= current_contact.value %></td>
+                        </tr>
                       <%end%>
-                    </table>
-                  </div>
-                </div>
-              </div>
+                      <%if current_contact.type == 'mobile'%>
+                        <tr>
+                          <td></td>
+                          <td style="font-size: 16px;"><i class="fa fa-mobile"></i></td>
+                          <td><%= current_contact.value %></td>
+                        </tr>
+                      <%end%>
+                      <%if current_contact.type == 'fax'%>
+                        <tr>
+                          <td></td>
+                          <td style="font-size: 16px;"><i class="fa fa-fax"></i></td>
+                          <td><%= current_contact.value %></td>
+                        </tr>
+                      <%end%>
+                      <%if current_contact.type == 'website'%>
+                        <tr>
+                          <td></td>
+                          <td style="font-size: 16px;"><i class="fa fa-globe"></i></td>
+                          <td><%= current_contact.value %></td>
+                        </tr>
+                      <%end%>
+                      <%if current_contact.type == 'email'%>
+                        <tr>
+                          <td></td>
+                          <td style="font-size: 16px;"><i class="fa fa-envelope-o"></i></td>
+                          <td><%= current_contact.value %></td>
+                        </tr>
+                      <%end%>
+                      <%if current_contact.type == 'facebook'%>
+                        <tr>
+                          <td></td>
+                          <td style="font-size: 16px;"><i class="fa fa-facebook"></i></td>
+                          <td><%= current_contact.value %></td>
+                        </tr>
+                      <%end%>
+                      <%if current_contact.type == 'twitter'%>
+                        <tr>
+                          <td></td>
+                          <td style="font-size: 16px;"><i class="fa fa-twitter"></i></td>
+                          <td><%= current_contact.value %></td>
+                        </tr>
+                      <%end%>
+                      <%if current_contact.type == 'youtube'%>
+                        <tr>
+                          <td></td>
+                          <td style="font-size: 16px;"><i class="fa fa-youtube"></i></td>
+                          <td><%= current_contact.value %></td>
+                        </tr>
+                      <%end%>
+                    </tbody>
+                  <%end%>
+                <%end%>
+              </table>
+            </div>
+            <!-- Add new contact data table -->
+            <div class="table-responsive">
+              <table class="table mb30">
+                <thead class="tbl_add_head">
+                  <tr>
+                    <th colspan="2">
+                      <h4 class="person-name">
+                        <span class="tbl_add_cont_name"></span>
+                      </h4>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="tbl_add_details">
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
 
-            <%# end %>
-          <!-- </div> -->
-        <%# end %>
-        <!-- </div> -->
-        <!-- <button class="add-contact-button btn btn-success btn-xs">Add Contact</button> -->
         <!-- add new contact modal -->
         <%= render 'contact_details_modal', f: f %>
-        <button class="btn btn-success btn-xs" data-toggle="modal" data-target=".contact-details-modal-form" type="button">Add Contact</button>
+        <button class="btn btn-success btn-xs" data-toggle="modal" data-target=".contact-details-modal-form" type="button" id="btn_edit_add">Add Contact</button>
       </div>
 
       <div class="tab-pane" id="vtab4">
@@ -444,6 +451,11 @@
       $('.c_type').attr('disabled','disabled');
       $('.c_value').attr('disabled','disabled');
     }
+  });
+
+  // update data table for edit account
+  $('#btn_edit_add').click(function(){
+    $('.tbl_add_details').empty();
   });
 
 </script>

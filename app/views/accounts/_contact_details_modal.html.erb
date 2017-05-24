@@ -8,7 +8,6 @@
         <div class="panel panel-default" style="text-align: center">
           <div class="panel-body">
             <div class="row row-pad-5">
-              <%# @contacts.each do |current_contact| %>
               <div class="row">
                 <label class="col-sm-1 control-label">Name<span class="asterisk">*</span></label>
                 <div class="col-sm-8">
@@ -20,7 +19,7 @@
                   <%= f.simple_fields_for :contacts_attributes do |c| %>
                     <% t = Time.now.to_i %>
                     <div class="form-group">
-                      <%= c.hidden_field :name, :name => "account[contacts_attributes][#{t}][name]", class: "contacts_attributes_name c_name" %>
+                      <%= c.hidden_field :name, :name => "account[contacts_attributes][#{t}][name]", class: "add_cont_name c_name" %>
 
                       <div class="row" id="type_value_div">
                         <label class="col-sm-1 control-label">Type<span class="asterisk">*</span></label>
@@ -40,7 +39,6 @@
                     </div>
                   <% end %>
                 </div>
-              <%# end %>
               </div>
               <button class="add-contact-button btn btn-success btn-xs pull-left">+</button>
             </div>
@@ -48,7 +46,7 @@
         </div><!-- panel -->
       </div><!-- modal body -->
       <div class="modal-footer">
-        <button type="button" class="btn btn-default btn-sm btnSave" id="btnSave">Save</button>
+        <button type="button" class="btn btn-default btn-sm btnSave" id="btn_add_cont">Save</button>
         <button type="button" class="btn btn-default btn-sm" data-dismiss="modal" id="btnClose">Close</button>
       </div><!-- modal footer -->
     </div><!-- modal content -->
@@ -113,7 +111,8 @@
   // new contact modal save button js
   $('.btnSave').click(function() {
     var name  = $('#edit_name').val();
-    $('.contacts_attributes_name').val(name);
+    $('.add_cont_name').val(name);
+    $('.contact_div').find('.contacts_attributes_name').val(name);
     $('.contact_name').text(name);
 
     // for each type and value
@@ -153,5 +152,43 @@
     $('.contact-details-modal-form').modal('hide');
   });
 
+  // Edit account Show data of madal in contact table tables for adding new contact
+  $('#btn_add_cont').click(function(){
+    var c_name  = $('#edit_name').val();
+    $('.tbl_add_cont_name').text(c_name);
+
+    var id = 1;
+    $(this).closest('#contact-modal').find('.contact-element').each(function(){
+
+      var c_type = $('#contact-element-'+id).find(".type_select  option:selected").val();
+      var c_value = $('#contact-element-'+id).find('.cont_value:not(:disabled)').val();
+
+      if (c_type!=undefined){
+        if (c_type == "phone") {
+          var c_icon = 'fa fa-phone'
+        } else if (c_type == "mobile") {
+          var c_icon = 'fa fa-mobile'
+        } else if (c_type == "fax") {
+          var c_icon = 'fa fa-fax'
+        } else if (c_type == "website") {
+          var c_icon = 'fa fa-globe'
+        } else if (c_type == "email") {
+          var c_icon = 'fa fa-envelope-o'
+        } else if (c_type == "facebook") {
+          var c_icon = 'fa fa-facebook'
+        } else if (c_type == "twitter") {
+          var c_icon = 'fa fa-twitter'
+        } else if (c_type == "youtube") {
+          var c_icon = 'fa fa-youtube'
+        } else {
+          var c_icon = 'fa fa-user'
+        }
+      }
+
+      $('.tbl_add_details').append("<tr><td></td><td style='font-size: 16px;'><i class='"+c_icon+"'></i></td><td>"+c_value+"</td></tr>");
+      id++;
+    });
+
+  });
 
 </script>
