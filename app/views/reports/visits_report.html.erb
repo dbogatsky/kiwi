@@ -10,8 +10,77 @@
       <h4 class="panel-title"></h4>
     </div>
     <div class="panel-body">
+      <div class="row">
+        <div class="col-sm-4">
+          <%=select_tag "user_visit", options_for_select(@users.map{|u| [u.first_name, u.id]}), {prompt: "-- Select Name --", class: 'form-control'} %>
+        </div>
+      </div>
 
-
+      <br><br>
+      <div style="float:left; width:100%; height:400px;">
+        <div id="map" style="width:100%; height:400px;"></div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-sm-4">
+          <%= @user %>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+
+    // Load google map
+    initMap();
+    function initMap() {
+      var myLatLng = {lat: 51.339478, lng: -86.680511};
+
+      var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 5,
+        center: myLatLng
+      });
+
+      var marker = new google.maps.Marker({
+        position: myLatLng,
+        map: map,
+      });
+    }
+
+    // Find user
+    $("#user_visit").change(function() {
+      var u_id = $("#user_visit").val();
+      console.log(u_id);
+      if( u_id != "" ){
+        $.ajax({
+          type: "get",
+          url: "/user_visits",
+          data: {user_id: u_id},
+          // dataType: "json",
+          success:function(result){
+            console.log("success");
+            setDiraction();
+          }
+        });
+      }
+    });
+
+    // diraction on google map
+    function setDiraction() {
+      var myLatLng = {lat: 36.7783, lng: -119.4179};
+
+      var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 5,
+        center: myLatLng
+      });
+
+      var marker = new google.maps.Marker({
+        position: myLatLng,
+        map: map,
+      });
+    }
+
+  })
+</script>
