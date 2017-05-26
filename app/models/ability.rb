@@ -63,6 +63,10 @@ class Ability
               can :schedule_filter, Account
               abilities_debug.push('can :schedule_filter, Account')
 
+              # Permission for showing the visits GPS tracking features (for Entity Admin)
+              can :visits_gps_tracking, Account
+              abilities_debug.push('can :visits_gps_tracking, Account')
+
               # Permission for Uploading and creating folders in the media page
               can :media_management, Medium
               abilities_debug.push('can :media_upload, Medium')

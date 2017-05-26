@@ -31,6 +31,7 @@ Rails.application.routes.draw do
   post '/login/superadmin_auth', to: 'login#superadmin_auth', as: :login_superadmin_auth
 
   match '/dashboard', to: 'dashboard#index', as: :dashboard, via: [:get]
+  get :visits_last_known, to: 'dashboard#visits_last_known'
 
   resource :profile, only: [:show, :update]
   resource :preference, only: [:show, :update]

@@ -18,6 +18,12 @@
     <%= render 'dashboard/widgets/widget_weather' %>
     <%= render 'dashboard/widgets/widget_meetings' %>
   </div><!-- right col-sm-4 -->
+
+  <% if @gps_tracking == 'on' && ( can? :visits_gps_tracking, Account ) %>
+  <div class="col-sm-10">
+    <# %= render 'dashboard/widgets/widget_visits' %>
+  </div><!-- right col-sm-10 -->
+  <% end %>
 </div>
 
 <%= render "dashboard/js" %>

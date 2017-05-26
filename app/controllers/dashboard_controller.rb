@@ -2,6 +2,7 @@ require 'open_weather'
 class DashboardController < ApplicationController
   before_action :get_api_values, only: [:index]
   before_action :get_news, only: [:index]
+  before_action :application_settings, only: [:index]
 
   def index
     #
@@ -108,6 +109,12 @@ class DashboardController < ApplicationController
     else
       @weather = Hash[]
     end
+  end
+
+  def visits_last_known
+    visits = []
+
+    render json: visits
   end
 
   private
