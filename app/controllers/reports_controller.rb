@@ -10,13 +10,13 @@ class ReportsController < ApplicationController
 
   def visits_report
     @users = User.all(uid: session[:user_id], reload: true)
-    # binding.pry
   end
 
   def user_visits
     @user = User.find(params[:user_id])
-    redirect_to visits_report_path
-    # binding.pry
+    # @lat = @user.addresses.first.latitude
+    # @long = @user.addresses.first.longitude
+    # render json: @user
   end
 
   def meeting_report_result

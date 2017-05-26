@@ -1,0 +1,24 @@
+console.log("user visits js erb page");
+
+// setDiraction();
+
+function setDiraction() {
+  var latitude = '<%= @user.addresses.first.latitude %>';
+  var longitude = '<%= @user.addresses.first.longitude %>';
+  console.log("lat : " + latitude);
+  console.log("lng : " + longitude);
+  console.log("set direction");
+
+  var myLatLng = {lat: 36.7783, lng: -119.4179};
+  // var myLatLng = {lat: latitude, lng: longitude};
+
+  var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 5,
+    center: myLatLng
+  });
+
+  var marker = new google.maps.Marker({
+    position: myLatLng,
+    map: map,
+  });
+}

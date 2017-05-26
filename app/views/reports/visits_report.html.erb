@@ -18,13 +18,8 @@
 
       <br><br>
       <div style="float:left; width:100%; height:400px;">
-        <div id="map" style="width:100%; height:400px;"></div>
-      </div>
-      <br>
-      <div class="row">
-        <div class="col-sm-4">
-          <%= @user %>
-        </div>
+        <!-- <div id="map" style="width:100%; height:400px;"></div> -->
+        <%= render 'google_map' %>
       </div>
     </div>
   </div>
@@ -36,7 +31,7 @@
     // Load google map
     initMap();
     function initMap() {
-      var myLatLng = {lat: 51.339478, lng: -86.680511};
+      var myLatLng = {lat: 43.670532, lng: -79.390740};
 
       var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 5,
@@ -68,19 +63,19 @@
     });
 
     // diraction on google map
-    function setDiraction() {
-      var myLatLng = {lat: 36.7783, lng: -119.4179};
+    // function setDiraction() {
+    //   var myLatLng = {lat: 36.7783, lng: -119.4179};
 
-      var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 5,
-        center: myLatLng
-      });
+    //   var map = new google.maps.Map(document.getElementById('map'), {
+    //     zoom: 5,
+    //     center: myLatLng
+    //   });
 
-      var marker = new google.maps.Marker({
-        position: myLatLng,
-        map: map,
-      });
-    }
+    //   var marker = new google.maps.Marker({
+    //     position: myLatLng,
+    //     map: map,
+    //   });
+    // }
 
   })
 </script>
