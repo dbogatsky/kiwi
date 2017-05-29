@@ -1,0 +1,2 @@
+class GpsPosition < OrchardApiModel
+end
