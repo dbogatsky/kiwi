@@ -28,6 +28,6 @@ module SettingsHelper
   end
 
   def gps_tracking_interval_options
-    return [['Off', 0], ['5 secs', 5000], ['10 secs', 10000], ['30 secs', 30000], ['1 min', 60000], ['5 mins', 300000], ['10 mins', 600000], ['15 mins', 900000], ['30 mins', 1800000], ['45 mins', 2700000], ['1 hour', 3600000]]
+    return [['Off', -1], ['5 secs', 5], ['10 secs', 10], ['30 secs', 30], ['1 min', 60], ['5 mins', 300], ['10 mins', 600], ['15 mins', 900], ['30 mins', 1800], ['45 mins', 2700], ['1 hour', 3600]]
   end
 end
