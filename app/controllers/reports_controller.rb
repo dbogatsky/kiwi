@@ -10,6 +10,28 @@ class ReportsController < ApplicationController
 
   def visits_report
     @users = User.all(uid: session[:user_id], reload: true)
+
+    company = Company.find(uid: RequestStore.store[:tenant])
+
+    @company_coordinates = {}
+    if company.addresses.first.present? && (company.addresses.first.latitude.nil? || company.addresses.first.longitude.nil?)
+      company_address = (
+          company.addresses.first.street_address + ', ' +
+          company.addresses.first.suite_number + ', ' +
+          company.addresses.first.city + ', ' +
+          company.addresses.first.region + ', ' +
+          company.addresses.first.country
+        )
+      geocoder_coordinates = Geocoder.coordinates(company_address)
+
+      @company_coordinates[:latitude] = geocoder_coordinates[0] if geocoder_coordinates.present?
+      @company_coordinates[:longitude] = geocoder_coordinates[1] if geocoder_coordinates.present?
+
+    elsif company.addresses.first.latitude.present? && company.addresses.first.longitude.present?
+      @company_coordinates[:latitude] = company.addresses.first.latitude
+      @company_coordinates[:longitude] = company.addresses.first.longitude
+    end
+
   end
 
   def user_visits
