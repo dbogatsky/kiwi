@@ -39,7 +39,20 @@ class ReportsController < ApplicationController
     search = {}
     search[:user_id_eq] = params[:user_id] if params[:user_id].present?
 
+    users_gps_tracking_info = []
     gps_positions = GpsPosition.all(params: {search: search})
+
+    gps_positions.each do | gps_position |
+      users_coordinate = {}
+      users_coordinate[:latitude] = gps_position.lat
+      users_coordinate[:longitude] = gps_position.lon
+      users_coordinate[:timestamp] = gps_position.timestamp
+      users_coordinate[:positionable_id] = gps_position.positionable_id
+      users_coordinate[:positionable_type] = gps_position.positionable_type
+
+      users_gps_tracking_info << users_coordinate
+    end
+
 
 
     @user = User.find(params[:user_id])
