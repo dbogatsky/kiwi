@@ -13,6 +13,14 @@ class ReportsController < ApplicationController
   end
 
   def user_visits
+
+    search = {}
+    search[:user_id_eq] = params[:user_id] if params[:user_id].present?
+
+    gps_positions = GpsPosition.all(params: {search: search})
+
+
+
     @user = User.find(params[:user_id])
     latlng = []
     if !@user.addresses[0].blank?
