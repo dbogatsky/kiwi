@@ -44,18 +44,25 @@ class ReportsController < ApplicationController
 
 
     @user = User.find(params[:user_id])
+    add = @user.addresses
     latlng = []
     if !@user.addresses[0].blank?
-      full_address = (
-                  @user.addresses[0].street_address + ', ' +
-                  @user.addresses[0].city + ', ' +
-                  @user.addresses[0].region + ', ' +
-                  @user.addresses[0].country
-                )
-      latlng = Geocoder.coordinates(full_address)
+      if @user.addresses[0].latitude.present? and @user.addresses[0].longitude.present?
+        @latitude = @user.addresses[0].latitude
+        @longitude = @user.addresses[0].longitude
+      else
+        full_address = (
+                    @user.addresses[0].street_address + ', ' +
+                    @user.addresses[0].city + ', ' +
+                    @user.addresses[0].region + ', ' +
+                    @user.addresses[0].country
+                  )
+        latlng = Geocoder.coordinates(full_address)
+        @latitude = latlng[0]
+        @longitude = latlng[1]
+      end
     end
-    @latitude = latlng.present? ? latlng[0] : 36.7783
-    @longitude = latlng.present? ? latlng[1] : -119.4179
+
   end
 
   def meeting_report_result
