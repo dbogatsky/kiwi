@@ -26,6 +26,21 @@ directionsService.route({
     directionsDisplay.setDirections(response);
   } else {
     window.alert('Directions request failed due to ' + status);
+    initMap();
   }
 
 });
+
+function initMap() {
+  var myLatLng = {lat: 43.670532, lng: -79.390740};
+
+  var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 7,
+    center: myLatLng
+  });
+
+  var marker = new google.maps.Marker({
+    position: myLatLng,
+    map: map,
+  });
+}

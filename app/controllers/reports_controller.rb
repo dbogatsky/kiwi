@@ -42,9 +42,7 @@ class ReportsController < ApplicationController
     gps_positions = GpsPosition.all(params: {search: search})
 
 
-
     @user = User.find(params[:user_id])
-    add = @user.addresses
     latlng = []
     if !@user.addresses[0].blank?
       if @user.addresses[0].latitude.present? and @user.addresses[0].longitude.present?

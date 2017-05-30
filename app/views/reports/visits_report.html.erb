@@ -30,25 +30,24 @@
 
     // Load google map
     initMap();
-    var directionsService;
-    var directionsDisplay;
-
     function initMap() {
-      directionsService = new google.maps.DirectionsService;
-      directionsDisplay = new google.maps.DirectionsRenderer;
+      var myLatLng = {lat: 43.670532, lng: -79.390740};
+
       var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 7,
-        center: {lat: 43.670532, lng: -79.390740}
+        center: myLatLng
       });
-      directionsDisplay.setMap(map);
 
+      var marker = new google.maps.Marker({
+        position: myLatLng,
+        map: map,
+      });
     }
 
 
     // Find user
     $("#user_visit").change(function() {
       var u_id = $("#user_visit").val();
-      console.log(u_id);
       if( u_id != "" ){
         $.ajax({
           type: "get",
