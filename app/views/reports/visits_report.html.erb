@@ -14,6 +14,15 @@
         <div class="col-sm-4">
           <%=select_tag "user_visit", options_for_select(@users.map{|u| ["#{u.first_name}" +" "+ "#{u.last_name}", u.id]}), {prompt: "-- Select Name --", class: 'form-control'} %>
         </div>
+        <div class="col-sm-3">
+          <div class="input-group ">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+              <input type="text" class="form-control" placeholder="mm/dd/yy" name="date" id="schedule-from-datepicker" required="required" />
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <%= submit_tag "Search", class: 'form-control search_button' %>
+        </div>
       </div>
 
       <br><br>
@@ -43,19 +52,36 @@
       });
     }
 
-
     // Find user
-    $("#user_visit").change(function() {
+    // $("#user_visit").change(function() {
+    //   var u_id = $("#user_visit").val();
+    //   if( u_id != "" ){
+    //     $.ajax({
+    //       type: "get",
+    //       url: "/user_visits.js",
+    //       data: {user_id: u_id},
+    //       // dataType: "json",
+    //       success:function(result){
+    //         console.log("success");
+    //       }
+    //     });
+    //   }
+    // });
+
+    // set default date
+    $("#schedule-from-datepicker").datepicker("setDate", new Date());
+
+    $('.search_button').click(function(){
       var u_id = $("#user_visit").val();
-      if( u_id != "" ){
+      var dt = $('#schedule-from-datepicker').val();
+      if( u_id != ""){
         $.ajax({
           type: "get",
           url: "/user_visits.js",
-          data: {user_id: u_id},
+          data: {user_id: u_id, date: dt},
           // dataType: "json",
           success:function(result){
             console.log("success");
-            // setDiraction();
           }
         });
       }
