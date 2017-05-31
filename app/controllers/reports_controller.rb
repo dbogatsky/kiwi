@@ -39,6 +39,16 @@ class ReportsController < ApplicationController
     search = {}
     search[:user_id_eq] = params[:user_id] if params[:user_id].present?
 
+    if params[:date].present?
+      search[:timestamp_gteq] = convert_datetime_to_utc(current_user.time_zone, params[:date], "00:00:00")
+      search[:timestamp_lteq] = convert_datetime_to_utc(current_user.time_zone, params[:date], "23:59:59")
+    else
+      #Default to Today's date
+      todays_date = Date.today.to_s
+      search[:timestamp_gteq] = convert_datetime_to_utc(current_user.time_zone, todays_date, "00:00:00")
+      search[:timestamp_lteq] = convert_datetime_to_utc(current_user.time_zone, todays_date, "23:59:59")
+    end
+
     users_gps_tracking_info = []
     gps_positions = GpsPosition.all(params: {search: search})
 
