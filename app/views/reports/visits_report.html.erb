@@ -12,13 +12,12 @@
     <div class="panel-body">
       <div class="row">
         <div class="col-sm-4">
-          <%=select_tag "user_visit", options_for_select(@users.map{|u| [u.first_name, u.id]}), {prompt: "-- Select Name --", class: 'form-control'} %>
+          <%=select_tag "user_visit", options_for_select(@users.map{|u| ["#{u.first_name}" +" "+ "#{u.last_name}", u.id]}), {prompt: "-- Select Name --", class: 'form-control'} %>
         </div>
       </div>
 
       <br><br>
-      <div style="float:left; width:100%; height:400px;">
-        <!-- <div id="map" style="width:100%; height:400px;"></div> -->
+      <div style="float:left; width:100%; height:500px;">
         <%= render 'google_map' %>
       </div>
     </div>
