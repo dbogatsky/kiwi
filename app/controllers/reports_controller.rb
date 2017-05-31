@@ -53,26 +53,29 @@ class ReportsController < ApplicationController
       users_gps_tracking_info << users_coordinate
     end
 
-
-
-    @user = User.find(params[:user_id])
-    latlng = []
-    if !@user.addresses[0].blank?
-      if @user.addresses[0].latitude.present? and @user.addresses[0].longitude.present?
-        @latitude = @user.addresses[0].latitude
-        @longitude = @user.addresses[0].longitude
-      else
-        full_address = (
-                    @user.addresses[0].street_address + ', ' +
-                    @user.addresses[0].city + ', ' +
-                    @user.addresses[0].region + ', ' +
-                    @user.addresses[0].country
-                  )
-        latlng = Geocoder.coordinates(full_address)
-        @latitude = latlng[0]
-        @longitude = latlng[1]
-      end
+    @latlng = []
+    users_gps_tracking_info.each do |data|
+      @latlng << [data[:latitude], data[:longitude]].map(&:to_f)
     end
+
+    # @user = User.find(params[:user_id])
+    # latlng = []
+    # if !@user.addresses[0].blank?
+    #   if @user.addresses[0].latitude.present? and @user.addresses[0].longitude.present?
+    #     @latitude = @user.addresses[0].latitude
+    #     @longitude = @user.addresses[0].longitude
+    #   else
+    #     full_address = (
+    #                 @user.addresses[0].street_address + ', ' +
+    #                 @user.addresses[0].city + ', ' +
+    #                 @user.addresses[0].region + ', ' +
+    #                 @user.addresses[0].country
+    #               )
+    #     latlng = Geocoder.coordinates(full_address)
+    #     @latitude = latlng[0]
+    #     @longitude = latlng[1]
+    #   end
+    # end
 
   end
 

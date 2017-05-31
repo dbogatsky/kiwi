@@ -1,46 +1,28 @@
 
-var directionsService;
-var directionsDisplay;
+var locations = <%= @latlng %>
 
-// Set source of user
-
-directionsService = new google.maps.DirectionsService;
-directionsDisplay = new google.maps.DirectionsRenderer;
 var map = new google.maps.Map(document.getElementById('map'), {
-  zoom: 7,
-  center: {lat: 43.670532, lng: -79.390740}
-});
-directionsDisplay.setMap(map);
-
-// Find destination of user
-
-var latitude = parseFloat('<%= @latitude %>');
-var longitude = parseFloat('<%= @longitude %>');
-
-directionsService.route({
-  origin: {lat: 43.670532, lng: -79.390740},
-  destination: {lat: latitude, lng: longitude},
-  travelMode: 'DRIVING'
-}, function(response, status) {
-  if (status === 'OK') {
-    directionsDisplay.setDirections(response);
-  } else {
-    window.alert('Directions request failed due to ' + status);
-    initMap();
-  }
-
+  zoom: 10,
+  center: new google.maps.LatLng(43.670532, -79.390740),
+  mapTypeId: google.maps.MapTypeId.ROADMAP
 });
 
-function initMap() {
-  var myLatLng = {lat: 43.670532, lng: -79.390740};
 
-  var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 7,
-    center: myLatLng
+var marker, i;
+
+for (i = 0; i < locations.length; i++) {
+
+  marker = new google.maps.Marker({
+    position: new google.maps.LatLng(locations[i][0], locations[i][1]),
+    map: map
   });
 
-  var marker = new google.maps.Marker({
-    position: myLatLng,
+  var circle = new google.maps.Circle({
     map: map,
+    radius: 1,
+    fillColor: '#FF0000',
+    fillOpacity: 0.8,
   });
+  circle.bindTo('center', marker, 'position');
+
 }
