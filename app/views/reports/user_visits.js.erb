@@ -1,5 +1,5 @@
 
-var locations = <%= @latlng %>
+var locations = <%= raw(@latlng) %>
 
 var map = new google.maps.Map(document.getElementById('map'), {
   zoom: 2,
@@ -9,20 +9,29 @@ var map = new google.maps.Map(document.getElementById('map'), {
 
 
 var marker, i;
+var infowindow = new google.maps.InfoWindow();
 
 for (i = 0; i < locations.length; i++) {
 
+  var lat = locations[i][0].toString()
+  var lng = locations[i][1].toString()
+  var latlang = 'Latitude : ' + lat + ', ' + 'Longitude : ' + lng + ', ' + 'Time : ' + locations[i][2]
+
   marker = new google.maps.Marker({
     position: new google.maps.LatLng(locations[i][0], locations[i][1]),
+    icon: {
+      path: google.maps.SymbolPath.CIRCLE,
+      scale: 10
+    },
+    draggable: false,
     map: map
   });
 
-  var circle = new google.maps.Circle({
-    map: map,
-    radius: 1,
-    fillColor: '#FF0000',
-    fillOpacity: 0.8,
-  });
-  circle.bindTo('center', marker, 'position');
+  google.maps.event.addListener(marker, 'click', (function(marker, latlang, i) {
+    return function() {
+      infowindow.setContent(latlang);
+      infowindow.open(map, marker);
+    }
+  })(marker, latlang, i));
 
 }
