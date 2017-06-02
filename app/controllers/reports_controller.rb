@@ -65,7 +65,7 @@ class ReportsController < ApplicationController
 
     @latlng = []
     users_gps_tracking_info.each do |data|
-      @latlng << [data[:latitude], data[:longitude]].map(&:to_f) + [data[:timestamp]]
+      @latlng << [data[:latitude], data[:longitude]].map(&:to_f) + [data[:timestamp].in_time_zone.to_s]
     end
 
     # @user = User.find(params[:user_id])
