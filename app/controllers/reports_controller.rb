@@ -12,6 +12,7 @@ class ReportsController < ApplicationController
     @users = User.all(uid: session[:user_id], reload: true)
 
     company = Company.find(uid: RequestStore.store[:tenant])
+    @company_marker_address = company.addresses.first
 
     @company_coordinates = {}
     if company.addresses.first.present? && (company.addresses.first.latitude.nil? || company.addresses.first.longitude.nil?)

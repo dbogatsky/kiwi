@@ -36,10 +36,19 @@
 <script type="text/javascript">
   $(document).ready(function(){
 
+    var c_name = '<%= @company_marker_address.name.present? ? @company_marker_address.name : 'nil'  %>'
+    var suite_number = '<%= @company_marker_address.suite_number %>'
+    var street_address = '<%= @company_marker_address.street_address %>'
+    var city = '<%= @company_marker_address.city %>'
+    var postcode = '<%= @company_marker_address.postcode %>'
+    var region = '<%= @company_marker_address.region %>'
+    var company_add = 'Name : ' + c_name + '<br/> Address : ' + suite_number + ', ' + street_address + '<br/> City : ' + city + '<br/> Postcode : ' + postcode + '<br/> Region : ' + region
+
     // Load google map
     initMap();
     function initMap() {
       var myLatLng = {lat: 43.670532, lng: -79.390740};
+      var infowindow = new google.maps.InfoWindow();
 
       var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 7,
@@ -50,6 +59,16 @@
         position: myLatLng,
         map: map,
       });
+
+      infowindow.setContent(company_add);
+      infowindow.open(map, marker);
+      google.maps.event.addListener(marker, 'click', (function(marker, company_add) {
+        return function() {
+          infowindow.setContent(company_add);
+          infowindow.open(map, marker);
+        }
+      })(marker, company_add));
+
     }
 
     // Find user
