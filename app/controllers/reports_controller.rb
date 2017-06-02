@@ -50,7 +50,7 @@ class ReportsController < ApplicationController
     end
 
     users_gps_tracking_info = []
-    gps_positions = GpsPosition.all(params: {search: search})
+    gps_positions = GpsPosition.all(params: {search: search, per_page: 100})
 
     gps_positions.each do | gps_position |
       users_coordinate = {}
