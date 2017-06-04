@@ -3,18 +3,70 @@
     <h3 class="panel-title">Visits Feed</h3>
   </div>
   <div class="panel-body">
-    <small><p>Below is a list of last known visits for each user for today.</p></small>
-    <br />
-    <div id="gmap-visits-marker" style="height: 300px">
+    <div class="row">
+      <div class="col-sm-12">
+        <small><p>Below is a list of last known positions for each user in the last hour.</p></small>
+        <div id="gmap-visits-widget" style="height: 400px">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-4">
+        
+      </div>
+      <div class="col-sm-4">
+
+      </div>
+      <div class="col-sm-4">
       
+      </div>
     </div>
   </div><!-- panel-body -->
+
+
 </div>
 
 <script type="text/javascript">
+  $(document).ready(function(){
+
+    var locations = <%= raw(@users_lastknown_position) %>
+
+    var map = new google.maps.Map(document.getElementById('gmap-visits-widget'), {
+      zoom: 5,
+      center: new google.maps.LatLng(<%= raw(@company_coordinates[:latitude]) %>, <%= raw(@company_coordinates[:longitude]) %>),
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
 
 
+    var marker, i;
+    var infowindow = new google.maps.InfoWindow();
 
+    for (i = 0; i < locations.length; i++) {
 
+      var lat = locations[i][0].toString()
+      var lng = locations[i][1].toString()
+      var latlang = 'Name : ' + locations[i][3].toString() + '<br/> Latitude : ' + lat + ', ' + 'Longitude : ' + lng + ' ' + '<br/>  Time : ' + locations[i][2]
 
+      marker = new google.maps.Marker({
+        position: new google.maps.LatLng(locations[i][0], locations[i][1]),
+        icon: {
+          path: google.maps.SymbolPath.CIRCLE,
+          scale: 10
+        },
+        draggable: false,
+        map: map
+      });
+
+      google.maps.event.addListener(marker, 'click', (function(marker, latlang, i) {
+        return function() {
+          infowindow.setContent(latlang);
+          infowindow.open(map, marker);
+        }
+      })(marker, latlang, i));
+
+    }
+
+    // Load google map
+    initMap();
+  })
 </script>
