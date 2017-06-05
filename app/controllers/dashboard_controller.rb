@@ -123,6 +123,9 @@ class DashboardController < ApplicationController
   def visits_lastknown
     visits = []
 
+    @users_lastknown_position = users_gps_position
+    company_coordinates
+
     render json: visits
   end
 
