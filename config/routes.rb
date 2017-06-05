@@ -165,6 +165,7 @@ Rails.application.routes.draw do
 
   get :visits_report, to: 'reports#visits_report'
   get :user_visits, to: 'reports#user_visits'
+  get :visits_lastknown, to: 'dashboard#visits_lastknown'
 
   match '(*any)', to: 'errors#routing', via: [:get, :post]
 end
