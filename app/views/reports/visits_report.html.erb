@@ -36,7 +36,7 @@
 <script type="text/javascript">
   $(document).ready(function(){
 
-    var company_name = '<%= @company_marker_address.name.present? ? @company_marker_address.name + '<br />' : 'Head Office <br />' %>'
+    var company_name = '<%= @company_marker_address.name.present? ? @company_marker_address.name + '<br />' : '' %>'
     var suite_number = '<%= @company_marker_address.suite_number %>'
     var street_address = '<%= @company_marker_address.street_address %>'
     var city = '<%= @company_marker_address.city %>'
@@ -52,7 +52,7 @@
       var infowindow = new google.maps.InfoWindow();
 
       var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 7,
+        zoom: <%= @zoom_level %>,
         center: myLatLng
       });
 

@@ -2,8 +2,8 @@
 var locations = <%= raw(@latlng) %>
 
 var map = new google.maps.Map(document.getElementById('map'), {
-  zoom: 2,
-  center: new google.maps.LatLng(43.670532, -79.390740),
+  zoom: <%= @zoom_level %>,
+  center: new google.maps.LatLng(<%= raw(@company_coordinates[:latitude]) %>, <%= raw(@company_coordinates[:longitude]) %>),
   mapTypeId: google.maps.MapTypeId.ROADMAP
 });
 

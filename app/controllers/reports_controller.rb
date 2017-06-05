@@ -15,8 +15,6 @@ class ReportsController < ApplicationController
   end
 
   def user_visits
-    company = Company.find(uid: RequestStore.store[:tenant])
-
     search = {}
     search[:user_id_eq] = params[:user_id] if params[:user_id].present?
 
@@ -48,6 +46,8 @@ class ReportsController < ApplicationController
     users_gps_tracking_info.each do |data|
       @latlng << [data[:latitude], data[:longitude]].map(&:to_f) + [data[:timestamp].in_time_zone.strftime("%Y-%m-%d %I:%M:%S %p")]
     end
+
+    company_coordinates
 
   end
 
