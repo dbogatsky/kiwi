@@ -32,7 +32,7 @@
     var locations = <%= raw(@users_lastknown_position) %>
 
     var map = new google.maps.Map(document.getElementById('gmap-visits-widget'), {
-      zoom: 5,
+      zoom: <%= @zoom_level %>,
       center: new google.maps.LatLng(<%= raw(@company_coordinates[:latitude]) %>, <%= raw(@company_coordinates[:longitude]) %>),
       mapTypeId: google.maps.MapTypeId.ROADMAP
     });

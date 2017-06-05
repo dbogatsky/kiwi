@@ -10,29 +10,8 @@ class ReportsController < ApplicationController
 
   def visits_report
     @users = User.all(uid: session[:user_id], reload: true)
-
-    company = Company.find(uid: RequestStore.store[:tenant])
-    @company_marker_address = company.addresses.first
-
-    @company_coordinates = {}
-    if company.addresses.first.present? && (company.addresses.first.latitude.nil? || company.addresses.first.longitude.nil?)
-      company_address = (
-          company.addresses.first.street_address + ', ' +
-          company.addresses.first.suite_number + ', ' +
-          company.addresses.first.city + ', ' +
-          company.addresses.first.region + ', ' +
-          company.addresses.first.country
-        )
-      geocoder_coordinates = Geocoder.coordinates(company_address)
-
-      @company_coordinates[:latitude] = geocoder_coordinates[0] if geocoder_coordinates.present?
-      @company_coordinates[:longitude] = geocoder_coordinates[1] if geocoder_coordinates.present?
-
-    elsif company.addresses.first.latitude.present? && company.addresses.first.longitude.present?
-      @company_coordinates[:latitude] = company.addresses.first.latitude
-      @company_coordinates[:longitude] = company.addresses.first.longitude
-    end
-
+    company_coordinates
+  
   end
 
   def user_visits
@@ -69,25 +48,6 @@ class ReportsController < ApplicationController
     users_gps_tracking_info.each do |data|
       @latlng << [data[:latitude], data[:longitude]].map(&:to_f) + [data[:timestamp].in_time_zone.strftime("%Y-%m-%d %I:%M:%S %p")]
     end
-
-    # @user = User.find(params[:user_id])
-    # latlng = []
-    # if !@user.addresses[0].blank?
-    #   if @user.addresses[0].latitude.present? and @user.addresses[0].longitude.present?
-    #     @latitude = @user.addresses[0].latitude
-    #     @longitude = @user.addresses[0].longitude
-    #   else
-    #     full_address = (
-    #                 @user.addresses[0].street_address + ', ' +
-    #                 @user.addresses[0].city + ', ' +
-    #                 @user.addresses[0].region + ', ' +
-    #                 @user.addresses[0].country
-    #               )
-    #     latlng = Geocoder.coordinates(full_address)
-    #     @latitude = latlng[0]
-    #     @longitude = latlng[1]
-    #   end
-    # end
 
   end
 
@@ -238,6 +198,39 @@ Please contact your administrator to help generate a report.'
   end
 
   private
+
+  def company_coordinates
+
+    company = Company.find(uid: RequestStore.store[:tenant])
+    @company_marker_address = company.addresses.first
+    @zoom_level = 5 #Default zoom level
+
+    @company_coordinates = {}
+    if company.addresses.first.present? && (company.addresses.first.latitude.nil? || company.addresses.first.longitude.nil?)
+      company_address = (
+          company.addresses.first.street_address + ', ' +
+          company.addresses.first.suite_number + ', ' +
+          company.addresses.first.city + ', ' +
+          company.addresses.first.region + ', ' +
+          company.addresses.first.country
+        )
+      geocoder_coordinates = Geocoder.coordinates(company_address)
+
+      @company_coordinates[:latitude] = geocoder_coordinates[0] if geocoder_coordinates.present?
+      @company_coordinates[:longitude] = geocoder_coordinates[1] if geocoder_coordinates.present?
+
+    elsif company.addresses.first.latitude.present? && company.addresses.first.longitude.present?
+      @company_coordinates[:latitude] = company.addresses.first.latitude
+      @company_coordinates[:longitude] = company.addresses.first.longitude
+    
+    else
+      #default central location (GB)
+      @company_coordinates[:latitude] = "51.509865"
+      @company_coordinates[:longitude] = "-0.118092"
+      @zoom_level = 10 #Wide zoom level
+    end
+
+  end
 
   def meeting_by_status_chart_data(meetings)
     s = 0

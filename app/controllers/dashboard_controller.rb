@@ -180,6 +180,7 @@ class DashboardController < ApplicationController
 
     company = Company.find(uid: RequestStore.store[:tenant])
     @company_marker_address = company.addresses.first
+    @zoom_level = 5 #Default zoom level
 
     @company_coordinates = {}
     if company.addresses.first.present? && (company.addresses.first.latitude.nil? || company.addresses.first.longitude.nil?)
@@ -198,6 +199,12 @@ class DashboardController < ApplicationController
     elsif company.addresses.first.latitude.present? && company.addresses.first.longitude.present?
       @company_coordinates[:latitude] = company.addresses.first.latitude
       @company_coordinates[:longitude] = company.addresses.first.longitude
+    
+    else
+      #default central location (GB)
+      @company_coordinates[:latitude] = "51.509865"
+      @company_coordinates[:longitude] = "-0.118092"
+      @zoom_level = 10 #Wide zoom level
     end
 
   end
