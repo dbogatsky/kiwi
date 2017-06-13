@@ -8,7 +8,7 @@
         <small><p>Below is a list of last known positions for each user in the last hour.</p></small>
       </div>
       <div class="col-sm-1">
-        <button class="btn btn-black btn-xs">Refresh</button>
+        <button class="btn btn-black btn-xs" id="btnRefresh">Refresh</button>
       </div>
     </div>
     <div class="row">
@@ -19,8 +19,9 @@
     <div class="row">
       <div class="col-sm-10">
       </div>
-      <div class="col-sm-2">
-        <small>Last refresh: 5 mins ago</small>
+      <div class="col-sm-2" id="time_div">
+        <!-- <small id="time_ago">Last Refresh: 5 mins ago</small> -->
+        <small id="time_ago"></small>
       </div>
     </div>
   </div><!-- panel-body -->
@@ -32,14 +33,18 @@
   $(document).ready(function(){
 
     var locations = <%= raw(@users_lastknown_position) %>
+    var map;
 
-    var map = new google.maps.Map(document.getElementById('gmap-visits-widget'), {
-      zoom: <%= @zoom_level %>,
-      center: new google.maps.LatLng(<%= raw(@company_coordinates[:latitude]) %>, <%= raw(@company_coordinates[:longitude]) %>),
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    });
+    load_gmap();
+    function load_gmap(){
+      map = new google.maps.Map(document.getElementById('gmap-visits-widget'), {
+        zoom: <%= @zoom_level %>,
+        center: new google.maps.LatLng(<%= raw(@company_coordinates[:latitude]) %>, <%= raw(@company_coordinates[:longitude]) %>),
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      });
+    }
 
-    visits_lastknown_ajax();
+    // visits_lastknown_ajax();
     function visits_lastknown_ajax(){
       $.ajax({
         type: "get",
@@ -49,7 +54,6 @@
           console.log("success");
           visits_lastknown_js();
           setTimeout(visits_lastknown_ajax, 600000);
-
         }
       });
     }
@@ -63,6 +67,9 @@
 
         var lat = locations[i][0].toString()
         var lng = locations[i][1].toString()
+        console.log('latitude : '+ lat);
+        console.log('longitude : '+ lng);
+
         var latlang = 'Name : ' + locations[i][3].toString() + '<br/> Latitude : ' + lat + ', ' + 'Longitude : ' + lng + ' ' + '<br/>  Time : ' + locations[i][2]
 
         marker = new google.maps.Marker({
@@ -85,7 +92,43 @@
       }
     }
 
-    // Load google map
-    // initMap();
+    // Refresh button click to update gmap content
+    var myVar;
+    var display = $('#time_ago');
+    var duration;
+    var minutes;
+    var timer;
+
+    var startTimer = function() {
+
+      minutes = parseInt(timer / 60, 10)
+
+      if(minutes < 1){
+        display.text('Last Refresh: < 1 min ago');
+      }
+      else if(minutes == 1){
+        display.text('Last Refresh: ' + minutes + ' min ago');
+      }
+      else{
+        display.text('Last Refresh: ' + minutes + ' mins ago');
+      }
+
+      if (timer++ > 600) {
+        timer = duration;
+      }
+    }
+
+    $('#btnRefresh').click(function() {
+      clearInterval(myVar);
+      duration = 0;
+      timer = duration;
+      myVar = setInterval(startTimer, 1000);
+      load_gmap();
+      visits_lastknown_ajax();
+    });
+
+    $('#btnRefresh').click();
+
+
   })
 </script>
