@@ -121,17 +121,13 @@ class DashboardController < ApplicationController
   end
 
   def visits_lastknown
-    visits = []
-
     @users_lastknown_position = users_gps_position
-    company_coordinates
-
-    render json: visits
+    render json: @users_lastknown_position
   end
 
   private
 
-  def users_gps_position(time=60) 
+  def users_gps_position(time=60)
     search = {}
 
     search[:timestamp_gteq] = time.minutes.ago.utc
@@ -202,7 +198,7 @@ class DashboardController < ApplicationController
     elsif company.addresses.first.latitude.present? && company.addresses.first.longitude.present?
       @company_coordinates[:latitude] = company.addresses.first.latitude
       @company_coordinates[:longitude] = company.addresses.first.longitude
-    
+
     else
       #default central location (GB)
       @company_coordinates[:latitude] = "51.509865"
