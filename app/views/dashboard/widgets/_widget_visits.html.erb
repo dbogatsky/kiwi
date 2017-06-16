@@ -31,8 +31,9 @@
 <script type="text/javascript">
   $(document).ready(function(){
 
-    var locations
+    var locations;
     var map;
+    var clear_timer;
 
     load_gmap();
     function load_gmap(){
@@ -53,7 +54,7 @@
           locations = result.user_gmap
           load_gmap();
           visits_lastknown_js(locations);
-          setTimeout(visits_lastknown_ajax, 600000);
+          clear_timer = setTimeout(visits_lastknown_ajax, 600000);
         }
       });
     }
@@ -122,6 +123,7 @@
       timer = duration;
       myVar = setInterval(startTimer, 1000);
       visits_lastknown_ajax();
+      clearTimeout(clear_timer);
       load_gmap();
     });
 
