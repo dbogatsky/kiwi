@@ -31,7 +31,7 @@
 <script type="text/javascript">
   $(document).ready(function(){
 
-    var locations = <%= raw(@users_lastknown_position) %>
+    var locations
     var map;
 
     load_gmap();
@@ -47,17 +47,18 @@
       $.ajax({
         type: "get",
         url: "/visits_lastknown",
-        // dataType: "json",
+        dataType: "json",
         success:function(result){
           console.log("success");
+          locations = result.user_gmap
           load_gmap();
-          visits_lastknown_js();
+          visits_lastknown_js(locations);
           setTimeout(visits_lastknown_ajax, 600000);
         }
       });
     }
 
-    function visits_lastknown_js(){
+    function visits_lastknown_js(locations){
 
       var marker, i;
       var infowindow = new google.maps.InfoWindow();
@@ -66,8 +67,6 @@
 
         var lat = locations[i][0].toString()
         var lng = locations[i][1].toString()
-        console.log('latitude : '+ lat);
-        console.log('longitude : '+ lng);
 
         var latlang = 'Name : ' + locations[i][3].toString() + '<br/> Latitude : ' + lat + ', ' + 'Longitude : ' + lng + ' ' + '<br/>  Time : ' + locations[i][2]
 
@@ -123,6 +122,7 @@
       timer = duration;
       myVar = setInterval(startTimer, 1000);
       visits_lastknown_ajax();
+      load_gmap();
     });
 
     $('#btnRefresh').click();

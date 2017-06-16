@@ -122,7 +122,7 @@ class DashboardController < ApplicationController
 
   def visits_lastknown
     @users_lastknown_position = users_gps_position
-    render json: @users_lastknown_position
+    render json: {success: true, user_gmap: @users_lastknown_position}
   end
 
   private
