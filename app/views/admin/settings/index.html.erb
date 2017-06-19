@@ -62,6 +62,14 @@
                   </div>
                 </div>
               </div><!-- row pad 5-->
+              <div class="row row-pad-5">
+                <div class="form-group">
+                  <label class="col-sm-4 control-label">GPS Tracking</label>
+                  <div class="col-sm-4">
+                    <%=select_tag('gps_tracking',options_for_select(gps_tracking_select_options, selected: @gps_tracking), class: "form-control")%>
+                  </div>
+                </div>
+              </div><!-- row pad 5-->
             </div>
           </div>
         </div>

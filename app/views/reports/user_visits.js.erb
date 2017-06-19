@@ -1,0 +1,37 @@
+
+var locations = <%= raw(@latlng) %>
+
+var map = new google.maps.Map(document.getElementById('map'), {
+  zoom: <%= @zoom_level %>,
+  center: new google.maps.LatLng(<%= raw(@company_coordinates[:latitude]) %>, <%= raw(@company_coordinates[:longitude]) %>),
+  mapTypeId: google.maps.MapTypeId.ROADMAP
+});
+
+
+var marker, i;
+var infowindow = new google.maps.InfoWindow();
+
+for (i = 0; i < locations.length; i++) {
+
+  var lat = locations[i][0].toString()
+  var lng = locations[i][1].toString()
+  var latlang = 'Latitude : ' + lat + ', ' + 'Longitude : ' + lng + '<br/>  Time : ' + locations[i][2]
+
+  marker = new google.maps.Marker({
+    position: new google.maps.LatLng(locations[i][0], locations[i][1]),
+    icon: {
+      path: google.maps.SymbolPath.CIRCLE,
+      scale: 10
+    },
+    draggable: false,
+    map: map
+  });
+
+  google.maps.event.addListener(marker, 'click', (function(marker, latlang, i) {
+    return function() {
+      infowindow.setContent(latlang);
+      infowindow.open(map, marker);
+    }
+  })(marker, latlang, i));
+
+}

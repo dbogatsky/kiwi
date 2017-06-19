@@ -3,21 +3,30 @@
   <h2><i class="fa fa-home"></i> Dashboard</h2>
 <% end %>
 
-<div class="row">
-  <div class="col-sm-4">
-    <% #render 'dashboard/widgets/widget_news' %>
-    <%= render 'dashboard/widgets/widget_quickstats' %>
-  </div><!-- left col-sm-4 -->
+  <div class="row">
+    <div class="col-sm-4">
+      <% #render 'dashboard/widgets/widget_news' %>
+      <%= render 'dashboard/widgets/widget_quickstats' %>
+    </div><!-- left col-sm-4 -->
 
-  <div class="col-sm-4">
-    <%= render 'dashboard/widgets/widget_quotes' %>
-    <%= render 'dashboard/widgets/widget_accountactivity' %>
-  </div><!-- middle col-sm-4 -->
+    <div class="col-sm-4">
+      <%= render 'dashboard/widgets/widget_quotes' %>
+      <%= render 'dashboard/widgets/widget_accountactivity' %>
+    </div><!-- middle col-sm-4 -->
 
-  <div class="col-sm-4">
-    <%= render 'dashboard/widgets/widget_weather' %>
-    <%= render 'dashboard/widgets/widget_meetings' %>
-  </div><!-- right col-sm-4 -->
-</div>
+    <div class="col-sm-4">
+      <%= render 'dashboard/widgets/widget_weather' %>
+      <%= render 'dashboard/widgets/widget_meetings' %>
+    </div><!-- right col-sm-4 -->
+  </div>
+
+  <% if @gps_tracking == 'on' && ( can? :visits_gps_tracking, Account ) %>
+  <div class="row">
+    <div class="col-sm-12">
+      <%= render 'dashboard/widgets/widget_visits' %>
+    </div><!-- right col-sm-12 -->
+  </div>  
+  <% end %>
+
 
 <%= render "dashboard/js" %>

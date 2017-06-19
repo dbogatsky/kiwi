@@ -31,6 +31,7 @@ Rails.application.routes.draw do
   post '/login/superadmin_auth', to: 'login#superadmin_auth', as: :login_superadmin_auth
 
   match '/dashboard', to: 'dashboard#index', as: :dashboard, via: [:get]
+  get :visits_last_known, to: 'dashboard#visits_last_known'
 
   resource :profile, only: [:show, :update]
   resource :preference, only: [:show, :update]
@@ -161,6 +162,10 @@ Rails.application.routes.draw do
 
   get :activity_report, to: 'reports#activity_report'
   get :activity_report_result, to: 'reports#activity_report_result'
+
+  get :visits_report, to: 'reports#visits_report'
+  get :user_visits, to: 'reports#user_visits'
+  get :visits_lastknown, to: 'dashboard#visits_lastknown'
 
   match '(*any)', to: 'errors#routing', via: [:get, :post]
 end

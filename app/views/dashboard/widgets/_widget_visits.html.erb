@@ -1,0 +1,133 @@
+<div class="panel panel-dark panel-alt">
+  <div class="panel-heading">
+    <h3 class="panel-title">Visits Feed</h3>
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-sm-11">
+        <small><p>Below is a list of last known positions for each user in the last hour.</p></small>
+      </div>
+      <div class="col-sm-1">
+        <button class="btn btn-black btn-xs" id="btnRefresh">Refresh</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <div id="gmap-visits-widget" style="height: 400px"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-10">
+      </div>
+      <div class="col-sm-2" id="time_div">
+        <small id="time_ago"></small>
+      </div>
+    </div>
+  </div><!-- panel-body -->
+
+
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+
+    var locations;
+    var map;
+    var clear_timer;
+
+    load_gmap();
+    function load_gmap(){
+      map = new google.maps.Map(document.getElementById('gmap-visits-widget'), {
+        zoom: <%= @zoom_level %>,
+        center: new google.maps.LatLng(<%= raw(@company_coordinates[:latitude]) %>, <%= raw(@company_coordinates[:longitude]) %>),
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      });
+    }
+
+    function visits_lastknown_ajax(){
+      $.ajax({
+        type: "get",
+        url: "/visits_lastknown",
+        dataType: "json",
+        success:function(result){
+          console.log("success");
+          locations = result.user_gmap
+          load_gmap();
+          visits_lastknown_js(locations);
+          clear_timer = setTimeout(visits_lastknown_ajax, 600000);
+        }
+      });
+    }
+
+    function visits_lastknown_js(locations){
+
+      var marker, i;
+      var infowindow = new google.maps.InfoWindow();
+
+      for (i = 0; i < locations.length; i++) {
+
+        var lat = locations[i][0].toString()
+        var lng = locations[i][1].toString()
+
+        var latlang = 'Name : ' + locations[i][3].toString() + '<br/> Latitude : ' + lat + ', ' + 'Longitude : ' + lng + ' ' + '<br/>  Time : ' + locations[i][2]
+
+        marker = new google.maps.Marker({
+          position: new google.maps.LatLng(locations[i][0], locations[i][1]),
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 10
+          },
+          draggable: false,
+          map: map
+        });
+
+        google.maps.event.addListener(marker, 'click', (function(marker, latlang, i) {
+          return function() {
+            infowindow.setContent(latlang);
+            infowindow.open(map, marker);
+          }
+        })(marker, latlang, i));
+
+      }
+    }
+
+    // Refresh button click to update gmap content
+    var myVar;
+    var display = $('#time_ago');
+    var duration;
+    var minutes;
+    var timer;
+
+    var startTimer = function() {
+
+      minutes = parseInt(timer / 60, 10)
+
+      if(minutes < 1){
+        display.text('Last Refresh: < 1 min ago');
+      }
+      else if(minutes == 1){
+        display.text('Last Refresh: ' + minutes + ' min ago');
+      }
+      else{
+        display.text('Last Refresh: ' + minutes + ' mins ago');
+      }
+
+      if (timer++ > 600) {
+        timer = duration;
+      }
+    }
+
+    $('#btnRefresh').click(function() {
+      clearInterval(myVar);
+      duration = 0;
+      timer = duration;
+      myVar = setInterval(startTimer, 1000);
+      visits_lastknown_ajax();
+      clearTimeout(clear_timer);
+      load_gmap();
+    });
+
+    $('#btnRefresh').click();
+
+  })
+</script>

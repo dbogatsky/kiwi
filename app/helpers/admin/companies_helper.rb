@@ -12,4 +12,8 @@ module Admin::CompaniesHelper
     return [['On', 'on'],['Off','off']]
   end
 
+  def gps_tracking_select_options
+    return [['On', 'on'],['Off','off']]
+  end
+
 end

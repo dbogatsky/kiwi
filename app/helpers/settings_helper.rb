@@ -26,4 +26,8 @@ module SettingsHelper
   def approval_for_account_transfer_options
     return [['By Admins and Entity Admins Only', true],['None', false]]
   end
+
+  def gps_tracking_interval_options
+    return [['Off', -1], ['5 secs', 5], ['10 secs', 10], ['30 secs', 30], ['1 min', 60], ['5 mins', 300], ['10 mins', 600], ['15 mins', 900], ['30 mins', 1800], ['45 mins', 2700], ['1 hour', 3600]]
+  end
 end

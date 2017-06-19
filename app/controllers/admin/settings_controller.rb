@@ -10,7 +10,7 @@ class Admin::SettingsController < Admin::AdminController
   def update_settings
     get_api_values
     apiFullUrl = ENV.fetch("ORCHARD_BO_API_HOST") + "/companies/#{params[:company_id]}/settings/private"
-    curlRes = `curl -X PUT -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -d '{"settings":{"googlemap_autocomplete": "#{params[:googlemap_autocomplete]}", "asset_management": "#{params[:asset_management]}", "account_attachment": "#{params[:account_attachment]}", "conversation_item_attachment": "#{params[:conversation_item_attachment]}" }}' '#{apiFullUrl}'`
+    curlRes = `curl -X PUT -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -d '{"settings":{"googlemap_autocomplete": "#{params[:googlemap_autocomplete]}", "asset_management": "#{params[:asset_management]}", "account_attachment": "#{params[:account_attachment]}", "conversation_item_attachment": "#{params[:conversation_item_attachment]}", "gps_tracking": "#{params[:gps_tracking]}" }}' '#{apiFullUrl}'`
 
     boApiIntegrationFullUrl = ENV.fetch("ORCHARD_BO_API_HOST") + "/companies/#{params[:company_id]}/settings/integrations"
     office365 = params[:office365_integration].to_s == 'on' ? 'true' : 'false'
@@ -111,6 +111,7 @@ class Admin::SettingsController < Admin::AdminController
       @account_attachment = application_setting['company']['settings']['private']['account_attachment']
       @conversation_item_attachment = application_setting['company']['settings']['private']['conversation_item_attachment']
       @googlemap_autocomplete = ( application_setting['company']['settings']['private']['googlemap_autocomplete'].nil? ) ? "on" : application_setting['company']['settings']['private']['googlemap_autocomplete']
+      @gps_tracking = ( application_setting['company']['settings']['private']['gps_tracking'].nil? ) ? "off" : application_setting['company']['settings']['private']['gps_tracking']
 
       @boApiIntegrationFullUrl = ENV.fetch("ORCHARD_BO_API_HOST") + "/companies/#{params[:company_id]}/settings/integrations"
       application_integration_setting = `curl -X GET -H "Authorization: Token token="#{@token}", email="#{@email}", app_key="#{@appKey}"" -H "Content-Type: application/json"  -H "Cache-Control: no-cache" "#{@boApiIntegrationFullUrl}"`

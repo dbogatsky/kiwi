@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  # Prevent CSRF attacks by raising an exception.
+  # Prevent CSRF attacks by raising an exception. 
   # For APIs, you may want to use :null_session instead.
   include Mobylette::RespondToMobileRequests
   force_ssl if Rails.env.production?
@@ -584,6 +584,7 @@ class ApplicationController < ActionController::Base
     @timezone_setting = preferences['enable_timezone_detect']
     @search_all_accounts = preferences['search_all_accounts']
     @needs_approval_for_account_transfer = preferences['needs_approval_for_account_transfer'] || false
+    @gps_tracking_interval = preferences['gps_tracking_interval'] || 0 #300000 # in milliseconds = 5 mins (default)
   end
 
   def get_timezone_setting
@@ -606,6 +607,7 @@ class ApplicationController < ActionController::Base
     @account_attachment = application_setting['company']['settings']['private']['account_attachment']
     @conversation_item_attachment = application_setting['company']['settings']['private']['conversation_item_attachment']
     @googlemap_autocomplete = ( application_setting['company']['settings']['private']['googlemap_autocomplete'].nil? ) ? "on" : application_setting['company']['settings']['private']['googlemap_autocomplete']
+    @gps_tracking = ( application_setting['company']['settings']['private']['gps_tracking'].nil? ) ? "off" : application_setting['company']['settings']['private']['gps_tracking']
   end
 
   def integrations_settings

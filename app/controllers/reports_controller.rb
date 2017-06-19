@@ -8,6 +8,49 @@ class ReportsController < ApplicationController
     @users = User.all(uid: session[:user_id], reload: true)
   end
 
+  def visits_report
+    @users = User.all(uid: session[:user_id], reload: true)
+    company_coordinates
+  
+  end
+
+  def user_visits
+    search = {}
+    search[:user_id_eq] = params[:user_id] if params[:user_id].present?
+
+    if params[:date].present?
+      search[:timestamp_gteq] = convert_datetime_to_utc(current_user.time_zone, params[:date], "00:00:00")
+      search[:timestamp_lteq] = convert_datetime_to_utc(current_user.time_zone, params[:date], "23:59:59")
+    else
+      #Default to Today's date
+      todays_date = Date.today.to_s
+      search[:timestamp_gteq] = convert_datetime_to_utc(current_user.time_zone, todays_date, "00:00:00")
+      search[:timestamp_lteq] = convert_datetime_to_utc(current_user.time_zone, todays_date, "23:59:59")
+    end
+
+    users_gps_tracking_info = []
+    gps_positions = GpsPosition.all(params: {search: search, per_page: 300})
+
+    gps_positions.each do | gps_position |
+      users_coordinate = {}
+      users_coordinate[:latitude] = gps_position.lat
+      users_coordinate[:longitude] = gps_position.lon
+      users_coordinate[:timestamp] = gps_position.timestamp
+      users_coordinate[:positionable_id] = gps_position.positionable_id
+      users_coordinate[:positionable_type] = gps_position.positionable_type
+
+      users_gps_tracking_info << users_coordinate
+    end
+
+    @latlng = []
+    users_gps_tracking_info.each do |data|
+      @latlng << [data[:latitude], data[:longitude]].map(&:to_f) + [data[:timestamp].in_time_zone.strftime("%Y-%m-%d %I:%M:%S %p")]
+    end
+
+    company_coordinates
+
+  end
+
   def meeting_report_result
     if current_user.roles.last.try(:name) == 'User'
       user_ids = [current_user.id]
@@ -155,6 +198,39 @@ Please contact your administrator to help generate a report.'
   end
 
   private
+
+  def company_coordinates
+
+    company = Company.find(uid: RequestStore.store[:tenant])
+    @company_marker_address = company.addresses.first
+    @zoom_level = 5 #Default zoom level
+
+    @company_coordinates = {}
+    if company.addresses.first.present? && (company.addresses.first.latitude.nil? || company.addresses.first.longitude.nil?)
+      company_address = (
+          company.addresses.first.street_address + ', ' +
+          company.addresses.first.suite_number + ', ' +
+          company.addresses.first.city + ', ' +
+          company.addresses.first.region + ', ' +
+          company.addresses.first.country
+        )
+      geocoder_coordinates = Geocoder.coordinates(company_address)
+
+      @company_coordinates[:latitude] = geocoder_coordinates[0] if geocoder_coordinates.present?
+      @company_coordinates[:longitude] = geocoder_coordinates[1] if geocoder_coordinates.present?
+
+    elsif company.addresses.first.latitude.present? && company.addresses.first.longitude.present?
+      @company_coordinates[:latitude] = company.addresses.first.latitude
+      @company_coordinates[:longitude] = company.addresses.first.longitude
+    
+    else
+      #default central location (GB)
+      @company_coordinates[:latitude] = "51.509865"
+      @company_coordinates[:longitude] = "-0.118092"
+      @zoom_level = 10 #Wide zoom level
+    end
+
+  end
 
   def meeting_by_status_chart_data(meetings)
     s = 0
