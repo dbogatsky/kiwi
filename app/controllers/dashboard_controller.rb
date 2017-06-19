@@ -113,11 +113,11 @@ class DashboardController < ApplicationController
     #
     #  Visit and last known location
     #
-    entities = CompanyEntity.all(uid: RequestStore.store[:tenant], reload: true)
-
-    @users_lastknown_position = users_gps_position
-    company_coordinates
-
+    if @gps_tracking == 'on' && ( can? :visits_gps_tracking, Account )
+      entities = CompanyEntity.all(uid: RequestStore.store[:tenant], reload: true)
+      @users_lastknown_position = users_gps_position
+      company_coordinates
+    end
   end
 
   def visits_lastknown
@@ -182,23 +182,24 @@ class DashboardController < ApplicationController
     @zoom_level = 5 #Default zoom level
 
     @company_coordinates = {}
-    if company.addresses.first.present? && (company.addresses.first.latitude.nil? || company.addresses.first.longitude.nil?)
-      company_address = (
-          company.addresses.first.street_address + ', ' +
-          company.addresses.first.suite_number + ', ' +
-          company.addresses.first.city + ', ' +
-          company.addresses.first.region + ', ' +
-          company.addresses.first.country
-        )
-      geocoder_coordinates = Geocoder.coordinates(company_address)
+    if company.addresses.present?
+      if company.addresses.first.present? && (company.addresses.first.latitude.nil? || company.addresses.first.longitude.nil?)
+        company_address = (
+            company.addresses.first.street_address + ', ' +
+            company.addresses.first.suite_number + ', ' +
+            company.addresses.first.city + ', ' +
+            company.addresses.first.region + ', ' +
+            company.addresses.first.country
+          )
+        geocoder_coordinates = Geocoder.coordinates(company_address)
 
-      @company_coordinates[:latitude] = geocoder_coordinates[0] if geocoder_coordinates.present?
-      @company_coordinates[:longitude] = geocoder_coordinates[1] if geocoder_coordinates.present?
+        @company_coordinates[:latitude] = geocoder_coordinates[0] if geocoder_coordinates.present?
+        @company_coordinates[:longitude] = geocoder_coordinates[1] if geocoder_coordinates.present?
 
-    elsif company.addresses.first.latitude.present? && company.addresses.first.longitude.present?
-      @company_coordinates[:latitude] = company.addresses.first.latitude
-      @company_coordinates[:longitude] = company.addresses.first.longitude
-
+      elsif company.addresses.first.latitude.present? && company.addresses.first.longitude.present?
+        @company_coordinates[:latitude] = company.addresses.first.latitude
+        @company_coordinates[:longitude] = company.addresses.first.longitude
+      end
     else
       #default central location (GB)
       @company_coordinates[:latitude] = "51.509865"
