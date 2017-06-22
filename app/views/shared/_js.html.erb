@@ -1,0 +1,617 @@
+
+<script>
+  mobile = '<%=mobile?%>'
+  $(document).ready(function() {
+
+    function clear_googlemap_error(element_name) {
+      $("#"+element_name).removeAttr('placeholder');
+      $("#"+element_name).removeAttr('disabled');
+      $("#"+element_name).removeClass('gm-err-autocomplete');
+      $("#"+element_name).css('background-image', 'none');
+    }
+
+    function address_auto_fill(e){
+    <% if @googlemap_autocomplete == 'on' || superadmin_logged_in? %>
+      var componentForm = {
+        street_number: 'short_name',
+        sublocality_level_1: 'short_name',
+        subpremise: 'long_name',
+        premise: 'long_name',
+        route: 'long_name',
+        locality: 'long_name',
+        administrative_area_level_1: 'long_name',
+        country: 'short_name',
+        postal_code: 'short_name'
+      };
+      var autocomplete = new google.maps.places.Autocomplete(e);
+      autocomplete.addListener('place_changed', fillInAddress);
+      function fillInAddress() {
+        var place = autocomplete.getPlace();
+        for (var i = 0; i < place.address_components.length; i++) {
+          var addressType = place.address_components[i].types[0];
+          if (componentForm[addressType]) {
+            if (addressType == 'country'){
+              var country_name = place.address_components[i][componentForm[addressType]]
+            }
+          }
+        }
+
+        var addressData
+        if (place.address_components) {
+          addressData = place.address_components;
+          if (place.name) { addressData.push({"name":place.name, "types":["name"]}); }
+        }
+
+        $.ajax({
+            url: '/accounts/address_mapping',
+            dataType: 'json',
+            data: JSON.stringify(place.address_components),
+            type: 'post',
+            contentType: 'application/json, charset=UTF-8',
+            processData: false,
+            success: function( data, textStatus, jQxhr ){
+                // console.log( JSON.stringify( data ) );
+              if (e.id == 'account_name'){
+                $("#account_name").val(titleize(place.name))
+              }
+              var lat = place.geometry.location.lat();
+              var lng = place.geometry.location.lng();
+
+              $("#account_lat").val(lat);
+              $("#account_lng").val(lng);
+
+              for (var component in componentForm) {
+                if (component != 'route'){
+                  $('#'+component).val('');
+                  $('#'+component).attr('readonly', false)
+                }
+              }
+              var address_mapping = data.address_mapping
+              for (var i = 0; i < place.address_components.length; i++) {
+                var addressType = place.address_components[i].types[0];
+                if (componentForm[addressType]) {
+                  var val = place.address_components[i][componentForm[addressType]];
+                  if(Object.keys(address_mapping).length > 0){
+                    if(addressType == 'sublocality_level_1' && address_mapping.sublocality_level_1){
+                      document.getElementById(address_mapping.sublocality_level_1).value = val
+                    }else if(addressType == 'premise' && address_mapping.premise){
+                      document.getElementById(address_mapping.premise).value = val
+                    }else if (addressType == 'locality' && address_mapping.locality){
+                      document.getElementById(address_mapping.locality).value = val;
+                    }else if (addressType == 'country'){
+                      $("#country").select2().val(val);
+                      $("#country").select2().val();
+                    }
+                  }else{
+                    if (addressType !='route'){
+                      if (addressType == 'country'){
+                        $("#country").select2().val(val);
+                        $("#country").select2().val();
+                      }else if (addressType == 'street_number'){
+                        r = place.address_components[i+1][componentForm['route']]
+                        document.getElementById('street_number').value = val+' '+r
+                      }else if (!(addressType == 'sublocality_level_1' || addressType == 'premise')){
+                        document.getElementById(addressType).value = val;
+                      }
+                    }
+                  }
+                }
+              }
+              if (address_mapping.name) {
+                document.getElementById(address_mapping.name).value = place.name;
+              }
+            },
+            error: function( jqXhr, textStatus, errorThrown ){
+              console.log( errorThrown );
+            }
+        });
+      }
+    <% end %>
+    }
+
+    if(mobile == 'true'){
+      $('#schedule-from-datepicker').on('change', function() {
+          $('#schedule-to-datepicker').prop('min', $(this).val());
+          $('#schedule-to-datepicker').val($(this).val());
+      });
+    }
+
+    if ($('#account_name').length > 0 ){
+        address_auto_fill(document.getElementById("account_name"));
+    }
+    if ($('#street_number').length > 0){
+        address_auto_fill(document.getElementById("street_number"));
+    }
+    // var path = window.location.pathname
+    // if((path.includes('/accounts/') || path.includes('/users/')) && (path.includes('/edit') || path.includes('/new'))){
+    //   if (document.getElementById("account_name") != null){
+    //       address_auto_fill(document.getElementById("account_name"));
+    //     }else{
+    //       address_auto_fill(document.getElementById("street_number"));
+    //   }
+    // }
+
+    $('body').bind('ajax:beforeSend', function(event, xhr, settings) {
+      console.log("ajax-beforesend");
+      $("#preloader").show();
+    });
+
+    $('body').bind('ajax:complete', function(xhr, status) {
+      console.log("ajax-complete");
+      $("#preloader").hide();
+    });
+
+
+    if(mobile == 'false'){
+      $('.datepicker').datepicker();
+
+      $('#schedule-from-datepicker, #meeting-reminder-date').datepicker({
+        dateFormat: 'mm/dd/yy',
+        altField: "#schedule-to-datepicker",
+        altFormat: "mm/dd/yy",
+        onSelect: function (selected) {
+          var dt = new Date(selected);
+          dt.setDate(dt.getDate());
+          $("#schedule-to-datepicker").datepicker("option", "minDate", dt);
+        }
+      });
+
+      $('#schedule-to-datepicker').datepicker({
+        dateFormat: 'mm/dd/yy'
+      });
+    }
+
+    var now = new Date();
+    var mins = now.getMinutes();
+    var quarterHours = Math.round(mins/15);
+    if (quarterHours == 4)
+    {
+        now.setHours(now.getHours()+1);
+    }
+    rounded = (quarterHours*15)%60;
+    now.setMinutes(rounded);
+    var d = now
+    var hh = d.getHours();
+    var m = d.getMinutes();
+    var dd = 'AM';
+    var h = hh;
+    if (h >= 12) {
+        h = hh-12;
+        dd = "PM";
+    }
+    if (h == 0) {
+        h = 12;
+    }
+    m = m<10?"0"+m:m;
+    var current_time = h+":"+m+" "+dd;
+
+    if(mobile == 'false'){
+      $('#schedule-from-timepicker').timepicker({
+        minuteStep: 15,
+        defaultTime: current_time
+      });
+
+      $('#schedule-to-timepicker').timepicker({
+        minuteStep: 15
+      });
+    }
+
+    $('#scheduleFromTimePicker').timepicker().on('hide.timepicker', function(e) {
+      $('#schedule-to-timepicker').timepicker('setTime', e.time.value);
+    });
+
+    $(".account_next").click(function(){
+       address_auto_fill(document.getElementById("street_number"));
+    });
+
+
+    $(document).on('click', '.jumpin', function(){
+      var conversation_id = $(this).data('conversation-id')
+      var cid = $(this).attr('id')
+      $('#'+cid).hide();
+      $('#preloader').show();
+      $.ajax({
+        type: "POST",
+        url : '/accounts/jump_in?conversation_id='+conversation_id+'&cid='+cid,
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+        },
+        complete: function() {
+          $('#preloader').hide();
+          $('#'+cid).switchClass("jumpin", "checkin");
+          $('#'+cid).parent().find('.position_button').text('Check In');
+          $('#'+cid).show();
+        },
+        success: function() {
+        },
+        error:function() {
+        }
+      });
+    });
+
+    $(document).on('click', '.checkin', function(){
+      checkin(this);
+    });
+
+    $(document).on('click', '.checkout', function(){
+      checkout(this);
+    });
+
+    function checkin(parent) {
+      var self = parent;
+      var created_by = $(parent).data('created-by')
+      var conversation_id = $(parent).data('conversation-id')
+      //immediately show loader
+      // $('#'+self.id).hide();
+      $('#preloader').show();
+      navigator.geolocation.getCurrentPosition(
+        function(position) {
+          savePosition(position, "checkin", "success", self.id, created_by, conversation_id);
+        },
+        function(position) {
+          savePosition(position, "checkin", "error", self.id, created_by, conversation_id);
+        }
+      );
+    }
+
+    function checkout(parent) {
+      var self = parent;
+      var created_by = $(parent).data('created-by')
+      var conversation_id = $(parent).data('conversation-id')
+      //immediately show loader
+      // $('#'+self.id).hide();
+      $('#preloader').show();
+      navigator.geolocation.getCurrentPosition(
+        function(position) {
+          savePosition(position, "checkout", "success", self.id, created_by, conversation_id);
+        },
+        function(position) {
+          savePosition(position, "checkout", "error", self.id, created_by, conversation_id);
+        }
+      );
+    }
+
+    function savePosition(position, type, result, cid, created_by, conversation_id) {
+      var url = null;
+      var lat = null;
+      var lng = null;
+
+      if (result == "success") {
+        lat = position.coords.latitude;
+        lng = position.coords.longitude;
+      }
+
+      if(type == "checkin") {
+        url = '/accounts/check_in';
+      }
+
+      if(type == "checkout") {
+        url = '/accounts/check_out';
+      }
+
+      <%unless superadmin_logged_in?%>
+        $.getJSON("https://api.ipify.org?format=json", function(data){
+          var ip_address = data.ip;
+          $.ajax({
+            url : url,
+            method: 'POST',
+            data: { cid: cid, lat: lat, lng: lng, ip_address: ip_address, created_by: created_by, conversation_id: conversation_id },
+            beforeSend: function(xhr) {
+              xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+            },
+            complete: function(data) {
+              var data = data.responseJSON
+              var citem_status = data[0];
+              var check_in_out = data[1]
+              var check_in_out_time = data[2]
+              console.log(check_in_out_time)
+              if (check_in_out == 'check_in'){
+                $('#'+cid).switchClass("checkin", "checkout");
+                $('#'+cid).parent().find('.position_button').text('Check Out');
+                $('#'+cid).parent().find('.fa-sign-in').switchClass("fa-sign-in", "fa-sign-out");
+                $('.check_in_time_'+cid).find("span").text(check_in_out_time)
+                $('.check_in_time_'+cid).removeClass('hidden')
+              }
+              if (check_in_out == 'check_out'){
+                $('.check_out_time_'+cid).find("span").text(check_in_out_time)
+                $('.check_out_time_'+cid).removeClass('hidden')
+                $('#'+cid).hide();
+              }
+              if(citem_status == "in_progress"){
+                $('.citem_'+cid).text("in_progress");
+                $('.citem_'+cid).css("color", "#FF0000");
+                $('.citem_'+cid).css("border", "1px solid #FF0000");
+              }else if(citem_status == "completed"){
+                $('.citem_'+cid).text("completed");
+                $('.citem_'+cid).css("color", "#4CAF50");
+                $('.citem_'+cid).css("border", "1px solid #4CAF50");
+              }
+              $('#preloader').hide();
+            },
+            success: function() {
+            },
+            error:function() {
+            }
+          });
+        });
+      <%end%>
+    }
+
+    $(".amount_val").keypress(function(event) {
+      if ((event.which != 46 || $(this).val().indexOf('.') != -1) &&
+        ((event.which < 48 || event.which > 57) &&
+          (event.which != 0 && event.which != 8))) {
+        event.preventDefault();
+      }
+      var text = $(this).val();
+      if ((text.indexOf('.') != -1) &&
+        (text.substring(text.indexOf('.')).length > 2) &&
+        (event.which != 0 && event.which != 8) &&
+        ($(this)[0].selectionStart >= text.length - 2)) {
+        event.preventDefault();
+      }
+    });
+
+    $(".amount_val").focusout(function(){
+       var re = /^-?[0-9]+$/;
+       var num = $(this).val();
+       if (re.test(num)){
+          num = num + '.00';
+          $(this).val(num);
+       }else if(!re.test(num) && num != '' ){
+         var length = parseFloat(num).toFixed(2).replace(/^-?\d*\.?|0+$/g, '').length
+         if(length == 1){
+          num = num + '0';
+          $(this).val(num);
+        }else if (length < 1){
+          num = parseFloat(num) + '.00';
+          $(this).val(num);
+        }
+      }
+    });
+
+    $(document).on('click', '.delete_item', function(){
+      $(".delete-meeting-modal-form").modal('show');
+      var item_id = $(this).data('id')
+      var account_id = $(this).data('account-id')
+      var select_date = $(this).data('select-date')
+      var select_user_id = $(this).data('select-user-id')
+      $(".delete-meeting-modal-form").data('id', item_id)
+      $(".delete-meeting-modal-form").data('account_id', account_id)
+      $(".delete-meeting-modal-form").data('select_date', select_date)
+      $(".delete-meeting-modal-form").data('select_user_id', select_user_id)
+    })
+
+    $(document).on('click', '#ok_delete_meeting', function(){
+      var item_id =   $(".delete-meeting-modal-form").data('id')
+      var account_id = $(".delete-meeting-modal-form").data('account_id')
+      var select_date = $(".delete-meeting-modal-form").data('select_date')
+      var select_user_id = $(".delete-meeting-modal-form").data('select_user_id')
+      $(".delete-meeting-modal-form").modal('hide');
+      $('#preloader').css('opacity', 0.8);
+      $('#preloader').show();
+      $.ajax({
+        type: "GET",
+        url: '/accounts/'+account_id+'/delete_meeting?item_id='+ item_id+'&date='+select_date+'&user_id='+select_user_id,
+        success: function (data) {
+        }
+      });
+    });
+
+    $(document).on('click', '.delete_attachment', function(){
+      $(".delete-attachment-modal-form").modal('show');
+      var account_conversation_id = $(this).data('account-conversation-id')
+      var item_id =   $(this).data('item-id')
+      var attachment_id = $(this).data('attachment-id')
+      var destroy = $(this).data('destroy')
+      var media_name = $(this).data('media-name')
+      $(".delete-attachment-modal-form").data('account_conversation_id',account_conversation_id );
+      $(".delete-attachment-modal-form").data('item_id', item_id);
+      $(".delete-attachment-modal-form").data('attachment_id', attachment_id);
+      $(".delete-attachment-modal-form").data('destroy', destroy);
+      $("#media_name").text(media_name);
+    })
+
+    $(document).on('click', '#ok_delete_attachment', function(){
+      var account_conversation_id = $(".delete-attachment-modal-form").data('account_conversation_id')
+      var item_id =   $(".delete-attachment-modal-form").data('item_id')
+      var attachment_id = $(".delete-attachment-modal-form").data('attachment_id')
+      var destroy = $(".delete-attachment-modal-form").data('destroy')
+      $(".delete-attachment-modal-form").modal('hide');
+      $('#preloader').css('opacity', 0.8);
+      $('#preloader').show();
+
+      $.ajax({
+        type: 'PATCH',
+        url: '/accounts/get_or_delete_conversation_attachment',
+        data: {
+          account_conversation_id: account_conversation_id,
+          item_id: item_id,
+          attachment_id: attachment_id,
+          destroy: destroy
+        },success: function (data) {
+        }
+      });
+    });
+
+
+    $(document).on('click', '#yes_delete_future_meeting, #no_delete_future_meeting, #modal_cross_button', function(){
+      var item_id =  $(".delete-future-meeting-modal-form").data('id')
+      var account_id = $(".delete-future-meeting-modal-form").data('account_id')
+      var select_date = $(".delete-future-meeting-modal-form").data('select_date')
+      var select_user_id = $(".delete-future-meeting-modal-form").data('select_user_id')
+      var button_id = $(this).attr('id')
+      if(button_id == 'yes_delete_future_meeting'){
+       var url = '/accounts/'+account_id+'/delete_future_meeting?citem_id='+item_id+'&date='+select_date+'&user_id='+select_user_id+'&destroy_future_meetings=' + true
+      }else{
+       var url = '/accounts/'+account_id+'/delete_future_meeting?citem_id='+item_id+'&date='+select_date+'&user_id='+select_user_id
+      }
+      $(".delete-future-meeting-modal-form").modal('hide');
+      $('#preloader').css('opacity', 0.8);
+      $('#preloader').show();
+      $.ajax({
+        type: "DELETE",
+        url: url,
+        success: function (data) {
+        }
+      });
+    });
+
+
+    if(mobile == 'false'){
+      $(".report_to_datepicker").datepicker()
+      $('.report_from_datepicker').datepicker({
+        dateFormat: 'mm/dd/yy',
+        altField: ".report_to_datepicker",
+        altFormat: "mm/dd/yy",
+        onSelect: function (selected) {
+          var min = new Date(selected);
+          var max = new Date(selected);
+          max.setDate(max.getDate()+31);
+          $('.report_to_datepicker').datepicker('option', { minDate: min, maxDate: max});
+        }
+      });
+    }else{
+
+      $('.report_from_datepicker').on('change', function() {
+        $('.report_to_datepicker').prop('min', $(this).val());
+        var dt = $(this).val()
+        var new_date = new Date(dt)
+        new_date.setDate(new_date.getDate()+31)
+        year = new_date.getFullYear()
+        month = new_date.getMonth()+1
+        date = new_date.getDate()
+        if(month < 10){
+         month = '0'+month
+        }
+        if(date < 10){
+          date = '0'+date
+        }
+        max_date = year+'-'+month+'-'+date
+        $('.report_to_datepicker').prop('max', max_date);
+        $('.report_to_datepicker').val($(this).val());
+      });
+    }
+
+    $("#select_users").select2({
+      width: '100%'
+    });
+
+    (function () {
+      var prev_selected_value;
+      $("#vtab3").on('click', '.type_select', function() {
+        prev_selected_value = $(this).val();
+      }).on('change', '.type_select', function() {
+        var selected_value = $(this).val();
+        if (selected_value == 'email'){
+          $(this).closest('div').parent().find('.phone_type_validate').removeClass('phone_validate')
+          $(this).closest('div').parent().find('.phone_div').hide(500)
+          $(this).closest('div').parent().find('.without_phone_div').removeClass('hidden')
+          $(this).closest('div').parent().find('.type_validate').removeClass('url_validate')
+          $(this).closest('div').parent().find('.type_validate').val(null)
+          $(this).closest('div').parent().find('.type_validate').attr('type', 'email')
+          $(this).closest('div').parent().find('.type_validate').attr('required', true)
+          $(this).closest('div').parent().find('.type_validate').attr('disabled', false)
+          $(this).closest('div').parent().find('.phone_type_validate').attr('required',false)
+          $(this).closest('div').parent().find('.phone_type_validate').attr('disabled',true)
+        }else if(selected_value == 'facebook' || selected_value == 'youtube' || selected_value == 'website'){
+          $(this).closest('div').parent().find('.phone_type_validate').removeClass('phone_validate')
+          $(this).closest('div').parent().find('.phone_div').hide(500)
+          $(this).closest('div').parent().find('.without_phone_div').removeClass('hidden')
+          $(this).closest('div').parent().find('.type_validate').addClass('url_validate')
+          $(this).closest('div').parent().find('.type_validate').val(null)
+          $(this).closest('div').parent().find('.type_validate').attr('type', 'text')
+          $(this).closest('div').parent().find('.type_validate').attr('required', true)
+          $(this).closest('div').parent().find('.type_validate').attr('disabled', false)
+          $(this).closest('div').parent().find('.phone_type_validate').attr('required',false)
+          $(this).closest('div').parent().find('.phone_type_validate').attr('disabled',true)
+        }else if (selected_value == 'phone' || selected_value == 'mobile' || selected_value == 'fax'){
+          $(this).closest('div').parent().find('.phone_div').show(500)
+          $(this).closest('div').parent().find('.without_phone_div').addClass('hidden')
+          $(this).closest('div').parent().find('.type_validate').val(null)
+          $(this).closest('div').parent().find('.type_validate').attr('required', false)
+          $(this).closest('div').parent().find('.type_validate').attr('disabled', true)
+
+          if (prev_selected_value != 'phone' && prev_selected_value != 'mobile' && prev_selected_value != 'fax') {
+            $(this).closest('div').parent().find('.phone_type_validate').val(null)
+          }
+
+          $(this).closest('div').parent().find('.phone_type_validate').attr('required',true)
+          $(this).closest('div').parent().find('.phone_type_validate').attr('disabled',false)
+          $(this).closest('div').parent().find('.phone_type_validate').addClass('phone_validate')
+          $(this).closest('div').parent().find('.type_validate').removeClass('url_validate')
+          // $(this).closest('div').parent().find('.type_validate').attr('type', 'tel')
+        }else{
+          $(this).closest('div').parent().find('.phone_div').hide(500)
+          $(this).closest('div').parent().find('.without_phone_div').removeClass('hidden')
+          $(this).closest('div').parent().find('.phone_type_validate').removeClass('phone_validate')
+          $(this).closest('div').parent().find('.type_validate').removeClass('url_validate')
+          $(this).closest('div').parent().find('.type_validate').val(null)
+          $(this).closest('div').parent().find('.type_validate').attr('required', true)
+          $(this).closest('div').parent().find('.type_validate').attr('disabled', false)
+          $(this).closest('div').parent().find('.type_validate').attr('type', 'text')
+          $(this).closest('div').parent().find('.phone_type_validate').attr('required',false)
+          $(this).closest('div').parent().find('.phone_type_validate').attr('disabled',true)
+        }
+      });
+    })();
+
+    $(document).on('keyup', '.phone_validate', function(){
+      // var status = phonenumber($(this))
+      var status = $(this).intlTelInput("isValidNumber")
+      if (status && $(this).next().hasClass('error_lable')){
+        $(this).next().remove()
+      }else if(($(this).val()=='') && ($(this).next().hasClass('error_lable'))){
+        $(this).next().remove()
+      }else if(status && $(this).closest('div').next().hasClass('error_lable')){
+        $(this).closest('div').next().remove()
+      }else if(($(this).val()=='') && ($(this).closest('div').next().hasClass('error_lable'))){
+        $(this).closest('div').next().remove()
+      }
+    });
+
+    $(document).on('keyup', '.url_validate', function(){
+      var status = valid_url($(this))
+      if (status && $(this).next().hasClass('error_lable')){
+        $(this).next().remove()
+      }else if(($(this).val()=='') && ($(this).next().hasClass('error_lable'))){
+        $(this).next().remove()
+      }
+    });
+
+    var page = 1;
+    $(".add_remote_option").select2({
+      placeholder: "-Select an Account-",
+      minimumInputLength: 3,
+      width: "15em",
+      ajax: {
+        url: "/schedule/get_account_list_by_scrolling",
+        dataType: "json",
+        data: function (term) {
+            return term;
+        },
+        processResults: function (data) {
+          total_page = data[1]
+          more = page++ < total_page;
+          var result = [];
+          $.each( data[0], function( i, val ) {
+            result.push({id: val.id, text: val.name});
+          });
+          return {
+            results: result,
+            pagination: {more: more}
+          };
+        }
+      }
+    });
+
+    window.gm_authFailure = function() {
+      console.log("Google Map API Key maybe no longer valid.");
+      clear_googlemap_error("account_name");
+      clear_googlemap_error("street_number");
+      clear_googlemap_error("keyword");
+      $("#googlemap_api_key_warning").show();
+    };
+  });
+</script>
+<!-- end of shared javascript -->

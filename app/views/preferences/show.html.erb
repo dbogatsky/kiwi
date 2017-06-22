@@ -1,0 +1,154 @@
+<% content_for :pageheader do %>
+  <h2><i class="fa fa-user"></i> Preference</h2>
+<% end %>
+<%= simple_form_for current_user, url: preference_path, method: :patch do |f| %>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">General</h3>
+      <p>Edit your preference below and click save</p>
+    </div>
+
+    <div class="panel-body">
+      <div class="form-group">
+        <label class="col-sm-3 control-label">Default view of my calendar</label>
+        <div class="col-sm-6">
+          <%=select_tag('preference[default_calendar_view]', options_for_select([['Daily', 'agendaDay'],['Weekly', 'agendaWeek'],['Monthly', 'month']], selected: @user_preference['default_calendar_view']), {prompt: "-- Select --", :class => 'form-control input-sm', required: true})%>
+        </div>
+      </div>
+    </div> <!-- panel-body -->
+
+<%
+# ##Using 'timeline_days_in_the_future' to replace the one below.
+#    <div class="panel-body">
+#      <div class="form-group">
+#        <label class="col-sm-3 control-label">Preview conversation timeline</label>
+#        <div class="col-sm-6">
+#          <%=select_tag('preference[preview_conversation_timeline]', options_for_select([['1 day', 'one_day'],['2 days', 'two_days'],['1 week', 'one_week'],['2 weeks', 'two_weeks'],['1 month', 'one_month']], selected: @user_preference['preview_conversation_timeline']), {prompt: "-- Select --", :class => 'form-control input-sm', required: true})% >
+#        </div>
+#      </div>
+#    </div> <!-- panel-body -->
+
+#    <div class="panel-body">
+#      <div class="form-group">
+#        <label class="col-sm-3 control-label">Receive Notifications by</label>
+#        <div class="col-sm-6">
+#          <%=select_tag('preference[received_notification_by]', options_for_select([['Both', 'both'],['Email only', 'email'],['SMS only', 'sms'],['None', 'none']], selected: @user_preference['received_notification_by']), {prompt: "-- Select --", :class => 'form-control input-sm', required: true})% >
+#        </div>
+#      </div>
+#    </div> <!-- panel-body -->
+%>
+
+    <div class="panel-body">
+      <div class="form-group">
+        <label class="col-sm-3 control-label">Notification display limit</label>
+        <div class="col-sm-6">
+          <%=select_tag('preference[notification_display_limit]', options_for_select([['1 day', 'one_day'],['2 days', 'two_days'],['3 days', 'three_days'],['1 week', 'one_week'],['2 weeks', 'two_weeks'],['3 weeks', 'three_weeks'],['1 month', 'one_month']], selected: @user_preference['notification_display_limit']), {prompt: "-- Select --", :class => 'form-control input-sm', required: true})%>
+        </div>
+      </div>
+    </div> <!-- panel-body -->
+
+    <div class="panel-body">
+      <div class="form-group">
+        <label class="col-sm-3 control-label">Get Notifications by</label>
+        <div class="col-sm-6">
+          <div class="checkbox block"><label><input type="checkbox" class="by_email" name="notifications[email]" > Email</label></div>
+          <div class="checkbox block"><label><input type="checkbox" class="by_sms" name="notifications[sms]"> SMS</label></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-body">
+      <div class="form-group">
+        <label class="col-sm-3 control-label">Show accounts per page</label>
+        <div class="col-sm-6">
+          <%=select_tag('preference[show_accounts_per_page]', options_for_select([['10', '10'],['26', '26'],['50', '50'],['100', '100']], selected: @user_preference['show_accounts_per_page']), {prompt: "-- Select --", :class => 'form-control input-sm', required: true})%>
+        </div>
+      </div>
+    </div> <!-- panel-body -->
+
+    <div class="panel-body">
+      <div class="form-group">
+        <label class="col-sm-3 control-label">Preview conversation timeline</label>
+        <div class="col-sm-6">
+        <% if @user_preference['timeline_days_in_the_future'].present? %>
+          <%=select_tag('preference[timeline_days_in_the_future]', options_for_select([['1 day', 1],['2 days', 2],['3 days', 3],['7 days', 7],['14 days', 14],['30 days', 30],['60 days', 60],['90 days', 90]], selected: @user_preference['timeline_days_in_the_future']), {:class => 'form-control input-sm'})%>
+        <%else%>
+          <%=select_tag('preference[timeline_days_in_the_future]', options_for_select([['1 day', 1],['2 days', 2],['3 days', 3],['7 days', 7],['14 days', 14],['30 days', 30],['60 days', 60],['90 days', 90]], selected: @user_preference['timeline_days_in_the_future']), {prompt: "Company Default", :class => 'form-control input-sm', required: true})%>
+        <%end%>
+        </div>
+      </div>
+    </div> <!-- panel-body -->
+
+  </div>
+
+
+<% if @integrations_settings == true %>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Integrations</h3>
+    </div>
+    <% if @integration_office365 == true %>
+      <div class="panel-body">
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Office 365</label>
+          <div class="col-sm-5">
+            <div class="btn btn-office365">
+              <% if @current_user.try(&:office365_auth) == true %>
+                <a class="btn btn-default-alt">Connected</a>
+                <a id="connect_office365" class="btn btn-success" href="javascript:void(0)">Reconnect</a>
+              <% else %>
+                <a id="connect_office365" class="btn btn-success" href="javascript:void(0)">Connect</a>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div> <!-- panel-body -->
+    <% end %>
+  </div>
+<% end %>
+
+
+  <div class="panel panel-default">
+    <div class="panel-footer">
+      <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+          <button type="submit" class="btn btn-primary" name="save" id="save">Save</button>&nbsp;
+          <a class="btn btn-default" href="/users">Cancel</a>
+        </div>
+      </div>
+    </div><!-- panel-footer -->
+  </div>
+<% end %>
+
+<script type="text/javascript">
+  $('#preloader').css('opacity', 0.8);
+  <%if @user_notification_setting['email'] == 'true'%>
+     $('.by_email').prop('checked','checked')
+  <%end%>
+
+  <%if @user_notification_setting['sms'] == 'true'%>
+     $('.by_sms').prop('checked','checked')
+  <%end%>
+
+  <%if @user_notification_setting['email'] == nil && @user_notification_setting['sms'] == nil%>
+    $('.by_email').prop('checked','checked')
+    $('.by_sms').prop('checked','checked')
+  <%end%>
+
+
+  $("#connect_office365").on("click", function () {
+    $('#preloader').show();
+    $.ajax({
+      type: "GET",
+      dataType: "json",
+      url: "preference/integration_office365",
+      success: function(data){
+        var login_url = data["login_url"];
+        window.location.replace(login_url);
+      },
+      failure: function(data){
+        var login_url = null;
+      }
+    })
+  });
+</script>

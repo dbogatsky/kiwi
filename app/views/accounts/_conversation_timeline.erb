@@ -1,0 +1,19 @@
+<% timeline_conversation_items.each do |i| %>
+  <div class="cd-timeline-block">
+    <% if i.type.eql? 'note' %>
+      <%= render "conversation_notes_show", :citem => i %>
+    <% elsif i.type.eql? 'reminder' %>
+      <%= render "conversation_reminder_show", :citem => i %>
+    <% elsif i.type.eql? 'email' %>
+      <%= render "conversation_email_show", :citem => i %>
+    <% elsif i.type.eql? 'call' %>
+      <%= render "conversation_phone_show", :citem => i %>
+    <% elsif i.type.eql? 'meeting' %>
+      <%= render "conversation_meeting_show", info: nil, created_by: i.created_by, :citem => i %>
+    <% elsif i.type.eql? 'quote' %>
+      <%= render "conversation_quotes_show", info: nil, :citem => i %>
+    <%elsif i.type.eql? 'account'%>
+      <%= render "conversation_account_show", :citem => i %>
+    <% end %>
+  </div>
+<% end %>

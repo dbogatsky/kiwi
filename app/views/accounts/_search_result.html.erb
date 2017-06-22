@@ -1,0 +1,33 @@
+<section id="cd-timeline" class="cd-container" >
+  <%if conversation_items.count > 0%>
+    <%conversation_items.each do |item| %>
+      <div class="cd-timeline-block">
+          <% if item.type.eql? 'meeting' %>
+            <%= render "conversation_meeting_show",info: nil, created_by: item.created_by, :citem => item  %>
+          <%elsif item.type.eql? 'note'%>
+            <%= render "conversation_notes_show", :citem => item %>
+          <%elsif item.type.eql? 'email'%>
+            <%= render "conversation_email_show", :citem => item %>
+          <%elsif item.type.eql? 'call'%>
+            <%= render "conversation_phone_show", :citem => item %>
+          <%elsif item.type.eql? 'quote'%>
+            <%= render "conversation_quotes_show", :citem => item %>
+           <%elsif item.type.eql? 'reminder'%>
+           <%= render "conversation_reminder_show", :citem => item %>
+          <%end%>
+      </div>
+    <%end%>
+  <%else%>
+  <div class="cd-timeline-block">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="row">
+          <div class="col-md-12">
+              <h3>No conversation items found</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% end %>
+</section>

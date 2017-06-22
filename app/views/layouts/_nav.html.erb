@@ -1,0 +1,114 @@
+<div class="leftpanel">
+  <div class="logopanel">
+      <h1>
+        <%= image_tag('logo_focus_white.png', height: '25', style: 'margin-left: 5px;') %>
+      </h1>
+  </div><!-- logopanel -->
+  <div class="leftpanelinner">
+    <!-- This is only visible to small devices -->
+    <div class="visible-xs hidden-sm hidden-md hidden-lg">
+      <div class="media userlogged">
+        <%if current_user.present?%>
+          <% if current_user.avatar_url.eql? "/avatars/web/missing.png" || !(current_user.avatar_url.present?)%>
+            <%= image_tag("user.png", class:"media-object") %>
+          <% else %>
+            <img alt="" src="<%= current_user.avatar_url %>" class="media-object">
+          <% end %>
+        <% else %>
+          <%= image_tag("user.png", class:"media-object") %>
+        <% end %>
+        <div class="media-body">
+          <h4><%= current_user.first_name rescue nil %> <%= current_user.last_name rescue nil%></h4>
+            <span><%= current_user.title rescue nil%></span>
+        </div>
+      </div>
+      <h5 class="sidebartitle actitle">Account</h5>
+      <ul class="nav nav-pills nav-stacked nav-bracket mb30">
+        <li><a href="<%= profile_path %>"><i class="fa fa-user"></i> <span>My Profile</span></a></li>
+        <% # <li><a href="<%= preference_path "><i class="fa fa-wrench"></i> <span>Preference</span></a></li> %>
+        <li><a href="<%=login_change_password_path(current_user.id) rescue nil%>"><i class="fa fa-lock"></i> <span>Change Password</span></a></li>
+        <li><a href="<%= user_logout_path %>"><i class="fa fa-sign-out"></i> <span>Log Out</span></a></li>
+      </ul>
+    </div>
+    <br />
+    <h5 class="sidebartitle">Main</h5>
+    <ul class="nav nav-pills nav-stacked nav-bracket">
+      <li><a href="<%= dashboard_path %>"><i class="fa fa-home"></i> <span>Dashboard</span></a></li>
+      <% if can? :read, Account %>
+        <li><a href="<%= schedule_path %>"><i class="fa fa-calendar"></i> <span>Schedule</span></a></li>
+      <% end %>
+
+      <% if can? :read, Account %>
+        <li><a href="<%= accounts_path %>"><i class="fa fa-briefcase"></i><span>Accounts</span></a></li>
+      <% end %>
+
+      <% if can? :read, Medium %>
+        <li><a href="<%= media_path %>"><i class="fa fa-picture-o"></i><span>Media</span></a></li>
+      <% end %>
+
+      <li class="nav-parent"><a href=""><i class="fa fa-edit"></i> <span>Reports</span></a>
+        <ul class="children">
+          <li>
+            <%= link_to activity_report_path do %>
+              <i class="fa fa-caret-right"></i> Activity
+            <% end %>
+          </li>
+          <li>
+            <%= link_to meeting_report_path do %>
+              <i class="fa fa-caret-right"></i> Meetings
+            <%end%>
+          </li>
+          <% if @gps_tracking == 'on' && ( can? :visits_gps_tracking, Account ) %>
+          <li>
+            <%= link_to visits_report_path do %>
+              <i class="fa fa-caret-right"></i> Visits
+            <%end%>
+          </li>
+          <% end %>
+        </ul>
+      </li>
+
+      <% if can? :read, Account %>
+        <li>
+          <a href="<%= notifications_path %>">
+            <% @pending_acc = @pending_account_notifications.nil? ? {} : @pending_account_notifications %>
+            <span class="pull-right badge badge-success" id="nav_unread_count"><%=@unread_items.count + @pending_acc.count%></span>
+              <i class="fa fa-bell-o"></i>
+            <span>Notifications</span>
+          </a>
+        </li>
+      <% end %>
+
+      <%#if can? :read, Account %>
+        <li><a href="<%= task_management_index_path %>"><i class="fa fa-tasks"></i><span>Task Manager</span></a></li>
+      <%#end %>
+
+    </ul>
+
+    <% if ( can? :read, Company ) || ( can? :read, CompanyEntity ) %>
+      <% if can? :manage, :all %>
+      <h5 class="sidebartitle">Admin</h5>
+      <% else %>
+      <h5 class="sidebartitle">About</h5>
+      <% end %>
+
+      <ul class="nav nav-pills nav-stacked nav-bracket">
+
+      <% if ( can? :read, Company ) || ( can? :read, CompanyEntity ) %>
+        <li><a href="<%= company_path %>"><i class="fa fa-building"></i> <span>Company</span></a></li>
+      <% end %>
+
+      <% if can? :manage, :all %>
+        <li><a href="<%= users_path %>"><i class="fa fa-users"></i> <span>Users</span></a></li>
+      <% end %>
+
+      <% if can? :manage, :all %>
+        <li><a href="<%= settings_path %>"><i class="fa fa-cogs"></i><span>Settings</span></a></li>
+      <% end %>
+
+      </ul>
+    <% end %>
+
+    <br />
+  </div><!-- leftpanelinner -->
+</div><!-- leftpanel -->

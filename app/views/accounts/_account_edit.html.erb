@@ -1,0 +1,303 @@
+<div class="panel-body panel-body-nopadding">
+
+  <!-- BASIC WIZARD -->
+  <div id="validationWizard" class="basic-wizard">
+
+    <ul class="nav nav-pills nav-justified">
+      <li><a href="#vtab1" data-toggle="tab"><span>Step 1:</span> Basic Info</a></li>
+      <li><a href="#vtab2" data-toggle="tab"><span>Step 2:</span> Address</a></li>
+      <li><a href="#vtab3" data-toggle="tab"><span>Step 3:</span> Contact Details</a></li>
+      <li><a href="#vtab4" data-toggle="tab"><span>Step 4:</span> Extra info</a></li>
+    </ul>
+
+    <!--<form class="form-horizontal" id="firstForm">-->
+    <%= simple_form_for @account, html: { id: "account-edit-form", class: "form-horizontal" } do |f| %>
+    <div class="tab-content">
+
+      <div class="tab-pane" id="vtab1">
+          <%= f.input :name, wrapper: :wizard_horizontal_form, label: "Account Name", required: true %>
+
+          <div class="form-group">
+            <label class="col-sm-offset-2 col-sm-2 control-label">Account Status<span class="asterisk">*</span></label>
+            <div class="col-sm-4">
+              <%= f.select( :status_id, options_for_select(AccountStatus.all(uid: RequestStore.store[:tenant]).collect{ |a| ["#{a.name}", a.id] }, @account.status.nil? ? "" : @account.status.id), {}, { :class => 'select2AccountStatus' }) %>
+            </div>
+          </div>
+           <%= f.input :contact_name, wrapper: :wizard_horizontal_form, label: "Contact Name", required: true %>
+
+           <%= f.input :contact_title, wrapper: :wizard_horizontal_form, label: "Contact Title"%>
+
+          <div class="form-group">
+            <label class="col-sm-offset-2 col-sm-2 control-label">Assign To<span class="asterisk">*</span></label>
+            <div class="col-sm-4">
+                <%= f.select( :assign_to, options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] }, selected: (@account.assigned_to.nil? ? "" : @account.assigned_to.id) ), {}, { :class => 'select2AssignTo' })%>
+            </div>
+          </div>
+      </div>
+
+      <div class="tab-pane" id="vtab2">
+        <%= f.fields_for :addresses_attributes do |add| %>
+          <input type="hidden" name="account[addresses_attributes][][id]" value="<%= @addresses.first.id %>" >
+          <%= add.input :street_address, wrapper: :wizard_horizontal_form, required: true, label: "Address", :input_html => { :name => "account[addresses_attributes][][street_address]",id: "street_number", :value => @addresses.first.street_address } %>
+          <%= add.input :suite_number, wrapper: :wizard_horizontal_form, required: false, label: "Address 2", :input_html => { :name => "account[addresses_attributes][][suite_number]", id: "subpremise",:value => @addresses.first.suite_number} %>
+          <%= add.input :city, wrapper: :wizard_horizontal_form, required: true, label: "City", :input_html => { :name => "account[addresses_attributes][][city]",id: "locality", :value => @addresses.first.city } %>
+          <%= add.input :postcode, wrapper: :wizard_horizontal_form, required: false, label: "Post/Zipcode", :input_html => { :name => "account[addresses_attributes][][postcode]",id: "postal_code", :value => @addresses.first.postcode } %>
+          <%= add.input :region, wrapper: :wizard_horizontal_form, required: false, label: "Province/State", :input_html => { :name => "account[addresses_attributes][][region]",id: "administrative_area_level_1", :value => @addresses.first.region } %>
+          <div class="form-group">
+            <label class="col-sm-offset-2 col-sm-2 control-label">Country<span class="asterisk">*</span></label>
+            <div class="col-sm-4 country_select">
+            <%= add.input_field :country, { required: true, priority: [ "Canada", "United States", "United Kingdom" ],  class: "select2Country", name: "account[addresses_attributes][][country]",id: "country", selected: @addresses.first.country } %>
+            </div>
+          </div>
+        <% end %>
+        <%=hidden_field_tag 'account[addresses_attributes][][latitude]', @addresses.first.try(:latitude), id: 'account_lat'%>
+        <%=hidden_field_tag 'account[addresses_attributes][][longitude]', @addresses.first.try(:longitude), id: 'account_lng' %>
+      </div>
+
+      <div class="tab-pane" id="vtab3">
+        <div class="contact-form-wrap">
+        <% @contacts.each do |current_contact| %>
+          <div class="contact-element" data-id="<%= current_contact.id %>"  style="padding-bottom: 10px;">
+            <%= f.simple_fields_for :contacts_attributes do |c| %>
+              <%if current_contact.type == 'email'%>
+                <%type = 'email'%>
+                <%cls = ''%>
+              <%elsif current_contact.type == 'website' || current_contact.type == 'facebook' || current_contact.type == 'youtube'%>
+                <%type = 'text'%>
+                <%cls = 'url_validate'%>
+              <%elsif current_contact.type == 'phone' || current_contact.type == 'fax' || current_contact.type == 'mobile'%>
+                <%type = 'text'%>
+                <%cls = "phone_validate"%>
+              <%else%>
+                <%type = 'text'%>
+                <%cls = ''%>
+              <%end%>
+              <div class="form-group">
+                <input type="hidden" name="account[contacts_attributes][<%= current_contact.id %>][id]" value="<%= current_contact.id %>" >
+                <label class="col-sm-1 control-label">Name<span class="asterisk">*</span></label>
+                <div class="col-sm-2">
+                  <%= c.input_field :name, { required: true, label: 'Contact', name: "account[contacts_attributes][#{current_contact.id}][name]", class: "form-control", :value => current_contact.name, :id => "account_contacts_attributes_name_#{current_contact.id}", placeholder: "contact name" } %>
+                </div>
+
+                <label class="col-sm-1 control-label">Type<span class="asterisk">*</span></label>
+                <div class="col-sm-2">
+                  <%= c.select( :type, options_for_select(Contact::CONTACT_TYPES, current_contact.type), {}, { :class => "input-sm background_color type_select", :name => "account[contacts_attributes][#{current_contact.id}][type]", :id => "account_contacts_attributes_type_#{current_contact.id}" } ) %>
+                </div>
+
+                <label class="col-sm-1 control-label">Value<span class="asterisk">*</span></label>
+                <%if current_contact.type == 'phone' || current_contact.type == 'fax' || current_contact.type == 'mobile'%>
+                  <div class="col-sm-3 phone_div">
+                    <%= c.input_field :value, { required: true, label: 'Value', name: "account[contacts_attributes][#{current_contact.id}][value]", type: 'tel' , class: "form-control phone_type_validate phone_validate", :value => current_contact.value, :id => "account_contacts_attributes_value_#{current_contact.id}" } %>
+                  </div>
+                  <div class="col-sm-3 without_phone_div hidden">
+                    <%= c.input_field :value, {label: 'Value', name: "account[contacts_attributes][#{current_contact.id}][value]", type: 'text' , class: "form-control type_validate", disabled: true, :id => "account_contacts_attributes_value_#{current_contact.id}" } %>
+                  </div>
+                <%else%>
+                  <div class="col-sm-3 phone_div" style="display:none">
+                    <%= c.input_field :value, {label: 'Value', name: "account[contacts_attributes][#{current_contact.id}][value]", type: 'tel' , class: "form-control phone_type_validate phone_validate",:id => "account_contacts_attributes_value_#{current_contact.id}", disabled: true } %>
+                  </div>
+                  <div class="col-sm-3 without_phone_div">
+                    <%= c.input_field :value, { required: true, label: 'Value', name: "account[contacts_attributes][#{current_contact.id}][value]", type: type , class: "form-control type_validate #{cls}", :value => current_contact.value, :id => "account_contacts_attributes_value_#{current_contact.id}" } %>
+                  </div>
+                <%end%>
+                <div class="col-sm-1"><button class="remove-contact-button btn btn-danger btn-xs">Remove</button></div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+        </div>
+        <button class="add-contact-button btn btn-success btn-xs">Add Contact</button>
+      </div>
+
+      <div class="tab-pane" id="vtab4">
+        <div class="form-group">
+          <label class="col-sm-offset-2 col-sm-2 control-label">Picture</label>
+          <div class="col-sm-4">
+            <label title="Upload image file" for="inputImage" class="btn btn-white">
+              <%= f.file_field :avatar, { name: "avatar" }  %>
+            </label>
+          </div>
+        </div>
+
+        <%= f.input :about,  as: :text, wrapper: :wizard_horizontal_form, :label => 'About', :input_html => { :rows => 5, :value => @account.about }  %>
+
+        <%= f.input :quick_facts,  as: :text, wrapper: :wizard_horizontal_form, :label => 'Quick Facts', :input_html => { :rows => 5, :value => @account.quick_facts }  %>
+        <%#if (@role == 'Admin' || @role == @enable_expected_sales.tr("_", " ").titleize || @enable_expected_sales == 'all')%>
+        <%if @enable_expected_sales == 'enable'%>
+          <div class="form-group">
+            <label class="col-sm-offset-2 col-sm-2 control-label">Expected Sales Value</label>
+            <div class="col-sm-4">
+               <%=text_field_tag "account[expected_sales]",@account.expected_sales,class: "form-control amount_val"%>
+            </div>
+          </div>
+        <%end%>
+        <%if @account_properties.present?%>
+          <%@account_properties.each do |key,value|%>
+            <div class="form-group">
+              <label class="col-sm-offset-2 col-sm-2 control-label"><%=value["label"]%>
+                <%if value['required'].to_s == 'true'%>
+                  <span class="asterisk">*</span>
+                <%end%>
+              </label>
+              <div class="col-sm-4">
+                <%if value["format"] == 'date'%>
+                  <%if mobile?%>
+                    <input type="date" name="account[properties]['<%=key%>']" required="<%=value['required']%>" value="<%=(@account.properties.present? && @account.properties.try(:attributes).present?) ? @account.properties.attributes[key] : nil%>"/>
+                  <%else%>
+                    <%=text_field_tag "account[properties][#{key}]",(@account.properties.present? && @account.properties.try(:attributes).present?) ? @account.properties.attributes[key] : nil, placeholder: "yyyy/mm/dd", class: "form-control datepicker", required: value['required'].to_s == 'false' ? false : true%>
+                  <%end%>
+                <%elsif value["format"] == 'numeric'%>
+                  <%=number_field_tag "account[properties][#{key}]", (@account.properties.present? && @account.properties.try(:attributes).present?) ? @account.properties.attributes[key] : nil, class: 'form-control', required: value['required'].to_s == 'false' ? false : true %>
+                <%elsif value["format"] == 'enum'%>
+                  <ul class="color_list">
+                    <%value['values'].each do |k,v|%>
+                      <li>
+                        <span><%=v%></span>
+                        <%=check_box_tag "account[properties][#{key}]", v, (@account.properties.present? && @account.properties.try(:attributes).present? && @account.properties.attributes[key] == k) ? true : false, class: 'form-control'%>
+                      </li>
+                      <!-- required: value['required'].to_s == 'false' ? false : true -->
+                    <%end%>
+                  </ul>
+                <%else%>
+                  <%=text_field_tag "account[properties][#{key}]", (@account.properties.present? && @account.properties.try(:attributes).present?) ? @account.properties.attributes[key] : nil, class: "form-control", required: value['required'].to_s == 'false' ? false : true%>
+                <%end%>
+              </div>
+            </div>
+          <%end%>
+        <%end%>
+        <input type="hidden" name="save">
+      </div>
+    </div><!-- tab-content -->
+    <% end %>
+    <!--</form>-->
+
+    <ul class="pager wizard">
+      <li class="previous"><a href="javascript:void(0)">Previous</a></li>
+      <li class="next"><a href="javascript:void(0)" class="account_next">Next</a></li>
+      <li class="next finish" style="display:none;"><a href="javascript:;">Finish</a></li>
+    </ul>
+
+  </div><!-- #validationWizard -->
+
+</div><!-- panel-body -->
+
+<script>
+  $('#preloader').css('opacity', 0.8);
+  $('.del_btn').click(function(){
+    $.confirm({
+    text: "You are attempting to delete this account. Please click Confirm Delete to continue.",
+    confirmButton: "Confirm Delete",
+    cancelButton: "Cancel",
+    confirm: function() {
+      $('#preloader').show();
+      $.ajax({
+        type: "DELETE",
+        url: '/accounts/<%=@account.id%>',
+        complete: function() {
+          window.location = "/accounts"
+        }
+      });
+    }
+  });
+
+  })
+  $(".select2AccountStatus").select2({
+    width: '100%',
+    minimumResultsForSearch: Infinity
+  });
+
+
+  $(".account_next").click(function(){
+    if ($("#vtab2").hasClass('active')){
+      phone_validate();
+    }
+  })
+
+  function phone_validate() {
+    $(".phone_validate").intlTelInput({
+      formatOnInit: true,
+      separateDialCode: true,
+      //utilsScript: "assets/libphonenumber/utils.js",
+      customPlaceholder: function(selectedCountryPlaceholder, selectedCountryData) {
+        return null
+      }
+    })
+
+    $(".phone_validate").each(function() {
+      selected_country = $("#country").val()
+      if($(this).closest('div').find('.selected-dial-code').text()!="" && $(this).val() != ""){
+        val = $(this).intlTelInput("getNumber");
+        $(this).intlTelInput("setNumber", val)
+      }else if ($(this).val() == ""){
+        $(this).intlTelInput("setCountry", selected_country)
+      }
+    })
+  }
+
+  $(".select2AssignTo").select2({
+    width: '100%'
+  });
+
+  $(".select2Country").select2({
+    width: '100%'
+  });
+
+  //  $(".select2ContactTypes").select2({
+  //   width: '100%'
+  // });
+
+  var max_fields      = 20; //maximum input boxes allowed
+  var wrapper         = $(".contact-form-wrap"); //Fields wrapper
+  var add_button      = $(".add-contact-button"); //Add button ID
+
+  <%
+    @contact_types = ""
+    Contact::CONTACT_TYPES.each { |x| @contact_types << '<option value="'+x+'">'+x+'</option>' }
+  %>
+
+  //var x = 1; //initlal text box count
+  var x = <%= @contacts.size %>; //initlal text box count
+  $(add_button).click(function(e){ //on add input button click
+    e.preventDefault();
+    if(x < max_fields){ //max input box allowed
+      x++;
+
+      t = (new Date()).getTime();
+        str_html = '\
+        <div class="contact-element" style="padding-bottom: 10px;">\
+          <div class="form-group">\
+            <label class="col-sm-1 control-label">Name<span class="asterisk">*</span></label>\
+            <div class="col-sm-2">\
+              <input label="Name" name="account[contacts_attributes]['+t+'][name]" class="form-control" required id="account_contacts_attributes_name_'+t+'" type="text" placeholder="contact name">\
+            </div>\
+            <label class="col-sm-1 control-label">Type<span class="asterisk">*</span></label>\
+            <div class="col-sm-2">\
+              <select class="input-sm background_color type_select" id="account_contacts_attributes_type_'+t+'" name="account[contacts_attributes]['+t+'][type]"><%= raw(@contact_types) %></select>\
+            </div>\
+            <label class="col-sm-1 control-label">Value<span class="asterisk">*</span></label>\
+            <div class="col-sm-3 phone_div">\
+              <input label="Value" name="account[contacts_attributes]['+t+'][value]" class="form-control phone_type_validate phone_validate" required id="account_contacts_attributes_value_'+t+'" type="tel">\
+            </div>\
+            <div class="col-sm-3 without_phone_div hidden">\
+              <input label="Value" name="account[contacts_attributes]['+t+'][value]" class="form-control type_validate" disabled id="account_contacts_attributes_value_'+t+'" type="text" placeholder="contact value">\
+            </div>\
+            <div class="col-sm-1"><button class="remove-contact-button btn btn-danger btn-xs">Remove</button></div>\
+          </div>\
+        </div>';
+        $(wrapper).append(str_html);
+        // $("#account_contacts_attributes_type_"+t).select2({ width: '100%'});
+    }
+    phone_validate();
+  });
+
+  $(wrapper).on("click",".remove-contact-button", function(e){ //user click on remove text
+      e.preventDefault();
+      $(this).closest('div.contact-element').hide(); x--;
+      elem_id = $(this).closest('div.contact-element').data('id');
+      if(typeof(elem_id) != "undefined"){
+        $(this).closest('div.contact-element').append("<input type='hidden' name='account[contacts_attributes]["+elem_id+"][_destroy]' value='true' >");
+      }else{
+        $(this).closest('div.contact-element').remove(); x--;
+      }
+  })
+</script>

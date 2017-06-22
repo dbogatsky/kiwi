@@ -1,0 +1,126 @@
+<% content_for :pageheader do %>
+  <h2><i class="fa fa-map-marker"></i>Visits Report</h2>
+<% end %>
+<div class="contentpanel">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-btns">
+        <!-- <a href="" class="minimize">−</a> -->
+      </div>
+      <h4 class="panel-title"></h4>
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-sm-4">
+          <%=select_tag "user_visit", options_for_select(@users.map{|u| ["#{u.first_name}" +" "+ "#{u.last_name}", u.id]}), {prompt: "-- Select Name --", class: 'form-control'} %>
+        </div>
+        <div class="col-sm-3">
+          <div class="input-group ">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+              <input type="text" class="form-control" placeholder="mm/dd/yy" name="date" id="schedule-from-datepicker" required="required" />
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <%= submit_tag "Search", class: 'btn btn-primary btn-block search_button' %>
+        </div>
+      </div>
+
+      <br><br>
+      <div style="float:left; width:100%; height:500px;">
+        <%= render 'google_map' %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+
+    var company_name = '<%= @company_marker_address.name.present? ? @company_marker_address.name + '<br />' : '' %>'
+    var suite_number = '<%= @company_marker_address.suite_number %>'
+    var street_address = '<%= @company_marker_address.street_address %>'
+    var city = '<%= @company_marker_address.city %>'
+    var postcode = '<%= @company_marker_address.postcode %>'
+    var region = '<%= @company_marker_address.region %>'
+    var country = '<%= @company_marker_address.country %>'
+    var company_addr = company_name + suite_number + ', ' + street_address + '<br/>' + city + ', ' + region + '<br/>' + postcode + '<br/>' + country
+
+    // Load google map
+    initMap();
+    function initMap() {
+      var myLatLng = {lat: <%= raw(@company_coordinates[:latitude]) %>, lng: <%= raw(@company_coordinates[:longitude]) %>};
+      var infowindow = new google.maps.InfoWindow();
+
+      var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: <%= @zoom_level %>,
+        center: myLatLng
+      });
+
+      var marker = new google.maps.Marker({
+        position: myLatLng,
+        map: map,
+      });
+
+      infowindow.setContent(company_addr);
+      infowindow.open(map, marker);
+      google.maps.event.addListener(marker, 'click', (function(marker, company_add) {
+        return function() {
+          infowindow.setContent(company_addr);
+          infowindow.open(map, marker);
+        }
+      })(marker, company_addr));
+
+    }
+
+    // Find user
+    // $("#user_visit").change(function() {
+    //   var u_id = $("#user_visit").val();
+    //   if( u_id != "" ){
+    //     $.ajax({
+    //       type: "get",
+    //       url: "/user_visits.js",
+    //       data: {user_id: u_id},
+    //       // dataType: "json",
+    //       success:function(result){
+    //         console.log("success");
+    //       }
+    //     });
+    //   }
+    // });
+
+    // set default date
+    $("#schedule-from-datepicker").datepicker("setDate", new Date());
+
+    $('.search_button').click(function(){
+      var u_id = $("#user_visit").val();
+      var dt = $('#schedule-from-datepicker').val();
+      if( u_id != ""){
+        $.ajax({
+          type: "get",
+          url: "/user_visits.js",
+          data: {user_id: u_id, date: dt},
+          // dataType: "json",
+          success:function(result){
+            console.log("success");
+          }
+        });
+      }
+    });
+
+    // diraction on google map
+    // function setDiraction() {
+    //   var myLatLng = {lat: 36.7783, lng: -119.4179};
+
+    //   var map = new google.maps.Map(document.getElementById('map'), {
+    //     zoom: 5,
+    //     center: myLatLng
+    //   });
+
+    //   var marker = new google.maps.Marker({
+    //     position: myLatLng,
+    //     map: map,
+    //   });
+    // }
+
+  })
+</script>

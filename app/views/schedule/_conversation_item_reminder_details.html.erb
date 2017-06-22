@@ -1,0 +1,147 @@
+<div class="ibox-content ibox-heading pull-left" style="width: 100%;">
+  <div class='row col-md-12 padd_left0 padd_right0'>
+    <div class="col-md-6 padd_left0 pull-left">
+      <span class="thumb meeting-icon" style="background: #f0ca45;">
+        <img class="meeting-img" src="/assets/vertical-timeline/img/cd-icon-bell.svg" alt="Reminder">
+      </span>
+    </div>
+    <div class="col-md-6 pull-left padd_right0">
+      <%if citem.scheduled_at.present? && (Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone)-5*60 >= DateTime.now.in_time_zone(current_user.time_zone))%>
+        <div class="btn-group pull-right">
+          <div class="btn-group mr5 pull-right">
+            <button data-toggle="dropdown" class="btn btn-sm btn-white dropdown-toggle" type="button" style="border-radius: 2px">
+              <i class="fa fa-ellipsis-v mr5"></i><span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                  <a class="edit_reminder" href="#"
+                   data-toggle="modal"
+                   data-target=".conversation-edit-reminder-modal-form"
+                   data-id="<%= citem.id %>"
+                   data-title="<%=citem.title%>"
+                   data-attachment="<%=citem.media.present?%>"
+                   data-account-conversation-id="<%=((citem.try(:conversation_id).present?) ? citem.conversation_id : citem.prefix_options[:conversation_id]) %>"
+                   data-notify-by-sms="<%=(citem.notify_by_sms.present?) ? 'true' : 'false'%>"
+                   data-notify-by-email="<%=(citem.notify_by_email.present?) ? 'true' : 'false'%>"
+                   data-users-to-notify-ids="<%=citem.conversation_item_user_to_notify.map(&:user_id) if citem.conversation_item_user_to_notify.present? %>"
+                   data-date="<%=mobile? ? Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") :  Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.scheduled_at.present?%>"
+                   data-time-24="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%H:%M") if citem.scheduled_at.present? %>"
+                   data-time="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p") if citem.scheduled_at.present? %>"
+                   data-description="<%= citem.body %>">Edit</a>
+              </li>
+              <li>
+                <%=link_to 'Delete', delete_reminder_account_path(citem.account_id, item_id: citem.id, info: true), method: :delete,data: {confirm: 'Are you sure to delete this reminder?'}%>
+              </li>
+              <li>
+                <%=link_to 'Go To Account', account_path(citem.account_id)%>
+              </li>
+            </ul>
+          </div>
+        </div>
+      <%end %>
+    </div>
+  </div>
+  <div class="row col-md-12 padd_left0 cd-date" style="margin-top: 5px">
+    <%= citem.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>
+    <h3 class="ci_header"><%= citem.title %></h3>
+  </div>
+</div>
+<div class="panel-body">
+  <div class="ci_reminder_body"><%= sanitize citem.body %></div>
+  <% if (citem.scheduled_at.present?) %>
+    <div class="ci_footer">
+        <i class="fa fa-bell"></i>
+        <%=citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %>
+        <i class="mr10"></i>
+      <% if citem.notify_by_email.present? %>
+        <i class="fa fa-envelope tooltips mr10" data-toggle="tooltip" data-original-title="Email"></i>
+      <% end %>
+      <% if citem.notify_by_sms.present? %>
+        <i class="fa fa-comment tooltips mr10" data-toggle="tooltip" data-original-title="SMS"></i>
+      <% end %>
+       <% if citem.conversation_item_user_to_notify.present? %>
+          <br />
+          <%=notified_users(citem)%>
+      <% end %>
+      <i class="fa fa-briefcase tooltips mr10" data-toggle="tooltip" data-original-title="Account"></i><%= citem.account.try(:name) ? citem.account.name : "Account Deleted" %>
+    </div>
+  <% end %>
+</div>
+<%=render "accounts/conversation_reminder_edit", account: account.id, info: true%>
+<script type="text/javascript">
+
+  if(mobile == 'false'){
+    $('#reminderDatePickerEdit').datepicker({
+      dateFormat: 'mm/dd/yy',
+      minDate: 0
+    });
+
+    $('#reminderTimePickerEdit').timepicker({
+      showMeridian: true,
+      minuteStep: 15,
+      showInputs: false,
+    }).on('changeTime.timepicker', function(e) {
+       if (mobile == 'false'){
+          var  date_val = $('#reminderDatePickerEdit').val()
+        }else{
+          var date_val = today_date(new Date($('#reminderDatePickerEdit').val()))
+        }
+
+        if((date_val != '') && (date_val == today_date(new Date))){
+          set_reminder_time(e)
+        }
+    });
+  }
+
+
+  var data = <%=raw(notifiable_users_json(account.id))%>;
+  $("#notifiable_users_edit").select2({
+    data: data
+  });
+
+  $(".conversation-edit-reminder-modal-form .select2").css('width', '100%');
+
+  var edit_reminder;
+    $(function() {
+      edit_reminder = $('#edit_reminder').wysihtml5({'font-styles': false, 'image': false, 'link':false,
+        "events": {
+          "load": function() {
+            $(this.composer.iframe).wysihtml5_size_matters();
+          }
+        }
+      });
+    });
+
+  $(document).on('click', "a.edit_reminder", function(e){
+    id = $(this).attr('data-id')
+    $('.conversation-edit-reminder-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
+    if(mobile == 'false'){
+      $('.conversation-edit-reminder-modal-form input[name="scheduled_time"]').val($(this).attr('data-time'));
+    }else{
+      $('.conversation-edit-reminder-modal-form input[name="scheduled_time"]').val($(this).attr('data-time-24'));
+    }
+    $('.conversation-edit-reminder-modal-form input[name="scheduled_date"]').val($(this).attr('data-date'));
+    $('.conversation-edit-reminder-modal-form input[name="info"]').val(true);
+    edit_reminder.data("wysihtml5").editor.setValue($(this).attr('data-description'));
+    var user_ids = $(this).attr('data-users-to-notify-ids')
+    user_ids.replace(/'/g, '"');
+    user_ids = JSON.parse(user_ids)
+    user_ids = user_ids.join().split(',')
+    $('.conversation-edit-reminder-modal-form select[name="conversation_item[users_to_notify_ids][]"]').select2().val(user_ids);
+    $('.conversation-edit-reminder-modal-form select[name="conversation_item[users_to_notify_ids][]"]').select2().val(user_ids);
+
+    if($(this).attr('data-notify-by-email') == 'true'){
+      $('#reminder-email-edit').attr('checked', true);
+    }
+
+    if($(this).attr('data-notify-by-sms') == 'true'){
+      $('#reminder-sms-edit').attr('checked', true);;
+    }
+
+    $('.conversation-edit-reminder-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
+    if ($(this).attr('data-notify-by-email')=='true') {
+      $('.conversation-edit-reminder-modal-form input[name="conversation_item[notify_by_email]"]').prop('checked', true); }
+    if ($(this).attr('data-notify-by-sms')=='true') {
+    $('.conversation-edit-reminder-modal-form input[name="conversation_item[notify_by_sms]"]').prop('checked', true); }
+  });
+</script>

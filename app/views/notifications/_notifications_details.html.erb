@@ -1,0 +1,168 @@
+<script type="text/javascript">
+	function show_conversation_details(e){
+  	id = e.attr('id')
+    conversation_id = e.data('conversation-id')
+    notification_type = e.data('notification-type')
+    notification_read = e.data('read-notification')
+    notification_id = e.data('notification-id')
+
+    if(e.next().attr('id') == 'details_tr_'+id) {
+      e.next().toggle(500)
+    } else {
+		  $.ajax({
+		    type: "GET",
+		    url: '/notifications/conversation_detail?item_id='+id+'&conversation_id='+conversation_id+'&notification_type='+notification_type+'&notification_read='+notification_read+'&notification_id='+notification_id,
+		    dataType: 'html',
+		    success: function (data) {
+          console.log(id);
+          $('#' + id).after(data)
+          $(".remove_bold_"+ id).css('font-weight', 'normal')
+          $(".remove_bold_"+ id).last().html('')
+		    },
+        beforeSend: function() {
+          $('#preloader').css('opacity', 0.8);
+          $('#preloader').show();
+        },
+        complete: function() {
+          $('#preloader').hide();
+        }
+		  });
+	  }
+  }
+
+</script>
+
+
+
+<%if notifications.present?%>
+	<table class="table table-responsive">
+	  <thead>
+	    <tr>
+	      <th></th>
+	      <th>Description</th>
+	      <th>Date/Time</th>
+	      <th>Unread</th>
+	    </tr>
+	  </thead>
+
+	  <tbody>
+      <%if @pending_account_notifications.present?%>
+        <%@pending_account_notifications.each do |pending_account|%>
+          <%if pending_account["account"].present?%>
+            <tr>
+              <td>
+                <span class="thumb notification_calender" style="background: #1d2939;">
+                  <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-arrow-right.svg" alt="Reminder">
+                </span>
+              </td>
+              <td id="pending" class="remove_bold_<%= pending_account["account"]["id"]%>" data-pending-account-id="<%= pending_account["account"]["id"]%>" style="font-weight:bold">
+                <p>Account Transfer Approval Required</br>
+                <%= pending_account["account"]["name"] %>  (<%= pending_account["account"]["id"] %>)</p>
+              </td>
+              <td class="remove_bold_<%= pending_account["account"]["id"]%>" style="font-weight:bold">
+                <%=Chronic.parse(pending_account["created_at"]).in_time_zone(current_user.time_zone).strftime("%b %d at %l:%M %p")%>
+              </td>
+              <td class="remove_bold_<%= pending_account["account"]["id"]%>" >
+                <i class="fa fa-exclamation-circle tooltips mr10" data-toggle="tooltip" data-original-title="Unread" ></i>
+              </td>
+            </tr>
+            <%=render 'account_transfer_pending_approval', pending_account_notifications: pending_account %>
+          <%end%>
+        <%end%>
+      <%end%>
+	    <%notifications.each do |notification|%>
+	      <%if params[:id].present? && notification.id == params[:id].to_i %>
+          <%show_conversation_details = true%>
+	      <%else%>
+          <%show_conversation_details = false%>
+	      <%end%>
+		    <tr class="<%=show_conversation_details ? 'default_show' : 'show_details'%> i_pointer"
+            id="<%=notification.id%>"
+            data-conversation-id="<%=
+              case notification.type
+              when 'reminder'
+                notification.value.reminder_id
+              when 'meeting_reminder'
+                notification.value.meeting_id
+              when 'account_status_change'
+                notification.value.account_id
+              end
+            %>"
+            data-notification-type="<%=notification.type%>"
+            data-read-notification="<%=notification.read_at.present?%>"
+            data-notification-id="<%=notification.id%>"
+          >
+		      <%mark_class = notification.read_at.blank? ? 'mark_read' : ''%>
+		        <td>
+	            <%#=link_to notification.read_at.blank? ? notification_path(k) : "javascript:void(0)", remote: :true, method: :patch, class: "#{mark_class} noti_link_#{k} ", data: {id: "#{k}"} do%>
+			          <%if notification.type == 'reminder'%>
+			            <span class="thumb notification_calender" style="background: #f0ca45;">
+			              <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-bell.svg" alt="Reminder">
+			            </span>
+			          <%elsif notification.type == 'meeting_reminder' || notification.type == 'meeting'%>
+				          <span class="thumb notification_calender" style="background:#1cc7c2;">
+				            <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-calendar.svg" alt="Meeting">
+				          </span>
+				        <%elsif notification.type == 'account_status_change'%>
+					        <span class="thumb notification_calender" style="background: #333;">
+					          <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-briefcase.svg" alt="Reminder">
+					        </span>
+					      <%end%>
+		          <%#end%>
+		        </td>
+		        <td class="remove_bold_<%= notification.id %>" style="<%=notification.read_at.blank? ? 'font-weight:bold' : ''%>">
+			        <%= notification.title == nil ? "Click to see Details" : notification.title %>
+		        </td>
+		        <td class="remove_bold_<%= notification.id%>" style="<%=notification.read_at.blank? ? 'font-weight:bold' : ''%>">
+		          <%=Chronic.parse(notification.created_at).in_time_zone(current_user.time_zone).strftime("%b %d at %l:%M %p")%>
+		        </td>
+		        <td class="remove_bold_<%= notification.id %>">
+			        <%if notification.read_at.blank?%>
+			          <i class="fa fa-exclamation-circle tooltips mr10" data-toggle="tooltip" data-original-title="Unread" ></i>
+			        <%end%>
+		        </td>
+	      </tr>
+	      <%if show_conversation_details%>
+          <script>show_conversation_details($(".default_show"))</script>
+	      <%end%>
+	    <%end%>
+	  </tbody>
+	</table>
+<%else%>
+<p>You have 0 Notifications</p>
+<%end%>
+
+<script type="text/javascript">
+
+  $(document).on('click', '.show_details', function(){
+    show_conversation_details($(this))
+  })
+
+  $(document).on('click', '.default_show', function(){
+    show_conversation_details($(this))
+  })
+
+  $(document).on('click', '.close_div', function(){
+    $(this).closest('tr').hide(500);
+  })
+
+  $(document).on('click', '#pending', function(){
+    var pending_account_id = $(this).data('pending-account-id')
+    $('#details_tr_'+pending_account_id).toggle(500)
+  })
+</script>
+
+<% content_for :custom_css do %>
+	<style>
+
+	  @media only screen and (max-width: 767px) {
+	  	.notification_calender{
+	  		display: inline-block;
+	  	}
+	  	#unread_items .table{
+	  		display: inline-block;
+	  		border:0px;
+	  	}
+	  }
+	</style>
+<% end %>

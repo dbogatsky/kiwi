@@ -1,0 +1,5 @@
+<%if @duplication == true%>
+  $("#duplication_warning").html("<%=j render 'account_duplication_warning', values: @duplicate_accounts%>");
+<%else%>
+  $("#duplication_warning").html("");
+<%end%>

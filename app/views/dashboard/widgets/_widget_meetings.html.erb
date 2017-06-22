@@ -1,0 +1,47 @@
+<div class="panel panel-dark panel-alt">
+  <div class="panel-heading">
+    <h3 class="panel-title">My Schedule</h3>
+  </div>
+  <div class="panel-body">
+    <div class="mb20">
+      <h4 class="subtitle-lined"><%= @current_date.to_datetime.strftime("%a %B %e, %Y") %></h4>
+      <small><%= current_user.time_zone %></small>
+    </div>
+    <div class="inspinia-timeline">
+      <% if @meetings.present? && @meetings.count > 0 %>
+        <% @meetings.each do |m|%>
+          <div class="timeline-item">
+            <div class="row">
+              <div class="col-xs-3 date">
+                <i class="fa fa-calendar"></i>
+                <small>
+                  <%= m.starts_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%l:%M %p") if m.starts_at.present? %><br />
+                  <%= m.ends_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%l:%M %p") if m.ends_at.present? %>
+                </small>
+              </div>
+              <div class="col-xs-7 content no-top-border"
+                <% if m.type == "meeting" %>
+                  style="border-left: 1px solid <%= get_meetingstatus_color(m.status) %>"
+                <% end %>
+              >
+                <p><strong><a href="/schedule?mid=<%= m.id %>&acc_id=<%=m.account_id%>" style="color:#636e7b;"><%=m.title%></a></strong></p>
+                <p><small><%= sanitize m.body.gsub(/<br\s*\/?>/, '') %></small></p>
+                <p><small class="meeting-fa-icon"><i class="fa fa-briefcase"></i></small><small class="meeting-fa-account"><a href="/accounts/<%=m.account_id%>" style="color:#636e7b;"><%= m.account.try(:name) ? m.account.name : "Account Deleted" %></a></small></p>
+              </div>
+            </div>
+          </div>
+        <%end%>
+      <% else %>
+        <div class="timeline-item">
+          <div class="row">
+            <div class="text-center">
+              There was no items found on your schedule<br/>
+              Looks like you have a free day<br /><br />
+              <img src="/assets/images/penguin.png" class="img-responsive" style="display: block; margin: 0 auto;">
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div><!-- meeting widget -->

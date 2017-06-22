@@ -1,0 +1,33 @@
+<% if @totals[:regular_meeting] == 0 %>
+  <p>Looks like there was no regular meetings scheduled for this date range</p>
+<% else %>
+  <div class="table-responsive">
+    <table class="table table-hover mb30">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Date</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @sorted_citems[:meeting].each do | meeting | %>
+          <%if meeting.item_type == "regular"%>
+            <tr>
+              <td class="td_width"><%= meeting.title %></td>
+              <td><%= meeting.updated_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%b %d") %></td>
+              <td>
+                <%=render 'reports/activity_report/meeting_activity_details', meeting: meeting%>
+                <div class="table-controls">
+                  <a href="#" data-target=".meeting-activity-detail_<%=meeting.id%>" data-toggle="modal" class="btn btn-default btn-icon btn-xs tip" title="" data-original-title="Add entry"><i class="fa fa-search-plus"></i></a>
+                  <%=link_to account_path(meeting.account_id), class: "btn btn-default btn-icon btn-xs tip margin_left10", :target => "_blank" do%>
+                  <i class="fa fa-briefcase" title="Go to account"></i><%end%>
+                </div>
+              </td>
+            </tr>
+          <%end%>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>

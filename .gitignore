@@ -1,0 +1,23 @@
+
+# Ignore the default SQL database.
+*.sqlite3
+*.sql
+*.sql.bz2
+
+# Ignore all logfiles and tempfiles.
+/log
+/tmp
+/coverage
+
+
+# Ignore this file created by Mac OS X
+*.DS_Store
+
+# Ignore old files extension
+*.old
+/nbproject/private/
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

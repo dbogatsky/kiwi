@@ -1,0 +1,11 @@
+$(function(){
+	$("#p-duration-choice").click(function()
+	{
+		if($(this).is(":checked")){
+			$("#p-duration").removeAttr("disabled");
+		}
+		else{
+			$("#p-duration").attr("disabled","disabled");
+		}
+	});
+});

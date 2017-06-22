@@ -1,0 +1,54 @@
+<% content_for :pageheader do %>
+  <h2><i class="fa fa-home"></i> Meetings</h2>
+<% end %>
+<div class="contentpanel">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-btns">
+        <a href="" class="minimize">−</a>
+      </div>
+      <h4 class="panel-title">Meeting Report Form</h4>
+    </div>
+    <div class="panel-body">
+      <%=form_tag meeting_report_result_path, method: :get do%>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label class="control-label">Start Date</label>
+              <%if mobile?%>
+                <input class="report_from_datepicker" type="date" name="search[date_gteq]" required="required" placeholder="Start Date"/>
+              <%else%>
+                <input type="text" name="search[date_gteq]" class="form-control report_from_datepicker" placeholder="Start Date" required="required">
+              <%end%>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label class="control-label">End Date</label>
+              <%if mobile?%>
+                <input  class="report_to_datepicker" type="date" name="search[date_lteq]" required="required" placeholder="End Date"/>
+              <%else%>
+                <input type="text" class="form-control report_to_datepicker" name="search[date_lteq]" placeholder="End Date" required="required">
+              <%end%>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <%if current_user.roles.last.try(:name) != 'User'%>
+            <label class="control-label">Users</label>
+            <select class="select2" id="select_users" name="users[]" multiple="multiple" required="required" class="form-control" data-placeholder="Filter report by user(s)">
+              <%= options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] }, selected: current_user.id) %>
+              <% if @users.count > 1 %>
+                <option value="all">All</option>
+              <% end %>
+            </select>
+          <%end%>
+        </div>
+        <button type="submit" class="btn btn-primary">Get Report</button>
+        <button type="reset" class="btn btn-default">Reset</button>
+      <%end%>
+    </div>
+  </div>
+</div>
+
+

@@ -1,0 +1,109 @@
+<div class="row">
+  <%= form_tag search_account_path, method: :get, remote: :true do |f| %>
+    <div class="col-md-10">
+      <div class="input-group" id="adv-search">
+        <div class="input-group-btn">
+          <div class="btn-group" role="group">
+            <div class="dropdown dropdown-lg">
+            <button type="button" class="btn btn-default dropdown-toggle close_tab" data-toggle="dropdown" aria-expanded="false"><span class="glyphicon glyphicon-search"></span></button>
+              <div class="dropdown-menu conversation-search" id="conversation_search_div" role="menu">
+                <br />
+                <div class="form-group mb20">
+                  <label for="filter">Contains</label>
+                  <input type="text" name="search[title]" class="form-control" placeholder="keyword in title" />
+                </div>
+                <div class="form-group mb20">
+                  <label for="filter">Type</label>
+                  <select name="search[type_cont]" class="form-control input-sm" id="select_con_type">
+                      <option value="" selected="">All</option>
+                      <option value="meeting">Meetings</option>
+                      <option value="note">Notes</option>
+                      <option value="reminder">Reminders</option>
+                      <option value="email">Emails</option>
+                      <option value="quote">Quotes</option>
+                  </select>
+                </div>
+                <div class="form-group mb30">
+                  <label for="filter">Date Range</label>
+                    <div class="input-daterange input-group">
+                      <%if mobile?%>
+                        <input id="search-from-datepicker" type="date" name="search[date_gteq]"/>
+
+                        <input id="search_datepicker_end" type="date" name="search[date_lteq]"/>
+                      <%else%>
+                        <input type="text" class="form-control datepicker" placeholder="dd/mm/yy" name="search[date_gteq]" id="search-from-datepicker"/>
+                           <span class="input-group-addon">to</span>
+                        <input type="text" class="form-control datepicker" placeholder="dd/mm/yy" name="search[date_lteq]" id="search_datepicker_end">
+                      <%end%>
+                    </div>
+                </div>
+                <div>
+                  <button type="submit" class="btn btn-primary submit_search"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search</button>
+                  &nbsp;&nbsp;&nbsp;<a href="<%= account_path(@account.id)%>" class="btn btn-primary" style="width: 92px">Reset</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <%end%>
+</div>
+<script type="text/javascript">
+  $('#select_con_type, #search-from-datepicker, #search_datepicker_end, #conversation_search_div').click(function(e){
+    e.stopPropagation();
+  })
+
+  $('#search-from-datepicker').on('change', function() {
+    var d = $(this).val();
+    if(mobile == 'false'){
+      var dt = new Date(d);
+      dt.setDate(dt.getDate());
+      // $("#search_datepicker_end").datepicker("option", "minDate", dt);
+      $('#search_datepicker_end').val(d)
+    }else{
+      $('#search_datepicker_end').prop('min', d);
+      $('#search_datepicker_end').val(d);
+    }
+  });
+
+</script>
+<% content_for :custom_css do %>
+  <style>
+    .dropdown.dropdown-lg .dropdown-menu {
+        margin-top: 0px;
+        padding: 6px 20px;
+    }
+    .input-group-btn .btn-group {
+        display: flex !important;
+    }
+    .btn-group .btn {
+        margin-left: -1px;
+    }
+    .btn-group .btn:last-child {
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+    }
+    .btn-group .form-horizontal .btn[type="submit"] {
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+    }
+    .form-horizontal .form-group {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    @media screen and (min-width: 768px) {
+      #adv-search {
+          width: auto;
+          margin: 0 auto;
+      }
+      .dropdown.dropdown-lg {
+          /*position: static !important;*/
+      }
+      .dropdown.dropdown-lg .dropdown-menu {
+          min-width: 400px;
+      }
+    }
+  </style>
+<% end %>

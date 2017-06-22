@@ -1,0 +1,164 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://acme-api.code10.ca/api/v1/token.json
+    body:
+      encoding: UTF-8
+      string: '{"app_key":"app_LL1zKMy_vLixnHSyyiAB","user":{"email":"test@example.com","password":"12341234"}}'
+    headers:
+      Content-Type:
+      - application/json
+      Authorization:
+      - ''
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 25 Apr 2016 03:14:08 GMT
+      Etag:
+      - W/"2f87ab3f56128cff872efa4182ff5d6c"
+      Server:
+      - nginx/1.8.1
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 91cd96af-4c14-46d7-afdc-501c38c235a1
+      X-Runtime:
+      - '0.383918'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '116'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"user_id":1,"token":"secret_Crsty_opnh5b85UxrmXS","email":"test@example.com","username":null}'
+    http_version: 
+  recorded_at: Mon, 25 Apr 2016 03:14:08 GMT
+- request:
+    method: get
+    uri: https://acme-api.code10.ca/api/v1/users/1.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - Token token="secret_Crsty_opnh5b85UxrmXS", app_key="app_LL1zKMy_vLixnHSyyiAB"
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 25 Apr 2016 03:14:08 GMT
+      Etag:
+      - W/"b69eab695d7f589762fa41b734ae07a9"
+      Server:
+      - nginx/1.8.1
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 1b212fcf-48e3-498b-b048-59de8cdddce2
+      X-Runtime:
+      - '0.277130'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '1073'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"user":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1461556748\u0026Signature=3x8E8%2FSgtQ7dNO7xR07TFZW5gfo%3D","locale":"en","time_zone":"America/New_York","title":"Director
+        of Nothing","addresses":[{"id":50,"name":null,"street_address":"UNIT 2050
+        BOX 490","city":"APO","postcode":"96522 - 1215","region":"ARMED FORCES PACIFIC","country":"Canada","latitude":null,"longitude":null},{"id":51,"name":null,"street_address":"UNIT
+        2050 BOX 490","city":"APO","postcode":"96522 - 1215","region":"ARMED FORCES
+        PACIFIC","country":"CA","latitude":null,"longitude":null},{"id":52,"name":null,"street_address":"UNIT
+        2050 BOX 490","city":"APO","postcode":"96522 - 1215","region":"ARMED FORCES
+        PACIFIC","country":"CA","latitude":null,"longitude":null},{"id":53,"name":null,"street_address":"UNIT
+        2050 BOX 490","city":"APO","postcode":"96522 - 1215","region":"ARMED FORCES
+        PACIFIC","country":"CA","latitude":null,"longitude":null},{"id":54,"name":null,"street_address":"UNIT
+        2050 BOX 490","city":"APO","postcode":"96522 - 1215","region":"ARMED FORCES
+        PACIFIC","country":"CA","latitude":null,"longitude":null},{"id":57,"name":null,"street_address":"UNIT
+        2050 BOX 490","city":"APO","postcode":"96522 - 1215","region":"ARMED FORCES
+        PACIFIC","country":"CA","latitude":null,"longitude":null},{"id":75,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A3","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":79,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A3","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":80,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":81,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A3","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":82,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A43","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":83,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":84,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":85,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":86,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":87,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":88,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":89,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":90,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":91,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":92,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":93,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":94,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":95,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":96,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":97,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":98,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":99,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":100,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":101,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A5","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":102,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":110,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":112,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":113,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":114,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A6","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":115,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":116,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":117,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":119,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":120,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":121,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A5","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":122,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A5","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":123,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A5","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":125,"name":null,"street_address":"94
+        Cumberland Streett","city":"Torontoo","postcode":"M5R1A5","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":126,"name":null,"street_address":"94
+        Cumberland Streett","city":"Torontoo","postcode":"M5R1A5","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":127,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R 1A3","region":"Ontario","country":"CA","latitude":43.6705,"longitude":-79.3908}],"contacts":[{"id":164,"name":"Devid","value":"XXX
+        / 555-1115","type":"phone"},{"id":165,"name":"Devid","value":"XXX / 555-3333","type":"phone"},{"id":166,"name":"Devid","value":"XXX
+        / 555-3333","type":"phone"},{"id":167,"name":"Devid","value":"XXX / 555-3333","type":"phone"},{"id":168,"name":"Devid","value":"XXX
+        / 555-3333","type":"phone"},{"id":171,"name":"Devid","value":"XXX / 555-3333","type":"phone"},{"id":189,"name":"Devid","value":"416-893-9988","type":"mobile"},{"id":193,"name":null,"value":"416-893-9987","type":"mobile"},{"id":194,"name":null,"value":"416-893-9988","type":"mobile"},{"id":195,"name":null,"value":"416-893-9988","type":"phone"},{"id":196,"name":null,"value":"416-893-9987","type":"phone"},{"id":197,"name":null,"value":"416-893-6666","type":"phone"},{"id":198,"name":null,"value":"416-893-6660","type":"mobile"},{"id":199,"name":null,"value":"416-893-6669","type":"mobile"},{"id":200,"name":null,"value":"416-893-6668","type":"mobile"},{"id":201,"name":null,"value":"416-893-6666","type":"mobile"},{"id":202,"name":"5678","value":"416-893-6666","type":"mobile"},{"id":203,"name":"875462314","value":"416-893-6666","type":"mobile"},{"id":204,"name":"875462314","value":"416-893-6669","type":"phone"},{"id":205,"name":"875462314","value":"416-893-6670","type":"phone"},{"id":206,"name":"875462314","value":"416-893-6665","type":"phone"},{"id":207,"name":"875462314","value":"416-893-6669","type":"phone"},{"id":208,"name":"875462314","value":"416-893-6669","type":"phone"},{"id":209,"name":"875462314","value":"416-893-6669","type":"phone"},{"id":210,"name":"875462314","value":"416-893-6669","type":"phone"},{"id":211,"name":"875462315","value":"416-893-6669","type":"phone"},{"id":212,"name":null,"value":"416-893-6669","type":"phone"},{"id":213,"name":null,"value":"416-893-6669","type":"phone"},{"id":221,"name":null,"value":"416-893-6669","type":"phone"},{"id":225,"name":null,"value":"416-893-6669","type":"phone"},{"id":226,"name":null,"value":"416-893-6669","type":"phone"},{"id":227,"name":null,"value":"416-893-6669","type":"mobile"},{"id":228,"name":null,"value":"416-893-6669","type":"mobile"},{"id":229,"name":null,"value":"416-893-6669","type":"mobile"},{"id":230,"name":null,"value":"416-893-6669","type":"mobile"},{"id":231,"name":null,"value":"416-893-6669","type":"mobile"},{"id":234,"name":null,"value":"416-893-6669","type":"mobile"},{"id":235,"name":null,"value":"416-893-6669","type":"mobile"},{"id":236,"name":null,"value":"416-893-6669","type":"mobile"},{"id":237,"name":null,"value":"416-893-6669","type":"mobile"},{"id":238,"name":null,"value":"416-893-6669","type":"mobile"},{"id":241,"name":null,"value":"416-893-1111","type":"mobile"},{"id":242,"name":null,"value":"XXX
+        / 555-1112","type":"phone"},{"id":243,"name":null,"value":"416-893-1111","type":"mobile"}],"roles":[{"id":1,"name":"Admin","description":"Company
+        admin"}],"entity":null}}'
+    http_version: 
+  recorded_at: Mon, 25 Apr 2016 03:14:08 GMT
+recorded_with: VCR 3.0.1

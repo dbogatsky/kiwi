@@ -1,0 +1,303 @@
+<% content_for :pageheader do %>
+  <h2><i class="fa fa-home"></i> Company</h2>
+<% end %>
+<div class="profile-header">
+  <div class="row">
+    <div class="col-sm-3">
+    	<%= image_tag("photos/default_firm_picture.jpg", class:"thumbnail img-responsive") %>
+      <div class="mb30"></div>
+    </div><!-- col-sm-3 -->
+    <div class="col-sm-9">
+      <h2 class="profile-name"><%= @company.name %></h2>
+      <div class="mb20"></div>
+      <div class="row">
+        <div class="col-sm-11">
+          <div class="row">
+              <small>
+              <div class="col-sm-5">
+                  <div class="row bars">
+                      <div class="col-xs-5" style="text-align:right"><strong>Status</strong></div>
+                      <div class="col-xs-7"><span class="badge" style="background-color: #0eb057; border-color: #0eb057;">Open</span> </div>
+                  </div>
+                  <div class="row bars">
+                      <div class="col-xs-5" style="text-align:right"><strong>Address</strong></div>
+                      <div class="col-xs-7">
+                       <ul class="profile-social-list" id="account-addresses">
+                          <%if @company.addresses.present?%>
+                            <% @company.addresses.each_with_index do |address, index| %>
+                              <li id="<%= dom_id(address) %>" style="border-bottom:0px;">
+                                <address>
+                                  <% if address.name.present? %>
+                                    <strong><%= address.name %></strong>
+                                  <% end %>
+                                  <a href="https://maps.google.com?daddr=<%= address.suite_number %>+<%= address.street_address %>+<%= address.city %>+<%= address.region %>+<%= address.country %>+<%= address.postcode %>" target="_blank">
+                                  <%= address.suite_number %><%=address.suite_number.present? ? '-' : ''%><%= address.street_address %><br>
+                                  <%= address.city %>, <%= address.region %>, <%= address.country %><br />
+                                  <%= address.postcode %>
+                                  </a>
+                                </address>
+                              </li>
+                            <% end %>
+                          <% end %>
+                        </ul>
+                      </div>
+                  </div>
+                  <div class="row bars">
+                      <div class="col-xs-5" style="text-align:right"><strong>Contact</strong></div>
+                      <div class="col-xs-7">
+                        <ul class="profile-social-list">
+                          <%if @company.contacts.present?%>
+                            <% @company.contacts.each do |contact| %>
+                              <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.type %>"></i>
+                              <% if contact.type.eql? "phone"  or  contact.type.eql? "mobile"  or  contact.type.eql? "fax" %>
+                                <a href="tel:+1<%= contact.value.delete(" ").delete("-") %>"><%= contact.value %></a>
+                              <% else %>
+                                <%= contact.value %>
+                              <% end %>
+                              </li>
+                            <% end %>
+                          <% end %>
+                        </ul>
+                      </div>
+                  </div>
+              </div><!-- col-sm-4 -->
+              <div class="col-sm-7">
+                  <div class="row bars">
+                      <div class="col-xs-5" style="text-align:right"><strong>Created</strong></div>
+                      <div class="col-xs-7"></div>
+                  </div>
+                  <div class="row bars">
+                      <div class="col-xs-5" style="text-align:right"><strong>Language</strong></div>
+                      <div class="col-xs-7"><%= @company.locale %></div>
+                  </div>
+                  <div class="row bars">
+                      <div class="col-xs-5" style="text-align:right"><strong>Time Zone</strong></div>
+                      <div class="col-xs-7"><%= @company.time_zone %></div>
+                  </div>
+              </div><!-- col-sm-4 -->
+              </small>
+          </div><!-- row -->
+        </div>
+      </div>
+    </div><!-- col-sm-9 -->
+    <div class="mb20"></div>
+  </div><!-- row -->
+
+  <% if can? :manage, :all %>
+  <div class="col-md-12 mb20">
+  <!--    <h5 class="subtitle mb5">Dark Nav Tabs</h5>
+    <p>You can use darker tab bar for a nicer look and feel.</p>
+    <br> -->
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs nav-dark">
+      <li class="active"><a href="#news" data-toggle="tab"><strong>Company News</strong></a></li>
+      <li class=""><a href="#account_status" data-toggle="tab"><strong>Account Statuses</strong></a></li>
+      <li class=""><a href="#company_entities" data-toggle="tab"><strong>Company Entities</strong></a></li>
+      <li class=""><a href="#general" data-toggle="tab"><strong>General</strong></a></li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content mb30">
+      <div class="tab-pane active" id="news">
+        <div class="row row-pad-5">
+          <%if @news_data.size < 5%>
+            <div class="col-md-10"></div>
+            <div class="col-md-2">
+                <a href="#" id="add_news" class="btn btn-primary btn-block" data-toggle="modal" data-target=".add-company-news"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add News</a>
+            </div>
+          <%else%>
+            <div class="col-md-10">
+                <span>You have reached the limit (5 max) for the amount of news entries that can be added.<br />Please remove an entry or edit an existing one.</span>
+            </div>
+            <div class="col-md-2"></div>
+          <%end%>
+        </div><!-- row pad 5-->
+        <div class="row row-pad-5">
+          <div class="col-md-8">
+            <div class="table-responsive">
+              <table class="table mb30">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <%if @news_data.present?%>
+                    <% @news_data.each do |k,v| %>
+                      <tr>
+                        <td><%=truncate(v, :length => 90) rescue nil%></td>
+                        <td class="table-action">
+                            <a href="#"
+                            data-news = '<%=k%>'
+                            data-news-val='<%=v%>'
+                            data-toggle="modal" data-target=".add-company-news" class="edit_news"><i class="fa fa-pencil"></i></a>
+                            <%=link_to delete_news_path(company_id: @company.id, news: k), method: :delete, data: {confirm: 'Are you sure to delete this news?'} do%>
+                          <i class="fa fa-trash-o"></i><%end%>
+                        </td>
+                      </tr>
+                    <%end%>
+                  <%else%>
+                    <tr><td>No news available.</td></tr>
+                  <%end%>
+                </tbody>
+              </table>
+            </div><!-- table-responsive -->
+          </div><!-- col-md-6 -->
+        </div><!-- row pad 5-->
+      </div>
+      <div class="tab-pane" id="account_status">
+        <% if can? :read, AccountStatus %>
+          <div class="row row-pad-5">
+            <div class="col-md-10">
+              <p>
+                Each account is designated a status and can a great way to organize based on name and color.
+              </p>
+            </div>
+            <div class="col-md-2">
+              <% if can? :manage, AccountStatus %>
+                <a href="#" id="add_status" class="btn btn-primary btn-block" data-toggle="modal" data-target=".account-status-add"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Status</a>
+              <% end %>
+            </div>
+          </div><!-- row pad 5-->
+          <div class="row row-pad-5">
+            <div class="col-md-8">
+              <div class="table-responsive">
+                <table class="table mb30">
+                  <thead>
+                    <tr>
+                      <th>Status</th>
+                      <th>Description</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% @account_statuses.each do |status| %>
+                      <tr>
+                        <td><span class="badge" style="background-color: <%= status.color %>; border-color: <%= status.color %>;"><%= status.name %></span></td>
+                        <td><%= status.description %></td>
+                        <td class="table-action">
+                          <% if can? :manage, AccountStatus %>
+                            <a href="#"
+                            data-id="<%= status.id %>"
+                            data-statname="<%= status.name %>"
+                            data-statcolor="<%= status.color %>"
+                            data-statdesc="<%= status.description %>"
+                            data-toggle="modal" data-target=".account-status-add" class="modal-link"><i class="fa fa-pencil"></i></a>
+                          <% end %>
+                        </td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                </table>
+              </div><!-- table-responsive -->
+            <% if @account_statuses.count == 0 %>
+              <div class="col-md-4">
+                <a href="<%= default_account_statuses_path %>" id="add_default_status" class="btn btn-primary btn-block"><i class="fa fa-th-list"></i>&nbsp;&nbsp;&nbsp;Add Default Statuses</a>
+              </div>
+            <%end%>
+            </div><!-- col-md-6 -->
+          </div><!-- row pad 5-->
+        <%end%>
+      </div>
+      <div class="tab-pane" id="company_entities">
+        <% if can? :read, CompanyEntity %>
+          <div class="row row-pad-5">
+            <div class="col-md-10">
+              <p>Use entities to describe how your organization is structured</p>
+            </div>
+            <div class="col-md-2">
+              <% if can? :manage, CompanyEntity %>
+                <a href="<%= new_company_entity_path %>" class="btn btn-primary btn-block"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Entities</a>
+              <% end %>
+            </div>
+          </div><!-- row -->
+          <div class="row row-pad-5">
+            <div class="col-md-8">
+              <% if @entites.present? %>
+                <div class="table-responsive">
+                  <ul class="table_head">
+                    <li class="first_li">Name</li>
+                     <li class="second_li">Description</li>
+                      <li class="third_li">&nbsp;</li>
+                  </ul>
+                  <%=nested_entities(@entites)%>
+                </div><!-- table-responsive -->
+              <% else %>
+                <p>Create and manage Entities here.</p>
+              <% end %>
+            </div>
+          </div>
+        <%end%>
+      </div>
+      <div class="tab-pane" id="general">
+      </div>
+    </div>
+  </div><!-- profile-header -->
+  <%end%>
+</div>
+</div><!-- mainpanel -->
+</section>
+<%= render "company_account_status" %>
+<%= render 'edit_company_entity' %>
+<%= render 'add_company_news'%>
+
+<script src="/assets/bootstrap/js/colorpicker.js"></script>
+<script src="/assets/bootstrap/js/chosen.jquery.min.js"></script>
+<script>
+
+  $(document).on('click', "a.edit-folder", function(e){
+    id = $(this).attr('data-id')
+    $('input[name="company_entity[name]"]').val($(this).attr('data-name'));
+    $('textarea[name="company_entity[description]"]').val($(this).attr('data-description'));
+    $('select[name="company_entity[parent_id]"]').val($(this).attr('data-parent'))
+    $('#edit_company_entity').modal('show');
+    $('#edit_company_entity').find('form').attr('action', '/company_entities/'+id)
+  });
+	// Color Picker
+	if(jQuery('#account-status-color').length > 0) {
+	 jQuery('#colorSelector').ColorPicker({
+			onShow: function (colpkr) {
+				jQuery(colpkr).fadeIn(500);
+				return false;
+			},
+			onHide: function (colpkr) {
+				jQuery(colpkr).fadeOut(500);
+				return false;
+			},
+			onChange: function (hsb, hex, rgb) {
+				jQuery('#colorSelector span').css('backgroundColor', '#' + hex);
+				jQuery('#account-status-color').val('#'+hex);
+			}
+	 });
+	}
+
+
+	$(document).on("click", ".modal-link", function () {
+		var statusID = $(this).data('id');
+		$(".modal-body #account-status-id").val( statusID );
+		$("#account-status-name").val( $(this).data('statname') );
+		$("#account-status-color").val( $(this).data('statcolor') );
+		$("#account-status-desc").val( $(this).data('statdesc') );
+	});
+
+
+  $(document).on("click", "#add_status", function () {
+    $(".modal-body #account-status-id").val("");
+    $("#account-status-name").val("");
+    $("#account-status-color").val("");
+    $("#account-status-desc").val("");
+  });
+
+  $(document).on('click', '.nested_link', function(){
+    $('#preloader').css('opacity', 0.3);
+    $('#preloader').show();
+  });
+
+  $(document).on('click', "a.edit_news", function(e){
+    console.log($(this).attr('data-news'))
+    $('.add-company-news textarea[name="news"]').val($(this).attr('data-news-val'));
+    $('.add-company-news input[name="update_params"]').val($(this).attr('data-news'));
+  });
+
+
+</script>

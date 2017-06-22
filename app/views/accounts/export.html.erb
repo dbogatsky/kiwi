@@ -1,0 +1,43 @@
+<% content_for :pageheader do %>
+  <h2><i class="fa fa-briefcase"></i>Export Accounts Results</h2>
+<% end %>
+<div class="row">
+  <div class="col-md-10">
+  </div>
+  <div class="col-md-2 pull-right">
+   <%= link_to 'Go Back', :back, class: "btn btn-white btn-block" %><br />
+  </div>
+</div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">Please select the options to export your results.</h4>
+    </div>
+
+    <div class="panel-body">
+      <div class="form-group">
+        <label class="col-sm-3 control-label">Export File Type</label>
+        <div class="col-sm-6">
+          <%=radio_button("option1", "format", "csv", :checked =>true)%> CSV<br />
+          <%=radio_button("option1", "format", "xls")%> Excel
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-footer">
+      <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+          <%=link_to 'Export', accounts_path(page: session[:page].to_i, format: "csv"), method: :get, class: "btn btn-primary btn-sm export_link" %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script type="text/javascript">
+  $("#option1_format_csv, #option1_format_xls").click(function(){
+    if ($(this).attr("checked") == 'checked'){
+      var format_type = $(this).val()
+      $('.export_link').attr('href',"/accounts."+format_type)
+    }
+  });
+</script>

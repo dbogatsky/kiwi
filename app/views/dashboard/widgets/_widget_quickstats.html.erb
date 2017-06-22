@@ -1,0 +1,42 @@
+<div class="panel panel-default">
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-sm-12">
+        <h4 class="subtitle-lined mb5"><%= @greeting_message %></h4>
+        <br/>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <%= render 'dashboard/widgets/widget_news' %> 
+        <p class="mb15"><small>Some quick stats for day so far</small></p>
+        <table class="table small">
+          <tbody>
+            <tr>
+              <td align="right"><span class="badge"><%= @quick_stats.accounts_updated %></span></td>
+              <td align="left"><i class="fa fa-comments"></i>&nbsp;&nbsp;Accounts updated</td>
+            </tr>
+            <tr>
+              <td align="right"><span class="badge"><%= @quick_stats.shared_account_updated %></span></td>
+              <td align="left"><i class="fa fa-share-alt"></i>&nbsp;&nbsp;Shared Accounts updated</td>
+            </tr>
+            <tr>
+              <td align="right"><span class="badge"><%= @quick_stats.meetings %></span></td>
+              <td align="left"><i class="fa fa-calendar"></i>&nbsp;&nbsp;Meetings</td>
+            </tr>
+            <tr>
+              <td align="right"><span class="badge">0</span></td>
+              <td align="left"><i class="fa fa-bell"></i>&nbsp;&nbsp;Notifications</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+<!--     <div class="row">
+      <div class="col-sm-12">
+        <p class="mb15"><small>Summary of your accounts by status over the last few months</small></p>
+        <div id="accounts-status-breakdown"></div>    
+      </div>
+    </div> -->
+  </div><!-- panel body -->
+</div><!-- panel -->

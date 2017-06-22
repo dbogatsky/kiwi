@@ -1,0 +1,17 @@
+<%= simple_form_for [@account, Address.new], :remote => true, html: { id: "account-address-add-form" } do |f|%>
+	<%= f.input :name %>
+	<%= f.input :street_address, required: true %>
+	<%= f.input :city, required: true %>
+	<%= f.input :postcode, required: true %>
+	<%= f.input :region, required: true %>
+	<%#= f.input :country %>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">Country<span class="asterisk">*</span></label>
+		<div class="col-sm-6">
+		<%= f.input_field :country, { required: true, priority: [ "Canada", "United States", "United Kingdom" ],  class: "select2" } %>
+		</div>
+	</div>
+	<%= f.hidden_field :account_id, :value => @account.id %>
+	<button type="submit" class="btn btn-primary" name="save" id="save">Create</button>
+	<%#= f.submit %>
+<% end %>

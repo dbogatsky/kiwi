@@ -1,0 +1,185 @@
+<% content_for :pageheader do %>
+  <h2><i class="fa fa-cogs"></i>Settings</h2>
+<% end %>
+<%= form_tag settings_company_level_setting_path, method: :patch, class: "form-horizontal" do |f| %>
+  <div class="profile-header">
+    <div class="row row-pad-5">
+      <div class="col-md-12 mb20">
+        <!-- Nav tabs -->
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <div class="panel-btns">
+              <a href="" class="minimize">−</a>
+            </div><!-- panel-btns -->
+            <h3 class="panel-title">Authentication</h3>
+          </div>
+          <div class="panel-body">
+            <div class="tab-pane" id="authentication">
+              <div class="row row-pad-5">
+                <div class="form-group">
+                  <label class="col-sm-4 control-label">User automatic logout after being idle for</label>
+                  <div class="col-sm-4">
+                    <%=select_tag('automatic_logout',options_for_select(automatic_logout_select_options, selected: @company_settings['authentication']['automatic_logout']), prompt: '-select-', class: "form-control")%>
+                  </div>
+                </div>
+              </div><!-- row pad 5-->
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <div class="panel-btns">
+              <a href="" class="minimize">−</a>
+            </div><!-- panel-btns -->
+            <h3 class="panel-title">Preferences</h3>
+          </div>
+          <div class="panel-body">
+            <div class="tab-pane" id="preferences">
+              <div class="row row-pad-5">
+                <div class="form-group">
+                  <label class="col-sm-4 control-label">Show Accounts per page</label>
+                  <div class="col-sm-4">
+                    <%=select_tag('account_per_page',options_for_select(account_per_page_select_options, selected: @account_per_page), prompt: '-select-', class: "form-control")%>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label">Default show accounts by account status(es)</label>
+                  <div class="col-sm-4">
+                     <select class="form-control select2" id="accounts_by_status" multiple="multiple" name="accounts_by_status[]" data-placeholder="-select-">
+                     <option></option>
+                       <%=options_for_select(account_by_account_status_select_options, selected: @account_by_status)%>
+                      </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label"> Timezone Detection</label>
+                  <div class="col-sm-4">
+                    <%=select_tag('enable_timezone_detect',options_for_select(enable_disable_options, selected: @timezone_setting), prompt: '-select-', class: "form-control")%>
+                  </div>
+                </div>
+<% ## Commented out - Daylight Saving Time Detection Not Working
+  #              <div class="form-group">
+  #                <label class="col-sm-4 control-label">Daylight Saving Time Detection</label>
+  #                <div class="col-sm-4">
+  #                  < %=select_tag('enable_dst',options_for_select(enable_disable_options, selected: @daylight_setting), prompt: '-select-', class: "form-control") % >
+  #                </div>
+  #              </div>
+%>
+              </div><!-- row -->
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <div class="panel-btns">
+              <a href="" class="minimize">−</a>
+            </div><!-- panel-btns -->
+            <h3 class="panel-title">Accounts</h3>
+          </div>
+          <div class="panel-body">
+            <div class="tab-pane" id="accounts">
+              <div class="row row-pad-5">
+                <div class="form-group">
+                  <label class="col-sm-4 control-label">Account Transfer Approval</label>
+                  <div class="col-sm-4">
+                    <%=select_tag('approval_for_account_transfer',options_for_select(approval_for_account_transfer_options, selected: @needs_approval_for_account_transfer), class: "form-control")%>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label">Search All Accounts</label>
+                  <div class="col-sm-4">
+                    <%=select_tag('search_all_accounts',options_for_select(enable_disable_options, selected: @search_all_accounts),class: "form-control")%>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label">Import Account</label>
+                  <div class="col-sm-4">
+                    <%=select_tag('enable_import',options_for_select(enable_import_export_select_options, selected: @enable_import), prompt: '-select-', class: "form-control")%>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label">Export Account</label>
+                  <div class="col-sm-4">
+                    <%=select_tag('enable_export',options_for_select(enable_import_export_select_options, selected: @enable_export), prompt: '-select-', class: "form-control")%>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label">Expected Sales</label>
+                  <div class="col-sm-4">
+                    <%=select_tag('expected_sales_attribute',options_for_select(enable_disable_options, selected: @enable_expected_sales), class: "form-control")%>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label">Schedule Meetings/Regular Visits Checkin/Checkout(incl. Schedule Page)</label>
+                  <div class="col-sm-4">
+                    <%=select_tag('enable_checkin_checkout',options_for_select(enable_disable_options, selected: @enable_checkin_checkout), class: "form-control")%>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <div class="panel-btns">
+              <a href="" class="minimize">−</a>
+            </div><!-- panel-btns -->
+            <h3 class="panel-title">Schedule</h3>
+          </div>
+          <div class="panel-body">
+            <div class="tab-pane" id="accounts">
+              <div class="row row-pad-5">
+                <div class="form-group">
+                  <label class="col-sm-4 control-label">Regular Visits Sort</label>
+                  <div class="col-sm-4">
+                    <%=select_tag('enable_regular_visits_sort',options_for_select(enable_disable_options, selected: @enable_regular_visits_sort), class: "form-control")%>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <% if @gps_tracking == 'on' %>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <div class="panel-btns">
+              <a href="" class="minimize">−</a>
+            </div><!-- panel-btns -->
+            <h3 class="panel-title">GPS Tracking</h3>
+          </div>
+          <div class="panel-body">
+            <div class="tab-pane" id="accounts">
+              <div class="row row-pad-5">
+                <div class="form-group">
+                  <label class="col-sm-4 control-label">GPS Tracking Interval</label>
+                  <div class="col-sm-4">
+                    <%=select_tag('gps_tracking_interval',options_for_select(gps_tracking_interval_options, selected: @gps_tracking_interval), class: "form-control")%>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% end %>
+
+        <div class="panel panel-default">
+          <div class="panel-footer">
+            <div class="row row-pad-5">
+              <div class="col-sm-8 col-sm-offset-5">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="reset" class="btn btn-default">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> <!-- col- -->
+    </div><!-- row -->
+  </div><!-- profile-header -->
+<%end%>
+<script type="text/javascript">
+  $("#accounts_by_status").select2({
+    width: '100%',
+  });
+</script>

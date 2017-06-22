@@ -1,0 +1,102 @@
+$thumb-path:"../../img/slider/";
+.slider{
+	
+	position:absolute;
+	top:0;
+	z-index:-1;
+
+	.slides{
+		background-size:cover;
+		height: 100%;
+		.slide-content{
+		margin-top: 15%;
+		div{
+				
+				font-size: 250%;
+				padding:10px;
+				text-transform: capitalize;
+				i{
+					font-style: normal;
+					color:get_color("white");
+					padding:5px;
+					background-color: rgba($base-color,.6);
+					opacity: 1;
+			}
+		}
+	}
+	}
+
+}
+.prev,.next{
+		text-align: center;
+		color: $base-color;
+		height:100px;
+		width:50px;
+		top:70%;
+		position:absolute;
+		padding:5px;
+		font-size: 250%;
+		line-height: 250%;
+		z-index: 10;
+	}
+	.prev{
+		left:0;
+		border-right:3px solid $base-color;
+	}
+	.next{
+		right:0;
+		border-left:3px solid $base-color;
+	}
+$slides:(
+    1 "1.png",
+    2 "2.png",
+    3 "3.png",
+    4 "4.png",
+    5 "5.png"
+);
+@each $i in $slides{
+  .slide-#{nth($i,1)}{
+    background: url("#{$thumb-path}#{nth($i,2)}") no-repeat 
+    center center fixed;
+    @if nth($i,1)!=1{
+    	display:none;
+    }
+  }
+}
+div[class^="slide-content-"]:not(.slide-content-1){
+	display:none;
+
+}
+.hide-slide{
+	animation:slide-right-hide .5s;
+}
+.show-slide{
+    animation:slide-left 1s;
+}
+@keyframes slide-left{
+	from{
+		transform:translateX(100px);
+		transform:rotate(-5Deg);
+	}
+	to{
+		transform: translateX(0px);
+		transform:rotate(0Deg);
+	}
+}
+@keyframes slide-right{
+	from{
+		transform:translateX(0px);
+
+	}
+	to{
+		transform: translateX(100px);
+	}
+}
+@keyframes slide-right-hide{
+	from{
+		transform:translateX(0px);
+	}
+	to{
+		transform: translateX(-100px);
+	}
+}

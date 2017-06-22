@@ -1,0 +1,26 @@
+<div class="modal fade email-activity-detail_<%=email.id%>" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+          <button aria-hidden="true" data-dismiss="modal" class="close" type="button">&times;</button>
+          <h4 class="modal-title">Activity Detail</h4>
+      </div>
+      <div class="modal-body">
+        <span class="cd-date"><%= email.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%></span>
+        <h4 class="ci_header"><%= email.title %></h4>
+        <p><%= sanitize email.body %></p>
+        <div class="row ci_footer">
+          <div class="col-sm-10">
+            <% if !email.invitees.nil? %>
+              <i class="fa fa-paper-plane-o mr10"></i><%= email.invitees %><br />
+            <% end %>
+            <% if (email.scheduled_at.present?) %>
+              <i class="fa fa-calendar mr10"></i><%= email.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %><br/>
+            <% end %>
+            <i class="fa fa-briefcase tooltips mr10" data-toggle="tooltip" data-original-title="Account"></i><%= email.account.try(:name) ? email.account.name : "Account Deleted" %><br/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

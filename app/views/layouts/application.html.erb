@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="apple-touch-icon" sizes="57x57" href="/images/favicon/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/images/favicon/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/images/favicon/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/favicon/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/images/favicon/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/images/favicon/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/images/favicon/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/images/favicon/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="/images/favicon/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/images/favicon/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+  <link rel="manifest" href="/images/favicon/manifest.json">
+
+
+
+  <title><%= APP_CONFIG['software_title'] %></title>
+
+
+  <%= stylesheet_link_tag 'application', media: 'all' %>
+
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCOQhKZhel2NDAqT7cXphUoaH9Y0hLzEeM&libraries=places"></script>
+  <%= javascript_include_tag 'application' %>
+  <%= render "shared/js" %>
+
+
+  <%= csrf_meta_tags %>
+
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="/assets/bootstrap/js/html5shiv.js"></script>
+  <script src="/assets/bootstrap/js/respond.min.js"></script>
+  <![endif]-->
+
+  <%= yield :custom_css %>
+  <%= yield :head_assets %>
+  <style>
+    #ui-datepicker-div{ z-index:9999 !important; }
+    .datepicker {
+      padding: 10px;
+    }
+  	.colorpicker, .colorpicker * {
+  		z-index: 9999 !important;
+  	}
+  </style>
+</head>
+
+<body data-no-turbolink>
+  <!-- Preloader -->
+  <div id="preloader">
+    <div id="status"><i class="fa fa-spinner fa-spin"></i></div>
+  </div>
+
+  <section>
+    <%= render "layouts/nav" %>
+    <div class="mainpanel">
+      <%= render "layouts/bar" %>
+
+      <div class="pageheader">
+        <%= yield :pageheader %>
+      </div>
+      <div class="contentpanel">
+        <%= render 'layouts/flash_messages'%>
+        <%= yield %>
+        <%=render "layouts/change_time_zone"%>
+      </div>
+    </div>
+  </section>
+
+
+
+  <%= yield :outside_section %>
+  <%#= render "shared/js" %>
+  <%= yield :custom_js %>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      // var t_zone = "<%=cookies['browser.timezone']%>"
+      var t_zone_setting = "<%=get_timezone_setting%>"
+      var t_zone = "<%=Time.zone.now.zone%>"
+      var not_now = "<%=session['time_zone_not_now']%>";
+      var c_zone = "<%=ActiveSupport::TimeZone[current_user.time_zone].now.zone%>"
+      if (t_zone != c_zone && not_now != 'true' && t_zone != '' && t_zone_setting == "enable"){
+         $(".change-timezone-modal-form").modal('show');
+      }else{
+         $(".change-timezone-modal-form").modal('hide');
+      }
+    });
+
+    $("#account_name").focusout(function(){
+      var name = $(this).val()
+      var new_name = titleize(name)
+      $(this).val(new_name)
+    });
+
+    function titleize(sentence) {
+      if(!sentence.split) return sentence;
+      var _titleizeWord = function(string) {
+              return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+          },
+          result = [];
+      sentence.split(" ").forEach(function(w) {
+          result.push(_titleizeWord(w));
+      });
+      return result.join(" ");
+    }
+
+
+    var time_hour = '<%=company_settings_load['authentication']['automatic_logout']%>'
+    if(time_hour != ''){
+      var timeout;
+      time_hour = parseInt(time_hour)
+
+      document.onmousemove = resetTimer;
+      document.onclick = resetTimer;
+      function resetTimer() {
+        clearTimeout(timeout);
+        timeout = setTimeout(function() {
+          logout();
+          }, time_hour * 60 * 60 * 1000);
+      }
+
+      function logout(){
+        $.ajax({
+          type: "GET",
+          url: '/login/destroy'
+        });
+      }
+    }
+
+  </script>
+</body>
+</html>

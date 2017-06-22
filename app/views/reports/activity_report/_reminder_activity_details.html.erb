@@ -1,0 +1,32 @@
+<div class="modal fade reminder-activity-detail_<%=reminder.id%>" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">&times;</button>
+        <h4 class="modal-title">Activity Detail</h4>
+      </div>
+      <div class="modal-body">
+        <span class="cd-date"><%= reminder.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%></span>
+        <h4 class="ci_header"><%= reminder.title %></h4>
+        <p><%= sanitize reminder.body %></p>
+        <div class="row ci_footer">
+          <div class="col-sm-10">
+            <i class="fa fa-bell mr10"></i><%= reminder.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %>
+            <i class="mr10"></i>
+            <% if reminder.notify_by_email.present? %>
+            <i class="fa fa-envelope tooltips mr10" data-toggle="tooltip" data-original-title="Email"></i>
+            <% end %>
+            <% if reminder.notify_by_sms.present? %>
+            <i class="fa fa-comment tooltips mr10" data-toggle="tooltip" data-original-title="SMS"></i>
+            <% end %>
+            <% if reminder.conversation_item_user_to_notify.present? %>
+                <br />
+                <%=notified_users(reminder)%>
+            <% end %>
+            <i class="fa fa-briefcase tooltips mr10" data-toggle="tooltip" data-original-title="Account"></i><%= reminder.account.try(:name) ? reminder.account.name : "Account Deleted" %><br/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

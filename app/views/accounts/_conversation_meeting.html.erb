@@ -1,0 +1,604 @@
+<div class="modal fade account-action-meeting" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+          <button aria-hidden="true" data-dismiss="modal" class="close" type="button">&times;</button>
+          <h4 class="modal-title">Schedule Meeting</h4>
+      </div>
+      <div class="modal-body">
+        <p>Provide the details below to schedule a meeting</p>
+        <%= form_tag account_schedule_meeting_path, enctype: "multipart/form-data", id: 'submit_conversation_meeting_form', remote: :true do |f| %>
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div class="row row-pad-5">
+                <div class="col-lg-12">
+                  <select class="form-control meeting_type input-sm" name="conversation_item[item_type]" placeholder="Meeting Type" required="required">
+                    <option value="general">General</option>
+                    <option value="regular">Regular Visit</option>
+                  </select>
+                </div>
+              </div><!-- row -->
+
+              <div class="row row-pad-5">
+                <div class="col-lg-12">
+                  <input type="text" name="conversation_item[title]" placeholder="Event" class="form-control meeting_title" required="required" />
+                </div>
+              </div><!-- row -->
+
+              <%unless account.present?%>
+                <div class="row row-pad-5">
+                  <div class="col-lg-12 country_select">
+                    <select class="form-control select2 selected_account get_address add_remote_option" name="id" placeholder="-Select account-" required="required">
+                      <option value="">-Select account-</option>
+                    </select>
+                  </div>
+                </div><!-- row -->
+                <input type="hidden" name="add_from_schedule" value= "true">
+              <%end%>
+              <%if account.present? && account.addresses.present? %>
+               <%address = "#{account.addresses.first.suite_number}" +"#{account.addresses.first.suite_number.present? ? '-' : ''}"+"#{account.addresses.first.street_address}" +', ' + "#{account.addresses.first.city}" +', ' + "#{account.addresses.first.postcode}" +', ' + "#{account.addresses.first.region}" +', ' + "#{account.addresses.first.country}"%>
+              <%else%>
+               <%address = ''%>
+              <%end%>
+              <div class="row row-pad-5">
+                <div class="col-lg-12">
+                  <input type="text" name="conversation_item[location]" id="keyword" placeholder="Add Location" value="<%=address%>"class="form-control" required="required"/>
+                </div>
+              </div><!-- row -->
+
+              <div class="row row-pad-5 invitee_emails_div">
+                <div class="col-lg-12">
+                  <div class="invitee_emails">
+                    <div id="tags">
+                      <input type="text" id="tag_input" placeholder="Invitees email" class="form-control" />
+                      <input type="hidden" name="conversation_item[invitees]" id="invitee_emails" />
+                    </div>
+                  </div>
+                </div>
+              </div><!-- row -->
+
+              <div class="row">
+	              <div class="col-lg-4">
+	              <h5>Starts</h5>
+	              </div>
+              </div>
+
+              <div class="row row-pad-5">
+                <div class="col-lg-5">
+                  <div class="input-group ">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    <%if mobile?%>
+                      <input id="schedule-from-datepicker" type="date" name="starts_date" required="required"/>
+                    <%else%>
+                      <input type="text" class="form-control" placeholder="mm/dd/yy" name="starts_date" id="schedule-from-datepicker" required="required" />
+                    <%end%>
+                  </div>
+                </div>
+
+                <div class="col-lg-4 start-time">
+                  <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                    <div class="bootstrap-timepicker">
+                    <%if mobile?%>
+                      <input id="schedule-from-timepicker" type="time" name="starts_time" step=900 required="required"/>
+                    <%else%>
+                      <input id="schedule-from-timepicker" name="starts_time" type="text" class="form-control" required="required" />
+                    <%end%>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4 all-day" style="display:none; margin-top: 10px;">
+                  <div class="input-group">
+                    <label>All Day Appointment</label>
+                  </div>
+                </div>
+              </div><!-- row -->
+
+              <div class="row end-date-time">
+	              <div class="col-lg-4">
+	              <h5>Ends</h5>
+	              </div>
+              </div>
+
+              <div class="row row-pad-5 end-date-time">
+                <div class="col-lg-5">
+                  <div class="input-group ">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    <%if mobile?%>
+                      <input id="schedule-to-datepicker" type="date" name="ends_date" required="required"/>
+                    <%else%>
+                      <input type="text" class="form-control" placeholder="mm/dd/yy" name="ends_date" id="schedule-to-datepicker" required="required" />
+                    <%end%>
+                  </div>
+                </div>
+
+                <div class="col-lg-4">
+                  <div class="input-group mb15">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                    <div class="bootstrap-timepicker">
+                      <%if mobile?%>
+                        <input id="schedule-to-timepicker" type="time" name="ends_time" step=900 required="required"/>
+                      <%else%>
+                        <input name="ends_time"  id="schedule-to-timepicker" type="text" class="form-control" required="required" />
+                      <%end%>
+                    </div>
+                  </div>
+                </div>
+              </div><!-- row -->
+
+              <div class="row row-pad-5">
+                <div class="col-lg-6">
+                  <div class="ckbox ckbox-primary">
+                    <input type="checkbox" id="meeting-reminder" name="conversation_item[reminder]">
+                    <label for="meeting-reminder">Set a Custom Reminder</label>
+                  </div>
+                </div>
+                <div class="col-lg-6 repeat_div">
+                  <div class="ckbox ckbox-primary">
+                    <input type="checkbox" id="meeting-repeat" name="meeting-repeat">
+                    <label for="meeting-repeat">Repeat</label>
+                  </div>
+                </div>
+              </div><!-- row -->
+
+			        <div id="meeting-reminder-settings">
+	              <div class="row row-pad-5">
+	                <div class="col-lg-5">
+	                  <div class="input-group">
+	                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                      <%if mobile?%>
+                        <input id="meeting-reminder-date" type="date" name="scheduled_date"/>
+                      <%else%>
+                        <input type="text" class="form-control" placeholder="mm/dd/yy" name="scheduled_date" id="meeting-reminder-date"/>
+                      <%end%>
+	                   </div>
+	                </div>
+
+	                <div class="col-lg-4">
+	                  <div class="input-group">
+	                    <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+	                    <div class="bootstrap-timepicker">
+                        <%if mobile?%>
+                          <input id="meeting-reminder-time" type="time" name="scheduled_time" step=900 />
+                        <%else%>
+                          <input name="scheduled_time" id="meeting-reminder-time" type="text" class="form-control" />
+                        <%end%>
+                      </div>
+	                  </div>
+	                </div>
+	              </div><!-- row -->
+			        </div><!-- meeting reminder settings -->
+
+							<div id="meeting-repeat-settings">
+								<div class="row row-pad-5">
+									<div class="col-sm-4">
+										<label for="repeat-frequency">Frequency:</label>
+										<select class="form-control input-sm mb15" name="conversation_item[repetition_rule][frequency_type]" id="repeat-frequency">
+										  <option value=''>-select -</option>
+											<option value="daily">Daily</option>
+											<option value="weekly">Weekly</option>
+											<option value="monthly">Monthly</option>
+											<option value="yearly">Yearly</option>
+										</select>
+									</div>
+
+									<div class="col-sm-4">
+										<label for="repeat-occurrences">Stop After:</label>
+										<select class="form-control input-sm mb15" name="conversation_item[repetition_rule][repeat_occurrences]" id="repeat-occurrences">
+										  <option value=''>-select -</option>
+											<% (1..50).each do |i| %>
+											<option value="<%= i %>">
+												<%= pluralize(i, 'Occurrence') %>
+											</option>
+											<% end %>
+										</select>
+									</div>
+
+                  <div class="col-sm-4">
+                    <div id="repeat-frequency-day">
+                      <label for="repeat-every-day">Repeat Every:</label>
+                      <select class="form-control input-sm mb15" name="conversation_item[repetition_rule][repeat_day]" id="repeat-every-day">
+                        <option value=''>- select-</option>
+                        <% (1..6).each do |i| %>
+                        <option value="<%= i %>">
+                            <% if i == 1 %>
+                              Day
+                          <% else %>
+                            <%= "#{i.ordinalize} Day" %>
+                          <% end %>
+                        </option>
+                        <% end %>
+                      </select>
+                    </div><!-- repeat every: day -->
+
+                    <div id="repeat-frequency-week">
+                      <label for="repeat-every-week">Repeat Every:</label>
+                      <select class="form-control input-sm mb15"  name="conversation_item[repetition_rule][repeat_week]" id="repeat-every-week">
+                        <option value=''>- select-</option>
+                        <% (1..52).each do |i| %>
+                        <option value="<%= i %>">
+                            <% if i == 1 %>
+                                Week
+                            <% else %>
+                                <%= "#{i.ordinalize} Week" %>
+                            <% end %>
+                        </option>
+                        <% end %>
+                      </select>
+                    </div><!-- repeat every: week -->
+
+                    <div id="repeat-frequency-month">
+                      <label for="repeat-every-month">Repeat Every:</label>
+                      <select class="form-control input-sm mb15" name="conversation_item[repetition_rule][repeat_month]" id="repeat-every-month">
+                        <option value=''>- select-</option>
+                        <% (1..12).each do |i| %>
+                        <option value="<%= i %>">
+                            <%= pluralize(i, 'Month') %>
+                        </option>
+                        <% end %>
+                      </select>
+                    </div><!-- repeat every: month -->
+
+                    <div id="repeat-frequency-year">
+                      <label for="repeat-every-year">Repeat Every:</label>
+                      <select class="form-control input-sm mb15" name="conversation_item[repetition_rule][repeat_year]" id="repeat-every-year">
+                        <option value=''>- select-</option>
+                        <% (1..4).each do |i| %>
+                        <option value="<%= i %>">
+                            <%= pluralize(i, 'Year') %>
+                        </option>
+                        <% end %>
+                      </select>
+                    </div><!-- repeat every: year -->
+
+                  </div><!-- col -->
+                </div><!-- row -->
+
+								<div id="repeat-frequency-weekday-on">
+                  <div class="row row-pad-5">
+  									<div class="col-sm-12">
+											Repeat On:<br/>
+                        <input type="checkbox" id="repeat-day-mon" class="outline_none" name="conversation_item][repetition_rule][day_of_week][]" value='1'>
+                        <label for="repeat-day-mon" style="padding:4px;">M</label>
+                        <input type="checkbox" id="repeat-day-tue" class="outline_none" name="conversation_item][repetition_rule][day_of_week][]" value="2">
+                        <label for="repeat-day-tue" style="padding:4px;">T</label>
+                        <input type="checkbox" id="repeat-day-wed" class="outline_none" name="conversation_item][repetition_rule][day_of_week][]" value="3">
+                        <label for="repeat-day-wed" style="padding:5px;">W</label>
+                        <input type="checkbox" id="repeat-day-thu" class="outline_none"  name="conversation_item][repetition_rule][day_of_week][]" value="4">
+                        <label for="repeat-day-thu" style="padding:4px;">T</label>
+                        <input type="checkbox" id="repeat-day-fri" class="outline_none" name="conversation_item][repetition_rule][day_of_week][]" value="5">
+                        <label for="repeat-day-fri" style="padding:4px;">F</label>
+                        <input type="checkbox" id="repeat-day-sat" class="outline_none" name="conversation_item][repetition_rule][day_of_week][]" value="6">
+                        <label for="repeat-day-sat" style="padding:4px;">S</label>
+                        <input type="checkbox" id="repeat-day-sun" class="outline_none" name="conversation_item][repetition_rule][day_of_week][]" value="0">
+                        <label for="repeat-day-sun" style="padding:4px;">S</label>
+  									</div>
+                  </div>
+								</div><!-- row repeat week: weekdays -->
+
+
+								<div id="repeat-frequency-month-on">
+									<div class="row row-pad-5">
+										<div class="col-sm-12">
+											<label for="repeat-every-month-on">Repeat On:</label>
+											<select class="form-control input-sm mb15" name="month_week" id="repeat-every-month-on">
+											  <option value=''>-select-</option>
+												<option value="dayofmonth">Day of the Month</option>
+												<option value="dayofweek">Day of the Week</option>
+											</select>
+										</div>
+									</div>
+								</div><!-- row repeat frequency month -->
+							</div><!-- meeting repeat settings -->
+
+              <div class="row row-pad-5">
+                <div class="col-lg-12 mb15">
+                  <textarea class="form-control wysihtml5" name="conversation_item[body]" id="meeting_new_editor"  rows="5" placeholder="Agenda"></textarea>
+                </div>
+              </div><!-- row -->
+              <%if @conversation_item_attachment == 'on'%>
+                <%=render "accounts/conversation_upload", box_for: 'meeting'%>
+              <%end%>
+              <%if account.present?%>
+                <input type="hidden" name="id" value="<%=account.id%>">
+              <%end%>
+              <input type="hidden" name="conversation_item[latitude]">
+              <input type="hidden" name="conversation_item[longitude]">
+              <input type="hidden" name="user_selected" id="user_selected_id" value= "">
+            </div><!-- panel-body -->
+            <div class="panel-footer">
+              <%=submit_tag 'Save',  data: {disable_with: "Saving..." }, class: "btn btn-primary save_btn", id: "submit_meeting_form"%>
+            </div>
+          </div><!-- panel -->
+        <% end %> <!-- end form -->
+      </div><!-- modal body -->
+    </div><!-- modal content -->
+  </div><!-- modal dialog -->
+</div><!-- modal -->
+<script type="text/javascript">
+
+  $("#meeting-repeat-settings").hide();
+  $("#repeat-frequency-week").hide();
+  $("#repeat-frequency-month").hide();
+  $("#repeat-frequency-year").hide();
+  $("#repeat-frequency-weekday-on").hide();
+  $("#repeat-frequency-month-on").hide();
+
+  $('#meeting-repeat').change(function () {
+    if ($(this).is(':checked')) {
+      $("#meeting-repeat-settings").show(500);
+      $("#repeat-frequency").attr('required', true);
+      $("#repeat-occurrences").attr('required', true);
+      $("#repeat-every-day").attr('required', true);
+    }
+    else {
+      $("#meeting-repeat-settings").hide(500);
+      $("#repeat-frequency-weekday-on").hide(500)
+      $("#repeat-frequency").val(null);
+      $("#repeat-occurrences").val(null);
+      $('#repeat-every-day').val(null);
+      $('#repeat-every-week').val(null);
+      $('#repeat-every-month').val(null);
+      $('#repeat-every-year').val(null);
+      $('#repeat-every-month-on').val(null);
+      $('#repeat-frequency-weekday-on').val(null);
+      $("#repeat-frequency").attr('required', false);
+      $("#repeat-occurrences").attr('required', false);
+      $("#repeat-every-day").attr('required', false);
+      repeat_on_required(false)
+      repeat_on_check(false)
+    }
+  });
+
+  $('#repeat-frequency').change(function () {
+    if($(this).val() == "daily") {
+      $("#repeat-frequency-day").show(500);
+      $("#repeat-frequency-week").hide(500);
+      $("#repeat-frequency-month").hide(500);
+      $("#repeat-frequency-year").hide(500);
+      $("#repeat-frequency-weekday-on").hide(500);
+      $("#repeat-frequency-month-on").hide(500);
+      $("#repeat-every-day").attr('required', true);
+      $("#repeat-every-week").attr('required', false);
+      $("#repeat-every-month").attr('required', false);
+      $("#repeat-every-year").attr('required', false);
+      $("#repeat-every-month-on").attr('required',false);
+      repeat_on_required(false)
+    }
+    else if($(this).val() == "weekly"){
+      $("#repeat-frequency-day").hide(500);
+      $("#repeat-frequency-week").show(500);
+      $("#repeat-frequency-month").hide(500);
+      $("#repeat-frequency-year").hide(500);
+      $("#repeat-frequency-weekday-on").show(500);
+      $("#repeat-frequency-month-on").hide(500);
+      $("#repeat-every-day").attr('required', false);
+      $("#repeat-every-week").attr('required', true);
+      $("#repeat-every-month").attr('required', false);
+      $("#repeat-every-year").attr('required', false);
+      $("#repeat-every-month-on").attr('required',false);
+      repeat_on_required(true)
+      repeat_on_check(false)
+
+    }
+    else if($(this).val() == "monthly"){
+      $("#repeat-frequency-day").hide(500);
+      $("#repeat-frequency-week").hide(500);
+      $("#repeat-frequency-month").show(500);
+      $("#repeat-frequency-year").hide(500);
+      $("#repeat-frequency-weekday-on").hide(500);
+      $("#repeat-frequency-month-on").show(500);
+      $("#repeat-every-day").attr('required', false);
+      $("#repeat-every-week").attr('required', false);
+      $("#repeat-every-month").attr('required', true);
+      $("#repeat-every-year").attr('required', false);
+      $("#repeat-every-month-on").attr('required',true);
+      repeat_on_required(false)
+    }
+    else if($(this).val() == "yearly"){
+      $("#repeat-frequency-day").hide(500);
+      $("#repeat-frequency-week").hide(500);
+      $("#repeat-frequency-month").hide(500);
+      $("#repeat-frequency-year").show(500);
+      $("#repeat-frequency-weekday-on").hide(500);
+      $("#repeat-frequency-month-on").hide(500);
+      $("#repeat-every-day").attr('required', false);
+      $("#repeat-every-week").attr('required', false);
+      $("#repeat-every-month").attr('required', false);
+      $("#repeat-every-year").attr('required', true);
+      $("#repeat-every-month-on").attr('required',false);
+      repeat_on_required(false)
+    }
+    else if($(this).val() == ""){
+      $("#repeat-frequency-day").show(500);
+      $("#repeat-frequency-week").hide(500);
+      $("#repeat-frequency-month").hide(500);
+      $("#repeat-frequency-year").hide(500);
+      $("#repeat-frequency-weekday-on").hide(500);
+      $("#repeat-frequency-month-on").hide(500);
+      $("#repeat-every-day").attr('required', true);
+      $("#repeat-every-week").attr('required', false);
+      $("#repeat-every-month").attr('required', false);
+      $("#repeat-every-year").attr('required', false);
+      $("#repeat-every-month-on").attr('required',false);
+      repeat_on_required(false)
+    }
+  });
+
+  function repeat_on_required(e){
+    $("#repeat-day-mon").attr("required", e)
+    $("#repeat-day-tue").attr("required", e)
+    $("#repeat-day-wed").attr("required", e)
+    $("#repeat-day-thu").attr("required", e)
+    $("#repeat-day-fri").attr("required", e)
+    $("#repeat-day-sat").attr("required", e)
+    $("#repeat-day-sun").attr("required", e)
+  }
+
+  function repeat_on_check(e){
+    $("#repeat-day-mon").attr("checked", e)
+    $("#repeat-day-tue").attr("checked", e)
+    $("#repeat-day-wed").attr("checked", e)
+    $("#repeat-day-thu").attr("checked", e)
+    $("#repeat-day-fri").attr("checked", e)
+    $("#repeat-day-sat").attr("checked", e)
+    $("#repeat-day-sun").attr("checked", e)
+  }
+
+
+  $("#repeat-day-mon, #repeat-day-tue, #repeat-day-wed, #repeat-day-thu, #repeat-day-fri, #repeat-day-sat, #repeat-day-sun").on('change', function(){
+    if ($("#repeat-day-mon").is(":checked") || $("#repeat-day-tue").is(":checked") || $("#repeat-day-wed").is(":checked") || $("#repeat-day-thu").is(":checked") || $("#repeat-day-fri").is(":checked") || $("#repeat-day-sat").is(":checked") || $("#repeat-day-sun").is(":checked")){
+      repeat_on_required(false)
+    }else{
+      repeat_on_required(true)
+    }
+  })
+
+
+  $("#schedule-from-timepicker").on('change', function(){
+    var d = new Date();
+    var t = $("#schedule-from-timepicker").val();
+    var time = t.match(/(\d+)(?::(\d\d))?\s*(P?)/);
+    d.setHours( parseInt(time[1]) + (time[3] ? 12 : 24) );
+    d.setMinutes( parseInt(time[2]) || 0 );
+    var hh = d.getHours()+1;
+    var m = d.getMinutes();
+    var h = hh;
+    if (h > 12 && h != 24 && h != 13) {
+        h = hh-12;
+        dd = "PM";
+    }else if (h == 24){
+        h = 12
+        dd = 'AM'
+    }else if (h< 12){
+      dd = "AM"
+    }else if (h==12){
+      dd = 'PM'
+    }else if(h==13){
+        h = hh-12;
+        dd = "AM";
+    }
+    if (hh==0){
+        h = 12;
+        dd = "AM"
+    }
+    if(hh==1){
+      dd = "PM"
+    }
+    m = m<10?"0"+m:m;
+    var current_time = h+":"+m+" "+dd;
+    if(mobile == 'false'){
+      $('#schedule-to-timepicker').val(current_time);
+    }else{
+      ConvertTimeformat('24', current_time);
+      $('#schedule-to-timepicker').val(sHours+':'+sMinutes);
+    }
+  });
+
+  if (mobile != 'false'){
+    function get_current_time(now, mins){
+      var quarterHours = Math.round(mins/15);
+      if (quarterHours >= 4)
+      {
+          now.setHours(now.getHours()+1);
+      }
+      rounded = (quarterHours*15)%60;
+      now.setMinutes(rounded);
+      var d = now
+      hh = d.getHours();
+      m = d.getMinutes();
+    }
+
+    var now = new Date();
+    var mins = now.getMinutes();
+    get_current_time(now, mins)
+    $("#schedule-from-timepicker").val(hh+':'+m)
+    get_current_time(now, mins+60)
+    $("#schedule-to-timepicker").val(hh+':'+m)
+  }
+
+
+  $(".account-action-meeting").on("shown.bs.modal", function(){
+    $("#user_selected_id").val($("#schedule_user_list").val());
+    $(".meeting_type").val('general');
+    $(".meeting_title").prop("placeholder","Event")
+    $(".meeting_title").val(null)
+    $(".invitee_emails_div").show(300);
+    $('.end-date-time').show(500);
+    $('.all-day').hide(500)
+    $('.start-time').show(500)
+    $('.meeting_title').show(500)
+    $('.meeting_title').attr('required', true)
+    $('#schedule-from-timepicker').attr('required', true)
+    $('#schedule-to-datepicker').attr('required', true)
+    $('#schedule-to-timepicker').attr('required', true)
+    $(".repeat_div").show(500);
+    $("#meeting-repeat-settings").hide(500);
+    $("#repeat-frequency").val(null);
+    $("#repeat-occurrences").val(null);
+    $('#repeat-every-day').val(null);
+    $('#repeat-every-week').val(null);
+    $('#repeat-every-month').val(null);
+    $('#repeat-every-year').val(null);
+    $('#repeat-every-month-on').val(null);
+    $('#repeat-frequency-weekday-on').val(null);
+    $("#repeat-frequency").attr('required', false);
+    $("#repeat-occurrences").attr('required', false);
+    $("#repeat-every-day").attr('required', false);
+    var input = document.getElementById("keyword");
+    var autocomplete = new google.maps.places.Autocomplete(input);
+
+      google.maps.event.addListener(autocomplete, 'place_changed', function() {
+        var place = autocomplete.getPlace();
+        var lat = place.geometry.location.lat();
+        var lng = place.geometry.location.lng();
+        $(".account-action-meeting input[name='conversation_item[latitude]']").val(lat);
+        $(".account-action-meeting input[name='conversation_item[longitude]']").val(lng);
+      });
+
+      if($('#tags').find('span').length < 2){
+        $('#tag_input').attr('required', false);
+      }
+
+      $("#tags input").on({
+        focusout : function() {
+          // var txt = this.value.replace(/[^a-z0-9\+\-\.\#]/ig,''); // allowed characters
+
+          var txt = this.value.replace(',','').replace(' ', '');
+          var pattern = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
+          if( txt && pattern.test(txt.trim())){
+            $("<span/>", {text:txt.toLowerCase(), insertBefore:this});
+            $('#tag_input').attr('required', false);
+            emails = $('#invitee_emails').val();
+            values = emails ? emails+', '+txt : txt;
+            $('#invitee_emails').val(values);
+          }
+          this.value = "";
+        },
+        keyup : function(ev) {
+          // if: comma|enter (delimit more keyCodes with | pipe)
+          if(/(188|13|32)/.test(ev.which)){
+            $(this).focusout();
+          }
+        }
+      });
+      $('#tags').on('click', 'span', function() {
+      // $('#tags span').click(function(){
+        if(confirm("Remove "+ $(this).text() +"?")) {
+        	emails_array = $('#invitee_emails').val().split(',')
+        	del_obj_index = emails_array.indexOf($(this).text());
+        	emails_array.splice(del_obj_index,1)
+        	$('#invitee_emails').val(emails_array.join(','));
+        	$(this).remove();
+          if($('#tags').find('span').length < 2){
+            $('#tag_input').attr('required', false);
+          }
+        }
+      });
+      $( "#tag_input" ).autocomplete({
+        source: "/get_users",
+        minLength: 2,
+        select: function( event, ui ){}
+      });
+    });
+</script>

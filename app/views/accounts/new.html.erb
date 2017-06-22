@@ -1,0 +1,117 @@
+<% content_for :pageheader do %>
+  <h2><i class="fa fa-briefcase"></i>Add Account</h2>
+<% end %>
+<div class="row">
+  <div class="col-md-10">
+  </div>
+  <div class="col-md-2 pull-right">
+  <%= link_to accounts_path, class: "btn btn-white btn-block" do %><i class="fa fa-minus-circle"></i>&nbsp;&nbsp;&nbsp;Cancel<% end %><br />
+  </div>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+	  <h4 class="panel-title">Fill in the details below to add an account</h4>
+	  <div id="duplication_warning">
+		</div>
+	</div>
+  <%= render partial: "account_form" %>
+</div>
+
+<% content_for :custom_js do %>
+
+<script>
+	jQuery(document).ready(function(){
+	    "use strict";
+
+    jQuery("#account-add-form").on("submit", function(e){
+		 	$(".phone_validate").each(function() {
+	      var virl = $(this).intlTelInput("getNumber");
+	      $(this).val(virl);
+	    });
+		});
+
+		// With Form Validation Wizard
+		var $validator = jQuery("#account-add-form").validate({
+			highlight: function(element) {
+			  jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+			},
+			success: function(element) {
+			  jQuery(element).closest('.form-group').removeClass('has-error');
+			}
+		});
+
+		jQuery('#validationWizard').bootstrapWizard({
+			tabClass: 'nav nav-pills nav-justified nav-disabled-click',
+			onTabClick: function(tab, navigation, index) {
+			  return false;
+			},
+			onNext: function(tab, navigation, index) {
+			  var $valid = jQuery('#account-add-form').valid();
+			  if ($("#vtab3").hasClass('active')){
+	        $(".phone_validate").each(function() {
+	          // var status = phonenumber($(this))
+	          var status = $(this).intlTelInput("isValidNumber")
+	          if (!status && $(this).val() != ''){
+	            $(this).after('<label class="error error_lable">Please enter valid number</label>')
+	          }
+	        });
+        }
+
+        if ($("#vtab3").hasClass('active')){
+	        $(".url_validate").each(function() {
+	          var status = valid_url($(this))
+	          if (!status && $(this).val() != ''){
+	            $(this).after('<label class="error error_lable">Please enter valid URL</label>')
+	          }
+	        });
+        }
+
+		   //  var phone_status = phonenumber_status()
+		   //  var url_status = url_status()
+
+			  // if(!$valid || !phone_status || !url_status) {
+			  //   $validator.focusInvalid();
+			  //   return false;
+			  // }
+
+			},
+			onTabShow: function(tab, navigation, index){
+				if(index == 3){
+			  		$(".pager .next").hide();
+			  		$('.pager .finish').removeClass('disabled');
+			  		$(".pager .finish").show();
+				  }else{
+				  	$(".pager .next").show();
+				  	$(".pager .finish").hide();
+				  }
+			}
+
+		});
+
+  	$(".pager .finish").click(function(e){
+  		e.preventDefault();
+  		$("#account-add-form").submit();
+  		$('#preloader').css('opacity', 0.6);
+      $('#preloader').show();
+  	})
+
+		// Textarea Autogrow
+		jQuery('#account-about').autogrow();
+		jQuery('#account-facts').autogrow();
+	});
+</script>
+<% end %>
+
+
+<% content_for :custom_css do %>
+<style>
+	.account-avatar {
+	width: 100%;
+}
+
+.account-avatar > img {
+	max-width: 100%;
+}
+</style>
+<% end %>

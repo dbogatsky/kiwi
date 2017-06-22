@@ -1,0 +1,13 @@
+<%if @result%>
+  <% @pending_acc = @pending_account_notifications.nil? ? {} : @pending_account_notifications %>
+	$("#nav_unread_count, #bar_unread_count").html('<%=@unread_items.count + @pending_acc.count%>')
+	$("#bar_notification_list").html("<%=j render 'notifications/bar_notification_list', unread_items: @unread_items, pending_account_notifications: @pending_account_notifications %>")
+	// $("#unread_items").html("<%=j render 'notifications_details', notifications: @all_items%>")
+	// $("#read_items").html("<%=j render 'notifications_details', notifications: @read_items, read: true%>")
+  // $(".noti_link_<%=params[:id]%>").attr('href', 'javascript:void(0)');
+  // $(".noti_link_<%=params[:id]%>").removeClass('mark_read');
+  // $(".remove_bold_<%=params[:id]%>").css('font-weight', 'normal')
+  $('#preloader').hide();
+<%else%>
+  window.location.reload();
+<%end%>

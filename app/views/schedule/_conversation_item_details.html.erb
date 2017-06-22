@@ -1,0 +1,158 @@
+<div class="ibox-content ibox-heading">
+  <div class='col-md-12 padd_left0 padd_right0'>
+    <div class="col-md-4 padd_left0 pull-left">
+      <span class="thumb meeting-icon" style="background:#1cc7c2;">
+        <img class="meeting-img" src="/assets/vertical-timeline/img/cd-icon-calendar.svg" alt="Meeting">
+      </span>
+    </div>
+    <div class="col-md-4 pull-left">
+      <span class="schedule"><%= get_styled_meetingstatus(citem, false) %></span>
+    </div>
+    <div class="col-md-4 pull-left padd_right0">
+      <div class="btn-group pull-right">
+        <button data-toggle="dropdown" class="btn btn-sm btn-white dropdown-toggle" type="button" style="border-radius: 2px">
+          <i class="fa fa-ellipsis-v mr5"></i><span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li>
+            <a class="complete_meeting" href="#"
+               data-toggle="modal"
+               data-target=".conversation-complete-meeting-modal-form"
+               data-id="<%=citem.id%>"
+               data-notes ="<%=citem.notes%>"
+               data-check-out = "<%=check_out_details(citem, nil).present? ? 'completed' : ''%>"
+               data-status = "<%=citem.status%>"
+               data-account-id="<%=citem.account_id%>">Complete
+            </a>
+          </li>
+          <li>
+            <a class="edit_meeting get_conversation_attachment" href="#"
+               data-toggle="modal"
+               data-target=".conversation-edit-meeting-modal-form"
+               data-id="<%= citem.id %>"
+               data-account-id="<%=citem.account_id%>"
+               data-attachment="<%=citem.media.present?%>"
+               data-account-conversation-id="<%=((citem.try(:conversation_id).present?) ? citem.conversation_id : citem.prefix_options[:conversation_id]) %>"
+               data-invitees="<%=citem.invitees%>"
+               data-title="<%=citem.title %>"
+               data-date="<%=(mobile? ? Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") : Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y")) if citem.scheduled_at.present?%>"
+               data-time="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p") if citem.scheduled_at.present? %>"
+               data-time-24="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%H:%M") if citem.scheduled_at.present? %>"
+               data-starts-date="<%=(mobile? ? Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") : Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y")) if citem.starts_at.present? %>"
+               data-starts-time="<%=Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p") if citem.starts_at.present? %>"
+               data-starts-time-24="<%=Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%H:%M") if citem.starts_at.present? %>"
+               data-ends-date="<%=(mobile? ? Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") : Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y")) if citem.ends_at.present? %>"
+               data-ends-time="<%=Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p") if citem.ends_at.present? %>"
+               data-ends-time-24="<%=Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%H:%M") if citem.ends_at.present? %>"
+               data-repetition-rule ="<%=(citem.repetition_rule.present? || citem.related_to.present?) ? 'true' : 'false'%>"
+               data-latitude="<%=citem.latitude%>"
+               data-longitude="<%=citem.longitude%>"
+               data-location="<%= citem.location%>"
+               data-item-type="<%=citem.item_type%>"
+               data-body="<%= citem.body %>">Edit
+            </a>
+          </li>
+          <li>
+            <%#=link_to 'Delete',"javascript:void(0)", id: "del_item_#{citem.id}"%>
+            <%=link_to 'Delete', "javascript:void(0)", class: "delete_item", data:{id: citem.id, account_id: citem.account_id}%>
+          </li>
+          <%if @conversation_item_attachment == 'on'%>
+            <li>
+              <a class="open_add_conversation_attachment_modal" href="#"
+                data-toggle="modal"
+                data-target=".add-conversation-attachment-modal-form"
+                data-account-conversation-id="<%=((citem.try(:conversation_id).present?) ? citem.conversation_id : citem.prefix_options[:conversation_id]) %>"
+                data-title="<%=citem.title %>"
+                data-created-at="<%= citem.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>"
+                data-id="<%=citem.id%>">Add Attachment
+              </a>
+            </li>
+          <%end%>
+          <li class="divider"></li>
+          <li><%= link_to "Go To Account", account_path(citem.account_id) %></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <h3 class="repeat_heading"><%=citem.title%></h3>
+  <small><i class="fa fa-map-marker" style="margin-right:10px"></i>&nbsp;&nbsp;<%=citem.location%></small><br />
+  <small><i class="fa fa-calendar" style="margin-right:10px"></i><%=Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.starts_at.present? %></small><br />
+  <% if citem.item_type == "general" %>
+    <small><i class="fa fa-clock-o" style="margin-right:10px"></i>
+      <%if citem.starts_at.present? && citem.ends_at.present?%>
+        <%=Chronic.parse(citem.starts_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p")%>
+        to
+        <%=Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p")%>
+      <%end%>
+    </small><br />
+  <% end %>
+</div>
+<%time = citem.ends_at.present? ? (DateTime.now.in_time_zone(current_user.time_zone) > citem.ends_at.to_datetime.in_time_zone(current_user.time_zone)+1.hour) : false%>
+<%invitees = citem.invitees.present? ? citem.invitees.split(', ') : []%>
+<div class="panel-body">
+  <%if @enable_checkin_checkout == 'enable'%>
+    <% if (citem.status == "scheduled" || citem.status == "in_progress")%>
+      <%if current_user.id == citem_created_by.id || invitees.include?(current_user.email)%>
+        <%if check_in(citem,false) && !time%>
+          <a class="btn btn-xs btn-default pull-right mr5 checkin" id="<%=citem.id%>" data-created-by="<%=citem.created_by.id%>" data-conversation-id="<%=citem.prefix_options[:conversation_id].present? ? citem.prefix_options[:conversation_id] : citem.conversation_id %>">
+            <i class="fa fa-sign-in mr5"></i><span class="position_button">Check In</span>
+          </a>
+        <%end%>
+        <%if !check_in(citem,false) && check_out(citem,false)%>
+          <a class="btn btn-xs btn-default pull-right mr5 checkout" id="<%=citem.id%>" data-created-by="<%=citem.created_by.id%>" data-conversation-id="<%=citem.prefix_options[:conversation_id].present? ? citem.prefix_options[:conversation_id] : citem.conversation_id %>">
+            <i class="fa fa-sign-out mr5"></i><span class="position_button">Check Out</span>
+          </a>
+        <%end%>
+      <%elsif (!time)%>
+        <a class="btn btn-xs btn-default pull-right mr5 jumpin" id="<%=citem.id%>" data-conversation-id = "<%=citem.prefix_options[:conversation_id].present? ? citem.prefix_options[:conversation_id] : citem.conversation_id%>">
+          <i class="fa fa-sign-in mr5"></i><span class="position_button1">Jump In</span>
+        </a>
+      <%end%>
+    <% elsif !check_in(citem,false) && check_out(citem,false) && (citem.status == "in_progress" || citem.status == "completed")%>
+      <a class="btn btn-xs btn-default pull-right mr5 checkout" id="<%=citem.id%>" data-created-by="<%=citem.created_by.id%>" data-conversation-id = "<%=citem.prefix_options[:conversation_id].present? ? citem.prefix_options[:conversation_id] : citem.conversation_id%>">
+        <i class="fa fa-sign-out mr5"></i><span class="position_button">Check Out</span>
+      </a>
+    <% end %>
+  <% end %>
+  <p>
+    <span class="subheading">Agenda:<br></span>
+    <%= sanitize citem.body %>
+  </p>
+  <p>
+    <span class="subheading">Notes:<br></span>
+    <%= sanitize citem.notes %>
+  </p>
+  <div>
+    <%=render "accounts/conversation_attachment_show", citem: citem%>
+  </div>
+  <div class="row ci_footer">
+      <div class="col-sm-10">
+        <%if citem.scheduled_at.present? %>
+          <i class="fa fa-bell tooltips mr10" data-toggle="tooltip" data-original-title="Reminder"></i>
+          <%=citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>
+          <br>
+        <%end%>
+        <i class="fa fa-user tooltips mr10" data-toggle="tooltip" data-original-title="Created by"></i><%=citem_created_by.first_name%> <%=citem_created_by.last_name%><br>
+        <%if citem.invitees.present?%>
+          <i class="fa fa-users tooltips mr10" data-toggle="tooltip" data-original-title="Invitees"></i><%= citem.invitees %><br>
+        <%end%>
+        <%check_in_time = check_in_details(citem, false) %>
+        <%check_out_time = check_out_details(citem, false) %>
+        <% if check_in_time%>
+          <i class="fa fa-sign-in mr10" data-toggle="tooltip" data-original-title="Check In"></i><%= check_in_time %><br/>
+        <% end %>
+        <% if check_out_time && !check_out(citem,false)%>
+          <i class="fa fa-sign-out mr10" data-toggle="tooltip" data-original-title="Check Out"></i><%= check_out_time %><br/>
+        <% end %>
+        <div class="check_in_time_<%=citem.id%> hidden">
+          <i class="fa fa-sign-in mr10" data-toggle="tooltip" data-original-title="Check In"></i><span></span>
+        </div>
+        <div class="check_out_time_<%=citem.id%> hidden">
+          <i class="fa fa-sign-out mr10" data-toggle="tooltip" data-original-title="Check Out"></i><span></span>
+        </div>
+        <i class="fa fa-briefcase tooltips mr10" data-toggle="tooltip" data-original-title="Account"></i><%= citem.account.try(:name) ? citem.account.name : "Account Deleted" %>
+      </div>
+      <div class="col-sm-2">
+      </div>
+  </div>
+</div>

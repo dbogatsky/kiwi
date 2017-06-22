@@ -1,0 +1,27 @@
+<div class="panel panel-dark panel-alt">
+  <div class="panel-heading">
+    <h3 class="panel-title">Accounts Feed</h3>
+  </div>
+  <div class="panel-body">
+    <small><p>Below is a list of activity by account over the last 24 hours</p></small>
+    <br />
+    <div class="feed-activity-list">
+      <% if @accounts.count == 0 %>
+        <p>No activity to report</p>
+      <% else %>
+        <% @accounts.each do |a|%>
+          <div class="feed-element">
+            <a href="profile.html" class="pull-left">
+              <img alt="image" class="img-circle" src="<%= (a.avatar_url.eql? "/avatars/thumb/missing.png") ? '/assets/images/default_account_avatar.png' : a.avatar_url %>">
+            </a>
+            <div class="media-body ">
+              <small class="pull-right"><%= time_ago_in_words(a.updated_at).gsub('about','') + ' ago' %></small>
+              <strong><%= a.updated_by.try(:first_name) %>&nbsp;<%= a.updated_by.try(:last_name) %></strong>&nbsp;updated the <%= link_to a.name, account_path(a.id) %> account<br>
+              <small class="text-muted"><%= a.updated_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%b %e at %l:%M %p") %></small>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div> <!-- feed activity list -->
+  </div><!-- panel-body -->
+</div>

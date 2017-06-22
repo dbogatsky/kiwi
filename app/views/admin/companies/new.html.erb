@@ -1,0 +1,67 @@
+<% content_for :pageheader do %>
+  <h2><i class="fa fa-building"></i>Add Company</h2>
+<% end %>
+<div class="row">
+  <div class="col-md-10">
+  </div>
+  <div class="col-md-2 pull-right">
+  <%= link_to admin_companies_path, class: "btn btn-white btn-block" do %><i class="fa fa-minus-circle"></i>&nbsp;&nbsp;&nbsp;Cancel<% end %><br />
+  </div>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+	  <h4 class="panel-title">Fill in the details below to add an company</h4>
+	</div>
+  	<%= render partial: "company_form" %>
+</div>
+
+
+<script>
+  $(function(){
+
+  	var $validator = $("#company-add-form").validate({
+			highlight: function(element) {
+			  $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+			},
+			success: function(element) {
+			  $(element).closest('.form-group').removeClass('has-error');
+			}
+		});
+
+		$('#validationWizard').bootstrapWizard({
+			tabClass: 'nav nav-pills nav-justified nav-disabled-click',
+			onTabClick: function(tab, navigation, index) {
+			  return false;
+			},
+			onNext: function(tab, navigation, index) {
+				console.log(index)
+			  var $valid = $('#company-add-form').valid();
+
+			  if(!$valid) {
+			    $validator.focusInvalid();
+			    return false;
+			  }
+
+			},
+			onTabShow: function(tab, navigation, index){
+				if(index == 3){
+			  		$(".pager .next").hide();
+			  		$('.pager .finish').removeClass('disabled');
+			  		$(".pager .finish").show();
+				  }else{
+				  	$(".pager .next").show();
+				  	$(".pager .finish").hide();
+				  }
+			}
+
+		});
+
+		$(".pager .finish").click(function(e){
+			e.preventDefault();
+			$("#company-add-form").submit();
+			$('#preloader').css('opacity', 0.6);
+      $('#preloader').show();
+		})
+  })
+</script>

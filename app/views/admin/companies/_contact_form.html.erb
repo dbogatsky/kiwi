@@ -1,0 +1,36 @@
+<%if contact.present?%>
+  <%contact.each do |c|%>
+    <% t = SecureRandom.base64 %>
+    <div class="form-group">
+      <label class="col-sm-offset-1 col-sm-1 control-label">Contact<span class="asterisk">*</span></label>
+      <div class="col-sm-2">
+        <%=text_field_tag "company[contacts_attributes][#{t}][name]", c.name, { required: true, class: "form-control", id: "company_contacts_attributes_name_1" } %>
+      </div>
+      <label class="col-sm-1 control-label">Type<span class="asterisk">*</span></label>
+      <div class="col-sm-1">
+        <%=select_tag("company[contacts_attributes][#{t}][type]", options_for_select(Contact::CONTACT_TYPES, selected: c.type ),{ :class => "select2 form-control", :id => "company_contacts_attributes_type_1", required: true } ) %>
+      </div>
+      <label class="col-sm-1 control-label">Value<span class="asterisk">*</span></label>
+      <div class="col-sm-2">
+        <%=text_field_tag "company[contacts_attributes][#{t}][value]",c.value, { required: true, class: "form-control", id: "company_contacts_attributes_value_1" } %>
+      </div>
+      <%=hidden_field_tag "company[contacts_attributes][#{t}][id]",c.id%>
+    </div>
+  <%end%>
+<%else%>
+  <% t = SecureRandom.base64 %>
+  <div class="form-group">
+    <label class="col-sm-offset-1 col-sm-1 control-label">Contact<span class="asterisk">*</span></label>
+    <div class="col-sm-2">
+      <%=text_field_tag "company[contacts_attributes][#{t}][name]", nil, { required: true, class: "form-control", id: "company_contacts_attributes_name_1" } %>
+    </div>
+    <label class="col-sm-1 control-label">Type<span class="asterisk">*</span></label>
+    <div class="col-sm-1">
+      <%=select_tag("company[contacts_attributes][#{t}][type]", options_for_select(Contact::CONTACT_TYPES),{ :class => "select2 form-control", :id => "company_contacts_attributes_type_1", required: true } ) %>
+    </div>
+    <label class="col-sm-1 control-label">Value<span class="asterisk">*</span></label>
+    <div class="col-sm-2">
+      <%=text_field_tag "company[contacts_attributes][#{t}][value]",nil, { required: true, class: "form-control", id: "company_contacts_attributes_value_1" } %>
+    </div>
+  </div>
+<%end%>

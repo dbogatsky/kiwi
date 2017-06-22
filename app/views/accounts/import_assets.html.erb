@@ -1,0 +1,115 @@
+<% content_for :pageheader do %>
+  <h2><i class="fa fa-briefcase"></i>Accounts: Import Assets</h2>
+<% end %>
+<div class="row">
+  <div class="col-md-10">
+  </div>
+  <div class="col-md-2 pull-right">
+   <%= link_to 'Go Back', :back, class: "btn btn-white btn-block" %><br />
+  </div>
+</div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">Please follow the steps below to import assets</h4>
+    </div>
+     <div class="panel-body panel-body-nopadding">
+    <!-- BASIC WIZARD -->
+    <div id="validationWizard" class="basic-wizard">
+      <ul class="nav nav-pills nav-justified">
+        <li><a href="#tab1" data-toggle="tab"><span>Step 1:</span> Download CSV Template</a></li>
+        <li><a href="#tab2" data-toggle="tab"><span>Step 2:</span> Upload CSV File</a></li>
+      </ul>
+      <%= form_tag account_import_assets_path, id: "add-assets-form", multipart: true, method: :post do |f| %>
+        <div class="tab-content">
+          <div class="tab-pane" id="tab1">
+            <p class="mb20" align="center"><%=link_to "Download CSV template and fill in the assets information.", accounts_assets_csv_template_path(format: "csv")%></p>
+          </div>
+
+          <div class="tab-pane" id="tab2">
+            <div class="col-md-3"></div>
+            <div class="col-md-4 padd_left0">
+              Upload the CSV file with the assets information
+            </div>
+            <div class="col-md-4 padd_left0">
+              <%=file_field_tag "import_csv", accept: 'text/csv' %>
+            </div>
+          </div>
+        </div><!-- tab-content -->
+      <% end %>
+      <ul class="pager wizard">
+        <li class="previous"><a href="javascript:void(0)">Previous</a></li>
+        <li class="next"><a href="javascript:void(0)" class="">Next</a></li>
+        <li class="next finish" style="display:none;"><a href="javascript:;">Import</a></li>
+      </ul>
+    </div><!-- #validationWizard -->
+  </div><!-- panel-body -->
+</div>
+<%if @row_numbers.present?%>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">CSV Validation Check - Error(s) Found</h4>
+      <p>Please resolve the errors below found in your CSV and try again.</p>
+    </div>
+
+    <div class="panel-body">
+      <div class="form-group">
+        <div class="col-sm-10">
+          <table class="table table-danger mb30">
+            <thead>
+              <tr>
+                <th>Line #</th>
+                <th>Error Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <%@row_numbers.each do |line_no, error|%>
+                <tr>
+                  <td>Line#<%=line_no%></td>
+                  <td><%=error%></td>
+                </tr>
+              <%end%>
+            </tbody>
+          </table>
+          </div>
+        </div>
+      </div> <!-- panel-body -->
+  </div>
+<%end%>
+
+<script type="text/javascript">
+  jQuery(document).ready(function(){
+    jQuery('#validationWizard').bootstrapWizard({
+      tabClass: 'nav nav-pills nav-justified nav-disabled-click',
+      onTabClick: function(tab, navigation, index) {
+        return false;
+      },
+      // onNext: function(tab, navigation, index) {
+      //   var $valid = jQuery('#add-assets-form').valid();
+
+      //   if(!$valid) {
+      //     $validator.focusInvalid();
+      //     return false;
+      //   }
+
+      // },
+      onTabShow: function(tab, navigation, index){
+        if(index == 1){
+            $(".pager .next").hide();
+            $('.pager .finish').removeClass('disabled');
+            $(".pager .finish").show();
+          }else{
+            $(".pager .next").show();
+            $(".pager .finish").hide();
+          }
+      }
+    });
+
+    $(".pager .finish").click(function(e){
+      e.preventDefault();
+      $("#add-assets-form").submit();
+      $('#preloader').css('opacity', 0.6);
+      $('#preloader').show();
+    })
+  });
+</script>

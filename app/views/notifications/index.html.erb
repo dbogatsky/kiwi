@@ -1,0 +1,10 @@
+<% content_for :pageheader do %>
+  <h2><i class="fa fa-bell"></i> Notifications</h2>
+<% end %>
+<div class="contentpanel">
+  <div class="panel panel-default">
+    <div class="panel-body", id="unread_items">
+       <%=render 'notifications_details', notifications: @notifications, pending_account_notifications: @pending_account_notifications %>
+    </div>
+  </div>
+</div>

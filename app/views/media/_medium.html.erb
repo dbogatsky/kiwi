@@ -1,0 +1,23 @@
+<% if medium.type == 'folder' %>
+  <li class="folder-id-<%= medium.id %>">
+    <a href="javascript:void(0);" class="open-folder" data-id="<%= medium.id %>"><i class="fa fa-folder-o"></i><span><%= medium.name %></span>
+    </a>
+
+    <% if can? :media_management, Medium %>
+      <div class="edit-div-right">
+        <a href="javascript:void(0);" class="edit-folder" data-id="<%= medium.id %>"><i class="fa fa-pencil"></i></a>
+        <a href="javascript:void(0);" class="delete-folder" data-id="<%= medium.id %>"><i class="fa fa-trash-o"></i></a>
+      </div>
+    <% end %>
+
+    <div class="edit-folder-form" style="display:none">
+      <%= form_tag media_path, class: "save-folder-frm" do %>
+        <%= text_field_tag :name, medium.name , class: 'form-control form-control-2' %>
+        <%= hidden_field_tag :type,'Folder' %>
+        <%= hidden_field_tag :folder_iid, medium.id %>
+        <%= submit_tag "Save", class: "btn btn-primary save-folder" %>
+        <%= button_tag "Cancel", class: "btn btn-default cancel-save-folder", onclick: 'return false;' %>
+      <% end %>
+    </div>
+  </li>
+<% end %>

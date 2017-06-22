@@ -1,0 +1,72 @@
+<% content_for :pageheader do %>
+ <h2><i class="fa fa-building"></i> Companies</h2>
+<% end %>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row row-pad-5">
+      <div class="col-md-10">
+      </div>
+      <div class="col-md-2">
+        <%= link_to new_admin_company_path, class: "btn btn-primary btn-block" do %><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Company<% end %>
+      </div>
+    </div><!-- row -->
+  </div>
+
+  <div class="panel-body">
+    <div class="row row-pad-5">
+      <div class="col-md-12">
+            <div class="clearfix mb30"></div>
+            <p>Below are list of companies</p>
+            <br />
+            <div class="table-responsive">
+            <table class="table table-striped" id="companyTable">
+                <thead>
+                   <tr>
+                      <th>Name</th>
+                      <th>Sub Domain</th>
+                      <th>Locale</th>
+                      <th>Time Zone</th>
+                      <th>Actions</th>
+                   </tr>
+                </thead>
+                <tbody>
+                  <% @companies.each do |company| %>
+                    <tr>
+                      <td><%= company.name %></td>
+                      <td><%= company.subdomain %></td>
+                      <td><%= company.locale == 'en' ? 'English' : '' %></td>
+                      <td><%= company.time_zone %></td>
+                      <td class="table-action">
+                        <%=link_to admin_company_path(company.id) do %>
+                          <i class="fa fa-eye"></i>
+                        <% end %>
+                        <%=link_to edit_admin_company_path(company.id) do %>
+                          <i class="fa fa-pencil"></i>
+                        <% end %>
+                        <%=link_to admin_company_settings_path(company.id) do %>
+                          <i class="fa fa-cog"></i>
+                        <% end %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+             </table>
+            </div><!-- table-responsive -->
+      </div>
+    </div><!-- row -->
+  </div><!-- panel-body -->
+  <div class="panel-footer"></div><!-- panel-footer -->
+</div>
+
+<script>
+  jQuery(document).ready(function() {
+
+    //"use strict";
+
+    jQuery('#companyTable').dataTable({
+      "sPaginationType": "full_numbers"
+    });
+
+  });
+</script>

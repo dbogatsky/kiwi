@@ -1,0 +1,23 @@
+$buffer:(5,10,20,40,80,120,240);
+$unit:"px";
+@each $p in $buffer{
+	.top-buffer-#{$p}{
+		margin-top:#{$p}#{$unit};
+	}
+	.right-buffer-#{$p}{
+		margin-right:#{$p}#{$unit};
+	}
+	.left-buffer-#{$p}{
+		margin-left:#{$p}#{$unit};
+	}
+	.bottom-buffer-#{$p}{
+		margin-bottom:#{$p}#{$unit};
+	}
+	.margin{
+		margin:#{$p}#{$unit};
+	}
+	.padding-#{$p}{
+		padding:#{$p}#{$unit};
+	}
+
+}

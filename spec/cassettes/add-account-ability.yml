@@ -1,0 +1,557 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://acme-api.code10.ca/api/v1/users/1.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - Token token="secret_4sTtmAtebrqzHY1y2exw", app_key="app_LL1zKMy_vLixnHSyyiAB"
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 03 Jun 2016 22:00:59 GMT
+      Etag:
+      - W/"bae8016de2e2af5f1dbb64876c035963"
+      Server:
+      - nginx/1.4.6 (Ubuntu)
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - c654eab8-dcd0-4641-9b30-fc61f106dcc2
+      X-Runtime:
+      - '0.492764'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '1000'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"user":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993959\u0026Signature=iCflOT70LBV%2BROVA6yS0UCaDyCI%3D","locale":"en","time_zone":"Pacific
+        Time (US \u0026 Canada)","title":"Director of Nothing","addresses":[{"id":50,"name":null,"street_address":"UNIT
+        2050 BOX 490","city":"APO","postcode":"96522 - 1215","region":"ARMED FORCES
+        PACIFIC","country":"Canada","latitude":null,"longitude":null},{"id":51,"name":null,"street_address":"UNIT
+        2050 BOX 490","city":"APO","postcode":"96522 - 1215","region":"ARMED FORCES
+        PACIFIC","country":"CA","latitude":null,"longitude":null},{"id":52,"name":null,"street_address":"UNIT
+        2050 BOX 490","city":"APO","postcode":"96522 - 1215","region":"ARMED FORCES
+        PACIFIC","country":"CA","latitude":null,"longitude":null},{"id":53,"name":null,"street_address":"UNIT
+        2050 BOX 490","city":"APO","postcode":"96522 - 1215","region":"ARMED FORCES
+        PACIFIC","country":"CA","latitude":null,"longitude":null},{"id":54,"name":null,"street_address":"UNIT
+        2050 BOX 490","city":"APO","postcode":"96522 - 1215","region":"ARMED FORCES
+        PACIFIC","country":"CA","latitude":null,"longitude":null},{"id":57,"name":null,"street_address":"UNIT
+        2050 BOX 490","city":"APO","postcode":"96522 - 1215","region":"ARMED FORCES
+        PACIFIC","country":"CA","latitude":null,"longitude":null},{"id":75,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A3","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":79,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A3","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":80,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":81,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A3","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":82,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A43","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":83,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":84,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":85,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":86,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":87,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":88,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":89,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":90,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":91,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":92,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":93,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":94,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":95,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":96,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":97,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":98,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":99,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":100,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":101,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A5","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":102,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":110,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":112,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":113,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":114,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A6","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":115,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":116,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":117,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":119,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":120,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A4","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":121,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A5","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":122,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A5","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":123,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R1A5","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":125,"name":null,"street_address":"94
+        Cumberland Streett","city":"Torontoo","postcode":"M5R1A5","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":126,"name":null,"street_address":"94
+        Cumberland Streett","city":"Torontoo","postcode":"M5R1A5","region":"Ontario","country":"CA","latitude":null,"longitude":null},{"id":127,"name":null,"street_address":"94
+        Cumberland Street","city":"Toronto","postcode":"M5R 1A3","region":"Ontario","country":"CA","latitude":43.6705,"longitude":-79.3908}],"contacts":[{"id":164,"name":"Devid","value":"4168938737","type":"phone"},{"id":165,"name":"Devid","value":"XXX
+        / 555-3333","type":"phone"},{"id":166,"name":"Devid","value":"XXX / 555-3333","type":"phone"},{"id":167,"name":"Devid","value":"XXX
+        / 555-3333","type":"phone"},{"id":168,"name":"Devid","value":"XXX / 555-3333","type":"phone"},{"id":171,"name":"Devid","value":"XXX
+        / 555-3333","type":"phone"},{"id":195,"name":null,"value":"416-893-9988","type":"phone"},{"id":196,"name":null,"value":"416-893-9987","type":"phone"},{"id":197,"name":null,"value":"416-893-6666","type":"phone"},{"id":204,"name":"875462314","value":"416-893-6669","type":"phone"},{"id":205,"name":"875462314","value":"416-893-6670","type":"phone"},{"id":206,"name":"875462314","value":"416-893-6665","type":"phone"},{"id":207,"name":"875462314","value":"416-893-6669","type":"phone"},{"id":208,"name":"875462314","value":"416-893-6669","type":"phone"},{"id":209,"name":"875462314","value":"416-893-6669","type":"phone"},{"id":210,"name":"875462314","value":"416-893-6669","type":"phone"},{"id":211,"name":"875462315","value":"416-893-6669","type":"phone"},{"id":212,"name":null,"value":"416-893-6669","type":"phone"},{"id":213,"name":null,"value":"416-893-6669","type":"phone"},{"id":221,"name":null,"value":"416-893-6669","type":"phone"},{"id":225,"name":null,"value":"416-893-6669","type":"phone"},{"id":226,"name":null,"value":"416-893-6669","type":"phone"},{"id":242,"name":null,"value":"4165581368","type":"mobile"}],"roles":[{"id":3,"name":"User","description":"Regular
+        user"}],"entity":{"id":19,"name":"East Coast","description":"Users and accounts
+        held on the east coast."}}}'
+    http_version: 
+  recorded_at: Fri, 03 Jun 2016 22:00:52 GMT
+- request:
+    method: get
+    uri: https://acme-api.code10.ca/api/v1/notifications.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - Token token="secret_4sTtmAtebrqzHY1y2exw", app_key="app_LL1zKMy_vLixnHSyyiAB"
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 03 Jun 2016 22:00:55 GMT
+      Etag:
+      - W/"b23acb0ecab3cc03eca4c14046842b85"
+      Server:
+      - nginx/1.4.6 (Ubuntu)
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 4f80e247-59d5-417d-9712-ac6c326f0c24
+      X-Runtime:
+      - '0.450520'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '1059'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"notifications":[{"id":113,"type":"reminder","value":{"reminder_id":9363,"scheduled_at":"2016-06-03T03:30:00Z"},"created_at":"2016-06-02T13:35:05Z","read_at":null},{"id":111,"type":"reminder","value":{"reminder_id":8969,"scheduled_at":"2016-06-02T03:15:00Z"},"created_at":"2016-05-31T22:19:33Z","read_at":null},{"id":110,"type":"reminder","value":{"reminder_id":8965,"scheduled_at":"2016-06-03T04:15:00Z"},"created_at":"2016-05-31T21:57:31Z","read_at":null},{"id":109,"type":"reminder","value":{"reminder_id":8905,"scheduled_at":"2016-06-01T15:29:00Z"},"created_at":"2016-05-31T05:31:48Z","read_at":null},{"id":108,"type":"reminder","value":{"reminder_id":8904,"scheduled_at":"2016-06-05T19:23:00Z"},"created_at":"2016-05-31T05:26:54Z","read_at":null},{"id":107,"type":"reminder","value":{"reminder_id":7439,"scheduled_at":"2016-05-30T17:00:00Z"},"created_at":"2016-05-30T07:10:31Z","read_at":null},{"id":105,"type":"reminder","value":{"reminder_id":2009,"scheduled_at":"2016-05-27T17:45:00Z"},"created_at":"2016-05-27T07:47:53Z","read_at":null},{"id":104,"type":"reminder","value":{"reminder_id":1994,"scheduled_at":"2016-05-26T20:00:00Z"},"created_at":"2016-05-26T10:02:28Z","read_at":null},{"id":96,"type":"account_status_change","value":{"account_id":485,"from_status":"Open","to_status":"Risk"},"created_at":"2016-05-24T21:09:40Z","read_at":"2016-05-24T21:39:16Z"},{"id":94,"type":"account_status_change","value":{"account_id":318,"from_status":"Lead","to_status":"Open"},"created_at":"2016-05-23T10:02:35Z","read_at":"2016-05-23T10:10:25Z"},{"id":93,"type":"reminder","value":{"reminder_id":1944,"scheduled_at":"2016-05-24T19:15:00Z"},"created_at":"2016-05-23T09:58:29Z","read_at":"2016-05-24T04:47:49Z"},{"id":92,"type":"reminder","value":{"reminder_id":1943,"scheduled_at":"2016-05-23T03:00:00Z"},"created_at":"2016-05-23T02:22:29Z","read_at":"2016-05-23T02:48:56Z"},{"id":75,"type":"account_status_change","value":{"account_id":318,"from_status":"Open","to_status":"Lead"},"created_at":"2016-05-16T18:21:32Z","read_at":"2016-05-20T03:55:33Z"},{"id":69,"type":"reminder","value":{"reminder_id":731,"scheduled_at":"2016-05-15T19:00:00Z"},"created_at":"2016-05-10T22:11:55Z","read_at":"2016-05-11T07:13:54Z"},{"id":66,"type":"reminder","value":{"reminder_id":723,"scheduled_at":"2016-05-11T00:20:00Z"},"created_at":"2016-05-10T11:22:11Z","read_at":"2016-05-11T07:33:50Z"},{"id":64,"type":"reminder","value":{"reminder_id":723,"scheduled_at":"2016-05-11T00:06:00Z"},"created_at":"2016-05-10T11:07:44Z","read_at":"2016-05-11T08:45:39Z"},{"id":58,"type":"reminder","value":{"reminder_id":706,"scheduled_at":"2016-05-04T23:50:00Z"},"created_at":"2016-05-04T23:44:18Z","read_at":"2016-05-09T06:03:09Z"},{"id":54,"type":"reminder","value":{"reminder_id":696,"scheduled_at":"2016-05-05T23:55:00Z"},"created_at":"2016-05-04T11:13:24Z","read_at":"2016-05-09T06:38:58Z"},{"id":43,"type":"reminder","value":{"reminder_id":685,"scheduled_at":"2016-05-03T22:50:00Z"},"created_at":"2016-05-03T22:48:53Z","read_at":null},{"id":40,"type":"reminder","value":{"reminder_id":685,"scheduled_at":"2016-05-03T23:50:00Z"},"created_at":"2016-05-03T22:48:09Z","read_at":null},{"id":37,"type":"reminder","value":{"reminder_id":685,"scheduled_at":"2016-05-04T01:45:00Z"},"created_at":"2016-05-03T22:37:56Z","read_at":null},{"id":34,"type":"reminder","value":{"reminder_id":685,"scheduled_at":"2016-05-04T03:40:00Z"},"created_at":"2016-05-03T22:37:13Z","read_at":null},{"id":31,"type":"reminder","value":{"reminder_id":685,"scheduled_at":"2016-05-04T03:45:00Z"},"created_at":"2016-05-03T22:36:47Z","read_at":null},{"id":29,"type":"reminder","value":{"reminder_id":685,"scheduled_at":"2016-05-04T02:45:00Z"},"created_at":"2016-05-03T22:36:29Z","read_at":null},{"id":27,"type":"reminder","value":{"reminder_id":685,"scheduled_at":"2016-05-04T02:30:00Z"},"created_at":"2016-05-03T22:21:42Z","read_at":null},{"id":24,"type":"reminder","value":{"reminder_id":672,"scheduled_at":"2016-05-02T17:00:00Z"},"created_at":"2016-05-03T02:25:59Z","read_at":"2016-05-11T08:59:08Z"},{"id":22,"type":"reminder","value":{"reminder_id":671,"scheduled_at":"2016-05-02T16:55:00Z"},"created_at":"2016-05-03T02:25:08Z","read_at":"2016-05-16T12:56:02Z"},{"id":20,"type":"reminder","value":{"reminder_id":653,"scheduled_at":"2016-05-02T04:50:00Z"},"created_at":"2016-05-03T02:15:08Z","read_at":"2016-05-20T10:19:03Z"},{"id":15,"type":"reminder","value":{"reminder_id":652,"scheduled_at":"2016-05-10T07:00:00Z"},"created_at":"2016-05-02T07:06:30Z","read_at":"2016-05-09T13:30:26Z"},{"id":13,"type":"reminder","value":{"reminder_id":651,"scheduled_at":"2016-05-15T06:50:00Z"},"created_at":"2016-05-02T06:53:18Z","read_at":null},{"id":12,"type":"reminder","value":{"reminder_id":647,"scheduled_at":"2016-04-30T18:30:00Z"},"created_at":"2016-05-01T04:05:20Z","read_at":"2016-05-11T10:09:10Z"},{"id":11,"type":"reminder","value":{"reminder_id":644,"scheduled_at":"2016-04-29T20:50:00Z"},"created_at":"2016-04-28T20:52:44Z","read_at":"2016-05-20T11:52:55Z"},{"id":10,"type":"reminder","value":{"reminder_id":642,"scheduled_at":"2016-04-30T13:05:00Z"},"created_at":"2016-04-28T09:43:32Z","read_at":"2016-05-17T10:03:28Z"},{"id":9,"type":"reminder","value":{"reminder_id":642,"scheduled_at":"2016-04-30T22:05:00Z"},"created_at":"2016-04-28T09:42:30Z","read_at":"2016-05-11T22:19:28Z"},{"id":8,"type":"reminder","value":{"reminder_id":641,"scheduled_at":"2016-05-01T04:30:00Z"},"created_at":"2016-04-28T09:27:47Z","read_at":null},{"id":7,"type":"reminder","value":{"reminder_id":641,"scheduled_at":"2016-04-28T19:55:00Z"},"created_at":"2016-04-28T07:32:57Z","read_at":null},{"id":5,"type":"reminder","value":{"reminder_id":633,"scheduled_at":"2016-04-27T05:40:00Z"},"created_at":"2016-04-27T05:32:41Z","read_at":null},{"id":4,"type":"meeting_reminder","value":{"meeting_id":632,"scheduled_at":"2016-04-27T06:50:00Z"},"created_at":"2016-04-27T00:45:55Z","read_at":"2016-05-20T23:07:30Z"},{"id":3,"type":"meeting_reminder","value":{"meeting_id":630,"scheduled_at":"2016-04-27T06:30:00Z"},"created_at":"2016-04-27T00:34:13Z","read_at":null},{"id":2,"type":"meeting_reminder","value":{"meeting_id":629,"scheduled_at":"2016-04-27T06:20:00Z"},"created_at":"2016-04-27T00:25:27Z","read_at":"2016-05-17T11:10:53Z"}]}'
+    http_version: 
+  recorded_at: Fri, 03 Jun 2016 22:00:53 GMT
+- request:
+    method: get
+    uri: https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=9363&search%5Btype_eq%5D=ConversationItems::Reminder&user_ids%5B%5D=1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - Token token="secret_4sTtmAtebrqzHY1y2exw", app_key="app_LL1zKMy_vLixnHSyyiAB"
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 03 Jun 2016 22:00:56 GMT
+      Etag:
+      - W/"39821e20036d428f9739209a4f491cef"
+      Server:
+      - nginx/1.4.6 (Ubuntu)
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - c2dffe67-909d-4159-9429-f933696f4e2b
+      X-Runtime:
+      - '0.465244'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '664'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"conversation_items/reminders":[{"id":9363,"title":"New add reminder","location":null,"body":"","type":"reminder","available_events":null,"scheduled_at":"2016-06-03T03:30:00Z","created_at":"2016-06-02T13:35:05Z","updated_at":"2016-06-02T13:35:05Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-06-03T22:00:55Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"Pacific
+        Time (US \u0026 Canada)","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
+        of Nothing"},"invitees":null,"starts_at":null,"ends_at":null,"status":null,"notes":null,"conversation_id":318,"notify_by_sms":null,"notify_by_email":true,"account_id":318,"created_by_id":1,"latitude":null,"longitude":null,"amount":null,"repetition_rule":null,"item_type":null,"all_day_appointment":false,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[{"id":73,"conversation_item_id":9363,"user_id":1,"created_at":"2016-06-02T13:35:05Z","updated_at":"2016-06-02T13:35:05Z"}],"check_ins":[],"check_outs":[],"related_to":null,"parent":null}]}'
+    http_version: 
+  recorded_at: Fri, 03 Jun 2016 22:00:54 GMT
+- request:
+    method: get
+    uri: https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=8969&search%5Btype_eq%5D=ConversationItems::Reminder&user_ids%5B%5D=1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - Token token="secret_4sTtmAtebrqzHY1y2exw", app_key="app_LL1zKMy_vLixnHSyyiAB"
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 03 Jun 2016 22:01:02 GMT
+      Etag:
+      - W/"7bb0295d62df51dd2c88f7252509c7d2"
+      Server:
+      - nginx/1.4.6 (Ubuntu)
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - a1ba5560-466b-4da4-9177-ec449bcb723a
+      X-Runtime:
+      - '0.508031'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '712'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"conversation_items/reminders":[{"id":8969,"title":"Management Meeting
+        Pre-Info","location":null,"body":"Don''t forget to check with Milton\u003cbr\u003e","type":"reminder","available_events":null,"scheduled_at":"2016-06-02T03:15:00Z","created_at":"2016-05-31T22:19:33Z","updated_at":"2016-05-31T22:19:33Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-06-03T22:01:02Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"Pacific
+        Time (US \u0026 Canada)","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
+        of Nothing"},"invitees":null,"starts_at":null,"ends_at":null,"status":null,"notes":null,"conversation_id":318,"notify_by_sms":null,"notify_by_email":true,"account_id":318,"created_by_id":1,"latitude":null,"longitude":null,"amount":null,"repetition_rule":null,"item_type":null,"all_day_appointment":false,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[{"id":71,"conversation_item_id":8969,"user_id":1,"created_at":"2016-05-31T22:19:33Z","updated_at":"2016-05-31T22:19:33Z"}],"check_ins":[],"check_outs":[],"related_to":null,"parent":null}]}'
+    http_version: 
+  recorded_at: Fri, 03 Jun 2016 22:00:55 GMT
+- request:
+    method: get
+    uri: https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=8965&search%5Btype_eq%5D=ConversationItems::Reminder&user_ids%5B%5D=1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - Token token="secret_4sTtmAtebrqzHY1y2exw", app_key="app_LL1zKMy_vLixnHSyyiAB"
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 03 Jun 2016 22:01:04 GMT
+      Etag:
+      - W/"a7e71463eb35d127da869cec0f07bf0a"
+      Server:
+      - nginx/1.4.6 (Ubuntu)
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 32945942-b42b-421c-a3e5-5e98bf87af35
+      X-Runtime:
+      - '0.859299'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '711'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"conversation_items/reminders":[{"id":8965,"title":"Loading Reminder","location":null,"body":"Check
+        the save button not clickable after it is clicked.\u003cbr\u003e","type":"reminder","available_events":null,"scheduled_at":"2016-06-03T04:15:00Z","created_at":"2016-05-31T21:57:31Z","updated_at":"2016-05-31T21:57:31Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-06-03T22:01:03Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"Pacific
+        Time (US \u0026 Canada)","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
+        of Nothing"},"invitees":null,"starts_at":null,"ends_at":null,"status":null,"notes":null,"conversation_id":485,"notify_by_sms":null,"notify_by_email":true,"account_id":485,"created_by_id":1,"latitude":null,"longitude":null,"amount":null,"repetition_rule":null,"item_type":null,"all_day_appointment":false,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[{"id":70,"conversation_item_id":8965,"user_id":1,"created_at":"2016-05-31T21:57:31Z","updated_at":"2016-05-31T21:57:31Z"}],"check_ins":[],"check_outs":[],"related_to":null,"parent":null}]}'
+    http_version: 
+  recorded_at: Fri, 03 Jun 2016 22:00:56 GMT
+- request:
+    method: get
+    uri: https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=8905&search%5Btype_eq%5D=ConversationItems::Reminder&user_ids%5B%5D=1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - Token token="secret_4sTtmAtebrqzHY1y2exw", app_key="app_LL1zKMy_vLixnHSyyiAB"
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 03 Jun 2016 22:01:04 GMT
+      Etag:
+      - W/"d7ae226eca841cf450db0d3278375006"
+      Server:
+      - nginx/1.4.6 (Ubuntu)
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 8569ccee-b918-453e-9aee-02f93de87470
+      X-Runtime:
+      - '0.491254'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '667'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"conversation_items/reminders":[{"id":8905,"title":"New test reminder","location":null,"body":"New
+        test reminder","type":"reminder","available_events":null,"scheduled_at":"2016-06-01T15:29:00Z","created_at":"2016-05-31T05:31:48Z","updated_at":"2016-05-31T05:31:48Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-06-03T22:01:04Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"Pacific
+        Time (US \u0026 Canada)","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
+        of Nothing"},"invitees":null,"starts_at":null,"ends_at":null,"status":null,"notes":null,"conversation_id":318,"notify_by_sms":null,"notify_by_email":true,"account_id":318,"created_by_id":1,"latitude":null,"longitude":null,"amount":null,"repetition_rule":null,"item_type":null,"all_day_appointment":false,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[{"id":69,"conversation_item_id":8905,"user_id":1,"created_at":"2016-05-31T05:31:48Z","updated_at":"2016-05-31T05:31:48Z"}],"check_ins":[],"check_outs":[],"related_to":null,"parent":null}]}'
+    http_version: 
+  recorded_at: Fri, 03 Jun 2016 22:00:57 GMT
+- request:
+    method: get
+    uri: https://acme-api.code10.ca/api/v1/conversation_items/search.json?search%5Bid_eq%5D=8904&search%5Btype_eq%5D=ConversationItems::Reminder&user_ids%5B%5D=1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - Token token="secret_4sTtmAtebrqzHY1y2exw", app_key="app_LL1zKMy_vLixnHSyyiAB"
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 03 Jun 2016 22:01:05 GMT
+      Etag:
+      - W/"f71c322f6f9f0664c42f3e5cb792b896"
+      Server:
+      - nginx/1.4.6 (Ubuntu)
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 806d05d2-225c-46e1-973b-d8dbd3231a17
+      X-Runtime:
+      - '0.494814'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '662'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"conversation_items/reminders":[{"id":8904,"title":"test reminder","location":null,"body":"test
+        reminder","type":"reminder","available_events":null,"scheduled_at":"2016-06-05T19:23:00Z","created_at":"2016-05-31T05:26:54Z","updated_at":"2016-05-31T05:26:54Z","created_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-06-03T22:01:05Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"Pacific
+        Time (US \u0026 Canada)","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
+        of Nothing"},"invitees":null,"starts_at":null,"ends_at":null,"status":null,"notes":null,"conversation_id":318,"notify_by_sms":null,"notify_by_email":true,"account_id":318,"created_by_id":1,"latitude":null,"longitude":null,"amount":null,"repetition_rule":null,"item_type":null,"all_day_appointment":false,"connected_items":[],"transition_logs":[],"future_meetings":[],"conversation_item_user_to_notify":[{"id":68,"conversation_item_id":8904,"user_id":1,"created_at":"2016-05-31T05:26:54Z","updated_at":"2016-05-31T05:26:54Z"}],"check_ins":[],"check_outs":[],"related_to":null,"parent":null}]}'
+    http_version: 
+  recorded_at: Fri, 03 Jun 2016 22:00:58 GMT
+- request:
+    method: get
+    uri: https://acme-api.code10.ca/api/v1/accounts.json?search=
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - Token token="secret_4sTtmAtebrqzHY1y2exw", app_key="app_LL1zKMy_vLixnHSyyiAB"
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 03 Jun 2016 22:01:06 GMT
+      Etag:
+      - W/"3f8f6842a7e9a3db77b904fb217ee6cd"
+      Server:
+      - nginx/1.4.6 (Ubuntu)
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - c28fba14-5cb0-42ea-bb80-1e4e53f7fa7b
+      X-Runtime:
+      - '0.568733'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '3488'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"accounts":[{"id":485,"name":"Test Account","contact_name":"test -
+        ","contact_title":"Owner","status":{"id":29,"name":"Risk","description":"Account
+        at risk of losing.","color":"#ff0000","company_id":1,"created_at":"2016-04-25T01:42:54Z","updated_at":"2016-04-25T01:42:54Z","deleted_at":null},"about":"","quick_facts":"","created_at":"2016-05-19T22:07:54Z","updated_at":"2016-06-03T07:54:28Z","updated_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-06-03T22:01:06Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"Pacific
+        Time (US \u0026 Canada)","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
+        of Nothing"},"avatar_url":"https://orchard-api-staging.s3.amazonaws.com/accounts/avatars/000/000/485/thumb/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=lzJc3ZyNyd999l0TiflOBu6wJ2w%3D","user_account_sharings":[],"city_name":"Burnaby","country_name":"CA","addresses":[{"id":623,"name":null,"street_address":"7788
+        Edmonds Street","city":"Burnaby","postcode":"V3N 1B8","region":"British Columbia","country":"CA","latitude":49.225,"longitude":-122.939}],"contacts":[{"id":837,"name":"new
+        york","value":"111-222-3344","type":"phone"}],"assigned_to":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=D2pVLzfqPBW7CYe32dvvid9oc5I%3D","locale":"en","time_zone":"Pacific
+        Time (US \u0026 Canada)","title":"Director of Nothing"},"conversation":{"id":485,"company_id":1,"account_id":485,"created_at":"2016-05-19T22:07:54Z","updated_at":"2016-06-03T07:54:28Z","deleted_at":null}},{"id":318,"name":"Staples","contact_name":"Milton","contact_title":"Basement
+        Dweller","status":{"id":1,"name":"Open","description":"The account is open
+        and available","color":"#1CAF9A","company_id":1,"created_at":"2015-10-30T08:20:20Z","updated_at":"2016-02-08T05:30:26Z","deleted_at":null},"about":"Staples
+        in Scarborough","quick_facts":"They have lots red staplers...","created_at":"2016-04-30T20:00:30Z","updated_at":"2016-06-03T07:37:57Z","updated_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-06-03T22:01:06Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"Pacific
+        Time (US \u0026 Canada)","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
+        of Nothing"},"avatar_url":"https://orchard-api-staging.s3.amazonaws.com/accounts/avatars/000/000/318/thumb/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=YpAecNyGjIGKw2YlCl4uXzx0jmg%3D","user_account_sharings":[{"id":30,"permission":"read","user":{"id":75,"first_name":"Anthony","last_name":"Martial","email":"sudeepsukumar@yahoo.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/075/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=nEh9Kp1oDCqRSy%2FX7M31oP4aL2A%3D","locale":"en","time_zone":"Eastern
+        Time (US \u0026 Canada)","title":null}}],"city_name":"Toronto","country_name":"CA","addresses":[{"id":455,"name":null,"street_address":"1980
+        Eglinton Avenue East","city":"Toronto","postcode":"M1L 2M6","region":"Ontario","country":"CA","latitude":43.7293,"longitude":-79.2841}],"contacts":[{"id":655,"name":"Head
+        Office","value":"6045555555","type":"phone"}],"assigned_to":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=D2pVLzfqPBW7CYe32dvvid9oc5I%3D","locale":"en","time_zone":"Pacific
+        Time (US \u0026 Canada)","title":"Director of Nothing"},"conversation":{"id":318,"company_id":1,"account_id":318,"created_at":"2016-04-30T20:00:30Z","updated_at":"2016-06-03T07:37:57Z","deleted_at":null}},{"id":76,"name":"Test
+        Lat Account","contact_name":"Test","contact_title":"Lat","status":{"id":1,"name":"Open","description":"The
+        account is open and available","color":"#1CAF9A","company_id":1,"created_at":"2015-10-30T08:20:20Z","updated_at":"2016-02-08T05:30:26Z","deleted_at":null},"about":"aaa","quick_facts":"vvvv","created_at":"2016-04-01T05:47:07Z","updated_at":"2016-06-01T06:38:28Z","updated_by":{"id":102,"email":"admin_entity2@example.com","created_at":"2016-04-13T06:52:12Z","updated_at":"2016-06-01T22:54:31Z","username":null,"company_id":1,"company_entity_id":null,"status":"pending_confirmation","time_zone":"Pacific
+        Time (US \u0026 Canada)","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"admin","last_name":"entity2","avatar_file_name":null,"avatar_content_type":null,"avatar_file_size":null,"avatar_updated_at":null,"title":null},"avatar_url":"https://orchard-api-staging.s3.amazonaws.com/accounts/avatars/000/000/076/thumb/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=4TCSK8HuW5xRInRqtLWR3zVz2EY%3D","user_account_sharings":[{"id":9,"permission":"update","user":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=D2pVLzfqPBW7CYe32dvvid9oc5I%3D","locale":"en","time_zone":"Pacific
+        Time (US \u0026 Canada)","title":"Director of Nothing"}}],"city_name":"New
+        Delhi","country_name":"IN","addresses":[{"id":191,"name":null,"street_address":"23","city":"New
+        Delhi","postcode":"110037","region":"Delhi","country":"IN","latitude":28.5562,"longitude":77.1}],"contacts":[{"id":361,"name":"abc","value":"79239127","type":"phone"}],"assigned_to":{"id":58,"first_name":"Gary","last_name":"Test4","email":"test44441@gmail.com","avatar_url":"/avatars/web/missing.png","locale":"en","time_zone":"Hawaii","title":null},"conversation":{"id":76,"company_id":1,"account_id":76,"created_at":"2016-04-01T05:47:07Z","updated_at":"2016-06-01T06:38:28Z","deleted_at":null}},{"id":73,"name":"Test23","contact_name":"Devid","contact_title":"Test","status":{"id":1,"name":"Open","description":"The
+        account is open and available","color":"#1CAF9A","company_id":1,"created_at":"2015-10-30T08:20:20Z","updated_at":"2016-02-08T05:30:26Z","deleted_at":null},"about":"qqq","quick_facts":"aa","created_at":"2016-03-23T09:02:16Z","updated_at":"2016-06-02T08:09:33Z","updated_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-06-03T22:01:06Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"Pacific
+        Time (US \u0026 Canada)","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
+        of Nothing"},"avatar_url":"https://orchard-api-staging.s3.amazonaws.com/accounts/avatars/000/000/073/thumb/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=BJ92cZqPQRq1HS3YKGqVkU20qwo%3D","user_account_sharings":[],"city_name":"delhi","country_name":"CA","addresses":[{"id":184,"name":null,"street_address":"l1
+        delhi","city":"delhi","postcode":"110096","region":"delhi","country":"CA","latitude":null,"longitude":null}],"contacts":[{"id":350,"name":"test","value":"23412","type":"phone"}],"assigned_to":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=D2pVLzfqPBW7CYe32dvvid9oc5I%3D","locale":"en","time_zone":"Pacific
+        Time (US \u0026 Canada)","title":"Director of Nothing"},"conversation":{"id":73,"company_id":1,"account_id":73,"created_at":"2016-03-23T09:02:16Z","updated_at":"2016-06-02T08:09:33Z","deleted_at":null}},{"id":71,"name":"Test
+        contact type","contact_name":"Test","contact_title":"Contact Type","status":{"id":1,"name":"Open","description":"The
+        account is open and available","color":"#1CAF9A","company_id":1,"created_at":"2015-10-30T08:20:20Z","updated_at":"2016-02-08T05:30:26Z","deleted_at":null},"about":"abc","quick_facts":"NCD","created_at":"2016-03-18T05:37:06Z","updated_at":"2016-04-30T06:40:12Z","updated_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-06-03T22:01:06Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"Pacific
+        Time (US \u0026 Canada)","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
+        of Nothing"},"avatar_url":"https://orchard-api-staging.s3.amazonaws.com/accounts/avatars/000/000/071/thumb/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=mXZieHDiBbeQVgiLLxobol%2BGHbE%3D","user_account_sharings":[],"city_name":"delhi","country_name":"IN","addresses":[{"id":167,"name":null,"street_address":"l28","city":"delhi","postcode":"
+        11096","region":"delhi","country":"IN","latitude":null,"longitude":null}],"contacts":[{"id":319,"name":"phone","value":"34534564","type":"phone"},{"id":320,"name":"website","value":"www.kiwi.com","type":"website"}],"assigned_to":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=D2pVLzfqPBW7CYe32dvvid9oc5I%3D","locale":"en","time_zone":"Pacific
+        Time (US \u0026 Canada)","title":"Director of Nothing"},"conversation":{"id":71,"company_id":1,"account_id":71,"created_at":"2016-03-18T05:37:06Z","updated_at":"2016-04-27T09:48:38Z","deleted_at":null}},{"id":65,"name":"Test
+        Image","contact_name":"Test Name","contact_title":"","status":{"id":1,"name":"Open","description":"The
+        account is open and available","color":"#1CAF9A","company_id":1,"created_at":"2015-10-30T08:20:20Z","updated_at":"2016-02-08T05:30:26Z","deleted_at":null},"about":"wed","quick_facts":"ed23e","created_at":"2016-03-09T07:43:53Z","updated_at":"2016-03-21T12:28:17Z","updated_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-06-03T22:01:06Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"Pacific
+        Time (US \u0026 Canada)","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
+        of Nothing"},"avatar_url":"/avatars/thumb/missing.png","user_account_sharings":[],"city_name":"mumbai","country_name":"IN","addresses":[{"id":152,"name":null,"street_address":"l1","city":"mumbai","postcode":"3493473","region":"mh","country":"IN","latitude":null,"longitude":null}],"contacts":[{"id":292,"name":"343","value":"453","type":"phone"}],"assigned_to":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=D2pVLzfqPBW7CYe32dvvid9oc5I%3D","locale":"en","time_zone":"Pacific
+        Time (US \u0026 Canada)","title":"Director of Nothing"},"conversation":{"id":65,"company_id":1,"account_id":65,"created_at":"2016-03-09T07:43:53Z","updated_at":"2016-03-21T12:28:17Z","deleted_at":null}},{"id":64,"name":"Autobots","contact_name":null,"contact_title":null,"status":{"id":1,"name":"Open","description":"The
+        account is open and available","color":"#1CAF9A","company_id":1,"created_at":"2015-10-30T08:20:20Z","updated_at":"2016-02-08T05:30:26Z","deleted_at":null},"about":"","quick_facts":"","created_at":"2016-03-08T21:12:01Z","updated_at":"2016-04-21T06:32:29Z","updated_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-06-03T22:01:06Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"Pacific
+        Time (US \u0026 Canada)","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
+        of Nothing"},"avatar_url":"/avatars/thumb/missing.png","user_account_sharings":[],"city_name":"Toronto","country_name":"CA","addresses":[{"id":150,"name":null,"street_address":"85-89
+        Yonge St.","city":"Toronto","postcode":"M5C 1S8","region":"Ontario","country":"CA","latitude":null,"longitude":null}],"contacts":[{"id":287,"name":"Head
+        Office","value":"4165551234","type":"phone"}],"assigned_to":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=D2pVLzfqPBW7CYe32dvvid9oc5I%3D","locale":"en","time_zone":"Pacific
+        Time (US \u0026 Canada)","title":"Director of Nothing"},"conversation":{"id":64,"company_id":1,"account_id":64,"created_at":"2016-03-08T21:12:01Z","updated_at":"2016-04-21T06:32:29Z","deleted_at":null}},{"id":62,"name":"Test
+        New","contact_name":"new name","contact_title":"new title","status":{"id":1,"name":"Open","description":"The
+        account is open and available","color":"#1CAF9A","company_id":1,"created_at":"2015-10-30T08:20:20Z","updated_at":"2016-02-08T05:30:26Z","deleted_at":null},"about":"Test111","quick_facts":"22Test","created_at":"2016-02-11T10:46:30Z","updated_at":"2016-05-16T11:39:25Z","updated_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-06-03T22:01:06Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"Pacific
+        Time (US \u0026 Canada)","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
+        of Nothing"},"avatar_url":"https://orchard-api-staging.s3.amazonaws.com/accounts/avatars/000/000/062/thumb/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=5U1CkIFX1CR9IgaTof2zB%2BX7IxM%3D","user_account_sharings":[{"id":4,"permission":"read","user":null}],"city_name":"last_test","country_name":"US","addresses":[{"id":71,"name":null,"street_address":"last_test","city":"last_test","postcode":"2313","region":"last_test
+        new","country":"US","latitude":null,"longitude":null}],"contacts":[{"id":185,"name":"123456","value":"123456","type":"phone"},{"id":222,"name":"11111111","value":"111111111","type":"mobile"}],"assigned_to":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=D2pVLzfqPBW7CYe32dvvid9oc5I%3D","locale":"en","time_zone":"Pacific
+        Time (US \u0026 Canada)","title":"Director of Nothing"},"conversation":{"id":62,"company_id":1,"account_id":62,"created_at":"2016-02-11T10:46:30Z","updated_at":"2016-05-16T11:39:25Z","deleted_at":null}},{"id":61,"name":"Blue-Bird
+        Plumbing","contact_name":"deep","contact_title":"hello","status":{"id":1,"name":"Open","description":"The
+        account is open and available","color":"#1CAF9A","company_id":1,"created_at":"2015-10-30T08:20:20Z","updated_at":"2016-02-08T05:30:26Z","deleted_at":null},"about":"Lorem
+        ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula
+        eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient
+        montes, nascetur ridiculus mus. ","quick_facts":"Lorem ipsum dolor sit amet,
+        consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.
+        Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus
+        mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.
+        Nulla consequat massa quis enim. ","created_at":"2016-02-04T19:52:27Z","updated_at":"2016-05-02T12:30:33Z","updated_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-06-03T22:01:06Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"Pacific
+        Time (US \u0026 Canada)","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
+        of Nothing"},"avatar_url":"https://orchard-api-staging.s3.amazonaws.com/accounts/avatars/000/000/061/thumb/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=sdCd252HnJbwHufZd0Fx4%2FImpF4%3D","user_account_sharings":[{"id":1,"permission":"read","user":{"id":42,"first_name":"Ali","last_name":"Shah","email":"test+dev3@dierbro.com","avatar_url":"/avatars/web/missing.png","locale":"en","time_zone":"UTC","title":null}},{"id":2,"permission":"update","user":{"id":58,"first_name":"Gary","last_name":"Test4","email":"test44441@gmail.com","avatar_url":"/avatars/web/missing.png","locale":"en","time_zone":"Hawaii","title":null}},{"id":5,"permission":"read","user":{"id":40,"first_name":"Gurpreet","last_name":"Judge","email":"test+dev1@dierbro.com","avatar_url":"/avatars/web/missing.png","locale":"en","time_zone":"UTC","title":null}}],"city_name":"Macclesfield","country_name":"GB","addresses":[{"id":43,"name":null,"street_address":"94","city":"Macclesfield","postcode":"SK10
+        1BT","region":"23","country":"GB","latitude":null,"longitude":null}],"contacts":[{"id":154,"name":"phone","value":"416-123-1234","type":"phone"},{"id":155,"name":"tweet","value":"twitter.com/abc12","type":"twitter"},{"id":157,"name":"you","value":"youtube.com/abc1234","type":"youtube"},{"id":256,"name":"phone2","value":"416-111-2233","type":"phone"},{"id":318,"name":"phone3","value":"374-387-0934","type":"phone"}],"assigned_to":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=D2pVLzfqPBW7CYe32dvvid9oc5I%3D","locale":"en","time_zone":"Pacific
+        Time (US \u0026 Canada)","title":"Director of Nothing"},"conversation":{"id":61,"company_id":1,"account_id":61,"created_at":"2016-02-04T19:52:27Z","updated_at":"2016-05-02T12:30:33Z","deleted_at":null}},{"id":59,"name":"inini","contact_name":null,"contact_title":null,"status":{"id":1,"name":"Open","description":"The
+        account is open and available","color":"#1CAF9A","company_id":1,"created_at":"2015-10-30T08:20:20Z","updated_at":"2016-02-08T05:30:26Z","deleted_at":null},"about":"xckjcxkj","quick_facts":"vkjfdkjfkd","created_at":"2016-01-19T15:53:02Z","updated_at":"2016-03-08T20:57:52Z","updated_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-06-03T22:01:06Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"Pacific
+        Time (US \u0026 Canada)","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
+        of Nothing"},"avatar_url":"/avatars/thumb/missing.png","user_account_sharings":[{"id":6,"permission":"read","user":{"id":38,"first_name":"Mary","last_name":"Baker","email":"test+dev@dierbro.com","avatar_url":"/avatars/web/missing.png","locale":"en","time_zone":"UTC","title":null}}],"city_name":"fdkjdfkj","country_name":"CA","addresses":[{"id":37,"name":null,"street_address":"ksjdkdsj","city":"fdkjdfkj","postcode":"dkfjdkj","region":"sdkjsdkj","country":"CA","latitude":null,"longitude":null}],"contacts":[{"id":150,"name":"p1","value":"p1@asd.com","type":"email"},{"id":151,"name":"p2","value":"asd@asd.com","type":"email"}],"assigned_to":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=D2pVLzfqPBW7CYe32dvvid9oc5I%3D","locale":"en","time_zone":"Pacific
+        Time (US \u0026 Canada)","title":"Director of Nothing"},"conversation":{"id":59,"company_id":1,"account_id":59,"created_at":"2016-01-19T15:53:03Z","updated_at":"2016-01-19T15:53:03Z","deleted_at":null}},{"id":55,"name":"Provacomp","contact_name":null,"contact_title":null,"status":{"id":3,"name":"Suspended","description":"Suspended
+        account","color":"#ff860d","company_id":1,"created_at":"2015-10-30T08:21:13Z","updated_at":"2015-10-30T08:21:13Z","deleted_at":null},"about":"asdasd8888","quick_facts":"asdasdasdasd","created_at":"2016-01-11T14:08:44Z","updated_at":"2016-01-11T15:18:34Z","updated_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-06-03T22:01:06Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"Pacific
+        Time (US \u0026 Canada)","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
+        of Nothing"},"avatar_url":"/avatars/thumb/missing.png","user_account_sharings":[],"city_name":"asdasd","country_name":"US","addresses":[{"id":31,"name":null,"street_address":"asdasd","city":"asdasd","postcode":"asdasd","region":"asdasd","country":"US","latitude":null,"longitude":null}],"contacts":[{"id":137,"name":"asdasd","value":"asd@asd.com","type":"email"}],"assigned_to":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=D2pVLzfqPBW7CYe32dvvid9oc5I%3D","locale":"en","time_zone":"Pacific
+        Time (US \u0026 Canada)","title":"Director of Nothing"},"conversation":{"id":55,"company_id":1,"account_id":55,"created_at":"2016-01-11T14:08:44Z","updated_at":"2016-01-11T14:08:44Z","deleted_at":null}},{"id":1,"name":"Diegoa","contact_name":null,"contact_title":null,"status":null,"about":"abount--a-sd","quick_facts":null,"created_at":"2015-11-05T17:25:49Z","updated_at":"2016-03-09T06:16:35Z","updated_by":{"id":1,"email":"test@example.com","created_at":"2015-12-16T19:31:39Z","updated_at":"2016-06-03T22:01:06Z","username":null,"company_id":1,"company_entity_id":19,"status":"pending_confirmation","time_zone":"Pacific
+        Time (US \u0026 Canada)","locale":"en","invitation_token":null,"invitation_created_at":null,"invitation_sent_at":null,"invitation_accepted_at":null,"invitation_limit":null,"invited_by_id":null,"invited_by_type":null,"invitations_count":0,"deleted_at":null,"first_name":"Christopher","last_name":"Smith","avatar_file_name":"image.jpg","avatar_content_type":"image/jpeg","avatar_file_size":296896,"avatar_updated_at":"2016-04-05T08:44:56Z","title":"Director
+        of Nothing"},"avatar_url":"/avatars/thumb/missing.png","user_account_sharings":[],"city_name":"city","country_name":"IT","addresses":[{"id":13,"name":"Address2","street_address":"street","city":"city","postcode":"43536","region":"region","country":"IT","latitude":null,"longitude":null}],"contacts":[{"id":108,"name":"Marvo","value":"asd@asd.com","type":"email"},{"id":109,"name":"Marvo","value":"+393331122345","type":"mobile"},{"id":117,"name":"Telefono","value":"+3908281990000","type":"fax"}],"assigned_to":{"id":1,"first_name":"Christopher","last_name":"Smith","email":"test@example.com","avatar_url":"https://orchard-api-staging.s3.amazonaws.com/users/avatars/000/000/001/web/image.jpg?AWSAccessKeyId=AKIAIIM4DYDQJUUF4W4Q\u0026Expires=1464993966\u0026Signature=D2pVLzfqPBW7CYe32dvvid9oc5I%3D","locale":"en","time_zone":"Pacific
+        Time (US \u0026 Canada)","title":"Director of Nothing"},"conversation":{"id":1,"company_id":1,"account_id":1,"created_at":"2015-11-05T17:25:49Z","updated_at":"2016-03-09T06:16:35Z","deleted_at":null}}]}'
+    http_version: 
+  recorded_at: Fri, 03 Jun 2016 22:00:59 GMT
+recorded_with: VCR 3.0.1

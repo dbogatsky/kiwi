@@ -1,0 +1,83 @@
+<tr id="details_tr_<%= @notification[:id] %>">
+  <td colspan="3">
+    <% if @item.is_a?(ActiveResource::Collection) && @item[0].present? && (@notification[:type] == 'meeting' || @notification[:type] == 'meeting_reminder')%>
+      <div class="cd-timeline-content shadow_non">
+          <%if @item[0].starts_at.present? && @item[0].ends_at.present? %>
+          <span class="cd-date"><%= @item[0].starts_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y - %l:%M %p")%> to <%=@item[0].ends_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%l:%M %p")%>&nbsp;&nbsp;</span>
+          <% else %>
+              <span class="cd-date"><%= @item[0].created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%></span>
+          <% end %>
+          <%= get_styled_meetingstatus(@item[0], false) %>
+          <span class="pull-right">
+            <%=link_to "javascript:void(0)", class: 'btn btn-xs btn-default mr5 close_div' do%>X<%end%>
+          </span>
+          <h2 class="ci_header"><%= @item[0].title %></h2>
+          <p><span class="subheading">Agenda:<br/></span><%= sanitize @item[0].body %></p>
+          <% if (!@item[0].notes.nil?) %>
+              <p><span class="subheading">Notes:<br/></span><%= sanitize @item[0].notes %></p>
+          <% end %>
+          <div class="row ci_footer">
+            <div class="col-sm-10">
+              <i class="fa fa-briefcase tooltips mr10" data-toggle="tooltip" data-original-title="Account"></i><%= @item[0].account.try(:name) ? @item[0].account.name : "Account Deleted" %>
+              <br>
+              <% if (@item[0].scheduled_at.present?) %>
+                  <i class="fa fa-bell tooltips mr10" data-toggle="tooltip" data-original-title="Reminder"></i><%= @item[0].scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %><br />
+              <% end %>
+              <i class="fa fa-user tooltips mr10" data-toggle="tooltip" data-original-title="Created by"></i><%=@item[0].created_by.first_name%> <%=@item[0].created_by.last_name%><br />
+              <% if @item[0].invitees.present? %>
+                  <i class="fa fa-users tooltips mr10" data-toggle="tooltip" data-original-title="Invitees"></i><%= @item[0].invitees %><br/>
+              <% end %>
+              <%=link_to account_path(@item[0].account_id), class: 'btn btn-xs btn-default mr5 pull-right' do%>Go To Account<%end%>
+            </div>
+          </div>
+      </div>
+    <% elsif @item.is_a?(ActiveResource::Collection) && @item[0].present? && @notification[:type] == 'reminder' %>
+      <div class="cd-timeline-content shadow_non">
+        <span class="cd-date">
+           <%=@item[0].created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>
+        </span>
+          <span class="pull-right">
+            <%=link_to "javascript:void(0)", class: 'btn btn-xs btn-default mr5 close_div' do%>X<%end%>
+          </span>
+        <h2 class="ci_header"><%= @item[0].title %></h2>
+        <div class="ci_reminder_body"><%= sanitize @item[0].body %></div>
+        <% if (@item[0].scheduled_at.present?) %>
+          <div class="ci_footer">
+            <i class="fa fa-briefcase tooltips mr10" data-toggle="tooltip" data-original-title="Account"></i><%= @item[0].account.try(:name) ? @item[0].account.name : "Account Deleted" %><br>
+            <i class="fa fa-bell"></i><%= @item[0].scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %>
+            <i class="mr10"></i>
+            <% if @item[0].notify_by_email.present? %>
+            <i class="fa fa-envelope tooltips mr10" data-toggle="tooltip" data-original-title="Email"></i>
+            <% end %>
+            <% if @item[0].notify_by_sms.present? %>
+            <i class="fa fa-comment tooltips mr10" data-toggle="tooltip" data-original-title="SMS"></i>
+            <% end %><br/>
+            <%=link_to account_path(@item[0].account_id), class: 'btn btn-xs btn-default mr5 pull-right' do%>Go To Account<%end%>
+          </div>
+        <% end %>
+      </div>
+  	<% elsif @item.is_a?(Account) && @notification[:type] == 'account_status_change' %>
+			<div class="cd-timeline-content shadow_non">
+			  <span class="pull-right">
+			    <%=link_to "javascript:void(0)", class: 'btn btn-xs btn-default mr5 close_div' do%>X<%end%>
+			  </span>
+			  <h2 class="ci_header"><%= @item.name %></h2>
+			  <%= get_styled_status(@item, false) %>
+			  <p><span class="subheading">Assigned To: &nbsp;</span><%= (@item.assigned_to.nil? ? "*Unassigned*" : "#{@item.assigned_to.first_name} #{@item.assigned_to.last_name}") %></p>
+			  <p>Account status was updated.</p>
+			  <div class="row ci_footer">
+			    <div class="col-sm-10">
+			      <%=link_to account_path(@item.id), class: 'btn btn-xs btn-default mr5 pull-right' do%>Go To Account<%end%>
+			    </div>
+			  </div>
+			</div>
+    <% else %>
+      <div class="cd-timeline-content shadow_non">
+        <span class="pull-right">
+          <%=link_to "javascript:void(0)", class: 'btn btn-xs btn-default mr5 close_div' do%>X<%end%>
+        </span>
+        <h2 class="ci_header">Looks like the related item has been deleted.</h2>
+      </div>
+    <% end %>
+  </td>
+<tr>

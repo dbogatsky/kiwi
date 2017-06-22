@@ -1,0 +1,108 @@
+<div class="modal fade account-shared-users" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">&times;</button>
+        <h4 class="modal-title">Shared Users</h4>
+        <p>Below are a list of users whom this account is shared with</p>
+      </div>
+      <div class="modal-body" id="user_list">
+        <%=render 'shared_user_list', shared_user: @shared_user, users: @users, account: @account%>
+      </div><!-- modal body -->
+    </div><!-- modal content -->
+  </div><!-- modal dialog -->
+</div><!-- modal -->
+
+<script type="text/javascript">
+  $(".account-shared-users").on("hidden.bs.modal", function(){
+    $("#user_list").html("<%=j render 'shared_user_list', shared_user: @shared_user, users: @users, account: @account%>");
+    $('.select2').select2();
+     save_show_hide();
+  });
+
+toggleButton();
+
+$("#add_shared_user").on("change", function (e) {
+  toggleButton();
+});
+
+$(document.body).on('click', '#add_shared_user_button' ,function(e){
+  // append to table
+  var added_user_id = $('#add_shared_user').val();
+  var added_user    = $("#add_shared_user option:selected").text();
+
+  if(added_user_id != '' && added_user != ''){
+    if($("#"+added_user_id).length > 0){
+       $("#"+added_user_id).remove();
+    }
+
+    if($("#delete_input_"+added_user_id).length > 0 && $("#delete_input_"+added_user_id).val() == 'true'){
+      $("#delete_input_"+added_user_id).remove();
+    }
+
+    var cell1 = '<input type="hidden" name="account[user_account_sharings_attributes]['+added_user_id+'][user_id]" value="'+added_user_id+'"/>'+added_user;
+    var cell2 = '<select class="input-sm" name="account[user_account_sharings_attributes]['+added_user_id+'][permission]">\
+                  <option value="read">Read Only</option>\
+                  <option value="update">Can Update</option>\
+                </select>';
+    var cell3 = '<a class="delete-row"><i class="fa fa-trash-o"></i></a>';
+
+    $('#shared_user_list tr:last').after('<tr id="'+added_user_id+'" class="'+added_user+'"><td>'+cell1+'</td><td>'+cell2+'</td><td class="table-action">'+cell3+'</td></tr>');
+
+    // remove option from add list
+    $("#add_shared_user option:selected").remove();
+    $("#add_shared_user").select2("val", "");
+    toggleButton();
+    save_show_hide();
+  }
+});
+
+save_show_hide();
+function executeAsynchronously(functions, timeout) {
+  for(var i = 0; i < functions.length; i++) {
+    setTimeout(functions[i], timeout);
+  }
+}
+$(document.body).on('click', '.delete-row' ,function(){
+  var trid = $(this).closest('tr').attr('id');
+
+  var delfield = $('<input>').attr({
+    id: 'delete_input_'+trid,
+    type: 'hidden',
+    name: 'account[user_account_sharings_attributes]['+trid+'][_destroy]',
+    value: 'true'
+  });
+  $(this).closest('td').append(delfield);
+  var user_id = $(this).closest('tr').attr('id')
+  var user_name = $(this).closest('tr').attr('class')
+  var option = document.createElement("option");
+  option.value = user_id;
+  option.text = user_name;
+  var select = document.getElementById("add_shared_user");
+  select.appendChild(option);
+  $(this).closest('tr').hide(500);
+  executeAsynchronously([save_show_hide], 550);
+});
+
+function save_show_hide(){
+  var shared_user_count  = '<%=@account.user_account_sharings.size%>'
+  if (shared_user_count > 0){
+    $(".save").show(300)
+  }else if($("#shared_user_list").find('tr:visible').length > 1){
+    console.log('2222')
+    $(".save").show(300)
+  }else{
+    $(".save").hide(300)
+  }
+}
+
+function toggleButton() {
+  if($('#add_shared_user').val() == "") {
+    $('#add_shared_user_button').hide();
+  }
+  else {
+    $('#add_shared_user_button').show();
+  }
+}
+
+</script>

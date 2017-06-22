@@ -1,0 +1,45 @@
+<div class="modal fade meeting-activity-detail_<%=meeting.id%>" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+          <button aria-hidden="true" data-dismiss="modal" class="close" type="button">&times;</button>
+          <h4 class="modal-title">Activity Detail</h4>
+      </div>
+      <div class="modal-body">
+        <%if meeting.starts_at.present? && meeting.ends_at.present? %>
+          <span class="cd-date"><%= meeting.starts_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y - %l:%M %p")%> to <%=meeting.ends_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%l:%M %p")%>&nbsp;&nbsp;</span>
+                <%= get_styled_meetingstatus(meeting, false) %>
+        <% else %>
+          <span class="cd-date"><%= meeting.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%></span>
+        <% end %>
+        <h4 class="ci_header"><%= meeting.title %></h4>
+        <p><span class="subheading">Agenda:<br/></span><%= sanitize meeting.body %></p>
+        <% if (!meeting.notes.nil?) %>
+            <p><span class="subheading">Notes:<br/></span><%= sanitize meeting.notes %></p>
+        <% end %>
+         <p><span class="subheading">Location:<br/></span><%= meeting.location %></p>
+        <div class="row ci_footer">
+          <div class="col-sm-10">
+            <% if (meeting.scheduled_at.present?) %>
+                <i class="fa fa-bell tooltips mr10" data-toggle="tooltip" data-original-title="Reminder"></i><%= meeting.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %><br />
+            <% end %>
+            <i class="fa fa-user tooltips mr10" data-toggle="tooltip" data-original-title="Created by"></i><%=meeting.created_by.first_name%> <%=meeting.created_by.last_name%><br />
+
+            <% if meeting.invitees.present?%>
+                <i class="fa fa-users tooltips mr10" data-toggle="tooltip" data-original-title="Invitees"></i><%= meeting.invitees %><br/>
+            <% end %>
+            <%check_in_time = check_in_details(meeting, false) %>
+            <%check_out_time = check_out_details(meeting, false) %>
+            <% if check_in_time%>
+              <i class="fa fa-sign-in mr10" data-toggle="tooltip" data-original-title="Check In"></i><%= check_in_time %><br/>
+            <% end %>
+            <% if check_out_time%>
+              <i class="fa fa-sign-out mr10" data-toggle="tooltip" data-original-title="Check Out"></i><%= check_out_time %><br/>
+            <% end %>
+            <i class="fa fa-briefcase tooltips mr10" data-toggle="tooltip" data-original-title="Account"></i><%= meeting.account.try(:name) ? meeting.account.name : "Account Deleted" %><br/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

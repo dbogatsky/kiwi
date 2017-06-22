@@ -1,0 +1,77 @@
+<style type="text/css">
+.notification-icon {
+    border-radius: 10%;
+    height:30px;
+    width:30px;
+}
+.thumb-img {
+    height: 60%;
+    position: relative;
+    margin-top: 5px;
+}
+@media only screen and (max-width: 767px) {
+.headermenu li:first-child .dropdown-menu{
+  margin-right: -175px;
+}
+}
+
+</style>
+<% pending_acc = pending_account_notifications.nil? ? {} : pending_account_notifications %>
+<h5 class="title">You Have <%= (unread_items.count + pending_acc.count) %> New Notifications</h5>
+<ul class="dropdown-list gen-list">
+  <%if pending_account_notifications.present?%>
+    <%pending_account_notifications.first(5).each do |pending_account|%>
+      <li class="new">
+        <%=link_to notifications_path(pending_account_id: pending_account["id"]),remote: true,method: :get do %>
+          <span class="thumb notification_calender" style="background: #1d2939;">
+            <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-arrow-right.svg" alt="Reminder">
+          </span>
+          <span class="desc">
+            <span class="name">
+              <small>
+                <p>Account Transfer Approval Required</br>
+                <%= pending_account["account"]["name"] %></p>
+              </small>
+              <span class="badge badge-success">new</span>
+            </span>
+            <span class="msg"><%=Chronic.parse(pending_account["created_at"]).in_time_zone(current_user.time_zone).strftime("%b %d at %l:%M %p")%></span>
+          </span>
+        <%end%>
+      </li>
+    <%end%>
+  <%end%>
+  <% rest_no = (pending_acc.count < 5) ? (5 - pending_acc.count) : 0 %>
+  <% @unread_items.first(rest_no).each do |notification| %>
+    <li class="new">
+      <%=link_to notifications_conversation_detail_path(notification_id: notification.id, notification_type: notification.type, conversation_id: (notification.type == "meeting_reminder" || notification.type == "meeting")?notification.value.meeting_id : (notification.type == "reminder")?notification.value.reminder_id : notification.value.account_id , item_id: notification.id), remote: true, method: :get do %>
+      <% if notification.type == 'reminder' %>
+        <span class="thumb notification-icon" style="background: #f0ca45;">
+          <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-bell.svg" alt="Reminder">
+        </span>
+      <% elsif notification.type == 'meeting' || notification.type == 'meeting_reminder'%>
+        <span class="thumb notification-icon" style="background:#1cc7c2;">
+          <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-calendar.svg" alt="Meeting">
+        </span>
+      <% elsif notification.type == 'quote' %>
+        <span class="thumb notification-icon" style="background:#e91e63;">
+          <img  class="thumb-img"  src="/assets/vertical-timeline/img/cd-icon-calculator.svg" alt="Quote">
+        </span>
+      <% elsif notification.type == 'account_status_change'%>
+        <span class="thumb notification-icon" style="background: #333;">
+          <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-briefcase.svg" alt="Account Status Change">
+        </span>
+      <%end%>
+      <span class="desc">
+        <span class="name">
+          <small>
+            <%= notification.title == nil ? "Click to see Details" : notification.title %>
+          </small>
+          <span class="badge badge-success">new</span></span>
+        <span class="msg"><%= Chronic.parse(notification.created_at).in_time_zone(current_user.time_zone).strftime("%b %d") %></span>
+      </span>
+      <%end%>
+    </li>
+  <%end%>
+  <li class="new"><a href="<%= notifications_path %>">Read All Notifications</a></li>
+</ul>
+

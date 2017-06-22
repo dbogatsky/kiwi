@@ -1,0 +1,139 @@
+<div class="modal fade conversation-edit-quote-modal-form" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">&times;</button>
+        <h4 class="modal-title">Edit Quote</h4>
+      </div>
+      <div class="modal-body">
+        <%= form_tag update_quote_account_path(account), method: :patch, enctype: "multipart/form-data", id: 'submit_conversation_edit_quote_form', remote: :true do %>
+          <div class="panel panel-default">
+            <form>
+              <div class="panel-body">
+                <div class="row row-pad-5">
+                  <div class="col-lg-12">
+                    <input type="text" name="conversation_item[title]" placeholder="Title" class="form-control" required="required"  />
+                  </div>
+                </div><!-- row -->
+
+                <div class="row row-pad-5">
+                  <div class="col-lg-8">
+                    <div class="input-group">
+                      <span class="input-group-addon">$</span>
+                      <input type="text" name="conversation_item[amount]" placeholder="Amount" class="form-control amount_val" required="required"/>
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <select class="form-control input-reg" name="conversation_item[item_type]">
+                      <option value="onetime">One Time</option>
+                      <option value="weekly">per Week</option>
+                      <option value="monthly">per Month</option>
+                      <option value="yearly">per Year</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="row row-pad-5">
+                  <div class="col-lg-4">
+                    <label class="radio-inline">
+                      <input type="radio" name="expires" class="exp_in" checked>Expires in
+                    </label>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="row">
+                      <div class="col-xs-7">
+                        <input type="number" value='30' class="form-control get_date" rows="5" name="expires_in" required="required" />
+                      </div>
+                      <div class="col-xs-5 pull-left">
+                        <p style="padding-top:10px;padding-right:10px;padding-bottom:10px;">days</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <input type="text" class="form-control display_date" style="border-width: 0px; background-color: white;" disabled="true" />
+                  </div>
+                </div>
+
+                <div class="row row-pad-5">
+                  <div class="col-lg-4">
+                    <label class="radio-inline">
+                      <input type="radio" name="expires" class= "exp_after">Expires after
+                    </label>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="input-group">
+                      <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                      <%if mobile?%>
+                        <input class="set_date" type="date" name="expires_after" disabled="true"/>
+                      <%else%>
+                        <input type="text" class="form-control datepicker set_date" placeholder="mm/dd/yyyy" name="expires_after" disabled="true"/>
+                      <%end%>
+                     </div>
+                  </div>
+                </div>
+                <div class="row row-pad-5">
+                  <div class="col-lg-12">
+                    <textarea class="form-control wysihtml5" id="quote_edit" rows="5" placeholder="Description" name="conversation_item[body]"></textarea>
+                  </div>
+                </div>
+                <div class="row row-pad-5">
+                  <div class="col-lg-6">
+                    <div class="ckbox ckbox-primary">
+                      <input type="checkbox" id="quote-reminder-edit" name="conversation_item[reminder]">
+                      <label for="quote-reminder-edit">Set a Reminder</label>
+                    </div>
+                  </div>
+                </div>
+                <div id="quote-reminder-settings-edit">
+                  <div class="row row-pad-5">
+                    <div class="col-lg-4">
+                      <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                        <%if mobile?%>
+                          <input class="clear_date" type="date" name="follow_date"/>
+                        <%else%>
+                          <input type="text" class="form-control datepicker clear_date" placeholder="mm/dd/yyyy" id="" name="follow_date"/>
+                        <%end%>
+                       </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                        <div class="bootstrap-timepicker">
+                          <%if mobile?%>
+                            <input type="time" class="clear_time follow_time" name="follow_time" step=900 />
+                          <%else%>
+                            <input type="text" class="form-control clear_time follow_time" name="follow_time"/>
+                          <%end%>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <%if @conversation_item_attachment == 'on'%>
+                  <%=render "accounts/conversation_upload_edit", box_for: 'quote'%>
+                <%end%>
+                <div class="row row-pad-5">
+                  <div class="col-lg-12 list_of_attachment">
+                  </div>
+                </div>
+                <input type="hidden" name="conversation_item[id]">
+                <input type="hidden" name="info" >
+              </div><!-- panel-body -->
+              <div class="panel-footer">
+                <!-- <button type="submit" class="btn btn-primary">Update</button> -->
+                <%=submit_tag 'Save',  data: {disable_with: "Saving..." }, class: "btn btn-primary", id: "submit_edit_quote_form"%>
+                <button type="reset" class="btn btn-default">Reset</button>
+              </div>
+          </div><!-- panel -->
+        <% end %>
+      </div><!-- modal body -->
+    </div><!-- modal content -->
+  </div><!-- modal dialog -->
+</div><!-- modal -->
+<script type="text/javascript">
+  $('.datepicker').datepicker();
+  $('#follow_time').timepicker({
+      minuteStep: 15
+  });
+</script>

@@ -1,0 +1,10 @@
+<%if @meeting.type.eql? 'meeting'%>
+  $("#conversation_item_details").html("<%=j render 'conversation_item_details', citem: @meeting, account: @account, citem_created_by: @meeting.created_by%>")
+<%elsif @meeting.type.eql? 'note'%>
+  $("#conversation_item_details").html("<%=j render 'conversation_item_note_details', citem: @meeting, account: @account, citem_created_by: @meeting.created_by%>")
+<%elsif @meeting.type.eql? 'reminder'%>
+  $("#conversation_item_details").html("<%=j render 'conversation_item_reminder_details', citem: @meeting, account: @account, citem_created_by: @meeting.created_by%>")
+<%elsif @meeting.type.eql? 'quote'%>
+  $("#conversation_item_details").html("<%=j render 'conversation_item_quote_details', citem: @meeting, account: @account, citem_created_by: @meeting.created_by%>")
+<%end%>
+$('#preloader').hide();

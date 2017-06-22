@@ -1,0 +1,149 @@
+<% content_for :pageheader do %>
+  <h2><i class="fa fa-building"></i><%= @company.name %></h2>
+  <div class="breadcrumb-wrapper">
+    <span class="label">You are here:</span>
+    <ol class="breadcrumb">
+        <li><a href="/admin/companies">Companies</a></li>
+        <li class="active">Details</li>
+    </ol>
+  </div>
+<% end %>
+
+<div class="profile-header">
+  <div class="row">
+    <div class="col-sm-3">
+      <%= image_tag("photos/default_firm_picture.jpg", class:"thumbnail img-responsive") %>
+      <div class="mb30"></div>
+      <h5 class="subtitle">Connect
+      </h5>
+      <ul class="profile-social-list" id="account-contacts">
+        <%if @company.contacts.present?%>
+          <% @company.contacts.each do |contact| %>
+            <li id="<%= dom_id(contact) %>"><i class="fa fa-<%= contact.type %>"></i>
+            <% if contact.type.eql? "phone"  or  contact.type.eql? "mobile"  or  contact.type.eql? "fax" %>
+              <a href="tel:+1<%= contact.value.delete(" ").delete("-") %>"><%= contact.value %></a>
+            <% else %>
+              <%= contact.value %>
+            <% end %>
+            </li>
+          <% end %>
+        <% end %>
+      </ul>
+      <div class="mb30"></div>
+      <h5 class="subtitle">Address&nbsp;<i class="fa fa-map-marker"></i>
+      </h5>
+      <ul class="profile-social-list" id="account-addresses">
+        <%if @company.addresses.present?%>
+	        <% @company.addresses.each_with_index do |address, index| %>
+	          <li id="<%= dom_id(address) %>" style="border-bottom:0px;">
+	            <address>
+	              <% if address.name.present? %>
+	                <strong><%= address.name %></strong>
+	              <% end %>
+	              <a href="https://maps.google.com?daddr=<%= address.suite_number.present? ? address.suite_number + "-" : "" %><%= address.street_address %>+<%= address.city %>+<%= address.region %>+<%= address.country %>+<%= address.postcode %>" target="_blank">
+                <%= address.suite_number.present? ? address.suite_number + "-" : "" %>
+                <%= address.street_address %><br>
+	              <%= address.city %>, <%= address.region %>, <%= address.country %><br />
+	              <%= address.postcode %>
+	              </a>
+	            </address>
+	          </li>
+	        <% end %>
+        <% end %>
+      </ul>
+    </div><!-- col-sm-3 -->
+    <div class="col-sm-9">
+
+      <div class="mb20"></div>
+      <div class="row">
+        <div class="col-sm-11">
+          <div class="row">
+            <small>
+              <div class="col-sm-5">
+                <div class="col-sm-5">
+                  <div class="row bars">
+                      <div class="col-xs-9"><strong>Locale</strong></div>
+                      <div class="col-xs-2"><%= @company.locale == 'en' ? 'English' : ''%></div>
+                  </div>
+                  <div class="row bars">
+                    <div class="col-xs-9"><strong>Sub Domain</strong></div>
+                    <div class="col-xs-2"><%= @company.subdomain %></div>
+                    </div>
+                </div><!-- col-sm-4 -->
+              </div>
+              <div class="col-sm-7">
+                <div class="row bars">
+                    <div class="col-xs-5" style="text-align:right"><strong>Time Zone</strong></div>
+                    <div class="col-xs-7"><%= @company.time_zone%></div>
+                </div>
+              </div><!-- col-sm-4 -->
+            </small>
+          </div><!-- row -->
+        </div>
+      </div>
+      <%= link_to new_admin_company_user_path(@company), class: "btn btn-primary pull-right" do %><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add User<% end %>
+    </div> <!-- col-sm-9 -->
+  </div><!-- row -->
+</div><!-- profile-header -->
+<div class="panel-body">
+  <div class="row row-pad-5">
+    <div class="col-md-12">
+      <%if @users.present?%>
+        <div class="clearfix mb30"></div>
+        <p>Below are list of company users.</p>
+        <br />
+        <div class="table-responsive">
+        <table class="table table-striped" id="userTable">
+            <thead>
+               <tr>
+                  <th>Email</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Role</th>
+                  <th>Entity</th>
+                  <th>Actions</th>
+               </tr>
+            </thead>
+            <tbody>
+              <% @users.each do |user| %>
+                <tr>
+                  <td><%= user.email %></td>
+                  <td><%= user.first_name %></td>
+                  <td><%= user.last_name %></td>
+                  <td><%=user.roles.present? ? user.roles.last.name : ''%></td>
+                  <td><%=user.entity.present? ? user.entity.name : 'N/A' %></td>
+                  <td class="table-action">
+                    <%=link_to swuser_path(c_id: @company.id, u_id: user.id), data: {confirm: "Switch to this user?\n\nUser: #{user.first_name} #{user.last_name}\nEmail: #{user.email}\nRole: #{user.roles.last.name}\nEntity: #{user.entity.present? ? user.entity.name : 'N/A'}"} do %>
+                      <i class="fa fa-user"></i>
+                    <% end %>
+                    <%=link_to edit_admin_company_user_path(company_id: @company.id, id: user.id) do %>
+                      <i class="fa fa-pencil"></i>
+                    <% end %>
+                    <%=link_to admin_company_user_path(company_id: @company.id, id: user.id), method: :delete, data: {confirm: 'Are you sure you want to delete this user?'} do %>
+                      <i class="fa fa-trash-o"></i>
+                    <%end %>
+                    <%=link_to admin_company_user_change_password_path(company_id: @company.id, user_id: user.id) do%>
+                      <i class="fa fa-lock"></i>
+                    <%end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+         </table>
+        </div><!-- table-responsive -->
+      <%end%>
+    </div>
+  </div><!-- row -->
+</div><!-- panel-body -->
+
+<script>
+  jQuery(document).ready(function() {
+
+    //"use strict";
+
+    jQuery('#userTable').dataTable({
+      "sPaginationType": "full_numbers"
+    });
+
+  });
+</script>

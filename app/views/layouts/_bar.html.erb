@@ -1,0 +1,46 @@
+    <div class="headerbar">
+
+      <a class="menutoggle"><i class="fa fa-bars"></i></a>
+
+
+      <div class="header-right">
+        <ul class="headermenu">
+          <li>
+            <div class="btn-group">
+              <button class="btn btn-default dropdown-toggle tp-icon" data-toggle="dropdown">
+                <% @pending_acc = @pending_account_notifications.nil? ? {} : @pending_account_notifications %>
+                <i class="glyphicon glyphicon-bell"></i>
+                <span class="badge" id="bar_unread_count"><%=@unread_items.count + @pending_acc .count%></span>
+              </button>
+              <div class="dropdown-menu dropdown-menu-head pull-right" id='bar_notification_list'>
+                <%=render 'notifications/bar_notification_list',unread_items: @unread_items,pending_account_notifications: @pending_account_notifications%>
+              </div>
+            </div>
+            <div id="pending_notification">
+            </div>
+            <div id="conversation_notification">
+            </div>
+          </li>
+	          <li>
+            <div class="btn-group">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                <% if current_user.avatar_url.eql? "/avatars/web/missing.png" || !(current_user.avatar_url.present?)%>
+                  <%= image_tag("user.png") %>
+                <% else %>
+                  <img alt="" src="<%= current_user.avatar_url %>">
+                <% end %>
+                <%= current_user.first_name %> <%= current_user.last_name %>
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-usermenu pull-right">
+                <li><a href="<%= profile_path %>"><i class="glyphicon glyphicon-user"></i> My Profile</a></li>
+                <li><a href="<%= preference_path%>"><i class="glyphicon glyphicon-wrench"></i> Preference</a></li>
+                <li><a href="<%=login_change_password_path(current_user.id)%>"><i class="glyphicon glyphicon-lock"></i> Change Password</a></li>
+                <li><a href="<%= user_logout_path %>"><i class="glyphicon glyphicon-log-out"></i> Log Out</a></li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div><!-- header-right -->
+
+    </div><!-- headerbar -->

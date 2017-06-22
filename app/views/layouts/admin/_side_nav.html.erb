@@ -1,0 +1,32 @@
+<div class="leftpanel">
+  <div class="logopanel">
+    <h1>
+      <%= image_tag('logo_focus_white.png', height: '25', style: 'margin-left: 5px;') %>
+    </h1>
+  </div><!-- logopanel -->
+  <div class="leftpanelinner">
+    <!-- This is only visible to small devices -->
+    <div class="visible-xs hidden-sm hidden-md hidden-lg">
+      <div class="media userlogged">
+        <%#= image_tag("photos/loggeduser.png", class:"media-object") %>
+        <div class="media-body">
+          <h4>Superadmin</h4>
+            <span><%= "Title/Role" %></span>
+        </div>
+      </div>
+      <h5 class="sidebartitle actitle">Account</h5>
+      <ul class="nav nav-pills nav-stacked nav-bracket mb30">
+        <li><a href="<%= user_logout_path %>"><i class="fa fa-sign-out"></i> <span>Log Out</span></a></li>
+      </ul>
+    </div>
+    <br />
+    <h5 class="sidebartitle">Main</h5>
+    <ul class="nav nav-pills nav-stacked nav-bracket">
+      <li>
+        <a href="<%= admin_companies_path%>">
+          <i class="fa fa-building"></i> <span>Companies</span>
+        </a>
+      </li>
+    </ul>
+  </div><!-- leftpanelinner -->
+</div><!-- leftpanel -->

@@ -1,0 +1,890 @@
+<% content_for :pageheader do %>
+  <h2><i class="fa fa-home"></i> Schedule</h2>
+<% end %>
+<div class="row">
+  <div class="col-md-4">
+    <div class="panel panel-default panel-alt">
+      <div class="media padding10">
+        <a class="pull-left">
+          <% if current_user.avatar_url.eql? "/avatars/web/missing.png" || !(current_user.avatar_url.present?)%>
+            <%= image_tag("user.png", class:"media-object") %>
+          <% else %>
+            <img alt="" src="<%= current_user.avatar_url %>" class="thumbnail media-object" style="margin-bottom:0px; height:100px;">
+          <% end %>
+        </a>
+
+        <div class="media-body event-body">
+          <h3 class="subtitle-lined"><%= current_user.first_name rescue nil %> <%= current_user.last_name rescue nil%></h3>
+          <small><%= current_user.time_zone %></small>
+        </div>
+      </div>
+      <div id="conversation_item_details">
+        <%if @meetings.present? && @next_meeting.present?%>
+          <%#account = Account.find(@next_meeting.first.account_id)%>
+          <%created_by = @next_meeting.first.created_by%>
+          <%=render 'conversation_item_details', citem: @next_meeting.first, citem_created_by: created_by%>
+        <%end%>
+      </div>
+    </div>
+  </div><!-- col-->
+  <div class="col-md-8">
+    <div class="row">
+      <div class="col-sm-6 mb10">
+        <% if can? :schedule_filter, Account %>
+          <% if (@users.count > 1) %>
+            <%= form_tag schedule_calendar_event_path, method: :get, remote: :true do |f| %>
+            <div class="col-sm-8 mb10">
+              <select class="select2" name="users" id="schedule_user_list" data-placeholder="Filter schedule by user" required="required">
+                <option></option>
+                <option value="<%=current_user.id%>">My Schedule</option>
+                <%= options_for_select(@users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] if current_user.id != u.id }, selected:(@selected_user.present? ? @selected_user.id : "") ) %>
+              </select>
+            </div>
+            <div class="col-sm-2">
+              <button type="submit" class="btn btn-primary" id="show_calendar_eve">Show</button>
+            </div>
+            <%end%>
+          <% end %>
+        <% end %>
+      </div>
+      <div class="col-sm-6">
+        <div class="btn-group mr5 pull-right">
+          <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
+              <i class="fa fa-plus-circle mr5"></i>Add
+              <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+              <li><a href="#" data-toggle="modal" data-target=".account-action-meeting">Schedule Meeting</a></li>
+              <li><a href="#" data-toggle="modal" data-target=".conversation-reminder-modal-form">Add Reminder</a></li>
+              <li><a href="#" data-toggle="modal" data-target=".conversation-quote-modal-form">Add Quote</a></li>
+          </ul>
+        </div>
+      </div>
+    </div><!-- row -->
+    <div class="row mb15">
+      <div class="col-sm-12">
+        <div id="calendar"></div>
+      </div>
+    </div><!-- row -->
+    <div class="row">
+      <div class="col-sm-12">
+        <div id="spinner"><div id="status"><i class="fa fa-spinner fa-spin"></i></div></div>
+        <div id="regular_visits">
+        </div>
+      </div>
+    </div><!-- row -->
+  </div>
+  <%if @user_preference['default_calendar_view'].present? %>
+     <%@calendar_view = @user_preference['default_calendar_view']%>
+  <%else%>
+     <%@calendar_view = 'month'%>
+  <%end%>
+</div>
+<%= render "accounts/conversation_meeting", account: nil %>
+<%= render "accounts/conversation_reminder", account: nil %>
+<%= render "accounts/conversation_quote", account: nil %>
+<%= render "accounts/conversation_meeting_complete", account: nil, info: true%>
+<%= render "accounts/conversation_meeting_edit", account: nil, info: true%>
+<%= render "delete_meeting_modal"%>
+<%= render "delete_future_meeting_modal"%>
+<%= render "accounts/add_conversation_attachment"%>
+<%= render "accounts/delete_attachment_modal"%>
+<%= render "accounts/file_error_pop_up"%>
+
+<script>
+  $.fn.modal.Constructor.prototype.enforceFocus = function () {};
+    $(document).on('ajax:complete', "#submit_conversation_edit_meeting_form, #submit_conversation_edit_quote_form, #submit_conversation_edit_note_form, #submit_conversation_quote_form, #submit_conversation_meeting_form", function(){
+      $("#preloader").show();
+      if (document.getElementById("submit_edit_meeting_form") != null){
+        $("#preloader").hide();
+        $(".conversation-edit-meeting-modal-form").modal('hide');
+        // document.getElementById("submit_edit_meeting_form").value = "Saving..."
+        // document.getElementById("submit_edit_meeting_form").disabled = "true"
+      }
+
+      if (document.getElementById("submit_edit_quote_form") != null){
+        document.getElementById("submit_edit_quote_form").value = "Saving..."
+        document.getElementById("submit_edit_quote_form").disabled = "true"
+      }
+
+      if (document.getElementById("submit_edit_note_form") != null){
+        document.getElementById("submit_edit_note_form").value = "Saving..."
+        document.getElementById("submit_edit_note_form").disabled = "true"
+      }
+
+      if (document.getElementById("submit_quote_form") != null){
+        document.getElementById("submit_quote_form").value = "Saving..."
+        document.getElementById("submit_quote_form").disabled = "true"
+      }
+
+      // if (document.getElementById("submit_meeting_form") != null){
+      //   // document.getElementById("submit_meeting_form").value = "Saving..."
+      //   // document.getElementById("submit_meeting_form").disabled = "true"
+      // }
+    })
+
+  $(document).on('click', '.add_attachment', function(){
+    if ($(this).closest('div').find('.drop_zone_height').hasClass('hidden')){
+      $(this).closest('div').find('.drop_zone_height').removeClass('hidden').addClass('shown')
+      $(this).find('i').removeClass("fa-plus").addClass("fa-minus")
+    }else{
+      $(this).closest('div').find('.drop_zone_height').removeClass('shown').addClass('hidden')
+      $(this).find('i').removeClass("fa-minus").addClass("fa-plus")
+    }
+  });
+
+  $(document).on('click', "a.open_add_conversation_attachment_modal", function(e){
+    id = $(this).attr('data-id')
+    $("#item_id_for_add_attachment").val(id);
+    account_conversation_id = $(this).attr('data-account-conversation-id')
+    $("#account_conversation_id_for_add_attachment").val(account_conversation_id)
+    $("#item_title").text($(this).attr('data-title'))
+    $("#item_created_at").text($(this).attr('data-created-at'))
+  });
+
+  $(document).on('click', '.get_conversation_attachment', function(){
+    item_id = $(this).attr('data-id')
+    attachment = $(this).attr('data-attachment')
+    account_conversation_id = $(this).attr('data-account-conversation-id')
+    if (attachment == 'true'){
+      $.ajax({
+        type: "PATCH",
+        url: "/accounts/get_or_delete_conversation_attachment?item_id="+item_id+"&account_conversation_id="+account_conversation_id,
+        success: function (data) {
+        },
+        beforeSend: function() {
+          $('#preloader').show();
+        },
+        complete: function() {
+          $('#preloader').hide();
+        },
+      });
+    }else{
+      $(".list_of_attachment").html("")
+    }
+  })
+
+  $(document).on("change",".get_address",function() {
+    var account_id = $(this).val();
+    if (account_id != ''){
+      $.ajax({
+        type: "GET",
+        dataType: "script",
+        url: '/schedule/get_account_address?account_id='+ account_id,
+        beforeSend: function() {
+         $('#preloader').css('opacity', 0.3);
+         $('#preloader').show();
+        }
+      });
+    }
+  });
+
+  $(document).on('change', '.meeting_type', function(){
+    if($(this).val() == 'regular'){
+      $(".invitee_emails_div").hide(500);
+      $('.end-date-time').hide(500);
+      $('.all-day').show(500)
+      $('.start-time').hide(500)
+      $('.meeting_title').prop("placeholder","Event (Optional)")
+      $('.meeting_title').attr('required', false)
+      $('#schedule-from-timepicker').attr('required', false)
+      $('#schedule-from-timepicker').val(null)
+      $('#schedule-to-datepicker').attr('required', false)
+      $('#schedule-to-timepicker').attr('required', false)
+      $(".repeat_div").hide(500);
+      $("#meeting-repeat-settings").show(500);
+      $("#repeat-frequency").attr('required', true);
+      $("#repeat-occurrences").attr('required', true);
+      $("#repeat-every-day").attr('required', true);
+
+    }else{
+      $(".invitee_emails_div").show(500);
+      $('.end-date-time').show(500);
+      $('.all-day').hide(500)
+      $('.start-time').show(500)
+      $('.meeting_title').prop("placeholder","Event")
+      $('.meeting_title').attr('required', true)
+      $('#schedule-from-timepicker').attr('required', true)
+      $('#schedule-to-datepicker').attr('required', true)
+      $('#schedule-to-timepicker').attr('required', true)
+      $(".repeat_div").show(500);
+      $("#meeting-repeat-settings").hide(500);
+      $("#repeat-frequency").val(null);
+      $("#repeat-occurrences").val(null);
+      $('#repeat-every-day').val(null);
+      $('#repeat-every-week').val(null);
+      $('#repeat-every-month').val(null);
+      $('#repeat-every-year').val(null);
+      $('#repeat-every-month-on').val(null);
+      $('#repeat-frequency-weekday-on').val(null);
+      $("#repeat-frequency").attr('required', false);
+      $("#repeat-occurrences").attr('required', false);
+      $("#repeat-every-day").attr('required', false);
+    }
+  });
+
+  var new_reminder;
+  $(function() {
+    new_reminder = $('#new_reminder').wysihtml5({'font-styles': false, 'image': false, 'link':false,
+      "events": {
+        "load": function() {
+          $(this.composer.iframe).wysihtml5_size_matters();
+        }
+      }
+    });
+  });
+
+  $(".get_notifiable_users").change(function(){
+    account_id = $(this).val();
+    if (account_id != ''){
+      $('#preloader').css('opacity', 0.3);
+      $('#preloader').show();
+      $.ajax({
+        type: "GET",
+        url: '/schedule/get_notifiable_users?account_id='+account_id,
+        success: function (data) {
+        }
+      });
+    }
+  });
+  $(".conversation-reminder-modal-form .select2").css('width', '100%');
+
+  var meeting_new_editor
+
+  $(function() {
+    meeting_new_editor = $('#meeting_new_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false,
+      "events": {
+        "load": function() {
+          $(this.composer.iframe).wysihtml5_size_matters();
+        }
+      }
+    });
+  });
+
+
+  var complete_meeting_editor;
+
+  $(function() {
+    complete_meeting_editor = $('#complete_meeting_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false,
+       "events": {
+          "load": function() {
+            $(this.composer.iframe).wysihtml5_size_matters();
+          }
+        }
+    });
+  });
+
+  $(document).on('click', "a.complete_meeting", function(e){
+    id = $(this).attr('data-id')
+    account_id = $(this).attr('data-account-id')
+    $(".conversation-complete-meeting-modal-form form").attr("action", "/accounts/" + account_id + "/update_meeting");
+    $('.conversation-complete-meeting-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
+    $('.conversation-complete-meeting-modal-form input[name="id"]').val($(this).attr('data-account-id'));
+    $('.conversation-complete-meeting-modal-form input[name="info"]').val(true);
+    var note = $(this).attr('data-notes')
+    if (note != ''){
+     complete_meeting_editor.data("wysihtml5").editor.setValue(note);
+    }
+    status = $(this).attr('data-status')
+    checked_out = $(this).attr('data-check-out')
+    if (status != "scheduled"){
+      $('.conversation-complete-meeting-modal-form select[name="conversation_item[status]"]').val(status);
+    }else if(checked_out == 'completed'){
+      $('.conversation-complete-meeting-modal-form select[name="conversation_item[status]"]').val('completed');
+    }
+  });
+
+  $(".conversation-complete-meeting-modal-form").on("hidden.bs.modal", function(){
+    complete_meeting_editor.data("wysihtml5").editor.setValue(null);
+    $('.conversation-complete-meeting-modal-form input[name="conversation_item[id]"]').val(null);
+    $('.conversation-complete-meeting-modal-form select[name="conversation_item[status]"]').val(null);
+  });
+
+  var meeting_edit_editor;
+
+  $(function() {
+    meeting_edit_editor = $('#meeting_edit_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false,
+       "events": {
+          "load": function() {
+            $(this.composer.iframe).wysihtml5_size_matters();
+          }
+        }
+    });
+  });
+
+  $(document).on('click', "a.edit_meeting", function(){
+    id = $(this).attr('data-id')
+    $("#conversation_id_for_edit_meeting").val(id);
+    account_conversation_id = $(this).attr('data-account-conversation-id')
+    $("#account_conversation_id_for_edit_meeting").val(account_conversation_id)
+    account_id = $(this).attr('data-account-id')
+    select_date = $(this).attr('select-date')
+    select_user_id = $(this).attr('select-user-id')
+    $(".conversation-edit-meeting-modal-form form").attr("action", "/accounts/" + account_id + "/update_meeting?date="+select_date +'&user_id='+select_user_id);
+    $('.conversation-edit-meeting-modal-form input[name="id"]').val($(this).attr('data-account-id'));
+    invitees = $(this).attr('data-invitees')
+    invitees_array = invitees.split(',')
+    $.each(invitees_array, function(index, value){
+      $("#edit_tag_input").before( "<span>"+value+"</span>");;
+    });
+    $('.conversation-edit-meeting-modal-form input[name="conversation_item[invitees]"]').val($(this).attr('data-invitees'));
+    $('.conversation-edit-meeting-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
+    $('.conversation-edit-meeting-modal-form input[name="conversation_item[location]"]').val($(this).attr('data-location'));
+
+    if (mobile == 'false'){
+      $('.conversation-edit-meeting-modal-form input[name="scheduled_time"]').val($(this).attr('data-time'));
+      $('.conversation-edit-meeting-modal-form input[name="starts_time"]').val($(this).attr('data-starts-time'));
+      $('.conversation-edit-meeting-modal-form input[name="ends_time"]').val($(this).attr('data-ends-time'));
+    }else{
+      $('.conversation-edit-meeting-modal-form input[name="scheduled_time"]').val($(this).attr('data-time-24'));
+      $('.conversation-edit-meeting-modal-form input[name="starts_time"]').val($(this).attr('data-starts-time-24'));
+      $('.conversation-edit-meeting-modal-form input[name="ends_time"]').val($(this).attr('data-ends-time-24'));
+    }
+
+    $('.conversation-edit-meeting-modal-form input[name="scheduled_date"]').val($(this).attr('data-date'));
+    $('.conversation-edit-meeting-modal-form input[name="starts_date"]').val($(this).attr('data-starts-date'));
+    $('.conversation-edit-meeting-modal-form input[name="ends_date"]').val($(this).attr('data-ends-date'));
+    $('.conversation-edit-meeting-modal-form input[name="info"]').val(true);
+    $('.conversation-edit-meeting-modal-form input[name="conversation_item[latitude]"]').val($(this).attr('data-latitude'));
+    $('.conversation-edit-meeting-modal-form input[name="conversation_item[longitude]"]').val($(this).attr('data-longitude'));
+    $('.conversation-edit-meeting-modal-form select[name="conversation_item[item_type]"]').val($(this).attr('data-item-type'));
+      if($(this).attr('data-item-type') == 'regular'){
+        // $('.conversation-edit-meeting-modal-form input[name="conversation_item[title]"]').hide()
+        // $('.conversation-edit-meeting-modal-form input[name="conversation_item[title]"]').attr('required', false)
+        $(".invitee_emails_div").hide();
+        $(".repeat_div").hide();
+        $(".end-date-time").hide();
+        $(".start-time").hide();
+        $(".all-day").show();
+        $("#schedule-to-datepicker-edit").attr('required', false);
+        $("#schedule-to-timepicker-edit").attr('required', false);
+        $("#schedule-from-timepicker-edit").attr('required', false);
+        $("#schedule-to-datepicker-edit").val(null);
+        $("#schedule-to-timepicker-edit").val(null);
+        $("#schedule-from-timepicker-edit").val(null);
+      }else{
+        // $('.conversation-edit-meeting-modal-form input[name="conversation_item[title]"]').show()
+        // $('.conversation-edit-meeting-modal-form input[name="conversation_item[title]"]').attr('required', true)
+        $(".invitee_emails_div").show();
+        $(".repeat_div").show();
+        $(".end-date-time").show();
+        $(".start-time").show();
+        $(".all-day").hide();
+        $("#schedule-to-datepicker-edit").attr('required', true);
+        $("#schedule-to-timepicker-edit").attr('required', true);
+        $("#schedule-from-timepicker-edit").attr('required', true);
+      }
+    $("#repetition_rule_value").val($(this).attr('data-repetition-rule'));
+
+      if ($('.conversation-edit-meeting-modal-form input[name="scheduled_time"]').val()!="" && $('.conversation-edit-meeting-modal-form input[name="scheduled_date"]').val()!="")
+        {
+          $("#meeting-reminder-edit").attr('checked', true);
+          $("#meeting-reminder-settings-edit").show(500);
+          $("#meeting-reminder-settings-edit").show(500);
+        }else{
+          $("#meeting-reminder-edit").attr('checked', false);
+          $("#meeting-reminder-settings-edit").hide(500);
+          $("#meeting-reminder-settings-edit").hide(500);
+          $('.conversation-edit-meeting-modal-form input[name="scheduled_date"]').val(null);
+
+        }
+     meeting_edit_editor.data("wysihtml5").editor.setValue($(this).attr('data-body'));
+
+    $('.conversation-edit-meeting-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
+  });
+
+  $(document).ready(function(){
+
+    if(mobile == 'false'){
+      $('#meeting-reminder-time-edit').timepicker({minuteStep: 5});
+      $('#meeting-reminder-time').timepicker({minuteStep: 5});
+    }
+    // by default hide reminder settings for meetings
+    $("#meeting-reminder-settings-edit").hide();
+
+    // hide show note reminder settings for meetings
+    $('#meeting-reminder-edit').change(function () {
+        if ($(this).is(':checked')) {
+          $("#meeting-reminder-settings-edit").show(500);
+      }
+      else {
+        $("#meeting-reminder-settings-edit").hide(500);
+        // $('.conversation-edit-meeting-modal-form input[name="scheduled_date"]').val(null);
+      }
+    });
+  });
+
+  $(document).ready(function(){
+
+    // Tags Input
+    jQuery('#invite-emails').tagsInput({
+      width:'100%',
+      height: 'auto',
+      onAddTag:isValidEmailAddress,
+      defaultText:'Invitees'
+    });
+    function isValidEmailAddress(emailAddress) {
+        var pattern = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
+
+        if (pattern.test(emailAddress) == false) {
+        alert("Please add a valid email address");
+        $('#invite-emails').removeTag(emailAddress);
+        }
+    };
+
+    // by default hide reminder settings for meetings
+    $("#meeting-reminder-settings").hide();
+
+    // hide show note reminder settings for meetings
+    $('#meeting-reminder').change(function () {
+        if ($(this).is(':checked')) {
+          $("#meeting-reminder-settings").show(500);
+          $("#meeting-reminder-date").attr('required', true);
+      }
+      else {
+        $("#meeting-reminder-settings").hide(500);
+        $("#meeting-reminder-date").attr('required', false);
+      }
+    });
+  });
+
+  // Select2
+  $("#schedule_user_list").select2({
+    width: '100%',
+    // maximumSelectionLength: 5,
+  });
+
+  $("#show_calendar_eve").click(function(){
+    if($("#schedule_user_list").val() != ''){
+     $('#preloader').css('opacity', 0.3);
+     $('#preloader').show();
+     update_regular_visits(null, null)
+    }
+  })
+
+  jQuery(document).ready(function() {
+
+    "use strict";
+    <%if params[:mid].present? && params[:acc_id].present? %>
+      var c_id = '<%=params[:mid]%>';
+      var acc_id = '<%=params[:acc_id]%>';
+      $.ajax({
+        type: "GET",
+        url: '/schedule/get_meeting?citem_id='+ c_id + "&account_id=" + acc_id,
+        success: function (data) {
+        }
+      });
+    <%end%>
+    /* initialize the calendar
+     -----------------------------------------------------------------*/
+    $('#calendar').fullCalendar({
+        now: '<%=@current_time_fullcalendar.iso8601%>',
+        customButtons: {
+          todayCustomButton: {
+              text: 'today',
+              click: function() {
+                 $('#calendar').fullCalendar('today');
+                 update_regular_visits(null, null)
+              }
+          }
+        },
+        header: {
+          left: 'prev,next todayCustomButton',
+          center: 'title',
+          right: 'month,agendaWeek,agendaDay',
+        },
+        defaultView: '<%=@calendar_view%>',
+        dayClick: function(date, jsEvent, view) {
+          update_regular_visits(date, null);
+        },
+        eventClick: function (calEvent, jsEvent, view) {
+          var c_id = calEvent.id
+          var account_id = calEvent.account_id
+          $.ajax({
+            type: "GET",
+            url: '/schedule/get_meeting?citem_id='+ c_id + "&account_id=" + account_id,
+            beforeSend: function() {
+              $('#preloader').css('opacity', 0.3);
+              $('#preloader').show();
+            },
+            complete: function() {
+              $('#preloader').hide();
+            },
+            success: function (data) {
+            }
+          });
+        },
+        editable: false,
+        droppable: false, // this allows things to be dropped onto the calendar
+        events: '/schedule/get_events'
+    });
+	});
+
+  $(document).on("click",".fc-next-button",function(){
+
+    get_regular_visit_with_day_view()
+
+  });
+
+  $(document).on("click",".fc-prev-button",function(){
+
+    get_regular_visit_with_day_view()
+
+  });
+
+  function get_regular_visit_with_day_view(){
+    var view = $('#calendar').fullCalendar('getView').name
+    if(view == 'agendaDay'){
+      var date = $('#calendar').fullCalendar('getDate')
+      update_regular_visits(date, null)
+    }
+  }
+
+  $("#quote-reminder-settings").hide();
+  $("#quote-reminder-settings-edit").hide();
+
+  $(document).on("change","#quote-reminder, #quote-reminder-edit",function() {
+    if ($(this).is(':checked')) {
+      $("#quote-reminder-settings").show(500);
+      $("#quote-reminder-settings-edit").show(500);
+      $(".clear_date").attr('required', true);
+      $(".clear_time").attr('required', true);
+    }
+    else {
+      $("#quote-reminder-settings").hide(500);
+      $("#quote-reminder-settings-edit").hide(500);
+      $(".clear_date").attr('required', false);
+      $(".clear_time").attr('required', false);
+      $(".clear_date").val(null)
+    }
+  });
+
+  $(document).on("click",".exp_in",function() {
+    if($(this).is(':checked')){
+      $(".get_date").attr('disabled', false)
+      $(".get_date").attr('required', true)
+      $(".set_date").attr('disabled', true)
+      $(".set_date").attr('required', false)
+    }
+  })
+
+  $(document).on("click",".exp_after",function() {
+    if($(this).is(':checked')){
+      $(".set_date").attr('disabled', false)
+      $(".set_date").attr('required', true)
+      $(".get_date").attr('disabled', true)
+      $(".get_date").attr('required', false)
+    }
+  });
+
+  $(document).on("keypress",".amount_val",function(event) {
+      if ((event.which != 46 || $(this).val().indexOf('.') != -1) &&
+        ((event.which < 48 || event.which > 57) &&
+          (event.which != 0 && event.which != 8))) {
+        event.preventDefault();
+      }
+      var text = $(this).val();
+      if ((text.indexOf('.') != -1) &&
+        (text.substring(text.indexOf('.')).length > 2) &&
+        (event.which != 0 && event.which != 8) &&
+        ($(this)[0].selectionStart >= text.length - 2)) {
+        event.preventDefault();
+      }
+  });
+
+  $(document).on("focusout",".amount_val",function() {
+     var re = /^-?[0-9]+$/;
+     var num = $(this).val();
+     if (re.test(num)){
+        num = num + '.00';
+        $(this).val(num);
+     }else if(!re.test(num) && num != '' ){
+       var length = parseFloat(num).toFixed(2).replace(/^-?\d*\.?|0+$/g, '').length
+       if(length == 1){
+        num = num + '0';
+        $(this).val(num);
+      }else if (length < 1){
+        num = parseFloat(num) + '.00';
+        $(this).val(num);
+      }
+    }
+  });
+
+  var new_quote
+  $(function() {
+    new_quote = $('#new_quote').wysihtml5({'font-styles': false, 'image': false, 'link':false,
+     "events": {
+        "load": function() {
+          $(this.composer.iframe).wysihtml5_size_matters();
+        }
+      }
+    });
+  });
+
+  var final_date
+  function getdate(e) {
+    var current_date = new Date();
+    current_date.setDate(current_date.getDate() + parseInt(e));
+    final_date = ('0' + (current_date.getMonth()+1)).slice(-2) + '/' + ('0' + current_date.getDate()).slice(-2) + '/' + current_date.getFullYear();
+  }
+
+  $(document).on("change",".get_date",function() {
+    var d = $(this).val()
+    getdate(d)
+    $(".display_date").val(final_date)
+  })
+
+
+  function set_time_when_date_change(){
+    var next_time = new Date();
+    var n = next_time.getMinutes()
+    var closest
+    if (n<=7){
+      closest = 0;
+    }else if(n>7 && n<=22){
+      closest = 15;
+    }
+    else if (n>22 && n<= 37){
+      closest = 30;
+    }else if(n>37 && n<=52){
+     closest = 45;
+    }else if(n>52 && n<=60){
+      closest = 60;
+    }
+    var time_val = closest + 30
+    next_time.setMinutes(time_val);
+    var c_time = set_time(next_time)
+    return c_time
+  }
+
+  called = false;
+
+  if(mobile == 'false'){
+    $('#reminderDatePicker').datepicker({
+      dateFormat: 'mm/dd/yy',
+      minDate: 0
+    });
+
+    $('.follow_time').timepicker({
+      minuteStep: 15
+    });
+
+    $(document).on("change","#reminderDatePicker",function() {
+      var select_date = $(this).val()
+      if(select_date == today_date(new Date)){
+        var c_time = set_time_when_date_change()
+        $("#reminderTimePicker").timepicker("setTime", c_time)
+      }
+    });
+
+    $(document).on("change","#reminderDatePickerEdit",function() {
+      var select_date = $(this).val()
+      if(select_date == today_date(new Date)){
+        var c_time = set_time_when_date_change()
+        $("#reminderTimePickerEdit").timepicker("setTime", c_time)
+      }
+    });
+
+    $('#reminderTimePicker').timepicker({
+        showMeridian: true,
+        minuteStep: 15,
+        showInputs: false,
+    }).on('changeTime.timepicker', function(e) {
+        if (mobile == 'false'){
+          var  date_val = $('#reminderDatePicker').val()
+        }else{
+          var date_val = today_date(new Date($('#reminderDatePicker').val()))
+        }
+        if((date_val != '') && (date_val == today_date(new Date))){
+          set_reminder_time(e);
+        }
+    });
+  }else{
+
+    $(document).on("change","#reminderDatePicker",function() {
+      var select_date = today_date(new Date($(this).val()))
+      if(select_date == today_date(new Date)){
+        var c_time = set_time_when_date_change()
+        ConvertTimeformat('24', c_time);
+        $("#reminderTimePicker").prop('min', sHours+':'+sMinutes)
+        $("#reminderTimePicker").val(sHours+':'+sMinutes)
+      }else{
+        $("#reminderTimePicker").prop('min',null)
+      }
+    });
+
+    $(document).on("change","#reminderDatePickerEdit",function() {
+      var select_date = today_date(new Date($(this).val()))
+      if(select_date == today_date(new Date)){
+        var c_time = set_time_when_date_change()
+        ConvertTimeformat('24', c_time);
+        $("#reminderTimePickerEdit").prop('min', sHours+':'+sMinutes)
+        $("#reminderTimePickerEdit").val(sHours+':'+sMinutes)
+      }else{
+        $("#reminderTimePickerEdit").prop('min',null)
+      }
+    });
+
+    ConvertTimeformat('24', set_time(new Date()))
+    $("#reminderTimePicker").val(sHours+':'+sMinutes)
+
+    $(document).on("change","#reminderTimePicker",function() {
+      var date_val = today_date(new Date($('#reminderDatePicker').val()))
+      if((date_val != '') && (date_val == today_date(new Date))){
+        var c_time = set_time_when_date_change()
+        ConvertTimeformat('24', c_time);
+        var hour1 = sHours
+        var minutes1 = sMinutes
+        $("#reminderTimePicker").prop('min', hour1+':'+minutes1)
+        var current_val = $(this).val()
+        var hour2 = Number(current_val.match(/^(\d+)/)[1]);
+        var minutes2 = Number(current_val.match(/:(\d+)/)[1]);
+        var c_date = new Date()
+        var hour = c_date.getHours()
+        var minutes = c_date.getMinutes()
+        if(Date.parse('01/01/2011'+' '+ hour1+':'+minutes1+':'+'00') > Date.parse('01/01/2011'+' '+ hour2+':'+minutes2+':'+'00')){
+          $("#reminderTimePicker").val(hour1+':'+minutes1)
+        }
+      }
+    });
+
+    $(document).on("change","#reminderTimePickerEdit",function() {
+      var date_val = today_date(new Date($('#reminderDatePickerEdit').val()))
+      if((date_val != '') && (date_val == today_date(new Date))){
+        var c_time = set_time_when_date_change()
+        ConvertTimeformat('24', c_time);
+        var hour1 = sHours
+        var minutes1 = sMinutes
+        $("#reminderTimePickerEdit").prop('min', hour1+':'+minutes1)
+        var current_val = $(this).val()
+        var hour2 = Number(current_val.match(/^(\d+)/)[1]);
+        var minutes2 = Number(current_val.match(/:(\d+)/)[1]);
+        var c_date = new Date()
+        var hour = c_date.getHours()
+        var minutes = c_date.getMinutes()
+        if(Date.parse('01/01/2011'+' '+ hour1+':'+minutes1+':'+'00') > Date.parse('01/01/2011'+' '+ hour2+':'+minutes2+':'+'00')){
+          $("#reminderTimePickerEdit").val(hour1+':'+minutes1)
+        }
+      }
+    });
+  }
+
+  function today_date(date){
+    var current_date = date
+    var date = current_date.getDate();
+    var month = current_date.getMonth()+1;
+    var year = current_date.getFullYear();
+    if(date<10) {
+        date='0'+date
+    }
+    if(month<10) {
+        month='0'+month
+    }
+    current_date = month+'/'+date+'/'+year;
+    return current_date;
+  }
+
+  function set_reminder_time(a){
+    if (called){
+      console.log(called);
+      called = false;
+      return;
+    }
+    called = true;
+    ConvertTimeformat('24', a.time.value);
+    total_minutes = parseInt(sHours)*60 + parseInt(sMinutes);
+    var d = new Date();
+    var current_t = set_time(d)
+    ConvertTimeformat('24', current_t);
+    total_current_minutes = parseInt(sHours)*60 + parseInt(sMinutes);
+
+    if((total_minutes) < total_current_minutes+30){
+      var display_time = new Date();
+      var n = display_time.getMinutes();
+      var closest;
+      if (n<=7){
+        closest = 0;
+      }else if(n>7 && n<=22){
+        closest = 15;
+      }
+      else if (n>22 && n<= 37){
+        closest = 30;
+      }else if(n>37 && n<=52){
+       closest = 45;
+      }else if(n>52 && n<=60){
+        closest = 60;
+      }
+      display_time.setMinutes(closest + 30);
+      var c_time = set_time(display_time);
+      $("#reminderTimePicker").timepicker("setTime", c_time);
+      $("#reminderTimePickerEdit").timepicker("setTime", c_time);
+    }
+  }
+
+  function set_time(t){
+    var hh = t.getHours();
+    var m = t.getMinutes();
+    var dd = 'AM';
+    var h = hh;
+    if (h >= 12) {
+        h = hh-12;
+        dd = "PM";
+    }
+    if (h == 0) {
+        h = 12;
+    }
+    m = m<10?"0"+m:m;
+    var current_time = h+":"+m+" "+dd;
+    return current_time
+  }
+
+  function ConvertTimeformat(format, str) {
+    var time = str
+    var hours = Number(time.match(/^(\d+)/)[1]);
+    var minutes = Number(time.match(/:(\d+)/)[1]);
+    var AMPM = time.match(/\s(.*)$/)[1];
+    if (AMPM == "PM" && hours < 12) hours = hours + 12;
+    if (AMPM == "AM" && hours == 12) hours = hours - 12;
+      sHours = hours.toString();
+      sMinutes = minutes.toString();
+    if (hours < 10) sHours = "0" + sHours;
+    if (minutes < 10) sMinutes = "0" + sMinutes;
+  }
+
+  function update_regular_visits(date, event_type) {
+      var user_id = $("#schedule_user_list").val()
+      if (date == null) {
+        url_path = '/schedule/regular_visits?user_id='+user_id;
+      }
+      else {
+        if(event_type == null) {
+          url_path = '/schedule/regular_visits?date='+date.format()+'&user_id='+user_id;
+        } else {
+          url_path = '/schedule/regular_visits?date='+date+'&user_id='+user_id;
+        }
+      }
+      $.ajax({
+        type: "GET",
+        url: url_path,
+        beforeSend: function() {
+          $('#spinner').show();
+          $('#regular_visits').html('');
+        },
+        complete: function() {
+          $('#spinner').hide();
+        },
+        success: function (data) {
+          $('#regular_visits').html(data);
+        }
+      });
+  }
+
+  update_regular_visits(null);
+</script>
+
+<style>
+  .fc-event-inner {/* force events to be one-line tall */
+    white-space: nowrap;
+    overflow: hidden;
+  }
+</style>

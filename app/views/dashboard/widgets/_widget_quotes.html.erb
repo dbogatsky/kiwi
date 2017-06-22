@@ -1,0 +1,38 @@
+<div class="panel panel-dark panel-alt widget-messaging">
+  <div class="panel-heading">
+    <h3 class="panel-title">Open Quotes</h3>
+  </div>
+  <div class="panel-body">
+    <% if @quotes.count > 0 %>
+      <ul>
+        <% @quotes.each do |q| %>
+          <li>
+            <small class="quote-price pull-right">
+              <strong><%=number_to_currency(q.amount)%>
+                <% if q.item_type? %>
+                  <% if q.item_type == 'weekly' %>
+                    / wk
+                  <% elsif q.item_type == 'monthly' %>
+                    / mo
+                  <% elsif q.item_type == 'yearly' %>
+                    / yr
+                  <% end %>
+                <% end %>    
+              </strong>
+            </small>
+            <h4 class="quote-title"><a href="/accounts/<%=q.account_id%>" style="color:#636e7b;"><%=q.title%></a></h4>
+            <small class="quote-expiry pull-right"><%= q.ends_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%b %d %Y") if q.ends_at.present? %></small>
+            <small class="quote-body"><%=truncate(strip_tags(q.body), length: 40, separator: ' ')%></small>
+            <br /><small class="quote-fa-icon"><i class="fa fa-briefcase"></i></small><small class="quote-account"><a href="/accounts/<%=q.account_id%>" style="color:#636e7b;"><%= q.account.try(:name) ? q.account.name : "Account Deleted" %></a></small>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <ul>
+        <li>   
+          <div class="quote-body">You have no quotes open</div>
+        </li>
+      </ul>
+    <% end %>
+  </div>
+</div>

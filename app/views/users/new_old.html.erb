@@ -1,0 +1,280 @@
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h4 class="panel-title">Add User</h4>
+		<p>Fill in the details below to add a user</p>
+	</div>
+	<div class="panel-body">
+  <%= simple_form_for @user, html: {class: "form-horizontal", multipart: true } do |f| %>
+
+    <%= f.input :email, label: "Email", required: true %>
+
+    <%= f.input :first_name, label: "First Name", required: true %>
+
+    <%= f.input :last_name, label: "Last Name", required: true %>
+
+    <%= f.input :password, label: "Password", required: true %>
+    <%#= f.input 'user[role_ids]', as: :select, collection: @roles.map{|r| [r[:name], r[:id]]},  label: "Role", required: true %>
+
+    <div class="form-group">
+      <label class="col-sm-3 control-label">Role<span class="asterisk">*</span></label>
+      <div class="col-sm-2">
+        <select name="user[role_ids][]" class="form-control input-sm">
+          <% @roles.each do |role| %>
+            <option value="<%= role[:id] %>"><%= role[:name] %></option>
+          <% end %>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-3 control-label">Locale<span class="asterisk">*</span></label>
+      <div class="col-sm-6">
+        <select class="form-control input-sm" name="user[locale]" data-placeholder="Select default language for this user">
+          <option value="1">English</option>
+          <option value="2">French</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-3 control-label">Time zone<span class="asterisk">*</span></label>
+      <div class="col-sm-6">
+        <%= time_zone_select( 'user[time_zone]', nil, ActiveSupport::TimeZone.us_zones, {:default => "Pacific Time (US & Canada)"}, {:class => 'form-control input-sm'}) %>
+      </div>
+    </div>
+
+    <%= f.fields_for :addresses_attributes do |add| %>
+
+      <%= add.input :street_address, required: true, label: "Street", :input_html => { :name => "user[addresses_attributes][][street_address]"} %>
+
+      <%= add.input :city, required: true, label: "City", :input_html => { :name => "user[addresses_attributes][][city]"} %>
+
+      <%= add.input :postcode, required: false, label: "Postcode/Zipcode", :input_html => { :name => "user[addresses_attributes][][postcode]"} %>
+
+      <%= add.input :region, required: false, label: "Province/State", :input_html => { :name => "user[addresses_attributes][][region]"} %>
+
+      <!-- <div class="form-group">
+        <label class="col-sm-offset-2 col-sm-2 control-label">Country<span class="asterisk">*</span></label>
+        <div class="col-sm-4">
+        <%#= add.input_field :country, { required: true, priority: [ "Canada", "United States", "United Kingdom" ],  class: "select2", name: "user[addresses_attributes][][country]"} %>
+        </div>
+      </div> -->
+    <% end %>
+
+    <!-- <div class="form-group">
+			<label class="col-sm-3 control-label">Street<span class="asterisk">*</span></label>
+			<div class="col-sm-6">
+				<input type="text" name="user-address[street_address]" id="user-street_address" class="form-control" required>
+			</div>
+		</div> -->
+
+		<!-- <div class="form-group">
+			<label class="col-sm-3 control-label">City<span class="asterisk">*</span></label>
+			<div class="col-sm-6">
+				<input type="text" name="user-address[city]" id="user-city" class="form-control" required>
+			</div>
+		</div> -->
+
+		<!-- <div class="form-group">
+			<label class="col-sm-3 control-label">Postcode/Zipcode<span class="asterisk">*</span></label>
+			<div class="col-sm-6">
+				<input type="text" name="user-address[postcode]" id="user-postcode" class="form-control" required>
+			</div>
+		</div> -->
+
+		<!-- <div class="form-group">
+			<label class="col-sm-3 control-label">Province/State<span class="asterisk">*</span></label>
+			<div class="col-sm-6">
+				<input type="text" name="user-address[region]" id="user-region" class="form-control" required>
+			</div>
+		</div> -->
+    <%= render 'countries_list'%>
+
+      <%= f.simple_fields_for :contacts_attributes do |c| %>
+        <% t = Time.now.to_i %>
+        <div class="form-group">
+          <label class="col-sm-offset-1 col-sm-2 control-label">Contact Name<span class="asterisk">*</span></label>
+          <div class="col-sm-2">
+            <%#= c.input :name, required: true, label: 'Contact', :input_html => { :name => "account[contacts_attributes][][name]" } %>
+            <%= c.input_field :name, { required: true, label: 'Contact', name: "user[contacts_attributes][][name]", class: "form-control"} %>
+          </div>
+
+          <label class="col-sm-1 control-label">Contact<span class="asterisk">*</span></label>
+          <div class="col-sm-1">
+            <%= c.select( :type, options_for_select(Contact::CONTACT_TYPES), {}, { :class => "select2", :name => "user[contacts_attributes][][type]"} ) %>
+          </div>
+
+          <label class="col-sm-1 control-label">Value<span class="asterisk">*</span></label>
+          <div class="col-sm-2">
+            <%#= c.input :value, required: true, :input_html => { :name => "account[contacts_attributes][][value]"} %>
+            <%= c.input_field :value, { required: true, label: 'Value', name: "user[contacts_attributes][][value]", class: "form-control"} %>
+          </div>
+        </div>
+    <% end %>
+		<!-- <div class="form-group">
+			<label class="col-sm-3 control-label">Contact Name</label>
+			<div class="col-sm-6">
+				<input type="text" name="user-contact_name" id="user-contact_name" class="form-control">
+			</div>
+		</div> -->
+
+		<!-- <div class="form-group">
+			<label class="col-sm-3 control-label">Contact</label>
+			<div class="col-sm-6">
+				<div class="row" id="user-contact-row">
+					<div class="col-sm-3">
+						<select name="user-contact[1][contact-type]" class="form-control input-sm">
+              <option value="phone">Phone</option>
+              <option value="mobile">Mobile</option>
+              <option value="fax">Fax</option>
+              <option value="email">Email</option>
+              <option value="website">Website</option>
+              <option value="twitter">Twitter</option>
+              <option value="facebook">Facebook</option>
+              <option value="youtube">Youtube</option>
+              <option value="instagram">Instagram</option>
+            </select>
+					</div>
+					<div class="col-sm-8">
+						<input type="text" name="user-contact[1][contact-details]" placeholder="Details" class="form-control" required>
+					</div>
+					<div class="col-sm-1">
+						<div class="btn-group">
+							<a class="add-detail btn btn-success"><i class="fa fa-plus"></i></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div> -->
+
+		<!-- <div class="form-group">
+			<label class="col-sm-3 control-label">Picture</label>
+			<div class="col-sm-6">
+        <label title="Upload image file" for="inputImage" class="btn btn-primary">
+          <input type="file" accept="image/*" name="user[avatar]" id="inputImage" class="hide">
+          Upload new image
+        </label>
+				<div class="user-avatar">
+					<img src="/assets/images/default_account_avatar.png" alt="Picture">
+				</div>
+			</div>
+		</div> -->
+
+    <div class="form-group">
+      <label class="col-sm-offset-2 col-sm-2 control-label">Picture</label>
+      <div class="col-sm-4">
+        <label title="Upload image file" for="inputImage" class="btn btn-white">
+          <%= f.file_field :avatar, { name: "user[avatar]" }  %>
+        </label>
+      </div>
+    </div>
+	</div><!-- panel-body -->
+
+	<div class="panel-footer">
+		<div class="row">
+			<div class="col-sm-6 col-sm-offset-3">
+				<button type="submit" class="btn btn-primary" name="save" id="save">Save</button>&nbsp;
+				<button class="btn btn-default" name="cancel" id="cancel">Cancel</button>
+			</div>
+		</div>
+	</div><!-- panel-footer -->
+</div>
+<% end %>
+
+<script src="/assets/bootstrap/js/fullcalendar.min.js"></script>
+<script src="/assets/bootstrap/js/jquery.ui.touch-punch.min.js"></script>
+
+<style>
+.user-avatar {
+  width: 100%;
+}
+
+.user-avatar > img {
+  max-width: 100%;
+}
+</style>
+<script>
+  contact_index = <%= @contact_counter %>;
+
+	//multiselect for sharing accounts
+
+	// Basic Form
+	jQuery("#user-add-form").validate({
+			highlight: function(element) {
+			jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+		},
+		success: function(element) {
+		  jQuery(element).closest('.form-group').removeClass('has-error');
+		}
+	});
+
+
+	$('#user-add-form').on('click', '.add-detail', function () {
+	    var row = $('#user-contact-row'),
+	        new_row = row.clone();
+
+	    row.find('.fa-plus')
+	        .removeClass('fa-plus')
+	        .addClass('fa-minus');
+
+	    row.find('.add-detail')
+	        .removeClass('add-detail')
+	        .removeClass('btn-success')
+	        .addClass('btn-danger')
+	        .addClass('minus-detail');
+
+
+          new_row.find('select').attr('name', 'user-contact[' + contact_index + '][contact-type]');
+          new_row.find('input:text').val('');
+          new_row.find('input:text').attr('name', 'user-contact[' + contact_index + '][contact-details]');
+          contact_index++;
+
+	    row.before(new_row);
+
+	}).on('click', '.minus-detail', function () {
+	    $(this).closest('#user-contact-row').remove();
+	});
+
+
+	var $image = $('.user-avatar > img'),
+	    replaced;
+
+	$image.cropper({
+		aspectRatio: 1 / 1,
+		movable: false,
+		zoomable: false,
+		rotatable: false,
+		scalable: false
+	});
+
+
+	var $inputImage = $("#inputImage");
+	if (window.FileReader) {
+	    $inputImage.change(function() {
+	        var fileReader = new FileReader(),
+	                files = this.files,
+	                file;
+
+	        if (!files.length) {
+	            return;
+	        }
+
+	        file = files[0];
+
+	        if (/^image\/\w+$/.test(file.type)) {
+	            fileReader.readAsDataURL(file);
+	            fileReader.onload = function () {
+	                // $inputImage.val("");
+	                $image.cropper("reset", true).cropper("replace", this.result);
+	            };
+	        } else {
+	            showMessage("Please choose an image file.");
+	        }
+	    });
+	} else {
+	    $inputImage.addClass("hide");
+	}
+
+
+
+</script>

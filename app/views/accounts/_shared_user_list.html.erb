@@ -1,0 +1,63 @@
+<%= form_tag(account_share_url) do |f| %>
+  <div class="row">
+    <div class="col-sm-10 country_select">
+      <select class="select2" id="add_shared_user" data-placeholder="Select a User">
+        <option value="">Select a User</option>
+        <%if shared_user.compact.present? %>
+          <%= options_for_select(users.reject{|u| shared_user.map(&:id).include?(u.id)}.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] if account.assigned_to.id != u.id }) %>
+        <%else%>
+          <%= options_for_select(users.collect{ |u| ["#{u.first_name} #{u.last_name}", u.id] if account.assigned_to.try(:id) != u.id }) %>
+        <%end%>
+      </select>
+    </div>
+    <div class="col-sm-2">
+      <button type="button" id="add_shared_user_button" class="btn btn-primary"><i class="fa fa-plus-circle mr5"></i>Add</button>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-body" id="user_list">
+      <div class="table-responsive">
+        <table class="table mb30" id="shared_user_list">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Permission</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% account.user_account_sharings.each do |s_user| %>
+              <%if s_user.user.present? %>
+                <tr id="<%= s_user.user.id %>" class="<%=s_user.user.first_name%> <%=s_user.user.last_name%>">
+                  <td>
+                    <input type="hidden" name="account[user_account_sharings_attributes][<%= s_user.user.id %>][user_id]" value="<%= s_user.user.id %>" >
+                    <%= s_user.user.first_name %>&nbsp;<%= s_user.user.last_name %>
+                  </td>
+                  <td>
+                    <select class="input-sm" name="account[user_account_sharings_attributes][<%= s_user.user.id %>][permission]">
+                    <%= options_for_select({ "Read Only" => "read", "Can Update" => "update" }, s_user.permission) %>
+                    </select>
+                  </td>
+                  <td class="table-action">
+                    <a class="delete-row"><i class="fa fa-trash-o"></i></a>
+                  </td>
+                </tr>
+              <%end%>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div><!-- panel-body -->
+
+    <div class="panel-footer">
+      <div class="row">
+        <div class="col-sm-12">
+          <button type="submit" value="submit" class="btn btn-primary save">Save</button>
+        </div>
+      </div>
+    </div><!-- panel footer -->
+  </div><!-- panel -->
+<% end %>
+<script type="text/javascript">
+  // save_show_hide();
+</script>

@@ -1,0 +1,250 @@
+<%if contacts.present?%>
+  <%
+     @contact_types = ""
+     Contact::CONTACT_TYPES.each { |x| @contact_types << '<option value="'+x+'">'+x+'</option>' }
+  %>
+  <% contacts.group_by{|x| x.name }.each do |contact| %>
+
+    <% contact.flatten[1..contact[1].length].each do |contact| %>
+        <%t=SecureRandom.urlsafe_base64(5)%>
+        <%if contact.type == 'email'%>
+          <%type = 'email'%>
+          <%cls = ''%>
+        <%elsif contact.type == 'website' || contact.type == 'facebook' || contact.type == 'youtube'%>
+          <%type = 'text'%>
+          <%cls = 'url_validate'%>
+        <%else%>
+          <%type = 'text'%>
+          <%cls = ''%>
+        <%end%>
+
+      <% if contact.type.eql? "phone"  or  contact.type.eql? "mobile"  or  contact.type.eql? "fax" %>
+          <li id="<%= t %>">
+            <div class="form-group">
+              <div class="row">
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-10">
+                  <input type='hidden' name='account[contacts_attributes][<%= t %>][_destroy]' value='false' class="delete_contact_id">
+                    <% if account.contact_name == contact.name %>
+                      <input label="Name" name="account[contacts_attributes][<%= t %>][name]" class="contact_li form-control input-sm user-error account_nam_edit hidden_root_acc_name hidden" id="account_contacts_attributes_name_<%= t %>" value="<%=contact.name %>" required="true" type="text" placeholder="contact name" aria-invalid="true">
+                    <%else%>
+                      <input label="Name" name="account[contacts_attributes][<%= t %>][name]" class="contact_li form-control input-sm user-error hidden" id="account_contacts_attributes_name_<%= t %>" value="<%=contact.name %>" required="true" type="text" placeholder="contact name" aria-invalid="true">
+                    <%end%>
+                </div>
+                <div class="col-sm-1">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="row">
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-10 padd_lt31">
+                  <input type='hidden' name='account[contacts_attributes][<%= t %>][_destroy]' value='false' class="delete_contact_id">
+                  <select class="input-sm background_color type_select" style="width: 100%;" id="account_contacts_attributes_type_<%= t %>" data-value="<%=contact.type%>" name="account[contacts_attributes][<%= t %>][type]"><%= raw(@contact_types) %></select>
+                </div>
+
+                <div class="col-sm-1">
+                  <a href="javascript:void(0);" class="remove_contact" data-toggle="tooltip" title="Click to Remove Contacts"><i class="fa fa-trash-o" aria-hidden="true"></i>
+                </a>
+                </a>
+                </div>
+                <div class="col-sm-1">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group padd_lt25">
+              <div class="row">
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-10 phone_div">
+                  <input type='hidden' name='account[contacts_attributes][<%= t %>][_destroy]' value='false' class="delete_contact_id">
+                  <input name="account[contacts_attributes][<%= t %>][value]" class="contact_li phone_type_validate phone_validate form-control input-sm" type="tel" value="<%=contact.value%>" required="true id="account_contacts_attributes_value_<%= t %>" ">
+                </div>
+
+                <div class="col-sm-10 without_phone_div hidden">
+                  <input type='hidden' name='account[contacts_attributes][<%= t %>][_destroy]' value='false' class="delete_contact_id">
+                 <input name="account[contacts_attributes][<%= t %>][value]" class="form-control type_validate contact_li" disabled value="abc" type="tel" required="true id="account_contacts_attributes_value_<%= t %>" ">
+                </div>
+
+                <div class="col-sm-1">
+                </div>
+              </div>
+            </div>
+          </li>
+      <%else%>
+        <li id="<%= t %>">
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-1">
+              </div>
+              <div class="col-sm-10">
+                <input type='hidden' name='account[contacts_attributes][<%= t %>][_destroy]' value='false' class="delete_contact_id">
+                <% if account.contact_name == contact.name %>
+                  <input label="Name" name="account[contacts_attributes][<%= t %>][name]" class="contact_li form-control input-sm user-error account_nam_edit  hidden_root_acc_name hidden" id="account_contacts_attributes_name_<%= t %>" value="<%=contact.name %>" required="true" type="text" placeholder="contact name" aria-invalid="true">
+                <%else%>
+                  <input label="Name" name="account[contacts_attributes][<%= t %>][name]" class="contact_li form-control input-sm user-error hidden" id="account_contacts_attributes_name_<%= t %>" value="<%=contact.name %>" required="true" type="text" placeholder="contact name" aria-invalid="true">
+                <%end%>
+              </div>
+              <div class="col-sm-1">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-1">
+              </div>
+              <div class="col-sm-10 padd_lt31">
+                <input type='hidden' name='account[contacts_attributes][<%= t %>][_destroy]' value='false' class="delete_contact_id">
+                <select class="input-sm background_color type_select" style="width: 100%;" id="account_contacts_attributes_type_<%= t %>" data-value="<%=contact.type%>" name="account[contacts_attributes][<%= t %>][type]"><%= raw(@contact_types) %></select>
+              </div>
+
+              <div class="col-sm-1">
+                <a href="javascript:void(0);" class="remove_contact" data-toggle="tooltip" title="Click to Remove Contacts"><i class="fa fa-trash-o" aria-hidden="true"></i>
+              </a>
+              </a>
+              </div>
+              <div class="col-sm-1">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group padd_lt25">
+            <div class="row">
+              <div class="col-sm-1">
+                <i class="fa fa-<%= contact.icon_name == 'website' ? 'globe' :  contact.icon_name%>">
+                </i>
+              </div>
+
+                <div class="col-sm-10 text_div">
+                  <input type='hidden' name='account[contacts_attributes][<%= t %>][_destroy]' value='false' class="delete_contact_id">
+                 <input name="account[contacts_attributes][<%= t %>][value]"  class="contact_li type_validate form-control input-sm <%=cls%>" type="<%=type%>" value="<%=contact.value%>" required="true" id="account_contacts_attributes_value_<%= t %>">
+                </div>
+
+
+                <div class="col-sm-10 edit_phone_div hidden">
+                  <input type='hidden' name='account[contacts_attributes][<%= t %>][_destroy]' value='false' class="delete_contact_id">
+                  <input name="account[contacts_attributes][<%= t %>][value]" class="contact_li phone_type_validate form-control input-sm" disabled value="abc" type="tel" required="true" id="account_contacts_attributes_value_<%= t %>" >
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+        </li>
+      <% end %>
+    <% end %>
+  <%end%>
+<%end%>
+
+<script type="text/javascript">
+  $(".type_select").each(function() {
+    $(this).val($(this).attr('data-value'));
+  });
+  phone_validate();
+  $(document).on('change', '.type_select', function(){
+    phone_validate();
+    var selected_value = $(this).val()
+    if (selected_value == 'email'){
+      $(this).closest('li').find('.phone_type_validate').removeClass('phone_validate')
+
+      $(this).closest('li').find('.phone_div').hide(500)
+      $(this).closest('li').find('.without_phone_div').removeClass('hidden')
+
+      $(this).closest('li').find('.edit_phone_div').addClass('hidden')
+      $(this).closest('li').find('.edit_phone_div').find('.contact_li').removeClass('phone_validate')
+      $(this).closest('li').find('.text_div').show(500)
+
+      $(this).closest('li').find('.type_validate').removeClass('url_validate')
+      $(this).closest('li').find('.type_validate').val(null)
+      $(this).closest('li').find('.type_validate').attr('type', 'email')
+      $(this).closest('li').find('.text_div').find('.contact_li').attr('type','email')
+      $(this).closest('li').find('.type_validate').attr('required', true)
+      $(this).closest('li').find('.type_validate').attr('disabled', false)
+      $(this).closest('li').find('.phone_type_validate').attr('required',false)
+      $(this).closest('li').find('.phone_type_validate').attr('disabled',true)
+    }else if(selected_value == 'facebook' || selected_value == 'youtube' || selected_value == 'website'){
+      $(this).closest('li').find('.phone_type_validate').removeClass('phone_validate')
+      $(this).closest('li').find('.phone_div').hide(500)
+      $(this).closest('li').find('.without_phone_div').removeClass('hidden')
+
+      $(this).closest('li').find('.edit_phone_div').addClass('hidden')
+      $(this).closest('li').find('.edit_phone_div').find('.contact_li').removeClass('phone_validate')
+      $(this).closest('li').find('.text_div').show()
+      $(this).closest('li').find('.text_div').find('.contact_li').attr('type','text')
+      $(this).closest('li').find('.type_validate').addClass('url_validate')
+      $(this).closest('li').find('.type_validate').val(null)
+      $(this).closest('li').find('.type_validate').attr('type', 'text')
+      $(this).closest('li').find('.type_validate').attr('required', true)
+      $(this).closest('li').find('.type_validate').attr('disabled', false)
+      $(this).closest('li').find('.phone_type_validate').attr('required',false)
+      $(this).closest('li').find('.phone_type_validate').attr('disabled',true)
+    }else if (selected_value == 'phone' || selected_value == 'mobile' || selected_value == 'fax'){
+      $(this).closest('li').find('.phone_div').show(500)
+      $(this).closest('li').find('.without_phone_div').addClass('hidden')
+
+      $(this).closest('li').find('.edit_phone_div').removeClass('hidden')
+      $(this).closest('li').find('.edit_phone_div').find('.contact_li').addClass('phone_validate')
+      $(this).closest('li').find('.text_div').hide()
+      $(this).closest('li').find('.text_div').find('.contact_li').attr("value", "")
+
+      $(this).closest('li').find('.edit_phone_div').find('.contact_li').attr('type','tel')
+      $(this).closest('li').find('.edit_phone_div').find('.contact_li').attr("value", "")
+
+
+      $(this).closest('li').find('.type_validate').val(null)
+      $(this).closest('li').find('.type_validate').attr('required', false)
+      $(this).closest('li').find('.type_validate').attr('disabled', true)
+      $(this).closest('li').find('.phone_type_validate').val(null)
+      $(this).closest('li').find('.phone_type_validate').attr('required',true)
+      $(this).closest('li').find('.phone_type_validate').attr('disabled',false)
+      $(this).closest('li').find('.phone_type_validate').addClass('phone_validate')
+      $(this).closest('li').find('.type_validate').removeClass('url_validate')
+      // $(this).closest('li').find('.type_validate').attr('type', 'tel')
+    }else{
+      $(this).closest('li').find('.phone_div').hide(500)
+      $(this).closest('li').find('.without_phone_div').removeClass('hidden')
+
+      $(this).closest('li').find('.edit_phone_div').addClass('hidden')
+      $(this).closest('li').find('.edit_phone_div').find('.contact_li').removeClass('phone_validate')
+      $(this).closest('li').find('.text_div').show()
+
+      $(this).closest('li').find('.phone_type_validate').removeClass('phone_validate')
+      $(this).closest('li').find('.type_validate').removeClass('url_validate')
+      $(this).closest('li').find('.type_validate').val(null)
+      $(this).closest('li').find('.type_validate').attr('required', true)
+      $(this).closest('li').find('.type_validate').attr('disabled', false)
+      $(this).closest('li').find('.type_validate').attr('type', 'text')
+      $(this).closest('li').find('.phone_type_validate').attr('required',false)
+      $(this).closest('li').find('.phone_type_validate').attr('disabled',true)
+    }
+  });
+
+  function check_phone_number() {
+    flag = true
+    $(".phone_validate").each(function() {
+      var status = $(this).intlTelInput("isValidNumber")
+      if (!status){
+        flag = false;
+        return flag;
+      }
+    });
+    return flag
+  }
+
+  function check_url_status() {
+    flag = true
+    $(".url_validate").each(function() {
+      var status = valid_url($(this))
+      if (!status){
+        flag = false;
+        return flag;
+      }
+    });
+  return flag
+}
+</script>

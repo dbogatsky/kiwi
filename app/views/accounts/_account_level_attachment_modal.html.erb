@@ -1,0 +1,52 @@
+<div class="modal fade account-level-attachment" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">&times;</button>
+        <h4 class="modal-title">Account Attachments</h4>
+        <p>Below are all attachments related to this account</p>
+      </div>
+      <div class="modal-body">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div class="row row-pad-5">
+                <div class="col-lg-12">
+                  <div class="drop_zone_height">
+                    <div class="col-lg-12 dropzone drop_zon_box add_account_level_attachment">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row row-pad-5">
+                <div class="col-lg-12" style="text-align: right;">
+                  <button type="submit" id="submit_dropzone_form" class="btn btn-primary">Upload</button>
+                </div>
+              </div>
+              <div id="account_attachment_list">
+                <%=render 'list_of_account_level_attachment', attachments: @attachments%>
+              </div>
+            </div><!-- panel-body -->
+            <div class="panel-footer">
+              <button aria-hidden="true" data-dismiss="modal" class="btn btn-primary save" type="button">Close</button>
+            </div><!-- panel footer -->
+          </div><!-- panel -->
+      </div><!-- modal body -->
+    </div><!-- modal content -->
+  </div><!-- modal dialog -->
+</div><!-- modal -->
+
+  <script type="text/javascript">
+    Dropzone.autoDiscover = false;
+    $("div.add_account_level_attachment").dropzone({
+      url: '/accounts/<%=@account.id%>/account_attachment',
+      uploadMultiple: true,
+      init: function() {
+        var myDropzone = this;
+        $(document).on("click","#submit_dropzone_form",function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          myDropzone.processQueue();
+        });
+      },
+    });
+  </script>

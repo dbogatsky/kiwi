@@ -1,0 +1,63 @@
+<%= content_for :head_assets do %>
+  <script src="/assets/bootstrap/js/fullcalendar.min.js"></script>
+  <script src="/assets/bootstrap/js/jquery.ui.touch-punch.min.js"></script>
+<% end %>
+<%= form_tag company_entities_path, class: 'form-horizontal', method: :post do %>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<p>Fill in the details below to add an entity</p>
+	</div>
+	<div class="panel-body">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">Entity Name<span class="asterisk">*</span></label>
+			<div class="col-sm-6">
+				<input type="text" name="company_entity[name]" class="form-control" required>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">Parent Entity</label>
+			<div class="col-sm-6">
+        <select name="company_entity[parent_id]" class="form-control input-sm">
+          <option value="">Default</option>
+          <%@entites.each do |entity|%>
+            <%unless entity.parent.present?%>
+              <option value="<%=entity.id%>"><%=entity.name%></option>
+              <%if entity.descendants.present?%>
+                <%entity.descendants.each do |des|%>
+                  <option value="<%=des.id%>">&nbsp;&nbsp;&nbsp;&nbsp;<%=des.name%></option>
+                <%end%>
+              <%end%>
+            <%end%>
+          <%end%>
+			  </select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">Description</label>
+			<div class="col-sm-6">
+				<textarea class="form-control" name="company_entity[description]" id="company-entity-description" rows="5"></textarea>
+			</div>
+		</div>
+	</div><!-- panel-body -->
+	<div class="panel-footer">
+		<div class="row">
+			<div class="col-sm-6 col-sm-offset-3">
+				<button type="submit" class="btn btn-primary" name="save" id="save">Save</button>&nbsp;
+				<a class="btn btn-default" href="/company">Cancel</a>
+			</div>
+		</div>
+	</div><!-- panel-footer -->
+</div>
+<%end%>
+
+<script>
+	// Basic Form
+	jQuery("#company-add-entity-form").validate({
+			highlight: function(element) {
+			jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+		},
+		success: function(element) {
+		  jQuery(element).closest('.form-group').removeClass('has-error');
+		}
+	});
+</script>

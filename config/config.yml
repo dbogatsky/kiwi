@@ -1,0 +1,24 @@
+default: &default
+  software_version: 0.1
+  software_title: Focus - Code10
+  superadmin_email: superadmin@code10.ca
+  open_weather_map: f4dc5bfac1f432cf8f665c834148f904
+
+
+development:
+  <<: *default
+  api_name: Orchard
+  api_app_key: app_LL1zKMy_vLixnHSyyiAB
+  api_verbose: true
+
+test:
+  <<: *default
+  api_name: Orchard
+  api_app_key: app_LL1zKMy_vLixnHSyyiAB
+  api_verbose: false
+
+production:
+  <<: *default
+  api_name: Orchard
+  api_app_key: app_LL1zKMy_vLixnHSyyiAB
+  api_verbose: false

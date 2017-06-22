@@ -1,0 +1,22 @@
+<%sub_entity.each do |sub|%>
+  <% sub_entty = CompanyEntity.find(sub.id)%>
+  <ul class="three_tree <%=sub_entty.descendants.present? ? 'plus_icon' : ''%>" id="add_sub_<%=sub.id%>">
+    <%if sub_entty.descendants.present?%>
+      <li class="first_li"><%=link_to sub.name, company_display_sub_entites_path(sub.id),remote: true, class: 'nested_link'%></li>
+    <%else%>
+       <li class="first_li"><%=sub.name%></li>
+    <%end%>
+      <li class="second_li"><%= sub.description %></li>
+      <li class="third_li">
+        <a href="javascript:void(0);" class="edit-folder"
+            data-id="<%= sub.id %>"
+            data-name="<%=sub.name %>"
+            data-description="<%= sub.description %>"
+            data-parent="<%=sub_entty.parent.present? ? sub_entty.parent.id : '' %>"
+            data-toggle="modal" data-target=".edit_company_entity" class="modal-link"><i class="fa fa-pencil"></i></a>
+        <%=link_to company_entity_path(sub.id), method: :delete,data: {:confirm => 'Are you sure to delete company entity?'} do %>
+              <i class="fa fa-trash-o"></i>
+        <% end %>
+      </li>
+  </ul>
+<%end%>

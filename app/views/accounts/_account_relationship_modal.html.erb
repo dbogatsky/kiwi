@@ -1,0 +1,40 @@
+<div class="modal fade account-relationship" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">&times;</button>
+        <h4 class="modal-title">Account Relations</h4>
+        <p>Below are a list of accounts related to this current one.(Name of Account Here)</p>
+      </div>
+      <div class="modal-body" id="">
+        <%= form_tag add_related_to_account_account_path(id: @account, destroy: false), method: :patch, remote: :true do |f| %>
+          <div class="row form-group">
+            <div class="col-sm-10 country_select">
+              <select class="form-control select2 account_selected add_remote_option_for_relationship" name="related_to" required="required"></select>
+            </div>
+            <div class="col-sm-2">
+              <button type="submit" id="add_related_to_account" class="btn btn-primary"><i class="fa fa-plus-circle mr5"></i>Add</button>
+            </div>
+          </div>
+          <!-- <div class="row form-group">
+            <div class="col-sm-10 country_select">
+              <select class="form-control" name="relationship_type" required="required">
+               <option value="child">As a child</option>
+               <option value="parent">As a parent</option>
+              </select>
+            </div>
+          </div> -->
+        <%end%>
+        <div class="panel panel-default">
+          <div class="panel-body" id="list_of_related_to_account">
+            <%= render 'list_of_related_to_account', related_to_account: @related_to_account%>
+          </div><!-- panel-body -->
+          <div class="panel-footer">
+            <div class="row">
+            </div>
+          </div><!-- panel footer -->
+        </div><!-- panel -->
+      </div><!-- modal body -->
+    </div><!-- modal content -->
+  </div><!-- modal dialog -->
+</div><!-- modal -->

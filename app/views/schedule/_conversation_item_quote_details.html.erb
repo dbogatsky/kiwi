@@ -1,0 +1,195 @@
+<div class="ibox-content ibox-heading pull-left" style="width: 100%;">
+  <div class=' row col-md-12 padd_left0 padd_right0'>
+    <div class="col-md-4 padd_left0 pull-left">
+      <span class="thumb meeting-icon" style="background:#e91e63;">
+        <img  class="meeting-img"  src="/assets/vertical-timeline/img/cd-icon-calculator.svg" alt="Quote">
+      </span>
+    </div>
+    <div class="col-md-4 pull-left">
+      <span class="schedule"><%=get_styled_quotestatus(citem, false)%></span>
+    </div>
+    <div class="col-md-4 pull-left padd_right0">
+      <div class="btn-group pull-right">
+        <div class="btn-group mr5 pull-right">
+          <button data-toggle="dropdown" class="btn btn-sm btn-white dropdown-toggle" type="button" style="border-radius: 2px">
+            <i class="fa fa-ellipsis-v mr5"></i><span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li>
+                <a class="edit_quote get_conversation_attachment" href="#"
+                 data-toggle="modal"
+                 data-target=".conversation-edit-quote-modal-form"
+                 data-id="<%= citem.id %>"
+                 data-title="<%=citem.title%>"
+                 data-attachment="<%=citem.media.present?%>"
+                 data-account-conversation-id="<%=((citem.try(:conversation_id).present?) ? citem.conversation_id : citem.prefix_options[:conversation_id]) %>"
+                 data-date="<%=mobile? ? Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") : Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y")  if citem.scheduled_at.present?%>"
+                 data-time-24="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%H:%M") if citem.scheduled_at.present? %>"
+                 data-time="<%=Chronic.parse(citem.scheduled_at).in_time_zone(current_user.time_zone).strftime("%I:%M %p") if citem.scheduled_at.present? %>"
+                 data-ends-day="<%=(Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).to_date - Date.today.in_time_zone(current_user.time_zone).to_date).to_i if citem.ends_at.present? %>"
+                 data-ends-date="<%=mobile? ? Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%d") : Chronic.parse(citem.ends_at).in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") if citem.ends_at.present?%>"
+                 data-amount = '<%=citem.amount%>'
+                 data-description="<%= citem.body %>">Edit</a>
+            </li>
+            <li>
+              <a class="complete_quote" href="#"
+                data-toggle="modal"
+                data-target=".conversation-complete-quote-modal-form"
+                data-status="<%= citem.status%>"
+                data-notes ="<%=citem.notes%>"
+                data-id="<%=citem.id%>">Complete
+              </a>
+            </li>
+            <li>
+              <%=link_to 'Delete', delete_quote_account_path(citem.account_id, item_id: citem.id, info: true), method: :delete,data: {confirm: 'Are you sure to delete this quote?'}%>
+            </li>
+            <%if @conversation_item_attachment == 'on'%>
+              <li>
+                <a class="open_add_conversation_attachment_modal" href="#"
+                  data-toggle="modal"
+                  data-target=".add-conversation-attachment-modal-form"
+                  data-account-conversation-id="<%=((citem.try(:conversation_id).present?) ? citem.conversation_id : citem.prefix_options[:conversation_id]) %>"
+                  data-title="<%=citem.title %>"
+                  data-created-at="<%= citem.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>"
+                  data-id="<%=citem.id%>">Add Attachment
+                </a>
+              </li>
+            <%end%>
+            <li>
+              <%=link_to 'Go To Account', account_path(citem.account_id)%>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row col-md-12 padd_left0 cd-date">
+    <%= citem.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>
+    <h3 class="ci_header"><%= citem.title %></h3>
+  </div>
+</div>
+<div class="panel-body">
+  <div class="ci_note_body">
+    <span class="subheading">Details:<br></span>
+          <%= sanitize citem.body %>
+    <% if (!citem.notes.nil?) %>
+      <p><span class="subheading">Notes:<br/></span><%= sanitize citem.notes %></p>
+  <% end %>
+  </div>
+  <div class="ci_amount">
+      <span class="subheading">Amount:<br></span>
+      $<%=number_with_precision(citem.amount, :precision => 2)%>
+  </div>
+  <div>
+    <%=render "accounts/conversation_attachment_show", citem: citem%>
+  </div>
+  <div class="ci_footer">
+    <i class="fa fa-user tooltips mr10" data-toggle="tooltip" data-original-title="Created by"></i><%=citem.created_by.first_name%> <%=citem.created_by.last_name%><br />
+    <% if citem.ends_at.present? %>
+        <i class="fa fa-clock-o tooltips mr10" data-toggle="tooltip" data-original-title="Expires Date"></i><%=citem.ends_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y")%>&nbsp;
+        (
+        <%if citem.ends_at.in_time_zone(current_user.time_zone).to_date > Date.today.in_time_zone(current_user.time_zone).to_date%>
+          <%= time_ago_in_words(citem.ends_at.to_date).gsub('about','')%>
+        <%elsif citem.ends_at.in_time_zone(current_user.time_zone).to_date == Date.today.in_time_zone(current_user.time_zone).to_date%>
+          <span>Today</span>
+        <%end%>
+        )<br />
+    <% end %>
+    <% if (citem.scheduled_at.present?) %>
+        <i class="fa fa-bell tooltips mr10" data-toggle="tooltip" data-original-title="Reminder"></i>
+        <%=citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %>
+        <br>
+    <%end%>
+    <i class="fa fa-briefcase tooltips mr10" data-toggle="tooltip" data-original-title="Account"></i><%= citem.account.try(:name) ? citem.account.name : "Account Deleted" %>
+  </div>
+</div>
+<%= render "accounts/conversation_quote_edit", account: account %>
+<%= render "accounts/conversation_quote_complete", account: account%>
+
+<script type="text/javascript">
+
+  var edit_quote;
+  $(function() {
+    edit_quote = $('#quote_edit').wysihtml5({'font-styles': false, 'image': false, 'link':false,
+     "events": {
+        "load": function() {
+          $(this.composer.iframe).wysihtml5_size_matters();
+        }
+      }
+    });
+  });
+  var complete_quote_editor;
+  $(function() {
+    complete_quote_editor = $('#complete_quote_editor').wysihtml5({'font-styles': false, 'image': false, 'link':false,
+     "events": {
+        "load": function() {
+          $(this.composer.iframe).wysihtml5_size_matters();
+        }
+      }
+    });
+  });
+
+  if(mobile == 'false'){
+    $('.datepicker').datepicker();
+    $('.follow_time').timepicker({
+      minuteStep: 15
+    });
+  }
+  $(document).on('click', "a.edit_quote", function(e){
+    id = $(this).attr('data-id')
+    $("#conversation_id_for_edit_quote").val(id);
+    account_conversation_id = $(this).attr('data-account-conversation-id')
+    $("#account_conversation_id_for_edit_quote").val(account_conversation_id)
+    status = $(this).attr('data-status')
+    body = $(this).attr('data-description')
+    $('.conversation-edit-quote-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
+    $('.conversation-edit-quote-modal-form select[name="conversation_item[status]"]').val(status);
+    console.log($(this).attr('data-amount'))
+    $('.conversation-edit-quote-modal-form input[name="conversation_item[amount]"]').val($(this).attr('data-amount'));
+    if (body != ''){
+      edit_quote.data("wysihtml5").editor.setValue(body);
+    }
+    if(mobile == 'false'){
+      $('.conversation-edit-quote-modal-form input[name="follow_time"]').val($(this).attr('data-time'));
+    }else{
+     $('.conversation-edit-quote-modal-form input[name="follow_time"]').val($(this).attr('data-time-24'));
+    }
+    $('.conversation-edit-quote-modal-form input[name="follow_date"]').val($(this).attr('data-date'));
+    $('.conversation-edit-quote-modal-form input[name="conversation_item[title]"]').val($(this).attr('data-title'));
+    $('.conversation-edit-quote-modal-form input[name="expires_in"]').val($(this).attr('data-ends-day'));
+    $('.conversation-edit-quote-modal-form input[name="info"]').val(true);
+    $('.conversation-edit-quote-modal-form input[name="expires_after"]').val($(this).attr('data-ends-date'));
+    if ($(this).attr('data-time') != '' && $(this).attr('data-date') != ''){
+      $("#quote-reminder-edit").attr('checked', true);
+      $(".clear_date").attr('required', true);
+      $(".clear_time").attr('required', true);
+      $("#quote-reminder-settings-edit").show();
+    }else{
+      $("#quote-reminder-edit").attr('checked', false);
+      $("#quote-reminder-settings-edit").hide();
+      $(".clear_date").attr('required', false);
+      $(".clear_time").attr('required', false);
+    }
+      getdate($(this).attr('data-ends-day'));
+      $(".display_date").val(final_date)
+      $(".set_date").attr('disabled', true)
+      $(".get_date").attr('disabled', false)
+  });
+
+  $(document).on('click', "a.complete_quote", function(e){
+    id = $(this).attr('data-id')
+    var status = $(this).attr('data-status')
+    if (status == 'open'){
+       status = ''
+    }
+    var notes = $(this).attr('data-notes')
+    $('.conversation-complete-quote-modal-form input[name="conversation_item[id]"]').val($(this).attr('data-id'));
+     $('.conversation-complete-quote-modal-form input[name="info"]').val(true);
+    if (status != "scheduled"){
+      $('.conversation-complete-quote-modal-form select[name="conversation_item[status]"]').val(status);
+    }
+    if (notes != ''){
+      complete_quote_editor.data("wysihtml5").editor.setValue(notes);
+    }
+  });
+</script>

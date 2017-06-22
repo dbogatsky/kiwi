@@ -1,0 +1,38 @@
+$('#calendar').fullCalendar('removeEvents')
+$('#calendar').fullCalendar('removeEventSources')
+$('#calendar').fullCalendar('addEventSource', '/schedule/get_events?user_id=<%=params[:users]%>')
+<%if @all_items.present?%>
+  <%@all_items.each do |i|%>
+    <%if i.type.eql? 'meeting'%>
+      <%s_date = Chronic.parse(i.starts_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S")%>
+      <%e_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S") %>
+      <%all_day = false%>
+      <%color = "#3a87ad"%>
+    <%elsif i.type.eql? 'reminder'%>
+      <%s_date = Chronic.parse(i.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S")%>
+      <%e_date = Chronic.parse(i.scheduled_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S") %>
+      <%all_day = false%>
+      <%color = "#f0ca45"%>
+    <%elsif i.type.eql? 'quote'%>
+      <%s_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S")%>
+      <%e_date = Chronic.parse(i.ends_at).in_time_zone(current_user.time_zone).strftime("%Y-%m-%dT%H:%M:%S") %>
+      <%all_day = true%>
+      <%color = "#e91e63"%>
+    <%end%>
+    <%#created_by = i.created_by.id%>
+    event_data = {
+      account_id: <%=i.account_id%>,
+      id: <%=i.id%>,
+      title: '<%=i.title%>',
+      start: '<%=s_date%>',
+      end: '<%=e_date%>',
+      color: '<%=color%>',
+      allDay: '<%=all_day%>'
+    }
+    // $('#calendar').fullCalendar('renderEvent', event_data);
+  <%end%>
+<%else%>
+  $('#calendar').fullCalendar('removeEvents');
+  $("#conversation_item_details").html('')
+<%end%>
+$('#preloader').hide();

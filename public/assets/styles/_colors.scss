@@ -1,0 +1,39 @@
+$color : (	"NAVY" #001F3F ,
+			"BLUE" #0074D9 ,
+			"AQUA" #7FDBFF ,
+			"TEAL" #42a385 ,
+			"OLIVE" #3D9970 ,
+			"GREEN" #2ECC40 ,
+			"LIME" #01FF70 ,
+			"YELLOW" #FFDC00 ,
+			"ORANGE" #FF851B ,
+			"RED" #FF4136 ,
+			"MAROON" #85144B ,
+			"FUCHSIA" #F012BE ,
+			"PURPLE" #B10DC9 ,
+			"BLACK" #111111 ,
+			"GRAY" #AAAAAA ,
+			"SILVER" #DDDDDD,
+			"WHITE" #fff);
+@each $p in $color{
+  $d:nth($p,1);
+  $d:to_lower_case($d);
+	.b-#{$d}{
+		background-color:#{nth($p,2)};
+	}
+	.t-#{$d}{
+		color:#{nth($p,2)};
+	}
+};
+@function get_color($colorx){
+  $hex:#fff;
+  $colorx:to_lower_case($colorx);
+  @each $p in $color{
+    $cl:nth($p,1);
+    $cl:to_lower_case($cl);
+    @if $cl==$colorx{
+      $hex:nth($p,2);
+    }
+  }
+  @return $hex;
+}

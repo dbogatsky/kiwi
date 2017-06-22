@@ -1,0 +1,287 @@
+<div class="row">
+  <div class="col-md-12">
+    <form class="form-horizontal" id="form1">
+      <div id="container">
+        <header>
+        </header>
+        <section id="accordion">
+          <%if @account.assets.present?%>
+              <%@account.assets.each do |asset|%>
+                <div>
+                  <script>
+                    jQuery(document).ready(function(){
+                      jQuery(".edit_asset_name_<%=asset.id%>").editable({
+                        validate: function(value) {
+                          if($.trim(value) == '') return 'This field is required';
+                        },
+                        mode: 'inline',
+                        name: 'name',
+                        url: '/update_asset?account_id=<%=@account.id%>',
+                        pk: '<%=asset.id%>',
+                        ajaxOptions: {
+                            type: 'put'
+                        }
+                      });
+
+                      jQuery(".edit_asset_description_<%=asset.id%>").editable({
+                        mode: 'inline',
+                        name: 'description',
+                        url: '/update_asset?account_id=<%=@account.id%>',
+                        pk: '<%=asset.id%>',
+                        ajaxOptions: {
+                            type: 'put'
+                        }
+                      });
+                    });
+                  </script>
+                  <input type="checkbox" id="check-<%=asset.id%>" />
+                  <label for="check-<%=asset.id%>"><i class="fa fa-plus-square" style="margin-right:10px;"></i>
+                  <a href="#" data-type="text" id="" class="editable editable-click edit_asset_name_<%=asset.id%> txt_color"><%=asset.name%></a> (ID# <%=asset.id%>)</label>
+                  <article>
+                    <div class="row editable-list-item">
+                      <div class="col-sm-3">Description</div>
+                      <div class="col-sm-9"><a href="#" data-type="text" id="" class="editable editable-click edit_asset_description_<%=asset.id%>"><%=asset.description%></a></div>
+                    </div>
+                    <%if @assets.present?%>
+                      <%@assets.each do |key,value|%>
+                        <script type="text/javascript">
+                          jQuery(document).ready(function(){
+                            <% if value["format"] == 'date' %>
+                              <%if value["required"].to_s == "true"%>
+                                jQuery(".comboDate_<%=asset.id%>_<%=key.gsub(' ','')%>").editable({
+                                  inputclass: 'sel',
+                                  template: 'MM /DD / YYYY',
+                                  viewformat: 'MM / DD / YYYY',
+                                  combodate: {
+                                    minYear: 2000,
+                                    maxYear: 2025
+                                  },
+                                  validate: function(value) {
+                                      if($.trim(value) == '') return 'This field is required';
+                                  },
+                                  name: '<%=key%>',
+                                  url: '/update_asset?account_id=<%=@account.id%>',
+                                  pk: '<%=asset.id%>',
+                                  ajaxOptions: {
+                                      type: 'put'
+                                  }
+                                });
+                              <%else%>
+                                jQuery(".comboDate_<%=asset.id%>_<%=key.gsub(' ','')%>").editable({
+                                  inputclass: 'sel',
+                                  template: 'MM /DD / YYYY',
+                                  viewformat: 'MM / DD / YYYY',
+                                  combodate: {
+                                    minYear: 2000,
+                                    maxYear: 2025
+                                  },
+                                  name: '<%=key%>',
+                                  url: '/update_asset?account_id=<%=@account.id%>',
+                                  pk: '<%=asset.id%>',
+                                  ajaxOptions: {
+                                      type: 'put'
+                                  }
+                                });
+                              <%end%>
+                            <% elsif value["format"] == 'enum' %>
+                              a = []
+                              checked_value_arr = []
+                              <%checked_value = (asset.properties.try(:attributes).present?) ?  asset.properties.attributes[key] : []%>
+                                <%unless checked_value.blank?%>
+                                  <% if checked_value.class ==  Array %>
+                                    <%checked_value.each do |cv|%>
+                                      checked_value_arr.push('<%=cv%>')
+                                    <%end%>
+                                  <%end%>
+                                <%end%>
+                              <%value['values'].each do |k,v|%>
+                                a.push({value: '<%=k%>', text: '<%=v%>'})
+                              <% end %>
+                              <%if value["required"].to_s == "true"%>
+                                jQuery(".checkList_<%=asset.id%>_<%=key.gsub(' ','')%>").editable({
+                                  value: checked_value_arr,
+                                  source: a,
+                                  validate: function(value) {
+                                    if($.trim(value) == '') return 'This field is required';
+                                  },
+                                  mode: 'inline',
+                                  name: '<%=key%>',
+                                  url: '/update_asset?account_id=<%=@account.id%>',
+                                  pk: '<%=asset.id%>',
+                                  ajaxOptions: {
+                                    type: 'put'
+                                  }
+                                });
+                              <%else%>
+                                jQuery(".checkList_<%=asset.id%>_<%=key.gsub(' ','')%>").editable({
+                                  value: checked_value_arr,
+                                  source: a,
+                                  mode: 'inline',
+                                  name: '<%=key%>',
+                                  url: '/update_asset?account_id=<%=@account.id%>',
+                                  pk: '<%=asset.id%>',
+                                  ajaxOptions: {
+                                    type: 'put'
+                                  }
+                                });
+                              <%end%>
+                            <%elsif value["format"] == 'select'%>
+                              var selected_value = "<%=(asset.properties.try(:attributes).present?) ?  asset.properties.attributes[key] : ''%>"
+                              a = []
+                              <%value['values'].each do |k,v|%>
+                                a.push({value: '<%=k%>', text: '<%=v%>'})
+                              <% end %>
+                              <%if value["required"].to_s == "true"%>
+                                jQuery(".selectWithNoBtn_<%=asset.id%>_<%=key.gsub(' ','')%>").editable({
+                                  source: a,
+                                  value: selected_value,
+                                  validate: function(value) {
+                                    if($.trim(value) == '') return 'This field is required';
+                                  },
+                                  mode: 'inline',
+                                  name: '<%=key%>',
+                                  url: '/update_asset?account_id=<%=@account.id%>',
+                                  pk: '<%=asset.id%>',
+                                  ajaxOptions: {
+                                    type: 'put'
+                                  }
+                                });
+                              <%else%>
+                                jQuery(".selectWithNoBtn_<%=asset.id%>_<%=key.gsub(' ','')%>").editable({
+                                  source: a,
+                                  value: selected_value,
+                                  mode: 'inline',
+                                  name: '<%=key%>',
+                                  url: '/update_asset?account_id=<%=@account.id%>',
+                                  pk: '<%=asset.id%>',
+                                  ajaxOptions: {
+                                    type: 'put'
+                                  }
+                                });
+                              <%end%>
+                            <%else%>
+                              <%if value["required"].to_s == "true"%>
+                                jQuery(".edit_text_<%=asset.id%>_<%=key.gsub(' ','')%>").editable({
+                                  validate: function(value) {
+                                    if($.trim(value) == '') return 'This field is required';
+                                  },
+                                  mode: 'inline',
+                                  name: '<%=key%>',
+                                  url: '/update_asset?account_id=<%=@account.id%>',
+                                  pk: '<%=asset.id%>',
+                                  ajaxOptions: {
+                                      type: 'put'
+                                  }
+                                });
+                              <%else%>
+                                jQuery(".edit_text_<%=asset.id%>_<%=key.gsub(' ','')%>").editable({
+                                  mode: 'inline',
+                                  name: '<%=key%>',
+                                  url: '/update_asset?account_id=<%=@account.id%>',
+                                  pk: '<%=asset.id%>',
+                                  ajaxOptions: {
+                                      type: 'put'
+                                  }
+                                });
+                              <%end%>
+                            <%end%>
+                          });
+                        </script>
+                        <div class="row editable-list-item">
+                          <div class="col-sm-3"><%= value["label"] %></div>
+                          <% if value["format"] == 'date' %>
+                            <div class="col-sm-9"><a href="#" id="" data-type="combodate" class="editable editable-click comboDate_<%=asset.id%>_<%=key.gsub(' ','')%>">
+                              <%=( asset.properties.try(:attributes).present?) ?  asset.properties.attributes[key] : nil%></a>
+                            </div>
+                          <% elsif value["format"] == 'enum' %>
+                            <div class="col-sm-9">
+                              <a href="#" id="" data-type="checklist" data-title="Select <%=value["label"]%>" class="editable editable-click editable-empty checkList_<%=asset.id%>_<%=key.gsub(' ','')%>">
+                              </a>
+                            </div>
+                          <% elsif value["format"] == 'select' %>
+                            <div class="col-sm-9">
+                              <a href="#" id="" data-type="select" class="editable editable-click selectWithNoBtn_<%=asset.id%>_<%=key.gsub(' ','')%>">
+                              </a>
+                            </div>
+                          <% else %>
+                            <div class="col-sm-9"><a href="#" data-type="text" id="" class="editable editable-click edit_text_<%=asset.id%>_<%=key.gsub(' ','')%>"><%=( asset.properties.try(:attributes).present?) ?  asset.properties.attributes[key] : nil%></a></div>
+                          <% end %>
+                        </div>
+                      <%end%>
+                    <%end%>
+                  </article>
+                </div>
+              <%end%>
+          <%end%>
+        </section>
+      </div>
+    </form>
+  </div><!-- col-md-12 -->
+</div><!-- row -->
+<br /><br />
+<style>
+  #container {
+      margin: 0 auto;
+      width: 100%;
+
+  }
+  #accordion input {
+    display: none;
+  }
+  #accordion label {
+    background: #eee;
+    border-radius: .25em;
+    cursor: pointer;
+    display: block;
+    margin-bottom: .125em;
+    padding: .25em 1em;
+    z-index: 20;
+  }
+
+  #accordion label {
+    background: #333;
+    padding: 10px;
+    color: #fff;
+  }
+
+  #accordion label:hover {
+    background: #000;
+  }
+
+  #accordion input:checked + label {
+    background: #333;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    color: white;
+    margin-bottom: 0;
+    padding: 10px;
+  }
+  #accordion article {
+    background: #f7f7f7;
+    height:0px;
+    overflow:hidden;
+    z-index:10;
+  }
+  #accordion article p {
+    padding: 1em;
+  }
+  #accordion input:checked article {
+  }
+  #accordion input:checked ~ article {
+    border-bottom-left-radius: .25em;
+    border-bottom-right-radius: .25em;
+    height: auto;
+    overflow: inherit;
+    margin-bottom: .125em;
+  }
+  #accordion .editableform input{display: block;}
+
+  #accordion .editable-checklist label {
+    padding:0px;
+    margin-bottom: 5px !important;
+    color: #4a535e;
+    background: #FFF;
+    white-space: nowrap;
+
+  }
+</style>

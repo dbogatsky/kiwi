@@ -1,0 +1,48 @@
+<div class="cd-timeline-img cd-account">
+    <img src="/assets/vertical-timeline/img/cd-icon-briefcase.svg" alt="Account Change">
+</div>
+<div class="cd-timeline-content">
+  <!-- <a class="btn btn-primary" data-toggle="collapse" href="#account_info_<%= citem.id %>" aria-expanded="false" aria-controls="collapseExample">
+    Link
+  </a> -->
+  <%= link_to 'javascript:;', id: "account_link_#{citem.id}" do%>
+    <i class="fa fa-angle-double-down pull-right"></i>
+  <%end%>
+  <span class="cd-date">
+    <%= citem.created_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p")%>
+  </span>
+  <h2 class="ci_header"><%= citem.title %></h2>
+  <div class="collapse note_display" id="account_info_<%= citem.id %>">
+    <div class="ci_note_body"><%= sanitize citem.body %></div>
+    <div class="ci_footer">
+      <% if (citem.scheduled_at.present?) %>
+        <i class="fa fa-bell"></i><%= citem.scheduled_at.to_datetime.in_time_zone(current_user.time_zone).strftime("%a %b %d %Y at %l:%M %p") %><br/>
+      <% end %>
+      <i class="fa fa-user tooltips mr10" data-toggle="tooltip" data-original-title="Created by"></i>
+      <% if citem.created_by.present? %>
+        <%=citem.created_by.try(:first_name)%> <%=citem.created_by.try(:last_name)%>
+      <% else %>
+        Deleted User
+      <% end %><br />
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $("#account_link_<%=citem.id%>").click(function(){
+    var element = $(this).parent().find("div#account_info_<%=citem.id%>")
+    $(".note_display").each(function() {
+     $(this).parent().find('a').find('i').removeClass("fa-angle-double-up").addClass("fa-angle-double-down")
+    });
+    if(element.hasClass('show_citem'))
+      {
+        element.removeClass('show_citem');
+        $(this).parent().find('a').find('i').removeClass("fa-angle-double-up").addClass("fa-angle-double-down")
+      }
+      else
+      {
+        $('.note_display').removeClass('show_citem');
+        element.addClass('show_citem');
+        $(this).parent().find('a').find('i').removeClass("fa-angle-double-down").addClass("fa-angle-double-up")
+      }
+  });
+</script>

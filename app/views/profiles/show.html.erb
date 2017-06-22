@@ -1,0 +1,319 @@
+<% content_for :pageheader do %>
+  <h2><i class="fa fa-user"></i> My Profile</h2>
+<% end %>
+
+    <%= simple_form_for current_user, url: profile_path, method: :patch do |f| %>
+      <div class="panel panel-default">
+
+      	<div class="panel-heading">
+      		<p>Edit your profile below and click save</p>
+      	</div>
+
+      	<div class="panel-body">
+          <div class="form-group">
+            <label class="col-sm-3 control-label">Email</label>
+            <div class="col-sm-6">
+              <%= current_user.email %>
+            </div>
+          </div>
+          <%= f.input :first_name, required: true %>
+          <%= f.input :last_name, required: true %>
+          <div class="form-group">
+            <label class="col-sm-3 control-label">Role</label>
+            <div class="col-sm-2">
+            <%#rol = current_user.roles.present? ? current_user.roles.last : '' %>
+              <%#=select_tag "user[role_ids][]", options_for_select(Role.all.map{|c| [c.name, c.id] }, selected: "#{rol}"), {prompt: "select", :class => 'form-control input-sm sel_role'}%>
+              <%=current_user.roles.present? ? current_user.roles.last.name : ''%>
+            </div>
+            <%en = (defined?(current_user.entity)).nil? ? 'display: none' : 'display: block' %>
+            <div class="show_entity" style="<%=en%>">
+              <label class="col-sm-1 control-label">Entity</label>
+                <div class="col-sm-2">
+                   <%en = (defined?(current_user.entity)).nil? ? '' : current_user.entity.id %>
+                   <%=f.select(:company_entity_id, options_for_select(CompanyEntity.all.map{|c| [c.name, c.id] }, selected: "#{en}"), {prompt: "select"}, {:class => 'form-control sel_clear input-sm', required: true})%>
+                </div>
+            </div>
+            <!-- <div class="col-sm-4">
+              <label class="col-sm-1 control-label">Locale:<span class="asterisk">*</span></label>
+              <%#=f.select(:locale, options_for_select([['English', 1],['French', 2]], selected: current_user.locale), {prompt: "select"}, {:class => 'form-control'})%>
+            </div> -->
+          </div>
+          <div class="form-group">
+            <label class="col-sm-3 control-label">Locale</label>
+            <div class="col-sm-6">
+              <%#=f.select(:locale, options_for_select([['English', 1],['French', 2]], selected: current_user.locale), {prompt: "select"}, {:class => 'form-control input-sm'})%>
+              <%=(current_user.locale == "en") ? "English" : ""%>
+            </div>
+          </div>
+          <%= f.input :title, required: true %>
+
+          <div class="form-group">
+            <label class="col-sm-3 control-label">Picture</label>
+            <div class="col-sm-6">
+              <!-- <label title="Upload image file" for="inputImage" class="btn btn-primary">
+                  <input type="file" name="user[avatar]" id="inputImage" class="hide">Upload new image
+              </label>
+              <div class="useravatar">
+                <img alt="" src="<%#=  current_user.avatar_url %>">
+              </div> -->
+              <label title="Upload image file" for="inputImage" class="btn btn-white">
+                <%= f.file_field :avatar, { name: "user[avatar]" }  %>
+              </label>
+            </div>
+          </div>
+
+          <%#= f.input :locale, input_html: { class: 'form-control input-sm' }, collection: I18n.available_locales, prompt: "Select a locale"%>
+          <%#= f.input :time_zone, input_html: { class: 'form-control input-sm' }, priority: ActiveSupport::TimeZone.us_zones %>
+
+          <div class="form-group">
+            <label class="col-sm-3 control-label">Time Zone<span class="asterisk">*</span></label>
+            <div class="col-sm-6">
+              <%=select_tag('user[time_zone]', options_for_select(ActiveSupport::TimeZone.all.sort.map{|z| ['(UTC '+"#{z.formatted_offset}"+')  ' +"#{z.name}", z.name]} ,selected: current_user.try(:time_zone)), {prompt: "-- select --", :class => 'form-control input-sm', required: true})%>
+            </div>
+          </div>
+
+          <%= f.fields_for :addresses_attributes do |add| %>
+            <%st_address = @address.last.street_address rescue nil%>
+            <%= add.input :street_address, required: false, label: "Street", :input_html => { :name => "user[addresses_attributes][][street_address]", :value => current_user.addresses.last.street_address, id: 'street_number'}%>
+
+            <%= add.input :suite_number, required: false, label: "Suite Number", :input_html => { :name => "user[addresses_attributes][][suite_number]", :value => current_user.addresses.last.try(:suite_number), id: 'subpremise'}%>
+
+            <%city = @address.last.city rescue nil%>
+            <%= add.input :city, required: false, label: "City", :input_html => { :name => "user[addresses_attributes][][city]", :value => current_user.addresses.last.city, id: 'locality'} %>
+            <%postcode = @address.last.postcode rescue nil%>
+            <%= add.input :postcode, required: false, label: "Postcode/Zipcode", :input_html => { :name => "user[addresses_attributes][][postcode]", :value => current_user.addresses.last.postcode, id: 'postal_code'}%>
+            <%address_region = @address.last.region rescue nil%>
+            <%= add.input :region, required: false, label: "Province/State", :input_html => { :name => "user[addresses_attributes][][region]", :value => current_user.addresses.last.region, id:'administrative_area_level_1'} %>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">Country</label>
+              <div class="col-sm-6">
+                <%= add.input_field :country, { required: true, priority: [ "Canada", "United States", "United Kingdom" ],  class: "select2Country", name: "user[addresses_attributes][][country]", selected: current_user.addresses.last.country, id: 'country'} %>
+              </div>
+            </div>
+            <% address_id = current_user.addresses.last.id rescue nil %>
+            <%= add.hidden_field :id, value: address_id, name: "user[addresses_attributes][][id]" %>
+          <% end %>
+          <%=hidden_field_tag 'user[addresses_attributes][][latitude]', current_user.addresses.last.try(:latitude), id: 'account_lat'%>
+          <%=hidden_field_tag 'user[addresses_attributes][][longitude]', current_user.addresses.last.try(:longitude), id: 'account_lng' %>
+
+          <%= f.simple_fields_for :contacts_attributes do |c| %>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">Phone:</label>
+              <div class="col-sm-3">
+                <% contact_value = current_user.contacts.first.value rescue nil%>
+                <%=c.hidden_field :type, value: 'phone', name: "user[contacts_attributes][][type]" %>
+                <%= c.input_field :value, {type: 'tel', label: 'Phone', name: "user[contacts_attributes][][value]", class: "contact_li phone_validate phone_type_validate form-control", value: contact_value}%>
+                <% contact_id = current_user.contacts.first.id rescue nil %>
+                <%=c.hidden_field :id, value: contact_id, name: "user[contacts_attributes][][id]" %>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">Mobile:</label>
+              <div class="col-sm-3">
+                <% contact_value1 = current_user.contacts.last.value rescue nil%>
+                <%=c.hidden_field :type, value: 'mobile', name: "user[contacts_attributes][][type]" %>
+                <%= c.input_field :value, {type: 'tel', label: 'Value', name: "user[contacts_attributes][][value]", class: "contact_li phone_validate phone_type_validate form-control", value: contact_value1}%>
+                <% contact_id1 = current_user.contacts.last.id rescue nil %>
+                <%=c.hidden_field :id, value: contact_id1, name: "user[contacts_attributes][][id]" %>
+              </div>
+            </div>
+          <% end %>
+
+      	<div class="panel-footer">
+      		<div class="row">
+            <div class="col-sm-6 col-sm-offset-4">
+      				<button type="submit" class="btn btn-primary" name="save" id="save">Save</button>&nbsp;
+              <a class="btn btn-default" href="<%= dashboard_path %>">Cancel</a>
+      			</div>
+      		</div>
+      	</div><!-- panel-footer -->
+
+      </div>
+
+    <% end %>
+
+    </div><!-- contentpanel -->
+
+  </div><!-- mainpanel -->
+
+</section>
+
+<style>
+.user-avatar {
+  width: 100%;
+}
+
+.user-avatar > img {
+  max-width: 100%;
+}
+</style>
+
+
+<script>
+
+  phone_validate();
+  $(".select2Country").select2({
+    width: '100%'
+  });
+  // $("#save").bind("submit", function(e){
+  //   $(".phone_validate").each(function() {
+  //     if ($(this).closest('div').next().hasClass('error_lable')) {
+  //       $(this).closest('div').next().remove()
+  //     }
+  //     var status = $(this).intlTelInput("isValidNumber")
+  //     console.log("submit bind")
+  //     if (!status && $(this).val() == ''){
+  //       $(this).closest('div').after('<label class="error error_lable">Invalid mobile number.Only numbers,hyphens and brackets are accepted</label>')
+  //     }
+  //   });
+
+  //   check_phone = check_phone_number()
+  //   // check_url = check_url_status()
+  //   if (check_phone){
+  //     $(".phone_validate").each(function() {
+  //       virl = $(this).intlTelInput("getNumber");
+  //       $(this).val(virl);
+  //     });
+
+  //     $(".phone_type_validate").each(function() {
+  //       val = $(this).val();
+  //       $(this).attr("value", val);
+  //     });
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // });
+
+  // Form validation
+  jQuery(".simple_form").validate({
+    submitHandler: function(form) {
+      // check_phone = check_phone_number()
+      var flag = true;
+      var re = new RegExp("^[0-9 ()\-]+$");
+
+      $(".phone_validate").each(function() {
+        if ($(this).closest('div').next().hasClass('error_lable')) {
+          $(this).closest('div').next().remove()
+        }
+
+        var status = $(this).intlTelInput("isValidNumber")
+        var number = $(this).val();
+        if(!(status && re.test(number))){
+          $(this).closest('div').after('<label class="error error_lable">Invalid mobile number. Only numbers, hyphens and brackets are accepted.</label>')
+          flag = false;
+        }
+      });
+
+
+      if(flag){
+        $(".phone_validate").each(function() {
+          virl = $(this).intlTelInput("getNumber");
+          $(this).val(virl);
+        });
+        form.submit();
+      }
+      return flag;
+
+
+
+
+      // $(".phone_validate").each(function() {
+      //   if ($(this).closest('div').next().hasClass('error_lable')) {
+      //     $(this).closest('div').next().remove()
+      //   }
+
+      //   var status = $(this).intlTelInput("isValidNumber")
+      //   //var status = $(this).val();
+      //   console.log("status")
+      //   console.log(status)
+      //   if(!status){
+      //     $(this).closest('div').after('<label class="error error_lable">Invalid mobile number.Only numbers,hyphens and brackets are accepted</label>')
+      //   }
+      // });
+      // console.log("check_phone");
+      // console.log(check_phone);
+      // if (check_phone){
+      //   $(".phone_validate").each(function() {
+      //     console.log("$(this).val()")
+      //     console.log($(this).val())
+      //     // virl = $(this).intlTelInput("getNumber");
+      //     virl = $(this).val();
+
+      //     console.log("virl")
+      //     console.log(virl)
+      //     $(this).val(virl);
+      //   });
+      //   flag = true;
+      // }else {
+      //   flag = false;
+      // }
+      // // form.submit();
+      // return flag;
+    },
+    highlight: function(element) {
+      jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+    },
+    success: function(element) {
+      jQuery(element).closest('.form-group').removeClass('has-error');
+    }
+  });
+
+  current_company_country = '<%=get_current_company_country%>'
+  // $(".phone_validate").intlTelInput({
+  //   formatOnInit: true,
+  //   separateDialCode: true
+  //   //,utilsScript: "assets/libphonenumber/utils.js"
+  // });
+  // $(".phone_validate").intlTelInput("setCountry", current_company_country)
+  
+  
+  function phone_validate() {
+      $(".phone_validate").intlTelInput({
+        formatOnInit: true,
+        separateDialCode: true,
+        //utilsScript: "assets/libphonenumber/utils.js",
+        customPlaceholder: function(selectedCountryPlaceholder, selectedCountryData) {
+          return null
+        }
+      })
+      set_country_code();
+    }
+
+  function set_country_code() {
+    $(".phone_validate").each(function() {
+      if($(this).closest('div').find('.selected-dial-code').text()!="" && $(this).val() != ""){
+        val = $(this).intlTelInput("getNumber");
+        $(this).intlTelInput("setNumber", val)
+      }else if ($(this).val() == ""){
+        $(this).intlTelInput("setCountry", current_company_country)
+      }
+    })
+  }
+
+
+  function check_phone_number() {
+    // return true; //DISABLE PHONE VALIDATION
+    flag = true
+    $(".phone_validate").each(function() {
+      var status = $(this).intlTelInput("isValidNumber")
+      if (!status){
+        flag = false;
+        return flag;
+      }
+    });
+    return flag
+  }
+
+
+$('.sel_role').change(function(){
+  if($(this).val() == 1 || $(this).val() == '' )
+    {
+      $(".show_entity").hide();
+      $(".sel_clear").val('');
+    }else
+    {
+     $(".show_entity").show();
+    }
+});
+</script>
