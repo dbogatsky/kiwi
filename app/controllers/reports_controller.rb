@@ -197,6 +197,10 @@ Please contact your administrator to help generate a report.'
     end
   end
 
+  def gps_tracking
+    @users = User.all(uid: session[:user_id], reload: true)
+  end
+
   private
 
   def company_coordinates

@@ -1,0 +1,99 @@
+<% content_for :pageheader do %>
+  <h2><i class="fa fa-map-marker"></i>Tracking Report</h2>
+<% end %>
+<div class="contentpanel">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-btns">
+        <!-- <a href="" class="minimize">−</a> -->
+      </div>
+      <h4 class="panel-title"></h4>
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-sm-4">
+          <%=select_tag "user-visits", options_for_select(@users.map{|u| ["#{u.first_name}" +" "+ "#{u.last_name}", u.id]}), {prompt: "-- Select Name --", class: 'form-control'} %>
+        </div>
+        <div class="col-sm-3">
+          <div class="input-group ">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+              <input type="text" class="form-control" placeholder="mm/dd/yy" name="date" id="schedule-from-datepicker" required="required" />
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-6">
+          <%= label_tag 'visit', "Visit", class: ''%>
+          <%= check_box_tag 'visit' %>
+          <%= label_tag 'tracking', "Tracking", class: ''%>
+          <%= check_box_tag 'tracking' %>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12">
+          <div id="gps-visits-tracker" style="height: 400px"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+ $(document).ready(function() {
+  $("#schedule-from-datepicker").datepicker("setDate", new Date());
+
+  (function() {
+      // map options
+      var options = {
+          zoom: 5,
+          center: new google.maps.LatLng(39.909736, -98.522109), // centered US
+          mapTypeId: google.maps.MapTypeId.TERRAIN,
+          mapTypeControl: false
+      };
+
+      // init map
+      var map = new google.maps.Map(document.getElementById('gps-visits-tracker'), options);
+
+      // NY and CA sample Lat / Lng
+      var southWest = new google.maps.LatLng(40.744656, -74.005966);
+      var northEast = new google.maps.LatLng(34.052234, -118.243685);
+      var lngSpan = northEast.lng() - southWest.lng();
+      var latSpan = northEast.lat() - southWest.lat();
+
+      var image = {
+          url: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+          // This marker is 20 pixels wide by 32 pixels high.
+          size: new google.maps.Size(20, 32),
+          // The origin for this image is (0, 0).
+          origin: new google.maps.Point(0, 0),
+          // The anchor for this image is the base of the flagpole at (0, 32).
+          anchor: new google.maps.Point(0, 32)
+        };
+
+      // set multiple marker
+      for (var i = 0; i < 10; i++) {
+          // init markers
+          var marker = new google.maps.Marker({
+              position: new google.maps.LatLng(southWest.lat() + latSpan * Math.random(), southWest.lng() + lngSpan * Math.random()),
+              map: map,
+              icon: image,
+              title: 'Click Me ' + i
+          });
+
+          // process multiple info windows
+          (function(marker, i) {
+              // add click event
+              google.maps.event.addListener(marker, 'click', function() {
+                  infowindow = new google.maps.InfoWindow({
+                      content: 'Hello, World!!'
+                  });
+                  infowindow.open(map, marker);
+              });
+          })(marker, i);
+      }
+      })();
+  });
+
+</script>
