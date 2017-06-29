@@ -64,6 +64,7 @@
  *= require focus/style.focus
  *= require custom.scss
  *= require intlTelInput
+ *= require example_2
  #@import "intlTelInput";
 
  */
@@ -109,4 +110,11 @@
   border-image: none;
   border-style: solid solid none;
   border-width: 1px 0px;
+}
+
+
+.gps-tracking{
+  .user-data-picker{
+    height: initial !important;
+  }
 }

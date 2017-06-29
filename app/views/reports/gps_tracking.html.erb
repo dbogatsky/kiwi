@@ -1,23 +1,20 @@
 <% content_for :pageheader do %>
   <h2><i class="fa fa-map-marker"></i>Tracking Report</h2>
 <% end %>
-<div class="contentpanel">
+<div class="gps-tracking">
   <div class="panel panel-default">
     <div class="panel-heading">
-      <div class="panel-btns">
-        <!-- <a href="" class="minimize">−</a> -->
-      </div>
       <h4 class="panel-title"></h4>
     </div>
     <div class="panel-body">
       <div class="row">
         <div class="col-sm-4">
-          <%=select_tag "user-visits", options_for_select(@users.map{|u| ["#{u.first_name}" +" "+ "#{u.last_name}", u.id]}), {prompt: "-- Select Name --", class: 'form-control'} %>
+          <%=select_tag "user-visits", options_for_select(@users.map{|u| ["#{u.first_name}" +" "+ "#{u.last_name}", u.id]}, params[:user]), {prompt: "-- Select Name --", class: 'form-control'} %>
         </div>
         <div class="col-sm-3">
           <div class="input-group ">
             <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-              <input type="text" class="form-control" placeholder="mm/dd/yy" name="date" id="schedule-from-datepicker" required="required" />
+              <input type="text" class="form-control user-data-picker" placeholder="mm/dd/yy" name="date" id="schedule-from-datepicker" required="required" value="<%=DateTime.parse(params[:date]).strftime('%m/%d/%Y') if !params[:date].nil? && params[:date] != ''%>"/>
           </div>
         </div>
       </div>
@@ -25,75 +22,78 @@
       <div class="row">
         <div class="col-sm-6">
           <%= label_tag 'visit', "Visit", class: ''%>
-          <%= check_box_tag 'visit' %>
+          <%= check_box_tag 'visit','visit-user' %>
           <%= label_tag 'tracking', "Tracking", class: ''%>
           <%= check_box_tag 'tracking' %>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-sm-12">
-          <div id="gps-visits-tracker" style="height: 400px"></div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
+<% if @allPosition.present? %>
+	<div class="col-sm-12 map-layout">
+	  <div id="map" style="height: 500px"></div>
+	</div>
+  
+  <!-- Commented because right now no need it for this functionality  -->
+  <!-- <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>     -->
+  
+  <%= javascript_include_tag "Leaflet.js" %>
+  <!-- 
+  <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>     -->
+
+  <!-- <script src="http://jdewit.github.io/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>  -->   
+
+
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.0/leaflet.awesome-markers.js"></script>
+  
+  <%= javascript_include_tag "LeafletPlayback.js" %>
+  
+  <script type="text/javascript">
+    var demoTracks = [<%=@allPosition.html_safe unless @allPosition.nil?%>];
+  </script>
+  
+  <%#= javascript_include_tag "demo-tracks.js" %>
+  <%= javascript_include_tag "example_2_control.js" %>
+  <%= javascript_include_tag "example_2.js" %>
+<% else %>
+ <!--  <script type="text/javascript">
+    alert('No Record Found');
+  </script> -->
+<% end %>
+
+
+
 <script type="text/javascript">
- $(document).ready(function() {
-  $("#schedule-from-datepicker").datepicker("setDate", new Date());
+	$('#visit').on('change', function(){
 
-  (function() {
-      // map options
-      var options = {
-          zoom: 5,
-          center: new google.maps.LatLng(39.909736, -98.522109), // centered US
-          mapTypeId: google.maps.MapTypeId.TERRAIN,
-          mapTypeControl: false
-      };
-
-      // init map
-      var map = new google.maps.Map(document.getElementById('gps-visits-tracker'), options);
-
-      // NY and CA sample Lat / Lng
-      var southWest = new google.maps.LatLng(40.744656, -74.005966);
-      var northEast = new google.maps.LatLng(34.052234, -118.243685);
-      var lngSpan = northEast.lng() - southWest.lng();
-      var latSpan = northEast.lat() - southWest.lat();
-
-      var image = {
-          url: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
-          // This marker is 20 pixels wide by 32 pixels high.
-          size: new google.maps.Size(20, 32),
-          // The origin for this image is (0, 0).
-          origin: new google.maps.Point(0, 0),
-          // The anchor for this image is the base of the flagpole at (0, 32).
-          anchor: new google.maps.Point(0, 32)
-        };
-
-      // set multiple marker
-      for (var i = 0; i < 10; i++) {
-          // init markers
-          var marker = new google.maps.Marker({
-              position: new google.maps.LatLng(southWest.lat() + latSpan * Math.random(), southWest.lng() + lngSpan * Math.random()),
-              map: map,
-              icon: image,
-              title: 'Click Me ' + i
-          });
-
-          // process multiple info windows
-          (function(marker, i) {
-              // add click event
-              google.maps.event.addListener(marker, 'click', function() {
-                  infowindow = new google.maps.InfoWindow({
-                      content: 'Hello, World!!'
-                  });
-                  infowindow.open(map, marker);
-              });
-          })(marker, i);
+		if ($('#visit').attr('checked')){
+			var user = $('select#user-visits option:selected').val();
+			var date = $("#schedule-from-datepicker").datepicker( 'getDate' );
+			if (user != null && user != '' && date != null && date != ''){
+				window.location.href = "/gps_tracking_report?user="+user+"&date="+date;
+			} else{
+        alert('You Missing Something!');
       }
-      })();
-  });
+
+			// $.ajax({
+   //      method: "GET",
+   //      url: "/user_gps_tracking",
+   //      data: { user: user, date: date },
+   //      dataType: "script",
+   //      success: function(data) {
+   //       console.log("data", data);
+	  //     },
+	  //     error: function() {
+   //        console.log("data", data);
+	  //     }
+   //    });
+
+		}else{
+			console.log('Please checked.');
+		}
+	});
 
 </script>
+

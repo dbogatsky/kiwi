@@ -197,7 +197,16 @@ Please contact your administrator to help generate a report.'
     end
   end
 
+  # GRP Tracking dynamic for all User
   def gps_tracking
+    # @allPosition = GpsPosition.getAllPosition.html_safe
+    if !params[:user].nil? && !params[:date].nil?
+      @allPosition = GpsPosition.getAllPosition(session[:token], params)
+      # render json: @allPosition
+      # return
+    else
+      @allPosition = nil
+    end
     @users = User.all(uid: session[:user_id], reload: true)
   end
 
