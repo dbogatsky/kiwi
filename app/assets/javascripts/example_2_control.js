@@ -7,31 +7,19 @@ L.Playback.Control = L.Control.extend({
 '  <div class="transport">' +
 '    <div class="navbar">' +
 '      <div class="navbar-inner">' +
-'        <ul class="nav">' +
-'          <li class="ctrl">' +
+'        <ul class="nav pos-box">' +
+'          <li class="ctrl navigation-btn first-li">' +
 '            <a id="play-pause" href="#"><i id="play-pause-icon" class="fa fa-play fa-lg"></i></a>' +
 '          </li>' +
-'          <li class="ctrl dropup">' +
+'          <li class="ctrl dropup pos-box second-li">' +
 '            <a id="clock-btn" class="clock" data-toggle="dropdown" href="#">' +
 '              <span id="cursor-date"></span><br/>' +
 '              <span id="cursor-time"></span>' +
 '            </a>' +
-'            <div class="dropdown-menu" role="menu" aria-labelledby="clock-btn">' +
-'              <label>Playback Cursor Time</label>' +
-'              <div class="input-append bootstrap-timepicker">' +
-'                <input id="timepicker" type="text" class="input-small span2">' +
-'                <span class="add-on"><i class="fa fa-clock-o"></i></span>' +
-'              </div>' +
-'              <div id="calendar"></div>' +
-'              <div class="input-append">' +
-'                <input id="date-input" type="text" class="input-small">' +
-'                <span class="add-on"><i class="fa fa-calendar"></i></span>' +
-'              </div>' +
-'            </div>' +
 '          </li>' +
 '        </ul>' +
-'        <ul class="nav pull-right">' +
-'          <li>' +
+'        <ul class="nav pos-box slider-box">' +
+'          <li class="third-li">' +
 '            <div id="time-slider"></div>' +
 '          </li>' +
 '        </ul>' +
@@ -90,7 +78,9 @@ L.Playback.Control = L.Control.extend({
     var startTime = playback.getStartTime();
     $('#cursor-date').html(L.Playback.Util.DateStr(startTime));
     $('#cursor-time').html(L.Playback.Util.TimeStr(startTime));
-
+    console.log("startTime0",new Date(startTime*1000));
+    console.log("startTime",startTime);
+    console.log("playback.getStartTime()",playback.getStartTime());
     $('#time-slider').slider({
       min: playback.getStartTime(),
       max: playback.getEndTime(),

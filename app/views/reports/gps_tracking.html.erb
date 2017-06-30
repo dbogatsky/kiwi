@@ -1,6 +1,7 @@
 <% content_for :pageheader do %>
   <h2><i class="fa fa-map-marker"></i>Tracking Report</h2>
 <% end %>
+
 <div class="gps-tracking">
   <div class="panel panel-default">
     <div class="panel-heading">
@@ -18,6 +19,10 @@
           </div>
         </div>
       </div>
+      <div class="row navigation">
+        <div class="col-sm-6">
+        </div>
+      </div>
 
       <div class="row">
         <div class="col-sm-6">
@@ -31,10 +36,12 @@
   </div>
 </div>
 
+<div class="col-sm-12 map-layout">
+  <div id="map" style="height: 500px"></div>
+</div>
+
 <% if @allPosition.present? %>
-	<div class="col-sm-12 map-layout">
-	  <div id="map" style="height: 500px"></div>
-	</div>
+
   
   <!-- Commented because right now no need it for this functionality  -->
   <!-- <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>     -->
@@ -45,29 +52,42 @@
 
   <!-- <script src="http://jdewit.github.io/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>  -->   
 
-
   <script src="http://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.0/leaflet.awesome-markers.js"></script>
   
   <%= javascript_include_tag "LeafletPlayback.js" %>
   
   <script type="text/javascript">
+    var mapsetView1 = <%=JSON.parse(@allPosition)['geometry']['coordinates'][0][0].to_f unless @allPosition.nil?%>
+    var mapsetView0 = <%=JSON.parse(@allPosition)['geometry']['coordinates'][0][1].to_f unless @allPosition.nil?%>
     var demoTracks = [<%=@allPosition.html_safe unless @allPosition.nil?%>];
+    var startDate = '<%= DateTime.parse(params[:date]).beginning_of_day.strftime("%m/%d/%Y")%>';
+    var startTimeGps = "<%= Time.at(JSON.parse(@allPosition)['properties']['time'][0]).to_datetime.strftime('%I:%M:%S %p')%>".toString();
+    $('#visit').attr('checked', true);
+
   </script>
-  
-  <%#= javascript_include_tag "demo-tracks.js" %>
+
   <%= javascript_include_tag "example_2_control.js" %>
   <%= javascript_include_tag "example_2.js" %>
 <% else %>
- <!--  <script type="text/javascript">
-    alert('No Record Found');
-  </script> -->
+  <script type="text/javascript">
+   $(document).ready(function() {
+      (function() {
+          // map options
+          var options = {
+              zoom: 5,
+              center: new google.maps.LatLng(39.909736, -98.522109), // centered US
+              mapTypeId: google.maps.MapTypeId.TERRAIN,
+              mapTypeControl: false
+          };
+          // init map
+          var map = new google.maps.Map(document.getElementById('map'), options);
+          })();
+      });
+  </script>
 <% end %>
-
-
 
 <script type="text/javascript">
 	$('#visit').on('change', function(){
-
 		if ($('#visit').attr('checked')){
 			var user = $('select#user-visits option:selected').val();
 			var date = $("#schedule-from-datepicker").datepicker( 'getDate' );
@@ -76,24 +96,8 @@
 			} else{
         alert('You Missing Something!');
       }
-
-			// $.ajax({
-   //      method: "GET",
-   //      url: "/user_gps_tracking",
-   //      data: { user: user, date: date },
-   //      dataType: "script",
-   //      success: function(data) {
-   //       console.log("data", data);
-	  //     },
-	  //     error: function() {
-   //        console.log("data", data);
-	  //     }
-   //    });
-
 		}else{
 			console.log('Please checked.');
 		}
 	});
-
 </script>
-

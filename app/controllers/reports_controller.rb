@@ -202,8 +202,6 @@ Please contact your administrator to help generate a report.'
     # @allPosition = GpsPosition.getAllPosition.html_safe
     if !params[:user].nil? && !params[:date].nil?
       @allPosition = GpsPosition.getAllPosition(session[:token], params)
-      # render json: @allPosition
-      # return
     else
       @allPosition = nil
     end

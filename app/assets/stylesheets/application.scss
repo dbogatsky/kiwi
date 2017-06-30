@@ -64,7 +64,12 @@
  *= require focus/style.focus
  *= require custom.scss
  *= require intlTelInput
- *= require example_2
+
+ * -- custom for google map leaflet
+ *= require leaflet
+ *= require leaflet_navigation
+
+ 
  #@import "intlTelInput";
 
  */

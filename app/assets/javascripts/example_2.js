@@ -5,7 +5,7 @@ $(function() {
     var basemapLayer = new L.TileLayer('http://{s}.tiles.mapbox.com/v3/github.map-xgq2svrz/{z}/{x}/{y}.png');
 
     // Center map and default zoom level
-    map.setView([44.61131534, -123.4726739], 9);
+    map.setView([mapsetView0, mapsetView1], 9);
 
     // Adds the background layer to the map
     map.addLayer(basemapLayer);
@@ -71,6 +71,6 @@ $(function() {
     control.addTo(map);
     
     // Add data
-    // playback.addData(blueMountain);
+    // playback.addData(demoTracks[0]);
        
 });
