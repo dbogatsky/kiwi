@@ -206,8 +206,8 @@ class ScheduleController < ApplicationController
     # get all meetings between the date range
     search = Hash[]
     search[:type_eq] = 'ConversationItems::Meeting'
-    search[:starts_at_gteq] = "#{@date} 00:00:00"
-    search[:starts_at_lteq] = "#{@date} 23:59:59"
+    search[:starts_at_gteq] = convert_datetime_to_utc(current_user.time_zone, @date, '00:00:00')
+    search[:starts_at_lteq] = convert_datetime_to_utc(current_user.time_zone, @date, '23:59:59')
     search[:item_type_eq] = 'regular'
     search[:s] = "sort asc"
     events = []
