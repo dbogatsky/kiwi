@@ -1,0 +1,41 @@
+.awesome-marker-shadow {
+  /*background: url(/assets/marker.png) no-repeat 0 0;*/
+  position:absolute;
+  left:0;
+  top:0;
+  display: block;
+  text-align: center;
+  width: 45px !important;
+  height: 66px !important;
+  margin-left: -20px !important;
+  margin-top: -60px !important;
+}
+
+/* Retina displays */
+@media (min--moz-device-pixel-ratio: 1.5),(-o-min-device-pixel-ratio: 3/2),
+(-webkit-min-device-pixel-ratio: 1.5),(min-device-pixel-ratio: 1.5),(min-resolution: 1.5dppx) {
+ .awesome-marker {
+  background-size: 360px 46px;
+ }
+ .awesome-marker-shadow {
+  background-size: 35px 16px;
+ }
+}
+
+.awesome-marker i {
+  color: #333;
+  margin-top: 10px;
+  display: inline-block;
+  font-size: 14px;
+}
+
+.awesome-marker .icon-white {
+  color: #fff;
+}
+
+.custom .leaflet-popup-tip,
+.custom .leaflet-popup-content-wrapper {
+    background: #e93434;
+    color: #ffffff;
+}
+

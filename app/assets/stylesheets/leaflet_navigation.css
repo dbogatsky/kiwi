@@ -6,11 +6,62 @@
   bottom: 0;
 }
 .map-layout{position: relative;}
-.navigation{height: 100px;}
+.navigation{height: 95px;}
 .navigation-btn{
     float: left;
     z-index: 1;
     width: 40px;
+}
+.full-screen1{
+  height: 100% !important;
+  overflow: hidden !important;
+  z-index: 10000 !important;
+  position: fixed !important;
+  left: 0 !important;
+  right: 0 !important;
+}
+.places-navigation{
+  margin-left: 740px;
+  margin-top: -30px;
+}
+.places {
+    margin-left: 740px;
+    margin-top: 20px;
+}
+
+.box-place{
+  background: white;
+  border: 1px solid;
+  float: right;
+  top: 20px;
+  right: 30px;
+}
+
+.full-screen{
+    position: absolute !important;
+    top: -130px!important;
+    z-index: 99999999!important;
+    left: 0!important;
+    right: 0!important;
+    bottom: 0!important;
+}
+.full-screen-with-navigation{
+    position: absolute !important;
+    top: -220px!important;
+    z-index: 99999999!important;
+    left: 0!important;
+    right: 0!important;
+    bottom: 0!important;
+}
+
+.hide{
+  display: none !important;
+}
+.places-action{
+  cursor: pointer;
+}
+.arrow-mrg{
+  margin-top: -8px;
 }
 .slider-box{
   background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);

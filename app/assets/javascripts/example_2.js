@@ -55,8 +55,8 @@ $(function() {
         marker: function(){
             return {
                 icon: L.AwesomeMarkers.icon({
-                    prefix: 'fa',
-                    icon: 'bullseye', 
+                    prefix: '',
+                    icon: '', 
                     markerColor: _assignColor()
                 }) 
             };

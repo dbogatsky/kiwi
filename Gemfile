@@ -55,3 +55,4 @@ group :development, :test do
   gem 'rubocop'
 end
 gem 'webshims-rails'
+gem 'rmagick'

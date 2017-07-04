@@ -208,6 +208,15 @@ Please contact your administrator to help generate a report.'
     @users = User.all(uid: session[:user_id], reload: true)
   end
 
+  def show_marker
+    root_path = "#{request.protocol}#{request.host_with_port}/"
+    user = User.find(params[:id])
+    mrkrImgPath = "#{Rails.public_path}/images/user-marker.png"
+    defaultUserImg = "#{Rails.public_path}/images/user.png"
+    userImg = "#{user.avatar_url}"
+    render text: GpsPosition.setMarkerImage(userImg, mrkrImgPath, defaultUserImg)
+    return
+  end
   private
 
   def company_coordinates

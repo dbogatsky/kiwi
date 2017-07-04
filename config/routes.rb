@@ -167,7 +167,7 @@ Rails.application.routes.draw do
   get :user_visits, to: 'reports#user_visits'
   get :visits_lastknown, to: 'dashboard#visits_lastknown'
   get :gps_tracking_report, to: 'reports#gps_tracking'
-
+  get '/marker_image/:id', to: 'reports#show_marker'
   resources :task_management
 
   match '(*any)', to: 'errors#routing', via: [:get, :post]

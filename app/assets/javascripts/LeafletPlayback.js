@@ -141,6 +141,11 @@ L.Playback.MoveableMarker = L.Marker.extend({
             }
         }
         this.setLatLng(latLng);
+
+        $('.awesome-marker').on('click', function(e) {
+          console.log(latLng);
+        });
+  
         if (this._popup) {
             this._popup.setContent(this.getPopupContent() + this._latlng.toString());
         }    

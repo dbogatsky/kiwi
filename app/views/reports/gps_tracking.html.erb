@@ -5,7 +5,12 @@
 <div class="gps-tracking">
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h4 class="panel-title"></h4>
+      <h4 class="panel-title">
+        <div class="pull-right arrow-mrg">
+           <i class="fa fa-arrow-up full-screen-action up-arrow" aria-hidden="true" id="full-screen"></i>
+           <i class="fa fa-arrow-down full-screen-action down-arrow" aria-hidden="true" style="display: none"></i>
+        </div>
+      </h4>
     </div>
     <div class="panel-body">
       <div class="row">
@@ -25,11 +30,12 @@
       </div>
 
       <div class="row">
-        <div class="col-sm-6">
-          <%= label_tag 'visit', "Visit", class: ''%>
+        <div class="col-sm-10">
           <%= check_box_tag 'visit','visit-user' %>
-          <%= label_tag 'tracking', "Tracking", class: ''%>
+          <%= label_tag 'visit', "Visits", class: ''%> &nbsp;&nbsp;&nbsp;
+
           <%= check_box_tag 'tracking' %>
+          <%= label_tag 'tracking', "Tracking", class: ''%>
         </div>
       </div>
     </div>
@@ -40,20 +46,27 @@
   <div id="map" style="height: 500px"></div>
 </div>
 
+<div class="col-sm-12">
+  <div class="places-position">
+    <span class="places-action">
+      <i class="fa fa-map-marker" aria-hidden="true"></i>
+      Schedule</span>
+  </div>
+</div>
+
+<div class="col-sm-2 box-place">
+  <div class="box" style="height: 150px">
+    <p>Ahmedabad</p>
+    <p>Surat</p>
+    <p>Bhavnagar</p>
+    <p>Rajkot</p>
+    <p>Baroda</p>
+  </div>
+</div>
+
 <% if @allPosition.present? %>
-
-  
-  <!-- Commented because right now no need it for this functionality  -->
-  <!-- <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>     -->
-  
   <%= javascript_include_tag "Leaflet.js" %>
-  <!-- 
-  <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>     -->
-
-  <!-- <script src="http://jdewit.github.io/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>  -->   
-
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.0/leaflet.awesome-markers.js"></script>
-  
+  <%= javascript_include_tag "Leaflet_AwesomeMarkers.js" %>
   <%= javascript_include_tag "LeafletPlayback.js" %>
   
   <script type="text/javascript">
@@ -62,42 +75,93 @@
     var demoTracks = [<%=@allPosition.html_safe unless @allPosition.nil?%>];
     var startDate = '<%= DateTime.parse(params[:date]).beginning_of_day.strftime("%m/%d/%Y")%>';
     var startTimeGps = "<%= Time.at(JSON.parse(@allPosition)['properties']['time'][0]).to_datetime.strftime('%I:%M:%S %p')%>".toString();
-    $('#visit').attr('checked', true);
-
+    $('#tracking').attr('checked', true);
+    $('.places-position').addClass('places-navigation');
   </script>
 
   <%= javascript_include_tag "example_2_control.js" %>
   <%= javascript_include_tag "example_2.js" %>
-<% else %>
+ 
   <script type="text/javascript">
-   $(document).ready(function() {
+    $(document).ready(function() {
+      var markerImg = 'url(/marker_image/<%=params[:user]%>) no-repeat 0 0';
+      $(".awesome-marker-shadow").css({'background':markerImg});
+    });
+  </script>
+
+<% else %>
+
+  <script type="text/javascript">
+    $('.navigation').css({'height' : '0px'});
+    $('.down-arrow').css({'display':'none'});
+    $('.places-position').addClass('places');
+    $(document).ready(function() {
       (function() {
-          // map options
-          var options = {
-              zoom: 5,
-              center: new google.maps.LatLng(39.909736, -98.522109), // centered US
-              mapTypeId: google.maps.MapTypeId.TERRAIN,
-              mapTypeControl: false
-          };
-          // init map
-          var map = new google.maps.Map(document.getElementById('map'), options);
-          })();
-      });
+        // map options
+        var options = {
+            zoom: 5,
+            center: new google.maps.LatLng(39.909736, -98.522109), // centered US
+            mapTypeId: google.maps.MapTypeId.TERRAIN,
+            mapTypeControl: false
+        };
+        // init map
+        var map = new google.maps.Map(document.getElementById('map'), options);
+        })();
+    });
   </script>
 <% end %>
 
 <script type="text/javascript">
-	$('#visit').on('change', function(){
-		if ($('#visit').attr('checked')){
+	$('#tracking').on('change', function(){
+		if ($('#tracking').attr('checked')){
 			var user = $('select#user-visits option:selected').val();
 			var date = $("#schedule-from-datepicker").datepicker( 'getDate' );
 			if (user != null && user != '' && date != null && date != ''){
 				window.location.href = "/gps_tracking_report?user="+user+"&date="+date;
 			} else{
-        alert('You Missing Something!');
+        alert('You Missed Something!');
       }
 		}else{
 			console.log('Please checked.');
 		}
 	});
+</script>
+
+<script type="text/javascript">
+  $('.full-screen-action').on('click', function(){
+    if($('#map').hasClass('full-screen') || ($('#map').hasClass('full-screen-with-navigation')) ){
+      if($('.transport').length > 0)
+      {
+        $('#map').removeClass('full-screen-with-navigation');
+      }else{
+        $('#map').removeClass('full-screen');
+      } 
+      $('.down-arrow').css({'display':'none'});
+      $('.up-arrow').css({'display':'block'});
+    } else {
+      if($('.transport').length > 0)
+      {
+        $('#map').addClass('full-screen-with-navigation');
+      }else{
+        $('#map').addClass('full-screen');
+      }  
+      $('.up-arrow').css({'display':'none'});
+      $('.down-arrow').css({'display':'block'});
+    }
+  });
+  $(document).keyup(function(e) { 
+    if (e.which == 27){
+      $('#map').removeClass('full-screen'); 
+    } 
+  });
+</script>
+
+<script type="text/javascript">
+  $('.places-action').on('click', function(){
+    if($('.box-place').hasClass('hide')){
+      $('.box-place').removeClass('hide');
+    }else{
+      $('.box-place').addClass('hide');
+    }
+  });
 </script>
