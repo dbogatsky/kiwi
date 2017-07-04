@@ -195,8 +195,8 @@ class ScheduleController < ApplicationController
       @formatted_date = Chronic.parse(params[:date]).strftime('%A %B %d, %Y')
       # @date = params[:date]
     else
-      @date = Time.now.strftime('%Y-%m-%d')
-      @formatted_date = Time.now.strftime('%A %B %d, %Y')
+      @date = Time.now.in_time_zone(current_user.time_zone).strftime('%Y-%m-%d') # To correctly set fullcalendar's today's date based on the users timezone
+      @formatted_date = Time.now.in_time_zone(current_user.time_zone).strftime('%A %B %d, %Y')
     end
 
     user_ids = []
