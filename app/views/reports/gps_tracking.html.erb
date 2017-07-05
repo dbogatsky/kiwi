@@ -34,12 +34,12 @@
 
       <div class="row">
         <div class="col-sm-12">
-          <%#= check_box_tag 'visit','visit-user' %>
-          <%= radio_button_tag 'tracks', 'visit'%>
+          <%= check_box_tag 'visit','visit-user' %>
+          <%#= radio_button_tag 'tracks', 'visit'%>
           <%= label_tag 'visit', "Visits", class: ''%> &nbsp;&nbsp;&nbsp;
 
-          <%#= check_box_tag 'tracking' %>
-          <%= radio_button_tag 'tracks', 'tracking'%>
+          <%= check_box_tag 'tracking' %>
+          <%#= radio_button_tag 'tracks', 'tracking'%>
           <%= label_tag 'tracking', "Tracking", class: ''%>
         </div>
       </div>
@@ -75,12 +75,29 @@
   <%= javascript_include_tag "LeafletPlayback.js" %>
   
   <script type="text/javascript">
+    var map;
     var mapsetView1 = <%=JSON.parse(@allPosition)['geometry']['coordinates'][0][0].to_f unless @allPosition.nil?%>
     var mapsetView0 = <%=JSON.parse(@allPosition)['geometry']['coordinates'][0][1].to_f unless @allPosition.nil?%>
     var demoTracks = [<%=@allPosition.html_safe unless @allPosition.nil?%>];
+
+        // var flightPlanCoordinates = [
+        //   {lat: 37.772, lng: -122.214},
+        //   {lat: 21.291, lng: -157.821},
+        //   {lat: -18.142, lng: 178.431},
+        //   {lat: -27.467, lng: 153.027}
+        // ];
+        // var flightPath = new google.maps.Polyline({
+        //   path: flightPlanCoordinates,
+        //   geodesic: true,
+        //   strokeColor: '#FF0000',
+        //   strokeOpacity: 1.0,
+        //   strokeWeight: 2
+        // });
+
+        // flightPath.setMap(map);
+        
     var startDate = '<%= DateTime.parse(params[:date]).beginning_of_day.strftime("%m/%d/%Y")%>';
     var startTimeGps = "<%= Time.at(JSON.parse(@allPosition)['properties']['time'][0]).to_datetime.strftime('%I:%M:%S %p')%>".toString();
-    $('#tracks_tracking').attr('checked', true);
     $('.places-position').addClass('places-navigation');
   </script>
 
@@ -93,16 +110,27 @@
       $(".awesome-marker-shadow").css({'background':markerImg});
       $('.leaflet-top.leaflet-right').css({'display' : 'none'});
       $('.leaflet-control-layers-selector').trigger('click');
-      $('.places-position').hide();
-      $('.box-place').hide();
+
+      var coordinates = <%=JSON.parse(@allPosition)['geometry']['coordinates']%>
+      var pointList = [];
+      $.each(coordinates, function( index, value ) {
+        pointList.push(new L.LatLng(value[1], value[0]))
+      });
+      var firstpolyline = new L.Polyline(pointList, {
+          color: '#00d6c7',
+          weight: 5,
+          opacity: 1,
+          smoothFactor: 1
+      });
+      firstpolyline.addTo(map);
+
     });
   </script>
 
 <% elsif  @gps_visits.present? %>
   <script type="text/javascript">
-    $('#tracks_visit').attr('checked', true);
-    $('.places-position').show();
-    $('.box-place').show();
+    $('#visit').attr('checked', true);
+   
   </script>
 <% else %>
   <script type="text/javascript">
@@ -130,14 +158,14 @@
 	$('#track-records').on('click', function(){
     var user = $('select#user-visits option:selected').val();
     var date = $("#schedule-from-datepicker").datepicker( 'getDate' );
-		if ($('#tracks_tracking').attr('checked')){
+		if ($('#tracking').attr('checked')){
 			if (user != null && user != '' && date != null && date != ''){
 				window.location.href = "/gps_tracking_report?user="+user+"&date="+date;
 			} else{
         alert('You Missed Something!');
       }
-		}else if ($('#tracks_visit').attr('checked')) {
-			console.log('tracks_visit.');
+		}else if ($('#visit').attr('checked')) {
+			console.log('visit.');
       if (user != null && user != '' && date != null && date != ''){
         window.location.href = "/gps_tracking_report";
       } else{
@@ -187,16 +215,16 @@
       $('.box-place').addClass('hide');
     }
   });
+  $('#tracking').attr('checked', true);
+// $("#tracks_tracking").on('click', function(){
+//   $('.places-position').hide();
+//   $('.box-place').hide();
+// });
 
-$("#tracks_tracking").on('click', function(){
-  $('.places-position').hide();
-  $('.box-place').hide();
-});
-
-$("#tracks_visit").on('click', function(){
-  $('.places-position').show();
-  $('.box-place').show();
-});
+// $("#tracks_visit").on('click', function(){
+//   $('.places-position').show();
+//   $('.box-place').show();
+// });
 
 
 </script>

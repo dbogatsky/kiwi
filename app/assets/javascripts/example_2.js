@@ -1,11 +1,11 @@
 $(function() {
     // Setup leaflet map
-    var map = new L.Map('map');
+    map = new L.Map('map');
 
     var basemapLayer = new L.TileLayer('http://{s}.tiles.mapbox.com/v3/github.map-xgq2svrz/{z}/{x}/{y}.png');
 
     // Center map and default zoom level
-    map.setView([mapsetView0, mapsetView1], 9);
+    map.setView([mapsetView0, mapsetView1], 3);
 
     // Adds the background layer to the map
     map.addLayer(basemapLayer);
