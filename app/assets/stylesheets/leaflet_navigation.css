@@ -21,11 +21,11 @@
   right: 0 !important;
 }
 .places-navigation{
-  margin-left: 740px;
+  margin-left: 830px;
   margin-top: -30px;
 }
 .places {
-    margin-left: 740px;
+    margin-left: 830px;
     margin-top: 20px;
 }
 
@@ -59,13 +59,16 @@
 }
 .places-action{
   cursor: pointer;
+  float: right;
+  margin-right: 20px;
 }
 .arrow-mrg{
   margin-top: -8px;
 }
 .slider-box{
   background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
-  height: 42px;
+  height: 43px;
+  border: 1px solid #d4d4d4
 }
 .first-li{
   border: 1px solid #d4d4d4;
@@ -75,7 +78,7 @@
   border-left: 0;
 }
 .third-li{
-  border: 1px solid #d4d4d4;
+  /*border: 1px solid #d4d4d4;*/
   border-left: 0;
   height: 42px;
   padding-top: 4px;
@@ -121,7 +124,7 @@ footer.lp {
 }
 
 .lp #time-slider {
-  width:410px;
+  width:325px;
 }
 
 .lp #calendar {

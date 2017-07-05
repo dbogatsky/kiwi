@@ -23,6 +23,9 @@
               <input type="text" class="form-control user-data-picker" placeholder="mm/dd/yy" name="date" id="schedule-from-datepicker" required="required" value="<%=DateTime.parse(params[:date]).strftime('%m/%d/%Y') if !params[:date].nil? && params[:date] != ''%>"/>
           </div>
         </div>
+        <div class="col-sm-2">
+          <%= submit_tag "Search", class: 'btn btn-primary btn-block', id: 'track-records' %>
+        </div>
       </div>
       <div class="row navigation">
         <div class="col-sm-6">
@@ -30,11 +33,13 @@
       </div>
 
       <div class="row">
-        <div class="col-sm-10">
-          <%= check_box_tag 'visit','visit-user' %>
+        <div class="col-sm-12">
+          <%#= check_box_tag 'visit','visit-user' %>
+          <%= radio_button_tag 'tracks', 'visit'%>
           <%= label_tag 'visit', "Visits", class: ''%> &nbsp;&nbsp;&nbsp;
 
-          <%= check_box_tag 'tracking' %>
+          <%#= check_box_tag 'tracking' %>
+          <%= radio_button_tag 'tracks', 'tracking'%>
           <%= label_tag 'tracking', "Tracking", class: ''%>
         </div>
       </div>
@@ -48,7 +53,7 @@
 
 <div class="col-sm-12">
   <div class="places-position">
-    <span class="places-action">
+    <span class="places-action btn btn-primary">
       <i class="fa fa-map-marker" aria-hidden="true"></i>
       Schedule</span>
   </div>
@@ -75,7 +80,7 @@
     var demoTracks = [<%=@allPosition.html_safe unless @allPosition.nil?%>];
     var startDate = '<%= DateTime.parse(params[:date]).beginning_of_day.strftime("%m/%d/%Y")%>';
     var startTimeGps = "<%= Time.at(JSON.parse(@allPosition)['properties']['time'][0]).to_datetime.strftime('%I:%M:%S %p')%>".toString();
-    $('#tracking').attr('checked', true);
+    $('#tracks_tracking').attr('checked', true);
     $('.places-position').addClass('places-navigation');
   </script>
 
@@ -86,11 +91,20 @@
     $(document).ready(function() {
       var markerImg = 'url(/marker_image/<%=params[:user]%>) no-repeat 0 0';
       $(".awesome-marker-shadow").css({'background':markerImg});
+      $('.leaflet-top.leaflet-right').css({'display' : 'none'});
+      $('.leaflet-control-layers-selector').trigger('click');
+      $('.places-position').hide();
+      $('.box-place').hide();
     });
   </script>
 
+<% elsif  @gps_visits.present? %>
+  <script type="text/javascript">
+    $('#tracks_visit').attr('checked', true);
+    $('.places-position').show();
+    $('.box-place').show();
+  </script>
 <% else %>
-
   <script type="text/javascript">
     $('.navigation').css({'height' : '0px'});
     $('.down-arrow').css({'display':'none'});
@@ -113,18 +127,26 @@
 <% end %>
 
 <script type="text/javascript">
-	$('#tracking').on('change', function(){
-		if ($('#tracking').attr('checked')){
-			var user = $('select#user-visits option:selected').val();
-			var date = $("#schedule-from-datepicker").datepicker( 'getDate' );
+	$('#track-records').on('click', function(){
+    var user = $('select#user-visits option:selected').val();
+    var date = $("#schedule-from-datepicker").datepicker( 'getDate' );
+		if ($('#tracks_tracking').attr('checked')){
 			if (user != null && user != '' && date != null && date != ''){
 				window.location.href = "/gps_tracking_report?user="+user+"&date="+date;
 			} else{
         alert('You Missed Something!');
       }
-		}else{
-			console.log('Please checked.');
-		}
+		}else if ($('#tracks_visit').attr('checked')) {
+			console.log('tracks_visit.');
+      if (user != null && user != '' && date != null && date != ''){
+        window.location.href = "/gps_tracking_report";
+      } else{
+        alert('You Missed Something!');
+      }
+		} else {
+      console.log('Please checked.');
+    }
+
 	});
 </script>
 
@@ -165,4 +187,16 @@
       $('.box-place').addClass('hide');
     }
   });
+
+$("#tracks_tracking").on('click', function(){
+  $('.places-position').hide();
+  $('.box-place').hide();
+});
+
+$("#tracks_visit").on('click', function(){
+  $('.places-position').show();
+  $('.box-place').show();
+});
+
+
 </script>

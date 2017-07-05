@@ -78,9 +78,9 @@ L.Playback.Control = L.Control.extend({
     var startTime = playback.getStartTime();
     $('#cursor-date').html(L.Playback.Util.DateStr(startTime));
     $('#cursor-time').html(L.Playback.Util.TimeStr(startTime));
-    console.log("startTime0",new Date(startTime*1000));
-    console.log("startTime",startTime);
-    console.log("playback.getStartTime()",playback.getStartTime());
+    // console.log("startTime0",new Date(startTime*1000));
+    // console.log("startTime",startTime);
+    // console.log("playback.getStartTime()",playback.getStartTime());
     $('#time-slider').slider({
       min: playback.getStartTime(),
       max: playback.getEndTime(),
