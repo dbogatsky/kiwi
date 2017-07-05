@@ -1,6 +1,6 @@
 class OrchardBoApiModel < ActiveResource::Base
   cattr_accessor :static_headers
-  self.site = 'https://convo-api.code10.ca/backoffice'
+  self.site = ENV.fetch("ORCHARD_BO_API_HOST")
   self.static_headers = headers
 
   def self.headers
