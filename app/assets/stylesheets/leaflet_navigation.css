@@ -7,11 +7,16 @@
 }
 .map-layout{position: relative;}
 .navigation{height: 95px;}
+
 .navigation-btn{
     float: left;
     z-index: 1;
     width: 40px;
 }
+
+.bg-black{background: black !important;}
+.bg-white{background: white !important;}
+
 .full-screen1{
   height: 100% !important;
   overflow: hidden !important;
@@ -89,9 +94,14 @@
 
 .left-chk{float: left;}
 
+.lp li.ctrl a#play-pause{
+  color: white
+}
+
 .lp li.ctrl a{
   color: black
 }
+
 
 footer.lp {
   position: relative;

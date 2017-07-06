@@ -8,7 +8,7 @@ L.Playback.Control = L.Control.extend({
 '    <div class="navbar">' +
 '      <div class="navbar-inner">' +
 '        <ul class="nav pos-box">' +
-'          <li class="ctrl navigation-btn first-li">' +
+'          <li class="ctrl navigation-btn first-li bg-black">' +
 '            <a id="play-pause" href="#"><i id="play-pause-icon" class="fa fa-play fa-lg"></i></a>' +
 '          </li>' +
 '          <li class="ctrl dropup pos-box second-li">' +
