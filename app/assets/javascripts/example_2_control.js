@@ -82,6 +82,7 @@ L.Playback.Control = L.Control.extend({
     // console.log("startTime",startTime);
     // console.log("playback.getStartTime()",playback.getStartTime());
     $('#time-slider').slider({
+      range: "min",
       min: playback.getStartTime(),
       max: playback.getEndTime(),
       step: playback.getTickLen(),
@@ -91,7 +92,17 @@ L.Playback.Control = L.Control.extend({
         $('#cursor-time').val(ui.value.toString());
         $('#cursor-time-txt').html(new Date(ui.value).toString());
       }
+      // min: playback.getStartTime(),
+      // max: playback.getEndTime(),
+      // step: playback.getTickLen(),
+      // value: playback.getTime(),
+      // slide: function( event, ui ) {
+      //   playback.setCursor(ui.value);
+      //   $('#cursor-time').val(ui.value.toString());
+      //   $('#cursor-time-txt').html(new Date(ui.value).toString());
+      // }
     });
+
 
     $('#speed-slider').slider({
       min: -9,

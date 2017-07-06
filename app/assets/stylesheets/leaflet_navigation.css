@@ -39,7 +39,7 @@
 
 .full-screen{
     position: absolute !important;
-    top: -130px!important;
+    top: -150px!important;
     z-index: 99999999!important;
     left: 0!important;
     right: 0!important;
@@ -47,7 +47,7 @@
 }
 .full-screen-with-navigation{
     position: absolute !important;
-    top: -220px!important;
+    top: -224px!important;
     z-index: 99999999!important;
     left: 0!important;
     right: 0!important;
