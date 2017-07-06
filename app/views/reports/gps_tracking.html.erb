@@ -23,7 +23,7 @@
               <input type="text" class="form-control user-data-picker" placeholder="mm/dd/yy" name="date" id="schedule-from-datepicker" required="required" value="<%=DateTime.parse(params[:date]).strftime('%m/%d/%Y') if !params[:date].nil? && params[:date] != ''%>"/>
           </div>
         </div>
-        <div class="col-sm-2">
+        <div class="col-sm-3">
           <%= submit_tag "Search", class: 'btn btn-primary btn-block', id: 'track-records' %>
         </div>
       </div>
@@ -32,15 +32,19 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="row custom-checbox">
         <div class="col-sm-12">
-          <%= check_box_tag 'visit','visit-user' %>
-          <%#= radio_button_tag 'tracks', 'visit'%>
-          <%= label_tag 'visit', "Visits", class: ''%> &nbsp;&nbsp;&nbsp;
+          <div class="ckbox ckbox-default left-chk">
+            <%= check_box_tag 'tracking', nil, true, class: '' %>
+            <%#= radio_button_tag 'tracks', 'tracking'%>
+            <%= label_tag 'tracking', "Tracking", class: '' %>&nbsp;&nbsp;&nbsp;
+          </div>
 
-          <%= check_box_tag 'tracking' %>
-          <%#= radio_button_tag 'tracks', 'tracking'%>
-          <%= label_tag 'tracking', "Tracking", class: ''%>
+          <div class="ckbox ckbox-default left-chk">
+            <%= check_box_tag 'visit', nil, false, class: '' %>
+            <%#= radio_button_tag 'tracks', 'visit'%>
+            <%= label_tag 'visit', "Visits", class: '' %> 
+          </div>
         </div>
       </div>
     </div>
@@ -79,22 +83,6 @@
     var mapsetView1 = <%=JSON.parse(@allPosition)['geometry']['coordinates'][0][0].to_f unless @allPosition.nil?%>
     var mapsetView0 = <%=JSON.parse(@allPosition)['geometry']['coordinates'][0][1].to_f unless @allPosition.nil?%>
     var demoTracks = [<%=@allPosition.html_safe unless @allPosition.nil?%>];
-
-        // var flightPlanCoordinates = [
-        //   {lat: 37.772, lng: -122.214},
-        //   {lat: 21.291, lng: -157.821},
-        //   {lat: -18.142, lng: 178.431},
-        //   {lat: -27.467, lng: 153.027}
-        // ];
-        // var flightPath = new google.maps.Polyline({
-        //   path: flightPlanCoordinates,
-        //   geodesic: true,
-        //   strokeColor: '#FF0000',
-        //   strokeOpacity: 1.0,
-        //   strokeWeight: 2
-        // });
-
-        // flightPath.setMap(map);
         
     var startDate = '<%= DateTime.parse(params[:date]).beginning_of_day.strftime("%m/%d/%Y")%>';
     var startTimeGps = "<%= Time.at(JSON.parse(@allPosition)['properties']['time'][0]).to_datetime.strftime('%I:%M:%S %p')%>".toString();
@@ -123,15 +111,15 @@
           smoothFactor: 1
       });
       firstpolyline.addTo(map);
-
     });
   </script>
 
 <% elsif  @gps_visits.present? %>
+
   <script type="text/javascript">
     $('#visit').attr('checked', true);
-   
   </script>
+
 <% else %>
   <script type="text/javascript">
     $('.navigation').css({'height' : '0px'});
@@ -149,7 +137,6 @@
         // init map
         var map = new google.maps.Map(document.getElementById('map'), options);
         })();
-
     });
   </script>
 <% end %>
@@ -216,15 +203,4 @@
     }
   });
   $('#tracking').attr('checked', true);
-// $("#tracks_tracking").on('click', function(){
-//   $('.places-position').hide();
-//   $('.box-place').hide();
-// });
-
-// $("#tracks_visit").on('click', function(){
-//   $('.places-position').show();
-//   $('.box-place').show();
-// });
-
-
 </script>

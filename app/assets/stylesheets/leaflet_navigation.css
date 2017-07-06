@@ -87,6 +87,8 @@
   float: left;
 }
 
+.left-chk{float: left;}
+
 .lp li.ctrl a{
   color: black
 }
