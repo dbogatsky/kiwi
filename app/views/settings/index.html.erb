@@ -141,28 +141,45 @@
           </div>
         </div>
 
-        <% if @gps_tracking == 'on' %>
+
         <div class="panel panel-default">
           <div class="panel-heading">
             <div class="panel-btns">
               <a href="" class="minimize">−</a>
             </div><!-- panel-btns -->
-            <h3 class="panel-title">GPS Tracking</h3>
+            <h3 class="panel-title">Focus Mobile App</h3>
           </div>
           <div class="panel-body">
             <div class="tab-pane" id="accounts">
               <div class="row row-pad-5">
+
                 <div class="form-group">
-                  <label class="col-sm-4 control-label">GPS Tracking Interval</label>
+                  <label class="col-sm-4 control-label">Preview Future Visits</label>
                   <div class="col-sm-4">
-                    <%=select_tag('gps_tracking_interval',options_for_select(gps_tracking_interval_options, selected: @gps_tracking_interval), class: "form-control")%>
+                    <%=select_tag('visits_preview_range',options_for_select(general_timeline_select_options, selected: @visits_preview_range), class: "form-control")%>
                   </div>
                 </div>
+
+                <div class="form-group">
+                  <label class="col-sm-4 control-label">Expired Past Visits</label>
+                  <div class="col-sm-4">
+                    <%=select_tag('visits_expire_range',options_for_select(general_timeline_select_options, selected: @visits_expire_range), class: "form-control")%>
+                  </div>
+                </div>
+
+                <% if @gps_tracking == 'on' %>
+                  <div class="form-group">
+                    <label class="col-sm-4 control-label">GPS Tracking Interval</label>
+                    <div class="col-sm-4">
+                      <%=select_tag('gps_tracking_interval',options_for_select(gps_tracking_interval_options, selected: @gps_tracking_interval), class: "form-control")%>
+                    </div>
+                  </div>
+                <% end %>
               </div>
             </div>
           </div>
         </div>
-        <% end %>
+
 
         <div class="panel panel-default">
           <div class="panel-footer">

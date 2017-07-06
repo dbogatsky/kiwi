@@ -30,4 +30,10 @@ module SettingsHelper
   def gps_tracking_interval_options
     return [['Off', -1], ['5 secs', 5], ['10 secs', 10], ['30 secs', 30], ['1 min', 60], ['5 mins', 300], ['10 mins', 600], ['15 mins', 900], ['30 mins', 1800], ['45 mins', 2700], ['1 hour', 3600]]
   end
+
+  def general_timeline_select_options
+    return [['1 day',1], ['2 days', 2], ['3 days', 3], ['4 days', 4], ['5 days', 5], ['6 days', 6], ['1 week', 7], ['2 weeks', 14], ['3 weeks', 21], ['4 weeks', 28]]
+  end
+
 end
+
