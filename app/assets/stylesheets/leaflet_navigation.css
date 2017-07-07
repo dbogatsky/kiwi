@@ -70,17 +70,27 @@
 .arrow-mrg{
   margin-top: -8px;
 }
+
 .slider-box{
-  background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
-  height: 43px;
-  border: 1px solid #d4d4d4
 }
+
 .first-li{
   border: 1px solid #d4d4d4;
 }
+.nav > li.first-li > a:hover, .nav > li.first-li > a:focus{
+  background: black !important;
+}
+.nav > li.second-li > a:hover, .nav > li.second-li > a:focus{
+  background: unset !important;
+}
+.pause-mrg{
+  margin-left: -4px;
+}
+
 .second-li{
   border: 1px solid #d4d4d4;
   border-left: 0;
+  font-size: 14px;
 }
 .third-li{
   /*border: 1px solid #d4d4d4;*/
@@ -100,6 +110,21 @@
 
 .lp li.ctrl a{
   color: black
+}
+
+.ui-slider .ui-slider-handle:hover {
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.4) !important;
+}
+
+.custom-checbox .ckbox input[type="checkbox"]:checked + label::after {
+  top: 0px;
+  left: 0;
+  width: 18px;
+  height: 19px;
+  color: #fff;
+  background: #428bca;
+  border-radius: 2px;
+  padding-left: 3px;
 }
 
 
@@ -136,7 +161,7 @@ footer.lp {
 }
 
 .lp #time-slider {
-  width:325px;
+  width:355px;
 }
 
 .lp #calendar {
@@ -185,6 +210,7 @@ footer.lp {
   background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
   background-repeat: repeat-x;
   border-right: 1px solid #d4d4d4;
+  line-height: 20px;
 
   -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
      -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
@@ -199,11 +225,11 @@ footer.lp {
 .lp li.ctrl:hover {
   color: #333333;
   text-decoration: none;
-  background-color: #e6e6e6;
-  *background-color: #d9d9d9;
+  /*background-color: #e6e6e6;*/
+  /**background-color: #d9d9d9;*/
   /* Buttons in IE7 don't get borders, so darken on hover */
 
-  background-position: 0 -15px;
+  /*background-position: 0 -15px;*/
   -webkit-transition: background-position 0.1s linear;
      -moz-transition: background-position 0.1s linear;
       -ms-transition: background-position 0.1s linear;

@@ -68,9 +68,12 @@ L.Playback.Control = L.Control.extend({
         playback.start();
         $('#play-pause-icon').removeClass('fa-play');
         $('#play-pause-icon').addClass('fa-pause');
+        $('#play-pause-icon').addClass('pause-mrg');
+
       } else {
         playback.stop();
         $('#play-pause-icon').removeClass('fa-pause');
+        $('#play-pause-icon').removeClass('pause-mrg');
         $('#play-pause-icon').addClass('fa-play');
       }
     });
@@ -78,29 +81,19 @@ L.Playback.Control = L.Control.extend({
     var startTime = playback.getStartTime();
     $('#cursor-date').html(L.Playback.Util.DateStr(startTime));
     $('#cursor-time').html(L.Playback.Util.TimeStr(startTime));
-    // console.log("startTime0",new Date(startTime*1000));
-    // console.log("startTime",startTime);
-    // console.log("playback.getStartTime()",playback.getStartTime());
     $('#time-slider').slider({
       range: "min",
       min: playback.getStartTime(),
       max: playback.getEndTime(),
-      step: playback.getTickLen(),
-      value: playback.getTime(),
+      step: playback.getTickLen() + 300000,
+      value: playback.getTime() + 300000,
       slide: function( event, ui ) {
-        playback.setCursor(ui.value);
-        $('#cursor-time').val(ui.value.toString());
-        $('#cursor-time-txt').html(new Date(ui.value).toString());
+        playback.setCursor(ui.value + 300000);
+        $('#cursor-time').val(ui.value.toString() + 300000);
+        $('#cursor-time-txt').html(new Date(ui.value).toString() + 300000);
+        console.log("ui,value",ui.value+ 300000);
+
       }
-      // min: playback.getStartTime(),
-      // max: playback.getEndTime(),
-      // step: playback.getTickLen(),
-      // value: playback.getTime(),
-      // slide: function( event, ui ) {
-      //   playback.setCursor(ui.value);
-      //   $('#cursor-time').val(ui.value.toString());
-      //   $('#cursor-time-txt').html(new Date(ui.value).toString());
-      // }
     });
 
 

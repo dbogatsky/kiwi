@@ -40,7 +40,7 @@ L.Playback.Util = L.Class.extend({
       if (h === 0) h = 12;
       if (m < 10) m = '0' + m;
       if (s < 10) s = '0' + s;
-      return h + ':' + m + ':' + s + dec + ' ' + mer;
+      return h + ':' + m + ' ' + mer;
     },
 
     ParseGPX: function(gpx) {
@@ -101,7 +101,7 @@ L.Playback.MoveableMarker = L.Marker.extend({
         if (marker_options.getPopup){
             this.popupContent = marker_options.getPopup(feature);            
         }
-        
+
         if(options.popups)
         {
             this.bindPopup(this.getPopupContent() + startLatLng.toString());
@@ -141,11 +141,9 @@ L.Playback.MoveableMarker = L.Marker.extend({
             }
         }
         this.setLatLng(latLng);
-
-        $('.awesome-marker').on('click', function(e) {
-          console.log(latLng);
-        });
-  
+        // $('.awesome-marker').on('click', function(e) {
+        //   console.log(latLng);
+        // });
         if (this._popup) {
             this._popup.setContent(this.getPopupContent() + this._latlng.toString());
         }    
@@ -216,6 +214,7 @@ L.Playback.Track = L.Class.extend({
             
             this._geoJSON = geoJSON;
             this._tickLen = tickLen;
+            this._popup = true;
             this._ticks = [];
             this._marker = null;
 			this._orientations = [];

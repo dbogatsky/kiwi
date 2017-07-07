@@ -2,7 +2,7 @@ class GpsPosition < OrchardApiModel
 
 	# Get Google place location 
 	def self.getAllPosition(session, params)
-		url = "https://acme-api.code10.ca:443/api/v1/gps_positions.json?per_page=1000&search[timestamp_gteq]="+DateTime.parse(params[:date]).beginning_of_day.utc.to_s+"&search[timestamp_lteq]="+DateTime.parse(params[:date]).end_of_day.utc.to_s+"&search[user_id_eq]="+params[:user].to_s
+		url = "https://acme-api.code10.ca:443/api/v1/gps_positions.json?per_page=1000&search[timestamp_gteq]="+DateTime.parse(params[:date]).beginning_of_day.to_s+"&search[timestamp_lteq]="+DateTime.parse(params[:date]).end_of_day.to_s+"&search[user_id_eq]="+params[:user].to_s
     uri = URI.parse(url)
     header = {'Content-Type' => 'application/json'}
     header = {'X-HTTP-Method-Override' => 'PUT'}

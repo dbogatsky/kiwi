@@ -7,6 +7,9 @@ $(function() {
     // Center map and default zoom level
     map.setView([mapsetView0, mapsetView1], 3);
 
+    // Set zoom level default
+    map.setZoom(17);
+
     // Adds the background layer to the map
     map.addLayer(basemapLayer);
 
