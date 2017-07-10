@@ -69,12 +69,37 @@ L.Playback.Control = L.Control.extend({
         $('#play-pause-icon').removeClass('fa-play');
         $('#play-pause-icon').addClass('fa-pause');
         $('#play-pause-icon').addClass('pause-mrg');
+        $('#time-slider').slider({
+          range: "min",
+          min: playback.getStartTime(),
+          max: playback.getEndTime(),
+          step: playback.getTickLen(),
+          value: playback.getTime(),
+          slide: function( event, ui ) {
+            playback.setCursor(ui.value);
+            $('#cursor-time').val(ui.value.toString());
+            $('#cursor-time-txt').html(new Date(ui.value).toString());
+          }
+        });
 
       } else {
         playback.stop();
         $('#play-pause-icon').removeClass('fa-pause');
         $('#play-pause-icon').removeClass('pause-mrg');
         $('#play-pause-icon').addClass('fa-play');
+        $('#time-slider').slider({
+          range: "min",
+          min: playback.getStartTime(),
+          max: playback.getEndTime(),
+          step: playback.getTickLen() + 300000,
+          value: playback.getTime() + 300000,
+          slide: function( event, ui ) {
+            playback.setCursor(ui.value + 300000);
+            $('#cursor-time').val(ui.value.toString() + 300000);
+            $('#cursor-time-txt').html(new Date(ui.value).toString() + 300000);
+          }
+        });
+
       }
     });
 
