@@ -45,7 +45,7 @@
           <div class="ckbox ckbox-default left-chk">
             <%= check_box_tag 'visit', nil, false, class: '' %>
             <%#= radio_button_tag 'tracks', 'visit'%>
-            <%= label_tag 'visit', "Visits", class: '' %> 
+            <%= label_tag 'visit', "Visits", class: '' %>
           </div>
         </div>
       </div>
@@ -57,35 +57,33 @@
   <div id="map" style="height: 500px"></div>
 </div>
 
-<div class="col-sm-12">
-  <div class="places-position">
-    <span class="places-action btn btn-primary">
-      <i class="fa fa-map-marker" aria-hidden="true"></i>
-      Schedule</span>
+<div class="col-sm-2 places-position panel panel-dark">
+  <div class="panel-heading">
+    <h3 class="panel-title"><i class="fa fa-map-marker" aria-hidden="true"></i> Schedule</h3>
+  </div>
+  <div class="panel-body" style="padding-left: 0px;">
+    <ul>
+      <p>Ahmedabad</p>
+      <p>Surat</p>
+      <p>Bhavnagar</p>
+      <p>Rajkot</p>
+      <p>Baroda</p>
+    </ul>
   </div>
 </div>
 
-<div class="col-sm-2 box-place">
-  <div class="box" style="height: 150px">
-    <p>Ahmedabad</p>
-    <p>Surat</p>
-    <p>Bhavnagar</p>
-    <p>Rajkot</p>
-    <p>Baroda</p>
-  </div>
-</div>
 
 <% if @allPosition.present? %>
   <%= javascript_include_tag "Leaflet.js" %>
   <%= javascript_include_tag "Leaflet_AwesomeMarkers.js" %>
   <%= javascript_include_tag "LeafletPlayback.js" %>
-  
+
   <script type="text/javascript">
     var map;
     var mapsetView1 = <%=JSON.parse(@allPosition)['geometry']['coordinates'][0][0].to_f unless @allPosition.nil?%>
     var mapsetView0 = <%=JSON.parse(@allPosition)['geometry']['coordinates'][0][1].to_f unless @allPosition.nil?%>
     var demoTracks = [<%=@allPosition.html_safe unless @allPosition.nil?%>];
-        
+
     var startDate = '<%= DateTime.parse(params[:date]).beginning_of_day.strftime("%m/%d/%Y")%>';
     var startTimeGps = "<%= Time.at(JSON.parse(@allPosition)['properties']['time'][0]).to_datetime.strftime('%I:%M:%S %p')%>".toString();
     $('.places-position').addClass('places-navigation');
@@ -93,7 +91,7 @@
 
   <%= javascript_include_tag "example_2_control.js" %>
   <%= javascript_include_tag "example_2.js" %>
- 
+
   <script type="text/javascript">
     $(document).ready(function() {
       var markerImg = 'url(/marker_image/<%=params[:user]%>) no-repeat 0 0';
@@ -113,6 +111,15 @@
           smoothFactor: 1
       });
       firstpolyline.addTo(map);
+
+    $('#tracking').click(function(event) {
+       if($('#tracking').attr('checked')){
+        map.addLayer(firstpolyline);
+       }else{
+        map.removeLayer(firstpolyline);
+       }
+    });
+
     });
   </script>
 
@@ -175,7 +182,7 @@
         $('#map').removeClass('full-screen-with-navigation');
       }else{
         $('#map').removeClass('full-screen');
-      } 
+      }
       $('.down-arrow').css({'display':'none'});
       $('.up-arrow').css({'display':'block'});
     } else {
@@ -184,15 +191,15 @@
         $('#map').addClass('full-screen-with-navigation');
       }else{
         $('#map').addClass('full-screen');
-      }  
+      }
       $('.up-arrow').css({'display':'none'});
       $('.down-arrow').css({'display':'block'});
     }
   });
-  $(document).keyup(function(e) { 
+  $(document).keyup(function(e) {
     if (e.which == 27){
-      $('#map').removeClass('full-screen'); 
-    } 
+      $('#map').removeClass('full-screen');
+    }
   });
 </script>
 
