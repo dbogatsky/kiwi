@@ -2,7 +2,7 @@ L.Playback = L.Playback || {};
 
 L.Playback.Control = L.Control.extend({
 
-  _html: 
+  _html:
 '<footer class="lp">' +
 '  <div class="transport">' +
 '    <div class="navbar">' +
@@ -91,8 +91,6 @@ L.Playback.Control = L.Control.extend({
         playback.setCursor(ui.value + 300000);
         $('#cursor-time').val(ui.value.toString() + 300000);
         $('#cursor-time-txt').html(new Date(ui.value).toString() + 300000);
-        console.log("ui,value",ui.value+ 300000);
-
       }
     });
 
@@ -134,7 +132,7 @@ L.Playback.Control = L.Control.extend({
         playback.setCursor(ts);
         $('#time-slider').slider('value', ts);
       }
-    }); 
+    });
 
     $('#date-input').on('keyup', function(e) {
       $('#calendar').datepicker('setDate', $('#date-input').val());
@@ -147,8 +145,8 @@ L.Playback.Control = L.Control.extend({
     $('#timepicker').timepicker({
       showSeconds: true
     });
-    
-    $('#timepicker').timepicker('setTime', 
+
+    $('#timepicker').timepicker('setTime',
         new Date(playback.getTime()).toTimeString());
 
     $('#timepicker').timepicker().on('changeTime.timepicker', function(e) {
@@ -177,12 +175,12 @@ L.Playback.Control = L.Control.extend({
 
   _speedToSliderVal: function(speed) {
     if (speed < 1) return -10+speed*10;
-    return speed - 1;    
+    return speed - 1;
   },
 
   _sliderValToSpeed: function(val) {
     if (val < 0) return parseFloat((1+val/10).toFixed(2));
-    return val + 1;    
+    return val + 1;
   },
 
   _combineDateAndTime: function(date, time) {
@@ -194,7 +192,7 @@ L.Playback.Control = L.Control.extend({
     if (time.meridian === 'PM' && hr !== 12) hr += 12;
     var min = time.minutes || time.minute;
     var sec = time.seconds || time.second;
-    return new Date(yr, mo, dy, hr, min, sec).getTime();    
+    return new Date(yr, mo, dy, hr, min, sec).getTime();
   },
 
   _loadTracksFromFile: function(file) {
@@ -223,7 +221,7 @@ L.Playback.Control = L.Control.extend({
 
       self.playback.addData(tracks);
       $('#load-tracks-modal').modal('hide');
-    };    
+    };
   }
 
 });
