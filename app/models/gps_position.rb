@@ -15,6 +15,28 @@ class GpsPosition < OrchardApiModel
     return result && result.length >= 2 ? self.setResponse(JSON.parse(result)) : nil
 	end
 
+	def self.getAllVisitPlaces(session)
+		url = "https://acme-api.code10.ca:443/api/v1/visits?date="+ (Time.now).utc.strftime('%Y-%m-%d')
+		uri = URI.parse(url)
+		header = {'Content-Type' => 'application/json'}
+		header = {'X-HTTP-Method-Override' => 'PUT'}
+		header = {'Authorization' => 'Token token="'+session+'", app_key="'+ APP_CONFIG["api_app_key"]+'"'}
+		http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    request = Net::HTTP::Get.new(uri.request_uri, header)
+    result = http.request(request).body
+    return result && result.length >= 14 ? self.setVisitResponse(JSON.parse(result)) : nil
+	end
+
+	def self.setVisitResponse(data)
+		result = []
+		data['visits'].each do |v|
+			result.push (v['account']['city_name']) unless v.nil? || v['account'].nil? || v['account']['city_name'].nil?
+		end
+		return result.first(5)
+	end
+
 	def self.setResponse(data)
 
 		if data['gps_positions'].length > 0
