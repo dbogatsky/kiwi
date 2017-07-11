@@ -103,7 +103,7 @@
 }
 
 .left-chk{float: left;}
-
+.left-right{padding-left: 0px; padding-right: 0px;}
 .lp li.ctrl a#play-pause{
   color: white
 }
