@@ -57,21 +57,22 @@
   <div id="map" style="height: 500px"></div>
 </div>
 
-<div class="col-sm-2 places-position panel panel-dark">
+<div class="col-sm-3 places-position panel-dark pull-right">
   <div class="panel-heading">
     <h3 class="panel-title"><i class="fa fa-map-marker" aria-hidden="true"></i> Schedule</h3>
   </div>
-  <div class="panel-body" style="padding-left: 0px;">
+  <div class="panel-body left-right">
     <ul>
-      <p>Ahmedabad</p>
-      <p>Surat</p>
-      <p>Bhavnagar</p>
-      <p>Rajkot</p>
-      <p>Baroda</p>
+      <%if @gps_visits.present? %>
+        <% @gps_visits.each do |v| %>
+          <p><%= v['city_name'] %> <%= v['status'] %> <%= v['scheduled_at'].to_datetime.strftime('%H:%M:%p') %></p>
+        <% end %>
+      <% else %>
+        <p>No place to visit.</p>
+      <% end %>
     </ul>
   </div>
 </div>
-
 
 <% if @allPosition.present? %>
   <%= javascript_include_tag "Leaflet.js" %>
@@ -146,13 +147,6 @@
     });
 
   </script>
-
-<% elsif  @gps_visits.present? %>
-
-  <script type="text/javascript">
-    $('#visit').attr('checked', true);
-  </script>
-
 <% else %>
   <script type="text/javascript">
     $('.navigation').css({'height' : '0px'});
@@ -185,17 +179,9 @@
 			} else{
         alert('You Missed Something!');
       }
-		}else if ($('#visit').attr('checked')) {
-			console.log('visit.');
-      if (user != null && user != '' && date != null && date != ''){
-        window.location.href = "/gps_tracking_report";
-      } else{
-        alert('You Missed Something!');
-      }
 		} else {
       console.log('Please checked.');
     }
-
 	});
 </script>
 
@@ -249,5 +235,4 @@
       $('.box-place').hide();
     }
   });
-
 </script>

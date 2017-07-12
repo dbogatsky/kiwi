@@ -200,6 +200,7 @@ Please contact your administrator to help generate a report.'
   # GRP Tracking dynamic for all User
   def gps_tracking
     # @allPosition = GpsPosition.getAllPosition.html_safe
+    get_gps_visit_places
     if !params[:user].nil? && !params[:date].nil?
       @allPosition = GpsPosition.getAllPosition(session[:token], params)
     else
@@ -354,4 +355,9 @@ Please contact your administrator to help generate a report.'
     @meeting_comparison_data = [{ y: date_range, a: g_meeting, b: r_meeting }]
     @meeting_comparison_data = @meeting_comparison_data.to_json
   end
+
+  def get_gps_visit_places
+    @gps_visits = GpsPosition.getAllVisitPlaces(session[:token])
+  end
+
 end
