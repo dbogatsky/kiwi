@@ -84,6 +84,10 @@
     var mapsetView0 = <%=JSON.parse(@allPosition)['geometry']['coordinates'][0][1].to_f unless @allPosition.nil?%>
     var demoTracks = [<%=@allPosition.html_safe unless @allPosition.nil?%>];
 
+    console.log(mapsetView1,'mapsetView1')
+    console.log(mapsetView0,'mapsetView0')
+    console.log(demoTracks,'demoTracks')
+
     var startDate = '<%= DateTime.parse(params[:date]).beginning_of_day.strftime("%m/%d/%Y")%>';
     var startTimeGps = "<%= Time.at(JSON.parse(@allPosition)['properties']['time'][0]).to_datetime.strftime('%I:%M:%S %p')%>".toString();
     $('.places-position').addClass('places-navigation');
@@ -95,6 +99,7 @@
   <script type="text/javascript">
     $(document).ready(function() {
       var markerImg = 'url(/marker_image/<%=params[:user]%>) no-repeat 0 0';
+      console.log(markerImg);
       $(".awesome-marker-shadow").css({'background':markerImg});
       $('.leaflet-top.leaflet-right').css({'display' : 'none'});
       $('.leaflet-control-layers-selector').trigger('click');
@@ -112,6 +117,24 @@
       });
       firstpolyline.addTo(map);
 
+      console.log(firstpolyline);
+      console.log(firstpolyline.path);
+
+      var demo = firstpolyline.on('click', function(event) {
+        console.log(event);
+          var l = event.latlng;
+          var latitude = event.latlng.lat;
+          var longitude = event.latlng.lng;
+          console.log( latitude + ', ' + longitude );
+          var endDate = '<%= DateTime.parse(params[:date]).end_of_day.strftime("%m/%d/%Y")%>';
+          // L.AwesomeMarkers = {};
+          L.setMarker(endDate,l)
+      });
+      // }); //end addListener
+      // (marker, "click", function (event) {
+
+
+
     $('#tracking').click(function(event) {
        if($('#tracking').attr('checked')){
         map.addLayer(firstpolyline);
@@ -121,6 +144,7 @@
     });
 
     });
+
   </script>
 
 <% elsif  @gps_visits.present? %>
@@ -146,6 +170,7 @@
         // init map
         var map = new google.maps.Map(document.getElementById('map'), options);
         })();
+
     });
   </script>
 <% end %>
