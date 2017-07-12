@@ -1,0 +1,281 @@
+#map {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.map-layout{position: relative;}
+.navigation{height: 95px;}
+
+.navigation-btn{
+    float: left;
+    z-index: 1;
+    width: 40px;
+}
+
+.bg-black{background: black !important;}
+.bg-white{background: white !important;}
+
+.full-screen1{
+  height: 100% !important;
+  overflow: hidden !important;
+  z-index: 10000 !important;
+  position: fixed !important;
+  left: 0 !important;
+  right: 0 !important;
+}
+.places-navigation{
+  /*margin-left: 830px;*/
+  margin-top: -40px;
+}
+.places {
+    /*margin-left: 830px;*/
+    margin-top: 10px;
+}
+
+.box-place{
+  background: white;
+  border: 1px solid;
+  float: right;
+  top: 20px;
+  right: 30px;
+}
+
+.full-screen{
+    position: absolute !important;
+    top: -150px!important;
+    z-index: 99999999!important;
+    left: 0!important;
+    right: 0!important;
+    bottom: 0!important;
+}
+.full-screen-with-navigation{
+    position: absolute !important;
+    top: -224px!important;
+    z-index: 99999999!important;
+    left: 0!important;
+    right: 0!important;
+    bottom: 0!important;
+}
+
+.hide{
+  display: none !important;
+}
+.places-action{
+  cursor: pointer;
+  float: right;
+  margin-right: 20px;
+}
+.arrow-mrg{
+  margin-top: -8px;
+}
+
+.slider-box{
+}
+
+.first-li{
+  border: 1px solid #d4d4d4;
+}
+.nav > li.first-li > a:hover, .nav > li.first-li > a:focus{
+  background: black !important;
+}
+.nav > li.second-li > a:hover, .nav > li.second-li > a:focus{
+  background: unset !important;
+}
+.pause-mrg{
+  margin-left: -4px;
+}
+
+.second-li{
+  border: 1px solid #d4d4d4;
+  border-left: 0;
+  font-size: 14px;
+}
+.third-li{
+  /*border: 1px solid #d4d4d4;*/
+  border-left: 0;
+  height: 42px;
+  padding-top: 4px;
+}
+.pos-box{
+  float: left;
+}
+
+.left-chk{float: left;}
+.left-right{padding-left: 0px; padding-right: 0px;}
+.lp li.ctrl a#play-pause{
+  color: white
+}
+
+.lp li.ctrl a{
+  color: black
+}
+
+.ui-slider .ui-slider-handle:hover {
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.4) !important;
+}
+
+.custom-checbox .ckbox input[type="checkbox"]:checked + label::after {
+  top: 0px;
+  left: 0;
+  width: 18px;
+  height: 19px;
+  color: #fff;
+  background: #428bca;
+  border-radius: 2px;
+  padding-left: 3px;
+}
+
+
+footer.lp {
+  position: relative;
+  right: 150px;
+  top: -140px;
+}
+
+.lp .transport {
+  margin: 0 160px;
+  width: 600px;
+}
+
+.lp .navbar {
+  margin-bottom: 0;
+}
+
+.lp .navbar-inner {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.lp #play-pause {
+  width: 18px;
+}
+
+.lp #speed-btn {
+  width: 58px;
+}
+
+.lp .ui-slider {
+  margin: 13px;
+}
+
+.lp #time-slider {
+  width:355px;
+}
+
+.lp #calendar {
+  margin: 5px;
+}
+
+.leaflet-control-layers-list {
+  margin-bottom: 0;
+}
+
+.lp .speed-menu {
+  min-width: 60px;
+}
+
+.lp .dropdown-menu {
+  padding: 5px;
+  text-align: center;
+}
+
+.lp #speed-slider {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.lp .navbar .btn,
+.lp .navbar .btn-group {
+  margin-top: 0;
+  padding: 0;
+}
+
+.lp .navbar .nav > li > a.clock {
+  padding: 0 3px 0 3px;
+  text-align: center;
+  margin-left:4px;
+  margin-right:4px;
+}
+
+.lp li.ctrl {
+  background-color: #f5f5f5;
+  *background-color: #e6e6e6;
+  background-image: -ms-linear-gradient(top, #ffffff, #e6e6e6);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));
+  background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
+  background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
+  background-image: linear-gradient(top, #ffffff, #e6e6e6);
+  background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
+  background-repeat: repeat-x;
+  border-right: 1px solid #d4d4d4;
+  line-height: 20px;
+
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+     -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.lp .pull-right li.ctrl {
+  border-right: 0;
+  border-left: 1px solid #d4d4d4;
+}
+
+.lp li.ctrl:hover {
+  color: #333333;
+  text-decoration: none;
+  /*background-color: #e6e6e6;*/
+  /**background-color: #d9d9d9;*/
+  /* Buttons in IE7 don't get borders, so darken on hover */
+
+  /*background-position: 0 -15px;*/
+  -webkit-transition: background-position 0.1s linear;
+     -moz-transition: background-position 0.1s linear;
+      -ms-transition: background-position 0.1s linear;
+       -o-transition: background-position 0.1s linear;
+          transition: background-position 0.1s linear;
+}
+
+/*.lp li.ctrl:hover a {
+  color: #a9ff00;
+}*/
+
+.lp li.ctrl:active {
+  background-color: #e6e6e6;
+  background-color: #d9d9d9 \9;
+  background-image: none;
+  outline: 0;
+  -webkit-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+     -moz-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+          box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/*Bootstrap interfering with leaflet*/
+input {
+  vertical-align: baseline;
+}
+
+label {
+  font-weight: bold;
+}
+
+/*bootstrap mod*/
+.navbar .nav { margin: 0; }
+
+.navbar .nav > li > .dropdown-menu:before,
+.bootstrap-timepicker-widget.dropdown-menu:before {
+  top: auto;
+  bottom: -7px;
+  border-top: 7px solid #ccc;
+  border-bottom: 0;
+  border-top-color: rgba(0, 0, 0, 0.2);
+}
+
+.navbar .nav > li > .dropdown-menu:after,
+.bootstrap-timepicker-widget.dropdown-menu:after {
+  top: auto;
+  bottom: -6px;
+  border-top: 6px solid #ffffff;
+  border-bottom: 0;
+}

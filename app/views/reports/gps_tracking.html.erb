@@ -1,0 +1,213 @@
+<% content_for :pageheader do %>
+  <h2><i class="fa fa-map-marker"></i>Tracking Report</h2>
+<% end %>
+
+<div class="gps-tracking">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <div class="pull-right arrow-mrg">
+           <i class="fa fa-arrow-up full-screen-action up-arrow" aria-hidden="true" id="full-screen"></i>
+           <i class="fa fa-arrow-down full-screen-action down-arrow" aria-hidden="true" style="display: none"></i>
+        </div>
+      </h4>
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-sm-4">
+          <%=select_tag "user-visits", options_for_select(@users.map{|u| ["#{u.first_name}" +" "+ "#{u.last_name}", u.id]}, params[:user]), {prompt: "-- Select Name --", class: 'form-control'} %>
+        </div>
+        <div class="col-sm-3">
+          <div class="input-group ">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+              <input type="text" class="form-control user-data-picker" placeholder="mm/dd/yy" name="date" id="schedule-from-datepicker" required="required" value="<%=DateTime.parse(params[:date]).strftime('%m/%d/%Y') if !params[:date].nil? && params[:date] != ''%>"/>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <%= submit_tag "Search", class: 'btn btn-primary btn-block', id: 'track-records' %>
+        </div>
+      </div>
+      <div class="row navigation">
+        <div class="col-sm-6">
+        </div>
+      </div>
+      <% unless @allPosition.present? %>
+        <br/>
+      <% end %>
+      <div class="row custom-checbox">
+        <div class="col-sm-12">
+          <div class="ckbox ckbox-default left-chk">
+            <%= check_box_tag 'tracking', nil, true, class: '' %>
+            <%#= radio_button_tag 'tracks', 'tracking'%>
+            <%= label_tag 'tracking', "Tracking", class: '' %>&nbsp;&nbsp;&nbsp;
+          </div>
+
+          <div class="ckbox ckbox-default left-chk">
+            <%= check_box_tag 'visit', nil, false, class: '' %>
+            <%#= radio_button_tag 'tracks', 'visit'%>
+            <%= label_tag 'visit', "Visits", class: '' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-12 map-layout">
+  <div id="map" style="height: 500px"></div>
+</div>
+
+<div class="col-sm-3 places-position panel-dark pull-right">
+  <div class="panel-heading">
+    <h3 class="panel-title"><i class="fa fa-map-marker" aria-hidden="true"></i> Schedule</h3>
+  </div>
+  <div class="panel-body left-right">
+    <ul>
+      <%if @gps_visits.present? %>
+        <% @gps_visits.each do |v| %>
+          <p><%= v['city_name'] %> <%= v['status'] %> <%= v['scheduled_at'].to_datetime.strftime('%H:%M:%p') %></p>
+        <% end %>
+      <% else %>
+        <p>No place to visit.</p>
+      <% end %>
+    </ul>
+  </div>
+</div>
+
+<% if @allPosition.present? %>
+  <%= javascript_include_tag "Leaflet.js" %>
+  <%= javascript_include_tag "Leaflet_AwesomeMarkers.js" %>
+  <%= javascript_include_tag "LeafletPlayback.js" %>
+
+  <script type="text/javascript">
+    var map;
+    var mapsetView1 = <%=JSON.parse(@allPosition)['geometry']['coordinates'][0][0].to_f unless @allPosition.nil?%>
+    var mapsetView0 = <%=JSON.parse(@allPosition)['geometry']['coordinates'][0][1].to_f unless @allPosition.nil?%>
+    var demoTracks = [<%=@allPosition.html_safe unless @allPosition.nil?%>];
+
+    var startDate = '<%= DateTime.parse(params[:date]).beginning_of_day.strftime("%m/%d/%Y")%>';
+    var startTimeGps = "<%= Time.at(JSON.parse(@allPosition)['properties']['time'][0]).to_datetime.strftime('%I:%M:%S %p')%>".toString();
+    $('.places-position').addClass('places-navigation');
+  </script>
+
+  <%= javascript_include_tag "example_2_control.js" %>
+  <%= javascript_include_tag "example_2.js" %>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      var markerImg = 'url(/marker_image/<%=params[:user]%>) no-repeat 0 0';
+      $(".awesome-marker-shadow").css({'background':markerImg});
+      $('.leaflet-top.leaflet-right').css({'display' : 'none'});
+      $('.leaflet-control-layers-selector').trigger('click');
+
+      var coordinates = <%=JSON.parse(@allPosition)['geometry']['coordinates']%>
+      var pointList = [];
+      $.each(coordinates, function( index, value ) {
+        pointList.push(new L.LatLng(value[1], value[0]))
+      });
+      var firstpolyline = new L.Polyline(pointList, {
+          color: '#1caf9a',
+          weight: 5,
+          opacity: 1,
+          smoothFactor: 1
+      });
+      firstpolyline.addTo(map);
+
+    $('#tracking').click(function(event) {
+       if($('#tracking').attr('checked')){
+        map.addLayer(firstpolyline);
+       }else{
+        map.removeLayer(firstpolyline);
+       }
+    });
+
+    });
+  </script>
+<% else %>
+  <script type="text/javascript">
+    $('.navigation').css({'height' : '0px'});
+    $('.down-arrow').css({'display':'none'});
+    $('.places-position').addClass('places');
+    $(document).ready(function() {
+      (function() {
+        // map options
+        var options = {
+            zoom: 5,
+            center: new google.maps.LatLng(39.909736, -98.522109), // centered US
+            mapTypeId: google.maps.MapTypeId.TERRAIN,
+            mapTypeControl: false
+        };
+        // init map
+        var map = new google.maps.Map(document.getElementById('map'), options);
+        })();
+    });
+  </script>
+<% end %>
+
+<script type="text/javascript">
+	$('#track-records').on('click', function(){
+    var user = $('select#user-visits option:selected').val();
+    var date = $("#schedule-from-datepicker").datepicker( 'getDate' );
+		if ($('#tracking').attr('checked')){
+			if (user != null && user != '' && date != null && date != ''){
+				window.location.href = "/gps_tracking_report?user="+user+"&date="+date;
+			} else{
+        alert('You Missed Something!');
+      }
+		} else {
+      console.log('Please checked.');
+    }
+	});
+</script>
+
+<script type="text/javascript">
+  $('.full-screen-action').on('click', function(){
+    if($('#map').hasClass('full-screen') || ($('#map').hasClass('full-screen-with-navigation')) ){
+      if($('.transport').length > 0)
+      {
+        $('#map').removeClass('full-screen-with-navigation');
+      }else{
+        $('#map').removeClass('full-screen');
+      }
+      $('.down-arrow').css({'display':'none'});
+      $('.up-arrow').css({'display':'block'});
+    } else {
+      if($('.transport').length > 0)
+      {
+        $('#map').addClass('full-screen-with-navigation');
+      }else{
+        $('#map').addClass('full-screen');
+      }
+      $('.up-arrow').css({'display':'none'});
+      $('.down-arrow').css({'display':'block'});
+    }
+  });
+  $(document).keyup(function(e) {
+    if (e.which == 27){
+      $('#map').removeClass('full-screen');
+    }
+  });
+</script>
+
+<script type="text/javascript">
+  $('.places-action').on('click', function(){
+    if($('.box-place').hasClass('hide')){
+      $('.box-place').removeClass('hide');
+    }else{
+      $('.box-place').addClass('hide');
+    }
+  });
+  $('#tracking').attr('checked', true);
+  $('.places-position').hide();
+  $('.box-place').hide();
+
+  $("#visit").on('click', function(){
+    if($('#visit').attr('checked')){
+      $('.places-position').show();
+      $('.box-place').show();
+    } else {
+      $('.places-position').hide();
+      $('.box-place').hide();
+    }
+  });
+</script>
