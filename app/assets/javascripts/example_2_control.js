@@ -118,8 +118,6 @@ L.Playback.Control = L.Control.extend({
         $('#cursor-time-txt').html(new Date(ui.value).toString() + 300000);
       }
     });
-
-
     $('#speed-slider').slider({
       min: -9,
       max: 9,

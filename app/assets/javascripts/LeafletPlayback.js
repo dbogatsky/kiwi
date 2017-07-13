@@ -282,6 +282,21 @@ L.Playback.Track = L.Class.extend({
             return this._ticks[timestamp];
         },
 
+        time : function (latLng) {
+          var that = this;
+          return Object.keys(this._ticks).map( function(timestamp) {
+              // set cursor, timer, slider on clicking the path.
+              if ((that._ticks[timestamp][0]).toFixed(5) == (latLng.lng).toFixed(5) && (that._ticks[timestamp][1]).toFixed(5) == (latLng.lat).toFixed(5)) {
+                $('#time-slider').slider({ value:  timestamp});
+                $('#cursor-time').html(L.Playback.Util.TimeStr(parseInt(timestamp)));
+                  return timestamp;
+              } else {
+                  return null;
+              }
+            }).filter(function(item) { return (item != null) })[0];
+        },
+
+
         setMarker : function(timestamp, options){
             var lngLat = null;
 
@@ -295,6 +310,7 @@ L.Playback.Track = L.Class.extend({
 
             if (lngLat) {
                 var latLng = new L.LatLng(lngLat[1], lngLat[0]);
+
                 this._marker = new L.Playback.MoveableMarker(latLng, options, this._geoJSON);
             }
 
@@ -319,11 +335,9 @@ L.Playback.TrackController = L.Class.extend({
 
     initialize : function (map, tracks, options) {
         this.options = options || {};
-
         this._map = map;
 
         this._tracks = [];
-
         // initialize tick points
         this.setTracks(tracks);
     },
@@ -383,6 +397,10 @@ L.Playback.TrackController = L.Class.extend({
             var latLng = new L.LatLng(lngLat[1], lngLat[0]);
             this._tracks[i].moveMarker(latLng, transitionTime);
         }
+    },
+
+    getTimeStampFromLatLng : function (latLng) {
+        return this._tracks[this._tracks.length - 1].time(latLng);
     },
 
     getStartTime : function () {
@@ -719,9 +737,7 @@ L.Playback = L.Playback.Clock.extend({
             tickLen: 250,
             speed: 1,
             maxInterpolationTime: 5*60*1000, // 5 minutes
-
             tracksLayer : true,
-
             playControl: false,
             dateControl: false,
             sliderControl: false,
@@ -746,7 +762,7 @@ L.Playback = L.Playback.Clock.extend({
             if (this.options.tracksLayer) {
                 this._tracksLayer = new L.Playback.TracksLayer(map, options);
             }
-
+            this._clock = new L.Playback.Clock(this._trackController, callback, this.options);
             this.setData(geoJSON);
 
 

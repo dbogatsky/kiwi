@@ -1,5 +1,4 @@
 class ApplicationController < ActionController::Base
-  # Prevent CSRF attacks by raising an exception. 
   # For APIs, you may want to use :null_session instead.
   include Mobylette::RespondToMobileRequests
   force_ssl if Rails.env.production?
@@ -584,7 +583,6 @@ class ApplicationController < ActionController::Base
     @timezone_setting = preferences['enable_timezone_detect']
     @search_all_accounts = preferences['search_all_accounts']
     @needs_approval_for_account_transfer = preferences['needs_approval_for_account_transfer'] || false
-
     @visits_preview_range = preferences['visits_preview_range'] || 14 # Focus Mobile App Default
     @visits_expire_range = preferences['visits_expire_range'] || 7 # Focus Mobile App Default
     @gps_tracking_interval = preferences['gps_tracking_interval'] || 0 #300000 # in milliseconds = 5 mins (default)

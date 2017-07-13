@@ -36,4 +36,3 @@ module SettingsHelper
   end
 
 end
-

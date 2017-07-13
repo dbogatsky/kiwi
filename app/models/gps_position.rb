@@ -104,5 +104,4 @@ class GpsPosition < OrchardApiModel
     return oo.to_blob
     # oo.write('qq.png')
   end
-
 end

@@ -11,7 +11,7 @@ class ReportsController < ApplicationController
   def visits_report
     @users = User.all(uid: session[:user_id], reload: true)
     company_coordinates
-  
+
   end
 
   def user_visits
@@ -244,7 +244,7 @@ Please contact your administrator to help generate a report.'
     elsif company.addresses.first.latitude.present? && company.addresses.first.longitude.present?
       @company_coordinates[:latitude] = company.addresses.first.latitude
       @company_coordinates[:longitude] = company.addresses.first.longitude
-    
+
     else
       #default central location (GB)
       @company_coordinates[:latitude] = "51.509865"
