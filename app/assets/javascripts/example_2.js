@@ -27,53 +27,56 @@ $(function() {
           'darkblue',
           'darkpurple'
         ];
-        
+
     function _assignColor() {
         return _colors[_colorIdx++%10];
     }
-    
+
     // =====================================================
     // =============== Playback ============================
     // =====================================================
 
     // Playback options
-    var playbackOptions = {        
+    var playbackOptions = {
         // layer and marker options
         layer: {
             pointToLayer : function(featureData, latlng){
+               //console.log('latlng',latlng);
                 var result = {};
-                
+
                 if (featureData && featureData.properties && featureData.properties.path_options){
                     result = featureData.properties.path_options;
                 }
-                
+
                 if (!result.radius){
                     result.radius = 5;
                 }
-                
+
                 return new L.CircleMarker(latlng, result);
             }
         },
-        
+
         marker: function(){
+
             return {
                 icon: L.AwesomeMarkers.icon({
                     prefix: '',
                     icon: '', 
                     markerColor: _assignColor()
-                }) 
+                })
             };
-        }        
+        }
     };
-    
+
     // Initialize playback
     var playback = new L.Playback(map, demoTracks, null, playbackOptions);
-    
+
     // Initialize custom control
     var control = new L.Playback.Control(playback);
     control.addTo(map);
-    
-    // Add data
-    // playback.addData(demoTracks[0]);
-       
+
+    map.on("click", function (event) {
+        var currentPosition = event.latlng;
+        playback._clock.setCursor(playback._trackController.getTimeStampFromLatLng(currentPosition));
+    });
 });

@@ -83,6 +83,7 @@ L.Playback.Control = L.Control.extend({
         });
 
       } else {
+        //console.log('ELSE');
         playback.stop();
         $('#play-pause-icon').removeClass('fa-pause');
         $('#play-pause-icon').removeClass('pause-mrg');
@@ -113,12 +114,12 @@ L.Playback.Control = L.Control.extend({
       step: playback.getTickLen() + 300000,
       value: playback.getTime() + 300000,
       slide: function( event, ui ) {
+        //console.log('SLIDER',ui.value);
         playback.setCursor(ui.value + 300000);
         $('#cursor-time').val(ui.value.toString() + 300000);
         $('#cursor-time-txt').html(new Date(ui.value).toString() + 300000);
       }
     });
-
 
     $('#speed-slider').slider({
       min: -9,
