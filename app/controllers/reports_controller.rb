@@ -197,6 +197,28 @@ Please contact your administrator to help generate a report.'
     end
   end
 
+  # GRP Tracking dynamic for all User
+  def gps_tracking
+    # @allPosition = GpsPosition.getAllPosition.html_safe
+    get_gps_visit_places
+    if !params[:user].nil? && !params[:date].nil?
+      @allPosition = GpsPosition.getAllPosition(session[:token], params)
+    else
+      @allPosition = nil
+    end
+    @users = User.all(uid: session[:user_id], reload: true)
+  end
+
+  def show_marker
+    root_path = "#{request.protocol}#{request.host_with_port}/"
+    user = User.find(params[:id])
+    mrkrImgPath = "#{Rails.public_path}/images/user-marker.png"
+    defaultUserImg = "#{Rails.public_path}/images/user.png"
+    userImg = "#{user.avatar_url}"
+    render text: GpsPosition.setMarkerImage(userImg, mrkrImgPath, defaultUserImg)
+    return
+  end
+
   private
 
   def company_coordinates
@@ -333,5 +355,9 @@ Please contact your administrator to help generate a report.'
     end
     @meeting_comparison_data = [{ y: date_range, a: g_meeting, b: r_meeting }]
     @meeting_comparison_data = @meeting_comparison_data.to_json
+  end
+
+  def get_gps_visit_places
+    @gps_visits = GpsPosition.getAllVisitPlaces(session[:token])
   end
 end

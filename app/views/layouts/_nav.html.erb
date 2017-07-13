@@ -65,6 +65,11 @@
             <%end%>
           </li>
           <% end %>
+          <li>
+            <%= link_to gps_tracking_report_path do %>
+              <i class="fa fa-caret-right"></i> GPS Tracking
+            <%end%>
+          </li>
         </ul>
       </li>
 
@@ -78,6 +83,15 @@
           </a>
         </li>
       <% end %>
+
+      <%#if can? :read, Account %>
+        <li>
+          <a href="<%= task_management_index_path %>"><i class="fa fa-tasks"></i>
+            <span>Task Manager</span>
+          </a>
+        </li>
+      <%#end %>
+
     </ul>
 
     <% if ( can? :read, Company ) || ( can? :read, CompanyEntity ) %>

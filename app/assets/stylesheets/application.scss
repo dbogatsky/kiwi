@@ -66,6 +66,11 @@
  *= require intlTelInput
  #@import "intlTelInput";
 
+ * -- custom for google map leaflet
+ *= require leaflet
+ *= require leaflet_navigation
+ *= require leaflet-awesome-marker
+
  */
 
   /* Intimeline */
@@ -109,4 +114,10 @@
   border-image: none;
   border-style: solid solid none;
   border-width: 1px 0px;
+}
+
+.gps-tracking{
+  .user-data-picker{
+    height: initial !important;
+  }
 }

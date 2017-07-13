@@ -55,3 +55,8 @@ group :development, :test do
   gem 'rubocop'
 end
 gem 'webshims-rails'
+gem 'rmagick'
+
+group :production do
+  #gem 'rails_12factor'
+end
