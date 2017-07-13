@@ -41,6 +41,7 @@ $(function() {
         // layer and marker options
         layer: {
             pointToLayer : function(featureData, latlng){
+               //console.log('latlng',latlng);
                 var result = {};
 
                 if (featureData && featureData.properties && featureData.properties.path_options){
@@ -56,6 +57,7 @@ $(function() {
         },
 
         marker: function(){
+
             return {
                 icon: L.AwesomeMarkers.icon({
                     prefix: '',
@@ -73,7 +75,8 @@ $(function() {
     var control = new L.Playback.Control(playback);
     control.addTo(map);
 
-    // Add data
-    // playback.addData(demoTracks[0]);
-
+    map.on("click", function (event) {
+        var currentPosition = event.latlng;
+        playback._clock.setCursor(playback._trackController.getTimeStampFromLatLng(currentPosition));
+    });
 });

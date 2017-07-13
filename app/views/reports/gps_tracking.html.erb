@@ -59,7 +59,7 @@
 
 <div class="col-sm-3 places-position panel-dark pull-right">
   <div class="panel-heading">
-    <h3 class="panel-title"><i class="fa fa-map-marker" aria-hidden="true"></i> Schedule</h3>
+    <h3 class="panel-title text-center"><i class="fa fa-map-marker" aria-hidden="true"></i> Schedule</h3>
   </div>
   <div class="panel-body left-right">
     <ul>
@@ -84,10 +84,6 @@
     var mapsetView1 = <%=JSON.parse(@allPosition)['geometry']['coordinates'][0][0].to_f unless @allPosition.nil?%>
     var mapsetView0 = <%=JSON.parse(@allPosition)['geometry']['coordinates'][0][1].to_f unless @allPosition.nil?%>
     var demoTracks = [<%=@allPosition.html_safe unless @allPosition.nil?%>];
-
-    console.log(mapsetView1,'mapsetView1')
-    console.log(mapsetView0,'mapsetView0')
-    console.log(demoTracks,'demoTracks')
 
     var startDate = '<%= DateTime.parse(params[:date]).beginning_of_day.strftime("%m/%d/%Y")%>';
     var startTimeGps = "<%= Time.at(JSON.parse(@allPosition)['properties']['time'][0]).to_datetime.strftime('%I:%M:%S %p')%>".toString();
