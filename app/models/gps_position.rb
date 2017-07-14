@@ -32,11 +32,16 @@ class GpsPosition < OrchardApiModel
   def self.setVisitResponse(data)
     result = []
     data['visits'].each do |v|
-      values = {}
-      values['city_name'] = v['account']['city_name'] unless v.nil? || v['account'].nil? || v['account']['city_name'].nil?
-      values['status'] = v['status'] unless v.nil? || v['status'].nil?
-      values['scheduled_at'] = v['scheduled_at'] unless v.nil? || v['scheduled_at'].nil?
-      result.push (values)
+      unless v.nil?
+        values = {}
+        values['status'] = v['status'] unless v['status'].nil?
+        values['scheduled_at'] = v['scheduled_at'] unless v['scheduled_at'].nil?
+        unless v['account'].nil?
+          values['city_name'] = v['account']['city_name'] unless v['account']['city_name'].nil?
+          values['name'] = v['account']['name'] unless v['account']['name'].nil?
+        end
+        result.push (values)
+      end
     end
     return result.first(5)
   end

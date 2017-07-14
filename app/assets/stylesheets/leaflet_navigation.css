@@ -101,6 +101,36 @@
 .pos-box{
   float: left;
 }
+ul.schedule-box {
+    padding-left: 0;
+}
+ul.schedule-box li {
+    list-style: none;
+    background: #fff;
+    padding: 10px 0px 8px 10px;
+    margin-bottom: 10px;
+  
+    box-shadow: 0 0 10px #d2d2d2;
+}
+ul.schedule-box li.red{border-left: 3px solid #ff0000;}
+ul.schedule-box li.green{border-left: 3px solid #008000;}
+ul.schedule-box li.yellow{border-left: 3px solid #ffff00;}
+
+ul.schedule-box li h4 {
+    margin-top: 0;
+    margin-bottom: 0px;
+}
+ul.schedule-box li p {
+    margin-bottom: 0;
+}
+ul.schedule-box li:last-child {
+    margin-bottom: 0;
+}
+ul.schedule-box {
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
 
 .left-chk{float: left;}
 .left-right{padding-left: 0px; padding-right: 0px;}

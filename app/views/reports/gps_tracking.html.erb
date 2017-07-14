@@ -1,7 +1,6 @@
 <% content_for :pageheader do %>
   <h2><i class="fa fa-map-marker"></i>Tracking Report</h2>
 <% end %>
-
 <div class="gps-tracking">
   <div class="panel panel-default">
     <div class="panel-heading">
@@ -61,14 +60,26 @@
   <div class="panel-heading">
     <h3 class="panel-title text-center"><i class="fa fa-map-marker" aria-hidden="true"></i> Schedule</h3>
   </div>
-  <div class="panel-body left-right">
-    <ul>
+  <div class="panel-body left-right" style="padding: 10px 0;">
+    <ul class="schedule-box">
       <%if @gps_visits.present? %>
-        <% @gps_visits.each do |v| %>
-          <p><%= v['city_name'] %> <%= v['status'] %> <%= v['scheduled_at'].to_datetime.strftime('%H:%M:%p') %></p>
+        <% @gps_visits.each do |v| 
+          case v['status']
+          when 'done'
+            sideLineColor = 'yellow'
+          when 'todo'
+            sideLineColor = 'red'
+          when 'in_progress'
+            sideLineColor = 'green'
+          end
+        %>
+          <li class="<%=sideLineColor%>">
+            <h4><%= v['name'] %></h4>
+            <p><%= v['city_name'] %> <%= v['scheduled_at'].to_datetime.strftime('%H:%M:%p') %></p>
+          </li>
         <% end %>
       <% else %>
-        <p>No place to visit.</p>
+        <p class="text-center">No place to visit.</p>
       <% end %>
     </ul>
   </div>
@@ -124,17 +135,16 @@
           L.setMarker(endDate,l)
       });
 
-
-    $('#tracking').click(function(event) {
-       if($('#tracking').attr('checked')){
-        map.addLayer(firstpolyline);
-       }else{
-        map.removeLayer(firstpolyline);
-       }
+      $('#tracking').click(function(event) {
+         if($('#tracking').attr('checked')){
+          map.addLayer(firstpolyline);
+         }else{
+          map.removeLayer(firstpolyline);
+         }
+      });
+      $( function() {$( "#map" ).resizable();});
+      $('.mainpanel').css({'min-height' : '1200px'});
     });
-
-    });
-
   </script>
 <% else %>
   <script type="text/javascript">
@@ -159,19 +169,19 @@
 <% end %>
 
 <script type="text/javascript">
-	$('#track-records').on('click', function(){
+  $('#track-records').on('click', function(){
     var user = $('select#user-visits option:selected').val();
     var date = $("#schedule-from-datepicker").datepicker( 'getDate' );
-		if ($('#tracking').attr('checked')){
-			if (user != null && user != '' && date != null && date != ''){
-				window.location.href = "/gps_tracking_report?user="+user+"&date="+date;
-			} else{
+    if ($('#tracking').attr('checked')){
+      if (user != null && user != '' && date != null && date != ''){
+        window.location.href = "/gps_tracking_report?user="+user+"&date="+date;
+      } else{
         alert('You Missed Something!');
       }
-		} else {
+    } else {
       console.log('Please checked.');
     }
-	});
+  });
 </script>
 
 <script type="text/javascript">
