@@ -154,7 +154,8 @@ class ApplicationController < ActionController::Base
       RequestStore.store[:tenant] = "acme" #sandbox
     end
     # move into a service
-    api_host = "#{RequestStore.store[:tenant]}-api.code10.ca"
+    api_host = "acme-api.code10.ca"
+    # api_host = "#{RequestStore.store[:tenant]}-api.code10.ca"
     RequestStore.store[:api_url] = "https://#{api_host}/api/v1"
     OrchardApiModel.site = RequestStore.store[:api_url]
     # OrchardApiModel.site.host = api_host
