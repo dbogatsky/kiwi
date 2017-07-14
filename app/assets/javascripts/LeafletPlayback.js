@@ -286,7 +286,7 @@ L.Playback.Track = L.Class.extend({
           var that = this;
           return Object.keys(this._ticks).map( function(timestamp) {
               // set cursor, timer, slider on clicking the path.
-              if ((that._ticks[timestamp][0]).toFixed(5) == (latLng.lng).toFixed(5) && (that._ticks[timestamp][1]).toFixed(5) == (latLng.lat).toFixed(5)) {
+              if ((that._ticks[timestamp][0]).toFixed(4) == (latLng.lng).toFixed(4) && (that._ticks[timestamp][1]).toFixed(4) == (latLng.lat).toFixed(4)) {
                 $('#time-slider').slider({ value:  timestamp});
                 $('#cursor-time').html(L.Playback.Util.TimeStr(parseInt(timestamp)));
                   return timestamp;
