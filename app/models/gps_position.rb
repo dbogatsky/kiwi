@@ -49,8 +49,8 @@ class GpsPosition < OrchardApiModel
   end
 
   def self.setResponse(data)
-
-    if data['gps_positions'].length > 0
+ 
+    if !data['gps_positions'].nil? && data['gps_positions'].length > 0
       result = {}
       geometry = {}
       properties = {}
