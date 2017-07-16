@@ -49,30 +49,32 @@ class GpsPosition < OrchardApiModel
   end
 
   def self.setResponse(data)
- 
     if !data['gps_positions'].nil? && data['gps_positions'].length > 0
+
+      # no idea why we are creating hash like this, hopefully its for a good cause
       result = {}
       geometry = {}
       properties = {}
+
+      # not sure what this is for
       geometry['type'] = 'MultiPoint'
-      # properties['title'] = data['gps_positions'][0]['type']
-      # properties['path_options'] = {:color => "red"}
       result['type'] = "Feature"
+
+      # data from api
       coordinates = []
       time = []
-      # speed = []
-      # altitude = []
-      # heading = []
-      # horizontal_accuracy = []
-      # vertical_accuracy = []
+      metadata = []
       data['gps_positions'].each_with_index do |d, i|
         coordinates.push([d['lon'].to_f, d['lat'].to_f])
         time.push(d['timestamp'].to_time.to_i*1000)
-        # speed.push(80)
-        # altitude.push(45+i)
-        # heading.push(0)
-        # horizontal_accuracy.push(50+i)
-        # vertical_accuracy.push(0)
+
+        # some data may not have metadata yet
+        if d['metadata'].present?
+          metadata << d['metadata']
+        else
+          metadata.push(nil)
+        end
+        
       end
       properties['time'] = time
       # properties['speed'] = speed
@@ -80,7 +82,7 @@ class GpsPosition < OrchardApiModel
       # properties['heading'] = heading
       # properties['horizontal_accuracy'] = horizontal_accuracy
       # properties['vertical_accuracy'] = vertical_accuracy
-      # properties['raw'] = []
+      properties['metadata'] = metadata
       geometry['coordinates'] = coordinates
       result['geometry'] = geometry
       result['properties'] = properties

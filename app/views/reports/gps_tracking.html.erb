@@ -14,7 +14,7 @@
     <div class="panel-body">
       <div class="row">
         <div class="col-sm-4">
-          <%=select_tag "user-visits", options_for_select(@users.map{|u| ["#{u.first_name}" +" "+ "#{u.last_name}", u.id]}, params[:user]), {prompt: "-- Select Name --", class: 'form-control'} %>
+          <%=select_tag "user-visits", options_for_select(@users.map{|u| ["#{u.first_name}" +" "+ "#{u.last_name}", u.id]}, params[:user]), {prompt: "-- Select Name --", class: 'form-control input-sm'} %>
         </div>
         <div class="col-sm-3">
           <div class="input-group ">
@@ -52,9 +52,136 @@
   </div>
 </div>
 
-<div class="col-sm-12 map-layout">
-  <div id="map" style="height: 500px"></div>
-</div>
+
+  <div class="col-sm-12 map-layout" style="margin-bottom:20px;">
+    <div id="tracking_map" style="height: 600px;">
+      <div id="map" style="height: 100%;"></div>
+    </div>
+  </div>
+
+
+
+
+
+<div class="row">
+  <div class="col-sm-4">
+    <div class="panel panel-stat">
+      <div class="panel-heading" style="background-color:#1cc7c2;">
+        <div class="stat">
+          <div class="row">
+            <div class="col-xs-4">
+              <span class="thumb activity-icon">
+                <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-calendar.svg" alt="Planned Visits">
+              </span>
+            </div>
+            <div class="col-xs-8 text-center">
+              <small class="stat-label"><strong>Planned Visits</strong></small>
+              <h1>0</h1>
+            </div>
+          </div><!-- row -->
+        </div><!-- stat -->
+      </div><!-- panel-heading -->
+    </div>
+  </div><!-- tile meeting -->
+  <div class="col-sm-4">
+    <div class="panel panel-stat">
+      <div class="panel-heading" style="background-color:#673AB7;">
+        <div class="stat">
+          <div class="row">
+            <div class="col-xs-4">
+              <span class="thumb activity-icon">
+                <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-calendar.svg" alt="Adhoc Visits">
+              </span>
+            </div>
+            <div class="col-xs-8 text-center">
+              <small class="stat-label"><strong>Adhoc Visits</strong></small>
+              <h1>0</h1>
+            </div>
+          </div><!-- row -->
+        </div><!-- stat -->
+      </div><!-- panel-heading -->
+    </div>
+  </div><!-- tile regular visits -->
+  <div class="col-sm-4">
+    <div class="panel panel-stat">
+      <div class="panel-heading" style="background-color:#e91e63;">
+        <div class="stat">
+          <div class="row">
+            <div class="col-xs-4">
+              <span class="thumb activity-icon">
+                <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-calculator.svg" alt="Total Visits">
+              </span>
+            </div>
+            <div class="col-xs-8 text-center">
+              <small class="stat-label"><strong>Total</strong></small>
+              <h1>0</h1>
+            </div>
+          </div><!-- row -->
+        </div><!-- stat -->
+      </div><!-- panel-heading -->
+    </div>
+  </div><!-- tile quote -->
+</div><!-- row -->
+
+
+<div class="row">
+  <div class="col-sm-12">
+    <table class="table table-striped" id="trackingTable">
+      <thead>
+         <tr>
+            <th></th>
+            <th>Coordinates</th>
+            <th>Time</th>
+            <th>App Version</th>
+            <th>GPS</th>
+            <th>WiFi</th>
+            <th>Mobile Data</th>
+            <th>Activity Type</th>
+            <th>Heading</th>
+            <th>Battery Level</th>
+            <th>Accuracy</th>
+            <th>Confidence</th>
+            <th>Charging</th>
+         </tr>
+      </thead>
+       <%
+        coordinateData  = JSON.parse(@allPosition)
+        coordinateData['geometry']['coordinates'].each_with_index do |coord, i| 
+      %>
+        <tr>
+          <td><%= i + 1 %>
+          <td><%= coord %></td>
+          <td><%= coordinateData['properties']['time'][i] %></td>
+          <% if coordinateData['properties']['metadata'][i].present? %>
+            <td><%= coordinateData['properties']['metadata'][i]['version'] %></td>
+            <td><%= coordinateData['properties']['metadata'][i]['gps'] %></td>
+            <td><%= coordinateData['properties']['metadata'][i]['wifi'] %></td>
+            <td><%= coordinateData['properties']['metadata'][i]['mobile_data'] %></td>
+            <td><%= coordinateData['properties']['metadata'][i]['activity_type'] %></td>
+            <td><%= coordinateData['properties']['metadata'][i]['heading'] %></td>
+            <td><%= coordinateData['properties']['metadata'][i]['battery_level'] %></td>
+            <td><%= coordinateData['properties']['metadata'][i]['accuracy'] %></td>
+            <td><%= coordinateData['properties']['metadata'][i]['activity_confidence'] %></td>
+            <td><%= coordinateData['properties']['metadata'][i]['battery_is_charging'] %></td>
+          <% else %>
+            <td> na </td>
+            <td> na </td>
+            <td> na </td>
+            <td> na </td>
+            <td> na </td>
+            <td> na </td>
+            <td> na </td>
+            <td> na </td>
+            <td> na </td>
+            <td> na </td>
+          <% end %>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div><!-- col-sm-12 -->
+</div><!-- row -->
+
 
 <div class="col-sm-3 places-position panel-dark pull-right">
   <div class="panel-heading">
