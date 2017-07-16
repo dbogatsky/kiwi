@@ -58,7 +58,7 @@
               <i class="fa fa-caret-right"></i> Meetings
             <%end%>
           </li>
-          <% if @gps_tracking == 'on' && ( can? :visits_gps_tracking, Account ) %>
+          <% if @gps_tracking == 'on' && ( can? :visits_gps_tracking, Account ) && false %>
           <li>
             <%= link_to visits_report_path do %>
               <i class="fa fa-caret-right"></i> Visits
