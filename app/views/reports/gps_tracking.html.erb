@@ -92,13 +92,36 @@
 
   <script type="text/javascript">
     var map;
-    var mapsetView1 = <%=JSON.parse(@allPosition)['geometry']['coordinates'][0][0].to_f unless @allPosition.nil?%>
-    var mapsetView0 = <%=JSON.parse(@allPosition)['geometry']['coordinates'][0][1].to_f unless @allPosition.nil?%>
-    var demoTracks = [<%=@allPosition.html_safe unless @allPosition.nil?%>];
+    var InfoDateTime = <%= JSON.parse(@allPosition)['properties']['time'][0].to_f %>
+    var InfoNewDateTime;
+    var mapsetView1 = <%= JSON.parse(@allPosition)['geometry']['coordinates'][0][0].to_f %>
+    var mapsetView0 = <%= JSON.parse(@allPosition)['geometry']['coordinates'][0][1].to_f %>
+    var lngLast = <%= JSON.parse(@allPosition)['geometry']['coordinates'].last[0].to_f %>
+    var latLast = <%= JSON.parse(@allPosition)['geometry']['coordinates'].last[1].to_f %>
+
+    var demoTracks = [<%=@allPosition.html_safe%>];
 
     var startDate = '<%= DateTime.parse(params[:date]).beginning_of_day.strftime("%m/%d/%Y")%>';
     var startTimeGps = "<%= Time.at(JSON.parse(@allPosition)['properties']['time'][0]).to_datetime.strftime('%I:%M:%S %p')%>".toString();
     $('.places-position').addClass('places-navigation');
+
+    function setInfoDateTime(InfoDateTime){
+      var d = new Date(InfoDateTime);
+      var h = d.getHours();
+      var m = d.getMinutes();
+      var s = d.getSeconds();
+      var tms = InfoDateTime / 1000;
+      var dec = (tms - Math.floor(tms)).toFixed(2).slice(1);
+      var mer = 'AM';
+      if (h > 11) {
+        h %= 12;
+        mer = 'PM';
+      }
+      if (h === 0) h = 12;
+      if (m < 10) m = '0' + m;
+      if (s < 10) s = '0' + s;
+      return h + ':' + m + ' ' + mer;
+    }
   </script>
 
   <%= javascript_include_tag "example_2_control.js" %>
@@ -110,7 +133,6 @@
       $(".awesome-marker-shadow").css({'background':markerImg});
       $('.leaflet-top.leaflet-right').css({'display' : 'none'});
       $('.leaflet-control-layers-selector').trigger('click');
-
       var coordinates = <%=JSON.parse(@allPosition)['geometry']['coordinates']%>
       var pointList = [];
       $.each(coordinates, function( index, value ) {
@@ -144,6 +166,7 @@
       });
       $( function() {$( "#map" ).resizable();});
       $('.mainpanel').css({'min-height' : '1200px'});
+      $('.leaflet-shadow-pane').find('img').hide();
     });
   </script>
 <% else %>

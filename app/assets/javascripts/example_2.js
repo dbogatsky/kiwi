@@ -67,6 +67,10 @@ $(function() {
             };
         }
     };
+    // Set Flags
+    L.Icon.Default.imagePath = '/assets';
+    L.marker([mapsetView0, mapsetView1]).addTo(map);
+    L.marker([latLast, lngLast]).addTo(map);
 
     // Initialize playback
     var playback = new L.Playback(map, demoTracks, null, playbackOptions);
