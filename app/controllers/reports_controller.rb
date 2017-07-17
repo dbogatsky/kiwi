@@ -207,6 +207,14 @@ Please contact your administrator to help generate a report.'
       @allPosition = nil
     end
     @users = User.all(uid: session[:user_id], reload: true)
+
+    @users_accounts_info = users_accounts
+
+    @latlng = []
+    @users_accounts_info.each do |data|
+      @latlng << [data[:address][:latitude], data[:address][:longitude]].map(&:to_f) + [data[:id]] + [data[:name]] + [data[:address][:suite_number]] + [data[:address][:street_address]] + [data[:address][:city]] + [data[:address][:postcode]] + [data[:address][:region]] + [data[:address][:country]]
+    end
+
   end
 
   def show_marker
@@ -220,6 +228,41 @@ Please contact your administrator to help generate a report.'
   end
 
   private
+
+  def users_accounts
+    accounts_info = []
+    
+    if !params[:user].nil? && !params[:date].nil?
+      search ||= {}
+      page = 1
+      accounts = Account.all(params: { search: search, page: page, per_page: 200 })
+      accounts.each do |account|
+        if !account.assigned_to.nil? && account.assigned_to.id == params[:user].to_i
+          if account.addresses.present? && account.addresses.first.latitude.present? && account.addresses.first.longitude.present?
+
+            account_item = {}
+            account_item[:id] = account.id
+            account_item[:name] = account.name
+
+            account_item[:address] = {}
+            account_item[:address][:suite_number] = account.addresses.first.try(:suite_number)
+            account_item[:address][:street_address] = account.addresses.first.try(:street_address)
+            account_item[:address][:city] = account.addresses.first.try(:city)
+            account_item[:address][:postcode] = account.addresses.first.try(:postcode)
+            account_item[:address][:region] = account.addresses.first.try(:region)
+            account_item[:address][:country] = account.addresses.first.try(:country)
+
+            account_item[:address][:latitude] = account.addresses.first.latitude
+            account_item[:address][:longitude] = account.addresses.first.longitude
+
+            accounts_info << account_item
+
+          end
+        end
+      end
+    end
+    accounts_info
+  end
 
   def company_coordinates
 
