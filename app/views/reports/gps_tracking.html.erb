@@ -169,9 +169,9 @@
                       image_tag('battery_full.png', size: "22", alt: "Full")
                     elsif (coordinateData['properties']['metadata'][i]['battery_level'] >= 0.50 && coordinateData['properties']['metadata'][i]['battery_level'] < 0.75)
                       image_tag('battery_half.png', size: "22", alt: "Half")
-                    elsif (coordinateData['properties']['metadata'][i]['battery_level'] <= 0.25 && coordinateData['properties']['metadata'][i]['battery_level'] < 0.50)
+                    elsif (coordinateData['properties']['metadata'][i]['battery_level'] >= 0.25 && coordinateData['properties']['metadata'][i]['battery_level'] < 0.50)
                       image_tag('battery_drained.png', size: "22", alt: "Drained")
-                    elsif (coordinateData['properties']['metadata'][i]['battery_level'] <= 0.25)
+                    elsif (coordinateData['properties']['metadata'][i]['battery_level'] < 0.25)
                       image_tag('battery_empty.png', size: "22", alt: "Empty")
                     else
                       "na"
