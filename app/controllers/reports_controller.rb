@@ -235,11 +235,10 @@ Please contact your administrator to help generate a report.'
     if !params[:user].nil? && !params[:date].nil?
       search ||= {}
       page = 1
-      accounts = Account.all(params: { search: search, page: page, per_page: 200 })
+      accounts = Account.all(params: { search: search, page: page, per_page: 600 })
       accounts.each do |account|
         if !account.assigned_to.nil? && account.assigned_to.id == params[:user].to_i
           if account.addresses.present? && account.addresses.first.latitude.present? && account.addresses.first.longitude.present?
-
             account_item = {}
             account_item[:id] = account.id
             account_item[:name] = account.name
