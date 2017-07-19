@@ -138,10 +138,9 @@
             <th>Data</th>
             <th>Activity Type</th>
             <th>Heading</th>
-            <th>Battery Level</th>
             <th>Accuracy</th>
             <th>Confidence</th>
-            <th>Charging</th>
+            <th>Battery</th>
          </tr>
       </thead>
        <%
@@ -160,10 +159,27 @@
             <td><%= (coordinateData['properties']['metadata'][i]['mobile_data'] == "Y")? image_tag('greencheck.png') : image_tag('redx.png') %></td>
             <td><%= coordinateData['properties']['metadata'][i]['activity_type'] %></td>
             <td><%= coordinateData['properties']['metadata'][i]['heading'] %></td>
-            <td><%= coordinateData['properties']['metadata'][i]['battery_level'] %></td>
-            <td><%= coordinateData['properties']['metadata'][i]['accuracy'] %></td>
-            <td><%= coordinateData['properties']['metadata'][i]['activity_confidence'] %></td>
-            <td><%= coordinateData['properties']['metadata'][i]['battery_is_charging'] %></td>
+            <td><%= coordinateData['properties']['metadata'][i]['accuracy'] %>m</td>
+            <td><%= coordinateData['properties']['metadata'][i]['activity_confidence'] %>%</td>
+            <td><%= (coordinateData['properties']['metadata'][i]['battery_level'] * 100).round(0) %>%&nbsp;<%= 
+                  if (coordinateData['properties']['metadata'][i]['battery_is_charging'] == "true")
+                    image_tag('battery_charging.png', size: "22", alt: "Charging")
+                  else
+                    if(coordinateData['properties']['metadata'][i]['battery_level'] >= 0.75)
+                      image_tag('battery_full.png', size: "22", alt: "Full")
+                    elsif (coordinateData['properties']['metadata'][i]['battery_level'] >= 0.50 && coordinateData['properties']['metadata'][i]['battery_level'] < 0.75)
+                      image_tag('battery_half.png', size: "22", alt: "Half")
+                    elsif (coordinateData['properties']['metadata'][i]['battery_level'] <= 0.25 && coordinateData['properties']['metadata'][i]['battery_level'] < 0.50)
+                      image_tag('battery_drained.png', size: "22", alt: "Drained")
+                    elsif (coordinateData['properties']['metadata'][i]['battery_level'] <= 0.25)
+                      image_tag('battery_empty.png', size: "22", alt: "Empty")
+                    else
+                      "na"
+                    end
+                  end
+                %>
+              
+            </td>
           <% else %>
             <td> na </td>
             <td> na </td>
