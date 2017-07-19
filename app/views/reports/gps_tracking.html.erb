@@ -135,7 +135,7 @@
             <th>App Version</th>
             <th>GPS</th>
             <th>WiFi</th>
-            <th>Mobile Data</th>
+            <th>Data</th>
             <th>Activity Type</th>
             <th>Heading</th>
             <th>Battery Level</th>
@@ -152,12 +152,12 @@
         <tr>
           <td><%= i + 1 %>
           <td><%= coord %></td>
-          <td><%= coordinateData['properties']['time'][i] %></td>
+          <td><%= Time.at(coordinateData['properties']['time'][i]/1000).to_datetime.strftime('%I:%M:%S %p') %></td>
           <% if coordinateData['properties']['metadata'][i].present? %>
             <td><%= coordinateData['properties']['metadata'][i]['version'] %></td>
-            <td><%= coordinateData['properties']['metadata'][i]['gps'] %></td>
-            <td><%= coordinateData['properties']['metadata'][i]['wifi'] %></td>
-            <td><%= coordinateData['properties']['metadata'][i]['mobile_data'] %></td>
+            <td><%= (coordinateData['properties']['metadata'][i]['gps'] == "Y")? image_tag('greencheck.png') : image_tag('redx.png') %></td>
+            <td><%= (coordinateData['properties']['metadata'][i]['wifi'] == "Y")? image_tag('greencheck.png') : image_tag('redx.png') %></td>
+            <td><%= (coordinateData['properties']['metadata'][i]['mobile_data'] == "Y")? image_tag('greencheck.png') : image_tag('redx.png') %></td>
             <td><%= coordinateData['properties']['metadata'][i]['activity_type'] %></td>
             <td><%= coordinateData['properties']['metadata'][i]['heading'] %></td>
             <td><%= coordinateData['properties']['metadata'][i]['battery_level'] %></td>
