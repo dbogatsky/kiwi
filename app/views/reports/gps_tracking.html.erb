@@ -151,7 +151,7 @@
         <tr>
           <td><%= i + 1 %>
           <td><%= coord %></td>
-          <td><%= Time.at(coordinateData['properties']['time'][i]/1000).to_datetime.strftime('%I:%M:%S %p') %></td>
+          <td><%= Time.at(coordinateData['properties']['time'][i]/1000).to_datetime.in_time_zone(current_user.time_zone).strftime('%I:%M:%S %p') %></td>
           <% if coordinateData['properties']['metadata'][i].present? %>
             <td><%= coordinateData['properties']['metadata'][i]['version'] %></td>
             <td><%= (coordinateData['properties']['metadata'][i]['gps'] == "Y")? image_tag('greencheck.png') : image_tag('redx.png') %></td>
@@ -181,7 +181,6 @@
               
             </td>
           <% else %>
-            <td> na </td>
             <td> na </td>
             <td> na </td>
             <td> na </td>
