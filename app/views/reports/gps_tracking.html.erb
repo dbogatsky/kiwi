@@ -162,7 +162,7 @@
             <td><%= coordinateData['properties']['metadata'][i]['accuracy'] %>m</td>
             <td><%= coordinateData['properties']['metadata'][i]['activity_confidence'] %>%</td>
             <td><%= (coordinateData['properties']['metadata'][i]['battery_level'] * 100).round(0) %>%&nbsp;<%= 
-                  if (coordinateData['properties']['metadata'][i]['battery_is_charging'] == "true")
+                  if (coordinateData['properties']['metadata'][i]['battery_is_charging'] == true)
                     image_tag('battery_charging.png', size: "22", alt: "Charging")
                   else
                     if(coordinateData['properties']['metadata'][i]['battery_level'] >= 0.75)
