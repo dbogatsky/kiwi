@@ -64,7 +64,26 @@
 
 
 <div class="row">
-  <div class="col-sm-4">
+  <div class="col-sm-3">
+    <div class="panel panel-stat">
+      <div class="panel-heading" style="background-color:#1c84c6;">
+        <div class="stat">
+          <div class="row">
+            <div class="col-xs-4">
+              <span class="thumb activity-icon">
+                <img class="thumb-img" src="/assets/vertical-timeline/img/cd-icon-calendar.svg" alt="Stops">
+              </span>
+            </div>
+            <div class="col-xs-8 text-center">
+              <small class="stat-label"><strong>Estimated Stops</strong></small>
+              <h1><%= @stops %></h1>
+            </div>
+          </div><!-- row -->
+        </div><!-- stat -->
+      </div><!-- panel-heading -->
+    </div>
+  </div><!-- tile meeting -->
+  <div class="col-sm-3">
     <div class="panel panel-stat">
       <div class="panel-heading" style="background-color:#1cc7c2;">
         <div class="stat">
@@ -83,7 +102,7 @@
       </div><!-- panel-heading -->
     </div>
   </div><!-- tile meeting -->
-  <div class="col-sm-4">
+  <div class="col-sm-3">
     <div class="panel panel-stat">
       <div class="panel-heading" style="background-color:#673AB7;">
         <div class="stat">
@@ -102,7 +121,7 @@
       </div><!-- panel-heading -->
     </div>
   </div><!-- tile regular visits -->
-  <div class="col-sm-4">
+  <div class="col-sm-3">
     <div class="panel panel-stat">
       <div class="panel-heading" style="background-color:#e91e63;">
         <div class="stat">
@@ -137,6 +156,7 @@
             <th>WiFi</th>
             <th>Data</th>
             <th>Activity Type</th>
+            <th>Duration</th>
             <th>Heading</th>
             <th>Accuracy</th>
             <th>Confidence</th>
@@ -145,33 +165,41 @@
       </thead>
        <%
        unless @allPosition.nil?  
-          coordinateData  = JSON.parse(@allPosition)
-          coordinateData['geometry']['coordinates'].each_with_index do |coord, i| 
+          @coordinateData['geometry']['coordinates'].each_with_index do |coord, i| 
       %>
         <tr>
           <td><%= i + 1 %>
           <td><%= coord %></td>
-          <td><%= Time.at(coordinateData['properties']['time'][i]/1000).to_datetime.in_time_zone(current_user.time_zone).strftime('%I:%M:%S %p') %></td>
-          <% if coordinateData['properties']['metadata'][i].present? %>
-            <td><%= coordinateData['properties']['metadata'][i]['version'] %></td>
-            <td><%= (coordinateData['properties']['metadata'][i]['gps'] == "Y")? image_tag('greencheck.png') : image_tag('redx.png') %></td>
-            <td><%= (coordinateData['properties']['metadata'][i]['wifi'] == "Y")? image_tag('greencheck.png') : image_tag('redx.png') %></td>
-            <td><%= (coordinateData['properties']['metadata'][i]['mobile_data'] == "Y")? image_tag('greencheck.png') : image_tag('redx.png') %></td>
-            <td><%= coordinateData['properties']['metadata'][i]['activity_type'] %></td>
-            <td><%= coordinateData['properties']['metadata'][i]['heading'] %></td>
-            <td><%= coordinateData['properties']['metadata'][i]['accuracy'] %>m</td>
-            <td><%= coordinateData['properties']['metadata'][i]['activity_confidence'] %>%</td>
-            <td><%= (coordinateData['properties']['metadata'][i]['battery_level'] * 100).round(0) %>%&nbsp;<%= 
-                  if (coordinateData['properties']['metadata'][i]['battery_is_charging'] == true)
+          <td><%= Time.at(@coordinateData['properties']['time'][i]/1000).to_datetime.in_time_zone(current_user.time_zone).strftime('%I:%M:%S %p') %></td>
+          <% if @coordinateData['properties']['metadata'][i].present? %>
+            <td><%= @coordinateData['properties']['metadata'][i]['version'] %></td>
+            <td><%= (@coordinateData['properties']['metadata'][i]['gps'] == "Y")? image_tag('greencheck.png') : image_tag('redx.png') %></td>
+            <td><%= (@coordinateData['properties']['metadata'][i]['wifi'] == "Y")? image_tag('greencheck.png') : image_tag('redx.png') %></td>
+            <td><%= (@coordinateData['properties']['metadata'][i]['mobile_data'] == "Y")? image_tag('greencheck.png') : image_tag('redx.png') %></td>
+            <td><%= @coordinateData['properties']['metadata'][i]['activity_type'] %></td>
+            <td>
+              <% if @coordinateData['properties']['metadata'][i]['activity_type'] == "still" %>
+                <% if i < @coordinateData['geometry']['coordinates'].count-1 %>
+                  <%= ((Time.at(@coordinateData['properties']['time'][i+1]/1000) - Time.at(@coordinateData['properties']['time'][i]/1000))/60).round(0) %> mins
+                <% end %>
+              <% else %>
+                -
+              <% end %>
+            </td>
+            <td><%= @coordinateData['properties']['metadata'][i]['heading'] %></td>
+            <td><%= @coordinateData['properties']['metadata'][i]['accuracy'] %>m</td>
+            <td><%= @coordinateData['properties']['metadata'][i]['activity_confidence'] %>%</td>
+            <td><%= (@coordinateData['properties']['metadata'][i]['battery_level'] * 100).round(0) %>%&nbsp;<%= 
+                  if (@coordinateData['properties']['metadata'][i]['battery_is_charging'] == true)
                     image_tag('battery_charging.png', size: "22", alt: "Charging")
                   else
-                    if(coordinateData['properties']['metadata'][i]['battery_level'] >= 0.75)
+                    if(@coordinateData['properties']['metadata'][i]['battery_level'] >= 0.75)
                       image_tag('battery_full.png', size: "22", alt: "Full")
-                    elsif (coordinateData['properties']['metadata'][i]['battery_level'] >= 0.50 && coordinateData['properties']['metadata'][i]['battery_level'] < 0.75)
+                    elsif (@coordinateData['properties']['metadata'][i]['battery_level'] >= 0.50 && @coordinateData['properties']['metadata'][i]['battery_level'] < 0.75)
                       image_tag('battery_half.png', size: "22", alt: "Half")
-                    elsif (coordinateData['properties']['metadata'][i]['battery_level'] >= 0.25 && coordinateData['properties']['metadata'][i]['battery_level'] < 0.50)
+                    elsif (@coordinateData['properties']['metadata'][i]['battery_level'] >= 0.25 && @coordinateData['properties']['metadata'][i]['battery_level'] < 0.50)
                       image_tag('battery_drained.png', size: "22", alt: "Drained")
-                    elsif (coordinateData['properties']['metadata'][i]['battery_level'] < 0.25)
+                    elsif (@coordinateData['properties']['metadata'][i]['battery_level'] < 0.25)
                       image_tag('battery_empty.png', size: "22", alt: "Empty")
                     else
                       "na"
@@ -188,6 +216,7 @@
             <td> na </td>
             <td> na </td>
             <td> na </td>
+            <td> - </td>
             <td> na </td>
             <td> na </td>
           <% end %>
