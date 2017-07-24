@@ -52,16 +52,11 @@
   </div>
 </div>
 
-
-  <div class="col-sm-12 map-layout" style="margin-bottom:20px;">
-    <div id="tracking_map" style="height: 600px;">
-      <div id="map" style="height: 100%;"></div>
-    </div>
+<div class="col-sm-12 map-layout" style="margin-bottom:20px;">
+  <div id="tracking_map" style="height: 600px;">
+    <div id="map" style="height: 100%;"></div>
   </div>
-
-
-
-
+</div>
 
 <div class="row">
   <div class="col-sm-3">
@@ -296,17 +291,23 @@
           smoothFactor: 1
       });
       firstpolyline.addTo(map);
-
-      var demo = firstpolyline.on('click', function(event) {
-        console.log(event);
-          var l = event.latlng;
-          var latitude = event.latlng.lat;
-          var longitude = event.latlng.lng;
-          console.log( latitude + ', ' + longitude );
-          var endDate = '<%= DateTime.parse(params[:date]).end_of_day.strftime("%m/%d/%Y")%>';
-          // L.AwesomeMarkers = {};
-          L.setMarker(endDate,l)
+      $.each(coordinates, function( index, value ) {
+        var merker = new L.CircleMarker(new L.LatLng(value[1], value[0]),{
+          radius : 5
+        })
+        merker.addTo(map).bindPopup("LatLng("+value[1]+", "+value[0]+")");
       });
+
+      // var demo = firstpolyline.on('click', function(event) {
+      //   console.log(event);
+      //     var l = event.latlng;
+      //     var latitude = event.latlng.lat;
+      //     var longitude = event.latlng.lng;
+      //     console.log( latitude + ', ' + longitude );
+      //     var endDate = '<%#= DateTime.parse(params[:date]).end_of_day.strftime("%m/%d/%Y")%>';
+      //     // L.AwesomeMarkers = {};
+      //     L.setMarker(endDate,l)
+      // });
 
       $('#tracking').click(function(event) {
          if($('#tracking').attr('checked')){

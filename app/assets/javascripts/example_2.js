@@ -75,9 +75,9 @@ $(function() {
     var control = new L.Playback.Control(playback);
     control.addTo(map);
 
-    map.on("click", function (event) {
-        var currentPosition = event.latlng;
-        playback._clock.setCursor(playback._trackController.getTimeStampFromLatLng(currentPosition));
-    });
+    // map.on("click", function (event) {
+    //     var currentPosition = event.latlng;
+    //     playback._clock.setCursor(playback._trackController.getTimeStampFromLatLng(currentPosition));
+    // });
 
 });

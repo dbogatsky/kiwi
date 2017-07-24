@@ -213,27 +213,29 @@ Please contact your administrator to help generate a report.'
       # lets combine still activity types where they are one after another
       # tracking sometimes sends multiple still
       @coordinateData['geometry']['coordinates'].each_with_index do |coord, i|
-        if (@coordinateData['properties']['metadata'][i]['activity_type'] == "still") 
 
+      if(@coordinateData['properties']['metadata'][i].present? && @coordinateData['properties']['metadata'][i]['activity_type'] == "still")
+          if (@coordinateData['properties']['metadata'][i]['activity_type'] == "still")
 
-          # check the next activity types to see if the are also 'still'
-          counter = 0
-          j = i+1
-          while (j < @coordinateData['geometry']['coordinates'].count-1 && @coordinateData['properties']['metadata'][j]['activity_type'] == "still")
-            #count how many still are after the initial
-            counter += 1
-            j += 1
-          end
-
-          # we have some multiple logged coordiantes in sequence for type 'still'
-          if counter > 0
-            for j in 1..counter do
-              @coordinateData['geometry']['coordinates'].delete_at(i+1)
-              @coordinateData['properties']['metadata'].delete_at(i+1)
-              @coordinateData['properties']['time'].delete_at(i+1)
+            # check the next activity types to see if the are also 'still'
+            counter = 0
+            j = i+1
+            while (j < @coordinateData['geometry']['coordinates'].count-1 && @coordinateData['properties']['metadata'][j]['activity_type'] == "still")
+              #count how many still are after the initial
+              counter += 1
+              j += 1
             end
+
+            # we have some multiple logged coordiantes in sequence for type 'still'
+            if counter > 0
+              for j in 1..counter do
+                @coordinateData['geometry']['coordinates'].delete_at(i+1)
+                @coordinateData['properties']['metadata'].delete_at(i+1)
+                @coordinateData['properties']['time'].delete_at(i+1)
+              end
+            end
+            @stops += 1
           end
-          @stops += 1
         end
       end
     end
